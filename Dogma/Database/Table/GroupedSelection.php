@@ -116,7 +116,7 @@ class GroupedSelection extends Selection
 
 
 
-	public function insert($data)
+	public function insert($data, $ignore = FALSE)
 	{
 		if ($data instanceof \Traversable && !$data instanceof Selection) {
 			$data = iterator_to_array($data);
@@ -124,7 +124,7 @@ class GroupedSelection extends Selection
 		if (is_array($data)) {
 			$data[$this->column] = $this->active;
 		}
-		return parent::insert($data);
+		return parent::insert($data, $ignore);
 	}
 
 
