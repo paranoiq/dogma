@@ -1,0 +1,137 @@
+<?php
+
+set_time_limit(0);
+
+$options = array(
+    'size' => 'range',
+    'time' => 'range',
+    'redir' => 'range',
+    'status' => 'choose',
+);
+
+
+$request = array();
+
+foreach ($options as $option => $type) {
+    if (!isset($_GET[$option])) continue;
+    
+    // select random value within range. eg: "100K-20M" for response between 100 kB and 20 MB
+    if ($type === 'range') {
+        $mm = explode('-', strtoupper($_GET[$option]));
+        if (count($mm) > 1) {
+            $min = abs((int) $mm[0]);
+            if (strstr($mm[0], 'K') !== FALSE) $min *= 1000;
+            if (strstr($mm[0], 'M') !== FALSE) $min *= 1000000;
+            
+            $max = abs((int) $mm[1]);
+            if (strstr($mm[1], 'K') !== FALSE) $max *= 1000;
+            if (strstr($mm[1], 'M') !== FALSE) $max *= 1000000;
+            
+            if ($min > $max) list($min, $max) = array($max, $min);
+            
+            $request[$option] = rand($min, $max);
+        } else {
+            $size = abs((int) $_GET[$option]);
+            if (strstr($_GET[$option], 'K') !== FALSE) $size *= 1000;
+            if (strstr($_GET[$option], 'M') !== FALSE) $size *= 1000000;
+            
+            $request[$option] = $size;
+        }
+    }
+    
+    // select random value from given options. every minus sign after value means 10x lover probability
+    if ($type === 'choose') {
+        $arr = explode(',', $_GET[$option]);
+        
+        if (count($arr) > 1) {
+            $rats = array();
+            $sum = 0.0;
+            foreach ($arr as $st) {
+                $ratio = 1 / pow(10, strlen(preg_replace('/[^-]/', '', $st)));
+                $status = (int) $st;
+                $rats[$status] = $ratio;
+                $sum += $ratio;
+            }
+            
+            $rand = rand(0, $sum * 1000000000) / 1000000000;
+            $selected = 0;
+            foreach ($rats as $status => $ratio) {
+                if ($rand < $ratio) {
+                    $selected = $status;
+                    break;
+                }
+                $rand -= $ratio;
+            }
+            
+            $request['status'] = $selected ?: key($rats);
+        } else {
+            $request[$option] = (int) $_GET[$option];
+        }
+    }
+}
+
+
+$protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
+
+
+// redirect
+if (!empty($request['redir'])) {
+    $request['redir']--;
+    if ($request['status'] === 200) unset($request['status']);
+    if ($request['redir'] < 1) unset($request['redir']);
+    
+    $urlx = explode('?', $_SERVER["REQUEST_URI"]);
+    $url = $urlx[0] . '?' . http_build_query($request);
+    header($protocol . ' ' . 301, TRUE, 301);
+    header("Location: " . $url);
+    exit;
+}
+
+
+// defaults
+if (empty($request['size'])) $request['size'] = 20000;
+if (empty($request['time'])) $request['time'] = 0;
+if (empty($request['status'])) $request['status'] = 200;
+
+
+// response status
+if ($request['status'] !== 200) {
+    header($protocol . ' ' . $request['status'], TRUE, $request['status']);
+}
+
+
+echo "<!DOCTYPE HTML>\n";
+echo "<html>\n<head><title></title></head>\n<body><pre>\n";
+echo "<h1>Testing response:</h1>\n";
+echo "Size: " . number_format($request['size']) . "\n";
+echo "Time: $request[time]\n";
+echo "Status: $request[status]\n";
+
+$chars = 'QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklxcvbnm1234567890[](){}+|\,.-~@#$%^&*\'"=/`;:_?!';
+$chars = str_split($chars);
+
+if ($request['time']) {
+    $chunkSize = (int) ($request['size'] / $request['time']);
+    for ($n = 0; $n < $request['size']; $n++) {
+        if ($n % $chunkSize === 0) {
+            sleep(1);
+        }
+        if ($n % 100 === 0) {
+            echo "\n";
+            if ($n % 1000 === 0) echo "\n";
+        }
+        echo $chars[rand(0, 90)];
+    }
+} else {
+    for ($n = 0; $n < $request['size']; $n++) {
+        if ($n % 100 === 0) {
+            echo "\n";
+            if ($n % 1000 === 0) echo "\n";
+        }
+        echo $chars[rand(0, 90)];
+    }
+}
+
+
+echo "<h2>Done!</h2>";
+echo "<pre>\n</body>\n</html>";
