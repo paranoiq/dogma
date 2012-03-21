@@ -1,0 +1,4 @@
+array(
+	'UPDATE table SET `a`=123, `b`=456',
+	array(),
+)

@@ -1,0 +1,4 @@
+array(
+	'INSERT INTO table (col1, col2) VALUES (`0`, `1`) VALUES (123, 456), (456, 789)',
+	array(),
+)

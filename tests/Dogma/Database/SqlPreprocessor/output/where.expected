@@ -1,0 +1,4 @@
+array(
+	'UPDATE table WHERE (`a` IS NULL AND `b`=123 AND `c` LIKE \'text\' AND `d` IN (123, 456))',
+	array(),
+)

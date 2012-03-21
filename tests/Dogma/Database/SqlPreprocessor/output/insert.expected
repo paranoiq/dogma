@@ -1,0 +1,4 @@
+array(
+	'INSERT INTO table (col1, col2, col3) VALUES (123, \'abc\', \'2012-01-16 00:00:00\')',
+	array(),
+)
