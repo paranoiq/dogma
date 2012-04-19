@@ -1,7 +1,6 @@
 <?php
 
 require_once __DIR__ . '/../bootstrap.php';
-require_once __DIR__ . '/../../../Dogma/Http/loader.php';
 
 use Nette\Diagnostics\Debugger;
 
@@ -9,25 +8,42 @@ Debugger::enable(Debugger::DEVELOPMENT, __DIR__);
 
 header("Content-Type: text/html; charset=utf-8");
 
+echo "<!DOCTYPE HTML><html><head><title>Dogma\\Http</title></head><body>";
+
+$dir = __DIR__ . '/../../../Dogma';
+
+require_once $dir . '/Object/Object.php';
+require_once $dir . '/types/Enum.php';
+require_once $dir . '/Http/exceptions.php';
+require_once $dir . '/Http/HttpCode.php';
+require_once $dir . '/Http/Response.php';
+require_once $dir . '/Http/FileResponse.php';
+require_once $dir . '/Http/Request.php';
+require_once $dir . '/Http/DownloadRequest.php';
+require_once $dir . '/Http/Channel.php';
+require_once $dir . '/Http/RequestManager.php';
+require_once $dir . '/Http/CurlHelpers.php';
+
 
 use Dogma\Http;
 
 
 $manager = new Http\RequestManager;
 
-$request = new Http\Request('http://lh/vsp/dogma/tests/Dogma/Http/responder.php');
-$request->setFollowRedirects(TRUE);
+$requestA = new Http\DownloadRequest('http://lh/vsp/dogma/tests/Dogma/Http/responder.php', __DIR__);
+$requestA->setFollowRedirects(TRUE);
 
-$channelA = $manager->createChannel(clone $request);
-$channelB = $manager->createChannel($request);
-$channelC = $manager->createChannel($request);
-$channelD = $manager->createChannel($request);
-$channelE = $manager->createChannel($request);
-$channelF = $manager->createChannel($request);
-$channelG = $manager->createChannel($request);
-$channelH = $manager->createChannel($request);
+$requestB = new Http\Request('http://lh/vsp/dogma/tests/Dogma/Http/responder.php');
+$requestB->setFollowRedirects(TRUE);
 
-$channelA->getRequestPrototype()->setDownloadDir(__DIR__);
+$channelA = $manager->createChannel($requestA);
+$channelB = $manager->createChannel($requestB);
+$channelC = $manager->createChannel($requestB);
+$channelD = $manager->createChannel($requestB);
+$channelE = $manager->createChannel($requestB);
+$channelF = $manager->createChannel($requestB);
+$channelG = $manager->createChannel($requestB);
+$channelH = $manager->createChannel($requestB);
 
 $channelG->setPriority(6.0);
 $channelH->setPriority(12.0);
@@ -37,7 +53,6 @@ while (@$m++ < 20) {
 }
 
 while (@$n++ < 100) {
-    
     $channelB->addJob("?size=10000", "B$n");
     $channelC->addJob("?size=10000", "C$n");
     $channelD->addJob("?size=10000", "D$n");
@@ -45,7 +60,6 @@ while (@$n++ < 100) {
     $channelF->addJob("?size=10000", "F$n");
     $channelG->addJob("?size=10000", "G$n");
     $channelH->addJob("?size=10000", "H$n");
-    
 }
 
 while ($response = $channelA->fetch()) {
