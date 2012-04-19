@@ -90,8 +90,8 @@ class Connection extends \Nette\Database\Connection {
     public function table($table) {
         return new Table\Selection($table, $this);
     }
-    
-    
+
+
     /**
      * Alias for beginTransaction()
      * @return bool
@@ -100,5 +100,46 @@ class Connection extends \Nette\Database\Connection {
         return $this->beginTransaction();
     }
     
+    
+    // QueryComposer ---------------------------------------------------------------------------------------------------
+    
+    
+    public function compose() {
+        return new QueryComposer;
+    }
+
+    /*
+    public function select() {
+
+    }
+
+    public function insert() {
+
+    }
+
+    public function update() {
+
+    }
+
+    public function replace() {
+
+    }
+
+    public function delete() {
+
+    }
+
+    public function call() {
+
+    }
+
+    public function show() {
+
+    }
+
+    public function create() {
+
+    }
+    */
 }
 

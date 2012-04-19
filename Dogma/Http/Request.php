@@ -21,23 +21,13 @@ class Request extends \Dogma\Object {
 
 
     /** @var resource */
-    private $curl;
+    protected $curl;
 
     /** @var string */
-    private $url;
+    protected $url;
 
     /** @var array */
     private $headers = array();
-    
-    /** @var string */
-    private $downloadDir;
-
-    /** @var string */
-    private $fileName;
-    
-    /** @var resource */
-    private $file;
-    
     
     
     public function __construct($url = NULL) {
@@ -207,7 +197,7 @@ class Request extends \Dogma\Object {
     }
 
 
-    private function setRequestHeaders() {
+    protected function setRequestHeaders() {
         $headers = array();
         foreach ($this->headers as $key => $value) {
             if (is_int($key)) {
@@ -302,29 +292,15 @@ class Request extends \Dogma\Object {
 
     
     /**
-     * @param string
-     * @return self
-     */
-    public function setDownloadDir($dir) {
-        if (!is_dir($dir))
-            throw new RequestException("Directory $dir does not exist.");
-        
-        $this->downloadDir = rtrim($dir, '/');
-        
-        return $this;
-    }
-    
-    
-    /**
      * Execute request.
      * @param string
      * @param string
      * @return Response
      */
-    public function execute($url = NULL, $fileName = NULL) {
-        $fileName = $this->prepare($url, $fileName);
+    public function execute($url = NULL) {
+        $this->prepare($url);
         list($response, $error) = $this->sendRequest();
-        return $this->createResponse($response, $error, $fileName);
+        return $this->createResponse($response, $error, '');
     }
 
 
@@ -335,47 +311,19 @@ class Request extends \Dogma\Object {
      * @param string
      * @param string
      * @param bool
-     * @return string downloaded file name
      */
-    public function prepare($url = NULL, $fileName = NULL, $forceDownload = TRUE) {
-        /// extract path from file name
-        if ($fileName && $forceDownload && !$this->downloadDir)
-            throw new RequestException("Download directory must be set for download!");
-        
-        if ($this->downloadDir) {
-            if (!is_dir($this->downloadDir))
-                throw new RequestException("Download directory does not exist or is not accessible!");
-            
-            if (is_null($fileName)) $fileName = $this->fileName;
-            if (is_null($fileName)) {
-                $b = explode('?', $url);
-                $b = explode('#', $b[0]);
-                $fileName = basename($b[0]);
-            }
-            
-            $this->file = fopen($this->downloadDir . "/" . $fileName . ".tmp", 'wb');
-            if ($this->file === FALSE)
-                throw new RequestException("File $fileName cannot be open!");
-            
-
-            $this->setOption(CURLOPT_FILE, $this->file);
-            $this->setOption(CURLOPT_BINARYTRANSFER, TRUE);
-            
-        } else {
-            $this->setOption(CURLOPT_RETURNTRANSFER, TRUE);
-        }
+    public function prepare($url = NULL) {
+        $this->setOption(CURLOPT_RETURNTRANSFER, TRUE);
         
         $this->setRequestHeaders();
         if ($url) $this->setOption(CURLOPT_URL, $this->url . $url);
-        
-        return $fileName;
     }
     
     
     /**
      * @return array
      */
-    private function sendRequest() {
+    protected function sendRequest() {
         $response = curl_exec($this->curl);
         $error = curl_errno($this->curl);
 
@@ -403,19 +351,12 @@ class Request extends \Dogma\Object {
      * @param string
      * @return Response
      */
-    public function createResponse($response, $error, $fileName) {
+    public function createResponse($response, $error, $name) {
         $info = curl_getinfo($this->curl);
         if ($info === FALSE)
             throw new RequestException("Info cannot be obtained from CURL.");
         
-        if ($this->file) {
-            fclose($this->file);
-            unset($this->file);
-            return new FileResponse($fileName, $info, $error);
-            
-        } else {
-            return new Response($response, $info, $error);
-        }
+        return new Response($response, $info, $error);
     }
 
 

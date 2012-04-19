@@ -57,8 +57,16 @@ class Response extends \Dogma\Object {
     /**
      * @return int
      */
-    public function getError() {
+    public function getErrorCode() {
         return $this->error;
+    }
+
+    
+    /**
+     * @return string
+     */
+    public function getError() {
+        return CurlHelpers::getCurlErrorName($this->error);
     }
     
     
@@ -67,6 +75,16 @@ class Response extends \Dogma\Object {
      */
     public function getStatusCode() {
         return $this->status;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getStatus() {
+        $code = HttpCode::instance($this->status);
+        
+        return $code->name;
     }
     
     
@@ -97,6 +115,58 @@ class Response extends \Dogma\Object {
         
         return $this->headers;
     }
+
+
+    /**
+     * @param string
+     * @param string
+     * @return self
+     */
+    public function convert($to = "UTF-8", $from = NULL) {
+        if ($from === NULL) {
+            $charset = $this->query['head > meta[http-equiv=Content-Type]']->attr('content');
+            $charset = $charset ?: $this->query['head > meta[http-equiv=content-type]']->attr('content');
+            $charset = $charset ?: $this->headers['Content-Type'];
+
+            $from = static::getCharset($charset);
+        }
+
+        $from = Strings::upper($from);
+        $to = Strings::upper($to);
+
+        if ($from != $to && $from && $to) {
+            if ($body = @iconv($from, $to, $this->body)) {
+                $this->Body = ltrim($body);
+
+            } else {
+                throw new CurlException("Charset conversion from $from to $to failed");
+            }
+        }
+
+        $this->Body = self::fixContentTypeMeta($this->body);
+
+        return $this;
+    }
+    
+
+    /**
+     * @param string $header
+     * @return string
+     */
+    public static function getCharset($header, $default = NULL) {
+        $match = Strings::match($header, self::CONTENT_TYPE);
+        return isset($match['charset']) ? $match['charset'] : $default;
+    }
+
+
+    /**
+     * @param string $header
+     * @return string
+     */
+    public static function getContentType($header, $default = NULL) {
+        $match = Strings::match($header, self::CONTENT_TYPE);
+        return isset($match['type']) ? $match['type'] : $default;
+    }
     
     
     /**
@@ -121,6 +191,9 @@ class Response extends \Dogma\Object {
     // internals -------------------------------------------------------------------------------------------------------
     
 
+    /**
+     * Remove headers from response.
+     */
     private function parseResponse() {
         $headers = Strings::split(substr($this->response, 0, $this->info['header_size']), "~[\n\r]+~", PREG_SPLIT_NO_EMPTY);
         $this->headers = static::parseHeaders($headers);

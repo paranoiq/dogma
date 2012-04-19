@@ -5,6 +5,14 @@ namespace Dogma\Http;
 use Nette\Callback;
 
 
+/**
+ * Manages parallel requests over multiple HTTP channels.
+ * 
+ * @todo: vyřešit možná nekonečné smyčky při čekání na odpověď
+ * @todo: vyřešit fetch() ze zapausovaného kanálu
+ * @todo: (opožděné) restartování jobů na pokyn handleru
+ * @todo: pauza kanálu na určitý čas
+ */
 class RequestManager extends \Dogma\Object {
 
     /**
@@ -12,17 +20,18 @@ class RequestManager extends \Dogma\Object {
      *
      * $cid: [
      *      request: $request,
-     *      callback: $callback,
      *      priority: $priority,
      *      threadLimit: -1,
      *      lastIndex: -1,
      *      queued: 0,
      *      running: 0,
      *      finished: 0,
-     *      fetched: 0
+     *      fetched: 0,
+     *      onSuccess: $callback,
+     *      onError: $callback,
      * ]
      *
-     * @var Request[]
+     * @var Request[]|Callback[]|string[]
      */
     private $channels = array();
 
@@ -91,17 +100,16 @@ class RequestManager extends \Dogma\Object {
 
     /**
      * @param Request
-     * @param Callback
      * @param float
      * @return self
      */
-    public function addRequest(Request $request, Callback $callback = NULL, $priority = 1.0) {
+    public function addRequest(Request $request, $priority = 1.0) {
         $channel = new Channel($this, $request);
         $cid = spl_object_hash($channel);
 
         $this->channels[$cid] = array(
             'request' => $request,
-            'callback' => $callback,
+            'channel' => $channel,
             'priority' => $priority,
             'threadLimit' => -1,
             'lastIndex' => -1,
@@ -123,13 +131,13 @@ class RequestManager extends \Dogma\Object {
      * @param int
      * @return Channel
      */
-    public function createChannel(Request $request, Callback $callback = NULL, $priority = 1.0, $threadLimit = 10) {
+    public function createChannel(Request $request, $priority = 1.0, $threadLimit = 10) {
         $channel = new Channel($this, $request);
         $cid = spl_object_hash($channel);
         
         $this->channels[$cid] = array(
             'request' => $request,
-            'callback' => $callback,
+            'channel' => $channel,
             'priority' => $priority,
             'threadLimit' => abs((int) $threadLimit),
             'lastIndex' => -1,
@@ -166,7 +174,8 @@ class RequestManager extends \Dogma\Object {
     public function removeChannel(Channel $channel, $throwAwayResults = FALSE) {
         $cid = $this->findChannel($channel);
 
-        $this->readResults(); // to empty the $running
+        $this->channels[$cid]['stopped'] = TRUE;
+        $this->readResults(FALSE); // to empty the $running
 
         if (!empty($this->running[$cid]))
             throw new RequestManagerException("Cannot remove channel with running jobs!");
@@ -191,9 +200,65 @@ class RequestManager extends \Dogma\Object {
         unset($this->running[$cid]);
         unset($this->finished[$cid]);
     }
+    
+    
+    /**
+     * Stop a channel (do not start any jobs).
+     * @param Channel
+     * @return self
+     */
+    public function stopChannel(Channel $channel) {
+        $cid = $this->findChannel($channel);
 
+        $this->channels[$cid]['stopped'] = TRUE;
+        
+        return $this;
+    }
 
+    
+    /**
+     * Check if channel is stopped.
+     * @param Channel
+     * @return bool
+     */
+    public function isStopped(Channel $channel) {
+        $cid = $this->findChannel($channel);
+        
+        return isset($this->channels[$cid]['stopped']);
+    }
+    
 
+    /**
+     * Resume a channel.
+     * @param Channel
+     * @return self
+     */
+    public function resumeChannel(Channel $channel) {
+        $cid = $this->findChannel($channel);
+
+        unset($this->channels[$cid]['stopped']);
+        
+        return $this;
+    }
+    
+
+    /**
+     * Add channel callback handlers.
+     * @param Channel
+     * @param Callback
+     * @param Callback
+     * @return self
+     */
+    public function setHandlers(Channel $channel, Callback $onSuccess, Callback $onFailure) {
+        $cid = $this->findChannel($channel);
+        
+        $this->channels[$cid]['onSuccess'] = $onSuccess;
+        $this->channels[$cid]['onFailure'] = $onFailure;
+        
+        return $this;
+    }
+    
+    
     /**
      * Add new job to a channel. String for GET. Array for POST.
      * @param Channel
@@ -300,12 +365,16 @@ class RequestManager extends \Dogma\Object {
 
 
     /**
-     * Check if channel or a job is finished.
+     * Check if all channels or a channel or a job are finished.
      * @param Channel
      * @param string
      * @return bool
      */
-    public function isFinished(Channel $channel, $name = NULL) {
+    public function isFinished(Channel $channel = NULL, $name = NULL) {
+        if (!$channel) {
+            return empty($this->running);
+        }
+        
         $cid = $this->findChannel($channel);
 
         if ($name === NULL) {
@@ -317,9 +386,20 @@ class RequestManager extends \Dogma\Object {
 
 
     /**
+     * @return self
+     */
+    public function read() {
+        $this->waitForResult();
+        $this->readResults();
+        
+        return $this;
+    }
+    
+    
+    /**
      * @param Channel
      * @param string
-     * @return Response|bool
+     * @return Response|NULL
      */
     public function fetch(Channel $channel, $name = NULL) {
         $cid = $this->findChannel($channel);
@@ -335,8 +415,8 @@ class RequestManager extends \Dogma\Object {
 
         // start one job immediately
         if (empty($this->running[$cid])) {
-            if (empty($this->queue[$cid]))
-                return FALSE;
+            if (isset($this->channels[$cid]['stopped']) || empty($this->queue[$cid]))
+                return NULL;
 
             foreach ($this->queue[$cid] as $name => $job) {
                 $this->startJob($cid, $job, $name);
@@ -357,14 +437,14 @@ class RequestManager extends \Dogma\Object {
             return $this->fetchResultInt($cid, $name);
         }
 
-        return FALSE;
+        return NULL;
     }
-
-
+    
+    
     /**
      * @param string
      * @param string
-     * @return Response
+     * @return Response|NULL
      */
     private function fetchNamedJob($cid, $name) {
         if (!isset($this->queue[$cid][$name])
@@ -372,6 +452,8 @@ class RequestManager extends \Dogma\Object {
             && !isset($this->finished[$cid][$name]))
             throw new RequestManagerException("Job named '$name' was not found.");
 
+        if (isset($this->channels[$cid]['stopped'])) return NULL;
+        
         // start job immediately
         if (isset($this->queue[$cid][$name])) {
             $this->startJob($cid, $this->queue[$cid][$name], $name);
@@ -442,8 +524,14 @@ class RequestManager extends \Dogma\Object {
     }
 
     
+    /**
+     * Decide if channel can start a job.
+     * @param string
+     * @return bool
+     */
     private function selectable($cid) {
         if (empty($this->queue[$cid])) return FALSE;
+        if (isset($this->channels[$cid]['stopped'])) return FALSE;
         if (!empty($this->running[$cid]) 
             && count($this->running[$cid]) >= $this->channels[$cid]['threadLimit']) return FALSE;
         
@@ -478,7 +566,7 @@ class RequestManager extends \Dogma\Object {
         if (empty($this->queue[$cid])) unset($this->queue[$cid]);
 
         if ($channel['threadLimit'] === -1) {
-            $request = $channel['request'];
+            $request = $this->channels[$cid]['request'];
             
         } else {
             $request = clone $channel['request'];
@@ -489,52 +577,57 @@ class RequestManager extends \Dogma\Object {
             }
         }
         
-        $request->prepare('', $name, FALSE);
+        $request->prepare('', $name);
         $handler = $request->getHandler();
         if ($err = curl_multi_add_handle($this->handler, $handler))
             throw new RequestManagerException("CURL error when adding a job: "
                 . CurlHelpers::getCurlMultiErrorName($err), $err);
-
-        if ($err = curl_multi_exec($this->handler, $active))
-            throw new RequestManagerException("CURL error when starting jobs: "
-                . CurlHelpers::getCurlMultiErrorName($err), $err);
+        
+        $this->exec();
 
         $this->running[$cid][$name] = 1;
         $this->resources[(string)$handler] = array($cid, $name, $request);
     }
 
 
+    private function exec() {
+        do {
+            $err = curl_multi_exec($this->handler, $active);
+            if ($err > 0)
+                throw new RequestManagerException("CURL error when starting jobs: "
+                    . CurlHelpers::getCurlMultiErrorName($err), $err);
+        } while ($err === CURLM_CALL_MULTI_PERFORM);
+        
+        return $active;
+    }
+    
+    
     /**
      * Wait for any request to finish. Blocking.
-     * @return bool
+     * @return int
      */
     private function waitForResult() {
-        if (!count($this->running)) return FALSE;
+        if (empty($this->running)) return 0;
 
         do {
-            if ($err = curl_multi_exec($this->handler, $running))
-                throw new RequestManagerException("CURL error when executing jobs: "
-                    . CurlHelpers::getCurlMultiErrorName($err), $err);
-
+            $active = $this->exec();
             $ready = curl_multi_select($this->handler);
-            //if ($ready === -1)
-            //    throw new RequestManagerException("CURL error when waiting for a result.");
+            
+            if ($ready > 0) return $ready;
 
-            if ($ready > 0) return TRUE;
-
-        } while ($running > 0 && $ready != -1);
-
-        return FALSE;
+        } while ($active > 0 && $ready != -1);
+        
+        return 0;
     }
 
 
     /**
-     * Read finished results from CURL
+     * Read finished results from CURL.
      */
-    public function readResults() {
+    private function readResults() {
         while ($minfo = curl_multi_info_read($this->handler)) {
             // ok
-
+            
             $resId = (string) $minfo['handle'];
             list($cid, $name, $request) = $this->resources[$resId];
             $channel = & $this->channels[$cid];
@@ -550,8 +643,13 @@ class RequestManager extends \Dogma\Object {
                 throw new RequestManagerException("CURL error when reading results: "
                     . CurlHelpers::getCurlMultiErrorName($err), $err);
 
-            if ($channel['callback']) {
-                $channel['callback']->invoke($this->fetchResultInt($cid, $name));
+            if (isset($channel['onSuccess'])) {
+                $response = $this->fetchResultInt($cid, $name);
+                if ($response->isSuccess()) {
+                    $channel['onSuccess']->invoke($response, $channel['channel']);
+                } else {
+                    $channel['onFailure']->invoke($response, $channel['channel']);
+                }
             }
         }
         $this->startJobs();

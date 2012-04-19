@@ -43,7 +43,21 @@ class Channel extends \Dogma\Object {
     public function getRequestPrototype() {
         return $this->request;
     }
+
+
+    /**
+     * Set callback handlers on job finish.
+     * @param callable
+     * @param callable
+     * @return self
+     */
+    public function setHandlers(Callback $onSuccess, Callback $onFailure) {
+        $this->manager->setHandlers($this, $onSuccess, $onFailure);
+
+        return $this;
+    }
     
+
 
     /**
      * Add new job to channel. String for GET. Array for POST.
@@ -118,6 +132,46 @@ class Channel extends \Dogma\Object {
         return $this->manager->fetch($this, $name);
     }
 
+    
+    /**
+     * Stop channel (do not start any jobs).
+     * @return self
+     */
+    public function stop() {
+        $this->manager->stopChannel($this);
+        
+        return $this;
+    }
+    
+    
+    /**
+     * Check if channel is stopped.
+     * @return bool
+     */
+    public function isStopped() {
+        return $this->manager->isStopped($this);
+    }
+    
+    
+    /**
+     * Restore function of channel.
+     * @return self 
+     */
+    public function resume() {
+        $this->manager->resumeChannel($this);
+        
+        return $this;
+    }
+
+
+    /**
+     * @return self
+     */
+    public function read() {
+        $this->manager->read();
+
+        return $this;
+    }
     
 
     public function &__get($name) {

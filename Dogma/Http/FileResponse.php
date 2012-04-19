@@ -7,16 +7,25 @@ use Nette\Utils\Strings;
 
 class FileResponse extends Response {
     
+    /** @var string */
     private $fileName;
     
     
-    public function __construct($fileName, $info, $error) {
+    /**
+     * @param string
+     * @param array
+     * @param int
+     */
+    public function __construct($fileName, array $info, $error) {
         parent::__construct(NULL, $info, $error);
         
         $this->fileName = $fileName;
     }
 
 
+    /**
+     * @return array
+     */
     public function getHeaders() {
         if (!$this->headers) $this->parseFile();
 
@@ -24,15 +33,26 @@ class FileResponse extends Response {
     }
 
 
+    /**
+     * @return string
+     */
     public function getBody() {
         if (!$this->headers) $this->parseFile();
         
         return file_get_contents($this->fileName);
     }
     
+    
+    /**
+     * @return string
+     */
+    public function getFileName() {
+        return $this->fileName;
+    }
+    
 
     /**
-     * Fix downloaded file
+     * Remove headers from downloaded file
      */
     private function parseFile() {
         if (($fp = @fopen($this->fileName . '.tmp', 'rb')) === FALSE) { // internationaly @
@@ -63,7 +83,7 @@ class FileResponse extends Response {
         chmod($this->fileName, 0755);
 
         if (!$this->headers) {
-            throw new RequestException("Headers parsing failed", NULL, $this);
+            throw new RequestException("Headers parsing failed");
         }
     }
     
