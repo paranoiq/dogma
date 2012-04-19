@@ -79,7 +79,7 @@ abstract class Enum {
     final public static function instance($value) {
         if (!isset(self::$values[$class = get_called_class()])) self::init($class);
         
-        foreach (static::$values[$class] as $name => $val) {
+        foreach (self::$values[$class] as $name => $val) {
             if ($value === $val) return self::__callStatic($name, array());
         }
         
