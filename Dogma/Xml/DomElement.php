@@ -53,6 +53,22 @@ class DomElement extends \Dogma\Object {
     }
     
     
+    /**
+     * @return \DOMElement
+     */
+    public function getElement() {
+        return $this->element;
+    }
+    
+    
+    /**
+     * @return bool
+     */
+    public function remove() {
+        $this->element->parentNode->removeChild($this->element);
+        return TRUE;
+    }
+    
     
     public function &__get($name) {
         $val = $this->element->$name;
