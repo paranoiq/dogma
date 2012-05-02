@@ -43,7 +43,13 @@ class RequestManager extends \Dogma\Object {
      * @var array ($cid ($name: $job))
      */
     private $queue = array();
-
+    
+    /**
+     * Job contexts.
+     * @var array ($cid ($name: $context))
+     */
+    private $contexts = array();
+    
     /**
      * Running jobs by channels and names.
      * @var array ($cid: ($name: 1))
@@ -243,7 +249,7 @@ class RequestManager extends \Dogma\Object {
     
 
     /**
-     * Add channel callback handlers.
+     * Add channel callback handlers: function(Response $response, Channel $channel, string $name)
      * @param Channel
      * @param Callback
      * @param Callback
@@ -260,21 +266,22 @@ class RequestManager extends \Dogma\Object {
     
     
     /**
-     * Add new job to a channel. String for GET. Array for POST.
+     * Add new job to a channel.
      * @param Channel
      * @param string|array
      * @param string
-     * @return self
+     * @param mixed Request context
+     * @return string|int
      */
-    public function addJob(Channel $channel, $job, $name = '') {
+    public function addJob(Channel $channel, $data, $name = '', $context = NULL) {
         $cid = $this->findChannel($channel);
 
-        $this->addJobInt($cid, $job, $name);
+        $name = $this->addJobInt($cid, $data, $name, $context);
         $this->startJobs();
 
-        return $this;
+        return $name;
     }
-
+    
 
     /**
      * Add more jobs to a channel. Array indexes are job names if they are strings.
@@ -285,8 +292,8 @@ class RequestManager extends \Dogma\Object {
     public function addJobs(Channel $channel, array $jobs) {
         $cid = $this->findChannel($channel);
 
-        foreach ($jobs as $name => $job) {
-            $this->addJobInt($cid, $job, $name);
+        foreach ($jobs as $name => $data) {
+            $this->addJobInt($cid, $data, $name);
         }
         $this->startJobs();
 
@@ -299,23 +306,28 @@ class RequestManager extends \Dogma\Object {
      * @param string
      * @param string|array
      * @param string|int
+     * @return string|int
      */
-    private function addJobInt($cid, $job, $name) {
-        if (!is_string($job) && !is_array($job))
+    private function addJobInt($cid, $data, $name, $context = NULL) {
+        if (!is_string($data) && !is_array($data))
             throw new RequestManagerException('Illegal job data. Job data can be either string (for GET/HEAD requests) or array (for POST requests).');
         
         if (is_string($name)) {
-            $this->queue[$cid][$name] = $job;
+            $this->queue[$cid][$name] = $data;
 
         } elseif (is_int($name)) {
             $name = ++$this->channels[$cid]['lastIndex'];
-            $this->queue[$cid][$name] = $job;
+            $this->queue[$cid][$name] = $data;
             
         } else {
             throw new RequestManagerException('Illegal job name. Job name can be only a string or an integer.');
         }
 
+        if (isset($context))
+            $this->contexts[$cid][$name] = $context;
         $this->channels[$cid]['queued']++;
+        
+        return $name;
     }
 
 
@@ -544,8 +556,8 @@ class RequestManager extends \Dogma\Object {
      */
     private function startJobs() {
         while ($cid = $this->selectChannel()) {
-            foreach ($this->queue[$cid] as $name => $job) {
-                $this->startJob($cid, $job, $name);
+            foreach ($this->queue[$cid] as $name => $data) {
+                $this->startJob($cid, $data, $name);
                 break;
             }
         }
@@ -558,7 +570,7 @@ class RequestManager extends \Dogma\Object {
      * @param string|array
      * @param string
      */
-    private function startJob($cid, $job, $name) {
+    private function startJob($cid, $data, $name) {
         $channel = & $this->channels[$cid];
         $channel['queued']--;
         $channel['running']++;
@@ -570,11 +582,17 @@ class RequestManager extends \Dogma\Object {
             
         } else {
             $request = clone $channel['request'];
-            if (is_string($job)) {
-                $request->appendUrl($job);
+            if (is_string($data)) {
+                $request->appendUrl($data);
             } else {
-                $request->setPostData($job);
+                $request->setPostData($data);
             }
+        }
+        
+        if (!empty($this->contexts[$cid][$name])) {
+            $request->setContext($this->contexts[$cid][$name]);
+            unset($this->contexts[$cid][$name]);
+            if (empty($this->contexts[$cid])) unset($this->contexts[$cid]);
         }
         
         $request->prepare('', $name);
@@ -590,6 +608,9 @@ class RequestManager extends \Dogma\Object {
     }
 
 
+    /**
+     * @return int
+     */
     private function exec() {
         do {
             $err = curl_multi_exec($this->handler, $active);
@@ -646,9 +667,9 @@ class RequestManager extends \Dogma\Object {
             if (isset($channel['onSuccess'])) {
                 $response = $this->fetchResultInt($cid, $name);
                 if ($response->isSuccess()) {
-                    $channel['onSuccess']->invoke($response, $channel['channel']);
+                    $channel['onSuccess']->invoke($response, $channel['channel'], $name);
                 } else {
-                    $channel['onFailure']->invoke($response, $channel['channel']);
+                    $channel['onFailure']->invoke($response, $channel['channel'], $name);
                 }
             }
         }

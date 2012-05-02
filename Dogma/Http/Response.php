@@ -25,6 +25,8 @@ class Response extends \Dogma\Object {
     /** @var string */
     protected $body;
     
+    /** @var mixed Request context */
+    protected $context;
     
 
     /**
@@ -45,6 +47,25 @@ class Response extends \Dogma\Object {
         $this->response = $response;
     }
 
+    
+    /**
+     * @param mixed Request context
+     * @return self
+     */
+    public function setContext($data) {
+        $this->context = $data;
+        
+        return $this;
+    }
+    
+    
+    /**
+     * @return mixed
+     */
+    public function getContext() {
+        return $this->context;
+    }
+    
     
     /**
      * @return bool
