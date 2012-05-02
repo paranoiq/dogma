@@ -7,6 +7,8 @@ use Nette\Utils\Strings;
 
 /**
  * Compiles and executes an XPath query
+ * 
+ * @todo: bug v xpath - při date() není někdy funkci předán řetězec
  */
 class XpathProcessor extends \Dogma\Object {
     
@@ -80,6 +82,7 @@ class XpathProcessor extends \Dogma\Object {
         '/float\\(/' => "number(",
         '/bool\\(/' => "php:functionString('Dogma\\Xml\\XpathProcessor::bool', ",
         '/date\\(/' => "php:functionString('Dogma\\Xml\\XpathProcessor::date', ",
+        '/datetime\\(/' => "php:functionString('Dogma\\Xml\\XpathProcessor::datetime', ",
         '/match\\(/' => "php:functionString('Dogma\\Xml\\XpathProcessor::match', ",
         '/replace\\(/' => "php:functionString('Dogma\\Xml\\XpathProcessor::replace', ",
     );
@@ -121,7 +124,8 @@ class XpathProcessor extends \Dogma\Object {
         
         'match',
         'replace',
-        'date'
+        'date',
+        'datetime'
     );
 
 
@@ -216,6 +220,7 @@ class XpathProcessor extends \Dogma\Object {
         'Dogma\\Xml\\XpathProcessor::match',
         'Dogma\\Xml\\XpathProcessor::replace',
         'Dogma\\Xml\\XpathProcessor::date',
+        'Dogma\\Xml\\XpathProcessor::datetime',
         'Dogma\\Xml\\XpathProcessor::bool',
     );
     
@@ -409,6 +414,22 @@ class XpathProcessor extends \Dogma\Object {
         
         return $date->format('Y-m-d');
     }
+
+
+    /**
+     * Format date in standard ISO format Y-m-d H:i:s
+     * @param string
+     * @param string
+     * @return string
+     */
+    static public function datetime($string, $format = 'Y-m-d H:i:s') {
+        dump($string);
+        $date = \DateTime::createFromFormat($format, $string);
+        if (!$date)
+            throw new XpathException("Cannot create DateTime object from '$string' using format '$format'.");
+
+        return $date->format('Y-m-d H:i:s');
+    }
     
     
     /**
@@ -486,6 +507,9 @@ class XpathProcessor extends \Dogma\Object {
         
         if (substr($path, 0, 5) === 'date(') {
             return new \Dogma\Date($value);
+        
+        } elseif (substr($path, 0, 9) === 'datetime(') {
+            return new \Dogma\DateTime($value);
             
         } elseif (substr($path, 0, 4) === 'int(') {
             return (int) $value;
@@ -500,7 +524,7 @@ class XpathProcessor extends \Dogma\Object {
 
 
     /**
-     * Etract values from paths defined by Zpath queries
+     * Extract values from paths defined by Zpath queries
      * @param string|string[]
      * @param DomNode|\DOMNode
      * @return string|string[]
