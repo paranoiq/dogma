@@ -60,17 +60,28 @@ class Channel extends \Dogma\Object {
 
 
     /**
-     * Add new job to channel. String for GET. Array for POST.
+     * Add new job to channel queue.
      * @param string|array
      * @param string
-     * @return self
+     * @param mixed Request context
+     * @return string|int
      */
-    public function addJob($job, $name = 0) {
-        $this->manager->addJob($this, $job, $name);
-
-        return $this;
+    public function addJob($data, $name = 0, $context = NULL) {
+        return $this->manager->addJob($this, $data, $name, $context);
     }
 
+    
+    /**
+     * Run a new job and wait for the response.
+     * @param string|array
+     * @param string|int
+     * @return Response|NULL
+     */
+    public function runJob($data, $name = 0) {
+        $name = $this->manager->addJob($this, $data, $name);
+        return $this->manager->fetch($this, $name);
+    }
+    
 
     /**
      * Add more jobs to a channel. Array indexes are job names if they are strings.

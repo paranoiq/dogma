@@ -29,6 +29,9 @@ class Request extends \Dogma\Object {
     /** @var array */
     private $headers = array();
     
+    /** @var mixed Request context */
+    private $context;
+    
     
     public function __construct($url = NULL) {
         $this->curl = curl_init();
@@ -37,6 +40,25 @@ class Request extends \Dogma\Object {
     }
 
 
+    /**
+     * @param mixed Request context
+     * @return self
+     */
+    public function setContext($data) {
+        $this->context = $data;
+
+        return $this;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getContext() {
+        return $this->context;
+    }
+    
+    
     // basic operations ------------------------------------------------------------------------------------------------
 
     
@@ -356,7 +378,10 @@ class Request extends \Dogma\Object {
         if ($info === FALSE)
             throw new RequestException("Info cannot be obtained from CURL.");
         
-        return new Response($response, $info, $error);
+        $response = new Response($response, $info, $error);
+        if ($this->context) $response->setContext($this->context);
+        
+        return $response;
     }
 
 
