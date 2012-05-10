@@ -7,8 +7,6 @@ use Nette\Utils\Strings;
 
 /**
  * Compiles and executes an XPath query
- * 
- * @todo: bug v xpath - při date() není někdy funkci předán řetězec
  */
 class XpathProcessor extends \Dogma\Object {
     
@@ -35,16 +33,20 @@ class XpathProcessor extends \Dogma\Object {
         "/\\[:only\\]/"  => '[position() = 1 and position() = last()]', // [:only]
 
         // name: ["foo"]
-        '/\\["([^"])"\\]/' => '[@name = "$1"]',
-        "/\\['([^'])'\\]/" => '[@name = \'$1\']',
+        '/\\["([^"]+)"\\]/' => '[@name = "$1"]',
+        "/\\['([^']+)'\\]/" => '[@name = \'$1\']',
+        
+        // content: [="foo"]
+        '/\\[="([^"]+)"\\]/' => '[string() = "$1"]',
+        "/\\[='([^']+)'\\]/" => '[string() = \'$1\']',
 
         // label: [label("foo")]
-        '/\\[label\\("([^"])"\\)\\]/' => '[
+        '/\\[label\\("([^"]+)"\\)\\]/' => '[
                 (ancestor::label[normalize-space() = "$1"]) or
                 (@id = ancestor::form/descendant::label[normalize-space() = "$1"]/@for) or
                 ((@type = "submit" or @type = "reset" or @type = "button") and @value = "$1") or
                 (@type = "button" and normalize-space() = "$1")]',
-        "/\\[label\\('([^'])'\\)\\]/" => '[
+        "/\\[label\\('([^']+)'\\)\\]/" => '[
                 (ancestor::label[normalize-space() = \'$1\']) or
                 (@id = ancestor::form/descendant::label[normalize-space() = \'$1\']/@for) or
                 ((@type = "submit" or @type = "reset" or @type = "button") and @value = \'$1\') or
@@ -78,13 +80,13 @@ class XpathProcessor extends \Dogma\Object {
         '/:anchor/' => "*[@id or (name() = 'a' and @name)]",
         
         // function aliases
-        '/int\\(/' => "number(",
-        '/float\\(/' => "number(",
-        '/bool\\(/' => "php:functionString('Dogma\\Xml\\XpathProcessor::bool', ",
-        '/date\\(/' => "php:functionString('Dogma\\Xml\\XpathProcessor::date', ",
-        '/datetime\\(/' => "php:functionString('Dogma\\Xml\\XpathProcessor::datetime', ",
-        '/match\\(/' => "php:functionString('Dogma\\Xml\\XpathProcessor::match', ",
-        '/replace\\(/' => "php:functionString('Dogma\\Xml\\XpathProcessor::replace', ",
+        '/int\\(/' => "number(.//",
+        '/float\\(/' => "number(.//",
+        '/bool\\(/' => "php:functionString('Dogma\\Xml\\XpathProcessor::bool', .//",
+        '/date\\(/' => "php:functionString('Dogma\\Xml\\XpathProcessor::date', .//",
+        '/datetime\\(/' => "php:functionString('Dogma\\Xml\\XpathProcessor::datetime', .//",
+        '/match\\(/' => "php:functionString('Dogma\\Xml\\XpathProcessor::match', .//",
+        '/replace\\(/' => "php:functionString('Dogma\\Xml\\XpathProcessor::replace', .//",
     );
     
     
@@ -356,6 +358,9 @@ class XpathProcessor extends \Dogma\Object {
         
         $path = Strings::replace($path, $this->translates);
         
+        // fix ".//" before function names
+        $path = Strings::replace($path, '@\\(\\.//([0-9A-Za-z_:-]+)\\(@', '($1(');
+        
         $path = Strings::replace($path, '/(?<![A-Za-z0-9_-])([A-Za-z0-9_-]+)\\(/', 
         function ($match) {
             
@@ -366,7 +371,7 @@ class XpathProcessor extends \Dogma\Object {
                 return "php:functionString('$match[1]', ";
 
             } elseif (in_array($match[1], XpathProcessor::$mathFunctions)) {
-                return "php:function('$match[1]', ";
+                return "php:functionString('$match[1]', ";
 
             } else {
                 throw new \DOMException("XPath compilation failure: Functions '$match[1]' is not enabled.");
@@ -408,6 +413,8 @@ class XpathProcessor extends \Dogma\Object {
      * @return string
      */
     static public function date($string, $format = 'Y-m-d') {
+        if (!$string) return "";
+        
         $date = \DateTime::createFromFormat($format, $string);
         if (!$date) 
             throw new XpathException("Cannot create DateTime object from '$string' using format '$format'.");
@@ -423,7 +430,8 @@ class XpathProcessor extends \Dogma\Object {
      * @return string
      */
     static public function datetime($string, $format = 'Y-m-d H:i:s') {
-        dump($string);
+        if (!$string) return "";
+        
         $date = \DateTime::createFromFormat($format, $string);
         if (!$date)
             throw new XpathException("Cannot create DateTime object from '$string' using format '$format'.");
@@ -506,10 +514,10 @@ class XpathProcessor extends \Dogma\Object {
             throw new XpathException("Invalid xpath query: \"$xpath\", translated from: \"$path\".");
         
         if (substr($path, 0, 5) === 'date(') {
-            return new \Dogma\Date($value);
+            return $value ? new \Dogma\Date($value) : NULL;
         
         } elseif (substr($path, 0, 9) === 'datetime(') {
-            return new \Dogma\DateTime($value);
+            return $value ? new \Dogma\DateTime($value) : NULL;
             
         } elseif (substr($path, 0, 4) === 'int(') {
             return (int) $value;
@@ -551,8 +559,7 @@ class XpathProcessor extends \Dogma\Object {
         if (Strings::match($path, '/^[a-zA-Z0-9_]+\\(/')) {
             $node = $this->evaluate($path, $context);
         } else {
-            $xpath = $this->translate($path, (bool) $context);
-            $node = $this->findOne($xpath, $context);
+            $node = $this->findOne($path, $context);
         }
 
         if (is_scalar($node) || $node instanceof \DateTime) {
