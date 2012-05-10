@@ -585,7 +585,7 @@ class RequestManager extends \Dogma\Object {
             if (is_string($data)) {
                 $request->appendUrl($data);
             } else {
-                $request->setPostData($data);
+                $request->setVariables($data);
             }
         }
         

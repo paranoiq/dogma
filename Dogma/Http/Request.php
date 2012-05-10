@@ -25,9 +25,15 @@ class Request extends \Dogma\Object {
 
     /** @var string */
     protected $url;
-
+    
+    /** @var string */
+    protected $method = self::GET;
+    
     /** @var array */
     private $headers = array();
+    
+    /** @var array */
+    private $data = array();
     
     /** @var mixed Request context */
     private $context;
@@ -67,7 +73,6 @@ class Request extends \Dogma\Object {
      * @return self
      */
     public function setUrl($url) {
-        $this->setOption(CURLOPT_URL, $url);
         $this->url = $url;
 
         return $this;
@@ -84,15 +89,27 @@ class Request extends \Dogma\Object {
         return $this;
     }
 
+
+    /**
+     * Set URL or POST variables. Can be called repeatedly.
+     * @param array
+     * @return self
+     */
+    public function setVariables(array $data) {
+        $this->data = array_merge($this->data, $data);
+
+        return $this;
+    }
+    
     
     /**
      * @param string
      * @return self
      */
     public function setMethod($method) {
-        $method = strtolower($method);
+        $this->method = strtolower($method);
 
-        switch ($method) {
+        switch ($this->method) {
             case self::GET:
                 $this->setOption(CURLOPT_HTTPGET, TRUE);
                 break;
@@ -109,24 +126,12 @@ class Request extends \Dogma\Object {
             case self::TRACE:
             case self::OPTIONS:
             case self::CONNECT:
-                $this->setOption(CURLOPT_CUSTOMREQUEST, $method);
+                $this->setOption(CURLOPT_CUSTOMREQUEST, $this->method);
                 break;
             default:
-                throw new RequestException("Unknown method '$method'!");
+                throw new RequestException("Unknown method '$this->method'!");
         }
 
-        return $this;
-    }
-
-    
-    /**
-     * @param array
-     * @return self
-     */
-    public function setPostData(array $data) {
-        $this->setOption(CURLOPT_POSTFIELDS, $data);
-        //$this->setMethod(self::POST); // should be automatic?
-        
         return $this;
     }
 
@@ -150,11 +155,11 @@ class Request extends \Dogma\Object {
         }
 
         if (!curl_setopt($this->curl, $num, $value))
-            throw new RequestException("Invalid CURL option.");
+            throw new RequestException("Invalid CURL option."); ///
 
         return $this;
     }
-
+    
 
     // connection options ----------------------------------------------------------------------------------------------
 
@@ -173,10 +178,10 @@ class Request extends \Dogma\Object {
 
         if (is_null($connectTimeout)) return $this;
 
-        if ($timeout < 1) {
-            $this->setOption(CURLOPT_CONNECTTIMEOUT_MS, (int)($timeout / 1000));
+        if ($connectTimeout < 1) {
+            $this->setOption(CURLOPT_CONNECTTIMEOUT_MS, (int)($connectTimeout / 1000));
         } else {
-            $this->setOption(CURLOPT_CONNECTTIMEOUT, (int) $timeout);
+            $this->setOption(CURLOPT_CONNECTTIMEOUT, (int) $connectTimeout);
         }
 
         return $this;
@@ -319,9 +324,10 @@ class Request extends \Dogma\Object {
      * @param string
      * @return Response
      */
-    public function execute($url = NULL) {
-        $this->prepare($url);
-        list($response, $error) = $this->sendRequest();
+    public function execute($urlSuffix = NULL) {
+        $this->prepare($urlSuffix);
+        $response = curl_exec($this->curl);
+        $error = curl_errno($this->curl);
         return $this->createResponse($response, $error, '');
     }
 
@@ -334,24 +340,17 @@ class Request extends \Dogma\Object {
      * @param string
      * @param bool
      */
-    public function prepare($url = NULL) {
-        $this->setOption(CURLOPT_RETURNTRANSFER, TRUE);
+    public function prepare($urlSuffix = NULL) {
+        if ($urlSuffix) $this->appendUrl($urlSuffix);
         
+        $params = $this->analyzeUrl();
+        if ($params || $this->data) $this->prepareData($params);
+        
+        $this->setOption(CURLOPT_URL, $this->url);
+        $this->setOption(CURLOPT_RETURNTRANSFER, TRUE);
         $this->setRequestHeaders();
-        if ($url) $this->setOption(CURLOPT_URL, $this->url . $url);
     }
     
-    
-    /**
-     * @return array
-     */
-    protected function sendRequest() {
-        $response = curl_exec($this->curl);
-        $error = curl_errno($this->curl);
-
-        return array($response, $error);
-    }
-
     
     /**
      * Called by RequestManager.
@@ -387,7 +386,72 @@ class Request extends \Dogma\Object {
 
     // -----------------------------------------------------------------------------------------------------------------
 
+
+    /**
+     * @return array
+     */
+    private function analyzeUrl() {
+        $params = array();
+
+        if (preg_match_all('/\\W([0-9A-Za-z_]+)=%[^0-9A-Fa-f]/', $this->url, $mm, PREG_SET_ORDER)) {
+            foreach ($mm as $m) {
+                $params[$m[1]] = TRUE;
+            }
+        }
+        if (preg_match_all('/{%([0-9A-Za-z_]+)}/', $this->url, $mm, PREG_SET_ORDER)) {
+            foreach ($mm as $m) {
+                $params[$m[1]] = FALSE;
+            }
+        }
+        
+        return $params;
+    }
     
+    
+    /**
+     * @param array
+     */
+    private function prepareData(array $params) {
+        if ($params) {
+            $this->fillUrlParams($params, $this->data);
+        }
+        
+        if (!$this->data) return;
+        
+        if ($this->method === self::POST) {
+            foreach ($this->data as $name => $value) {
+                if ($value === NULL)
+                    throw new RequestException("POST parameter '$name' must be filled.");
+            }
+            $this->setOption(CURLOPT_POSTFIELDS, $this->data);
+            $this->data = array();
+        } else {
+            $names = array_keys($this->data);
+            throw new RequestException("Redundant URL parameter" . (count($names) > 1 ? "s" : "") 
+                . " '" . implode("', '", $names) . "' in request data.");
+        }
+    }
+    
+    
+    /**
+     * @param array
+     */
+    private function fillUrlParams(array $params) {
+        foreach ($params as $name => $short) {
+            if (!isset($this->data[$name]))
+                throw new RequestException("URL parameter '$name' is missing in request data.");
+            
+            if ($short) {
+                $this->url = preg_replace("/(?<=\\W$name=)%(?=[^0-9A-Fa-f])/", urlencode($this->data[$name]), $this->url);
+            } else {
+                $this->url = preg_replace("/\\{%$name\\}/", urlencode($this->data[$name]), $this->url);
+            }
+            
+            unset($this->data[$name]);
+        }
+    }
+
+
     /**
      * Copy resource.
      */
