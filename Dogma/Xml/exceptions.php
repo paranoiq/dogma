@@ -10,7 +10,7 @@ class DomException extends \DOMException {
 }
 
 
-class XpathException extends DomException {
+class QueryEngineException extends DomException {
     
     //
     
