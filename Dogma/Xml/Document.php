@@ -100,6 +100,17 @@ class Document extends \DomDocument {
     
     /**
      * @param string
+     * @return Element|\DOMNode|null
+     */
+    public function getElementById($id) {
+        $el = parent::getElementById($id);
+        
+        return $el ? $this->wrap($el) : NULL;
+    }
+    
+    
+    /**
+     * @param string
      * @return NodeList
      */
     public function find($xpath) {
@@ -136,6 +147,19 @@ class Document extends \DomDocument {
     
     public function dump() {
         Dumper::dump($this);
+    }
+
+
+    /**
+     * @param \DOMNode
+     * @return Element|\DOMNode
+     */
+    private function wrap($node) {
+        if ($node instanceof \DOMElement) {
+            return new Element($node, $this->engine);
+        } else {
+            return $node;
+        }
     }
     
 }
