@@ -5,7 +5,7 @@ namespace Dogma\Xml;
 
 class Dumper {
     
-    public static function dump($node, $maxDepth = 12, $depth = 0, $only = FALSE) {
+    public static function dump($node, $maxDepth = 15, $depth = 0, $only = FALSE) {
         if ($depth > $maxDepth) echo "…";
         if ($depth === 0) echo "<pre><code>";
         
