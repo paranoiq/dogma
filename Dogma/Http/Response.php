@@ -71,7 +71,7 @@ class Response extends \Dogma\Object {
      * @return bool
      */
     public function isSuccess() {
-        return !$this->error && !(substr($this->status, 0, 1) === '4' || substr($this->status, 0, 1) === '5');
+        return !$this->error && !StatusCode::isError($this->status);
     }
     
     
@@ -103,9 +103,48 @@ class Response extends \Dogma\Object {
      * @return int
      */
     public function getStatus() {
-        $code = HttpCode::instance($this->status);
+        $code = StatusCode::instance($this->status);
         
         return $code->name;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getBody() {
+        if ($this->response) $this->parseResponse();
+
+        return $this->body;
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getHeaders() {
+        if ($this->response) $this->parseResponse();
+
+        return $this->headers;
+    }
+
+    
+    /**
+     * Get all cookies received with this response.
+     * @return array
+     */
+    public function getCookies() {
+        if ($this->response) $this->parseResponse();
+        
+        $cookies = array();
+        
+        foreach ((array) @$this->headers['Set-Cookie'] as $cookie) {
+            $s = explode(';', $cookie);
+            list($name, $value) = explode('=', $s[0]);
+            $cookies[$name] = $value;
+        }
+        
+        return $cookies;
     }
     
     
@@ -127,79 +166,6 @@ class Response extends \Dogma\Object {
         return $this->info[$tname];
     }
     
-    
-    /**
-     * @return array
-     */
-    public function getHeaders() {
-        if ($this->response) $this->parseResponse();
-        
-        return $this->headers;
-    }
-
-
-    /**
-     * @param string
-     * @param string
-     * @return self
-     */
-    public function convert($to = "UTF-8", $from = NULL) {
-        if ($from === NULL) {
-            $charset = $this->query['head > meta[http-equiv=Content-Type]']->attr('content');
-            $charset = $charset ?: $this->query['head > meta[http-equiv=content-type]']->attr('content');
-            $charset = $charset ?: $this->headers['Content-Type'];
-
-            $from = static::getCharset($charset);
-        }
-
-        $from = Strings::upper($from);
-        $to = Strings::upper($to);
-
-        if ($from != $to && $from && $to) {
-            if ($body = @iconv($from, $to, $this->body)) {
-                $this->Body = ltrim($body);
-
-            } else {
-                throw new CurlException("Charset conversion from $from to $to failed");
-            }
-        }
-
-        $this->Body = self::fixContentTypeMeta($this->body);
-
-        return $this;
-    }
-    
-
-    /**
-     * @param string $header
-     * @return string
-     */
-    public static function getCharset($header, $default = NULL) {
-        $match = Strings::match($header, self::CONTENT_TYPE);
-        return isset($match['charset']) ? $match['charset'] : $default;
-    }
-
-
-    /**
-     * @param string $header
-     * @return string
-     */
-    public static function getContentType($header, $default = NULL) {
-        $match = Strings::match($header, self::CONTENT_TYPE);
-        return isset($match['type']) ? $match['type'] : $default;
-    }
-    
-    
-    /**
-     * @return string
-     */
-    public function getBody() {
-        if ($this->response) $this->parseResponse();
-        /// file
-        
-        return $this->body;
-    }
-
     
     /**
      * @return string
@@ -233,17 +199,26 @@ class Response extends \Dogma\Object {
 
         // Extract the version and status from the first header
         $version_and_status = array_shift($headers);
-        $matches = Strings::match($version_and_status, '~HTTP/(?P<version>\d\.\d)\s(?P<code>\d\d\d)\s(?P<status>.*)~');
-        if (count($matches) > 0) {
-            $found['Http-Version'] = $matches['version'];
-            $found['Status-Code'] = $matches['code'];
-            $found['Status'] = $matches['code'] . ' ' . $matches['status'];
+        $m = Strings::match($version_and_status, '~HTTP/(?P<version>\d\.\d)\s(?P<code>\d\d\d)\s(?P<status>.*)~');
+        if (count($m) > 0) {
+            $found['Http-Version'] = $m['version'];
+            $found['Status-Code'] = $m['code'];
+            $found['Status'] = $m['code'] . ' ' . $m['status'];
         }
 
         // Convert headers into an associative array
         foreach ($headers as $header) {
-            $matches = Strings::match($header, '~(?P<header>.*?)\:\s(?P<value>.*)~');
-            $found[$matches['header']] = $matches['value'];
+            $m = Strings::match($header, '~(?P<header>.*?)\:\s(?P<value>.*)~');
+            if (isset($found[$m['header']])) {
+                if (is_array($found[$m['header']])) {
+                    $found[$m['header']][] = $m['value'];
+                } else {
+                    $found[$m['header']] = array($found[$m['header']]);
+                    $found[$m['header']][] = $m['value'];
+                }
+            } else {
+                $found[$m['header']] = $m['value'];
+            }
         }
 
         return $found;

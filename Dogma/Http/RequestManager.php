@@ -583,7 +583,7 @@ class RequestManager extends \Dogma\Object {
         } else {
             $request = clone $channel['request'];
             if (is_string($data)) {
-                $request->appendUrl($data);
+                $request->setContent($data);
             } else {
                 $request->setVariables($data);
             }
