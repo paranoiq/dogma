@@ -3,13 +3,13 @@
 namespace Dogma\Xml;
 
 
-class DomNodeList extends \Dogma\Object implements \Countable, \Iterator {
+class NodeList extends \Dogma\Object implements \Countable, \Iterator {
     
     /** @var \DOMNodeList */
     private $nodeList;
     
-    /** @var XpathProcessor */
-    private $xpathProcessor;
+    /** @var QueryEngine */
+    private $engine;
     
     /** @var int */
     private $offset = 0;
@@ -17,11 +17,11 @@ class DomNodeList extends \Dogma\Object implements \Countable, \Iterator {
     
     /**
      * @param \DOMNodeList
-     * @param XpathProcessor
+     * @param QueryEngine
      */
-    public function __construct(\DOMNodeList $nodeList, XpathProcessor $xpathProcessor) {
+    public function __construct(\DOMNodeList $nodeList, QueryEngine $engine) {
         $this->nodeList = $nodeList;
-        $this->xpathProcessor = $xpathProcessor;
+        $this->engine = $engine;
     }
     
     
@@ -68,11 +68,11 @@ class DomNodeList extends \Dogma\Object implements \Countable, \Iterator {
     
     /**
      * @param \DOMNode
-     * @return DomElement|\DOMNode
+     * @return Element|\DOMNode
      */
     private function wrap($node) {
         if ($node instanceof \DOMElement) {
-            return new DomElement($node, $this->xpathProcessor);
+            return new Element($node, $this->engine);
         } else {
             return $node;
         }

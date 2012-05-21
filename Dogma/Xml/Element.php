@@ -3,17 +3,18 @@
 namespace Dogma\Xml;
 
 
-class DomElement extends \Dogma\Object {
+class Element extends \Dogma\Object {
     
+    /** @var QueryEngine */
+    private $engine;
     
-    private $xpathProcessor;
-    
+    /** @var \DOMElement */
     private $element;
     
     
-    public function __construct(\DOMElement $element, XpathProcessor $xpathProcessor) {
+    public function __construct(\DOMElement $element, QueryEngine $engine) {
         $this->element = $element;
-        $this->xpathProcessor = $xpathProcessor;
+        $this->engine = $engine;
     }
     
     
@@ -22,7 +23,7 @@ class DomElement extends \Dogma\Object {
      * @return \DOMNode
      */
     public function find($xpath) {
-        return $this->xpathProcessor->find($xpath, $this->element);
+        return $this->engine->find($xpath, $this->element);
     }
 
 
@@ -31,7 +32,7 @@ class DomElement extends \Dogma\Object {
      * @return \DOMNode
      */
     public function findOne($xpath) {
-        return $this->xpathProcessor->findOne($xpath, $this->element);
+        return $this->engine->findOne($xpath, $this->element);
     }
 
 
@@ -40,7 +41,7 @@ class DomElement extends \Dogma\Object {
      * @return string|int|float
      */
     public function evaluate($xpath) {
-        return $this->xpathProcessor->evaluate($xpath, $this->element);
+        return $this->engine->evaluate($xpath, $this->element);
     }
 
 
@@ -49,7 +50,7 @@ class DomElement extends \Dogma\Object {
      * @return string|string[]
      */
     public function extract($target) {
-        return $this->xpathProcessor->extract($target, $this->element);
+        return $this->engine->extract($target, $this->element);
     }
     
     
