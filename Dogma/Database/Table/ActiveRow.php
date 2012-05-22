@@ -36,10 +36,6 @@ class ActiveRow extends \Nette\Database\Table\ActiveRow {
             $value = $this->get($key);
         }
         
-        // notify owner on change
-        if ($value instanceof \Dogma\DateTime) {
-            $this->setNotifier($value, $key);
-        }
         return $value;
     }
     
