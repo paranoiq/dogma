@@ -23,9 +23,9 @@ class DownloadRequest extends Request {
     
     
     public function __construct($url, $downloadDir) {
-        $this->setDownloadDir($downloadDir);
-        
         parent::__construct($url);
+        
+        $this->setDownloadDir($downloadDir);
     }
     
     
@@ -65,15 +65,19 @@ class DownloadRequest extends Request {
     }
 
 
+    // output handling -------------------------------------------------------------------------------------------------
+    
+
     /**
      * Execute request.
      * @param string
      * @param string
      * @return FileResponse
      */
-    public function execute($url = NULL, $fileName = NULL) {
-        $fileName = $this->prepare($url, $fileName);
-        list($response, $error) = $this->sendRequest();
+    public function execute($urlSuffix = NULL, $fileName = NULL) {
+        $fileName = $this->prepare($urlSuffix, $fileName);
+        $response = curl_exec($this->curl);
+        $error = curl_errno($this->curl);
         return $this->createResponse($response, $error, $fileName);
     }
 
@@ -87,10 +91,12 @@ class DownloadRequest extends Request {
      * @param bool
      * @return string downloaded file name
      */
-    public function prepare($url = NULL, $fileName = NULL) {
+    public function prepare($urlSuffix = NULL, $fileName = NULL) {
+        parent::prepare($urlSuffix);
+        
         if (is_null($fileName)) $fileName = $this->fileName;
         if (is_null($fileName)) {
-            $b = explode('?', $url);
+            $b = explode('?', $urlSuffix);
             $b = explode('#', $b[0]);
             $fileName = basename($b[0]);
         }
@@ -102,10 +108,7 @@ class DownloadRequest extends Request {
 
         $this->setOption(CURLOPT_FILE, $this->file);
         $this->setOption(CURLOPT_BINARYTRANSFER, TRUE);
-
-        $this->setRequestHeaders();
-        if ($url) $this->setOption(CURLOPT_URL, $this->url . $url);
-
+        
         return $fileName;
     }
 

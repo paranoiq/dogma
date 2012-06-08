@@ -7,13 +7,10 @@ use Nette\Utils\Strings;
 
 class Response extends \Dogma\Object {
     
-    /** @var int CURLE_* */
-    private $error;
-    
     /** @var array */
     protected $info;
     
-    /** @var int */
+    /** @var ResponseStatus */
     private $status;
     
     /** @var string */
@@ -34,17 +31,11 @@ class Response extends \Dogma\Object {
      * @param array
      * @param int
      */
-    public function __construct($response, array $info, $error) {
-        $this->error = $error;
+    public function __construct($response, ResponseStatus $status, array $info) {
+        $this->status = $status;
         $this->info = $info;
         
-        if ($error) return;
-        
-        $this->status = $info['http_code'];
-        
-        if (!$response) return;
-        
-        $this->response = $response;
+        if ($response) $this->response = $response;
     }
 
     
@@ -71,44 +62,18 @@ class Response extends \Dogma\Object {
      * @return bool
      */
     public function isSuccess() {
-        return !$this->error && !StatusCode::isError($this->status);
+        return $this->status->isOk();
     }
     
     
     /**
-     * @return int
-     */
-    public function getErrorCode() {
-        return $this->error;
-    }
-
-    
-    /**
-     * @return string
-     */
-    public function getError() {
-        return CurlHelpers::getCurlErrorName($this->error);
-    }
-    
-    
-    /**
-     * @return int
-     */
-    public function getStatusCode() {
-        return $this->status;
-    }
-
-
-    /**
-     * @return int
+     * @return ResponseStatus
      */
     public function getStatus() {
-        $code = StatusCode::instance($this->status);
-        
-        return $code->name;
+        return $this->status;
     }
-
-
+    
+    
     /**
      * @return string
      */
@@ -197,7 +162,7 @@ class Response extends \Dogma\Object {
     public static function parseHeaders($headers) {
         $found = array();
 
-        // Extract the version and status from the first header
+        // extract version and status
         $version_and_status = array_shift($headers);
         $m = Strings::match($version_and_status, '~HTTP/(?P<version>\d\.\d)\s(?P<code>\d\d\d)\s(?P<status>.*)~');
         if (count($m) > 0) {
@@ -206,7 +171,7 @@ class Response extends \Dogma\Object {
             $found['Status'] = $m['code'] . ' ' . $m['status'];
         }
 
-        // Convert headers into an associative array
+        // convert headers to associative array
         foreach ($headers as $header) {
             $m = Strings::match($header, '~(?P<header>.*?)\:\s(?P<value>.*)~');
             if (isset($found[$m['header']])) {

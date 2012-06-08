@@ -10,7 +10,7 @@ class HttpException extends \RuntimeException {
 }
 
 
-class RequestManagerException extends HttpException {
+class ChannelException extends HttpException {
 
     //
 

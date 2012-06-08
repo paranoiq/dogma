@@ -3,6 +3,7 @@
 namespace Dogma\Http;
 
 use Nette\Utils\Strings;
+use Nette\Callback;
 
 
 /**
@@ -44,6 +45,9 @@ class Request extends \Dogma\Object {
     /** @var mixed Request context */
     private $context;
     
+    /** @var \Nette\Callback */
+    private $init;
+    
     
     public function __construct($url = NULL) {
         $this->curl = curl_init();
@@ -68,6 +72,31 @@ class Request extends \Dogma\Object {
      */
     public function getContext() {
         return $this->context;
+    }
+    
+    
+    /**
+     * @param Callback(@param Request, @return bool)
+     * @return self
+     */
+    public function setInit(Callback $init) {
+        $this->init = $init;
+        
+        return $this;
+    }
+    
+    
+    /**
+     * Called by RequestManager 
+     * @internal
+     */
+    public function init() {
+        if ($this->init) {
+            if (!$this->init->invoke($this)) 
+                throw new RequestException("Request initialisation failed!");
+                
+            $this->init = NULL;
+        }
     }
     
     
@@ -96,6 +125,31 @@ class Request extends \Dogma\Object {
     }
 
 
+    /**
+     * @param mixed
+     * @return mixed
+     */
+    public function setData($data) {
+        if ($data !== NULL) $this->dispatch($data);
+    }
+    
+    
+    /**
+     * @param string|array
+     */
+    protected function dispatch($data) {
+        if (is_string($data)) {
+            $this->setContent($data);
+            
+        } elseif (is_array($data)) {
+            $this->setVariables($data);
+            
+        } else {
+            throw new RequestException("Job data may be only a string or array!");
+        }
+    }
+    
+    
     /**
      * @param string
      * @return self
@@ -354,34 +408,28 @@ class Request extends \Dogma\Object {
     
     /**
      * Execute request.
-     * @param string
-     * @param string
      * @return Response
      */
-    public function execute($urlSuffix = NULL) {
-        $this->prepare($urlSuffix);
+    public function execute() {
+        $this->init();
+        $this->prepare();
         $response = curl_exec($this->curl);
         $error = curl_errno($this->curl);
-        return $this->createResponse($response, $error, '');
+        return $this->createResponse($response, $error);
     }
 
 
     /**
      * Called by RequestManager.
      * @internal
-     *
-     * @param string
-     * @param string
-     * @param bool
      */
-    public function prepare($urlSuffix = NULL) {
-        if ($urlSuffix) $this->appendUrl($urlSuffix);
-        
+    public function prepare() {
         $params = $this->analyzeUrl();
         if ($params || $this->variables || $this->content) $this->prepareData($params);
         
         $this->setOption(CURLOPT_URL, $this->url);
         $this->setOption(CURLOPT_RETURNTRANSFER, TRUE);
+        
         if ($this->headers) $this->prepareHeaders();
         if ($this->cookies) $this->prepareCookies();
     }
@@ -404,15 +452,29 @@ class Request extends \Dogma\Object {
      * 
      * @param string|bool
      * @param int
-     * @param string
      * @return Response
      */
-    public function createResponse($response, $error, $name) {
+    public function createResponse($response, $error) {
         $info = curl_getinfo($this->curl);
         if ($info === FALSE)
             throw new RequestException("Info cannot be obtained from CURL.");
+
+        if ($error) {
+            $status = ResponseStatus::instance($error);
+            
+        } else {
+            try {
+                $status = ResponseStatus::instance($info['http_code']);
+            } catch (\Exception $e) {
+                $status = ResponseStatus::instance(ResponseStatus::UNKNOWN_RESPONSE_CODE);
+            }
+        }
         
-        $response = new Response($response, $info, $error);
+        if ($status->isFatalError()) {
+            throw new RequestException("Fatal error occured during request execution: $status->cname", $status->value);
+        }
+        
+        $response = new Response($response, $status, $info);
         if ($this->context) $response->setContext($this->context);
         
         return $response;
@@ -496,14 +558,6 @@ class Request extends \Dogma\Object {
             echo "PUT upload";
             
         } else {
-            /*
-            $file = fopen('php://temp/maxmemory:256000', 'w');
-            if (!$file)
-                throw new RequestException('Could not open temporary memory file.');
-
-            fwrite($file, $this->content);
-            fseek($file, 0);
-            */
             $this->setOption(CURLOPT_POSTFIELDS, $this->content);
         }
     }
