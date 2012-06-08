@@ -55,16 +55,16 @@ class FileResponse extends Response {
      * Remove headers from downloaded file
      */
     private function parseFile() {
-        if (($fp = @fopen($this->fileName . '.tmp', 'rb')) === FALSE) { // internationaly @
+        if (($fp = @fopen($this->fileName . '.tmp', 'rb')) === FALSE) {
             throw new ResponseException("Fopen error for file '$this->fileName.tmp'");
         }
 
-        $headers = Strings::split(@fread($fp, $this->info['header_size']), "~[\n\r]+~", PREG_SPLIT_NO_EMPTY); // internationaly @
+        $headers = Strings::split(@fread($fp, $this->info['header_size']), "~[\n\r]+~", PREG_SPLIT_NO_EMPTY);
         $this->headers = static::parseHeaders($headers);
 
-        @fseek($fp, $this->info['header_size']); // internationaly @
+        @fseek($fp, $this->info['header_size']);
 
-        if (($ft = @fopen($this->fileName, 'wb')) === FALSE) { // internationaly @
+        if (($ft = @fopen($this->fileName, 'wb')) === FALSE) {
             throw new ResponseException("Write error for file '$this->fileName' ");
         }
 
@@ -73,10 +73,10 @@ class FileResponse extends Response {
             fwrite($ft, $row);
         }
 
-        @fclose($fp); // internationaly @
-        @fclose($ft); // internationaly @
+        @fclose($fp);
+        @fclose($ft);
 
-        if (!@unlink($this->fileName . '.tmp')) { // internationaly @
+        if (!@unlink($this->fileName . '.tmp')) {
             throw new ResponseException("Error while deleting file $this->fileName.");
         }
         
@@ -86,6 +86,5 @@ class FileResponse extends Response {
             throw new RequestException("Headers parsing failed");
         }
     }
-    
     
 }
