@@ -20,8 +20,8 @@ class QueryEngine extends \Dogma\Object {
         "/\\[:last\\]/"  => '[last()]', // [:last]
         "/\\[-([0-9]+)\\]/"  => '[position() = last() + 1 - $1]', // nth from end: [-n]
         "/\\[([0-9]+)..([0-9]+)\\]/" => '[position() >= $1 and position() <= $2]', // [m..n]
-        "/\\[..([0-9]+)\\]/" => '[position() >= $1]', // [..n]
-        "/\\[([0-9]+)..\\]/" => '[position() <= $1]', // [n..]
+        "/\\[..([0-9]+)\\]/" => '[position() <= $1]', // [..n]
+        "/\\[([0-9]+)..\\]/" => '[position() >= $1]', // [n..]
         "/\\[:even\\]/"  => '[position() mod 2]', // [:even]
         "/\\[:odd\\]/"   => '[not(position() mod 2)]', // [:odd]
         "/\\[:only\\]/"  => '[position() = 1 and position() = last()]', // [:only]
@@ -244,6 +244,7 @@ class QueryEngine extends \Dogma\Object {
      */
     public function evaluate($query, $context = NULL) {
         $path = $this->translateQuery($query, NULL);
+        
         if ($context) {
             $value = $this->xpath->evaluate($path, $context);
         } else {
@@ -300,7 +301,7 @@ class QueryEngine extends \Dogma\Object {
      * @return string|int|float|\DateTime|null
      */
     private function extractPath($query, $context) {
-        if (Strings::match($query, '/^[a-zA-Z0-9_]+\\(/')) {
+        if (Strings::match($query, '/^[a-zA-Z0-9_-]+\\(/')) {
             $node = $this->evaluate($query, $context);
         } else {
             $node = $this->findOne($query, $context);
@@ -345,8 +346,11 @@ class QueryEngine extends \Dogma\Object {
         }
 
         $query = Strings::replace($query, $this->translations);
-
-        // fix ".//" before function names
+        
+        // adding ".//" before element names
+        $query = Strings::replace($query, '@(?<=\\()([0-9A-Za-z_:]+)(?!\\()@', './/$1');
+        
+        // fixing ".//" before function names
         $query = Strings::replace($query, '@\\.//([0-9A-Za-z_:-]+)\\(@', '$1(');
 
         $nativeFunctions = $this->nativeFunctions;
