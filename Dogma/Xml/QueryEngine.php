@@ -286,7 +286,11 @@ class QueryEngine extends \Dogma\Object {
         
         $value = array();
         foreach ($queries as $i => $query) {
-            $value[$i] = $this->extractPath($query, $context);
+            if (is_array($query)) {
+                $value[$i] = $this->extract($query, $context);
+            } else {
+                $value[$i] = $this->extractPath($query, $context);
+            }
         }
         return $value;
     }
