@@ -66,6 +66,7 @@ class ResponseStatus extends \Dogma\Enum {
         S431_REQUEST_HEADER_FIELDS_TOO_LARGE = 431,
         S449_RETRY_WITH = 449,
         S450_BLOCKED_BY_WINDOWS_PARENTAL_CONTROLS = 450,
+        S451_UNAVAILABLE_FOR_LEGAL_RESONS = 451, // draft
 
         S500_INTERNAL_SERVER_ERROR = 500,
         S501_NOT_IMPLEMENTED = 501,
@@ -81,7 +82,7 @@ class ResponseStatus extends \Dogma\Enum {
         S511_NETWORK_AUTHENTICATION_REQUIRED = 511,
 
         
-        // system & CURL
+        // system & CURL internals
         FAILED_INIT           =  2, // Very early initialization code failed. This is likely to be an internal error or problem, or a resource problem where something fundamental couldn't get done at init time.
         NOT_BUILT_IN          =  4, // (CURLE_URL_MALFORMAT_USER) A requested feature, protocol or option was not found built-in in this libcurl due to a build-time decision. This means that a feature or option was not enabled or explicitly disabled when libcurl was built and in order to get it to function you have to get a rebuilt libcurl.
         OUT_OF_MEMORY         = 27, // A memory allocation request failed. This is serious badness and things are severely screwed up if this ever occurs.
