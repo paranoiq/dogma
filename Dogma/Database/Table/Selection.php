@@ -85,6 +85,28 @@ class Selection extends \Nette\Database\Table\Selection {
 	}
     
     
+    public function replace($data) {
+        if ($data instanceof Selection) {
+            $data = $data->getSql();
+
+        } elseif ($data instanceof \Traversable) {
+            $data = iterator_to_array($data);
+        }
+
+        $return = $this->connection->query("REPLACE INTO $this->delimitedName", $data);
+
+        $this->rows = NULL;
+        if (!is_array($data)) {
+            return $return->rowCount();
+        }
+
+        /*if (!isset($data[$this->primary]) && ($id = $this->connection->lastInsertId())) {
+            $data[$this->primary] = $id;
+        }
+        return $this->instantiate($data);*/ /// paranoiq
+    }
+    
+    
     /**
 	 * Returns referencing rows.
 	 * @param  string table name
