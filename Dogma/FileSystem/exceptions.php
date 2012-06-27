@@ -25,7 +25,3 @@ class StreamException extends IoException {
     ///
 }
 
-
-class DatabaseException extends \RuntimeException {
-    ///
-}
