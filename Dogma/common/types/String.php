@@ -33,7 +33,7 @@ word count?
  * Basic object for a UTF-8 string.
  * Strings are always kept normalized.
  */
-class String implements ArrayAccess {
+class String implements \ArrayAccess {
     
     /** @var string */
     protected $string = '';

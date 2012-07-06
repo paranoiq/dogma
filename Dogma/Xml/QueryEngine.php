@@ -16,12 +16,12 @@ class QueryEngine extends \Dogma\Object {
     
     private $translations = array(
         // index: [n]
-        "/\\[:first\\]/" => '[1]', // [:first]
-        "/\\[:last\\]/"  => '[last()]', // [:last]
-        "/\\[-([0-9]+)\\]/"  => '[position() = last() + 1 - $1]', // nth from end: [-n]
         "/\\[([0-9]+)..([0-9]+)\\]/" => '[position() >= $1 and position() <= $2]', // [m..n]
         "/\\[..([0-9]+)\\]/" => '[position() <= $1]', // [..n]
         "/\\[([0-9]+)..\\]/" => '[position() >= $1]', // [n..]
+        "/\\[-([0-9]+)\\]/"  => '[position() = last() + 1 - $1]', // nth from end: [-n]
+        "/\\[:first\\]/" => '[1]', // [:first]
+        "/\\[:last\\]/"  => '[last()]', // [:last]
         "/\\[:even\\]/"  => '[position() mod 2]', // [:even]
         "/\\[:odd\\]/"   => '[not(position() mod 2)]', // [:odd]
         "/\\[:only\\]/"  => '[position() = 1 and position() = last()]', // [:only]
