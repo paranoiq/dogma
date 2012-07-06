@@ -1,6 +1,6 @@
 <?php
 
-namespace Dogma\Xml;
+namespace Dogma\Dom;
 
 
 class Element extends \Dogma\Object {

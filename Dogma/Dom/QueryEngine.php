@@ -1,6 +1,6 @@
 <?php
 
-namespace Dogma\Xml;
+namespace Dogma\Dom;
 
 use Nette\Utils\Strings;
 
@@ -217,7 +217,7 @@ class QueryEngine extends \Dogma\Object {
     /**
      * Find one node
      * @param string
-     * @param DomElement|\DOMNode
+     * @param Element|\DOMNode
      * @return \DOMNode|Element|NULL
      */
     public function findOne($query, $context = NULL) {
@@ -239,7 +239,7 @@ class QueryEngine extends \Dogma\Object {
     /**
      * Evaluate a query
      * @param string
-     * @param DomElement|\DOMNode
+     * @param Element|\DOMNode
      * @return string|int|float
      */
     public function evaluate($query, $context = NULL) {
@@ -276,7 +276,7 @@ class QueryEngine extends \Dogma\Object {
     /**
      * Extract values from paths defined by one or more queries
      * @param string|string[]
-     * @param DomElement|\DOMNode
+     * @param Element|\DOMNode
      * @return string|string[]
      */
     public function extract($queries, $context = NULL) {
@@ -301,7 +301,7 @@ class QueryEngine extends \Dogma\Object {
     
     /**
      * @param string
-     * @param DomElement|\DOMNode
+     * @param Element|\DOMNode
      * @return string|int|float|\DateTime|null
      */
     private function extractPath($query, $context) {

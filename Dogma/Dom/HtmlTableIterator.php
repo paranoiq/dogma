@@ -1,24 +1,24 @@
 <?php
 
-namespace Dogma\Xml;
+namespace Dogma\Dom;
 
 
 class HtmlTableIterator extends \Dogma\Object implements \Iterator {
     
-    /** @var DomDocument */
+    /** @var Element */
     private $table;
     
     /** @var string[] */
     private $head;
     
-    /** @var DomNodeList */
+    /** @var NodeList */
     private $rows;
     
     /** @var int */
     private $position;
     
     
-    public function __construct(DomElement $table) {
+    public function __construct(Element $table) {
         if ($table->nodeName !== 'table')
             throw new \InvalidArgumentException("Element must be a table. $table->nodeName given!");
         
@@ -73,7 +73,7 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator {
      * @param DomElement
      * @return string[]
      */
-    private function formatRow(DomElement $row) {
+    private function formatRow(Element $row) {
         $res = array();
         foreach ($row->find(":cell") as $i => $cell) {
             $res[$this->head[$i]] = $cell->textContent;
