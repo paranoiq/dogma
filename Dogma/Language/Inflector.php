@@ -1,4 +1,11 @@
 <?php
+/**
+ * This file is part of the Dogma library (https://github.com/paranoiq/dogma)
+ *
+ * Copyright (c) 2012 Vlasta Neubauer (@paranoiq)
+ *
+ * For the full copyright and license information read the file 'license.md', distributed with this source code
+ */
 
 namespace Dogma\Language;
 
@@ -15,9 +22,6 @@ use Nette\Utils\Strings;
  * @copyright  Copyright (c) 2008 Luke Baker (http://lukebaker.org)
  * @copyright  Copyright (c) 2005 Flinn Mueller (http://actsasflinn.com)
  * @license    New BSD License
- * @example    http://addons.nettephp.com/inflector
- * @package    Nette\Extras\Inflector
- * @version    0.5
  */
 class Inflector {
 
