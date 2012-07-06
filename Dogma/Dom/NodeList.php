@@ -1,6 +1,6 @@
 <?php
 
-namespace Dogma\Xml;
+namespace Dogma\Dom;
 
 
 class NodeList extends \Dogma\Object implements \Countable, \Iterator {

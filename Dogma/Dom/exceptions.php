@@ -1,6 +1,6 @@
 <?php
 
-namespace Dogma\Xml;
+namespace Dogma\Dom;
 
 
 class DomException extends \DOMException {

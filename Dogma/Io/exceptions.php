@@ -1,6 +1,6 @@
 <?php
 
-namespace Dogma;
+namespace Dogma\Io;
 
 
 /**
