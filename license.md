@@ -1,28 +1,17 @@
 Licenses
 ========
 
-Good news! You may use Nette Framework under the terms of either
-the New BSD License or the GNU General Public License (GPL) version 2 or 3.
+Good news! You may use Dogma library under the terms of the New BSD License.
 
-The BSD License is recommended for most projects. It is easy to understand and it
-places almost no restrictions on what you can do with the framework. If the GPL
-fits better to your project, you can use the framework under this license.
-
-You don't have to notify anyone which license you are using. You can freely
-use Nette Framework in commercial projects as long as the copyright header
-remains intact.
-
-Please be advised that the name "Nette Framework" is a protected trademark and its
-usage has some limitations. So please do not use word "Nette" in the name of your
-project or top-level domain, and choose a name that stands on its own merits.
-If your stuff is good, it will not take long to establish a reputation for yourselves.
+You can freely use Dogma library in commercial projects as long as the copyright
+header remains intact.
 
 
 
 New BSD License
 ---------------
 
-Copyright (c) 2012 Vlasta Neubauer (https://twitter.com/paranoiq)
+Copyright (c) 2012 Vlasta Neubauer (@paranoiq)
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -49,14 +38,3 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
 ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
-
-GNU General Public License
---------------------------
-
-GPL licenses are very very long, so instead of including them here we offer
-you URLs with full text:
-
-- GPL version 2: http://www.gnu.org/licenses/gpl-2.0.html
-- GPL version 3: http://www.gnu.org/licenses/gpl-3.0.html
