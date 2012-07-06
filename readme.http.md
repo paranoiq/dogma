@@ -1,4 +1,5 @@
-*** Http ***
+Http
+====
 
 Http Request Manager allows you to download/upload many requests in multiple channels in parallel.
 New jobs can be added on the fly, while the other are fetched.
@@ -40,10 +41,10 @@ fetching by job name:
     $channel->fetch($name); // fetch the last one first!
     ...
 
-handlers:
-    $channel->addResponseHandler();
-    $channel->addErrorHandler();
-    $channel->addRedirectHandler();
+using callback handlers:
+    $channel->addResponseHandler($cb); // called when downloaded
+    $channel->addErrorHandler($cb);
+    $channel->addRedirectHandler($cb);
     
     
     
