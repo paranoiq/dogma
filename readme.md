@@ -3,7 +3,7 @@ Dogma
 
 Dogma is a collection of OO libraries sharing the same base and the same ideology - simplicity, self-explaining API, good design
 
-All parts are currently under development and some back compatibility breaks can happen
+Most parts are currently under development and some back compatibility breaks can happen
 
 
 Requirements
