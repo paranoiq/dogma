@@ -1,0 +1,27 @@
+{
+    "name": "dogma/dogma",
+    "type": "library",
+    "description": "collection of OO libraries sharing the same base and the same ideology - simplicity, self-explaining API, good design",
+    "keywords": ["datasheet","database","xml","html","dom","http","filesystem","mail","imap"],
+    "homepage": "http://github.com/paranoiq/dogma",
+    "license": ["BSD-3", "GPLv2", "GPLv3"],
+    "authors": [
+        {
+            "name": "Vlasta Neubauer",
+            "homepage": "https://twitter.com/paranoiq"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "nette/nette": ">=2.0.0"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git://github.com/paranoiq/dogma.git"
+        }
+    ],
+    "autoload": {
+        "files": ["Dogma/loader.php"]
+    }
+}
