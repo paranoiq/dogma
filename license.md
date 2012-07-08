@@ -1,7 +1,7 @@
-Licenses
+License
 ========
 
-Good news! You may use Dogma library under the terms of the New BSD License.
+You may use Dogma library under the terms of the New BSD License.
 
 You can freely use Dogma library in commercial projects as long as the copyright
 header remains intact.

@@ -18,25 +18,25 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
 
     /** @var array */
     public $list = array(
-        'Dogma\\Object' => '/common/types/Object.php',
-        'Dogma\\ArrayObject' => '/common/types/ArrayObject.php',
-        'Dogma\\Collection' => '/common/types/Collection.php',
-        'Dogma\\DateTime' => '/common/types/DateTime.php',
-        'Dogma\\Date' => '/common/types/Date.php',
-        'Dogma\\Enum' => '/common/types/Enum.php',
-        'Dogma\\Regexp' => '/common/types/Regexp.php',
-        'Dogma\\String' => '/common/types/String.php',
-        'Dogma\\Type' => '/common/types/Type.php',
+        'Dogma\\Object' => '/common/types/Object',
+        'Dogma\\ArrayObject' => '/common/types/ArrayObject',
+        'Dogma\\Collection' => '/common/types/Collection',
+        'Dogma\\DateTime' => '/common/types/DateTime',
+        'Dogma\\Date' => '/common/types/Date',
+        'Dogma\\Enum' => '/common/types/Enum',
+        'Dogma\\Regexp' => '/common/types/Regexp',
+        'Dogma\\String' => '/common/types/String',
+        'Dogma\\Type' => '/common/types/Type',
 
-        'Dogma\\Io\\IoException' => '/Io/exceptions.php',
-        'Dogma\\Io\\FileException' => '/Io/exceptions.php',
-        'Dogma\\Io\\DirectoryException' => '/Io/exceptions.php',
-        'Dogma\\Io\\StreamException' => '/Io/exceptions.php',
+        'Dogma\\Io\\IoException' => '/Io/exceptions',
+        'Dogma\\Io\\FileException' => '/Io/exceptions',
+        'Dogma\\Io\\DirectoryException' => '/Io/exceptions',
+        'Dogma\\Io\\StreamException' => '/Io/exceptions',
         
-        'Dogma\\Mail\\MailParserException' => '/Mail/exceptions.php',
+        'Dogma\\Mail\\MailParserException' => '/Mail/exceptions',
 
-        'Dogma\\Dom\\DomException' => '/Dom/exceptions.php',
-        'Dogma\\Dom\\QueryEngineException' => '/Dom/exceptions.php',
+        'Dogma\\Dom\\DomException' => '/Dom/exceptions',
+        'Dogma\\Dom\\QueryEngineException' => '/Dom/exceptions',
     );
 
 
