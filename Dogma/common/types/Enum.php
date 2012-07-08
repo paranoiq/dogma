@@ -11,9 +11,9 @@ namespace Dogma;
 
 
 /**
- * Enum type
+ * Enum type. Simillar to enum from Java. Allowed values are defined as class constants.
  * 
- * @property-read $cname
+ * @property-read $identifier
  * @property-read $value
  */
 abstract class Enum {
@@ -21,7 +21,7 @@ abstract class Enum {
     private static $values = array();
     private static $instances = array();
     
-    private $cname;
+    private $identifier;
     private $value;
     
     
@@ -29,8 +29,8 @@ abstract class Enum {
      * @param string
      * @param mixed
      */
-    final private function __construct($cname, $value) {
-        $this->cname = $cname;
+    final private function __construct($identifier, $value) {
+        $this->identifier = $identifier;
         $this->value = $value;
     }
     
@@ -54,24 +54,47 @@ abstract class Enum {
     /**
      * @return mixed
      */
-    final public function getCname() {
-        return $this->cname;
+    final public function getIdentifier() {
+        return $this->identifier;
     }
     
     
     // static ----------------------------------------------------------------------------------------------------------
+
+
+    /**
+     * @param mixed
+     * @return bool
+     */
+    final public static function isValid($value) {
+        if (!isset(self::$values[$class = get_called_class()])) self::init($class);
+
+        return in_array($value, self::$values[$class]);
+    }
+
+
+    /**
+     * Get possible values.
+     * @return \ArrayIterator
+     */
+    public static function getAllowedValues() {
+        if (!isset(self::$values[$class = get_called_class()])) self::init($class);
+
+        return new \ArrayIterator(self::$values[$class]);
+    }
     
     
     /**
+     * Get all values as Enum objects.
      * @return \ArrayIterator
      */
     final public static function enumerate() {
         if (!isset(self::$values[$class = get_called_class()])) self::init($class);
         
         if (count(self::$values[$class]) !== count(self::$instances[$class])) { 
-            foreach (self::$values[$class] as $cname => $value) {
-                if (!isset(self::$instances[$class][$cname]))
-                    self::$instances[$class][$cname] = new static($cname, self::$values[$class][$cname]);
+            foreach (self::$values[$class] as $identifier => $value) {
+                if (!isset(self::$instances[$class][$identifier]))
+                    self::$instances[$class][$identifier] = new static($identifier, self::$values[$class][$identifier]);
             }
         }
         
@@ -90,7 +113,7 @@ abstract class Enum {
             if ($value === $val) return self::__callStatic($name, array());
         }
         
-        throw new \InvalidArgumentException("Enum: Invalid value '$value' for type " . get_called_class() . ".");
+        throw new \InvalidArgumentException("Invalid value '$value' for type " . get_called_class() . ".");
     }
 
 
@@ -114,7 +137,7 @@ abstract class Enum {
         if (!isset(self::$values[$class = get_called_class()])) self::init($class);
 
         if (!isset(self::$values[$class][$name]))
-            throw new \InvalidArgumentException("Enum: Invalid name '$name' for type " . get_called_class() . ".");
+            throw new \InvalidArgumentException("Invalid name '$name' for type " . get_called_class() . ".");
         
         if (isset(self::$instances[$class][$name])) {
             return self::$instances[$class][$name];
@@ -126,7 +149,6 @@ abstract class Enum {
     
     
     /**
-     * Get posible values
      * @param string
      */
     final private static function init($class) {
@@ -162,7 +184,7 @@ abstract class Enum {
      * @param mixed
      */
     final public function __set($name, $value) {
-        throw new \Nette\MemberAccessException("Enum: Properties of Enum type are read-only.");
+        throw new \Nette\MemberAccessException("Properties of Enum type are read-only.");
     }
     
     
@@ -171,22 +193,22 @@ abstract class Enum {
      * @param mixed
      */
     final public function __unset($name) {
-        throw new \Nette\MemberAccessException("Enum: Properties of Enum type are read-only.");
+        throw new \Nette\MemberAccessException("Properties of Enum type are read-only.");
     }
     
     
     final public function __sleep() {
-        throw new \Exception("Enum: Enum type cannot be serialized. Use its value instead.");
+        throw new \Exception("Enum type cannot be serialized. Use its value instead.");
     }
     
     
     final public function __wakeup() {
-        throw new \Exception("Enum: Enum type cannot be serialized. Use its value instead.");
+        throw new \Exception("Enum type cannot be serialized. Use its value instead.");
     }
     
     
     final public function __clone() {
-        throw new \Exception("Enum: Enum type cannot be cloned. There can be only one instance of each value.");
+        throw new \Exception("Enum type cannot be cloned. There can be only one instance of each value.");
     }
     
 }

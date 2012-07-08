@@ -14,18 +14,18 @@ namespace Dogma;
  * Common type enumeration
  */
 final class Type extends Enum {
-    
+
+    const NULL = 'null';
+    const BOOL = 'bool';
     const INT = 'int';
     const FLOAT = 'float';
     const STRING = 'string';
-    const BOOL = 'bool';
-    const NULL = 'null';
     
-    const DATE = 'date';
-    const DATETIME = 'datetime';
+    const DATE = 'Date';
+    const DATETIME = 'DateTime';
     
-    //const REGEXP = 'string';
+    const REGEXP = 'Regexp';
     
-    //const ENUM = 'enum';
-    
+    const ENUM = 'Enum';
+    const SET = 'Set';
 }

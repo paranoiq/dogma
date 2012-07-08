@@ -11,39 +11,100 @@ namespace Dogma;
 
 
 /**
- * Type validator/normalizer/formater
+ * Type validator/normalizer/formater.
+ * Default formats (when formating bool or null, first case is used):
+ * - TRUE: true, t, on, yes, y
+ * - FALSE: false, f, off, no, n
+ * - NULL: null, nil, n/a, na, unknown, undefined
+ * - Date: Y-m-d
+ * - DateTime: Y-m-d H:i:s
+ * - decimal point: .
+ * - thousand separator: none
+ * - set separator: ,
  * 
- * @todo support enum
- * @todo support set
+ * @property-write $true
+ * @property-write $false
+ * @property-write $null
+ * @property-write $date
+ * @property-write $dateTime
+ * @property-write $decimalPouint
+ * @property-write $thousandSeparator
+ * @property-write $setSeparator
  */
-class Normalizer {
+class Normalizer extends \Dogma\Object {
     
     
     /** @var array */
-    protected $formats = array(
+    private $formats = array(
         'date' => 'Y-m-d',
-        'datetime' => 'Y-m-d H:i:s',
-        'true' => 'TRUE',
-        'false' => 'FALSE',
-        'null' => 'N/A',
+        'dateTime' => 'Y-m-d H:i:s',
+        'true' => array('TRUE', 't', 'on', 'yes', 'y'),
+        'false' => array('FALSE', 'f', 'off', 'no', 'n'),
+        'null' => array('NULL', 'nil', 'n/a', 'na', 'unknown', 'undefined'),
         'decimalPoint' => '.',
-        'thousandSeparator' => '');
+        'thousandSeparator' => '',
+        'setSeparator' => ',',
+    );
 
+    /** @var array user types (Enum, Set, Validator…) */
+    private $types = array();
+    
 
     /**
      * @param string
      * @param string
      * @return self
      */
-    public function setFormat($type, $format) {
-        if (!isset($this->formats[$type]))
-            throw new \InvalidArgumentException("Normalizer: Unknown formating option '$type' given.");
+    public function setFormat($option, $format) {
+        if (!isset($this->formats[$option]))
+            throw new \InvalidArgumentException("Normalizer: Unknown formating option '$option' given.");
         
-        $this->formats[$type] = $format;
+        if (is_string($format) && in_array($option, array('true', 'false', 'null'))) {
+            $format = explode(',', $format);
+        } else {
+            $format = array_values($format);
+        }
+        $this->formats[$option] = $format;
         
         return $this;
     }
+    
+    
+    /**
+     * @param string
+     * @param string|string[]
+     */
+    public function __set($name, $value) {
+        if (isset($this->formats[$name])) {
+            $this->setFormat($name, $value);
+        } else {
+            parent::__set($name, $value);
+        }
+    }
 
+    
+    /**
+     * @param string
+     * @param object
+     */
+    public function addType($type) {
+        if (is_subclass_of($type, 'Dogma\\Enum')) {
+            $this->types[] = array('Enum', $type);
+            
+        } elseif (is_subclass_of($type, 'Dogma\\Set')) {
+            $this->types[] = array('Set', $type);
+        /*
+        } elseif (is_subclass_of($type, 'Dogma\\Validator')) {
+            $this->types[] = array('Validator', $type);
+        
+        } elseif (is_subclass_of($type, 'Dogma\\Regexp')) {
+            $this->types[] = array('Regexp', $type);
+        */
+        } else {
+            throw new \InvalidArgumentException("Unsupported type.");
+        }
+    }
+    
 
     /**
      * Autodetect type and normalize
@@ -66,21 +127,38 @@ class Normalizer {
         } elseif (NULL !== $val = $this->detectDateTime($value)) {
             return $val;
             
-        } else {
-            return $value;
         }
+        
+        foreach ($this->types as $item) {
+            list($type, $name) = $item;
+            
+            if ($type === 'Enum' && call_user_func($name . '::isValid', $value)) {
+                return call_user_func($name . '::instance', $value);
+                
+            } elseif ($type === 'Set') {
+                $set = explode($this->setSeparator, $value);
+                if (call_user_func($name . '::isValid', $set))
+                    return new $name($value);
+            }
+        }
+        
+        return $value;
     }
 
 
     /**
-     * Detects NULL from string. Returns TRUE on success, FALSE otherwise.
+     * Detects NULL from string. Returns TRUE on match, FALSE otherwise.
      * @param string
      * @return bool
      */
     public function detectNull($value) {
         if (is_null($value)) return TRUE;
+
+        foreach ($this->formats['null'] as $v) {
+            if (preg_match('/^' . preg_quote($v, '/') . '$/iu', $value)) return TRUE;
+        }
         
-        return preg_match('/' . preg_quote($this->formats['null'], '/') . '/iu', $value);
+        return FALSE;
     }
 
 
@@ -92,9 +170,13 @@ class Normalizer {
     public function detectBool($value) {
         if (is_bool($value)) return $value;
 
-        if (preg_match('/' . preg_quote($this->formats['true'], '/') . '/iu', $value)) return TRUE;
-        if (preg_match('/' . preg_quote($this->formats['false'], '/') . '/iu', $value)) return FALSE;
-        
+        foreach ($this->formats['true'] as $v) {
+            if (preg_match('/^' . preg_quote($v, '/') . '$/iu', $value)) return TRUE;
+        }
+        foreach ($this->formats['false'] as $v) {
+            if (preg_match('/^' . preg_quote($v, '/') . '$/iu', $value)) return FALSE;
+        }
+            
         return NULL;
     }
     
@@ -154,7 +236,7 @@ class Normalizer {
         if ($value instanceof Date) return new DateTime($value);
         if ($value instanceof DateTime) return $value;
 
-        if (!$datetime = DateTime::createFromFormat($this->formats['datetime'], $value))
+        if (!$datetime = DateTime::createFromFormat($this->formats['dateTime'], $value))
             return NULL;
 
         return $datetime;
@@ -246,13 +328,13 @@ class Normalizer {
             if (isset($type) && $type !== Type::BOOL)
                 throw new \InvalidArgumentException("Normalizer: Wrong data type bool. $type expected.");
 
-            return $value ? $this->formats['true'] : $this->formats['false'];
+            return $value ? $this->formats['true'][0] : $this->formats['false'][0];
 
         } elseif (is_null($value)) {
             if (!$nullable)
                 throw new \InvalidArgumentException("Normalizer: Null value is not allowed.");
 
-            return $this->formats['null'];
+            return $this->formats['null'][0];
 
         } else {
             return (string) $value;
@@ -274,7 +356,7 @@ class Normalizer {
      * @return string
      */
     public function formatDateTime(\DateTime $date) {
-        return $date->format($this->formats['datetime']);
+        return $date->format($this->formats['dateTime']);
     }
     
 }
