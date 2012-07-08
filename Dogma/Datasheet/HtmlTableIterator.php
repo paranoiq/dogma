@@ -9,6 +9,8 @@
 
 namespace Dogma\Datasheet;
 
+use Dogma\Dom\Element;
+
 
 class HtmlTableIterator extends \Dogma\Object implements \Iterator {
     
@@ -18,7 +20,7 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator {
     /** @var string[] */
     private $head;
     
-    /** @var NodeList */
+    /** @var \Dogma\Dom\NodeList */
     private $rows;
     
     /** @var int */
