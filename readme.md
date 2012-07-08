@@ -1,7 +1,8 @@
 Dogma
 ========
 
-Dogma is a collection of OO libraries sharing the same base and the same ideology - simplicity, self-explaining API, good design
+Dogma is a collection of OO libraries sharing the same base and the same ideology - simplicity, self-explaining API, good design.
+Includes Database, Datasheet, XML/HTML DOM, HTTP, Filesystem and Email tools
 
 Most parts are currently under development and some back compatibility breaks can happen
 
@@ -19,7 +20,7 @@ Parts
  - **Database** - simple extension of Nette\Database *(stable, will be discontinued in future!)*
  - **Dom** - extension of PHP DOM library with simplified XPath-like query language for quick data extraction from XML/HTML documents *(beta)*
  - **Graph** - some algorythm(s) for manipulating graphs - mathematics, not graphics! *(stable)*
- - **Http** - asynchronous HTTP client for multichannel parallel requests based on CURL. see `readme.http.md` *(stable)*
+ - **Http** - asynchronous HTTP client for multichannel parallel requests based on CURL. see `readme-http.md` *(stable)*
  - **Io** - object wrapper over PHP filesystem functions *(beta)*
  - **Mail** - IMAP client and MIME mail parser *(dev)*
 

@@ -1,7 +1,7 @@
 {
     "name": "dogma/dogma",
     "type": "library",
-    "description": "collection of OO libraries sharing the same base and the same ideology - simplicity, self-explaining API, good design",
+    "description": "Collection of OO libraries sharing the same base and the same ideology - simplicity, self-explaining API, good design. Includes Database, Datasheet, XML/HTML DOM, HTTP, Filesystem and Email tools.",
     "keywords": ["datasheet","database","xml","html","dom","http","filesystem","mail","imap"],
     "homepage": "http://github.com/paranoiq/dogma",
     "license": ["BSD-3"],
