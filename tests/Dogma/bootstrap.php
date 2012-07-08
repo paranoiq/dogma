@@ -9,7 +9,7 @@
 
 require __DIR__ . '/../Test/TestHelpers.php';
 require __DIR__ . '/../Test/Assert.php';
-require __DIR__ . '/../../../Nette/loader.php';
+require __DIR__ . '/../../../nette/Nette/loader.php';
 
 
 // configure environment
