@@ -38,7 +38,6 @@ word count?
 
 /**
  * Basic object for a UTF-8 string.
- * Strings are always kept normalized.
  */
 class String implements \ArrayAccess {
     
