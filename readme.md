@@ -28,4 +28,4 @@ Parts
 
 Author:
 --------
-Vlasta Neubauer, https://twitter.com/#!/paranoiq
+Vlasta Neubauer, https://twitter.com/paranoiq
