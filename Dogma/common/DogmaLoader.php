@@ -32,8 +32,6 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
         'Dogma\\Io\\FileException' => '/Io/exceptions',
         'Dogma\\Io\\DirectoryException' => '/Io/exceptions',
         'Dogma\\Io\\StreamException' => '/Io/exceptions',
-        
-        'Dogma\\Mail\\MailParserException' => '/Mail/exceptions',
 
         'Dogma\\Dom\\DomException' => '/Dom/exceptions',
         'Dogma\\Dom\\QueryEngineException' => '/Dom/exceptions',
