@@ -14,7 +14,7 @@ use Dogma\Type;
 
 
 /**
- * CSV file reader/Writer
+ * CSV file reader/writer
  * 
  * @see http://tools.ietf.org/html/rfc4180
  * 
@@ -55,7 +55,7 @@ final class CsvFile extends TextFile {
     
     /**
      * Set CSV column delimiter
-     * @param string or NULL for autodetect
+     * @param string|NULL for autodetect
      * @return CsvFile
      */
     public function setDelimiter($delimiter) {
@@ -107,10 +107,10 @@ final class CsvFile extends TextFile {
     
     /**
      * Add a column
-     * @param string user column name
-     * @param string real column name in file
-     * @param string column type (string|int|float|bool|date|datetime|bool)
-     * @param bool required?
+     * @param string $name user column name
+     * @param string $realName real column name in file
+     * @param string $type column type (string|int|float|bool|date|datetime|bool)
+     * @param bool $required
      * @param bool NULL value allowed?
      * @return self
      */
@@ -221,7 +221,7 @@ final class CsvFile extends TextFile {
     
     /**
      * Returns next CSV row or FALSE
-     * @return array|FALSE
+     * @return array|bool
      */
     public function fetch() {
         if (!$this->realColumns) $this->initializeRead();
@@ -239,7 +239,7 @@ final class CsvFile extends TextFile {
     /**
      * Returns next CSV row or FALSE
      * @param string
-     * @return mixed|FALSE
+     * @return mixed|bool
      */
     public function fetchColumn($name) {
         if (!$this->realColumns) $this->initializeRead();
@@ -368,8 +368,7 @@ final class CsvFile extends TextFile {
     
     /**
      * Detect format of file
-     * @param bool detect delimiter?
-     * @param bool detect column names?
+     * @param array
      */
     private function initializeWrite($data) {
         if (!$this->delimiter)
@@ -402,8 +401,6 @@ final class CsvFile extends TextFile {
     
     /**
      * Detect format of file
-     * @param bool detect delimiter?
-     * @param bool detect column names?
      */
     private function initializeRead() {
         if (!$this->delimiter) $this->detectDelimiter();

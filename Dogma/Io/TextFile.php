@@ -7,18 +7,20 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\FileSystem;
+namespace Dogma\Io;
 
 
 /**
  * Text file reader/writer
  */
 class TextFile extends File {
-    
+
+    /**#@+ Line endings */
     const UNIX = "\n";
     const WINDOWS = "\r\n";
     const MAC = "\r";
     const AUTODETECT = NULL;
+    /**#@-*/
     
     
     /** @var string */
@@ -57,6 +59,7 @@ class TextFile extends File {
      * @return string
      */
     public function readChar() {
+        /// handle utf-8!
         return $this->decode(fgetc($this->file));
     }
 
