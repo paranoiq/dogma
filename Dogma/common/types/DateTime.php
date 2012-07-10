@@ -33,6 +33,14 @@ class DateTime extends \DateTime {
 
 
     /**
+     * @return self
+     */
+    public function setDefaultTimezone() {
+        return $this->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+    }
+    
+    
+    /**
      * @static
      * @param string
      * @param string
@@ -60,10 +68,9 @@ class DateTime extends \DateTime {
     
     /**
      * Call to undefined method.
-     * @param  string  method name
-     * @param  array   arguments
+     * @param  string $name method name
+     * @param  array  $args arguments
      * @return mixed
-     * @throws MemberAccessException
      */
     public function __call($name, $args) {
         return \Nette\ObjectMixin::call($this, $name, $args);
