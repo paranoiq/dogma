@@ -48,8 +48,8 @@ class QueryEngine extends \Dogma\Object {
         "/\\[='([^']+)'\\]/" => "[string() = '$1']",
 
         // content matches: [~"/foo/i"]
-        '/\\[~"([^"]+)"\\]/' => "[php:functionString('Dogma\\Xml\\QueryEngine::match', string(), \"$1\")]",
-        "/\\[~'([^']+)'\\]/" => "[php:functionString('Dogma\\Xml\\QueryEngine::match', string(), '$1')]",
+        '/\\[~"([^"]+)"\\]/' => "[php:functionString('Dogma\\Dom\\QueryEngine::match', string(), \"$1\")]",
+        "/\\[~'([^']+)'\\]/" => "[php:functionString('Dogma\\Dom\\QueryEngine::match', string(), '$1')]",
         
         // label: [label("foo")]
         '/\\[label\\("([^"]+)"\\)\\]/' => '[
@@ -76,11 +76,11 @@ class QueryEngine extends \Dogma\Object {
         // function shortcuts
         '/int\\(/'      => "number(.//",
         '/float\\(/'    => "number(.//",
-        '/bool\\(/'     => "php:functionString('Dogma\\Xml\\QueryEngine::bool', .//",
-        '/date\\(/'     => "php:functionString('Dogma\\Xml\\QueryEngine::date', .//",
-        '/datetime\\(/' => "php:functionString('Dogma\\Xml\\QueryEngine::datetime', .//",
-        '/match\\(/'    => "php:functionString('Dogma\\Xml\\QueryEngine::match', .//",
-        '/replace\\(/'  => "php:functionString('Dogma\\Xml\\QueryEngine::replace', .//",
+        '/bool\\(/'     => "php:functionString('Dogma\\Dom\\QueryEngine::bool', .//",
+        '/date\\(/'     => "php:functionString('Dogma\\Dom\\QueryEngine::date', .//",
+        '/datetime\\(/' => "php:functionString('Dogma\\Dom\\QueryEngine::datetime', .//",
+        '/match\\(/'    => "php:functionString('Dogma\\Dom\\QueryEngine::match', .//",
+        '/replace\\(/'  => "php:functionString('Dogma\\Dom\\QueryEngine::replace', .//",
 
         // jQuery-like shortcuts
         /*
@@ -146,11 +146,11 @@ class QueryEngine extends \Dogma\Object {
 
 
     private $userFunctions = array(
-        'Dogma\\Xml\\QueryEngine::match',
-        'Dogma\\Xml\\QueryEngine::replace',
-        'Dogma\\Xml\\QueryEngine::date',
-        'Dogma\\Xml\\QueryEngine::datetime',
-        'Dogma\\Xml\\QueryEngine::bool',
+        'Dogma\\Dom\\QueryEngine::match',
+        'Dogma\\Dom\\QueryEngine::replace',
+        'Dogma\\Dom\\QueryEngine::date',
+        'Dogma\\Dom\\QueryEngine::datetime',
+        'Dogma\\Dom\\QueryEngine::bool',
     );
     
     
