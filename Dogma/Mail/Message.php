@@ -10,6 +10,7 @@
 namespace Dogma\Mail;
 
 use Nette\Diagnostics\Debugger;
+use Nette\Utils\Strings;
 use Dogma\Io\File;
 use Dogma\Language\Inflector;
 
@@ -25,7 +26,6 @@ use Dogma\Language\Inflector;
  * @property-read string $to
  * @property-read string $cc
  * @property-read string $replyTo
- * @property-read string $returnPath
  * 
  * @property-read string $messageId
  * @property-read string $inReplyTo
@@ -39,9 +39,6 @@ class Message extends \Dogma\Object {
     /** @var int bigger attachements will be treated using temporary files */
     public static $bigFileTreshold = 0x100000; // 1MB
     
-    /** @var string charset to convert headers to */
-    public static $internalEncoding = 'utf-8';
-    
     /** @var array */
     private $parts = array();
 
@@ -53,6 +50,10 @@ class Message extends \Dogma\Object {
     
     /** @var string */
     private $data;
+
+
+    /** @var callback(@param string $address, @param string $name, @return Address) */
+    private $addressFactory;
     
     
     /**
@@ -103,6 +104,17 @@ class Message extends \Dogma\Object {
         }
         
         mailparse_msg_free($handler);
+    }
+
+
+    /**
+     * @param callable
+     */
+    public function setAddressFactory($factory) {
+        if (!is_callable($factory))
+            throw new \InvalidArgumentException("Message factory must be callable.");
+
+        $this->addressFactory = $factory;
     }
     
     
@@ -224,7 +236,8 @@ class Message extends \Dogma\Object {
         if (!$this->headers) $this->getHeaders();
         
         $name = Inflector::dasherize(Inflector::underscore($name));
-        $val = isset($this->headers[$name]) ? $this->headers[$name] : NULL;
+        $val = isset($this->headers[$name]) ? $this->headers[$name]
+            : (isset($this->headers['x-' . $name]) ? $this->headers['x-' . $name] : NULL);
         
         return $val;
     }
@@ -234,7 +247,7 @@ class Message extends \Dogma\Object {
     
 
     /**
-     * Decode message from transfer encoding.
+     * Decode message part from transfer encoding.
      * @internal
      * @param string
      * @param string
@@ -267,48 +280,91 @@ class Message extends \Dogma\Object {
                 continue;
             }
 
-            if (substr($value, 0, 2) === '=?') $value = $this->decodeHeader($value);
+            //
 
             if (in_array($name, array('date', 'resent-date', 'delivery-date', 'expires'), TRUE)) {
                 $value = new \Dogma\DateTime($value);
                 $value->setDefaultTimezone();
+                
+            } elseif (in_array($name, array('from', 'to', 'cc', 'bcc', 'reply-to', 'return-path', 'sender'), TRUE)) {
+                $value = self::parseAddressHeader($value);
+                
+            } elseif (strpos($value, '=?') !== FALSE) {
+                $value = $this->decodeHeader($value);
             }
         }
     }
 
 
     /**
+     * Parse addresses from mail header (from, to, cc, bcc, reply-to, return-path, delivered-to, sender…)
+     * @param string
+     * @return Address[]
+     */
+    private function parseAddressHeader($header) {
+        $data = mailparse_rfc822_parse_addresses($header);
+
+        $arr = array();
+        foreach ($data as $item) {
+            list($name, $address, $group) = array_values($item);
+            
+            $name = $address === $name ? NULL 
+                : (strpos($name, '=?') !== FALSE ? $this->decodeHeader($name) : $name);
+            $arr[] = call_user_func($this->addressFactory, $address, $name);
+        }
+
+        return $arr;
+    }
+    
+    
+    /**
+     * @param string
+     * @param string
+     */
+    private static function createAddress($address, $name) {
+        return new Address($address, $name);
+    }
+    
+
+    /**
      * Decode email header.
+     * @internal
      * @param string
      * @return string
      */
     private function decodeHeader($header) {
         // =?utf-8?q?Test=3a=20P=c5=99=c3=...?=
-        list($x, $charset, $encoding, $message, $y) = explode('?', $header);
+        $that = $this;
+        $header = Strings::replace($header, '/(=\\?[^?]+\\?[^?]\\?[^?]+\\?=)/', function ($match) use ($that) {
+            list($x, $charset, $encoding, $message, $y) = explode('?', $match[0]);
+            
+            if (strtolower($encoding) === 'b') {
+                $message = base64_decode($message);
 
-        if (strtolower($encoding) === 'b') {
-            $message = base64_decode($message);
+            } elseif (strtolower($encoding) === 'q') {
+                $message = quoted_printable_decode($message);
 
-        } elseif (strtolower($encoding) === 'q') {
-            $message = quoted_printable_decode($message);
+            } else {
+                throw new ParsingException("Unknown header encoding '$encoding'.");
+            }
 
-        } else {
-            throw new ParsingException("Unknown header encoding.");
-        }
-
-        return $this->convertCharset($message, strtolower($charset));
+            return $that->convertCharset($message, strtolower($charset));
+        });
+        
+        return $header;
     }
     
 
     /**
+     * @internal
      * @param string
      * @return string
      */
-    private function convertCharset($string, $charset) {
-        if ($charset === self::$internalEncoding)
+    public static function convertCharset($string, $charset) {
+        if ($charset === 'utf-8')
             return $string;
 
-        return iconv(self::$internalEncoding, $charset, $string);
+        return iconv('utf-8', $charset, $string);
     }
 
     

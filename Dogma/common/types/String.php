@@ -125,7 +125,7 @@ class String implements \ArrayAccess {
     
     
     ///
-    private function testWithCollator($value) {
+    /*private function testWithCollator($value) {
         switch ($this->operator) {
         
         case self::EQUAL:
@@ -168,7 +168,7 @@ class String implements \ArrayAccess {
         case self::MATCH:
             return $this->decide($this->value->match($value));
         }
-    }
+    }*/
     
     
     /**
@@ -203,13 +203,16 @@ class String implements \ArrayAccess {
         }
     }
     
+    
     public function offsetGet($key) {
         return mb_substr($this->string, $key, 1);
     }
     
+    
     public function offsetExists($key) {
         return is_string(mb_substr($this->string, $key, 1));
     }
+    
     
     public function offsetUnset($key) {
         throw new \LogicException('String: Cannot unset a string offset.');

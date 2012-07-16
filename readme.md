@@ -11,6 +11,7 @@ Requirements
 --------
  - **PHP 5.3** - needed, some key part rely completely on 5.3 features and cannot be translated to 5.2
  - **Nette Framework 2.0** - Core, Caching, Database, Debugger, Loaders, Utils
+ - PHP extension **mailparse** and **imap** for Mail
 
 
 Parts
