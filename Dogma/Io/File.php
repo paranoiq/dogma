@@ -181,8 +181,8 @@ class File extends \Nette\Object {
 
 
     /**
-     * Copy range of data to another File.
-     * @param File|Callback
+     * Copy range of data to another File or callback
+     * @param File|callable
      * @param int
      * @param int
      * @return int actual length of copied data
@@ -204,7 +204,7 @@ class File extends \Nette\Object {
                 call_user_func($destination, $buff);
                 
             } else {
-                throw new \InvalidArgumentException("File or callable expected!");
+                throw new \InvalidArgumentException("Destination must be File or callable!");
             }
         }
 
@@ -250,7 +250,7 @@ class File extends \Nette\Object {
     
     
     /**
-     * Truncate file and move pointer at the end.
+     * Truncate file and move pointer at the end
      * @param int $size new file size in bytes
      * @return self
      */

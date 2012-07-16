@@ -9,6 +9,8 @@
 
 namespace Dogma\Io;
 
+use Nette\Diagnostics\Debugger;
+
 
 /**
  * Text file reader/writer
@@ -38,7 +40,7 @@ class TextFile extends File {
      * @return self
      */
     public function setEncoding($encoding) {
-        $this->encoding = strToLower($encoding);
+        $this->encoding = strtolower($encoding);
         
         return $this;
     }
@@ -58,26 +60,38 @@ class TextFile extends File {
     /**
      * @return string
      */
-    public function readChar() {
-        /// handle utf-8!
+    /*public function readChar() {
+        /// handle multibyte encodings!
         return $this->decode(fgetc($this->file));
-    }
+    }*/
 
 
     /**
      * @param string
      * @return self
      */
-    public function writeChar($char) {
+    /*public function writeChar($char) {
         return $this->write($this->encode($char));
-    }
+    }*/
 
 
     /**
      * @return string
      */
     public function readLine() {
-        return $this->decode(fgets($this->file));
+        Debugger::tryError();
+        $line = fgets($this->file);
+            
+        if (Debugger::catchError($error)) {
+            throw new FileException("Cannot read data from file: $error->message.", 0, $error);
+        } elseif ($line === FALSE) {
+            if ($this->eof()) {
+                throw new FileException("Cannot read data from file. End of file was reached.");
+            } else {
+                throw new FileException("Cannot read data from file.");
+            }
+        }
+        return $this->decode($line);
     }
 
 
