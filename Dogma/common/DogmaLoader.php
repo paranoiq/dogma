@@ -24,6 +24,7 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
         'Dogma\\DateTime' => '/common/types/DateTime',
         'Dogma\\Date' => '/common/types/Date',
         'Dogma\\Enum' => '/common/types/Enum',
+        'Dogma\\Set' => '/common/types/Set',
         'Dogma\\Regexp' => '/common/types/Regexp',
         'Dogma\\String' => '/common/types/String',
         'Dogma\\Type' => '/common/types/Type',
@@ -59,11 +60,11 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
     public function tryLoad($type) {
         $type = ltrim($type, '\\');
         if (isset($this->list[$type])) {
-            \Nette\Utils\LimitedScope::load(DOGMA_DIR . $this->list[$type] . '.php', TRUE);
+            \Nette\Utils\LimitedScope::load(DOGMA_DIR . $this->list[$type] . '.php');
             self::$count++;
             
         } elseif (substr($type, 0, 6) === 'Dogma\\') {
-            \Nette\Utils\LimitedScope::load(DOGMA_DIR . strtr(substr($type, 5), '\\', '/') . '.php', TRUE);
+            \Nette\Utils\LimitedScope::load(DOGMA_DIR . strtr(substr($type, 5), '\\', '/') . '.php');
             self::$count++;
         }
     }

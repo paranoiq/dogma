@@ -13,7 +13,7 @@ namespace Dogma;
 /**
  * Set type. Similar to set from MySql. Allowed values are defined as class constants.
  */
-abstract class Set {
+abstract class Set /*extends \Dogma\Object*/ {
 
     private static $values = array();
 
@@ -73,7 +73,7 @@ abstract class Set {
         $this->checkSet($set);
 
         foreach ($set as $value) {
-            if (!in_array($this->set, $value))
+            if (!in_array($value, $this->set))
                 return FALSE;
         }
 
@@ -110,6 +110,20 @@ abstract class Set {
      */
     final public function getValues() {
         return $this->set;
+    }
+
+
+    /**
+     * Set more values at once
+     * @param array(name=>bool)
+     * @return self
+     */
+    public function setValues($values) {
+        foreach ($values as $name => $value) {
+            $this->__set($name, $value);
+        }
+        
+        return $this;
     }
     
     
@@ -195,6 +209,7 @@ abstract class Set {
             }
             
             $value ? $this->add($name) : $this->remove($name);
+            return;
         }
 
         return \Nette\ObjectMixin::set($this, $name, $value);
