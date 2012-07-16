@@ -16,25 +16,24 @@ namespace Dogma\Mail;
  * @property-read $name
  */
 class Address extends \Dogma\Object {
+
+    /** @var string */
+    private $name;
     
     /** @var string */
     private $address;
     
-    /** @var string */
-    private $name;
-    
-    /** @var bool */
-    private $group;
+    //** @var bool */
+    //private $group;
     
     
     /**
      * @param string
      * @param string
      */
-    public function __construct($address, $name = NULL, $group = FALSE) {
-        $this->address = $address;
-        $this->name = ($name === $address) ? NULL : $name;
-        $this->group = (bool) $group;
+    public function __construct($address, $name = NULL) {
+        $this->address = strtolower($address);
+        $this->name = $name;
     }
     
     
@@ -48,33 +47,10 @@ class Address extends \Dogma\Object {
     public function getName() {
         return $this->name;
     }
-
-
-    /** @return bool */
-    public function isGroup() {
-        return $this->group;
-    }
     
     
     public function __toString() {
-        /// group?
         return $this->name ? "\"$this->name\" <$this->address>" : $this->address;
-    }
-    
-    
-    /**
-     * Parse addresses from mail header (from, to, cc, reply-to, return-path, delivered-to, sender…)
-     * @param string
-     */
-    public static function parseHeader($header) {
-        $data = mailparse_rfc822_parse_addresses($header);
-        
-        $arr = array();
-        foreach ($data as $item) {
-            $arr[] = new self($item['address'], $item['display'], $item['is_group']);
-        }
-        
-        return $arr;
     }
     
 }
