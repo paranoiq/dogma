@@ -91,16 +91,16 @@ class Message extends \Dogma\Object {
         }
         
         $this->parts = array();
-        foreach ($structure as $part_id) {
+        foreach ($structure as $partId) {
             Debugger::tryError();
-            $partHandler = mailparse_msg_get_part($handler, $part_id);
+            $partHandler = mailparse_msg_get_part($handler, $partId);
             $partData = mailparse_msg_get_part_data($partHandler);
             if (Debugger::catchError($error)) {
                 throw new ParsingException("Cannot get email part data: $error->message.", 0, $error);
             } elseif (!$partHandler || !$partData) {
                 throw new ParsingException("Cannot get email part data.");
             }
-            $this->parts[$part_id] = $partData;
+            $this->parts[$partId] = $partData;
         }
         
         mailparse_msg_free($handler);

@@ -170,8 +170,8 @@ class Response extends \Dogma\Object {
         $found = array();
 
         // extract version and status
-        $version_and_status = array_shift($headers);
-        $m = Strings::match($version_and_status, '~HTTP/(?P<version>\d\.\d)\s(?P<code>\d\d\d)\s(?P<status>.*)~');
+        $versionAndStatus = array_shift($headers);
+        $m = Strings::match($versionAndStatus, '~HTTP/(?P<version>\d\.\d)\s(?P<code>\d\d\d)\s(?P<status>.*)~');
         if (count($m) > 0) {
             $found['Http-Version'] = $m['version'];
             $found['Status-Code'] = $m['code'];

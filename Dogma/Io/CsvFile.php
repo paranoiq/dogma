@@ -419,19 +419,19 @@ final class CsvFile extends TextFile {
     private function detectDelimiter() {
         $this->setPosition(0);
         $row = fgetcsv($this->file, 0, ",", $this->quoteChar, $this->escapeChar);
-        $comma = is_array($row) ? count($row) : 0;
+        $comma = count($row);
         
         $this->setPosition(0);
         $row = fgetcsv($this->file, 0, ";", $this->quoteChar, $this->escapeChar);
-        $semi = is_array($row) ? count($row) : 0;
+        $semi = count($row);
         
         $this->setPosition(0);
         $row = fgetcsv($this->file, 0, "\t", $this->quoteChar, $this->escapeChar);
-        $tab = is_array($row) ? count($row) : 0;
+        $tab = count($row);
         
         $this->setPosition(0);
         $row = fgetcsv($this->file, 0, "|", $this->quoteChar, $this->escapeChar);
-        $pipe = is_array($row) ? count($row) : 0;
+        $pipe = count($row);
         
         if ($comma && $comma > $semi && $comma > $tab && $comma > $pipe) {
             $this->delimiter = ",";

@@ -215,10 +215,9 @@ class Connection extends \Dogma\Object {
             $name = preg_replace("/^Inbox(?=\\W)/i", "INBOX", substr($this->decode($folder->name), strlen($this->ref)));
 
             if (empty($this->folders[$name])) {
-                $info[$name] = $this->folders[$name] = new Folder($this, $name, $folder->attributes);
-            } else {
-                $info[$name] = $this->folders[$name];
+                $this->folders[$name] = new Folder($this, $name, $folder->attributes);
             }
+            $info[$name] = $this->folders[$name];
         }
         ksort($info);
         
@@ -421,10 +420,9 @@ class Connection extends \Dogma\Object {
         $messages = array();
         foreach ($uids as $uid) {
             if (empty($this->messages[$uid])) {
-                $messages[$uid] = $this->messages[$uid] = new MessageInfo($this, $uid);
-            } else {
-                $messages[$uid] = $this->messages[$uid];
+                $this->messages[$uid] = new MessageInfo($this, $uid);
             }
+            $messages[$uid] = $this->messages[$uid];
         }
         
         return array_values($messages);

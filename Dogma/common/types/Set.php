@@ -212,7 +212,7 @@ abstract class Set /*extends \Dogma\Object*/ {
             return;
         }
 
-        return \Nette\ObjectMixin::set($this, $name, $value);
+        \Nette\ObjectMixin::set($this, $name, $value);
     }
 
 
@@ -225,7 +225,7 @@ abstract class Set /*extends \Dogma\Object*/ {
             $this->remove($name);
         }
 
-        return \Nette\ObjectMixin::remove($this, $name);
+        \Nette\ObjectMixin::remove($this, $name);
     }
 
 

@@ -177,8 +177,8 @@ abstract class Enum {
     final public function __isset($name) {
         return \Nette\ObjectMixin::has($this, $name);
     }
-    
-    
+
+
     /**
      * @param string
      * @param mixed
@@ -186,11 +186,10 @@ abstract class Enum {
     final public function __set($name, $value) {
         throw new \Nette\MemberAccessException("Properties of Enum type are read-only.");
     }
-    
-    
+
+
     /**
      * @param string
-     * @param mixed
      */
     final public function __unset($name) {
         throw new \Nette\MemberAccessException("Properties of Enum type are read-only.");
