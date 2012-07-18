@@ -29,6 +29,8 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
         'Dogma\\String' => '/common/types/String',
         'Dogma\\Type' => '/common/types/Type',
 
+        'Dogma\\Normalizer' => '/common/Normalizer',
+
         'Dogma\\Io\\IoException' => '/Io/exceptions',
         'Dogma\\Io\\FileException' => '/Io/exceptions',
         'Dogma\\Io\\DirectoryException' => '/Io/exceptions',

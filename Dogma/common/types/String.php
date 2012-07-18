@@ -9,6 +9,7 @@
 
 namespace Dogma;
 
+use Nette\Utils\Strings;
 
 /*
 //z condition:
@@ -37,7 +38,7 @@ word count?
 */
 
 /**
- * Basic object for a UTF-8 string.
+ * Basic object for a UTF-8 string. MESS. DO NOT USE!
  */
 class String implements \ArrayAccess {
     
@@ -112,7 +113,7 @@ class String implements \ArrayAccess {
      * @param string|Collator
      */
     public function compareTo($string, $collator = NULL) {
-        if ($collator = NULL) strcmp($this->string, $string);
+        if ($collator === NULL) strcmp($this->string, $string);
         
         if (!$collator instanceof Language\Collator) $collator = new Language\Collator($collator);
         return $collator->compare($this->string, $string);
@@ -173,7 +174,7 @@ class String implements \ArrayAccess {
     
     /**
      * Normalize string
-     * @return string     
+     * @return string
      */
     public static function normalize($string) {
         if ($string instanceof String) {
@@ -182,8 +183,8 @@ class String implements \ArrayAccess {
         } elseif (is_string($string)) {
             return \Normalizer::normalize($string);
         
-        } elseif (is_object($string) && has_method($string, '__toString')) {
-            return \Normalizer::normalize($string->__toString());
+        } elseif (is_object($string) && method_exists($string, '__toString')) {
+            return \Normalizer::normalize((string) $string);
             
         } else {
             throw new \LogicException('String: Given value is not a string.');

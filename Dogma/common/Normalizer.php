@@ -61,7 +61,7 @@ class Normalizer extends \Dogma\Object {
         
         if (is_string($format) && in_array($option, array('true', 'false', 'null'))) {
             $format = explode(',', $format);
-        } else {
+        } elseif (is_array($format)) {
             $format = array_values($format);
         }
         $this->formats[$option] = $format;
