@@ -37,7 +37,6 @@ class Connection extends \Nette\Database\Connection {
      */
     public function __construct($dsn, $username = NULL, $password  = NULL, array $options = NULL, \Nette\Database\IReflection $databaseReflection = NULL) {
         parent::__construct($dsn, $username, $password, $options, $databaseReflection);
-        Diagnostics\ConnectionPanelLogQueryLimiter::initialize($this);
         
         $this->preprocessor = new SqlPreprocessor($this);
         $this->setAttribute(\PDO::ATTR_STATEMENT_CLASS, array('Dogma\Database\Statement', array($this)));
