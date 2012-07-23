@@ -15,6 +15,8 @@ use Nette\Callback;
 
 /**
  * Binary file reader/writer
+ * 
+ * @property FileStat $info
  */
 class File extends \Nette\Object {
     
@@ -67,7 +69,7 @@ class File extends \Nette\Object {
     /** @var resource file descriptor */
     protected $file;
     
-    /** @var array */
+    /** @var FileStat */
     private $stat;
     
     
@@ -406,12 +408,25 @@ class File extends \Nette\Object {
     
     /**
      * Get file info
-     * @return FileInfo
+     * @return FileStat
      */
     public function getInfo() {
-        if (empty($this->name)) $this->getName();
+        if (!$this->stat) {
+            if ($this->file) {
+                if (!$stat = @fstat($this->file)) {
+                    throw new FileException("Cannot acquire file metadata.");
+                }
+            } else {
+                if (empty($this->name)) $this->getName();
+
+                if (!$stat = @stat($this->name)) {
+                    throw new FileException("Cannot acquire file metadata.");
+                }
+            }
+            $this->stat = new FileStat($stat);
+        }
         
-        return new FileInfo($this->name);
+        return $this->stat;
     }
     
     
@@ -468,75 +483,6 @@ class File extends \Nette\Object {
     )*/
     
     
-    // stat ------------------------------------------------------------------------------------------------------------
-    
-    
-    public function getDeviceId() {
-        if (!$this->stat) $this->loadStat();
-        return $this->stat['dev'];
-    }
-    
-    public function getInode() {
-        if (!$this->stat) $this->loadStat();
-        return $this->stat['ino'];
-    }
-    
-    public function getPerms() {
-        if (!$this->stat) $this->loadStat();
-        return $this->stat['mode'];
-    }
-    
-    public function getLinksCount() {
-        if (!$this->stat) $this->loadStat();
-        return $this->stat['nlinks'];
-    }
-    
-    public function getOwner() {
-        if (!$this->stat) $this->loadStat();
-        return $this->stat['uid'];
-    }
-    
-    public function getGroup() {
-        if (!$this->stat) $this->loadStat();
-        return $this->stat['gid'];
-    }
-    
-    public function getDeviceType() {
-        if (!$this->stat) $this->loadStat();
-        return $this->stat['rdev'];
-    }
-    
-    public function getSize() {
-        if (!$this->stat) $this->loadStat();
-        return $this->stat['size'];
-    }
-    
-    public function getATime() {
-        if (!$this->stat) $this->loadStat();
-        return $this->stat['atime'];
-    }
-    
-    public function getMTime() {
-        if (!$this->stat) $this->loadStat();
-        return $this->stat['mtime'];
-    }
-    
-    public function getCTime() {
-        if (!$this->stat) $this->loadStat();
-        return $this->stat['ctime'];
-    }
-    
-    public function getBlockSize() {
-        if (!$this->stat) $this->loadStat();
-        return $this->stat['blksize'];
-    }
-    
-    public function getBlocks() {
-        if (!$this->stat) $this->loadStat();
-        return $this->stat['blocks'];
-    }
-    
-    
     // factories -------------------------------------------------------------------------------------------------------
 
 
@@ -565,23 +511,6 @@ class File extends \Nette\Object {
     private function testOpen() {
         if (!$this->file)
             throw new FileException("File is already closed.");
-    }
-
-
-    private function loadStat() {
-        if (!$this->stat) {
-            if ($this->file) {
-                if (!$this->stat = @fstat($this->file)) {
-                    throw new FileException("Cannot acquire file metadata.");
-                }
-            } else {
-                if (empty($this->name)) $this->getName();
-
-                if (!$this->stat = @stat($this->name)) {
-                    throw new FileException("Cannot acquire file metadata.");
-                }
-            }
-        }
     }
     
 }
