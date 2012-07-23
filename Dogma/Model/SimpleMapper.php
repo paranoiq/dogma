@@ -7,7 +7,7 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Database\Mapping;
+namespace Dogma\Model;
 
 
 class SimpleMapper extends \Nette\Object {
@@ -28,10 +28,16 @@ class SimpleMapper extends \Nette\Object {
 	/**
      * Translate table name to class name
      * @param string
+     * @param \Nette\Database\Table\ActiveRow
+     * @return ActiveEntity
      */
-    public function mapTable($table) {
+    public function getInstance($table, $row) {
         if (array_key_exists($table, $this->map)) {
-            return $this->map[$table];
+            $class = $this->map[$table];
+            return new $class($row);
+            
+        } else {
+            return new ActiveEntity($row);
         }
     }
     

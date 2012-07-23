@@ -62,28 +62,10 @@ class Statement extends \Nette\Database\Statement {
             } elseif ($type === self::FIELD_DATE) {
                 $row[$key] = new \Dogma\Date($value);
                 
-            }/* elseif ($type === self::FIELD_SET) {
-                $row[$key] = new \Dogma\Database\Set($value);
-            }*/
-        }
-        
-        return $this->connection->getSupplementalDriver()->normalizeRow($row, $this);
-    }
-    
-    
-    private function detectColumnTypes() {
-        if (!$this->connection->getSupplementalDriver()->supports['meta']) // workaround for PHP bugs #53782, #54695
-            return array();
-        
-        $types = array();
-        $col = 0;
-        while ($meta = $this->getColumnMeta($col++)) {
-            if (isset($meta['native_type'])) {
-                $types[$meta['name']] = static::detectType($meta['native_type']);
             }
         }
         
-        return $types;
+        return $this->connection->getSupplementalDriver()->normalizeRow($row, $this);
     }
     
     

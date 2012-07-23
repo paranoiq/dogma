@@ -9,7 +9,7 @@
 
 namespace Dogma\Database;
 
-use Nette\Database\Reflection\DatabaseReflection;
+use Dogma\Model\SimpleMapper;
 
 
 /**
@@ -24,7 +24,7 @@ class Connection extends \Nette\Database\Connection {
     /** @var SqlPreprocessor */
     private $preprocessor;
     
-    /** @var Mapping\SimpleMapper */
+    /** @var SimpleMapper */
     private $mapper;
 
 
@@ -45,15 +45,15 @@ class Connection extends \Nette\Database\Connection {
 
 
     /**
-     * @param Mapping\SimpleMapper
+     * @param SimpleMapper
      */
-    public function setMapper(Mapping\SimpleMapper $mapper) {
+    public function setMapper(SimpleMapper $mapper) {
         $this->mapper = $mapper;
     }
 
 
     /**
-     * @return Mapping\SimpleMapper
+     * @return SimpleMapper
      */
     public function getMapper() {
         return $this->mapper;
@@ -92,7 +92,7 @@ class Connection extends \Nette\Database\Connection {
     /**
      * Creates selector for table.
      * @param  string
-     * @return Nette\Database\Table\Selection
+     * @return \Nette\Database\Table\Selection
      */
     public function table($table) {
         return new Table\Selection($table, $this);
@@ -110,7 +110,7 @@ class Connection extends \Nette\Database\Connection {
     
     // QueryComposer ---------------------------------------------------------------------------------------------------
     
-    
+    /*
     public function compose() {
         return new QueryComposer;
     }

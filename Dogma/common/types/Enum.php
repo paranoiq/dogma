@@ -16,7 +16,7 @@ namespace Dogma;
  * @property-read $identifier
  * @property-read $value
  */
-abstract class Enum {
+abstract class Enum implements IndirectInstantiable {
     
     private static $values = array();
     private static $instances = array();
@@ -75,12 +75,12 @@ abstract class Enum {
 
     /**
      * Get possible values.
-     * @return \ArrayIterator
+     * @return array
      */
     public static function getAllowedValues() {
         if (!isset(self::$values[$class = get_called_class()])) self::init($class);
-
-        return new \ArrayIterator(self::$values[$class]);
+        
+        return self::$values[$class];
     }
     
     
@@ -106,7 +106,7 @@ abstract class Enum {
      * @param scalar
      * @return static
      */
-    final public static function instance($value) {
+    final public static function getInstance($value) {
         if (!isset(self::$values[$class = get_called_class()])) self::init($class);
         
         foreach (self::$values[$class] as $name => $val) {
@@ -121,7 +121,7 @@ abstract class Enum {
      * @param scalar
      * @return static
      */
-    final public static function instanceByName($name) {
+    final public static function getInstanceByName($name) {
         if (!isset(self::$values[$class = get_called_class()])) self::init($class);
 
         return self::__callStatic($name, array());
@@ -141,9 +141,10 @@ abstract class Enum {
         
         if (isset(self::$instances[$class][$name])) {
             return self::$instances[$class][$name];
+            
         } else {
             self::$instances[$class][$name] = new static($name, self::$values[$class][$name]);
-            return self::instance(self::$values[$class][$name]);
+            return self::getInstance(self::$values[$class][$name]);
         }
     }
     
