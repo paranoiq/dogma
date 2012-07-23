@@ -9,12 +9,23 @@
 
 namespace Dogma\Database\Reflection;
 
-
+/**
+ * Discovered reflection with optional exceptions.
+ */
 class DiscoveredReflection extends \Nette\Database\Reflection\DiscoveredReflection {
     
     
     /** @var array list of primatry columns which do not follow convention */
     private $exceptions = array();
+
+    /**
+     * Create autodiscovery structure.
+     * @param  Nette\Caching\IStorage
+     */
+    public function __construct(\Nette\Caching\IStorage $storage = NULL, $exceptions = array()) {
+        parent::__construct($storage);
+        $this->setExceptions($exceptions);
+    }
     
     
     /**
@@ -24,22 +35,31 @@ class DiscoveredReflection extends \Nette\Database\Reflection\DiscoveredReflecti
     public function setExceptions($exceptions = array()) {
         $this->exceptions = array_merge($this->exceptions, $exceptions);
     }
-    
-    
+
+
+    /**
+     * @param string
+     * @return string|NULL
+     */
     public function getPrimary($table) {
         if (isset($this->exceptions[$table]))
             return $this->exceptions[$table];
         
         return parent::getPrimary($table);
     }
-    
-    
-    public function getReferencedColumn($name, $table) {
+
+
+    /**
+     * @param string
+     * @param string
+     * @return mixed
+     */
+    /*public function getReferencedColumn($name, $table) {
         if (isset($this->exceptions[$name]))
             return $this->exceptions[$name];
         
         return parent::getReferencedColumn($name, $table);
-    }
+    }*/
     
 }
 

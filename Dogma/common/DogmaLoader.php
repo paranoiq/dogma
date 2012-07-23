@@ -19,6 +19,7 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
     /** @var array */
     public $list = array(
         'Dogma\\Object' => '/common/types/Object',
+        'Dogma\\IndirectInstantiable' => '/common/types/IndirectInstantiable',
         'Dogma\\ArrayObject' => '/common/types/ArrayObject',
         'Dogma\\Collection' => '/common/types/Collection',
         'Dogma\\DateTime' => '/common/types/DateTime',
@@ -28,6 +29,7 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
         'Dogma\\Regexp' => '/common/types/Regexp',
         'Dogma\\String' => '/common/types/String',
         'Dogma\\Type' => '/common/types/Type',
+        
 
         'Dogma\\Normalizer' => '/common/Normalizer',
 
