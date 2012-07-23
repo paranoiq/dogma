@@ -78,7 +78,7 @@ class FileInfo extends \SplFileInfo {
      * @return File
      */
     public function openFile($mode = File::READ, $streamContext = NULL) {
-        return $this->open($this->getRealPath(), $mode, $streamContext);
+        return $this->open($mode, $streamContext);
     }
 
 
@@ -99,7 +99,6 @@ class FileInfo extends \SplFileInfo {
      * @param  string  method name
      * @param  array   arguments
      * @return mixed
-     * @throws MemberAccessException
      */
     public function __call($name, $args) {
         return Nette\ObjectMixin::call($this, $name, $args);
@@ -111,7 +110,6 @@ class FileInfo extends \SplFileInfo {
      * @param  string  method name (in lower case!)
      * @param  array   arguments
      * @return mixed
-     * @throws MemberAccessException
      */
     public static function __callStatic($name, $args) {
         return Nette\ObjectMixin::callStatic(get_called_class(), $name, $args);
@@ -143,7 +141,6 @@ class FileInfo extends \SplFileInfo {
      * Returns property value. Do not call directly.
      * @param  string  property name
      * @return mixed   property value
-     * @throws MemberAccessException if the property is not defined.
      */
     public function &__get($name) {
         return Nette\ObjectMixin::get($this, $name);
@@ -155,7 +152,6 @@ class FileInfo extends \SplFileInfo {
      * @param  string  property name
      * @param  mixed   property value
      * @return void
-     * @throws MemberAccessException if the property is not defined or is read-only
      */
     public function __set($name, $value) {
         Nette\ObjectMixin::set($this, $name, $value);
