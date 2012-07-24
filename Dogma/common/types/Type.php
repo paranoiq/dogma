@@ -28,4 +28,5 @@ final class Type extends Enum {
     
     const ENUM = 'Enum';
     const SET = 'Set';
+    
 }

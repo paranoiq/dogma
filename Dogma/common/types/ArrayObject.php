@@ -108,10 +108,12 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
      * @param integer
      * @param integer
      * @param bool
+     * @return self
      */
     public function slice($offset, $limit, $yourself = FALSE) {
         if ($yourself) {
             $this->data = array_slice($this->data, $offset, $limit, $this->preserverKeys);
+            return $this;
         } else {
             return new static(array_slice($this->data, $offset, $limit, $this->preserverKeys));
         }
@@ -122,6 +124,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
      * Filter items in array by callback function. Allways preserves keys.
      * @param callback|Regexp|ICondition|array
      * @param bool
+     * @return self
      */
     public function filter($filter, $yourself = FALSE) {
         if (is_callable($filter)) {
@@ -132,11 +135,12 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
             $arr = new self($filter);
             $filter = function ($value) use ($arr) { return $arr->contains($value); };
         } else {
-            throw new InvalidArgumentException('ArrayObject: Filter must be a valid callback, Regexp, Condition or array.');
+            throw new \InvalidArgumentException('ArrayObject: Filter must be a valid callback, Regexp, Condition or array.');
         }
         
         if ($yourself) {
             $this->data = array_filter($this->data, $filter);
+            return $this;
         } else {
             return new static(array_filter($this->data, $filter));
         }
@@ -147,6 +151,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
      * Remove duplicit items from array. Allways preserves keys.
      * @param callback|Language\Collator|Regexp  optional
      * @param bool
+     * @return self
      */
     public function unique($collator = NULL, $yourself = NULL) {
         if (is_bool($collator) && is_null($yourself)) {
@@ -161,6 +166,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         
         if ($yourself) {
             $this->data = $arr->toArray();
+            return $this;
         } else {
             return $arr;
         }

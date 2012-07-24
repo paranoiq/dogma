@@ -275,13 +275,13 @@ class Normalizer extends \Dogma\Object {
             case Type::DATE:
                 $value = $this->detectDate($value);
                 if ($value === NULL)
-                    throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to boolean.");
+                    throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to Date.");
                 return $value;
 
             case Type::DATETIME:
                 $value = $this->detectDateTime($value);
                 if ($value === NULL)
-                    throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to boolean.");
+                    throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to DateTime.");
                 return $value;
 
             case Type::STRING:
