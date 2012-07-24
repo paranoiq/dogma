@@ -11,9 +11,9 @@ namespace Dogma;
 
 
 /**
- * Set type. Similar to set from MySql. Allowed values are defined as class constants.
+ * Set type. Similar to 'set' from MySql. Allowed values are defined as class constants.
  */
-abstract class Set /*extends \Dogma\Object*/ {
+abstract class Set implements SimpleValueObject {
 
     private static $values = array();
 
@@ -223,6 +223,7 @@ abstract class Set /*extends \Dogma\Object*/ {
     final public function __unset($name) {
         if (self::isValid($name)) {
             $this->remove($name);
+            return;
         }
 
         \Nette\ObjectMixin::remove($this, $name);
@@ -237,10 +238,5 @@ abstract class Set /*extends \Dogma\Object*/ {
     final public function __wakeup() {
         throw new \Exception("Set type cannot be serialized. Use its values instead.");
     }
-
-
-    /*final public function __clone() {
-        throw new \Exception("Set type cannot be cloned. There can be only one instance of each value.");
-    }*/
     
 }

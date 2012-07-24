@@ -11,12 +11,12 @@ namespace Dogma;
 
 
 /**
- * Enum type. Simillar to enum from Java. Allowed values are defined as class constants.
+ * Enum type. Simillar to Enum from Java. Allowed values are defined as class constants.
  * 
  * @property-read $identifier
  * @property-read $value
  */
-abstract class Enum implements IndirectInstantiable {
+abstract class Enum implements SimpleValueObject, IndirectInstantiable {
     
     private static $values = array();
     private static $instances = array();
@@ -77,7 +77,7 @@ abstract class Enum implements IndirectInstantiable {
      * Get possible values.
      * @return array
      */
-    public static function getAllowedValues() {
+    final public static function getAllowedValues() {
         if (!isset(self::$values[$class = get_called_class()])) self::init($class);
         
         return self::$values[$class];
