@@ -250,17 +250,14 @@ class SqlPreprocessor {
         } elseif (is_null($value)) {
             return 'NULL';
             
-        } elseif ($value instanceof ActiveRow) {
+        } elseif ($value instanceof ActiveRow
+            || $value instanceof \Dogma\Model\ActiveEntity
+            || $value instanceof \Dogma\SimpleValueObject
+        ) {
             return $this->connection->quote($value->__toString());
-        
-        } elseif ($value instanceof Set) {
-            return $this->connection->quote($value->__toString());
-        
-        } elseif ($value instanceof \Dogma\Date) {
-            return $this->connection->quote($value->__toString());
-        
+
         } elseif ($value instanceof \DateTime) {
-            return $this->driver->formatDateTime($value);    
+            return $this->driver->formatDateTime($value);
             
         } elseif ($value instanceof SqlLiteral) {
             return $value->value;
@@ -281,6 +278,9 @@ class SqlPreprocessor {
                 $vx[] = $this->formatValue($v);
             }
             return implode(', ', $vx);
+            
+        } elseif (is_object($value)) {
+            throw new DatabaseException("Unsupported parameter type: " . get_class($value) . ".");
             
         } else {
             $this->remaining[] = $value;

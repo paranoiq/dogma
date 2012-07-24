@@ -11,9 +11,9 @@ namespace Dogma;
 
 
 /**
- * DateTime
+ * Date and time class
  */
-class DateTime extends \DateTime {
+class DateTime extends \DateTime implements SimpleValueObject {
     
     /**
      * @param string

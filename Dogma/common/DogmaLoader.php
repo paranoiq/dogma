@@ -18,18 +18,21 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
 
     /** @var array */
     public $list = array(
-        'Dogma\\Object' => '/common/types/Object',
-        'Dogma\\IndirectInstantiable' => '/common/types/IndirectInstantiable',
+        'Dogma\\CompoundValueObject' => '/common/interfaces/CompoundValueObject',
+        'Dogma\\IndirectInstantiable' => '/common/interfaces/IndirectInstantiable',
+        'Dogma\\SimpleValueObject' => '/common/interfaces/SimpleValueObject',
+        'Dogma\\ValueObject' => '/common/interfaces/ValueObject',
+        
         'Dogma\\ArrayObject' => '/common/types/ArrayObject',
         'Dogma\\Collection' => '/common/types/Collection',
-        'Dogma\\DateTime' => '/common/types/DateTime',
         'Dogma\\Date' => '/common/types/Date',
+        'Dogma\\DateTime' => '/common/types/DateTime',
         'Dogma\\Enum' => '/common/types/Enum',
+        'Dogma\\Object' => '/common/types/Object',
         'Dogma\\Set' => '/common/types/Set',
         'Dogma\\Regexp' => '/common/types/Regexp',
         'Dogma\\String' => '/common/types/String',
         'Dogma\\Type' => '/common/types/Type',
-        
 
         'Dogma\\Normalizer' => '/common/Normalizer',
 
@@ -37,9 +40,6 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
         'Dogma\\Io\\FileException' => '/Io/exceptions',
         'Dogma\\Io\\DirectoryException' => '/Io/exceptions',
         'Dogma\\Io\\StreamException' => '/Io/exceptions',
-
-        'Dogma\\Dom\\DomException' => '/Dom/exceptions',
-        'Dogma\\Dom\\QueryEngineException' => '/Dom/exceptions',
     );
 
 

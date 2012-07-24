@@ -76,8 +76,6 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
         }
         self::$meta[$class] = $props;
         
-        dump($props);
-        
         return array_keys($props);
     }
 
@@ -98,13 +96,14 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
     
     /**
      * @param string
+     * @param string
      * @return object
      */
-    private function getPropertyInstance($name) {
-        list($class, $props) = self::$meta[get_called_class()][$name];
+    private function getPropertyInstance($ec, $name) {
+        list($class, $params) = self::$meta[$ec][$name];
         
         $args = array();
-        foreach ($props as $name => $type) {
+        foreach ($params as $name => $type) {
             $args[] = ($type === NULL)
                 ? $this->row->__get(Inflector::underscore($name))
                 : $this->createInstance($type, array($this->row->__get(Inflector::underscore($name))));
@@ -117,6 +116,38 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
         return $instance;
     }
 
+
+    /**
+     * @param string
+     * @param string
+     * @param mixed
+     */
+    private function updatePropertyInstance($ec, $name, $value) {
+        list($class, $params) = self::$meta[$ec][$name];
+        
+         if ($value instanceof $class) {
+            $instance = $value;
+            
+            if ($value instanceof \Dogma\CompoundValueObject) {
+                $parts = array_combine(array_keys($params), array_values($value->toArray()));
+                if (!$parts)
+                    throw new \LogicException("Count of fields returned by CompoundValueObject does not fit the count of fields in constructor.");
+                
+                foreach ($parts as $key => $val) {
+                    $this->row->__set($key, $val);
+                }
+            } else {
+                $this->row->__set($name, $value);
+            }
+            
+        } else {
+            $instance = $this->createInstance($class, array($value));
+            $this->row->__set($name, $instance);
+        }
+
+        $this->props[$name] = $instance;
+    }
+    
 
     /**
      * @param string
@@ -136,7 +167,7 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
 
 
     /**
-     * Save modification todatabase.
+     * Save modification to database.
      * @return bool
      */
     public function save() {
@@ -151,6 +182,15 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
     public function delete() {
         return (bool) $this->row->delete();
     }
+
+
+    /**
+     * Delete entity from database.
+     * @return \Nette\Database\Table\Selection
+     */
+    public function getTable() {
+        return $this->row->getTable();
+    }
     
 
     // interfaces ------------------------------------------------------------------------------------------------------
@@ -160,7 +200,7 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
      * @return \ArrayIterator
      */
     public function getIterator() {
-        /// fix!
+        /// iterate entity fields?
         return $this->row->getIterator();
     }
     
@@ -176,8 +216,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
         } elseif (method_exists($this, "get$name")) {
             $var = call_user_func(array($this, "get$name"));
             
-        } elseif (isset(self::$meta[get_called_class()][$name])) {
-            $var = $this->getPropertyInstance($name);
+        } elseif (isset(self::$meta[$class = get_called_class()][$name])) {
+            $var = $this->getPropertyInstance($class, $name);
             
         } else {
             $var = $this->row->__get(Inflector::underscore($name));
@@ -194,6 +234,9 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
     public function __set($name, $value) {
         if (method_exists($this, "set$name")) {
             call_user_func(array($this, "set$name"), $value);
+            
+        } elseif (isset(self::$meta[$class = get_called_class()][$name])) {
+            $this->updatePropertyInstance($class, $name, $value);
             
         } else {
             $this->row->__set(Inflector::underscore($name), $value);

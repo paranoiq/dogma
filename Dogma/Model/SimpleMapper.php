@@ -9,7 +9,9 @@
 
 namespace Dogma\Model;
 
-
+/**
+ * Maps database tables on entity classes. Creates entity instances from rows.
+ */
 class SimpleMapper extends \Nette\Object {
     
     /** @var array table => class map */
@@ -32,6 +34,11 @@ class SimpleMapper extends \Nette\Object {
      * @return ActiveEntity
      */
     public function getInstance($table, $row) {
+        if ($row instanceof ActiveEntity) {
+            /// something smells here! :/
+            return $row;
+        }
+        
         if (array_key_exists($table, $this->map)) {
             $class = $this->map[$table];
             return new $class($row);
