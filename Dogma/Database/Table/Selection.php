@@ -76,8 +76,8 @@ class Selection extends \Nette\Database\Table\Selection {
     public function get($key) {
         return $this->map(parent::get($key));
     }
-    
-    
+
+
     /** @return ActiveRow */
     public function current() {
         return $this->map(parent::current());
@@ -90,7 +90,7 @@ class Selection extends \Nette\Database\Table\Selection {
      * @return ActiveRow or NULL if there is no such row
      */
     public function offsetGet($key) {
-        return $this->map(parent::offsetGet($key));
+        return parent::offsetGet($key); // $this->map();
     }
 
 
