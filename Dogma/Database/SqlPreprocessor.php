@@ -250,7 +250,8 @@ class SqlPreprocessor {
         } elseif (is_null($value)) {
             return 'NULL';
             
-        } elseif ($value instanceof ActiveRow
+        } elseif ($value instanceof SqlLiteral
+            || $value instanceof ActiveRow
             || $value instanceof \Dogma\Model\ActiveEntity
             || $value instanceof \Dogma\SimpleValueObject
         ) {
@@ -258,9 +259,6 @@ class SqlPreprocessor {
 
         } elseif ($value instanceof \DateTime) {
             return $this->driver->formatDateTime($value);
-            
-        } elseif ($value instanceof SqlLiteral) {
-            return $value->value;
             
         } elseif ($value instanceof SqlFragment) {
             $pre = new self/*static*/($this->connection);
