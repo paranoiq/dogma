@@ -467,18 +467,18 @@ class Request extends \Dogma\Object {
             throw new RequestException("Info cannot be obtained from CURL.");
 
         if ($error) {
-            $status = ResponseStatus::instance($error);
+            $status = ResponseStatus::getInstance($error);
             
         } else {
             try {
-                $status = ResponseStatus::instance($info['http_code']);
+                $status = ResponseStatus::getInstance($info['http_code']);
             } catch (\Exception $e) {
-                $status = ResponseStatus::instance(ResponseStatus::UNKNOWN_RESPONSE_CODE);
+                $status = ResponseStatus::getInstance(ResponseStatus::UNKNOWN_RESPONSE_CODE);
             }
         }
         
         if ($status->isFatalError()) {
-            throw new RequestException("Fatal error occured during request execution: $status->cname", $status->value);
+            throw new RequestException("Fatal error occured during request execution: $status->identifier", $status->value);
         }
         
         $response = new Response($response, $status, $info);
