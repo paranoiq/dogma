@@ -55,9 +55,10 @@ abstract class Set implements SimpleValueObject {
     public function remove($set) {
         $this->checkSet($set);
         
-        foreach ($set as $i => $value) {
-            if (in_array($value, $this->set)) {
-                unset($this->set[$i]);
+        foreach ($set as $value) {
+            $key = array_search($value, $this->set);
+            if ($key !== FALSE) {
+                unset($this->set[$key]);
             }
         }
         
