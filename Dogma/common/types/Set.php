@@ -36,6 +36,8 @@ abstract class Set implements SimpleValueObject {
         $this->checkSet($set);
 
         foreach ($set as $value) {
+            if ($value === "") continue;
+            
             if (!self::isValid($value))
                 throw new \InvalidArgumentException("Invalid value given.");
             
