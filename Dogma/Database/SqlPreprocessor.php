@@ -35,8 +35,14 @@ class SqlPreprocessor {
         $this->connection = $connection;
         $this->driver = $connection->getSupplementalDriver();
     }
-    
-    
+
+
+    /**
+     * Format parameters and compile the query.
+     * @param string
+     * @param mixed
+     * @return array
+     */
     public function process($sql, $params) {
         
         $this->sql = '';
@@ -66,7 +72,7 @@ class SqlPreprocessor {
             $this->processArg($args[$i], $sql);
         }
         
-        $this->sql = Strings::replace($this->sql, '~\'.*?\'|".*?"|:[a-zA-Z0-9_]+:~s', array($this, 'substituteCb'));
+        //$this->sql = Strings::replace($this->sql, '~\'.*?\'|".*?"|:[a-zA-Z0-9_]+:~s', array($this, 'substituteCb'));
         
         return array($this->sql, $this->remaining);
     }
@@ -81,12 +87,14 @@ class SqlPreprocessor {
         } elseif ($m[0] === '?') { // placeholder
             return chr(0);
             
+        } else {
+            die;
         }
     }
     
     
-    /** @internal */
-    public function substituteCb($m) {
+    //** @internal */
+    /*public function substituteCb($m) {
         $m = $m[0];
         if ($m[0] === "'" || $m[0] === '"') { // string
             return $m;
@@ -95,7 +103,7 @@ class SqlPreprocessor {
             $s = substr($m, 1, -1);
             return isset($this->connection->substitutions[$s]) ? $this->connection->substitutions[$s] : $m;
         }
-    }
+    }*/
     
     
     /**
@@ -104,7 +112,7 @@ class SqlPreprocessor {
      * @param string
      */
     private function processArg($arg, $sql) {
-        if ($arg instanceof Set || $arg instanceof ActiveRow) {
+        if ($arg instanceof \Dogma\SimpleValueObject || $arg instanceof ActiveRow) {
             $this->sql .= $this->formatValue($arg);
             
         } elseif ((is_array($arg) || $arg instanceof \Traversable) && $mode = $this->detectArrayMode($sql)) {
@@ -154,29 +162,10 @@ class SqlPreprocessor {
      * @param string
      */
     private function processArray($array, $mode) {
-        $vx = $kx = array();
+        $vx = array();
         
         if ($mode === 'insert') { // (key, key, ...) VALUES (value, value, ...)
-            // multiinsert?
-            reset($array);
-            if (current($array) instanceof Set || current($array) instanceof ActiveRow) {
-                //
-            } elseif (is_array(current($array)) || current($array) instanceof \Traversable) {
-                $all = $array;
-                $array = array_shift($all);
-            }
-            
-            foreach ($array as $k => $v) {
-                $kx[] = $this->driver->delimite($k);
-                $vx[] = $this->formatValue($v);
-            }
-            $this->sql .= '(' . implode(', ', $kx) . ') VALUES (' . implode(', ', $vx) . ')';
-            
-            if (isset($all)) {
-                foreach ($all as $array) {
-                    $this->processArray($array, 'values');
-                }
-            }
+            $this->processInsert($array);
             
         } elseif ($mode === 'values') { // , (value, value, ...)
             $this->sql .= ', (' . $this->formatValue($array) . ')';
@@ -198,26 +187,65 @@ class SqlPreprocessor {
             $this->sql .= implode(', ', $vx);
             
         } elseif ($mode === 'where') { // key=value AND key=value AND ...
-            foreach ($array as $k => $v) {
-                if (is_string($v)) {
-                    $vx[] = $this->driver->delimite($k) . ' LIKE ' . $this->formatValue($v);
-                
-                } elseif (is_null($v)) {
-                    $vx[] = $this->driver->delimite($k) . ' IS NULL';
-                    
-                /* // MySQL 5+, PostgreSQL
-                } elseif (is_bool($v)) {
-                    $vx[] = $this->driver->delimite($k) . ($v ? ' IS TRUE' : ' IS FALSE');
-                */
-                } elseif (is_array($v) || $v instanceof \Traversable) {
-                    $vx[] = $this->driver->delimite($k) . ' IN (' . $this->formatValue($v) . ')';
-                
-                } else {
-                    $vx[] = $this->driver->delimite($k) . ' = ' . $this->formatValue($v);
-                }
-            }
-            $this->sql .= '(' . implode(' AND ', $vx) . ')';
+            $this->processWhere($array);
         }
+    }
+
+
+    /**
+     * @param array
+     */
+    private function processInsert($array) {
+        $vx = $kx = array();
+        
+        // multiinsert?
+        reset($array);
+        if (current($array) instanceof \Dogma\SimpleValueObject || current($array) instanceof ActiveRow) {
+            //
+        } elseif (is_array(current($array)) || current($array) instanceof \Traversable) {
+            $all = $array;
+            $array = array_shift($all);
+        }
+
+        foreach ($array as $k => $v) {
+            $kx[] = $this->driver->delimite($k);
+            $vx[] = $this->formatValue($v);
+        }
+        $this->sql .= '(' . implode(', ', $kx) . ') VALUES (' . implode(', ', $vx) . ')';
+
+        if (isset($all)) {
+            foreach ($all as $array) {
+                $this->processArray($array, 'values');
+            }
+        }
+    }
+
+
+    /**
+     * @param array
+     */
+    private function processWhere($array) {
+        $vx = array();
+        
+        foreach ($array as $k => $v) {
+            if (is_string($v)) {
+                $vx[] = $this->driver->delimite($k) . ' LIKE ' . $this->formatValue($v);
+
+            } elseif (is_null($v)) {
+                $vx[] = $this->driver->delimite($k) . ' IS NULL';
+
+            // MySQL 5+, PostgreSQL
+            } elseif (is_bool($v)) {
+                $vx[] = $this->driver->delimite($k) . ($v ? ' IS TRUE' : ' IS FALSE');
+            
+            } elseif (is_array($v) || $v instanceof \Traversable) {
+                $vx[] = $this->driver->delimite($k) . ' IN (' . $this->formatValue($v) . ')';
+
+            } else {
+                $vx[] = $this->driver->delimite($k) . ' = ' . $this->formatValue($v);
+            }
+        }
+        $this->sql .= '(' . implode(' AND ', $vx) . ')';
     }
     
     
@@ -241,7 +269,7 @@ class SqlPreprocessor {
             return (string) $value;
             
         } elseif (is_float($value)) {
-            return rtrim(rtrim(number_format($value, 10, '.', ''), '0'), '.');
+            return rtrim(rtrim(number_format($value, 15, '.', ''), '0'), '.');
             
         } elseif (is_bool($value)) {
             $this->remaining[] = $value;
@@ -249,19 +277,17 @@ class SqlPreprocessor {
             
         } elseif (is_null($value)) {
             return 'NULL';
-            
-        } elseif ($value instanceof SqlLiteral
-            || $value instanceof ActiveRow
-            || $value instanceof \Dogma\Model\ActiveEntity
-            || $value instanceof \Dogma\SimpleValueObject
-        ) {
-            return $this->connection->quote($value->__toString());
 
         } elseif ($value instanceof \DateTime) {
             return $this->driver->formatDateTime($value);
-            
+
+        } elseif ($value instanceof SqlLiteral || $value instanceof ActiveRow
+            || $value instanceof \Dogma\Model\ActiveEntity
+            || $value instanceof \Dogma\SimpleValueObject) {
+            return $this->connection->quote((string) $value);
+
         } elseif ($value instanceof SqlFragment) {
-            $pre = new self/*static*/($this->connection);
+            $pre = new self($this->connection);
             list($sql, $remaining) = $pre->process($value->statement, $value->params);
             
             if ($remaining) foreach ($remaining as $val) {

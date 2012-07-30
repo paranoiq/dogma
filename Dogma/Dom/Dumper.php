@@ -11,34 +11,20 @@ namespace Dogma\Dom;
 
 
 class Dumper {
-    
+
+    /**
+     * @param Element|\DOM\Node
+     * @param int
+     * @param int
+     * @param bool $only is the only child?
+     * @throws \Nette\NotImplementedException
+     */
     public static function dump($node, $maxDepth = 15, $depth = 0, $only = FALSE) {
         if ($depth > $maxDepth) echo "…";
         if ($depth === 0) echo "<pre><code>";
         
         if ($node instanceof Element || $node instanceof \DOMElement) {
-            if ($depth === 0) echo "<b>Element:</b>\n";
-            if (!$only) echo str_repeat('    ', $depth); 
-            echo "<b>&lt;</b><b style='color:red'>", $node->nodeName, "</b>";
-            
-            foreach ($node->attributes as $attribute) {
-                echo " <span style='color: green'>", $attribute->name, "</span>=<span style='color:blue'>'", $attribute->value, "'</span>";
-            }
-            
-            echo "<b>&gt;</b>";
-            
-            if ($node->childNodes->length > 1) {
-                echo "\n";
-            }
-            foreach ($node->childNodes as $child) {
-                self::dump($child, $maxDepth, $depth + 1, $node->childNodes->length === 1);
-            }
-            if ($node->childNodes->length > 1) {
-                echo str_repeat('    ', $depth);
-            }
-            
-            echo "<b>&lt;</b>/<b style='color: red'>", $node->nodeName, "</b><b>&gt;</b>";
-            if (!$only) echo "\n";
+            self::dumpElement($node, $maxDepth, $depth, $only);
             
         } elseif ($node instanceof \DOMDocument) {
             if ($depth === 0) echo "<b>Document:</b>\n";
@@ -67,11 +53,36 @@ class Dumper {
             
         } else {
             echo "[something]";
-            throw new \Exception('STOP');
-            //dump($node);
+            throw new \Nette\NotImplementedException('Dom dumper find some strange thing.');
         }
 
         if ($depth === 0) echo "<code></pre>";
+    }
+    
+    
+    private static function dumpElement($node, $maxDepth = 15, $depth = 0, $only = FALSE) {
+        if ($depth === 0) echo "<b>Element:</b>\n";
+        if (!$only) echo str_repeat('    ', $depth);
+        echo "<b>&lt;</b><b style='color:red'>", $node->nodeName, "</b>";
+
+        foreach ($node->attributes as $attribute) {
+            echo " <span style='color: green'>", $attribute->name, "</span>=<span style='color:blue'>'", $attribute->value, "'</span>";
+        }
+
+        echo "<b>&gt;</b>";
+
+        if ($node->childNodes->length > 1) {
+            echo "\n";
+        }
+        foreach ($node->childNodes as $child) {
+            self::dump($child, $maxDepth, $depth + 1, $node->childNodes->length === 1);
+        }
+        if ($node->childNodes->length > 1) {
+            echo str_repeat('    ', $depth);
+        }
+
+        echo "<b>&lt;</b>/<b style='color: red'>", $node->nodeName, "</b><b>&gt;</b>";
+        if (!$only) echo "\n";
     }
     
 }
