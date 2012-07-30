@@ -34,7 +34,10 @@ class SimpleMapper extends \Nette\Object {
      * @return ActiveEntity
      */
     public function getInstance($table, $row) {
-        if ($row instanceof ActiveEntity) {
+        if ($row === FALSE) {
+            return FALSE;
+            
+        } elseif ($row instanceof ActiveEntity) {
             /// something smells here! :/
             return $row;
         }
