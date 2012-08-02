@@ -34,7 +34,7 @@ class QueryEngine extends \Dogma\Object {
         "/\\[:only\\]/"  => '[position() = 1 and position() = last()]', // [:only]
 
         // class: [.foo]
-        "/\\[.([A-Za-z0-9_-]+)\\]/" => '[contains(concat(" ", normalize-space(@class), " "), " $1 ")]',
+        "/\\[\\.([A-Za-z0-9_-]+)\\]/" => '[contains(concat(" ", normalize-space(@class), " "), " $1 ")]',
 
         // id: [#foo]
         "/\\[#([A-Za-z0-9_-]+)\\]/" => '[@id = "$1"]',
