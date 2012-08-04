@@ -88,5 +88,10 @@ class Element extends \Dogma\Object {
         $args = func_get_args();
         return call_user_func(array($this->element, $name), array_shift($args));
     }
+
+
+    public function dump() {
+        Dumper::dump($this);
+    }
     
 }
