@@ -84,5 +84,10 @@ class NodeList extends \Dogma\Object implements \Countable, \Iterator {
             return $node;
         }
     }
+
+
+    public function dump() {
+        Dumper::dump($this);
+    }
     
 }
