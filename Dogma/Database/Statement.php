@@ -98,5 +98,10 @@ class Statement extends \Nette\Database\Statement {
         return $types[$type];
     }
     
+    
+    public function count() {
+        return parent::rowCount();
+    }
+    
 }
 
