@@ -9,6 +9,7 @@
 
 namespace Dogma\Database;
 
+use Dogma\Normalizer;
 use Dogma\Model\SimpleMapper;
 
 
@@ -27,6 +28,9 @@ class Connection extends \Nette\Database\Connection {
     /** @var SimpleMapper */
     private $mapper;
 
+    /** @var Normalizer */
+    private $normalizer;
+    
 
     /**
      * @param string
@@ -58,6 +62,22 @@ class Connection extends \Nette\Database\Connection {
         return $this->mapper;
     }
 
+
+    /**
+     * @param Normalizer
+     */
+    public function setNormalizer(Normalizer $normalizer) {
+        $this->normalizer = $normalizer;
+    }
+
+    
+    /**
+     * @return Normalizer
+     */
+    public function getNormalizer() {
+        return $this->normalizer;
+    }
+    
 
     /**
      * @param string
