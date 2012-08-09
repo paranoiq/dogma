@@ -16,10 +16,11 @@ use PDO;
 
 class Selection extends \Nette\Database\Table\Selection {
 
-
+    
     /** @var \Dogma\Database\Connection */
     protected $connection;
 
+    
 
     /**
      * @param array
@@ -32,6 +33,18 @@ class Selection extends \Nette\Database\Table\Selection {
             return $row;
         }
     }
+
+
+    /**
+     * Inserts row in a table.
+     * @param  array|\Traversable|Table\Selection
+     * @param  bool
+     * @return \Dogma\Model\ActiveEntity|ActiveRow|int|bool
+     */
+    public function insert($data, $map = FALSE) {
+        $row = parent::insert($data);
+        return $map ? $this->map($row) : $row;
+    }
     
     
     /**
@@ -40,7 +53,7 @@ class Selection extends \Nette\Database\Table\Selection {
 	 * @param  bool
 	 * @return \Dogma\Model\ActiveEntity|ActiveRow|int|bool
 	 */
-	public function insert($data, $ignore = FALSE) {
+	public function insertIgnore($data, $map = FALSE) {
 		if ($data instanceof \Nette\Database\Table\Selection) {
 			$data = $data->getSql();
 
@@ -48,7 +61,7 @@ class Selection extends \Nette\Database\Table\Selection {
 			$data = iterator_to_array($data);
 		}
 
-		$return = $this->connection->query("INSERT " . ($ignore ? "IGNORE " : "") . "INTO $this->delimitedName", $data); // paranoiq
+		$return = $this->connection->query("INSERT IGNORE INTO $this->delimitedName", $data);
 
         if (!is_array($data)) {
             return $return->rowCount();
@@ -58,50 +71,15 @@ class Selection extends \Nette\Database\Table\Selection {
 
         if (!isset($data[$this->primary]) && ($id = $this->connection->lastInsertId())) {
             $data[$this->primary] = $id;
-            $row = $this->rows[$id] = new ActiveRow($data, $this); // paranoiq
+            $row = $this->rows[$id] = new ActiveRow($data, $this);
 
         } else {
-            $row = new ActiveRow($data, $this); // paranoiq
+            $row = new ActiveRow($data, $this);
         }
         
-        return $this->map($row); // paranoiq
+        return $map ? $this->map($row) : $row;
 	}
-    
-    
-    /**
-     * Returns row specified by primary key.
-     * @param  mixed
-     * @return ActiveRow or FALSE if there is no such row
-     */
-    public function get($key) {
-        return $this->map(parent::get($key));
-    }
 
-
-    /** @return ActiveRow */
-    public function current() {
-        return $this->map(parent::current());
-    }
-
-
-    /**
-     * Returns specified row.
-     * @param  string row ID
-     * @return ActiveRow or NULL if there is no such row
-     */
-    public function offsetGet($key) {
-        return parent::offsetGet($key); // $this->map();
-    }
-
-
-    /**
-     * Returns next row of result.
-     * @return ActiveRow or FALSE if there is no row
-     */
-    public function fetch() {
-        return $this->map(parent::fetch());
-    }
-    
 
     /**
      * @param array|Traversable|Table\Selection
@@ -121,8 +99,45 @@ class Selection extends \Nette\Database\Table\Selection {
         if (!is_array($data)) {
             return $return->rowCount();
         }
-        
+
         return 0;
+    }
+    
+    
+    /**
+     * Returns row specified by primary key.
+     * @param  mixed
+     * @return ActiveRow or FALSE if there is no such row
+     */
+    public function get($key, $map = FALSE) {
+        $row = parent::get($key);
+        return $map ? $this->map($row) : $row;
+    }
+
+
+    /** @return ActiveRow */
+    public function current() {
+        return $this->map(parent::current()); /// always map?
+    }
+
+
+    /**
+     * Returns specified row.
+     * @param  string
+     * @return ActiveRow or NULL if there is no such row
+     */
+    public function offsetGet($key) {
+        return parent::offsetGet($key); /// never map?
+    }
+
+
+    /**
+     * Returns next row of result.
+     * @return ActiveRow or FALSE if there is no row
+     */
+    public function fetch($map = FALSE) {
+        $row = parent::fetch();
+        return $map ? $this->map($row) : $row;
     }
     
 }
