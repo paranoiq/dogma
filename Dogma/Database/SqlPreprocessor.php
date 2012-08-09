@@ -301,6 +301,7 @@ class SqlPreprocessor {
             foreach ($value as $v) {
                 $vx[] = $this->formatValue($v);
             }
+            if (!$vx) return 'NULL'; // empty array
             return implode(', ', $vx);
             
         } elseif (is_object($value)) {
