@@ -185,11 +185,15 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
 
 
     /**
-     * Delete entity from database.
+     * Get table selection
      * @return \Nette\Database\Table\Selection
      */
-    public function getTable() {
-        return $this->row->getTable();
+    public function getTable($table = NULL) {
+        if (empty($table)) {
+            return $this->row->getTable();
+        } else {
+            return $this->row->getTable()->getConnection()->table($table);
+        }
     }
     
 
