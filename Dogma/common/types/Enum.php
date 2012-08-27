@@ -120,11 +120,23 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
     /**
      * @param scalar
      * @return static
+     * @deprecated
      */
     final public static function getInstanceByName($name) {
         if (!isset(self::$values[$class = get_called_class()])) self::init($class);
 
         return self::__callStatic($name, array());
+    }
+
+
+    /**
+     * @param scalar
+     * @return static
+     */
+    final public static function getInstanceByIdentifier($identifier) {
+        if (!isset(self::$values[$class = get_called_class()])) self::init($class);
+
+        return self::__callStatic($identifier, array());
     }
     
     
