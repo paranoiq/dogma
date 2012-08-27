@@ -10,26 +10,26 @@
 namespace Dogma\Database;
 
 use Dogma\Normalizer;
-use Dogma\Model\SimpleMapper;
+use Dogma\Model\EntityMapper;
 
 
-/**
- * query(), fetch?(), exec():
- * New preprocesor makes dibi-like syntax possible.
- * Question mark (?) is not required and *not allowed* in alternative syntax.
- * eg. $db->exec("UPDATE x SET y = ", $y, "WHERE z = ", $z);
- */
+require_once __DIR__ . '/exceptions.php';
+
+
 class Connection extends \Nette\Database\Connection {
     
     
     /** @var SqlPreprocessor */
     private $preprocessor;
     
-    /** @var SimpleMapper */
+    /** @var EntityMapper */
     private $mapper;
 
     /** @var Normalizer */
     private $normalizer;
+    
+    /** @var Debugging\MysqlDebugger */
+    private $debugger;
     
 
     /**
@@ -39,8 +39,24 @@ class Connection extends \Nette\Database\Connection {
      * @param array
      * @param \Nette\Database\IReflection
      */
-    public function __construct($dsn, $username = NULL, $password  = NULL, array $options = NULL, \Nette\Database\IReflection $databaseReflection = NULL) {
-        parent::__construct($dsn, $username, $password, $options, $databaseReflection);
+    public function __construct($dsn, $username = NULL, $password  = NULL, array $options = NULL, Debugging\MysqlDebugger $debugger = NULL) {
+        if ($debugger) {
+            $debugger->setConnection($this);
+            $debugger->suspend('warnings');
+            $this->debugger = $debugger;
+        }
+        
+        try {
+            parent::__construct($dsn, $username, $password, $options);
+            if ($debugger) $debugger->restore();
+            
+        } catch (\PDOException $e) {
+            if ($debugger && $debugger->translateExceptions) {
+                throw $debugger->translateException($e);
+            } else {
+                throw $e;
+            }
+        }
         
         $this->preprocessor = new SqlPreprocessor($this);
         $this->setAttribute(\PDO::ATTR_STATEMENT_CLASS, array('Dogma\Database\Statement', array($this)));
@@ -50,13 +66,13 @@ class Connection extends \Nette\Database\Connection {
     /**
      * @param SimpleMapper
      */
-    public function setMapper(SimpleMapper $mapper) {
+    public function setMapper(EntityMapper $mapper) {
         $this->mapper = $mapper;
     }
 
 
     /**
-     * @return SimpleMapper
+     * @return EntityMapper
      */
     public function getMapper() {
         return $this->mapper;
@@ -88,7 +104,20 @@ class Connection extends \Nette\Database\Connection {
         if ($this->preprocessor && (count($params) || strpos($statement, ':') !== FALSE))
             list($statement, $params) = $this->preprocessor->process($statement, $params);
         
-        return $this->prepare($statement)->execute($params);
+        try {
+            $result = $this->prepare($statement)->execute($params);
+            if ($this->debugger && $this->debugger->checkWarnings) {
+                $this->debugger->checkWarnings();
+            }
+            return $result;
+            
+        } catch (\PDOException $e) {
+            if ($this->debugger && $this->debugger->translateExceptions) {
+                throw $this->debugger->translateException($e, $statement, $params);
+            } else {
+                throw $e;
+            }
+        }
     }
 
 

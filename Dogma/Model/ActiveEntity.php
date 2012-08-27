@@ -20,148 +20,23 @@ use Dogma\Language\Inflector;
  */
 class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggregate {
     
-    /** @var array ($entityClass => array($propertyName => array($propertyClass, array($paramName => $paramType)))) */
-    private static $meta = array();
     
     /** @var \Nette\Database\Table\ActiveRow */
-    private $row;
+    protected $row;
+    
+    /** @var EntityFactory */
+    private $factory;
 
     /** @var array property objects cache */
     private $props = array();
 
     
-    public function __construct(\Nette\Database\Table\ActiveRow $row) {
+    public function __construct(\Nette\Database\Table\ActiveRow $row, EntityFactory $factory) {
         $this->row = $row;
-        
-        foreach ($this->getMagicProperties() as $name) {
+        $this->factory = $factory;
+
+        foreach ($factory->getMagicProperties(get_called_class()) as $name) {
             unset($this->$name);
-        }
-    }
-
-
-    /**
-     * @return string[]
-     */
-    private function getMagicProperties() {
-        $class = get_called_class();
-        if (array_key_exists($class, self::$meta))
-            return array_keys(self::$meta[$class]);
-        
-        $ns = preg_replace('/[^\\\\]+$/', '', $class);
-        $ref = new \Nette\Reflection\ClassType($this);
-
-        $props = array();
-        foreach ($ref->getProperties() as $property) {
-            if ($property->isPublic()
-                && ($meta = $property->getAnnotation('instance'))
-                && ($type = $property->getAnnotation('var'))
-            ) {
-                $type = $this->getClassName($ns, $type);
-                
-                if ($meta === TRUE) {
-                    $props[$property->getName()] = array($type, array($property->getName() => NULL));
-                    
-                } else {
-                    $params = array();
-                    foreach ($meta as $param) {
-                        @list($a, $b) = explode(' ', $param);
-                        $paramName = $b ?: $a;
-                        $paramType = $b ? $a : NULL;
-                        $params[str_replace('$', '', $paramName)] = $paramType;
-                    }
-                    
-                    $props[$property->getName()] = array($type, $params);
-                }
-            }
-        }
-        self::$meta[$class] = $props;
-        
-        return array_keys($props);
-    }
-
-
-    /**
-     * @param string
-     * @param string
-     * @return string
-     */
-    private function getClassName($ns, $type) {
-        @list($type) = preg_split('/[\\s|]/', $type);
-        if ($type[0] === '\\')
-            return $type;
-        
-        return $ns . $type;
-    }
-    
-    
-    /**
-     * @param string
-     * @param string
-     * @return object
-     */
-    private function getPropertyInstance($ec, $name) {
-        list($class, $params) = self::$meta[$ec][$name];
-        
-        $args = array();
-        foreach ($params as $name => $type) {
-            $args[] = ($type === NULL)
-                ? $this->row->__get(Inflector::underscore($name))
-                : $this->createInstance($type, array($this->row->__get(Inflector::underscore($name))));
-        }
-        
-        $instance = $this->createInstance($class, $args);
-        
-        $this->props[$name] = $instance;
-        
-        return $instance;
-    }
-
-
-    /**
-     * @param string
-     * @param string
-     * @param mixed
-     */
-    private function updatePropertyInstance($ec, $name, $value) {
-        list($class, $params) = self::$meta[$ec][$name];
-        
-         if ($value instanceof $class) {
-            $instance = $value;
-            
-            if ($value instanceof \Dogma\CompoundValueObject) {
-                $parts = array_combine(array_keys($params), array_values($value->toArray()));
-                if (!$parts)
-                    throw new \LogicException("Count of fields returned by CompoundValueObject does not fit the count of fields in constructor.");
-                
-                foreach ($parts as $key => $val) {
-                    $this->row->__set($key, $val);
-                }
-            } else {
-                $this->row->__set($name, $value);
-            }
-            
-        } else {
-            $instance = $this->createInstance($class, array($value));
-            $this->row->__set($name, $instance);
-        }
-
-        $this->props[$name] = $instance;
-    }
-    
-
-    /**
-     * @param string
-     * @param array
-     * @return object
-     */
-    private function createInstance($class, $args) {
-        $ref = new \Nette\Reflection\ClassType($class);
-        
-        if ($ref->implementsInterface('Dogma\\IndirectInstantiable')) {
-            return call_user_func_array(array($class, 'getInstance'), $args);
-            
-        } else {
-            return $ref->newInstanceArgs($args);
         }
     }
 
@@ -220,8 +95,9 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
         } elseif (method_exists($this, "get$name")) {
             $var = call_user_func(array($this, "get$name"));
             
-        } elseif (isset(self::$meta[$class = get_called_class()][$name])) {
-            $var = $this->getPropertyInstance($class, $name);
+        } elseif ($this->factory->hasMagicProperty($class = get_called_class(), $name)) {
+            $var = $this->factory->createPropertyInstance($class, $name, $this->row);
+            $this->props[$name] = $var;
             
         } else {
             $var = $this->row->__get(Inflector::underscore($name));
@@ -239,8 +115,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
         if (method_exists($this, "set$name")) {
             call_user_func(array($this, "set$name"), $value);
             
-        } elseif (isset(self::$meta[$class = get_called_class()][$name])) {
-            $this->updatePropertyInstance($class, $name, $value);
+        } elseif ($this->factory->hasMagicProperty($class = get_called_class(), $name)) {
+            $this->props[$name] = $this->factory->updatePropertyInstance($class, $name, $value, $this->row);
             
         } else {
             $this->row->__set(Inflector::underscore($name), $value);
