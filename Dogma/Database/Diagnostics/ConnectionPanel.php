@@ -33,7 +33,7 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
     
     
     /** @var int maximum SQL length */
-    static public $maxLength = 1000;
+    static public $maxLength = 10000;
 
     /** @var int logged time */
     private $totalTime = 0;

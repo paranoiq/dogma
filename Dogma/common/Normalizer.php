@@ -22,14 +22,14 @@ namespace Dogma;
  * - thousand separator: none
  * - set separator: ,
  * 
- * @property-write $true
- * @property-write $false
- * @property-write $null
- * @property-write $date
- * @property-write $dateTime
- * @property-write $decimalPouint
- * @property-write $thousandSeparator
- * @property-write $setSeparator
+ * @property-write string[] $true
+ * @property-write string[] $false
+ * @property-write string[] $null
+ * @property-write string $date
+ * @property-write string $dateTime
+ * @property-write string $decimalPouint
+ * @property-write string $thousandSeparator
+ * @property-write string $setSeparator
  */
 class Normalizer extends \Dogma\Object {
     
