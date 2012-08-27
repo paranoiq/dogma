@@ -36,6 +36,11 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
 
         'Dogma\\Normalizer' => '/common/Normalizer',
 
+        'Dogma\\Http\\HttpException' => '/Http/exceptions',
+        'Dogma\\Http\\ChannelException' => '/Http/exceptions',
+        'Dogma\\Http\\RequestException' => '/Http/exceptions',
+        'Dogma\\Http\\ResponseException' => '/Http/exceptions',
+        
         'Dogma\\Io\\IoException' => '/Io/exceptions',
         'Dogma\\Io\\FileException' => '/Io/exceptions',
         'Dogma\\Io\\DirectoryException' => '/Io/exceptions',

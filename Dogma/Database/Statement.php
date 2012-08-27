@@ -86,6 +86,19 @@ class Statement extends \Nette\Database\Statement {
     public function count() {
         return parent::rowCount();
     }
+
+
+    /**
+     * @param  mixed
+     * @return array
+     */
+    public function fetchColumnAll() {
+        $cols = array();
+        while ($col = $this->fetchColumn()) {
+            $cols[] = $col;
+        }
+        return $cols;
+    }
     
 }
 
