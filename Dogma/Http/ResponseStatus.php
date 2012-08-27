@@ -12,6 +12,7 @@ namespace Dogma\Http;
 
 /**
  * HTTP 1.1 response status codes and CURL error codes
+ * @property-read $description
  */
 class ResponseStatus extends \Dogma\Enum {
 
@@ -196,8 +197,21 @@ class ResponseStatus extends \Dogma\Enum {
         // RTPS
         RTSP_CSEQ_ERROR       = 85, // Mismatch of RTSP CSeq numbers.
         RTSP_SESSION_ERROR    = 86; // Mismatch of RTSP Session Identifiers.
-    
 
+    
+    /**
+     * Get formated status name
+     * @return string
+     */
+    public function getDescription() {
+        $id = $this->getIdentifier();
+        if ($id[0] === 'S' && $id[4] === '_') $id = substr($id, 5);
+        
+        return ucwords(str_replace(
+            array('http', 'ftp', 'ssh', 'ldap', 'tftp', 'rtsp', 'url', 'ok', '_'), 
+            array('HTTP', 'FTP', 'SSH', 'LDAP', 'TFTP', 'RTSP', 'URL', 'OK', ' '), strtolower($id)));
+    }
+    
 
     /**
      * Is an information/handshaking HTTP response code (1xx)
