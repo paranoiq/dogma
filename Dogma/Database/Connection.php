@@ -17,20 +17,20 @@ require_once __DIR__ . '/exceptions.php';
 
 
 class Connection extends \Nette\Database\Connection {
-    
-    
+
+
     /** @var SqlPreprocessor */
     private $preprocessor;
-    
+
     /** @var EntityMapper */
     private $mapper;
 
     /** @var Normalizer */
     private $normalizer;
-    
+
     /** @var Debugging\MysqlDebugger */
     private $debugger;
-    
+
 
     /**
      * @param string
@@ -45,11 +45,18 @@ class Connection extends \Nette\Database\Connection {
             $debugger->suspend('warnings');
             $this->debugger = $debugger;
         }
-        
+
+        if (isset($options['driverClass'])) {
+            $driverClass = $options['driverClass'];
+            unset($options['driverClass']);
+        } else {
+            $driverClass = NULL;
+        }
+
         try {
-            parent::__construct($dsn, $username, $password, $options);
+            parent::__construct($dsn, $username, $password, $options, $driverClass);
             if ($debugger) $debugger->restore();
-            
+
         } catch (\PDOException $e) {
             if ($debugger && $debugger->translateExceptions) {
                 throw $debugger->translateException($e);
@@ -57,7 +64,7 @@ class Connection extends \Nette\Database\Connection {
                 throw $e;
             }
         }
-        
+
         $this->preprocessor = new SqlPreprocessor($this);
         $this->setAttribute(\PDO::ATTR_STATEMENT_CLASS, array('Dogma\Database\Statement', array($this)));
     }
@@ -86,14 +93,14 @@ class Connection extends \Nette\Database\Connection {
         $this->normalizer = $normalizer;
     }
 
-    
+
     /**
      * @return Normalizer
      */
     public function getNormalizer() {
         return $this->normalizer;
     }
-    
+
 
     /**
      * @param string
@@ -103,15 +110,30 @@ class Connection extends \Nette\Database\Connection {
     public function queryArgs($statement, $params) {
         if ($this->preprocessor && (count($params) || strpos($statement, ':') !== FALSE))
             list($statement, $params) = $this->preprocessor->process($statement, $params);
-        
+
         try {
+			// work-arround for PHP bug #61900
+			$dblib = $this->getAttribute(\PDO::ATTR_DRIVER_NAME) === 'dblib';
+			if ($dblib) {
+				set_error_handler(function($severity, $message, $file, $line) {
+					if (($severity & error_reporting()) === $severity) {
+  						throw new \PDOException($message, 0/*, $severity, $file, $line*/);
+					}
+ 					return FALSE;
+				});
+			}
             $result = $this->prepare($statement)->execute($params);
-            if ($this->debugger && $this->debugger->checkWarnings) {
+
+			if ($this->debugger && $this->debugger->checkWarnings) {
                 $this->debugger->checkWarnings();
             }
+
+			if ($dblib) restore_error_handler();
             return $result;
-            
+
         } catch (\PDOException $e) {
+			if ($dblib) restore_error_handler();
+
             if ($this->debugger && $this->debugger->translateExceptions) {
                 throw $this->debugger->translateException($e, $statement, $params);
             } else {
@@ -135,8 +157,8 @@ class Connection extends \Nette\Database\Connection {
         }
         return $cols;
     }
-    
-    
+
+
     /**
      * Creates selector for table.
      * @param  string
@@ -154,10 +176,10 @@ class Connection extends \Nette\Database\Connection {
     public function begin() {
         return $this->beginTransaction();
     }
-    
-    
+
+
     // QueryComposer ---------------------------------------------------------------------------------------------------
-    
+
     /*
     public function compose() {
         return new QueryComposer;
