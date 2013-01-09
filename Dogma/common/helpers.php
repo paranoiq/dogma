@@ -15,7 +15,7 @@
  */
 function arr() {
     $args = func_get_args();
-    
+
     return new Dogma\ArrayObject($args);
 }
 
@@ -27,7 +27,7 @@ function arr() {
  */
 // function coll() {
 //     $args = func_get_args();
-//     
+//
 //     return new Dogma\Collection($args);
 // }
 
@@ -35,9 +35,9 @@ function arr() {
 if (!function_exists('is_traversable')) {
     /**
      * Returns TRUE if variable is array or traversable object.
-     * 
+     *
      * @param mixed
-     * @return boolean 
+     * @return boolean
      */
     function is_traversable($var) {
         return is_array($var) || $var instanceof Traversable;
@@ -50,15 +50,15 @@ if (!function_exists('is_traversable')) {
 function array_separate_keys(&$array, $keys) {
     if (is_string($keys)) {
         $keys = array_flip(explode(',', $keys));
-        
+
     // Nette\Utils\Arrays::isList()
     } elseif (range(0, count($keys) - 1) === array_keys($keys)) {
         $keys = array_flip($keys);
     }
-    
+
     $good = array_diff_key($array, $keys);
     $remainder = array_diff_key($array, $good);
-    
+
     $array = $good;
     return $remainder;
 }
@@ -67,7 +67,7 @@ function array_separate_keys(&$array, $keys) {
 /**
  * Shortcut for in_array($value, array(...)) similar to SQL operator IN
  * Call: in($value, $param1, $param2, ...)
- * 
+ *
  * @param mixed
  * @param mixed multiple
  * @return bool
@@ -75,20 +75,20 @@ function array_separate_keys(&$array, $keys) {
 // function in($value, $params) {
 //    $params = func_get_args();
 //    array_shift($params);
-//    
+//
 //    return in_array($value, $params);
 // }
 
 
 /**
  * SQL operator LIKE
- * 
+ *
  * @param string
  * @param string
  * @return bool
  */
 // function like($string, $pattern) {
-//     return preg_match('/^' . str_replace(array('%', '_'), array('.*?', '.'), 
+//     return preg_match('/^' . str_replace(array('%', '_'), array('.*?', '.'),
 //         preg_quote($pattern, '/')) . '$/ui', $string);
 // }
 
@@ -107,7 +107,7 @@ function array_separate_keys(&$array, $keys) {
 
 function abbr($s, $maxLen, $append = "\xE2\x80\xA6") {
     if (Nette\Utils\Strings::length($s) <= $maxLen) return htmlspecialchars($s);
-    
-    return "<abbr title='" . htmlspecialchars($s) . "'>" 
+
+    return "<abbr title='" . htmlspecialchars($s) . "'>"
         . htmlspecialchars(Nette\Utils\Strings::truncate($s, $maxLen, $append)) . "</abbr>";
 }

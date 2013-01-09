@@ -17,8 +17,8 @@ use Dogma;
  * Recursive directory iterator
  */
 class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator {
-    
-    
+
+
     private $flags;
 
 
@@ -65,6 +65,5 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator {
         }
         return parent::current();
     }
-    
-}
 
+}

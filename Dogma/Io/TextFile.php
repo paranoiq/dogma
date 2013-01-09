@@ -23,14 +23,14 @@ class TextFile extends File {
     const MAC = "\r";
     const AUTODETECT = NULL;
     /**#@-*/
-    
-    
+
+
     /** @var string */
     public static $internalEncoding = 'utf-8';
-    
+
     /** @var string */
     protected $encoding = 'utf-8';
-    
+
     /** @var string */
     protected $nl = self::UNIX;
 
@@ -41,7 +41,7 @@ class TextFile extends File {
      */
     public function setEncoding($encoding) {
         $this->encoding = strtolower($encoding);
-        
+
         return $this;
     }
 
@@ -52,7 +52,7 @@ class TextFile extends File {
      */
     public function setLineEndings($nl) {
         $this->nl = $nl;
-        
+
         return $this;
     }
 
@@ -81,7 +81,7 @@ class TextFile extends File {
     public function readLine() {
         Debugger::tryError();
         $line = fgets($this->file);
-            
+
         if (Debugger::catchError($error)) {
             throw new FileException("Cannot read data from file: $error->message.", 0, $error);
         } elseif ($line === FALSE) {
@@ -111,7 +111,7 @@ class TextFile extends File {
     protected function encode($string) {
         if ($this->encoding === self::$internalEncoding)
             return $string;
-        
+
         return iconv($this->encoding, self::$internalEncoding, $string);
     }
 
@@ -123,9 +123,8 @@ class TextFile extends File {
     protected function decode($string) {
         if ($this->encoding === self::$internalEncoding)
             return $string;
-        
+
         return iconv(self::$internalEncoding, $this->encoding, $string);
     }
-    
-}
 
+}

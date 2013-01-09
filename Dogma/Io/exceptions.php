@@ -31,4 +31,3 @@ class DirectoryException extends IoException {
 class StreamException extends IoException {
     ///
 }
-

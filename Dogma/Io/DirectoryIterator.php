@@ -17,8 +17,8 @@ use Dogma;
  * Directory iterator
  */
 class DirectoryIterator extends FilesystemIterator {
-    
-    
+
+
     private $flags;
 
 
@@ -29,7 +29,7 @@ class DirectoryIterator extends FilesystemIterator {
     public function __construct($path, $flags = NULL) {
         if (isset($flags))
             $flags = FilesystemIterator::KEY_AS_PATHNAME | FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::SKIP_DOTS;
-        
+
         $this->flags = $flags;
         try {
             if ($flags & FilesystemIterator::CURRENT_AS_FILEINFO) {
@@ -65,6 +65,5 @@ class DirectoryIterator extends FilesystemIterator {
         }
         return parent::current();
     }
-    
-}
 
+}

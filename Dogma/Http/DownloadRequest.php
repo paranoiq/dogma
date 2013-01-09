@@ -27,15 +27,15 @@ class DownloadRequest extends Request {
     /** @var resource */
     private $file;
 
-    
-    
+
+
     public function __construct($url, $downloadDir) {
         parent::__construct($url);
-        
+
         $this->setDownloadDir($downloadDir);
     }
-    
-    
+
+
     /**
      * @param string
      * @return self
@@ -73,7 +73,7 @@ class DownloadRequest extends Request {
 
 
     // output handling -------------------------------------------------------------------------------------------------
-    
+
 
     /**
      * Execute request.
@@ -100,7 +100,7 @@ class DownloadRequest extends Request {
      */
     public function prepare($urlSuffix = NULL, $fileName = NULL) {
         parent::prepare($urlSuffix);
-        
+
         if (is_null($fileName)) $fileName = $this->fileName;
         if (is_null($fileName)) {
             $b = explode('?', $urlSuffix);
@@ -115,7 +115,7 @@ class DownloadRequest extends Request {
 
         $this->setOption(CURLOPT_FILE, $this->file);
         $this->setOption(CURLOPT_BINARYTRANSFER, TRUE);
-        
+
         return $fileName;
     }
 
@@ -133,10 +133,10 @@ class DownloadRequest extends Request {
         $info = curl_getinfo($this->curl);
         if ($info === FALSE)
             throw new RequestException("Info cannot be obtained from CURL.");
-        
+
         fclose($this->file);
         unset($this->file);
         return new FileResponse($fileName . $this->fileSuffix, $info, $error);
     }
-    
+
 }

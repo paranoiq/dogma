@@ -12,10 +12,10 @@ namespace Dogma\Http;
 
 class CurlHelpers {
 
-    
+
     // Errors ----------------------------------------------------------------------------------------------------------
-    
-    
+
+
     /**
      * @param int
      * @return string
@@ -25,11 +25,11 @@ class CurlHelpers {
         foreach ($consts['curl'] as $name => $value) {
             if ($value === $error && substr($name, 0, 6) === 'CURLE_') return $name;
         }
-        
+
         return 'UNKNOWN_ERROR';
     }
 
-    
+
     /**
      * @param int
      * @return string
@@ -43,10 +43,10 @@ class CurlHelpers {
 
         return 'UNKNOWN_ERROR';
     }
-    
-    
+
+
     // Options ---------------------------------------------------------------------------------------------------------
-    
+
 
     /**
      * @param string
@@ -54,7 +54,7 @@ class CurlHelpers {
      */
     public static function getCurlOptionNumber($name) {
         $name = strtoupper($name);
-        
+
         return constant('CURLOPT_' . $name);
     }
 
@@ -68,14 +68,14 @@ class CurlHelpers {
         foreach ($consts['curl'] as $name => $value) {
             if ($value === $option && substr($name, 0, 8) === 'CURLOPT_') return $name;
         }
-        
+
         return NULL;
     }
 
-    
+
     // Info ------------------------------------------------------------------------------------------------------------
-    
-    
+
+
     /**
      * @param int
      * @return string|NULL

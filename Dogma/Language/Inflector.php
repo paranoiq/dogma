@@ -177,7 +177,7 @@ class Inflector {
 		if (self::isIrregular($word))
 			return in_array($lower, array_values(self::$irregular));
 
-		foreach (self::$plurals as $rule => $replacement) 
+		foreach (self::$plurals as $rule => $replacement)
 			if (preg_match($rule, $word))
 				return TRUE;
 
@@ -305,7 +305,7 @@ class Inflector {
 			$class = substr($class, $a+1);
 		return preg_replace('/^.*::/', '', $class);
 	}
-	
+
 
 	/**
 	 * Create the name of a table like Rails does for models to table names.
@@ -348,7 +348,7 @@ class Inflector {
 
 	/**
 	 * Create a name of intersect entity of M:N relation of given tables.
-	 * 
+	 *
 	 * @param string $local
 	 * @param string $referenced
 	 * @return string

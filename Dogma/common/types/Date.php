@@ -11,7 +11,7 @@ namespace Dogma;
 
 /**
  * Date class.
- * 
+ *
  * @todo: strip time formats from format()
  */
 class Date extends DateTime {
@@ -25,12 +25,12 @@ class Date extends DateTime {
         parent::__construct($time, $timezone);
     }
 
-    
+
     /**
      * @return string
      */
     public function __toString() {
         return $this->format('Y-m-d');
     }
-    
+
 }

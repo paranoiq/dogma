@@ -116,4 +116,3 @@ class FilesException extends DatabaseException {}
 
 /** Distributed 'XA' transaction error. */
 class XaException extends DatabaseException {}
-

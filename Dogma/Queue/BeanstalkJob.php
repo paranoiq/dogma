@@ -5,7 +5,7 @@ namespace Dogma\Queue;
 
 /**
  * Beanstalk job representation returned by BeanstalkClient
- * 
+ *
  * @property-read $id
  * @property-read $data
  * @property-read $queue
@@ -21,30 +21,30 @@ namespace Dogma\Queue;
  * @property-read $restored
  */
 class BeanstalkJob extends \Dogma\Object {
-    
-    
+
+
     const DELAYED = 'delayed';
     const READY = 'ready';
     const RESERVED = 'reserved';
     const SUSPENDED = 'suspended';
-    
-    
+
+
     /** @var BeanstalkClient */
     private $connection;
-    
+
     /** @var int */
     private $id;
-    
+
     /** @var mixed */
     private $data;
-    
+
     /** @var bool */
     private $owned;
-    
+
     /** @var array */
     private $stats;
-    
-    
+
+
     /**
      * @param int
      * @param mixed
@@ -59,19 +59,19 @@ class BeanstalkJob extends \Dogma\Object {
         $this->connection = $connection;
         $this->stats = $stats;
     }
-    
-    
+
+
     /** @return mixed */
     public function getData() {
         return $this->data;
     }
-    
-    
+
+
     /** @return int */
     public function getId() {
         return $this->id;
     }
-    
+
     /** @return self */
     public function touch() {
         $this->connection->touch($this->id);
@@ -116,8 +116,8 @@ class BeanstalkJob extends \Dogma\Object {
         $this->connection->restore($this->id);
         return $this;
     }
-    
-    
+
+
     // job info & statistics -------------------------------------------------------------------------------------------
 
 
@@ -125,7 +125,7 @@ class BeanstalkJob extends \Dogma\Object {
     public function isOwned() {
         return $this->owned;
     }
-    
+
     /** @return bool */
     public function isDelayed() {
         return $this->__get('status') === self::DELAYED;
@@ -146,8 +146,8 @@ class BeanstalkJob extends \Dogma\Object {
     public function isSuspended() {
         return $this->__get('status') === self::SUSPENDED;
     }
-    
-    
+
+
     private function loadStats() {
         $this->stats = $this->connection->getJobStats($this->id);
     }
@@ -159,7 +159,7 @@ class BeanstalkJob extends \Dogma\Object {
      */
     public function __get($name) {
         if (!$this->stats) $this->loadStats();
-        
+
         static $fields = array(
             'queue' => 'tube',
             'status' => 'state',
@@ -180,15 +180,15 @@ class BeanstalkJob extends \Dogma\Object {
             'reserved' => self::RESERVED,
             'buried' => self::SUSPENDED
         );
-        
+
         if (!isset($this->stats[$fields[$name]])) return parent::__get($name);
-        
+
         $val = $this->stats[$fields[$name]];
         if ($name === 'status') $val = $states[$val];
-        
+
         return $val;
     }
-    
+
 }
 
 /*

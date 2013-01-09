@@ -11,9 +11,9 @@ namespace Dogma\Http;
 
 
 class HttpException extends \RuntimeException {
-    
+
     //
-    
+
 }
 
 
@@ -32,7 +32,7 @@ class RequestException extends HttpException {
 
 
 class ResponseException extends HttpException {
-    
+
     //
-    
+
 }

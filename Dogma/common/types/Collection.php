@@ -13,14 +13,14 @@ use Dogma\Object\PropertyAccessor;
 
 
 class Collection extends ArrayObject {
-    
-    
+
+
     protected $accepted;
-    
-    
+
+
     public function __construct($array = array(), $acceptedClass = NULL) {
         parent::__construct($array);
-        
+
         if ($acceptedClass) {
             $this->setAcceptedClass($acceptedClass);
             foreach ($this->data as $object) {
@@ -28,8 +28,8 @@ class Collection extends ArrayObject {
             }
         }
     }
-    
-    
+
+
     /**
      * Save order in the properties of items.
      * $col->indexItems(string $column);
@@ -40,11 +40,11 @@ class Collection extends ArrayObject {
             PropertyAccessor::setValue($object, $propertyName, $key);
         }
     }
-    
-    
+
+
     // class acceptance ------------------------------------------------------------------------------------------------
-    
-    
+
+
     /**
      * Returns name of accepted class.
      * @return string
@@ -52,8 +52,8 @@ class Collection extends ArrayObject {
     public function getAcceptedClass($className) {
         return $this->accepted;
     }
-    
-    
+
+
     /**
      * Check if object is of accepted class.
      * @param  object
@@ -63,8 +63,8 @@ class Collection extends ArrayObject {
         if (!$object instanceof $this->accepted)
             throw new \InvalidArgumentException("Collection: Inserted object is not of the accepted class.");
     }
-    
-    
+
+
     /**
      * Adds items to the end of array.
      * @param array
@@ -75,8 +75,8 @@ class Collection extends ArrayObject {
         }
         parent::append($items);
     }
-    
-    
+
+
     /**
      * Adds items to the beginning of array. Does not preserve keys.
      * @param array
@@ -87,8 +87,8 @@ class Collection extends ArrayObject {
         }
         parent::prepend($items);
     }
-    
-    
+
+
     /**
      * Insert items at given position. Does not preserve keys.
      * @param array
@@ -100,12 +100,12 @@ class Collection extends ArrayObject {
         }
         parent::insertAt($items, $position);
     }
-    
-    
+
+
     /** ArrayAccess interface */
     public function offsetSet($key, $value) {
         $this->checkAccepted($value);
         parent::offsetSet($key, $value);
     }
-    
+
 }

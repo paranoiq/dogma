@@ -16,11 +16,11 @@ use PDO;
 
 class Selection extends \Nette\Database\Table\Selection {
 
-    
+
     /** @var \Dogma\Database\Connection */
     protected $connection;
 
-    
+
 
     /**
      * @param array
@@ -45,8 +45,8 @@ class Selection extends \Nette\Database\Table\Selection {
         $row = parent::insert($data);
         return $map ? $this->map($row) : $row;
     }
-    
-    
+
+
     /**
 	 * Inserts row in a table.
 	 * @param  array|\Traversable|Table\Selection
@@ -76,7 +76,7 @@ class Selection extends \Nette\Database\Table\Selection {
         } else {
             $row = new ActiveRow($data, $this);
         }
-        
+
         return $map ? $this->map($row) : $row;
 	}
 
@@ -102,8 +102,8 @@ class Selection extends \Nette\Database\Table\Selection {
 
         return 0;
     }
-    
-    
+
+
     /**
      * Returns row specified by primary key.
      * @param  mixed
@@ -139,5 +139,5 @@ class Selection extends \Nette\Database\Table\Selection {
         $row = parent::fetch();
         return $map ? $this->map($row) : $row;
     }
-    
+
 }

@@ -11,11 +11,11 @@ namespace Dogma\Dom;
 
 
 class Document extends \DomDocument {
-    
+
     /** @var QueryEngine */
     private $engine;
-    
-    
+
+
     /**
      * @param string $document XML or HTML content or file path prefixed with '@'
      * @param string
@@ -23,37 +23,37 @@ class Document extends \DomDocument {
      */
     public function __construct($document = NULL, $version = '1.0', $encoding = 'utf-8') {
         parent::__construct($version, $encoding);
-        
+
         if (!$document) return;
-        
+
         if (substr($document, 0, 1) === '@') {
-            
+
             ///
-            
+
         } else {
             if (preg_match('/<!DOCTYPE\\s+HTML/i', $document)) {
                 $this->loadHtml($document);
-                
+
             } elseif (preg_match('/\\s*<\\?xml/i', $document)) {
                 $this->loadXml($document);
-                
+
             } else {
                 $this->loadHtml($document);
             }
         }
-        
+
         $this->engine = new QueryEngine($this);
     }
-    
-    
+
+
     /**
      * @param QueryEngine
      */
     public function setQueryEngine(QueryEngine $engine) {
         $this->engine = $engine;
     }
-    
-    
+
+
     /**
      * @return QueryEngine
      */
@@ -75,8 +75,8 @@ class Document extends \DomDocument {
             throw new DomException("Cannot load HTML document: " . trim($error->message) . " on line #" . $error->line, $error->code);
         }
     }
-    
-    
+
+
     /**
      * @param string
      * @return bool
@@ -90,7 +90,7 @@ class Document extends \DomDocument {
         }
     }
 
-    
+
     /**
      * @param string
      * @return bool
@@ -103,19 +103,19 @@ class Document extends \DomDocument {
             throw new DomException("Cannot load HTML document: " . trim($error->message) . " on line #" . $error->line, $error->code);
         }
     }
-    
-    
+
+
     /**
      * @param string
      * @return Element|\DOMNode|null
      */
     public function getElementById($id) {
         $el = parent::getElementById($id);
-        
+
         return $el ? $this->wrap($el) : NULL;
     }
-    
-    
+
+
     /**
      * @param string
      * @return NodeList
@@ -124,7 +124,7 @@ class Document extends \DomDocument {
         return $this->engine->find($xpath);
     }
 
-    
+
     /**
      * @param string
      * @return Element|\DOMNode
@@ -132,8 +132,8 @@ class Document extends \DomDocument {
     public function findOne($xpath) {
         return $this->engine->findOne($xpath);
     }
-    
-    
+
+
     /**
      * @param string
      * @return string|int|float
@@ -150,8 +150,8 @@ class Document extends \DomDocument {
     public function extract($target) {
         return $this->engine->extract($target);
     }
-    
-    
+
+
     public function dump() {
         Dumper::dump($this);
     }
@@ -168,5 +168,5 @@ class Document extends \DomDocument {
             return $node;
         }
     }
-    
+
 }

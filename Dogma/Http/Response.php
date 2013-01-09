@@ -13,25 +13,25 @@ use Nette\Utils\Strings;
 
 
 class Response extends \Dogma\Object {
-    
+
     /** @var array */
     protected $info;
-    
+
     /** @var ResponseStatus */
     private $status;
-    
+
     /** @var string */
     private $response;
-    
+
     /** @var array */
     protected $headers = array();
-    
+
     /** @var string */
     protected $body;
-    
+
     /** @var mixed Request context */
     protected $context;
-    
+
 
     /**
      * @param string
@@ -41,46 +41,46 @@ class Response extends \Dogma\Object {
     public function __construct($response, ResponseStatus $status, array $info) {
         $this->status = $status;
         $this->info = $info;
-        
+
         if ($response) $this->response = $response;
     }
 
-    
+
     /**
      * @param mixed Request context
      * @return self
      */
     public function setContext($data) {
         $this->context = $data;
-        
+
         return $this;
     }
-    
-    
+
+
     /**
      * @return mixed
      */
     public function getContext() {
         return $this->context;
     }
-    
-    
+
+
     /**
      * @return bool
      */
     public function isSuccess() {
         return $this->status->isOk();
     }
-    
-    
+
+
     /**
      * @return ResponseStatus
      */
     public function getStatus() {
         return $this->status;
     }
-    
-    
+
+
     /**
      * @return string
      */
@@ -100,33 +100,33 @@ class Response extends \Dogma\Object {
         return $this->headers;
     }
 
-    
+
     /**
      * Get all cookies received with this response.
      * @return array
      */
     public function getCookies() {
         if ($this->response) $this->parseResponse();
-        
+
         $cookies = array();
-        
+
         foreach ((array) @$this->headers['Set-Cookie'] as $cookie) {
             $s = explode(';', $cookie);
             list($name, $value) = explode('=', $s[0]);
             $cookies[$name] = $value;
         }
-        
+
         return $cookies;
     }
-    
-    
+
+
     /**
      * @param string|int
      * @return string|array
      */
     public function getInfo($name = NULL) {
         if (is_null($name)) return $this->info;
-        
+
         if (is_int($name)) {
             $tname = CurlHelpers::getCurlInfoName($name);
         } else {
@@ -134,21 +134,21 @@ class Response extends \Dogma\Object {
         }
         if (is_null($tname))
             throw new ResponseException("Unknown CURL info '$name'!");
-        
+
         return $this->info[$tname];
     }
-    
-    
+
+
     /**
      * @return string
      */
     public function __toString() {
         return (string) $this->getBody();
     }
-    
-    
+
+
     // internals -------------------------------------------------------------------------------------------------------
-    
+
 
     /**
      * Remove headers from response.
@@ -195,5 +195,5 @@ class Response extends \Dogma\Object {
 
         return $found;
     }
-    
+
 }

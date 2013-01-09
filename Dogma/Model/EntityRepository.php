@@ -11,15 +11,15 @@ namespace Dogma\Model;
 
 
 abstract class EntityRepository extends \Dogma\Object {
-    
+
     /** @var \Dogma\Database\Connection */
     private $db;
-    
+
     /** @var string */
     protected $table;
-    
-    
-    
+
+
+
     /**
      * @param \Dogma\Database\Connection
      */
@@ -34,10 +34,10 @@ abstract class EntityRepository extends \Dogma\Object {
     public function get($id) {
         return $this->db->table($this->table)->get($id);
     }
-    
-    
+
+
     public function getEntityClass(\Nette\Database\Table\ActiveRow $row) {
         ///
     }
-    
+
 }

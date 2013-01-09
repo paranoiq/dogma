@@ -14,7 +14,7 @@ namespace Dogma\System;
  * @property-read string $description
  */
 class LinuxError extends \Dogma\Enum implements Error {
-    
+
     const
         // common with Unix:
         SUCCESS = 0,
@@ -151,7 +151,7 @@ class LinuxError extends \Dogma\Enum implements Error {
         STATE_NOT_RECOVERABLE = 131;
 
 
-    
+
     /**
      * Get formated error description
      * @return string
@@ -162,5 +162,5 @@ class LinuxError extends \Dogma\Enum implements Error {
             array('.lib', 'a.out', 'I/O', 'cross-device', 'read-only', 'non-socket', 'references:', 'CSI', 'RFS', 'NFS', 'XENIX', ' '),
             strtolower($this->getIdentifier())));
     }
-    
+
 }

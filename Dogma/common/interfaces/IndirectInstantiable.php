@@ -21,5 +21,5 @@ interface IndirectInstantiable {
      * @return static
      */
     static function getInstance($value);
-    
+
 }

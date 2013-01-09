@@ -11,11 +11,11 @@ namespace Dogma\System;
 
 
 interface Error {
-    
+
     function getValue();
-    
+
     function getIdentifier();
-    
+
     function getDescription();
-    
+
 }

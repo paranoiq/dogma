@@ -33,29 +33,29 @@ class Request extends \Dogma\Object {
 
     /** @var string */
     protected $url;
-    
+
     /** @var string */
     protected $method = self::GET;
-    
+
     /** @var array */
     private $headers = array();
-    
+
     /** @var array */
     private $cookies = array();
-    
+
     /** @var array */
     private $variables = array();
-    
+
     /** @var string POST|PUT content */
     private $content;
-    
+
     /** @var mixed Request context */
     private $context;
-    
+
     /** @var \Nette\Callback */
     private $init;
-    
-    
+
+
     public function __construct($url = NULL) {
         $this->curl = curl_init();
         $this->setOption(CURLOPT_HEADER, TRUE);
@@ -80,36 +80,36 @@ class Request extends \Dogma\Object {
     public function getContext() {
         return $this->context;
     }
-    
-    
+
+
     /**
      * @param Callback(@param Request, @return bool)
      * @return self
      */
     public function setInit(Callback $init) {
         $this->init = $init;
-        
+
         return $this;
     }
-    
-    
+
+
     /**
-     * Called by RequestManager 
+     * Called by RequestManager
      * @internal
      */
     public function init() {
         if ($this->init) {
-            if (!$this->init->invoke($this)) 
+            if (!$this->init->invoke($this))
                 throw new RequestException("Request initialisation failed!");
-                
+
             $this->init = NULL;
         }
     }
-    
-    
+
+
     // basic operations ------------------------------------------------------------------------------------------------
 
-    
+
     /**
      * @param string
      * @return self
@@ -120,7 +120,7 @@ class Request extends \Dogma\Object {
         return $this;
     }
 
-    
+
     /**
      * @param string
      * @return self
@@ -139,24 +139,24 @@ class Request extends \Dogma\Object {
     public function setData($data) {
         if ($data !== NULL) $this->dispatch($data);
     }
-    
-    
+
+
     /**
      * @param string|array
      */
     protected function dispatch($data) {
         if (is_string($data)) {
             $this->setContent($data);
-            
+
         } elseif (is_array($data)) {
             $this->setVariables($data);
-            
+
         } else {
             throw new RequestException("Job data may be only a string or array!");
         }
     }
-    
-    
+
+
     /**
      * @param string
      * @return self
@@ -168,10 +168,10 @@ class Request extends \Dogma\Object {
             //$this->appendUrl($data); // ?
             throw new \Nette\InvalidStateException("Cannot set content of a '$this->method' request.");
         }
-            
+
         return $this;
     }
-    
+
 
     /**
      * Set URL or POST variables. Can be called repeatedly.
@@ -183,8 +183,8 @@ class Request extends \Dogma\Object {
 
         return $this;
     }
-    
-    
+
+
     /**
      * @param string
      * @return self
@@ -229,10 +229,10 @@ class Request extends \Dogma\Object {
             $num = CurlHelpers::getCurlOptionNumber($name);
             if (is_null($num))
                 throw new RequestException("Unknown CURL option '$name'!");
-            
+
         } elseif (!is_int($name)) {
             throw new RequestException("Option name must be a string or a CURLOPT_* constant!");
-            
+
         } else {
             $num = $name;
         }
@@ -242,11 +242,11 @@ class Request extends \Dogma\Object {
 
         return $this;
     }
-    
+
 
     // connection options ----------------------------------------------------------------------------------------------
 
-    
+
     /**
      * @param float|int
      * @param float|int
@@ -291,7 +291,7 @@ class Request extends \Dogma\Object {
      */
     public function addHeader($name, $value) {
         $this->headers[$name] = $value;
-        
+
         return $this;
     }
 
@@ -302,7 +302,7 @@ class Request extends \Dogma\Object {
      */
     public function setHeaders(array $headers) {
         $this->headers = $headers;
-        
+
         return $this;
     }
 
@@ -312,7 +312,7 @@ class Request extends \Dogma\Object {
      * @return self
      */
     public function setReferrer($url) {
-        $this->setOption(CURLOPT_REFERER, $url); 
+        $this->setOption(CURLOPT_REFERER, $url);
 
         return $this;
     }
@@ -343,19 +343,19 @@ class Request extends \Dogma\Object {
 
         return $this;
     }
-    
-    
+
+
     /**
      * @param array
      * @return self
      */
     public function setCookies(array $cookies) {
         $this->cookies = $cookies;
-        
+
         return $this;
     }
-    
-    
+
+
     /**
      * @param string
      * @param string
@@ -366,8 +366,8 @@ class Request extends \Dogma\Object {
 
         return $this;
     }
-    
-    
+
+
     /**
      * @param string
      * @param string
@@ -377,11 +377,11 @@ class Request extends \Dogma\Object {
     public function setCredentials($userName, $password, $method = CURLAUTH_ANYSAFE) {
         $this->setOption(CURLOPT_USERPWD, $userName . ':' . $password);
         $this->setOption(CURLOPT_HTTPAUTH, $method);
-        
+
         return $this;
     }
 
-    
+
     /**
      * @param string
      * @param string
@@ -392,7 +392,7 @@ class Request extends \Dogma\Object {
         $this->setOption(CURLOPT_SSLKEY, $keyFile);
         $this->setOption(CURLOPT_SSLKEYPASSWD, $password);
         $this->setOption(CURLOPT_SSLKEYTYPE, $keyType);
-        
+
         return $this;
     }
 
@@ -412,7 +412,7 @@ class Request extends \Dogma\Object {
 
     // output handling -------------------------------------------------------------------------------------------------
 
-    
+
     /**
      * Execute request.
      * @return Response
@@ -433,30 +433,30 @@ class Request extends \Dogma\Object {
     public function prepare() {
         $params = $this->analyzeUrl();
         if ($params || $this->variables || $this->content) $this->prepareData($params);
-        
+
         $this->setOption(CURLOPT_URL, $this->url);
         $this->setOption(CURLOPT_RETURNTRANSFER, TRUE);
-        
+
         if ($this->headers) $this->prepareHeaders();
         if ($this->cookies) $this->prepareCookies();
     }
-    
-    
+
+
     /**
      * Called by RequestManager.
      * @internal
-     * 
+     *
      * @return resource
      */
     public function getHandler() {
         return $this->curl;
     }
-    
-    
+
+
     /**
      * Called by RequestManager.
      * @internal
-     * 
+     *
      * @param string|bool
      * @param int
      * @return Response
@@ -468,7 +468,7 @@ class Request extends \Dogma\Object {
 
         if ($error) {
             $status = ResponseStatus::getInstance($error);
-            
+
         } else {
             try {
                 $status = ResponseStatus::getInstance($info['http_code']);
@@ -476,14 +476,14 @@ class Request extends \Dogma\Object {
                 $status = ResponseStatus::getInstance(ResponseStatus::UNKNOWN_RESPONSE_CODE);
             }
         }
-        
+
         if ($status->isFatalError()) {
             throw new RequestException("Fatal error occured during request execution: $status->identifier", $status->value);
         }
-        
+
         $response = new Response($response, $status, $info);
         if ($this->context) $response->setContext($this->context);
-        
+
         return $response;
     }
 
@@ -512,18 +512,18 @@ class Request extends \Dogma\Object {
 
         $this->setOption(CURLOPT_HTTPHEADER, $headers);
     }
-    
-    
+
+
     private function prepareCookies() {
         $cookie = '';
         foreach ($this->cookies as $name => $value) {
             $cookie .= "; $name=$value";
         }
-        
-        $this->setOption(CURLOPT_COOKIE, substr($cookie, 2)); 
+
+        $this->setOption(CURLOPT_COOKIE, substr($cookie, 2));
     }
-    
-    
+
+
     /**
      * @param array
      */
@@ -537,23 +537,23 @@ class Request extends \Dogma\Object {
 
         if ($this->content)
             $this->prepareUpload();
-        
+
         if (!$this->variables) return;
-        
+
         if ($this->method === self::POST) {
             $this->preparePost();
-            
+
         } else {
             $names = array_keys($this->variables);
-            throw new RequestException("Redundant request variable" . (count($names) > 1 ? "s" : "") 
+            throw new RequestException("Redundant request variable" . (count($names) > 1 ? "s" : "")
                 . " '" . implode("', '", $names) . "' in request data.");
         }
     }
-    
-    
+
+
     private function prepareUpload() {
         $this->setOption(CURLOPT_BINARYTRANSFER, true);
-        
+
         if (substr($this->content, 0, 1) === '@') {
             $fileName = substr($this->content, 1);
             $file = fopen($fileName, 'r');
@@ -563,13 +563,13 @@ class Request extends \Dogma\Object {
             $this->setOption(CURLOPT_INFILE, $file);
             $this->setOption(CURLOPT_INFILESIZE, strlen($this->content));
             echo "PUT upload";
-            
+
         } else {
             $this->setOption(CURLOPT_POSTFIELDS, $this->content);
         }
     }
-    
-    
+
+
     private function preparePost() {
         foreach ($this->variables as $name => $value) {
             if ($value === NULL)
@@ -599,8 +599,8 @@ class Request extends \Dogma\Object {
 
         return $params;
     }
-    
-    
+
+
     /**
      * @param array
      */
@@ -608,13 +608,13 @@ class Request extends \Dogma\Object {
         foreach ($vars as $name => $short) {
             if (!isset($this->variables[$name]))
                 throw new RequestException("URL variable '$name' is missing in request data.");
-            
+
             if ($short) {
                 $this->url = preg_replace("/(?<=\\W$name=)%(?=[^0-9A-Fa-f])/", urlencode($this->variables[$name]), $this->url);
             } else {
                 $this->url = preg_replace("/\\{%$name\\}/", urlencode($this->variables[$name]), $this->url);
             }
-            
+
             unset($this->variables[$name]);
         }
     }
@@ -628,5 +628,5 @@ class Request extends \Dogma\Object {
             $this->curl = curl_copy_handle($this->curl);
         }
     }
-    
+
 }
