@@ -15,23 +15,23 @@ use Nette,
 
 
 class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
-    
+
     public $maxQueries = 100;
-    
+
     private $counter = 0;
-    
-    
+
+
     /*public function logQuery(\Nette\Database\Statement $result, array $params = NULL) {
         $this->counter++;
         if ($this->counter > $this->maxQueries) return;
-        
+
         parent::logQuery($result, $params);
     }*/
 
-    
+
     // copy-paste, yeaaaahhhh! -----------------------------------------------------------------------------------------
-    
-    
+
+
     /** @var int maximum SQL length */
     static public $maxLength = 10000;
 
@@ -56,13 +56,13 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
     {
         $this->counter++;
         if ($this->counter > $this->maxQueries) return;
-        
+
         if ($this->disabled) {
             return;
         }
         $source = NULL;
         foreach (debug_backtrace(FALSE) as $row) {
-            if (isset($row['file']) && is_file($row['file']) 
+            if (isset($row['file']) && is_file($row['file'])
                 && strpos($row['file'], NETTE_DIR . DIRECTORY_SEPARATOR) !== 0
                 && strpos($row['file'], DOGMA_DIR . DIRECTORY_SEPARATOR) !== 0
             ) {

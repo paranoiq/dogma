@@ -13,11 +13,11 @@ use Nette\Utils\Strings;
 
 
 class FileResponse extends Response {
-    
+
     /** @var string */
     private $fileName;
-    
-    
+
+
     /**
      * @param string
      * @param array
@@ -25,7 +25,7 @@ class FileResponse extends Response {
      */
     public function __construct($fileName, array $info, $error) {
         parent::__construct(NULL, $info, $error);
-        
+
         $this->fileName = $fileName;
     }
 
@@ -45,18 +45,18 @@ class FileResponse extends Response {
      */
     public function getBody() {
         if (!$this->headers) $this->parseFile();
-        
+
         return file_get_contents($this->fileName);
     }
-    
-    
+
+
     /**
      * @return string
      */
     public function getFileName() {
         return $this->fileName;
     }
-    
+
 
     /**
      * Remove headers from downloaded file
@@ -86,12 +86,12 @@ class FileResponse extends Response {
         if (!@unlink($this->fileName . '.tmp')) {
             throw new ResponseException("Error while deleting file $this->fileName.");
         }
-        
+
         chmod($this->fileName, 0755);
 
         if (!$this->headers) {
             throw new RequestException("Headers parsing failed");
         }
     }
-    
+
 }

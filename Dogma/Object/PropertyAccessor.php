@@ -13,7 +13,7 @@ namespace Dogma\Object;
  * Property Accessor
  */
 final class PropertyAccessor {
-    
+
     /**
      * Get value from an object propperty or array key.
      * @param  object|array
@@ -25,17 +25,17 @@ final class PropertyAccessor {
             if (array_key_exists($propertyName, $data)) {
                 return $object[$propertyName];
             }
-            
+
         } elseif ($object instanceof \ArrayObject) {
             if ($object->hasKey($propertyName)) {
                 return $object[$propertyName];
             }
-            
+
         } elseif (is_object($object)) {
             $property = ReflectionCache::getPropertyReflection(get_class($object), $propertyName);
             return $property->getValue($object);
         }
-        
+
         throw new \Nette\MemberAccessException("PropertyAccessor: Property '$propertyName' was not found.");
     }
 
@@ -52,18 +52,18 @@ final class PropertyAccessor {
             if (array_key_exists($propertyName, $object)) {
                 $object[$propertyName] = $value;
             }
-            
+
         } elseif ($object instanceof \ArrayObject) {
             if ($object->hasKey($propertyName)) {
                 $object[$propertyName] = $value;
             }
-            
+
         } elseif (is_object($object)) {
             $property = ReflectionCache::getPropertyReflection(get_class($object), $propertyName);
             return $property->getValue($object);
         }
-        
+
         throw new \MemberAccessException("PropertyAccessor: Property '$propertyName' was not found.");
     }
-    
+
 }

@@ -20,5 +20,5 @@ interface SimpleValueObject extends ValueObject {
      * @return string
      */
     function __toString();
-    
+
 }

@@ -13,22 +13,22 @@ use Nette\Database\IReflection;
 
 
 class Statement extends \Nette\Database\Statement {
-    
-    
+
+
     /** @var Connection */
     private $connection;
-    
+
     /** @var array */
 	private $types;
-	
-    
+
+
     protected function __construct(Connection $connection) {
         parent::__construct($connection);
         $this->connection = $connection;
         $this->setFetchMode(\PDO::FETCH_CLASS, 'Nette\Database\Row', array($this));
     }
-    
-    
+
+
     /**
      * Normalizes result row.
      * @param  array
@@ -37,30 +37,30 @@ class Statement extends \Nette\Database\Statement {
     public function normalizeRow($row) {
         if ($this->types === NULL)
             $this->types = $this->detectColumnTypes();
-        
+
         // convert DATETIME, DATE and SET
         foreach ($this->types as $key => $type) {
             $value = $row[$key];
             if ($value === NULL || $value === FALSE || $type === IReflection::FIELD_TEXT) {
-                
+
             } elseif ($type === IReflection::FIELD_INTEGER) {
                 $row[$key] = is_float($tmp = $value * 1) ? $value : $tmp;
-                
+
             } elseif ($type === IReflection::FIELD_FLOAT) {
                 $row[$key] = (string) ($tmp = (float) $value) === $value ? $tmp : $value;
-                
+
             } elseif ($type === IReflection::FIELD_BOOL) {
                 $row[$key] = ((bool) $value) && $value !== 'f' && $value !== 'F';
-            
+
             } elseif ($type === IReflection::FIELD_DATETIME) {
                 $row[$key] = new \Dogma\DateTime($value);
-                
+
             } elseif ($type === IReflection::FIELD_DATE) {
                 $row[$key] = new \Dogma\Date($value);
-                
+
             }
         }
-        
+
         // GROUP_CONCAT(...) as `column[]`
         foreach ($row as $key => $value) {
             if (substr($key, -2) === '[]') {
@@ -74,7 +74,7 @@ class Statement extends \Nette\Database\Statement {
                 unset($row[$key]);
             }
         }
-        
+
         return $this->connection->getSupplementalDriver()->normalizeRow($row, $this);
     }
 
@@ -99,6 +99,5 @@ class Statement extends \Nette\Database\Statement {
         }
         return $cols;
     }
-    
-}
 
+}

@@ -981,7 +981,7 @@ class WindowsError extends \Dogma\Enum implements Error {
         ERROR_INSTALL_SERVICE_SAFEBOOT = 1652,
         ERROR_FAIL_FAST_EXCEPTION = 1653,
         ERROR_INSTALL_REJECTED = 1654,
-        
+
         RPC_S_INVALID_STRING_BINDING = 1700,
         RPC_S_WRONG_KIND_OF_BINDING = 1701,
         RPC_S_INVALID_BINDING = 1702,

@@ -11,7 +11,7 @@ namespace Dogma\Imap;
 
 
 class ImapException extends \RuntimeException {
-    
+
     ///
-    
+
 }

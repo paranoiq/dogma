@@ -29,15 +29,15 @@ class FileStat extends \Dogma\Object {
 
     /** @var array */
     private $stat;
-    
+
     /**
      * @param array
      */
     public function __construct($stat) {
         $this->stat = $stat;
     }
-    
-    
+
+
     public function getDeviceId() {
         return $this->stat['dev'];
     }
@@ -89,5 +89,5 @@ class FileStat extends \Dogma\Object {
     public function getBlocks() {
         return $this->stat['blocks'];
     }
-    
+
 }

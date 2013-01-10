@@ -219,4 +219,3 @@ class Connection extends \Nette\Database\Connection {
     }
     */
 }
-

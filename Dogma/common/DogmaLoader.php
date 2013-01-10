@@ -11,10 +11,10 @@ namespace Dogma;
 
 
 class DogmaLoader extends \Nette\Loaders\AutoLoader {
-    
+
     /** @var static */
     private static $instance;
-    
+
 
     /** @var array */
     public $list = array(
@@ -22,7 +22,7 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
         'Dogma\\IndirectInstantiable' => '/common/interfaces/IndirectInstantiable',
         'Dogma\\SimpleValueObject' => '/common/interfaces/SimpleValueObject',
         'Dogma\\ValueObject' => '/common/interfaces/ValueObject',
-        
+
         'Dogma\\ArrayObject' => '/common/types/ArrayObject',
         'Dogma\\Collection' => '/common/types/Collection',
         'Dogma\\Date' => '/common/types/Date',
@@ -40,7 +40,7 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
         'Dogma\\Http\\ChannelException' => '/Http/exceptions',
         'Dogma\\Http\\RequestException' => '/Http/exceptions',
         'Dogma\\Http\\ResponseException' => '/Http/exceptions',
-        
+
         'Dogma\\Io\\IoException' => '/Io/exceptions',
         'Dogma\\Io\\FileException' => '/Io/exceptions',
         'Dogma\\Io\\DirectoryException' => '/Io/exceptions',
@@ -71,7 +71,7 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
         if (isset($this->list[$type])) {
             \Nette\Utils\LimitedScope::load(DOGMA_DIR . $this->list[$type] . '.php');
             self::$count++;
-            
+
         } elseif (substr($type, 0, 6) === 'Dogma\\') {
             \Nette\Utils\LimitedScope::load(DOGMA_DIR . strtr(substr($type, 5), '\\', '/') . '.php');
             self::$count++;

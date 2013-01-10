@@ -17,8 +17,8 @@ class ErrorHelper {
         LINUX = 1,
         UNIX  = 2,
         WINDOWS = 3;
-    
-    
+
+
     /**
      * Get error object for given error number.
      * @param int|string
@@ -28,7 +28,7 @@ class ErrorHelper {
     public static function getError($errno, $system = self::LOCAL) {
         if (!$system || !is_int($system)) $system = self::detectSystem($system);
         if (!$system) return FALSE;
-        
+
         try {
             switch ($system) {
                 case self::LINUX:
@@ -41,7 +41,7 @@ class ErrorHelper {
         } catch (\Exception $e) {
             return FALSE;
         }
-        
+
         return FALSE;
     }
 
@@ -56,10 +56,10 @@ class ErrorHelper {
         if ($error = self::getError($errno, $system)) {
             return $error->getDescription();
         }
-        
+
         return FALSE;
     }
-    
+
 
     /**
      * Detect underlying operation system family.
@@ -69,7 +69,7 @@ class ErrorHelper {
     public static function detectSystem($string = NULL) {
         if (!$string) $string = PHP_OS;
         $string = strtolower($string);
-        
+
         if (strpos($string, 'linux') !== FALSE) {
             return self::LINUX;
         } elseif (strpos($string, 'win') !== FALSE) {
@@ -81,8 +81,8 @@ class ErrorHelper {
         } elseif (strpos($string, 'unix') !== FALSE) {
             return self::UNIX;
         }
-        
+
         return FALSE;
     }
-    
+
 }

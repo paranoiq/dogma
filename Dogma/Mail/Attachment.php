@@ -14,7 +14,7 @@ use Dogma\Io\File;
 
 /**
  * Email Attachment
- * 
+ *
  * @property-read $fileName
  * @property-read $contentType
  * @property-read $charset
@@ -23,19 +23,19 @@ use Dogma\Io\File;
  */
 class Attachment extends \Dogma\Object {
 
-    
+
     /** Content disposition */
     const
         ATTACHMENT = 'attachment',
         INLINE = 'inline';
-    
-    
+
+
     /** @var string */
     private $data;
-    
+
     /** @var File */
     private $file;
-    
+
     /** @var array */
     private $headers;
 
@@ -57,7 +57,7 @@ class Attachment extends \Dogma\Object {
         $this->headers = $headers;
     }
 
-    
+
     /**
      * @return string
      */
@@ -65,7 +65,7 @@ class Attachment extends \Dogma\Object {
         return @$this->headers['disposition-filename']; // not on 'inline'
     }
 
-    
+
     /**
      * @return string
      */
@@ -81,7 +81,7 @@ class Attachment extends \Dogma\Object {
         return @$this->headers['content-charset']; // not on binary
     }
 
-    
+
     /**
      * @return string
      */
@@ -89,7 +89,7 @@ class Attachment extends \Dogma\Object {
         return $this->headers['content-disposition'];
     }
 
-    
+
     /**
      * @return string
      */
@@ -97,7 +97,7 @@ class Attachment extends \Dogma\Object {
         return $this->headers;
     }
 
-    
+
     /**
      * @return int
      */
@@ -108,8 +108,8 @@ class Attachment extends \Dogma\Object {
             return $this->file->getSize();
         }
     }
-    
-    
+
+
     /**
      * Get file content.
      * @return string
@@ -121,8 +121,8 @@ class Attachment extends \Dogma\Object {
             return $this->file->getContent();
         }
     }
-    
-    
+
+
     /**
      * Get File object.
      * @return File

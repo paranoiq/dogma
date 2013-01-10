@@ -11,17 +11,17 @@ namespace Dogma\Dom;
 
 
 class NodeList extends \Dogma\Object implements \Countable, \Iterator {
-    
+
     /** @var \DOMNodeList */
     private $nodeList;
-    
+
     /** @var QueryEngine */
     private $engine;
-    
+
     /** @var int */
     private $offset = 0;
-    
-    
+
+
     /**
      * @param \DOMNodeList
      * @param QueryEngine
@@ -30,13 +30,13 @@ class NodeList extends \Dogma\Object implements \Countable, \Iterator {
         $this->nodeList = $nodeList;
         $this->engine = $engine;
     }
-    
-    
+
+
     public function item($offset) {
         return $this->wrap($this->nodeList->item($offset));
     }
-    
-    
+
+
     public function count() {
         // PHP bug - cannot count items using $length
         $n = 0;
@@ -45,34 +45,34 @@ class NodeList extends \Dogma\Object implements \Countable, \Iterator {
         }
         return $n;
     }
-    
-    
+
+
     public function current() {
         return $this->wrap($this->nodeList->item($this->offset));
     }
-    
-    
+
+
     public function key() {
         return $this->offset;
     }
-    
-    
+
+
     public function next() {
         $this->offset++;
     }
-    
-    
+
+
     public function rewind() {
         $this->offset = 0;
     }
-    
-    
+
+
     public function valid() {
         // PHP bug - cannot iterate through items
         return $this->nodeList->item($this->offset) !== NULL;
     }
-    
-    
+
+
     /**
      * @param \DOMNode
      * @return Element|\DOMNode
@@ -89,5 +89,5 @@ class NodeList extends \Dogma\Object implements \Countable, \Iterator {
     public function dump() {
         Dumper::dump($this);
     }
-    
+
 }

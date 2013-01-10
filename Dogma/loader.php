@@ -16,4 +16,3 @@ require_once __DIR__ . '/common/DogmaLoader.php';
 
 
 Dogma\DogmaLoader::getInstance()->register();
-

@@ -14,7 +14,7 @@ namespace Dogma;
  * Date and time class
  */
 class DateTime extends \DateTime implements SimpleValueObject {
-    
+
     /**
      * @param string
      * @param \DateTimeZone
@@ -23,7 +23,7 @@ class DateTime extends \DateTime implements SimpleValueObject {
         if ($time instanceof \DateTime)
             /** @noinspection PhpUndefinedMethodInspection */
             $time = $time->format("Y-m-d H:i:s");
-        
+
         if ($timezone) {
             parent::__construct($time, $timezone);
         } else {
@@ -38,8 +38,8 @@ class DateTime extends \DateTime implements SimpleValueObject {
     public function setDefaultTimezone() {
         return $this->setTimezone(new \DateTimeZone(date_default_timezone_get()));
     }
-    
-    
+
+
     /**
      * @static
      * @param string
@@ -53,19 +53,19 @@ class DateTime extends \DateTime implements SimpleValueObject {
         } else {
             $date = new static(parent::createFromFormat($format, $time));
         }
-        
+
         return $date;
     }
-    
-    
+
+
     /**
      * @return string
      */
     public function __toString() {
         return $this->format('Y-m-d H:i:s');
     }
-    
-    
+
+
     /**
      * Call to undefined method.
      * @param  string $name method name
@@ -75,5 +75,5 @@ class DateTime extends \DateTime implements SimpleValueObject {
     public function __call($name, $args) {
         return \Nette\ObjectMixin::call($this, $name, $args);
     }
-    
+
 }

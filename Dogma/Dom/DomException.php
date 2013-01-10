@@ -11,7 +11,7 @@ namespace Dogma\Dom;
 
 
 class DomException extends \DOMException {
-    
+
     //
-    
+
 }

@@ -18,16 +18,16 @@ abstract class Set implements SimpleValueObject {
     private static $values = array();
 
     private $set = array();
-    
-    
+
+
     /**
      * @param self|string|string[]
      */
     final public function __construct($set = array()) {
         $this->add($set);
     }
-    
-    
+
+
     /**
      * @param self|string|string[]
      * @return static
@@ -37,33 +37,33 @@ abstract class Set implements SimpleValueObject {
 
         foreach ($set as $value) {
             if ($value === "") continue;
-            
+
             if (!self::isValid($value))
                 throw new \InvalidArgumentException("Invalid value given.");
-            
+
             if (!in_array($value, $this->set)) {
                 $this->set[] = $value;
             }
         }
-        
+
         return $this;
     }
-    
-    
+
+
     /**
      * @param self|string|string[]
      * @return Set
      */
     public function remove($set) {
         $this->checkSet($set);
-        
+
         foreach ($set as $value) {
             $key = array_search($value, $this->set);
             if ($key !== FALSE) {
                 unset($this->set[$key]);
             }
         }
-        
+
         return $this;
     }
 
@@ -82,7 +82,7 @@ abstract class Set implements SimpleValueObject {
 
         return TRUE;
     }
-    
+
 
     /**
      * @param self|string|string[]
@@ -90,16 +90,16 @@ abstract class Set implements SimpleValueObject {
     private function checkSet(&$set) {
         if (is_string($set)) {
             $set = explode(',', $set);
-            
+
         } elseif ($set instanceof self) { // is_object($set) && get_class($set) === get_called_class() ?
             $set = $set->getValues();
-            
+
         } elseif (!is_array($set)) {
             throw new \InvalidArgumentException("Value must be a string, array or a Set.");
         }
     }
-    
-    
+
+
     /**
      * @return string
      */
@@ -107,7 +107,7 @@ abstract class Set implements SimpleValueObject {
         return implode(',', $this->set);
     }
 
-    
+
     /**
      * @return array
      */
@@ -125,11 +125,11 @@ abstract class Set implements SimpleValueObject {
         foreach ($values as $name => $value) {
             $this->__set($name, $value);
         }
-        
+
         return $this;
     }
-    
-    
+
+
     // static ----------------------------------------------------------------------------------------------------------
 
 
@@ -150,8 +150,8 @@ abstract class Set implements SimpleValueObject {
 
         return in_array($value, self::$values[$class]);
     }
-    
-    
+
+
     /**
      * Get possible values.
      * @return \ArrayIterator
@@ -170,7 +170,7 @@ abstract class Set implements SimpleValueObject {
         $ref = new \ReflectionClass($class);
         self::$values[$class] = $ref->getConstants();
     }
-    
+
 
     // magic motherfucker ----------------------------------------------------------------------------------------------
 
@@ -182,7 +182,7 @@ abstract class Set implements SimpleValueObject {
     final public function __get($name) {
         if (self::isValid($name))
             return $this->contains($name);
-        
+
         return \Nette\ObjectMixin::get($this, $name);
     }
 
@@ -194,7 +194,7 @@ abstract class Set implements SimpleValueObject {
     final public function __isset($name) {
         if (self::isValid($name))
             return $this->contains($name);
-        
+
         return \Nette\ObjectMixin::has($this, $name);
     }
 
@@ -210,7 +210,7 @@ abstract class Set implements SimpleValueObject {
                 $bool = $norm->detectBool($value);
                 if (isset($bool)) $value = $bool;
             }
-            
+
             $value ? $this->add($name) : $this->remove($name);
             return;
         }
@@ -241,5 +241,5 @@ abstract class Set implements SimpleValueObject {
     final public function __wakeup() {
         throw new \Exception("Set type cannot be serialized. Use its values instead.");
     }
-    
+
 }

@@ -16,13 +16,13 @@ namespace Dogma\Http;
  */
 class ResponseStatus extends \Dogma\Enum {
 
-    
+
     const
         S100_CONTINUE = 100,
         S101_SWITCHING_PROTOCOLS = 101,
         S102_PROCESSING = 102, // (WebDAV) (RFC 2518)
         S103_CHECKPOINT = 103,
-        
+
         S200_OK = 200,
         S201_CREATED = 201,
         S202_ACCEPTED = 202,
@@ -33,7 +33,7 @@ class ResponseStatus extends \Dogma\Enum {
         S207_MULTI_STATUS = 207, // (WebDAV) (RFC 4918)
         S208_ALREADY_REPORTED = 208, // (WebDAV) (RFC 5842)
         S226_IM_USER = 226, // (RFC 3229)
-        
+
         S300_MULTIPLE_CHOICES = 300,
         S301_MOVED_PERMANENTLY = 301,
         S302_FOUND = 302,
@@ -43,7 +43,7 @@ class ResponseStatus extends \Dogma\Enum {
         S306_SWITCH_PROXY = 306,
         S307_TEMPORARY_REDIRECT= 307,
         S308_RESUME_INCOMPLETE = 308,
-        
+
         S400_BAD_REQUEST = 400,
         S401_UNAUTHORIZED = 401,
         S402_PAYMENT_REQUIRED = 402,
@@ -89,7 +89,7 @@ class ResponseStatus extends \Dogma\Enum {
         S510_NOT_EXTENDED = 510, // (RFC 2774)
         S511_NETWORK_AUTHENTICATION_REQUIRED = 511,
 
-        
+
         // system & CURL internals
         FAILED_INIT           =  2, // Very early initialization code failed. This is likely to be an internal error or problem, or a resource problem where something fundamental couldn't get done at init time.
         NOT_BUILT_IN          =  4, // (CURLE_URL_MALFORMAT_USER) A requested feature, protocol or option was not found built-in in this libcurl due to a build-time decision. This means that a feature or option was not enabled or explicitly disabled when libcurl was built and in order to get it to function you have to get a rebuilt libcurl.
@@ -100,13 +100,13 @@ class ResponseStatus extends \Dogma\Enum {
         SEND_FAIL_REWIND      = 65, // When doing a send operation curl had to rewind the data to retransmit, but the rewinding operation failed.
         CONV_FAILED           = 75, // Character conversion failed.
         CONV_REQD             = 76, // Caller must register conversion callbacks.
-        
+
         // file system
         READ_ERROR            = 26, // There was a problem reading a local file or an error returned by the read callback.
         WRITE_ERROR           = 23, // An error occurred when writing received data to a local file, or an error was returned to libcurl from a write callback.
         FILE_COULDNT_READ_FILE = 37,// A file given with FILE:// couldn't be opened. Most likely because the file path doesn't identify an existing file. Did you check file permissions?
         FILESIZE_EXCEEDED     = 63, // Maximum file size exceeded.
-        
+
         // user error
         UNSUPPORTED_PROTOCOL  =  1, // The URL you passed to libcurl used a protocol that this libcurl does not support. The support might be a compile-time option that you didn't use, it can be a misspelled protocol string or just a protocol libcurl has no code for.
         URL_MALFORMAT         =  3, // The URL was not properly formatted.
@@ -116,7 +116,7 @@ class ResponseStatus extends \Dogma\Enum {
         BAD_CONTENT_ENCODING  = 61, // Unrecognized transfer encoding.
         LOGIN_DENIED          = 67, // The remote server denied curl to login
         REMOTE_FILE_NOT_FOUND = 78, // The resource referenced in the URL does not exist.
-        
+
         // network/socket
         COULDNT_RESOLVE_PROXY =  5, // Couldn't resolve proxy. The given proxy host could not be resolved.
         COULDNT_RESOLVE_HOST  =  6, // Couldn't resolve host. The given remote host was not resolved.
@@ -125,18 +125,18 @@ class ResponseStatus extends \Dogma\Enum {
         SEND_ERROR            = 55, // Failed sending network data.
         RECV_ERROR            = 56, // Failure with receiving network data.
         TRY_AGAIN             = 81, // [CURL_AGAIN] Socket is not ready for send/recv wait till it's ready and try again. This return code is only returned from curl_easy_recv(3) and curl_easy_send(3)
-        
+
         // server
         UNKNOWN_RESPONSE_CODE = -1, // An unknown (not listed above) HTTP response code was received
         RANGE_ERROR           = 33, // (CURLE_HTTP_RANGE_ERROR) The server does not support or accept range requests.
         GOT_NOTHING           = 52, // Nothing was returned from the server, and under the circumstances, getting nothing is considered an error.
-        
+
         // other
         PARTIAL_FILE          = 18, // A file transfer was shorter or larger than expected. This happens when the server first reports an expected transfer size, and then delivers data that doesn't match the previously given size.
         OPERATION_TIMEDOUT    = 28, // (CURLE_OPERATION_TIMEOUTED) Operation timeout. The specified time-out period was reached according to the conditions.
         ABORTED_BY_CALLBACK   = 42, // Aborted by callback. A callback returned "abort" to libcurl.
         TOO_MANY_REDIRECTS    = 47, // Too many redirects. When following redirects, libcurl hit the maximum amount. Set your limit with CURLOPT_MAXREDIRS.
-        
+
         // SSL
         SSL_CONNECT_ERROR     = 35, // A problem occurred somewhere in the SSL/TLS handshake. You really want the error buffer and read the message there as it pinpoints the problem slightly more. Could be certificates (file formats, paths, permissions), passwords, and others.
         PEER_FAILED_VERIFICATION = 51, // (CURLE_SSL_PEER_CERTIFICATE) The remote server's SSL certificate or SSH md5 fingerprint was deemed not OK.
@@ -150,10 +150,10 @@ class ResponseStatus extends \Dogma\Enum {
         SSL_SHUTDOWN_FAILED   = 80, // Failed to shut down the SSL connection.
         SSL_CRL_BADFILE       = 82, // Failed to load CRL file
         SSL_ISSUER_ERROR      = 83, // Issuer check failed
-        
-        
+
+
         // following errors should not occure in HTTP transfer
-        
+
         // FTP
         FTP_WEIRD_SERVER_REPLY = 8, // After connecting to a FTP server, libcurl expects to get a certain reply back. This error code implies that it got a strange or bad reply. The given remote server is probably not an OK FTP server.
         FTP_ACCESS_DENIED     =  9, // We were denied access to the resource given in the URL. For FTP, this occurs while trying to change to the remote directory.
@@ -190,7 +190,7 @@ class ResponseStatus extends \Dogma\Enum {
         LDAP_CANNOT_BIND      = 38, // LDAP cannot bind. LDAP bind operation failed.
         LDAP_SEARCH_FAILED    = 39, // LDAP search failed.
         LDAP_INVALID_URL      = 62, // Invalid LDAP URL.
-        
+
         // Telnet
         TELNET_OPTION_SYNTAX  = 49, // A telnet option string was Illegally formatted.
 
@@ -198,7 +198,7 @@ class ResponseStatus extends \Dogma\Enum {
         RTSP_CSEQ_ERROR       = 85, // Mismatch of RTSP CSeq numbers.
         RTSP_SESSION_ERROR    = 86; // Mismatch of RTSP Session Identifiers.
 
-    
+
     /**
      * Get formated status name
      * @return string
@@ -206,12 +206,12 @@ class ResponseStatus extends \Dogma\Enum {
     public function getDescription() {
         $id = $this->getIdentifier();
         if ($id[0] === 'S' && $id[4] === '_') $id = substr($id, 5);
-        
+
         return ucwords(str_replace(
-            array('http', 'ftp', 'ssh', 'ldap', 'tftp', 'rtsp', 'url', 'ok', '_'), 
+            array('http', 'ftp', 'ssh', 'ldap', 'tftp', 'rtsp', 'url', 'ok', '_'),
             array('HTTP', 'FTP', 'SSH', 'LDAP', 'TFTP', 'RTSP', 'URL', 'OK', ' '), strtolower($id)));
     }
-    
+
 
     /**
      * Is an information/handshaking HTTP response code (1xx)
@@ -220,8 +220,8 @@ class ResponseStatus extends \Dogma\Enum {
     public function isInfo() {
         return $this->value >= 100 && $this->value < 200;
     }
-    
-    
+
+
     /**
      * Is a positive HTTP response code (2xx)
      * @return bool
@@ -238,8 +238,8 @@ class ResponseStatus extends \Dogma\Enum {
     public function isRedirect() {
         return ($this->value >= 300 && $this->value < 400) || $this->value == self::TOO_MANY_REDIRECTS;
     }
-    
-    
+
+
     /**
      * Is an HTTP error response code (4xx or 5xx)
      * @return bool
@@ -247,8 +247,8 @@ class ResponseStatus extends \Dogma\Enum {
     public function isHttpError() {
         return $this->value >= 400 && $this->value < 600;
     }
-    
-    
+
+
     /**
      * Is a CURL error code
      * @return bool
@@ -265,8 +265,8 @@ class ResponseStatus extends \Dogma\Enum {
     public function isError() {
         return $this->isCurlError() || $this->isHttpError();
     }
-    
-    
+
+
     /**
      * Is a network connection error. Possibility of succesful retry
      * @return bool
@@ -281,8 +281,8 @@ class ResponseStatus extends \Dogma\Enum {
             self::TRY_AGAIN,
         ));
     }
-    
-    
+
+
     /**
      * CURL errors which should throw an exception immediately. Something is very wrong
      * @return bool
@@ -302,5 +302,5 @@ class ResponseStatus extends \Dogma\Enum {
             self::CONV_REQD,
         ));
     }
-    
+
 }

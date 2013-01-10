@@ -15,11 +15,11 @@ use Nette\Callback;
 
 /**
  * Binary file reader/writer
- * 
+ *
  * @property FileStat $info
  */
 class File extends \Nette\Object {
-    
+
     /**#@+ File opening mode */
     // if not found: ERROR; keep content
     const READ = 'rb';
@@ -37,42 +37,42 @@ class File extends \Nette\Object {
     const OPEN_CREATE_WRITE = 'cb';
     const OPEN_CREATE_READ_WRITE = 'c+b';
     /**#@-*/
-    
-    
+
+
     /**#@+ Position from */
     const BEGINNING = 0;
     const CURRENT = 1;
     const END = 2;
     /**#@-*/
-    
-    
+
+
     /**#@+ Lock type */
     const SHARED = 1;
     const EXCLUSIVE = 2;
     const UNLOCK = 3;
     const NON_BLOCKING = 4;
     /**#@-*/
-    
-    
+
+
     /**
      * @var int Set this *same or greater* then the alocation unit of your storage (disk sector, RAID strip etc.)
      */
     public static $defaultChunkSize = 8192;
-    
-    
+
+
     /** @var string file name */
     protected $name;
-    
+
     /** @var resource */
     protected $streamContext;
-    
+
     /** @var resource file descriptor */
     protected $file;
-    
+
     /** @var FileStat */
     private $stat;
-    
-    
+
+
     /**
      * Open file
      * @param string file name or stream resource
@@ -81,14 +81,14 @@ class File extends \Nette\Object {
      */
     public function __construct($file, $mode = self::READ_WRITE, $streamContext = NULL) {
         if ($file === NULL) return;
-        
+
         if (is_resource($file) && get_resource_type($file) === 'stream') {
             $this->file = $file;
             return;
         }
-        
+
         $this->name = (string) $file;
-        
+
         Debugger::tryError();
         if ($streamContext) {
             $this->streamContext = $streamContext;
@@ -96,26 +96,26 @@ class File extends \Nette\Object {
         } else {
             $this->file = fopen($this->name, $mode, FALSE);
         }
-        
+
         if (Debugger::catchError($error)) {
             throw new FileException("Cannot open file in mode '$mode': $error->message.", 0, $error);
         }
     }
-    
-    
+
+
     public function __destruct() {
         if ($this->file) fclose($this->file);
     }
-    
-    
+
+
     /**
      * @return bool
      */
     public function isOpen() {
         return (bool) $this->file;
     }
-    
-    
+
+
     /**
      * Close file
      * @return self
@@ -133,11 +133,11 @@ class File extends \Nette\Object {
         }
         $this->stat = NULL;
         $this->file = NULL;
-        
+
         return $this;
     }
-    
-    
+
+
     /**
      * End of file reached?
      * @return bool
@@ -151,11 +151,11 @@ class File extends \Nette\Object {
         if (Debugger::catchError($error)) {
             throw new FileException("Error whn checking End Of File: $error->message.", 0, $error);
         }
-        
+
         return $feof;
     }
-    
-    
+
+
     /**
      * Read binary data from file
      * @param int $length maximal length of input
@@ -164,10 +164,10 @@ class File extends \Nette\Object {
     public function read($length = NULL) {
         if (empty($length)) $length = self::$defaultChunkSize;
         $this->testOpen();
-        
+
         Debugger::tryError();
         $data = fread($this->file, $length);
-        
+
         if (Debugger::catchError($error)) {
             throw new FileException("Cannot read data from file: $error->message.", 0, $error);
         } elseif ($data === FALSE) {
@@ -177,7 +177,7 @@ class File extends \Nette\Object {
                 throw new FileException("Cannot read data from file.");
             }
         }
-        
+
         return $data;
     }
 
@@ -198,13 +198,13 @@ class File extends \Nette\Object {
         while (!$this->eof() && (!$length || $done < $length)) {
             $buff = $this->read($chunk);
             $done += strlen($buff);
-            
+
             if ($destination instanceof File) {
                 $destination->write($buff);
-                
+
             } elseif (is_callable($destination)) {
                 call_user_func($destination, $buff);
-                
+
             } else {
                 throw new \InvalidArgumentException("Destination must be File or callable!");
             }
@@ -212,24 +212,24 @@ class File extends \Nette\Object {
 
         return $done;
     }
-    
-    
+
+
     /**
      * Get entire content of file. Beware of BIG files!
      * @return string
      */
     public function getContent() {
         if ($this->getPosition()) $this->setPosition(0); // ?
-        
+
         $str = "";
         while (!$this->eof()) {
             $str .= $this->read();
         }
-        
+
         return $str;
     }
-    
-    
+
+
     /**
      * Write binary data to file
      * @param string
@@ -237,20 +237,20 @@ class File extends \Nette\Object {
      */
     public function write($data) {
         $this->testOpen();
-        
+
         Debugger::tryError();
         $res = fwrite($this->file, $data);
-        
+
         if (Debugger::catchError($error)) {
             throw new FileException("Cannot write data to file: $error->message.", 0, $error);
         } elseif ($res === FALSE) {
             throw new FileException("Cannot write data to file.");
         }
-        
+
         return $this;
     }
-    
-    
+
+
     /**
      * Truncate file and move pointer at the end
      * @param int $size new file size in bytes
@@ -267,11 +267,11 @@ class File extends \Nette\Object {
         } elseif ($res === FALSE) {
             throw new FileException("Cannot truncate file.");
         }
-        
+
         return $this->setPosition($size);
     }
-    
-    
+
+
     /**
      * Flush the file output buffer (fsync)
      * @return self
@@ -288,11 +288,11 @@ class File extends \Nette\Object {
             throw new FileException("Cannot flush file cache.");
         }
         $this->stat = NULL;
-        
+
         return $this;
     }
-    
-    
+
+
     /**
      * Lock file. see PHP flock() documentation
      * @param int $mode locking mode
@@ -301,7 +301,7 @@ class File extends \Nette\Object {
      */
     public function lock($mode = self::SHARED, &$wouldBlock = NULL) {
         $this->testOpen();
-        
+
         $wb = NULL;
         Debugger::tryError();
         $res = flock($this->file, $mode, $wb);
@@ -320,11 +320,11 @@ class File extends \Nette\Object {
                 throw new FileException("Cannot lock file.");
             }
         }
-        
+
         return $this;
     }
-    
-    
+
+
     /**
      * Release file lock
      * @return self
@@ -340,7 +340,7 @@ class File extends \Nette\Object {
         } elseif ($res === FALSE) {
             throw new FileException("Cannot unlock file.");
         }
-        
+
         return $this;
     }
 
@@ -367,11 +367,11 @@ class File extends \Nette\Object {
         } elseif ($res !== 0) {
             throw new FileException("Cannot set file pointer position.");
         }
-        
+
         return $this;
     }
-    
-    
+
+
     /**
      * Get file pointer position
      * @return int
@@ -387,11 +387,11 @@ class File extends \Nette\Object {
         } elseif ($pos === FALSE) {
             throw new FileException("Cannot get file pointer position.");
         }
-        
+
         return $pos;
     }
-    
-    
+
+
     /**
      * Get file name
      * @return string
@@ -401,11 +401,11 @@ class File extends \Nette\Object {
             $meta = $this->getMetaData();
             $this->name = $meta['uri'];
         }
-        
+
         return $this->name;
     }
-    
-    
+
+
     /**
      * Get file info
      * @return FileStat
@@ -425,36 +425,36 @@ class File extends \Nette\Object {
             }
             $this->stat = new FileStat($stat);
         }
-        
+
         return $this->stat;
     }
-    
-    
+
+
     /**
      * Get stream meta data for files opened via HTTP, FTP…
-     * @return array     
+     * @return array
      */
     public function getMetaData() {
         return stream_get_meta_data($this->file);
     }
-    
-    
+
+
     /**
      * Get stream wraper headers (HTTP)
      * @return array
      */
     public function getWraperData() {
         $data = stream_get_meta_data($this->file);
-        
+
         return $data['wraper_data'];
     }
-    
-    
+
+
     //public function getResponseContext() {
         ///
     //}
-    
-    
+
+
     /*Array(
         [wrapper_data] => Array
             (
@@ -465,24 +465,24 @@ class File extends \Nette\Object {
                 [4] => Accept-Ranges: bytes
                 [5] => Content-Type: text/html; charset=UTF-8
                 [6] => Set-Cookie: FOO=BAR; expires=Fri, 21-Dec-2012 12:00:00 GMT; path=/; domain=.example.com
-                [6] => Connection: close     
+                [6] => Connection: close
                 [7] => Date: Fri, 16 Oct 2009 12:00:00 GMT
-                [8] => Age: 1164   
+                [8] => Age: 1164
                 [9] => Content-Length: 438
             )
-    
+
         [wrapper_type] => http
         [stream_type] => tcp_socket/ssl
         [mode] => r
         [unread_bytes] => 438
-        [seekable] => 
+        [seekable] =>
         [uri] => http://www.example.com/
-        [timed_out] => 
+        [timed_out] =>
         [blocked] => 1
-        [eof] => 
+        [eof] =>
     )*/
-    
-    
+
+
     // factories -------------------------------------------------------------------------------------------------------
 
 
@@ -500,18 +500,17 @@ class File extends \Nette\Object {
         }
         $file = new static(NULL, 'w+');
         $file->file = $fd;
-        
+
         return $file;
     }
-    
-    
+
+
     // internals -------------------------------------------------------------------------------------------------------
-    
-    
+
+
     private function testOpen() {
         if (!$this->file)
             throw new FileException("File is already closed.");
     }
-    
-}
 
+}
