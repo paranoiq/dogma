@@ -27,7 +27,7 @@ class SqlFragment {
     public function __construct($statement) {
         $args = func_get_args();
         $this->statement = (string) array_shift($args);
-        $this->args($args);
+        $this->args = $args;
     }
 
 }

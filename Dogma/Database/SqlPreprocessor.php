@@ -291,7 +291,7 @@ class SqlPreprocessor {
 
         } elseif ($value instanceof SqlFragment) {
             $pre = new self($this->connection);
-            list($sql, $remaining) = $pre->process($value->statement, $value->params);
+            list($sql, $remaining) = $pre->process($value->statement, $value->args);
 
             if ($remaining) foreach ($remaining as $val) {
                 $this->remaining[] = $val;
