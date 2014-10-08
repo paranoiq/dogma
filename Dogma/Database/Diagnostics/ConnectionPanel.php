@@ -155,13 +155,13 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
 
         return empty($this->queries) ? '' :
             '<style> #nette-debug td.nette-DbConnectionPanel-sql { background: white !important }
-			#nette-debug .nette-DbConnectionPanel-source { color: #BBB !important } </style>
-			<h1>Queries: ' . count($this->queries) . ($this->totalTime ? ', time: ' . sprintf('%0.3f', $this->totalTime * 1000) . ' ms' : '') . '</h1>
-			<div class="nette-inner nette-DbConnectionPanel">
-			<table>
-				<tr><th>Time&nbsp;ms</th><th>SQL Statement</th><th>Params</th><th>Rows</th></tr>' . $s . '
-			</table>
-			</div>';
+            #nette-debug .nette-DbConnectionPanel-source { color: #BBB !important } </style>
+            <h1>Queries: ' . count($this->queries) . ($this->totalTime ? ', time: ' . sprintf('%0.3f', $this->totalTime * 1000) . ' ms' : '') . '</h1>
+            <div class="nette-inner nette-DbConnectionPanel">
+            <table>
+                <tr><th>Time&nbsp;ms</th><th>SQL Statement</th><th>Params</th><th>Rows</th></tr>' . $s . '
+            </table>
+            </div>';
     }
 
 

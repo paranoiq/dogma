@@ -48,20 +48,20 @@ class Selection extends \Nette\Database\Table\Selection {
 
 
     /**
-	 * Inserts row in a table.
-	 * @param  array|\Traversable|Table\Selection
-	 * @param  bool
-	 * @return \Dogma\Model\ActiveEntity|ActiveRow|int|bool
-	 */
-	public function insertIgnore($data, $map = FALSE) {
-		if ($data instanceof \Nette\Database\Table\Selection) {
-			$data = $data->getSql();
+     * Inserts row in a table.
+     * @param  array|\Traversable|Table\Selection
+     * @param  bool
+     * @return \Dogma\Model\ActiveEntity|ActiveRow|int|bool
+     */
+    public function insertIgnore($data, $map = FALSE) {
+        if ($data instanceof \Nette\Database\Table\Selection) {
+            $data = $data->getSql();
 
-		} elseif ($data instanceof \Traversable) {
-			$data = iterator_to_array($data);
-		}
+        } elseif ($data instanceof \Traversable) {
+            $data = iterator_to_array($data);
+        }
 
-		$return = $this->connection->query("INSERT IGNORE INTO $this->delimitedName", $data);
+        $return = $this->connection->query("INSERT IGNORE INTO $this->delimitedName", $data);
 
         if (!is_array($data)) {
             return $return->rowCount();
@@ -78,7 +78,7 @@ class Selection extends \Nette\Database\Table\Selection {
         }
 
         return $map ? $this->map($row) : $row;
-	}
+    }
 
 
     /**

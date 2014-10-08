@@ -112,26 +112,26 @@ class Connection extends \Nette\Database\Connection {
             list($statement, $params) = $this->preprocessor->process($statement, $params);
 
         try {
-			// work-arround for PHP bug #61900
-			if ($dblib = $this->getAttribute(\PDO::ATTR_DRIVER_NAME) === 'dblib') {
-				set_error_handler(function($severity, $message, $file, $line) {
-					if (($severity & error_reporting()) === $severity) {
-  						throw new \PDOException($message, 0);
-					}
- 					return FALSE;
-				});
-			}
+            // work-arround for PHP bug #61900
+            if ($dblib = $this->getAttribute(\PDO::ATTR_DRIVER_NAME) === 'dblib') {
+                set_error_handler(function($severity, $message, $file, $line) {
+                    if (($severity & error_reporting()) === $severity) {
+                          throw new \PDOException($message, 0);
+                    }
+                     return FALSE;
+                });
+            }
             $result = $this->prepare($statement)->execute($params);
 
-			if ($this->debugger && $this->debugger->checkWarnings) {
+            if ($this->debugger && $this->debugger->checkWarnings) {
                 $this->debugger->checkWarnings();
             }
 
-			if ($dblib) restore_error_handler();
+            if ($dblib) restore_error_handler();
             return $result;
 
         } catch (\PDOException $e) {
-			if ($dblib) restore_error_handler();
+            if ($dblib) restore_error_handler();
 
             if ($this->debugger && $this->debugger->translateExceptions) {
                 throw $this->debugger->translateException($e, $statement, $params);

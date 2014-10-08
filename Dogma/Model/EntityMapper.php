@@ -15,7 +15,7 @@ namespace Dogma\Model;
 class EntityMapper extends \Nette\Object {
 
     /** @var array table => class map */
-	private $map;
+    private $map;
 
     /** @var EntityFactory */
     private $factory;
@@ -24,7 +24,7 @@ class EntityMapper extends \Nette\Object {
     private $context;
 
 
-	/**
+    /**
      * Set mapping of tables to classes (descendants of ActiveRow)
      * @param array (table => class)
      */
@@ -35,7 +35,7 @@ class EntityMapper extends \Nette\Object {
     }
 
 
-	/**
+    /**
      * Translate table name to class name
      * @param string
      * @param \Nette\Database\Table\ActiveRow

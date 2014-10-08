@@ -19,7 +19,7 @@ class Statement extends \Nette\Database\Statement {
     private $connection;
 
     /** @var array */
-	private $types;
+    private $types;
 
 
     protected function __construct(Connection $connection) {
