@@ -98,7 +98,7 @@ class File extends \Nette\Object {
         }
 
         if (Debugger::catchError($error)) {
-            throw new FileException("Cannot open file in mode '$mode': $error->message.", 0, $error);
+            throw new FileException("Cannot open file in mode '$mode': " . $error->getMessage() . ".", 0, $error);
         }
     }
 
@@ -127,7 +127,7 @@ class File extends \Nette\Object {
         $res = fclose($this->file);
 
         if (Debugger::catchError($error)) {
-            throw new FileException("Cannot close file: $error->message.", 0, $error);
+            throw new FileException("Cannot close file: " . $error->getMessage() . ".", 0, $error);
         } elseif (!$res) {
             throw new FileException("Cannot close file.");
         }
@@ -149,7 +149,7 @@ class File extends \Nette\Object {
         $feof = feof($this->file);
 
         if (Debugger::catchError($error)) {
-            throw new FileException("Error whn checking End Of File: $error->message.", 0, $error);
+            throw new FileException("Error whn checking End Of File: " . $error->getMessage() . ".", 0, $error);
         }
 
         return $feof;
@@ -169,7 +169,7 @@ class File extends \Nette\Object {
         $data = fread($this->file, $length);
 
         if (Debugger::catchError($error)) {
-            throw new FileException("Cannot read data from file: $error->message.", 0, $error);
+            throw new FileException("Cannot read data from file: " . $error->getMessage() . ".", 0, $error);
         } elseif ($data === FALSE) {
             if ($this->eof()) {
                 throw new FileException("Cannot read data from file. End of file was reached.");
@@ -242,7 +242,7 @@ class File extends \Nette\Object {
         $res = fwrite($this->file, $data);
 
         if (Debugger::catchError($error)) {
-            throw new FileException("Cannot write data to file: $error->message.", 0, $error);
+            throw new FileException("Cannot write data to file: " . $error->getMessage() . ".", 0, $error);
         } elseif ($res === FALSE) {
             throw new FileException("Cannot write data to file.");
         }
@@ -263,7 +263,7 @@ class File extends \Nette\Object {
         $res = ftruncate($this->file, $size);
 
         if (Debugger::catchError($error)) {
-            throw new FileException("Cannot truncate file: $error->message.", 0, $error);
+            throw new FileException("Cannot truncate file: " . $error->getMessage() . ".", 0, $error);
         } elseif ($res === FALSE) {
             throw new FileException("Cannot truncate file.");
         }
@@ -283,7 +283,7 @@ class File extends \Nette\Object {
         $res = fflush($this->file);
 
         if (Debugger::catchError($error)) {
-            throw new FileException("Cannot flush file cache: $error->message.", 0, $error);
+            throw new FileException("Cannot flush file cache: " . $error->getMessage() . ".", 0, $error);
         } elseif ($res === FALSE) {
             throw new FileException("Cannot flush file cache.");
         }
@@ -308,7 +308,7 @@ class File extends \Nette\Object {
 
         if (Debugger::catchError($error)) {
             if ($wb) {
-                throw new FileException("Non-blocking lock cannot be acquired: $error->message.", 0, $error);
+                throw new FileException("Non-blocking lock cannot be acquired: " . $error->getMessage() . ".", 0, $error);
             } else {
                 throw new FileException("Cannot lock file: $error->message.", 0, $error);
             }
@@ -336,7 +336,7 @@ class File extends \Nette\Object {
         $res = flock($this->file, LOCK_UN);
 
         if (Debugger::catchError($error)) {
-            throw new FileException("Cannot unlock file: $error->message.", 0, $error);
+            throw new FileException("Cannot unlock file: " . $error->getMessage() . ".", 0, $error);
         } elseif ($res === FALSE) {
             throw new FileException("Cannot unlock file.");
         }
@@ -363,7 +363,7 @@ class File extends \Nette\Object {
         $res = fseek($this->file, $position, $from);
 
         if (Debugger::catchError($error)) {
-            throw new FileException("Cannot set file pointer position: $error->message.", 0, $error);
+            throw new FileException("Cannot set file pointer position: " . $error->getMessage() . ".", 0, $error);
         } elseif ($res !== 0) {
             throw new FileException("Cannot set file pointer position.");
         }
@@ -383,7 +383,7 @@ class File extends \Nette\Object {
         $pos = ftell($this->file);
 
         if (Debugger::catchError($error)) {
-            throw new FileException("Cannot get file pointer position: $error->message.", 0, $error);
+            throw new FileException("Cannot get file pointer position: " . $error->getMessage() . ".", 0, $error);
         } elseif ($pos === FALSE) {
             throw new FileException("Cannot get file pointer position.");
         }
@@ -494,7 +494,7 @@ class File extends \Nette\Object {
         $fd = tmpfile();
 
         if (Debugger::catchError($error)) {
-            throw new FileException("Cannot create a temporary file: $error->message.", 0, $error);
+            throw new FileException("Cannot create a temporary file: " . $error->getMessage() . ".", 0, $error);
         } elseif (!$fd) {
             throw new FileException("Cannot create a temporary file.");
         }

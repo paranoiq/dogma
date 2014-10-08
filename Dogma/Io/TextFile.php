@@ -83,7 +83,7 @@ class TextFile extends File {
         $line = fgets($this->file);
 
         if (Debugger::catchError($error)) {
-            throw new FileException("Cannot read data from file: $error->message.", 0, $error);
+            throw new FileException("Cannot read data from file: " . $error->getMessage() . ".", 0, $error);
         } elseif ($line === FALSE) {
             if ($this->eof()) {
                 throw new FileException("Cannot read data from file. End of file was reached.");
