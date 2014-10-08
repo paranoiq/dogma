@@ -13,13 +13,13 @@ use Nette\Reflection\ClassType;
 
 
 final class ReflectionCache {
-    
-    
+
+
     private static $classes = array();
     private static $properties = array();
     private static $allProps = array();
-    
-    
+
+
     /**
      * Returns class reflection.
      * @param  string
@@ -31,8 +31,8 @@ final class ReflectionCache {
         }
         return self::$classes[$className];
     }
-    
-    
+
+
     /**
      * Returns unlocked reflection of an object property.
      * @param  string
@@ -52,8 +52,8 @@ final class ReflectionCache {
         }
         return self::$properties[$className][$propertyName];
     }
-    
-    
+
+
     /**
      * Returns class reflection and unlocked reflections of its properties.
      * @param string
@@ -70,5 +70,5 @@ final class ReflectionCache {
         }
         return array(self::$classes[$className], self::$allProps[$className]);
     }
-    
+
 }

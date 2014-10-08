@@ -11,7 +11,7 @@ namespace Dogma\Mail;
 
 
 class ParsingException extends \RuntimeException {
-    
+
     //
-    
+
 }

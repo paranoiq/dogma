@@ -15,7 +15,7 @@ use Nette\Callback;
 
 /**
  * HTTP channel for multiple similar requests.
- * 
+ *
  * @todo: vyřešit možná nekonečné smyčky při čekání na odpověď
  * @todo: vyřešit fetch() ze zapausovaného kanálu
  */
@@ -23,43 +23,43 @@ class Channel extends \Dogma\Object {
 
     /** @var ChannelManager */
     protected $manager;
-    
+
     /** @var Request */
     private $request;
 
     /** @var int */
     private $priority = 1;
-    
+
     /** @var int */
     private $threadLimit = 10;
-    
+
     /** @var int */
     private $lastIndex = 0;
-    
+
     /** @var bool */
     private $initiated = FALSE;
-    
+
     /** @var bool */
     private $stopped = FALSE;
-    
+
     /** @var bool|int */
     private $paused = FALSE;
-    
-    
+
+
     /** @var array */
     private $queue = array();
-    
+
     /** @var array */
     private $running = array();
-    
+
     /** @var Response[] */
     private $finished = array();
-    
+
     /** @var array */
     private $contexts = array();
-    
-    
-    
+
+
+
     /** @var \Nette\Callback */
     private $responseHandler;
 
@@ -68,9 +68,9 @@ class Channel extends \Dogma\Object {
 
     /** @var \Nette\Callback */
     private $errorHandler;
-    
-    
-    
+
+
+
     /**
      * @param ChannelManager
      * @param Request
@@ -79,8 +79,8 @@ class Channel extends \Dogma\Object {
         $this->manager = $manager;
         $this->request = $request;
     }
-    
-    
+
+
     /**
      * @return Request
      */
@@ -161,10 +161,10 @@ class Channel extends \Dogma\Object {
     public function getThreadLimit() {
         return $this->threadLimit;
     }
-    
-    
+
+
     // jobs ------------------------------------------------------------------------------------------------------------
-    
+
 
     /**
      * Run a new job immediately and wait for the response.
@@ -174,7 +174,7 @@ class Channel extends \Dogma\Object {
      */
     public function fetchJob($data, $context = NULL) {
         $name = $this->addJob($data, $context, NULL, TRUE);
-        
+
         return $this->fetch($name);
     }
 
@@ -189,7 +189,7 @@ class Channel extends \Dogma\Object {
     public function runJob($data, $context = NULL, $name = NULL) {
         return $this->addJob($data, $context, $name, TRUE);
     }
-    
+
 
     /**
      * Add new job to channel queue.
@@ -235,23 +235,23 @@ class Channel extends \Dogma\Object {
      */
     public function addJobs(array $jobs, $context = NULL) {
         $useKeys = array_keys($jobs) !== range(0, count($jobs) - 1);
-        
+
         foreach ($jobs as $name => $data) {
             $this->addJob($data, $context, $useKeys ? $name : NULL);
         }
 
         return $this;
     }
-    
-    
-    /** 
+
+
+    /**
      * @return int
      */
     public function getRunningJobCount() {
         return count($this->running);
     }
 
-    
+
     /**
      * Decide if channel can start a job.
      * @param string
@@ -305,8 +305,8 @@ class Channel extends \Dogma\Object {
         unset($this->queue[$name]);
         $this->manager->jobStarted($handler, $this, $name, $request);
     }
-    
-    
+
+
     // -----------------------------------------------------------------------------------------------------------------
 
 
@@ -338,14 +338,14 @@ class Channel extends \Dogma\Object {
             unset($this->finished[$name]);
         }
     }
-    
-    
+
+
     /**
      * @param string
      * @return Response|NULL
      */
     public function fetch($name = NULL) {
-        if ($name !== NULL) 
+        if ($name !== NULL)
             return $this->fetchByName($name);
 
         if (!empty($this->finished)) {
@@ -369,8 +369,8 @@ class Channel extends \Dogma\Object {
 
         return array_shift($this->finished);
     }
-    
-    
+
+
     /**
      * @param string|int
      * @return Response|NULL
@@ -384,7 +384,7 @@ class Channel extends \Dogma\Object {
             unset($this->finished[$name]);
             return $response;
         }
-        
+
         // start job immediately
         if (isset($this->queue[$name])) {
             $this->startJob($name);
@@ -396,13 +396,13 @@ class Channel extends \Dogma\Object {
         while (!isset($this->finished[$name])) {
             $this->manager->read();
         }
-        
+
         $response = $this->finished[$name];
         unset($this->finished[$name]);
         return $response;
     }
-    
-    
+
+
     /**
      * Check if all channels or a channel or a job are finished.
      * @param Channel
@@ -417,7 +417,7 @@ class Channel extends \Dogma\Object {
         }
     }
 
-    
+
     /**
      * Wait till all jobs are finished.
      * @return self
@@ -426,11 +426,11 @@ class Channel extends \Dogma\Object {
         while (!$this->isFinished()) {
             $this->manager->read();
         }
-        
+
         return $this;
     }
 
-    
+
     public function stop() {
         $this->stopped = TRUE;
     }
@@ -442,8 +442,8 @@ class Channel extends \Dogma\Object {
     public function isStopped() {
         return $this->stopped;
     }
-    
-    
+
+
     public function pause($seconds = 0) {
         if ($seconds) {
             $this->paused = time() + $seconds;
@@ -451,8 +451,8 @@ class Channel extends \Dogma\Object {
             $this->paused = TRUE;
         }
     }
-    
-    
+
+
     /**
      * @return bool
      */
@@ -462,13 +462,13 @@ class Channel extends \Dogma\Object {
         }
         return (bool) $this->paused;
     }
-    
-    
+
+
     public function resume() {
         $this->stopped = FALSE;
         $this->paused = FALSE;
     }
-    
+
 
     /**
      * @return self
@@ -478,5 +478,5 @@ class Channel extends \Dogma\Object {
 
         return $this;
     }
-    
+
 }

@@ -15,5 +15,5 @@ namespace Dogma;
  * @abstract
  */
 interface ValueObject {
-    
+
 }

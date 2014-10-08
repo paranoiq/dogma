@@ -16,7 +16,7 @@ use Nette;
  * File Info
  */
 class FileInfo extends \SplFileInfo {
-    
+
     /* inherits:
     getATime()
     getBasename()
@@ -47,8 +47,8 @@ class FileInfo extends \SplFileInfo {
     setInfoClass() ok
     __toString() ???
     */
-    
-    
+
+
     /**
      * @param string
      */
@@ -59,8 +59,8 @@ class FileInfo extends \SplFileInfo {
             throw new FileException("FileInfo exception", 0, $e);
         }
     }*/
-    
-    
+
+
     /**
      * Open the file
      * @param string
@@ -89,11 +89,11 @@ class FileInfo extends \SplFileInfo {
     public function isDot() {
         return $this->getFilename() === '.' | $this->getFilename() === '..';
     }
-    
-    
+
+
     // Nette\Object magic ----------------------------------------------------------------------------------------------
-    
-    
+
+
     /**
      * Call to undefined method.
      * @param  string  method name
@@ -103,8 +103,8 @@ class FileInfo extends \SplFileInfo {
     public function __call($name, $args) {
         return Nette\ObjectMixin::call($this, $name, $args);
     }
-    
-    
+
+
     /**
      * Call to undefined static method.
      * @param  string  method name (in lower case!)
@@ -114,8 +114,8 @@ class FileInfo extends \SplFileInfo {
     public static function __callStatic($name, $args) {
         return Nette\ObjectMixin::callStatic(get_called_class(), $name, $args);
     }
-    
-    
+
+
     /**
      * Adding method to class.
      * @param  string  method name
@@ -135,8 +135,8 @@ class FileInfo extends \SplFileInfo {
             $class->setExtensionMethod($name, $callback);
         }
     }
-    
-    
+
+
     /**
      * Returns property value. Do not call directly.
      * @param  string  property name
@@ -145,8 +145,8 @@ class FileInfo extends \SplFileInfo {
     public function &__get($name) {
         return Nette\ObjectMixin::get($this, $name);
     }
-    
-    
+
+
     /**
      * Sets value of a property. Do not call directly.
      * @param  string  property name
@@ -156,8 +156,8 @@ class FileInfo extends \SplFileInfo {
     public function __set($name, $value) {
         Nette\ObjectMixin::set($this, $name, $value);
     }
-    
-    
+
+
     /**
      * Is property defined?
      * @param  string  property name
@@ -166,8 +166,8 @@ class FileInfo extends \SplFileInfo {
     public function __isset($name) {
         return Nette\ObjectMixin::has($this, $name);
     }
-    
-    
+
+
     /**
      * Access to undeclared property.
      * @param  string  property name
@@ -177,6 +177,5 @@ class FileInfo extends \SplFileInfo {
     public function __unset($name) {
         Nette\ObjectMixin::remove($this, $name);
     }
-    
-}
 
+}

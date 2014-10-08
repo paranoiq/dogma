@@ -13,16 +13,16 @@ use Nette\Callback;
 
 
 class MultiChannel extends \Dogma\Object {
-    
+
     /** @var Channel[] */
     private $channels;
-    
+
     /** @var string[] */
     private $cids;
-    
+
     /** @var int */
     private $lastIndex = -1;
-    
+
     /** @var string[][] array($sjName: ($cName: $jobName)) */
     private $queue = array();
 
@@ -38,24 +38,24 @@ class MultiChannel extends \Dogma\Object {
 
     /** @var \Nette\Callback */
     private $errorHandler;
-    
+
     /** @var \Nette\Callback */
     private $dispatch;
-    
-    
+
+
     /**
      * @param Channel[]
      */
     public function __construct(array $channels) {
         $this->channels = $channels;
-        
+
         foreach ($channels as $cName => $channel) {
             $this->cids[spl_object_hash($channel)] = $cName;
             $channel->setResponseHandler(new Callback($this, 'responseHandler'));
         }
     }
 
-    
+
     /**
      * @param Response
      * @param Channel
@@ -66,17 +66,17 @@ class MultiChannel extends \Dogma\Object {
         $cName = $this->cids[$cid];
         $jobName = $this->queue[$sjName][$cName];
         $this->finished[$jobName][$cName] = $response;
-        
+
         unset($this->queue[$sjName][$cName]);
         if (empty($this->queue[$sjName]))
             unset($this->queue[$sjName]);
-        
+
         if (count($this->finished[$jobName]) == count($this->channels)) {
             $this->jobFinished($jobName);
         }
     }
-    
-    
+
+
     /**
      * @param string|int
      */
@@ -85,7 +85,7 @@ class MultiChannel extends \Dogma\Object {
             if ($response->getStatus()->isError()) $error = TRUE;
             if ($response->getStatus()->isRedirect()) $redirect = TRUE;
         }
-        
+
         if ($this->errorHandler && isset($error)) {
             $this->errorHandler->invoke($this->finished[$jobName], $this);
             unset($this->finished[$jobName]);
@@ -99,8 +99,8 @@ class MultiChannel extends \Dogma\Object {
             unset($this->finished[$jobName]);
         }
     }
-    
-    
+
+
     /**
      * @return Channel[]
      */
@@ -144,17 +144,17 @@ class MultiChannel extends \Dogma\Object {
         return $this;
     }
 
-    
+
     /**
      * @param callable(mixed $data, Channel[] $channels)
      * @return self
      */
     public function setDispatchFunction($function) {
         $this->dispatch = new Callback($function);
-        
+
         return $this;
     }
-    
+
 
     /**
      * Add new job to channel queue.
@@ -173,7 +173,7 @@ class MultiChannel extends \Dogma\Object {
             throw new ChannelException(
                 'Illegal job name. Job name can be only a string or an integer.');
         }
-        
+
         if ($this->dispatch) {
             $subJobs = $this->dispatch->invoke($data, $this->channels);
         } else {
@@ -183,7 +183,7 @@ class MultiChannel extends \Dogma\Object {
             $sjName = $this->channels[$channel]->addJob($job, $context);
             $this->queue[$sjName][$channel] = $name;
         }
-        
+
         return $name;
     }
 
@@ -203,8 +203,8 @@ class MultiChannel extends \Dogma\Object {
 
         return $this;
     }
-    
-    
+
+
     /**
      * Run a new job and wait for the response.
      * @param string|array
@@ -231,10 +231,10 @@ class MultiChannel extends \Dogma\Object {
     public function fetch($name = NULL) {
         if ($name !== NULL)
             return $this->fetchNamedJob($name);
-        
-        if (empty($this->queue) && empty($this->finished)) 
+
+        if (empty($this->queue) && empty($this->finished))
             return NULL;
-        
+
         $keys = array_keys($this->channels);
         do {
             $this->channels[$keys[0]]->read();
@@ -245,11 +245,11 @@ class MultiChannel extends \Dogma\Object {
                 }
             }
         } while (TRUE);
-        
+
         return NULL;
     }
 
-    
+
     /**
      * @param string|int
      * @return Response[]|NULL
@@ -277,7 +277,7 @@ class MultiChannel extends \Dogma\Object {
         unset($this->finished[$name]);
         return $response;
     }
-    
+
 
     /**
      * Wait till all jobs are finished.
@@ -287,7 +287,7 @@ class MultiChannel extends \Dogma\Object {
         foreach ($this->channels as $channel) {
             $channel->finish();
         }
-        
+
         return $this;
     }
 
@@ -301,7 +301,7 @@ class MultiChannel extends \Dogma\Object {
         foreach ($this->channels as $channel) {
             if (!$channel->isFinished()) return FALSE;
         }
-        
+
         return TRUE;
     }
 
@@ -314,11 +314,11 @@ class MultiChannel extends \Dogma\Object {
             $channel->read();
             return $this;
         }
-        
+
         return $this;
     }
-    
-    
+
+
     /**
      * Job data dispatch function. Splits up data for sub-jobs (sub-channels). Override if needed.
      * @param string|array
@@ -331,17 +331,17 @@ class MultiChannel extends \Dogma\Object {
             foreach ($this->channels as $name => $channel) {
                 $jobs[$name] = $data;
             }
-            
+
         } elseif (is_array($data)) {
             // default - array is indexed by channel name
             return $data;
-            
+
         } else {
             throw new ChannelException('Illegal job data. Job data can be either string or array.');
         }
-        
+
         return $jobs;
     }
-    
-    
+
+
 }

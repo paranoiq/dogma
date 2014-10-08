@@ -221,17 +221,17 @@ class BeanstalkClient extends \Dogma\Object {
         if (is_numeric($delay)) {
             if ((int)$delay < 0)
                 trigger_error("BeanstalkClient: Job delay should not be negative. $delay given.", E_USER_WARNING);
-                
+
             return abs((int)$delay);
-            
+
         } elseif (is_string($delay) || $delay instanceof \DateTime) {
             if (is_string($delay)) $delay = new \DateTime($delay);
             $seconds = $delay->getTimestamp() - time();
             if ($seconds < 0)
                 trigger_error("BeanstalkClient: Job delay should not be negative. $seconds given.", E_USER_WARNING);
-            
+
             return abs($seconds);
-            
+
         } else {
             throw new \InvalidArgumentException("Unsupported delay parameter given.");
         }
@@ -414,7 +414,7 @@ class BeanstalkClient extends \Dogma\Object {
             default:
                 throw new BeanstalkException("Error when claiming a job: " . $status);
         }
-        
+
         return new BeanstalkJob($id, $body, TRUE, $this);
     }
 
@@ -686,7 +686,7 @@ class BeanstalkClient extends \Dogma\Object {
         } else {
             $st = array();
         }
-        
+
         return new BeanstalkJob($id, $data, FALSE, $this, $st);
     }
 

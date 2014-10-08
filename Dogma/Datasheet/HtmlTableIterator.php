@@ -13,39 +13,39 @@ use Dogma\Dom\Element;
 
 
 class HtmlTableIterator extends \Dogma\Object implements \Iterator {
-    
+
     /** @var Element */
     private $table;
-    
+
     /** @var string[] */
     private $head;
-    
+
     /** @var \Dogma\Dom\NodeList */
     private $rows;
-    
+
     /** @var int */
     private $position;
-    
-    
+
+
     public function __construct(Element $table) {
         if ($table->nodeName !== 'table')
             throw new \InvalidArgumentException("Element must be a table. $table->nodeName given!");
-        
+
         $this->table = $table;
     }
-    
-    
+
+
     public function rewind() {
         if (!$this->head) $this->processTable();
         $this->position = 0;
     }
 
-    
+
     public function next() {
         $this->position++;
     }
-    
-    
+
+
     /**
      * @return bool
      */
@@ -53,7 +53,7 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator {
         return $this->position < count($this->rows);
     }
 
-    
+
     /**
      * @return int
      */
@@ -61,23 +61,23 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator {
         return $this->position;
     }
 
-    
+
     /**
      * @return string[]
      */
     public function current() {
         return $this->formatRow($this->rows->item($this->position));
     }
-    
-    
+
+
     private function processTable() {
         foreach ($this->table->find(":headrow/:cell") as $cell) {
             $this->head[] = $cell->textContent;
         }
         $this->rows = $this->table->find(":bodyrow");
     }
-    
-    
+
+
     /**
      * @param DomElement
      * @return string[]
@@ -89,5 +89,5 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator {
         }
         return $res;
     }
-    
+
 }

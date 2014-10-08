@@ -81,5 +81,5 @@ abstract class Object {
     public function __unset($name) {
         ObjectMixin::remove($this, $name);
     }
-    
+
 }

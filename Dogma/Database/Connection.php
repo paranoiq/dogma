@@ -113,11 +113,10 @@ class Connection extends \Nette\Database\Connection {
 
         try {
 			// work-arround for PHP bug #61900
-			$dblib = $this->getAttribute(\PDO::ATTR_DRIVER_NAME) === 'dblib';
-			if ($dblib) {
+			if ($dblib = $this->getAttribute(\PDO::ATTR_DRIVER_NAME) === 'dblib') {
 				set_error_handler(function($severity, $message, $file, $line) {
 					if (($severity & error_reporting()) === $severity) {
-  						throw new \PDOException($message, 0/*, $severity, $file, $line*/);
+  						throw new \PDOException($message, 0);
 					}
  					return FALSE;
 				});
@@ -219,4 +218,3 @@ class Connection extends \Nette\Database\Connection {
     }
     */
 }
-

@@ -20,5 +20,5 @@ interface CompoundValueObject extends ValueObject {
      * @return array
      */
     function toArray();
-    
+
 }

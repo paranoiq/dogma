@@ -13,39 +13,39 @@ namespace Dogma\Graph;
 /**
  * Floyd-Warshall algorythm for finding all shortest paths in oriented weighted graph.
  * All the hard work is done in constructor to enable serialisation and caching.
- * 
+ *
  * @see http://en.wikipedia.org/wiki/Floyd–Warshall_algorithm
  * @see https://github.com/pierre-fromager/PeopleFloydWarshall/blob/4731f8d1e6dd5e659f5945d03ddf8746a578a665/class/floyd-warshall.class.php
  */
 class FloydWarshallPathFinder extends \Dogma\Object {
-    
+
     /** @var array */
     private $weights;
-    
+
     /** @var integer */
     private $nodeCount;
-    
+
     /** @var array */
     private $nodeNames;
-    
+
     /** @var array */
     private $distances = array(array());
-    
+
     /** @var array */
     private $predecessors = array(array());
-    
-    
+
+
     /**
      * @param int[][] graph edge weights. may be sparse
      */
     function __construct($weights) {
-        
+
         // array: assumption, that all nodes has an outgoing edge
         if (array_keys($weights) === range(0, count($weights))) {
             $this->weights = $weights;
             /// bug: wrong if last nodes has no outgoing edges
             $this->nodeCount = count($this->weights);
-            
+
         // hashmap: replace keys with numeric indexes
         } else {
             $n = 0;
@@ -62,11 +62,11 @@ class FloydWarshallPathFinder extends \Dogma\Object {
             $this->nodeNames = $nodeNames;
             $this->nodeCount = count($nodeNames);
         }
-        
+
         $this->calculatePaths();
     }
-    
-    
+
+
     /**
      * Implementation of Floyd-Warshall algorithm
      */
@@ -84,7 +84,7 @@ class FloydWarshallPathFinder extends \Dogma\Object {
                 $this->predecessors[$i][$j] = $i;
             }
         }
-        
+
         // run
         for ($k = 0; $k < $this->nodeCount; $k++) {
             for ($i = 0; $i < $this->nodeCount; $i++) {
@@ -97,8 +97,8 @@ class FloydWarshallPathFinder extends \Dogma\Object {
             }
         }
     }
-    
-    
+
+
     /**
      * Get total cost (distance) between point a and b
      * @param int|string
@@ -110,11 +110,11 @@ class FloydWarshallPathFinder extends \Dogma\Object {
             $i = $this->nodeNames[$i];
             $j = $this->nodeNames[$j];
         }
-        
+
         return $this->distances[$i][$j];
     }
-    
-    
+
+
     /**
      * Get nodes between a and b
      * @param int|string
@@ -126,18 +126,18 @@ class FloydWarshallPathFinder extends \Dogma\Object {
             $i = $this->nodeNames[$i];
             $j = $this->nodeNames[$j];
         }
-        
+
         $path = array();
         $k = $j;
         do {
             $path[] = $k;
             $k = $this->predecessors[$i][$k];
         } while ($i != $k);
-        
+
         return array_reverse($path);
     }
-    
-    
+
+
     /**
      * Print out the original Graph matrice
      * @return string html table
@@ -165,8 +165,8 @@ class FloydWarshallPathFinder extends \Dogma\Object {
         $rt .= "</table>";
         return $rt;
     }
-    
-    
+
+
     /**
      * Print out distances matrice
      * @return string html table
@@ -194,8 +194,8 @@ class FloydWarshallPathFinder extends \Dogma\Object {
         $rt .= "</table>\n";
         return $rt;
     }
-    
-    
+
+
     /**
      * Print out predecessors matrice
      * @return string html table
@@ -223,5 +223,5 @@ class FloydWarshallPathFinder extends \Dogma\Object {
         $rt .= "</table>\n";
         return $rt;
     }
-    
+
 }

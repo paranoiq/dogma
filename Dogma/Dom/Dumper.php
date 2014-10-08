@@ -22,27 +22,27 @@ class Dumper {
     public static function dump($node, $maxDepth = 15, $depth = 0, $only = FALSE) {
         if ($depth > $maxDepth) echo "…";
         if ($depth === 0) echo "<pre><code>";
-        
+
         if ($node instanceof Element || $node instanceof \DOMElement) {
             self::dumpElement($node, $maxDepth, $depth, $only);
-            
+
         } elseif ($node instanceof \DOMDocument) {
             if ($depth === 0) echo "<b>Document:</b>\n";
             self::dump($node->documentElement, $maxDepth);
-            
+
         } elseif ($node instanceof \DOMCdataSection) {
             if ($depth === 0) echo "<b>CdataSection:</b>\n";
             echo "<i style='color: purple'>", htmlspecialchars(trim($node->data)), "</i>";
-            
+
         } elseif ($node instanceof \DOMComment) {
             if ($depth === 0) echo "<b>Comment:</b>\n";
             echo "<i style='color: gray'>&lt;!-- ", trim($node->data), " --&gt;</i>\n";
-            
+
         } elseif ($node instanceof \DOMText) {
             if ($depth === 0) echo "<b>Text:</b>\n";
             $str = preg_replace("/[ \\t]+/", " ", trim($node->wholeText));
             echo "<i>", $str, "</i>";
-            
+
         } elseif ($node instanceof NodeList) {
             echo "<b>NodeList (", count($node), ")</b>\n";
             foreach ($node as $item) {
@@ -50,7 +50,7 @@ class Dumper {
                 echo "    ";
                 self::dump($item, $maxDepth, $depth + 1, TRUE);
             }
-            
+
         } else {
             echo "[something]";
             throw new \Nette\NotImplementedException('Dom dumper find some strange thing.');
@@ -58,8 +58,8 @@ class Dumper {
 
         if ($depth === 0) echo "<code></pre>";
     }
-    
-    
+
+
     private static function dumpElement($node, $maxDepth = 15, $depth = 0, $only = FALSE) {
         if ($depth === 0) echo "<b>Element:</b>\n";
         if (!$only) echo str_repeat('    ', $depth);
@@ -84,5 +84,5 @@ class Dumper {
         echo "<b>&lt;</b>/<b style='color: red'>", $node->nodeName, "</b><b>&gt;</b>";
         if (!$only) echo "\n";
     }
-    
+
 }

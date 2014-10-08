@@ -11,14 +11,14 @@ namespace Dogma\Database;
 
 
 class SqlFragment {
-    
+
     /** @var string */
     public $statement;
-    
+
     /** @var array */
     public $args = array();
-    
-    
+
+
     /**
      * SQL query Fragment.
      * @param  string  statement
@@ -29,5 +29,5 @@ class SqlFragment {
         $this->statement = (string) array_shift($args);
         $this->args($args);
     }
-    
+
 }

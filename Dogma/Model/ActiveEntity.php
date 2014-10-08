@@ -19,18 +19,18 @@ use Dogma\Language\Inflector;
  * - translates names from underscore to camel case
  */
 class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggregate {
-    
-    
+
+
     /** @var \Nette\Database\Table\ActiveRow */
     protected $row;
-    
+
     /** @var EntityFactory */
     private $factory;
 
     /** @var array property objects cache */
     private $props = array();
 
-    
+
     public function __construct(\Nette\Database\Table\ActiveRow $row, EntityFactory $factory) {
         $this->row = $row;
         $this->factory = $factory;
@@ -70,11 +70,11 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
             return $this->row->getTable()->getConnection()->table($table);
         }
     }
-    
+
 
     // interfaces ------------------------------------------------------------------------------------------------------
 
-    
+
     /**
      * @return \ArrayIterator
      */
@@ -82,8 +82,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
         /// iterate entity fields?
         return $this->row->getIterator();
     }
-    
-    
+
+
     /**
      * @param string
      * @return mixed
@@ -91,18 +91,18 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
     public function &__get($name) {
         if (isset($props[$name])) {
             $var = $props[$name];
-            
+
         } elseif (method_exists($this, "get$name")) {
             $var = call_user_func(array($this, "get$name"));
-            
+
         } elseif ($this->factory->hasMagicProperty($class = get_called_class(), $name)) {
             $var = $this->factory->createPropertyInstance($class, $name, $this->row);
             $this->props[$name] = $var;
-            
+
         } else {
             $var = $this->row->__get(Inflector::underscore($name));
         }
-        
+
         return $var;
     }
 
@@ -114,10 +114,10 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
     public function __set($name, $value) {
         if (method_exists($this, "set$name")) {
             call_user_func(array($this, "set$name"), $value);
-            
+
         } elseif ($this->factory->hasMagicProperty($class = get_called_class(), $name)) {
             $this->props[$name] = $this->factory->updatePropertyInstance($class, $name, $value, $this->row);
-            
+
         } else {
             $this->row->__set(Inflector::underscore($name), $value);
         }
@@ -149,7 +149,7 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
         return $this->__get($name);
     }
 
-    
+
     /**
      * @param string
      * @param mixed
@@ -158,7 +158,7 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
         $this->__set($name, $value);
     }
 
-    
+
     /**
      * @param string
      * @return bool
@@ -174,13 +174,13 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
     public function offsetUnset($name) {
         $this->__unset($name);
     }
-    
-    
+
+
     /**
      * @return string
      */
     public function __toString() {
         return $this->row->__toString();
     }
-    
+
 }

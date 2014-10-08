@@ -19,14 +19,14 @@ class Address extends \Dogma\Object {
 
     /** @var string */
     private $name;
-    
+
     /** @var string */
     private $address;
-    
+
     //** @var bool */
     //private $group;
-    
-    
+
+
     /**
      * @param string
      * @param string
@@ -35,8 +35,8 @@ class Address extends \Dogma\Object {
         $this->address = strtolower($address);
         $this->name = $name;
     }
-    
-    
+
+
     /** @return string */
     public function getAddress() {
         return $this->address;
@@ -47,10 +47,10 @@ class Address extends \Dogma\Object {
     public function getName() {
         return $this->name;
     }
-    
-    
+
+
     public function __toString() {
         return $this->name ? "\"$this->name\" <$this->address>" : $this->address;
     }
-    
+
 }

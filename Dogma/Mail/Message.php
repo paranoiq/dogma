@@ -18,15 +18,15 @@ use Dogma\Language\Inflector;
 /**
  * Mime mail parser. Parses mail message from a File or string.
  * Use -> to read message headers.
- * 
+ *
  * @property-read string $subject
  * @property-read \DateTime $date
- * 
+ *
  * @property-read string $from
  * @property-read string $to
  * @property-read string $cc
  * @property-read string $replyTo
- * 
+ *
  * @property-read string $messageId
  * @property-read string $inReplyTo
  */
@@ -35,27 +35,27 @@ class Message extends \Dogma\Object {
     const
         TEXT = 'text/plain',
         HTML = 'text/html';
-    
+
     /** @var int bigger attachements will be treated using temporary files */
     public static $bigFileTreshold = 0x100000; // 1MB
-    
+
     /** @var array */
     private $parts = array();
 
     /** @var array */
     private $headers;
-    
+
     /** @var File */
     private $file;
-    
+
     /** @var string */
     private $data;
 
 
     /** @var callback(@param string $address, @param string $name, @return Address) */
     private $addressFactory;
-    
-    
+
+
     /**
      * @param string|File
      */
@@ -69,7 +69,7 @@ class Message extends \Dogma\Object {
             } elseif (!$handler) {
                 throw new ParsingException("Cannot parse email file.");
             }
-            
+
         } else {
             Debugger::tryError();
             $handler = mailparse_msg_create();
@@ -89,7 +89,7 @@ class Message extends \Dogma\Object {
         } elseif (!$structure) {
             throw new ParsingException("Cannot parse email structure.");
         }
-        
+
         $this->parts = array();
         foreach ($structure as $partId) {
             Debugger::tryError();
@@ -102,7 +102,7 @@ class Message extends \Dogma\Object {
             }
             $this->parts[$partId] = $partData;
         }
-        
+
         mailparse_msg_free($handler);
     }
 
@@ -116,8 +116,8 @@ class Message extends \Dogma\Object {
 
         $this->addressFactory = $factory;
     }
-    
-    
+
+
     /**
      * Returns all email headers.
      * @return array
@@ -127,11 +127,11 @@ class Message extends \Dogma\Object {
             $this->headers = $this->parts[1]['headers'];
             $this->decodeHeaders($this->headers);
         }
-        
+
         return $this->headers;
     }
 
-    
+
     /**
      * Returns an email header.
      * @param string
@@ -139,7 +139,7 @@ class Message extends \Dogma\Object {
      */
     public function getHeader($name) {
         if (!$this->headers) $this->getHeaders();
-        
+
         if (isset($this->headers[$name])) {
             return $this->headers[$name];
         }
@@ -147,7 +147,7 @@ class Message extends \Dogma\Object {
         return NULL;
     }
 
-    
+
     /**
      * Return content types of body (usualy text/plain and text/html).
      * @return string[]
@@ -158,10 +158,10 @@ class Message extends \Dogma\Object {
             if (isset($part['content-disposition'])) continue;
             if (substr($part['content-type'], 0, 9) === 'multipart') continue;
         }
-        
+
         return $ct;
     }
-    
+
 
     /**
      * Returns message body of given type.
@@ -175,11 +175,11 @@ class Message extends \Dogma\Object {
         foreach ($this->parts as $part) {
             if ($type !== $part['content-type']) continue;
             if (isset($part['content-disposition'])) continue;
-            
+
             return $this->decode($this->getPartBody($part), @$part['headers']['content-transfer-encoding'] ?: '');
             break;
         }
-        
+
         return NULL;
     }
 
@@ -192,13 +192,13 @@ class Message extends \Dogma\Object {
     public function getBodyHeaders($type = self::TEXT) {
         if ($type !== 'text/plain' && $type !== 'text/html')
             throw new ParsingException('Invalid content type specified. Type can either be "text/plain" or "text/html".');
-        
+
         foreach ($this->parts as $part) {
             if ($type !== $part['content-type']) continue;
-            
+
             return @$part['headers'] ?: array();
         }
-        
+
         return array();
     }
 
@@ -212,12 +212,12 @@ class Message extends \Dogma\Object {
     public function getAttachments($contentType = NULL, $inlines = TRUE) {
         $dispositions = $inlines ? array('attachment', 'inline') : array('attachment');
         if (isset($contentType) && !is_array($contentType)) $contentType = array($contentType);
-        
+
         $attachments = array();
         foreach ($this->parts as $part) {
             if (!in_array(@$part['content-disposition'], $dispositions)) continue; // only on attachments
             if ($contentType && !in_array($part['content-type'], $contentType)) continue;
-            
+
             $attachments[] = new Attachment(
                 $this->getAttachmentData($part),
                 $this->getParsedPartHeaders($part)
@@ -227,24 +227,24 @@ class Message extends \Dogma\Object {
         return $attachments;
     }
 
-    
+
     /**
      * @param string
      * @return string|\DateTime
      */
     public function &__get($name) {
         if (!$this->headers) $this->getHeaders();
-        
+
         $name = Inflector::dasherize(Inflector::underscore($name));
         $val = isset($this->headers[$name]) ? $this->headers[$name]
             : (isset($this->headers['x-' . $name]) ? $this->headers['x-' . $name] : NULL);
-        
+
         return $val;
     }
-    
+
 
     // internals -------------------------------------------------------------------------------------------------------
-    
+
 
     /**
      * Decode message part from transfer encoding.
@@ -285,10 +285,10 @@ class Message extends \Dogma\Object {
             if (in_array($name, array('date', 'resent-date', 'delivery-date', 'expires'), TRUE)) {
                 $value = new \Dogma\DateTime($value);
                 $value->setDefaultTimezone();
-                
+
             } elseif (in_array($name, array('from', 'to', 'cc', 'bcc', 'reply-to', 'return-path', 'sender'), TRUE)) {
                 $value = self::parseAddressHeader($value);
-                
+
             } elseif (strpos($value, '=?') !== FALSE) {
                 $value = $this->decodeHeader($value);
             }
@@ -307,16 +307,16 @@ class Message extends \Dogma\Object {
         $arr = array();
         foreach ($data as $item) {
             list($name, $address, $group) = array_values($item);
-            
-            $name = $address === $name ? NULL 
+
+            $name = $address === $name ? NULL
                 : (strpos($name, '=?') !== FALSE ? $this->decodeHeader($name) : $name);
             $arr[] = call_user_func($this->addressFactory, $address, $name);
         }
 
         return $arr;
     }
-    
-    
+
+
     /**
      * @param string
      * @param string
@@ -324,7 +324,7 @@ class Message extends \Dogma\Object {
     private static function createAddress($address, $name) {
         return new Address($address, $name);
     }
-    
+
 
     /**
      * Decode email header.
@@ -337,7 +337,7 @@ class Message extends \Dogma\Object {
         $that = $this;
         $header = Strings::replace($header, '/(=\\?[^?]+\\?[^?]\\?[^?]+\\?=)/', function ($match) use ($that) {
             list($x, $charset, $encoding, $message, $y) = explode('?', $match[0]);
-            
+
             if (strtolower($encoding) === 'b') {
                 $message = base64_decode($message);
 
@@ -350,10 +350,10 @@ class Message extends \Dogma\Object {
 
             return $that->convertCharset($message, strtolower($charset));
         });
-        
+
         return $header;
     }
-    
+
 
     /**
      * @internal
@@ -367,7 +367,7 @@ class Message extends \Dogma\Object {
         return iconv('utf-8', $charset, $string);
     }
 
-    
+
     /**
      * @param array
      * @return array
@@ -386,8 +386,8 @@ class Message extends \Dogma\Object {
         unset($headers['content-base']);
         return $headers;
     }
-    
-    
+
+
     /**
      * @param array
      * @return string|NULL
@@ -395,16 +395,16 @@ class Message extends \Dogma\Object {
     private function getPartBody($part) {
         $start = $part['starting-pos-body'];
         $length = $part['ending-pos-body'] - $start;
-        
+
         if ($this->data) {
             return substr($this->data, $start, $length);
-            
+
         } else {
             $this->file->setPosition($start);
             return $this->file->read($length);
         }
     }
-    
+
 
     /**
      * Get attachment data as string or temporary File object (see File::$bigFileTreshold).
@@ -413,10 +413,10 @@ class Message extends \Dogma\Object {
      */
     private function getAttachmentData($part) {
         $encoding = array_key_exists('content-transfer-encoding', $part['headers']) ? $part['headers']['content-transfer-encoding'] : '';
-        
+
         if ($this->data) {
             return $this->decode($this->getPartBody($part), $encoding);
-            
+
         } else {
             $start = $part['starting-pos-body'];
             $length = $part['ending-pos-body'] - $start;
@@ -439,5 +439,5 @@ class Message extends \Dogma\Object {
             }
         }
     }
-    
+
 }

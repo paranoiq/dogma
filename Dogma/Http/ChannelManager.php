@@ -27,18 +27,18 @@ class ChannelManager extends \Dogma\Object {
 
     /** @var Channel[] */
     private $channels = array();
-    
+
     /** @var array ($resourceId => array($channelId, $jobName, $request)) */
     private $resources = array();
-    
 
-    
+
+
     public function __construct() {
         if (!$this->handler = curl_multi_init())
             throw new ChannelException("Cannot initialize CURL multi-request.");
     }
 
-    
+
     public function __destruct() {
         if ($this->handler) curl_multi_close($this->handler);
     }
@@ -50,8 +50,8 @@ class ChannelManager extends \Dogma\Object {
     public function getHandler() {
         return $this->handler;
     }
-    
-    
+
+
     /**
      * Set maximum of request to run paralelly.
      * @param int
@@ -59,11 +59,11 @@ class ChannelManager extends \Dogma\Object {
      */
     public function setThreadLimit($threads) {
         $this->threadLimit = abs($threads);
-        
+
         return $this;
     }
-    
-    
+
+
     /**
      * @param Channel
      * @return self
@@ -72,11 +72,11 @@ class ChannelManager extends \Dogma\Object {
         $this->channels[spl_object_hash($channel)] = $channel;
         $this->updatePriorities();
         $this->startJobs();
-        
+
         return $this;
     }
-    
-    
+
+
     public function updatePriorities() {
         $sum = 0;
         foreach ($this->channels as $channel) {
@@ -147,7 +147,7 @@ class ChannelManager extends \Dogma\Object {
             if ($err = curl_multi_remove_handle($this->handler, $minfo['handle']))
                 throw new ChannelException("CURL error when reading results: "
                     . CurlHelpers::getCurlMultiErrorName($err), $err);
-            
+
             $channel->jobFinished($name, $minfo, $request);
             unset($this->resources[$resourceId]);
         }
@@ -189,8 +189,8 @@ class ChannelManager extends \Dogma\Object {
 
         return $selected;
     }
-    
-    
+
+
     /**
      * Save data for later use.
      * @param resource
@@ -201,5 +201,5 @@ class ChannelManager extends \Dogma\Object {
     public function jobStarted($resource, $channel, $name, $request) {
         $this->resources[(string) $resource] = array(spl_object_hash($channel), $name, $request);
     }
-    
+
 }

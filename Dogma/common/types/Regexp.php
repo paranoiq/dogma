@@ -16,24 +16,24 @@ use Nette\Utils\Strings;
  * Regular expression object
  */
 class Regexp extends \Dogma\Object {
-    
+
     const
         DOLLAR_MATCH_END_ONLY = 'D',
         CASE_INSENSITIVE = 'i',
         MULTILINE = 'm',
         DOT_MATCH_EOL = 's',
         UNICODE = 'u',
-        UNGREEDY = 'U',    
+        UNGREEDY = 'U',
         IGNORE_WHITE_SPACE = 'x';
-    
-    
+
+
     /** @var string */
     private $pattern;
-    
-    
+
+
     /**
      * @param string
-     */    
+     */
     public function __construct($pattern) {
         $this->pattern = $pattern;
     }
@@ -45,8 +45,8 @@ class Regexp extends \Dogma\Object {
     public function __toString() {
         return $this->pattern;
     }
-    
-    
+
+
     /**
      * Splits string by a regular expression.
      * @param  string
@@ -56,8 +56,8 @@ class Regexp extends \Dogma\Object {
     public function split($subject, $flags = 0) {
         return Strings::split($subject, $this->pattern, $flags);
     }
-    
-    
+
+
     /**
      * Performs a regular expression match.
      * @param  string
@@ -68,8 +68,8 @@ class Regexp extends \Dogma\Object {
     public function match($subject, $flags = 0, $offset = 0) {
         return Strings::match($subject, $this->pattern, $flags, $offset);
     }
-    
-    
+
+
     /**
      * Performs a global regular expression match.
      * @param  string
@@ -80,8 +80,8 @@ class Regexp extends \Dogma\Object {
     public function matchAll($subject, $flags = 0, $offset = 0) {
         return Strings::matchAll($subject, $this->pattern, $flags, $offset);
     }
-    
-    
+
+
     /**
      * Perform a regular expression search and replace.
      * @param  string
@@ -92,5 +92,5 @@ class Regexp extends \Dogma\Object {
     public function replace($subject, $replacement = NULL, $limit = -1) {
         return Strings::replace($subject, $this->pattern, $replacement, $limit);
     }
-    
+
 }

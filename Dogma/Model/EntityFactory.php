@@ -12,14 +12,14 @@ class EntityFactory extends \Dogma\Object {
 
     /** @var array ($entityClass => array($propertyName => array($propertyClass, array($paramName => $paramType)))) */
     private $meta = array();
-    
+
     /** @var ClassType[] */
     private $reflections;
 
     /** @var \Nette\DI\Container */
     //private $context;
-    
-    
+
+
     //public function __construct(\Nette\DI\Container $context) {
     //    $this->context = $context;
     //}
@@ -33,7 +33,7 @@ class EntityFactory extends \Dogma\Object {
     //public function createEntity(ActiveRow $row, $class) {
     //    return $this->context->createInstance($class, array($row));
     //}
-    
+
 
     /**
      * @return string[]
@@ -139,8 +139,8 @@ class EntityFactory extends \Dogma\Object {
 
         return $instance;
     }
-    
-    
+
+
     /**
      * @param object|string
      * @return \Nette\Reflection\ClassType
@@ -148,10 +148,10 @@ class EntityFactory extends \Dogma\Object {
     public function getReflection($class) {
         if (is_object($class))
             $class = get_class($class);
-            
+
         if (!isset($this->reflections[$class]))
             $this->reflections[$class] = new ClassType($class);
-        
+
         return $this->reflections[$class];
     }
 
@@ -168,8 +168,8 @@ class EntityFactory extends \Dogma\Object {
 
         return $namespace . $type;
     }
-    
-    
+
+
     /**
      * @param string
      * @param array
@@ -185,5 +185,5 @@ class EntityFactory extends \Dogma\Object {
             return $ref->newInstanceArgs($args);
         }
     }
-    
+
 }

@@ -14,7 +14,7 @@ $request = array();
 
 foreach ($options as $option => $type) {
     if (!isset($_GET[$option])) continue;
-    
+
     // select random value within range. eg: "100K-20M" for response between 100 kB and 20 MB
     if ($type === 'range') {
         $mm = explode('-', strtoupper($_GET[$option]));
@@ -22,27 +22,27 @@ foreach ($options as $option => $type) {
             $min = abs((int) $mm[0]);
             if (strstr($mm[0], 'K') !== FALSE) $min *= 1000;
             if (strstr($mm[0], 'M') !== FALSE) $min *= 1000000;
-            
+
             $max = abs((int) $mm[1]);
             if (strstr($mm[1], 'K') !== FALSE) $max *= 1000;
             if (strstr($mm[1], 'M') !== FALSE) $max *= 1000000;
-            
+
             if ($min > $max) list($min, $max) = array($max, $min);
-            
+
             $request[$option] = rand($min, $max);
         } else {
             $size = abs((int) $_GET[$option]);
             if (strstr($_GET[$option], 'K') !== FALSE) $size *= 1000;
             if (strstr($_GET[$option], 'M') !== FALSE) $size *= 1000000;
-            
+
             $request[$option] = $size;
         }
     }
-    
+
     // select random value from given options. every minus sign after value means 10x lover probability
     if ($type === 'choose') {
         $arr = explode(',', $_GET[$option]);
-        
+
         if (count($arr) > 1) {
             $rats = array();
             $sum = 0.0;
@@ -52,7 +52,7 @@ foreach ($options as $option => $type) {
                 $rats[$status] = $ratio;
                 $sum += $ratio;
             }
-            
+
             $rand = rand(0, $sum * 1000000000) / 1000000000;
             $selected = 0;
             foreach ($rats as $status => $ratio) {
@@ -62,7 +62,7 @@ foreach ($options as $option => $type) {
                 }
                 $rand -= $ratio;
             }
-            
+
             $request['status'] = $selected ?: key($rats);
         } else {
             $request[$option] = (int) $_GET[$option];
@@ -79,7 +79,7 @@ if (!empty($request['redir'])) {
     $request['redir']--;
     if ($request['status'] === 200) unset($request['status']);
     if ($request['redir'] < 1) unset($request['redir']);
-    
+
     $urlx = explode('?', $_SERVER["REQUEST_URI"]);
     $url = $urlx[0] . '?' . http_build_query($request);
     header($protocol . ' ' . 301, TRUE, 301);
