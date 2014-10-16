@@ -112,10 +112,10 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
      */
     public function slice($offset, $limit, $yourself = FALSE) {
         if ($yourself) {
-            $this->data = array_slice($this->data, $offset, $limit, $this->preserverKeys);
+            $this->data = array_slice($this->data, $offset, $limit, $this->preserveKeys);
             return $this;
         } else {
-            return new static(array_slice($this->data, $offset, $limit, $this->preserverKeys));
+            return new static(array_slice($this->data, $offset, $limit, $this->preserveKeys));
         }
     }
 
@@ -199,7 +199,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
      * Reverse the order of items.
      */
     public function reverse() {
-        $this->data = array_reverse($this->data, $this->preserverKeys);
+        $this->data = array_reverse($this->data, $this->preserveKeys);
     }
 
 

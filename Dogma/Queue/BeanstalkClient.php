@@ -141,7 +141,7 @@ class BeanstalkClient extends \Dogma\Object {
      */
     private function disconnect() {
         if (is_resource($this->connection)) {
-            !fclose($this->connection);
+            fclose($this->connection);
         }
 
         $this->connection = NULL;

@@ -49,7 +49,7 @@ class Collection extends ArrayObject {
      * Returns name of accepted class.
      * @return string
      */
-    public function getAcceptedClass($className) {
+    public function getAcceptedClass() {
         return $this->accepted;
     }
 

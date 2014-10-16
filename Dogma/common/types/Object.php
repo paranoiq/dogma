@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-use Nette\ObjectMixin;
+use Nette\Utils\ObjectMixin;
 use Nette\MemberAccessException;
 
 
