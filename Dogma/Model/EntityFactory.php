@@ -53,15 +53,15 @@ class EntityFactory extends \Dogma\Object {
             ) {
                 $type = $this->getClassName($ns, $type);
 
-                if ($meta === TRUE) {
-                    $props[$property->getName()] = array($type, array($property->getName() => NULL));
+                if ($meta === true) {
+                    $props[$property->getName()] = array($type, array($property->getName() => null));
 
                 } else {
                     $params = array();
                     foreach ($meta as $param) {
                         @list($a, $b) = explode(' ', $param);
                         $paramName = $b ?: $a;
-                        $paramType = $b ? $a : NULL;
+                        $paramType = $b ? $a : null;
                         $params[str_replace('$', '', $paramName)] = $paramType;
                     }
 
@@ -96,7 +96,7 @@ class EntityFactory extends \Dogma\Object {
 
         $args = array();
         foreach ($params as $paramName => $paramType) {
-            $args[] = ($paramType === NULL)
+            $args[] = ($paramType === null)
                 ? $row[Inflector::underscore($paramName)]
                 : $this->createInstance($paramType, array($row[Inflector::underscore($paramName)]));
         }

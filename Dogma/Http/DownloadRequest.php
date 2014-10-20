@@ -81,7 +81,7 @@ class DownloadRequest extends Request {
      * @param string
      * @return FileResponse
      */
-    public function execute($urlSuffix = NULL, $fileName = NULL) {
+    public function execute($urlSuffix = null, $fileName = null) {
         $fileName = $this->prepare($urlSuffix, $fileName);
         $response = curl_exec($this->curl);
         $error = curl_errno($this->curl);
@@ -98,7 +98,7 @@ class DownloadRequest extends Request {
      * @param bool
      * @return string downloaded file name
      */
-    public function prepare($urlSuffix = NULL, $fileName = NULL) {
+    public function prepare($urlSuffix = null, $fileName = null) {
         parent::prepare($urlSuffix);
 
         if (is_null($fileName)) $fileName = $this->fileName;
@@ -109,12 +109,12 @@ class DownloadRequest extends Request {
         }
 
         $this->file = fopen($this->downloadDir . "/" . $fileName . $this->fileSuffix . ".tmp", 'wb');
-        if ($this->file === FALSE)
+        if ($this->file === false)
             throw new RequestException("File $fileName cannot be open!");
 
 
         $this->setOption(CURLOPT_FILE, $this->file);
-        $this->setOption(CURLOPT_BINARYTRANSFER, TRUE);
+        $this->setOption(CURLOPT_BINARYTRANSFER, true);
 
         return $fileName;
     }
@@ -131,7 +131,7 @@ class DownloadRequest extends Request {
      */
     public function createResponse($response, $error, $fileName) {
         $info = curl_getinfo($this->curl);
-        if ($info === FALSE)
+        if ($info === false)
             throw new RequestException("Info cannot be obtained from CURL.");
 
         fclose($this->file);

@@ -34,7 +34,7 @@ function arr() {
 
 if (!function_exists('is_traversable')) {
     /**
-     * Returns TRUE if variable is array or traversable object.
+     * Returns true if variable is array or traversable object.
      *
      * @param mixed
      * @return boolean

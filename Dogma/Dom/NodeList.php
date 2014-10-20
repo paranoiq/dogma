@@ -69,7 +69,7 @@ class NodeList extends \Dogma\Object implements \Countable, \Iterator {
 
     public function valid() {
         // PHP bug - cannot iterate through items
-        return $this->nodeList->item($this->offset) !== NULL;
+        return $this->nodeList->item($this->offset) !== null;
     }
 
 

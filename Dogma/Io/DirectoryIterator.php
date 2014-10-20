@@ -26,7 +26,7 @@ class DirectoryIterator extends FilesystemIterator {
      * @param string
      * @param int
      */
-    public function __construct($path, $flags = NULL) {
+    public function __construct($path, $flags = null) {
         if (isset($flags))
             $flags = FilesystemIterator::KEY_AS_PATHNAME | FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::SKIP_DOTS;
 

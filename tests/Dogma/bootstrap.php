@@ -14,9 +14,9 @@ require __DIR__ . '/../../../nette/Nette/loader.php';
 
 // configure environment
 error_reporting(E_ALL | E_STRICT);
-ini_set('display_errors', TRUE);
-ini_set('html_errors', FALSE);
-ini_set('log_errors', FALSE);
+ini_set('display_errors', true);
+ini_set('html_errors', false);
+ini_set('log_errors', false);
 
 
 // create temporary directory
@@ -30,7 +30,7 @@ set_error_handler(function($severity, $message, $file, $line) {
 		echo ("Error: $message in $file:$line");
 		exit(TestCase::CODE_ERROR);
 	}
-	return FALSE;
+	return false;
 });
 
 

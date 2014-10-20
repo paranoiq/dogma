@@ -54,7 +54,7 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
      * @return static
      */
     public static function getInstance() {
-        if (self::$instance === NULL) {
+        if (self::$instance === null) {
             self::$instance = new static;
         }
         return self::$instance;

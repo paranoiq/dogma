@@ -18,10 +18,10 @@ use Dogma\Http;
 $manager = new Http\ChannelManager;
 
 $requestA = new Http\DownloadRequest('http://lh/vsp/dogma/tests/Dogma/Http/responder.php', __DIR__);
-$requestA->setFollowRedirects(TRUE);
+$requestA->setFollowRedirects(true);
 
 $requestB = new Http\Request('http://lh/vsp/dogma/tests/Dogma/Http/responder.php');
-$requestB->setFollowRedirects(TRUE);
+$requestB->setFollowRedirects(true);
 
 $manager->addChannel($channelA = new Http\Channel($manager, $requestA));
 $manager->addChannel($channelB = new Http\Channel($manager, $requestB));

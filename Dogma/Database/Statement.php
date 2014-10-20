@@ -35,13 +35,13 @@ class Statement extends \Nette\Database\Statement {
      * @return array
      */
     public function normalizeRow($row) {
-        if ($this->types === NULL)
+        if ($this->types === null)
             $this->types = $this->detectColumnTypes();
 
         // convert DATETIME, DATE and SET
         foreach ($this->types as $key => $type) {
             $value = $row[$key];
-            if ($value === NULL || $value === FALSE || $type === IReflection::FIELD_TEXT) {
+            if ($value === null || $value === false || $type === IReflection::FIELD_TEXT) {
 
             } elseif ($type === IReflection::FIELD_INTEGER) {
                 $row[$key] = is_float($tmp = $value * 1) ? $value : $tmp;

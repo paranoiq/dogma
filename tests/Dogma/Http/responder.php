@@ -20,20 +20,20 @@ foreach ($options as $option => $type) {
         $mm = explode('-', strtoupper($_GET[$option]));
         if (count($mm) > 1) {
             $min = abs((int) $mm[0]);
-            if (strstr($mm[0], 'K') !== FALSE) $min *= 1000;
-            if (strstr($mm[0], 'M') !== FALSE) $min *= 1000000;
+            if (strstr($mm[0], 'K') !== false) $min *= 1000;
+            if (strstr($mm[0], 'M') !== false) $min *= 1000000;
 
             $max = abs((int) $mm[1]);
-            if (strstr($mm[1], 'K') !== FALSE) $max *= 1000;
-            if (strstr($mm[1], 'M') !== FALSE) $max *= 1000000;
+            if (strstr($mm[1], 'K') !== false) $max *= 1000;
+            if (strstr($mm[1], 'M') !== false) $max *= 1000000;
 
             if ($min > $max) list($min, $max) = array($max, $min);
 
             $request[$option] = rand($min, $max);
         } else {
             $size = abs((int) $_GET[$option]);
-            if (strstr($_GET[$option], 'K') !== FALSE) $size *= 1000;
-            if (strstr($_GET[$option], 'M') !== FALSE) $size *= 1000000;
+            if (strstr($_GET[$option], 'K') !== false) $size *= 1000;
+            if (strstr($_GET[$option], 'M') !== false) $size *= 1000000;
 
             $request[$option] = $size;
         }
@@ -82,7 +82,7 @@ if (!empty($request['redir'])) {
 
     $urlx = explode('?', $_SERVER["REQUEST_URI"]);
     $url = $urlx[0] . '?' . http_build_query($request);
-    header($protocol . ' ' . 301, TRUE, 301);
+    header($protocol . ' ' . 301, true, 301);
     header("Location: " . $url);
     exit;
 }
@@ -96,7 +96,7 @@ if (empty($request['status'])) $request['status'] = 200;
 
 // response status
 if ($request['status'] !== 200) {
-    header($protocol . ' ' . $request['status'], TRUE, $request['status']);
+    header($protocol . ' ' . $request['status'], true, $request['status']);
 }
 
 

@@ -21,7 +21,7 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
     private $counter = 0;
 
 
-    /*public function logQuery(\Nette\Database\Statement $result, array $params = NULL) {
+    /*public function logQuery(\Nette\Database\Statement $result, array $params = null) {
         $this->counter++;
         if ($this->counter > $this->maxQueries) return;
 
@@ -45,14 +45,14 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
     public $name;
 
     /** @var bool|string explain queries? */
-    public $explain = TRUE;
+    public $explain = true;
 
     /** @var bool */
-    public $disabled = FALSE;
+    public $disabled = false;
 
 
 
-    public function logQuery(Nette\Database\Statement $result, array $params = NULL)
+    public function logQuery(Nette\Database\Statement $result, array $params = null)
     {
         $this->counter++;
         if ($this->counter > $this->maxQueries) return;
@@ -60,8 +60,8 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
         if ($this->disabled) {
             return;
         }
-        $source = NULL;
-        foreach (debug_backtrace(FALSE) as $row) {
+        $source = null;
+        foreach (debug_backtrace(false) as $row) {
             if (isset($row['file']) && is_file($row['file'])
                 && strpos($row['file'], NETTE_DIR . DIRECTORY_SEPARATOR) !== 0
                 && strpos($row['file'], DOGMA_DIR . DIRECTORY_SEPARATOR) !== 0
@@ -103,13 +103,13 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
 
     public function getPanel()
     {
-        $this->disabled = TRUE;
+        $this->disabled = true;
         $s = '';
         $h = 'htmlSpecialChars';
         foreach ($this->queries as $i => $query) {
             list($sql, $params, $time, $rows, $connection, $source) = $query;
 
-            $explain = NULL; // EXPLAIN is called here to work SELECT FOUND_ROWS()
+            $explain = null; // EXPLAIN is called here to work SELECT FOUND_ROWS()
             if ($this->explain && preg_match('#\s*\(?\s*SELECT\s#iA', $sql)) {
                 try {
                     $cmd = is_string($this->explain) ? $this->explain : 'EXPLAIN';
@@ -147,7 +147,7 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
 
             $s .= '</td><td>';
             foreach ($params as $param) {
-                $s .= Debugger::dump($param, TRUE);
+                $s .= Debugger::dump($param, true);
             }
 
             $s .= '</td><td>' . $rows . '</td></tr>';

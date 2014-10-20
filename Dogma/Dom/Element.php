@@ -74,7 +74,7 @@ class Element extends \Dogma\Object {
      */
     public function remove() {
         $this->element->parentNode->removeChild($this->element);
-        return TRUE;
+        return true;
     }
 
 

@@ -19,7 +19,7 @@ class DateTime extends \DateTime implements SimpleValueObject {
      * @param string
      * @param \DateTimeZone
      */
-    public function __construct($time = 'now', \DateTimeZone $timezone = NULL) {
+    public function __construct($time = 'now', \DateTimeZone $timezone = null) {
         if ($time instanceof \DateTime)
             /** @noinspection PhpUndefinedMethodInspection */
             $time = $time->format("Y-m-d H:i:s");
@@ -47,7 +47,7 @@ class DateTime extends \DateTime implements SimpleValueObject {
      * @param \DateTimeZone
      * @return self
      */
-    public static function createFromFormat($format, $time, /*\DateTimeZone*/ $timezone = NULL) {
+    public static function createFromFormat($format, $time, /*\DateTimeZone*/ $timezone = null) {
         if ($timezone) {
             $date = new static(parent::createFromFormat($format, $time, $timezone), $timezone);
         } else {

@@ -13,9 +13,9 @@ namespace Dogma;
 /**
  * Type validator/normalizer/formater.
  * Default formats (when formating bool or null, first case is used):
- * - TRUE: true, t, on, yes, y
- * - FALSE: false, f, off, no, n
- * - NULL: null, nil, n/a, na, unknown, undefined
+ * - true: true, t, on, yes, y
+ * - false: false, f, off, no, n
+ * - null: null, nil, n/a, na, unknown, undefined
  * - Date: Y-m-d
  * - DateTime: Y-m-d H:i:s
  * - decimal point: .
@@ -38,9 +38,9 @@ class Normalizer extends \Dogma\Object {
     private $formats = array(
         'date' => 'Y-m-d',
         'dateTime' => 'Y-m-d H:i:s',
-        'true' => array('TRUE', 't', 'on', 'yes', 'y'),
-        'false' => array('FALSE', 'f', 'off', 'no', 'n'),
-        'null' => array('NULL', 'nil', 'n/a', 'na', 'unknown', 'undefined'),
+        'true' => array('true', 't', 'on', 'yes', 'y'),
+        'false' => array('false', 'f', 'off', 'no', 'n'),
+        'null' => array('null', 'nil', 'n/a', 'na', 'unknown', 'undefined'),
         'decimalPoint' => '.',
         'thousandSeparator' => '',
         'setSeparator' => ',',
@@ -112,19 +112,19 @@ class Normalizer extends \Dogma\Object {
      * @return mixed
      */
     public function autodetect($value) {
-        if (NULL !== $val = $this->detectInt($value)) {
+        if (null !== $val = $this->detectInt($value)) {
             return $val;
 
-        } elseif (NULL !== $val = $this->detectFloat($value)) {
+        } elseif (null !== $val = $this->detectFloat($value)) {
             return $val;
 
-        } elseif (NULL !== $val = $this->detectBool($value)) {
+        } elseif (null !== $val = $this->detectBool($value)) {
             return $val;
 
-        } elseif (NULL !== $val = $this->detectDate($value)) {
+        } elseif (null !== $val = $this->detectDate($value)) {
             return $val;
 
-        } elseif (NULL !== $val = $this->detectDateTime($value)) {
+        } elseif (null !== $val = $this->detectDateTime($value)) {
             return $val;
 
         }
@@ -147,23 +147,23 @@ class Normalizer extends \Dogma\Object {
 
 
     /**
-     * Detects NULL from string. Returns TRUE on match, FALSE otherwise.
+     * Detects null from string. Returns true on match, false otherwise.
      * @param string
      * @return bool
      */
     public function detectNull($value) {
-        if (is_null($value)) return TRUE;
+        if (is_null($value)) return true;
 
         foreach ($this->formats['null'] as $v) {
-            if (preg_match('/^' . preg_quote($v, '/') . '$/iu', $value)) return TRUE;
+            if (preg_match('/^' . preg_quote($v, '/') . '$/iu', $value)) return true;
         }
 
-        return FALSE;
+        return false;
     }
 
 
     /**
-     * Detects NULL from string. Returns TRUE on success, FALSE otherwise.
+     * Detects null from string. Returns true on success, false otherwise.
      * @param string
      * @return bool
      */
@@ -171,13 +171,13 @@ class Normalizer extends \Dogma\Object {
         if (is_bool($value)) return $value;
 
         foreach ($this->formats['true'] as $v) {
-            if (preg_match('/^' . preg_quote($v, '/') . '$/iu', $value)) return TRUE;
+            if (preg_match('/^' . preg_quote($v, '/') . '$/iu', $value)) return true;
         }
         foreach ($this->formats['false'] as $v) {
-            if (preg_match('/^' . preg_quote($v, '/') . '$/iu', $value)) return FALSE;
+            if (preg_match('/^' . preg_quote($v, '/') . '$/iu', $value)) return false;
         }
 
-        return NULL;
+        return null;
     }
 
 
@@ -189,7 +189,7 @@ class Normalizer extends \Dogma\Object {
         if (is_int($value)) return $value;
 
         if (!preg_match('/^-?[0-9]{1,3}(' . preg_quote($this->formats['thousandSeparator'], '/') . '[0-9]{3})*$/', $value))
-            return NULL;
+            return null;
 
         return (int) str_replace($this->formats['thousandSeparator'], '', $value);
     }
@@ -206,7 +206,7 @@ class Normalizer extends \Dogma\Object {
         if (!preg_match('/^-?[0-9]{1,3}(?:' .
             preg_quote($this->formats['thousandSeparator'], '/') . '[0-9]{3})*(?:' .
             preg_quote($this->formats['decimalPoint'], '/') . '[0-9]+)?([Ee][+-][0-9]+)?$/', $value))
-            return NULL;
+            return null;
 
         return (float) str_replace(
             array($this->formats['thousandSeparator'], $this->formats['decimalPoint']), array('', '.'), $value);
@@ -222,7 +222,7 @@ class Normalizer extends \Dogma\Object {
         if ($value instanceof DateTime) return new Date($value);
 
         if (!$date = Date::createFromFormat($this->formats['date'], $value))
-            return NULL;
+            return null;
 
         return $date;
     }
@@ -237,7 +237,7 @@ class Normalizer extends \Dogma\Object {
         if ($value instanceof DateTime) return $value;
 
         if (!$datetime = DateTime::createFromFormat($this->formats['dateTime'], $value))
-            return NULL;
+            return null;
 
         return $datetime;
     }
@@ -250,37 +250,37 @@ class Normalizer extends \Dogma\Object {
      * @param bool
      * @return mixed
      */
-    public function normalize($value, $type, $nullable = FALSE) {
-        if ($nullable && $this->detectNull($value) === TRUE) return NULL;
+    public function normalize($value, $type, $nullable = false) {
+        if ($nullable && $this->detectNull($value) === true) return null;
 
         switch ($type) {
             case Type::INT:
                 $value = $this->detectInt(trim($value));
-                if ($value === NULL)
+                if ($value === null)
                     throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to integer.");
                 return $value;
 
             case Type::FLOAT:
                 $value = $this->detectFloat($value);
-                if ($value === NULL)
+                if ($value === null)
                     throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to float.");
                 return $value;
 
             case Type::BOOL:
                 $value = $this->detectBool($value);
-                if ($value === NULL)
+                if ($value === null)
                     throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to boolean.");
                 return $value;
 
             case Type::DATE:
                 $value = $this->detectDate($value);
-                if ($value === NULL)
+                if ($value === null)
                     throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to Date.");
                 return $value;
 
             case Type::DATETIME:
                 $value = $this->detectDateTime($value);
-                if ($value === NULL)
+                if ($value === null)
                     throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to DateTime.");
                 return $value;
 
@@ -302,7 +302,7 @@ class Normalizer extends \Dogma\Object {
      * @param bool
      * @return string
      */
-    public function format($value, $type = NULL, $nullable = FALSE) {
+    public function format($value, $type = null, $nullable = false) {
 
         if (is_int($value) || is_numeric($value) && $type === Type::INT) {
             return number_format((int) $value, 0, '.', $this->formats['thousandSeparator']);

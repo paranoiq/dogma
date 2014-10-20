@@ -38,6 +38,6 @@ interface IMetadataStorage {
      * @param string
      * @param \DateTime|null
      */
-    function clear($queue, \DateTime $time = NULL);
+    function clear($queue, \DateTime $time = null);
 
 }

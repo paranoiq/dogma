@@ -21,7 +21,7 @@ class CurlHelpers {
      * @return string
      */
     public static function getCurlErrorName($error) {
-        $consts = get_defined_constants(TRUE);
+        $consts = get_defined_constants(true);
         foreach ($consts['curl'] as $name => $value) {
             if ($value === $error && substr($name, 0, 6) === 'CURLE_') return $name;
         }
@@ -35,7 +35,7 @@ class CurlHelpers {
      * @return string
      */
     public static function getCurlMultiErrorName($error) {
-        $consts = get_defined_constants(TRUE);
+        $consts = get_defined_constants(true);
         $curl = $consts['curl'];
         foreach ($curl as $name => $value) {
             if ($value === $error && substr($name, 0, 6) === 'CURLM_') return $name;
@@ -64,12 +64,12 @@ class CurlHelpers {
      * @return int
      */
     public static function getCurlOptionName($option) {
-        $consts = get_defined_constants(TRUE);
+        $consts = get_defined_constants(true);
         foreach ($consts['curl'] as $name => $value) {
             if ($value === $option && substr($name, 0, 8) === 'CURLOPT_') return $name;
         }
 
-        return NULL;
+        return null;
     }
 
 
@@ -78,7 +78,7 @@ class CurlHelpers {
 
     /**
      * @param int
-     * @return string|NULL
+     * @return string|null
      */
     public static function getCurlInfoName($num) {
         static $translate = array(
@@ -107,13 +107,13 @@ class CurlHelpers {
         // CURLINFO_PRIVATE
         // certinfo
 
-        $consts = get_defined_constants(TRUE);
+        $consts = get_defined_constants(true);
         foreach ($consts['curl'] as $name => $value) {
             if ($value === $num && substr($name, 0, 9) === 'CURLINFO_')
                 return $translate[$name];
         }
 
-        return NULL;
+        return null;
     }
 
 

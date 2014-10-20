@@ -59,7 +59,7 @@ abstract class Set implements SimpleValueObject {
 
         foreach ($set as $value) {
             $key = array_search($value, $this->set);
-            if ($key !== FALSE) {
+            if ($key !== false) {
                 unset($this->set[$key]);
             }
         }
@@ -77,10 +77,10 @@ abstract class Set implements SimpleValueObject {
 
         foreach ($set as $value) {
             if (!in_array($value, $this->set))
-                return FALSE;
+                return false;
         }
 
-        return TRUE;
+        return true;
     }
 
 
@@ -143,9 +143,9 @@ abstract class Set implements SimpleValueObject {
         if (is_array($value)) {
             foreach ($value as $val) {
                 if (!self::isValid($val))
-                    return FALSE;
+                    return false;
             }
-            return TRUE;
+            return true;
         }
 
         return in_array($value, self::$values[$class]);

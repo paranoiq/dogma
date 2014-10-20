@@ -15,11 +15,11 @@ $processor = $connection->getSqlPreprocessor();
 
 
 Assert::same(
-	array("UPDATE table WHERE (`a` IS NULL AND `b`=123 AND `c` LIKE 'text' AND `d` IN (123, 456))", array()), 
-	$processor->process("UPDATE table WHERE ?", 
+	array("UPDATE table WHERE (`a` IS NULL AND `b`=123 AND `c` LIKE 'text' AND `d` IN (123, 456))", array()),
+	$processor->process("UPDATE table WHERE ?",
 		array(
 			array(
-				'a' => NULL,
+				'a' => null,
 				'b' => 123,
 				'c' => 'text',
 				'd' => array(123, 456))
@@ -28,11 +28,11 @@ Assert::same(
 );
 
 Assert::same(
-	array("UPDATE table WHERE (`a` IS NULL AND `b`=123 AND `c` LIKE 'text' AND `d` IN (123, 456))", array()), 
-	$processor->process("UPDATE table WHERE ", 
+	array("UPDATE table WHERE (`a` IS NULL AND `b`=123 AND `c` LIKE 'text' AND `d` IN (123, 456))", array()),
+	$processor->process("UPDATE table WHERE ",
 		array(
 			array(
-				'a' => NULL,
+				'a' => null,
 				'b' => 123,
 				'c' => 'text',
 				'd' => array(123, 456))

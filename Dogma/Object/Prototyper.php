@@ -31,7 +31,7 @@ final class Prototyper {
             unset($data[$orig]);
         }
 
-        self::injectData($object, $data, FALSE);
+        self::injectData($object, $data, false);
         if ($data)
             throw new \InvalidArgumentException('Prototyper: Incomplete data injection.');
 
@@ -64,7 +64,7 @@ final class Prototyper {
      * @param bool   set fo false if you want inject private property without the concern of definer class
      * @return object
      */
-    public static function injectData($object, &$data, $respectPrivatePropertyDefiner = TRUE) {
+    public static function injectData($object, &$data, $respectPrivatePropertyDefiner = true) {
         list($class, $properties) = ReflectionCache::getClassAndPropertyReflections(get_class($object));
 
         do {
@@ -74,13 +74,13 @@ final class Prototyper {
                 $value = $respectPrivatePropertyDefiner && $property->isPrivate()
                     ? self::extractPrivateValue($data, $property->getName(), $class->getName())
                     : self::extractValue($data, $property->getName());
-                if ($value !== NULL) {
+                if ($value !== null) {
                     $property->setValue($object, $value);
                 }
             }
             if (!$class = $class->getParentClass()) break;
             list($class, $properties) = ReflectionCache::getClassAndPropertyReflections($class->getName());
-        } while (TRUE);
+        } while (true);
 
         return $object;
     }

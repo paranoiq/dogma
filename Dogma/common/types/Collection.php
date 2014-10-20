@@ -18,7 +18,7 @@ class Collection extends ArrayObject {
     protected $accepted;
 
 
-    public function __construct($array = array(), $acceptedClass = NULL) {
+    public function __construct($array = array(), $acceptedClass = null) {
         parent::__construct($array);
 
         if ($acceptedClass) {

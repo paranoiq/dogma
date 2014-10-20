@@ -102,9 +102,9 @@ class ChannelManager extends \Dogma\Object {
      * @return int
      */
     private function waitForResult() {
-        $run = FALSE;
+        $run = false;
         foreach ($this->channels as $channel) {
-            if (!$channel->isFinished()) $run = TRUE;
+            if (!$channel->isFinished()) $run = true;
         }
         if (!$run) return 0;
 
@@ -168,12 +168,12 @@ class ChannelManager extends \Dogma\Object {
 
     /**
      * Select channel to spawn new connection, taking in account channel priorities.
-     * @return int|NULL
+     * @return int|null
      */
     private function selectChannel() {
-        if (count($this->resources) >= $this->threadLimit) return NULL;
+        if (count($this->resources) >= $this->threadLimit) return null;
 
-        $selected = NULL;
+        $selected = null;
         $ratio = -1000000;
         foreach ($this->channels as $cid => & $channel) {
             if ($selected === $cid) continue;

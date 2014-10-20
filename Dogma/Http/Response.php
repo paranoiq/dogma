@@ -124,7 +124,7 @@ class Response extends \Dogma\Object {
      * @param string|int
      * @return string|array
      */
-    public function getInfo($name = NULL) {
+    public function getInfo($name = null) {
         if (is_null($name)) return $this->info;
 
         if (is_int($name)) {
@@ -157,7 +157,7 @@ class Response extends \Dogma\Object {
         $headers = Strings::split(substr($this->response, 0, $this->info['header_size']), "~[\n\r]+~", PREG_SPLIT_NO_EMPTY);
         $this->headers = static::parseHeaders($headers);
         $this->body = substr($this->response, $this->info['header_size']);
-        $this->response = NULL;
+        $this->response = null;
     }
 
 

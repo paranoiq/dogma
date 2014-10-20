@@ -21,7 +21,7 @@ class Document extends \DomDocument {
      * @param string
      * @param string
      */
-    public function __construct($document = NULL, $version = '1.0', $encoding = 'utf-8') {
+    public function __construct($document = null, $version = '1.0', $encoding = 'utf-8') {
         parent::__construct($version, $encoding);
 
         if (!$document) return;
@@ -112,7 +112,7 @@ class Document extends \DomDocument {
     public function getElementById($id) {
         $el = parent::getElementById($id);
 
-        return $el ? $this->wrap($el) : NULL;
+        return $el ? $this->wrap($el) : null;
     }
 
 

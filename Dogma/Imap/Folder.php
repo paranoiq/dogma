@@ -159,7 +159,7 @@ class Folder extends \Dogma\Object {
      * @param bool
      * @return string[]
      */
-    public function listSubfolders($filter = "*", $all = TRUE) {
+    public function listSubfolders($filter = "*", $all = true) {
         return $this->imap->listFolders($this->name . '/' . $filter, $all);
     }
 
@@ -169,7 +169,7 @@ class Folder extends \Dogma\Object {
      * @param bool
      * @return Folder[]
      */
-    public function getSubfolders($filter = "*", $all = TRUE) {
+    public function getSubfolders($filter = "*", $all = true) {
         return $this->imap->getFolders($this->name . '/' . $filter, $all);
     }
 

@@ -42,13 +42,13 @@ class EntityMapper extends \Nette\Object {
      * @return ActiveEntity
      */
     public function getInstance($table, $row) {
-        if ($row === FALSE)
-            return FALSE;
+        if ($row === false)
+            return false;
 
         if (array_key_exists($table, $this->map)) {
             $class = $this->map[$table];
             if (is_subclass_of($class, '\Dogma\Model\EntityRepository')) {
-                $class = $this->context->getByType($class, TRUE)->getEntityClass($row);
+                $class = $this->context->getByType($class, true)->getEntityClass($row);
             }
         } else {
             $class = '\Dogma\Model\ActiveEntity';

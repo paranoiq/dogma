@@ -44,7 +44,7 @@ final class ReflectionCache {
         if (!isset(self::$classes[$className])) {
             $class = self::getClassReflection($className);
             if ($property = $class->getProperty($propertyName)) {
-                $property->setAccessible(TRUE);
+                $property->setAccessible(true);
                 self::$properties[$className][$propertyName] = $property;
             } else {
                 throw new \Nette\MemberAccessException("PropertyCache: Class '$className' has not a property named '$propertyName'.");
@@ -64,7 +64,7 @@ final class ReflectionCache {
             $class = self::getClassReflection($className);
             $properties = $class->getProperties();
             foreach ($properties as $property) {
-                $property->setAccessible(TRUE);
+                $property->setAccessible(true);
             }
             self::$allProps[$className] = $properties;
         }

@@ -19,14 +19,14 @@ namespace Dogma;
 class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregate, \ArrayAccess {
 
     /** Apply operation on yourself */
-    const YOURSELF = TRUE;
+    const YOURSELF = true;
 
 
     /** @var array */
     protected $data = array();
 
     /** @var bool */
-    public $preserveKeys = FALSE;
+    public $preserveKeys = false;
 
 
     /**
@@ -40,7 +40,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
             $this->data = $array->toArray();
 
         } elseif ($array instanceof \Traversable) {
-            $this->data = iterator_to_array($array, TRUE);
+            $this->data = iterator_to_array($array, true);
 
         } else {
             throw new \InvalidArgumentException("ArrayObject: First parameter of constructor must be an array or traversable object.");
@@ -52,7 +52,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
      * Set array to preserve-keys mode.
      * @param bool
      */
-    public function setPreserveKeys($preserveKeys = TRUE) {
+    public function setPreserveKeys($preserveKeys = true) {
         $this->preserveKeys = $preserveKeys;
     }
 
@@ -70,7 +70,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
      * Get values of array (reindex)
      * @param bool
      */
-    public function values($yourself = FALSE) {
+    public function values($yourself = false) {
         if ($yourself) {
             $this->data = array_values($this->data);
         } else {
@@ -84,7 +84,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
      * @param callback
      * @param mixed
      */
-    public function each($callback, $param = NULL) {
+    public function each($callback, $param = null) {
         array_walk($this->data, $callback, $param);
     }
 
@@ -110,7 +110,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
      * @param bool
      * @return self
      */
-    public function slice($offset, $limit, $yourself = FALSE) {
+    public function slice($offset, $limit, $yourself = false) {
         if ($yourself) {
             $this->data = array_slice($this->data, $offset, $limit, $this->preserveKeys);
             return $this;
@@ -126,7 +126,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
      * @param bool
      * @return self
      */
-    public function filter($filter, $yourself = FALSE) {
+    public function filter($filter, $yourself = false) {
         if (is_callable($filter)) {
             // ok
         } elseif ($filter instanceof Regexp) {
@@ -153,10 +153,10 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
      * @param bool
      * @return self
      */
-    public function unique($collator = NULL, $yourself = NULL) {
+    public function unique($collator = null, $yourself = null) {
         if (is_bool($collator) && is_null($yourself)) {
             $yourself = $collator;
-            $collator = NULL;
+            $collator = null;
         }
 
         $arr = new static;
@@ -180,8 +180,8 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
      * Sort array using Collator, callback or standard sort function.
      * @param callback|Language\Collator|ISortCondition  (strcmp | strcasecmp | strnatcmp | strnatcasecmp | ...)
      */
-    public function sort($collator = NULL) {
-        if ($collator === NULL) {
+    public function sort($collator = null) {
+        if ($collator === null) {
             $this->preserveKeys ? asort($this->data) : sort($this->data);
         //} elseif ($collator instanceof Language\Collator) {
         //    $this->preserveKeys ? $collator->asort($this->data) : $collator->sort($this->data);
@@ -207,14 +207,14 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
 
 
     /**
-     * Search for item in array and return its key. Returns FALSE if not found.
+     * Search for item in array and return its key. Returns false if not found.
      * @param mixed
      * @param callback|Language\Collator|Regexp
      * @return mixed
      */
-    public function find($item, $collator = NULL) {
-        if ($collator === NULL) {
-            return array_search($item, $this->data, TRUE);
+    public function find($item, $collator = null) {
+        if ($collator === null) {
+            return array_search($item, $this->data, true);
 
         } elseif ($collator instanceof Language\Collator) {
             foreach ($this->data as $key => $value) {
@@ -235,7 +235,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
             throw new \InvalidArgumentException("ArrayObject: Invalid Collator or callback.");
         }
 
-        return FALSE;
+        return false;
     }
 
 
@@ -245,8 +245,8 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
      * @param callback|Language\Collator|Regexp
      * @return bool
      */
-    public function contains($item, $collator = NULL) {
-        return $this->search($item, $collator) === FALSE ? FALSE : TRUE;
+    public function contains($item, $collator = null) {
+        return $this->search($item, $collator) === false ? false : true;
     }
 
 
@@ -256,7 +256,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
      */
     public function append($items) {
         foreach ($items as $item) {
-            $this->offsetSet(NULL, $item);
+            $this->offsetSet(null, $item);
         }
     }
 
@@ -282,10 +282,10 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         $end = array_slice($this->data, $position, count($this->data) - $position);
         $this->data = array_slice($this->data, 0, $position, $this->preserveKeys);
         foreach ($items as $item) {
-            $this->offsetSet(NULL, $item);
+            $this->offsetSet(null, $item);
         }
         foreach ($end as $item) {
-            $this->offsetSet(NULL, $item);
+            $this->offsetSet(null, $item);
         }
     }
 
@@ -342,7 +342,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
 
     /**#@+ ArrayAccess interface */
     public function offsetSet($key, $value) {
-        if ($key === NULL) {
+        if ($key === null) {
             $this->data[] = $value;
 
         } elseif (is_string($key)) {
@@ -386,7 +386,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
             return $object->toArray();
 
         } elseif ($object instanceof \Traversable) {
-            return iterator_to_array($object, TRUE);
+            return iterator_to_array($object, true);
 
         } else {
             throw new \InvalidArgumentException("ArrayObject: Cannot convert argument to array.");

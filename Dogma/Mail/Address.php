@@ -31,7 +31,7 @@ class Address extends \Dogma\Object {
      * @param string
      * @param string
      */
-    public function __construct($address, $name = NULL) {
+    public function __construct($address, $name = null) {
         $this->address = strtolower($address);
         $this->name = $name;
     }

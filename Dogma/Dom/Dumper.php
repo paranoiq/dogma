@@ -19,7 +19,7 @@ class Dumper {
      * @param bool $only is the only child?
      * @throws \Nette\NotImplementedException
      */
-    public static function dump($node, $maxDepth = 15, $depth = 0, $only = FALSE) {
+    public static function dump($node, $maxDepth = 15, $depth = 0, $only = false) {
         if ($depth > $maxDepth) echo "…";
         if ($depth === 0) echo "<pre><code>";
 
@@ -48,7 +48,7 @@ class Dumper {
             foreach ($node as $item) {
                 echo "<hr style='border: 1px silver solid; border-width: 1px 0px 0px 0px'>";
                 echo "    ";
-                self::dump($item, $maxDepth, $depth + 1, TRUE);
+                self::dump($item, $maxDepth, $depth + 1, true);
             }
 
         } else {
@@ -60,7 +60,7 @@ class Dumper {
     }
 
 
-    private static function dumpElement($node, $maxDepth = 15, $depth = 0, $only = FALSE) {
+    private static function dumpElement($node, $maxDepth = 15, $depth = 0, $only = false) {
         if ($depth === 0) echo "<b>Element:</b>\n";
         if (!$only) echo str_repeat('    ', $depth);
         echo "<b>&lt;</b><b style='color:red'>", $node->nodeName, "</b>";

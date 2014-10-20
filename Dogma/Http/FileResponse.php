@@ -24,7 +24,7 @@ class FileResponse extends Response {
      * @param int
      */
     public function __construct($fileName, array $info, $error) {
-        parent::__construct(NULL, $info, $error);
+        parent::__construct(null, $info, $error);
 
         $this->fileName = $fileName;
     }
@@ -62,7 +62,7 @@ class FileResponse extends Response {
      * Remove headers from downloaded file
      */
     private function parseFile() {
-        if (($fp = @fopen($this->fileName . '.tmp', 'rb')) === FALSE) {
+        if (($fp = @fopen($this->fileName . '.tmp', 'rb')) === false) {
             throw new ResponseException("Fopen error for file '$this->fileName.tmp'");
         }
 
@@ -71,7 +71,7 @@ class FileResponse extends Response {
 
         @fseek($fp, $this->info['header_size']);
 
-        if (($ft = @fopen($this->fileName, 'wb')) === FALSE) {
+        if (($ft = @fopen($this->fileName, 'wb')) === false) {
             throw new ResponseException("Write error for file '$this->fileName' ");
         }
 

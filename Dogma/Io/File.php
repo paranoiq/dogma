@@ -79,8 +79,8 @@ class File extends \Nette\Object {
      * @param string
      * @param resource
      */
-    public function __construct($file, $mode = self::READ_WRITE, $streamContext = NULL) {
-        if ($file === NULL) return;
+    public function __construct($file, $mode = self::READ_WRITE, $streamContext = null) {
+        if ($file === null) return;
 
         if (is_resource($file) && get_resource_type($file) === 'stream') {
             $this->file = $file;
@@ -92,9 +92,9 @@ class File extends \Nette\Object {
         Debugger::tryError();
         if ($streamContext) {
             $this->streamContext = $streamContext;
-            $this->file = fopen($this->name, $mode, FALSE, $streamContext);
+            $this->file = fopen($this->name, $mode, false, $streamContext);
         } else {
-            $this->file = fopen($this->name, $mode, FALSE);
+            $this->file = fopen($this->name, $mode, false);
         }
 
         if (Debugger::catchError($error)) {
@@ -131,8 +131,8 @@ class File extends \Nette\Object {
         } elseif (!$res) {
             throw new FileException("Cannot close file.");
         }
-        $this->stat = NULL;
-        $this->file = NULL;
+        $this->stat = null;
+        $this->file = null;
 
         return $this;
     }
@@ -161,7 +161,7 @@ class File extends \Nette\Object {
      * @param int $length maximal length of input
      * @return string
      */
-    public function read($length = NULL) {
+    public function read($length = null) {
         if (empty($length)) $length = self::$defaultChunkSize;
         $this->testOpen();
 
@@ -170,7 +170,7 @@ class File extends \Nette\Object {
 
         if (Debugger::catchError($error)) {
             throw new FileException("Cannot read data from file: " . $error->getMessage() . ".", 0, $error);
-        } elseif ($data === FALSE) {
+        } elseif ($data === false) {
             if ($this->eof()) {
                 throw new FileException("Cannot read data from file. End of file was reached.");
             } else {
@@ -189,7 +189,7 @@ class File extends \Nette\Object {
      * @param int
      * @return int actual length of copied data
      */
-    public function copyData($destination, $start = NULL, $length = 0, $chunkSize = NULL) {
+    public function copyData($destination, $start = null, $length = 0, $chunkSize = null) {
         if (empty($chunkSize)) $chunkSize = self::$defaultChunkSize;
         if (!empty($start)) $this->setPosition($start);
 
@@ -243,7 +243,7 @@ class File extends \Nette\Object {
 
         if (Debugger::catchError($error)) {
             throw new FileException("Cannot write data to file: " . $error->getMessage() . ".", 0, $error);
-        } elseif ($res === FALSE) {
+        } elseif ($res === false) {
             throw new FileException("Cannot write data to file.");
         }
 
@@ -264,7 +264,7 @@ class File extends \Nette\Object {
 
         if (Debugger::catchError($error)) {
             throw new FileException("Cannot truncate file: " . $error->getMessage() . ".", 0, $error);
-        } elseif ($res === FALSE) {
+        } elseif ($res === false) {
             throw new FileException("Cannot truncate file.");
         }
 
@@ -284,10 +284,10 @@ class File extends \Nette\Object {
 
         if (Debugger::catchError($error)) {
             throw new FileException("Cannot flush file cache: " . $error->getMessage() . ".", 0, $error);
-        } elseif ($res === FALSE) {
+        } elseif ($res === false) {
             throw new FileException("Cannot flush file cache.");
         }
-        $this->stat = NULL;
+        $this->stat = null;
 
         return $this;
     }
@@ -299,10 +299,10 @@ class File extends \Nette\Object {
      * @param int $wouldBlock would block (in non blocking mode)
      * @return self
      */
-    public function lock($mode = self::SHARED, &$wouldBlock = NULL) {
+    public function lock($mode = self::SHARED, &$wouldBlock = null) {
         $this->testOpen();
 
-        $wb = NULL;
+        $wb = null;
         Debugger::tryError();
         $res = flock($this->file, $mode, $wb);
 
@@ -312,7 +312,7 @@ class File extends \Nette\Object {
             } else {
                 throw new FileException("Cannot lock file: $error->message.", 0, $error);
             }
-        } elseif ($res === FALSE) {
+        } elseif ($res === false) {
             if ($wb) {
                 $wouldBlock = $wb;
                 throw new FileException("Non-blocking lock cannot be acquired.");
@@ -337,7 +337,7 @@ class File extends \Nette\Object {
 
         if (Debugger::catchError($error)) {
             throw new FileException("Cannot unlock file: " . $error->getMessage() . ".", 0, $error);
-        } elseif ($res === FALSE) {
+        } elseif ($res === false) {
             throw new FileException("Cannot unlock file.");
         }
 
@@ -347,14 +347,14 @@ class File extends \Nette\Object {
 
     /**
      * Set the file pointer position
-     * @param int|bool position in bytes or TRUE for end of file
+     * @param int|bool position in bytes or true for end of file
      * @param int $from
      * @return self
      */
     public function setPosition($position, $from = self::BEGINNING) {
         $this->testOpen();
 
-        if ($position === TRUE) {
+        if ($position === true) {
             $position = 0;
             $from = SEEK_END;
         }
@@ -384,7 +384,7 @@ class File extends \Nette\Object {
 
         if (Debugger::catchError($error)) {
             throw new FileException("Cannot get file pointer position: " . $error->getMessage() . ".", 0, $error);
-        } elseif ($pos === FALSE) {
+        } elseif ($pos === false) {
             throw new FileException("Cannot get file pointer position.");
         }
 
@@ -498,7 +498,7 @@ class File extends \Nette\Object {
         } elseif (!$fd) {
             throw new FileException("Cannot create a temporary file.");
         }
-        $file = new static(NULL, 'w+');
+        $file = new static(null, 'w+');
         $file->file = $fd;
 
         return $file;

@@ -84,7 +84,7 @@ class BeanstalkJob extends \Dogma\Object {
      * @param int
      * @return self
      */
-    public function release($delay = NULL, $priority = NULL) {
+    public function release($delay = null, $priority = null) {
         $this->connection->release($this->id, $delay, $priority);
         return $this;
     }
@@ -106,7 +106,7 @@ class BeanstalkJob extends \Dogma\Object {
      * @param int
      * @return self
      */
-    public function suspend($priority = NULL) {
+    public function suspend($priority = null) {
         $this->connection->suspend($this->id, $priority);
         return $this;
     }
@@ -138,7 +138,7 @@ class BeanstalkJob extends \Dogma\Object {
 
     /** @return bool */
     public function isReserved() {
-        if ($this->isOwned()) return TRUE;
+        if ($this->isOwned()) return true;
         return $this->__get('status') === self::RESERVED;
     }
 

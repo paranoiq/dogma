@@ -21,7 +21,7 @@ class TextFile extends File {
     const UNIX = "\n";
     const WINDOWS = "\r\n";
     const MAC = "\r";
-    const AUTODETECT = NULL;
+    const AUTODETECT = null;
     /**#@-*/
 
 
@@ -84,7 +84,7 @@ class TextFile extends File {
 
         if (Debugger::catchError($error)) {
             throw new FileException("Cannot read data from file: " . $error->getMessage() . ".", 0, $error);
-        } elseif ($line === FALSE) {
+        } elseif ($line === false) {
             if ($this->eof()) {
                 throw new FileException("Cannot read data from file. End of file was reached.");
             } else {

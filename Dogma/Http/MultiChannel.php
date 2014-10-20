@@ -82,8 +82,8 @@ class MultiChannel extends \Dogma\Object {
      */
     private function jobFinished($jobName) {
         foreach ($this->finished[$jobName] as $response) {
-            if ($response->getStatus()->isError()) $error = TRUE;
-            if ($response->getStatus()->isRedirect()) $redirect = TRUE;
+            if ($response->getStatus()->isError()) $error = true;
+            if ($response->getStatus()->isRedirect()) $redirect = true;
         }
 
         if ($this->errorHandler && isset($error)) {
@@ -163,10 +163,10 @@ class MultiChannel extends \Dogma\Object {
      * @param mixed Request context
      * @return string|int
      */
-    public function addJob($data, $context = NULL, $name = NULL) {
+    public function addJob($data, $context = null, $name = null) {
         if (is_string($name) || is_int($name)) {
             // ok
-        } elseif ($name === NULL) {
+        } elseif ($name === null) {
             $name = ++$this->lastIndex;
 
         } else {
@@ -194,11 +194,11 @@ class MultiChannel extends \Dogma\Object {
      * @param mixed
      * @return self
      */
-    public function addJobs(array $jobs, $context = NULL) {
+    public function addJobs(array $jobs, $context = null) {
         $useKeys = array_keys($jobs) !== range(0, count($jobs) - 1);
 
         foreach ($jobs as $name => $data) {
-            $this->addJob($data, $context, $useKeys ? $name : NULL);
+            $this->addJob($data, $context, $useKeys ? $name : null);
         }
 
         return $this;
@@ -209,12 +209,12 @@ class MultiChannel extends \Dogma\Object {
      * Run a new job and wait for the response.
      * @param string|array
      * @param mixed
-     * @return Response|NULL
+     * @return Response|null
      */
-    public function fetchJob($data, $context = NULL) {
+    public function fetchJob($data, $context = null) {
         $jobs = $this->dispatch($data);
         foreach ($jobs as $channel => $job) {
-            $jobs[$channel] = $this->channels[$channel]->runJob($job, $context, NULL);
+            $jobs[$channel] = $this->channels[$channel]->runJob($job, $context, null);
         }
         $responses = array();
         foreach ($jobs as $channel => $sjName) {
@@ -226,14 +226,14 @@ class MultiChannel extends \Dogma\Object {
 
     /**
      * @param string
-     * @return Response[]|NULL
+     * @return Response[]|null
      */
-    public function fetch($name = NULL) {
-        if ($name !== NULL)
+    public function fetch($name = null) {
+        if ($name !== null)
             return $this->fetchNamedJob($name);
 
         if (empty($this->queue) && empty($this->finished))
-            return NULL;
+            return null;
 
         $keys = array_keys($this->channels);
         do {
@@ -244,15 +244,15 @@ class MultiChannel extends \Dogma\Object {
                     return $fin;
                 }
             }
-        } while (TRUE);
+        } while (true);
 
-        return NULL;
+        return null;
     }
 
 
     /**
      * @param string|int
-     * @return Response[]|NULL
+     * @return Response[]|null
      */
     private function fetchNamedJob($name) {
         if (!isset($this->queue[$name]) && !isset($this->finished[$name]))
@@ -299,10 +299,10 @@ class MultiChannel extends \Dogma\Object {
      */
     public function isFinished() {
         foreach ($this->channels as $channel) {
-            if (!$channel->isFinished()) return FALSE;
+            if (!$channel->isFinished()) return false;
         }
 
-        return TRUE;
+        return true;
     }
 
 

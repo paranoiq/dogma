@@ -61,7 +61,7 @@ class DdbMetadataStorage extends \Dogma\Object implements IMetadataStorage {
     }
 
 
-    public function clear($queue, \DateTime $time = NULL) {
+    public function clear($queue, \DateTime $time = null) {
         if ($time) {
             $this->connection->exec(
                 "DELETE " . $this->getTable($queue) . "WHERE `insert_time` <= ", $time);

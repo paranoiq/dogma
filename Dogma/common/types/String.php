@@ -102,7 +102,7 @@ class String implements \ArrayAccess {
      * @param string
      * @param string|Collator
      */
-    public function equalsTo($string, $collator = NULL) {
+    public function equalsTo($string, $collator = null) {
         return $this->compareTo($string, $collator) === 0;
     }
 
@@ -112,15 +112,15 @@ class String implements \ArrayAccess {
      * @param string
      * @param string|Collator
      */
-    public function compareTo($string, $collator = NULL) {
-        if ($collator === NULL) strcmp($this->string, $string);
+    public function compareTo($string, $collator = null) {
+        if ($collator === null) strcmp($this->string, $string);
 
         if (!$collator instanceof Language\Collator) $collator = new Language\Collator($collator);
         return $collator->compare($this->string, $string);
     }
 
 
-    public function contains($string, $collation = NULL) {
+    public function contains($string, $collation = null) {
         ///
     }
 
@@ -158,9 +158,9 @@ class String implements \ArrayAccess {
             /// speed up
             for ($n = 0; $n < mb_strlen($value) - mb_strlen($pattern); $n++) {
                 if ($this->collator->compare(mb_substr($value, $n, mb_strlen($pattern)), $pattern) === 0)
-                    return $this->decide(TRUE);
+                    return $this->decide(true);
             }
-            return $this->decide(FALSE);
+            return $this->decide(false);
 
         case self::LIKE:
             ///
@@ -197,7 +197,7 @@ class String implements \ArrayAccess {
 
     /**#@+ ArrayAccess interface */
     public function offsetSet($key, $value) {
-        if ($key === NULL) {
+        if ($key === null) {
             $this->append($value);
         } else {
             $this->string = mb_substr($this->string, 0, $key) . static::normalize($value) . mb_substr($this->string, ++$key);

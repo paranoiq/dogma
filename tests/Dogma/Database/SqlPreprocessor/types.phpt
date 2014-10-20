@@ -14,11 +14,11 @@ require_once __DIR__ . '/../connect.inc.php';
 $processor = $connection->getSqlPreprocessor();
 
 
-Assert::same(array("INSERT INTO ... VALUES (NULL, 123, 1.234, 'abc', '2012-01-16 00:00:00')", array()), 
+Assert::same(array("INSERT INTO ... VALUES (NULL, 123, 1.234, 'abc', '2012-01-16 00:00:00')", array()),
 	$processor->process(
-		"INSERT INTO ... VALUES (?, ?, ?, ?, ?)", 
+		"INSERT INTO ... VALUES (?, ?, ?, ?, ?)",
 		array(
-			NULL,
+			null,
 			123,
 			1.234,
 			"abc",
@@ -27,10 +27,10 @@ Assert::same(array("INSERT INTO ... VALUES (NULL, 123, 1.234, 'abc', '2012-01-16
 	)
 );
 
-Assert::same(array("INSERT INTO ... VALUES (NULL, 123, 1.234, 'abc', '2012-01-16 00:00:00')", array()), 
+Assert::same(array("INSERT INTO ... VALUES (NULL, 123, 1.234, 'abc', '2012-01-16 00:00:00')", array()),
 	$processor->process(
 		"INSERT INTO ... VALUES (",
-		array(NULL, ", ", 123, ", ", 1.234, ", ", "abc", ", ", new DateTime('2012-01-16'), ")")
+		array(null, ", ", 123, ", ", 1.234, ", ", "abc", ", ", new DateTime('2012-01-16'), ")")
 	)
 );
 

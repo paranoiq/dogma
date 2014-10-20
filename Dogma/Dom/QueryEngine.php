@@ -171,7 +171,7 @@ class QueryEngine extends \Dogma\Object {
      * @param bool
      * @return self
      */
-    public function registerFuction($name, $alias = '', $expectNode = FALSE) {
+    public function registerFuction($name, $alias = '', $expectNode = false) {
         if (!$alias) $alias = $name;
         if (in_array($alias, $this->nativeFunctions))
             throw new QueryEngineException("Function '$alias' is already registered.");
@@ -207,14 +207,14 @@ class QueryEngine extends \Dogma\Object {
      * @param \DOMNode
      * @return NodeList
      */
-    public function find($query, $context = NULL) {
+    public function find($query, $context = null) {
         $path = $this->translateQuery($query, (bool) $context);
         if ($context) {
             $list = $this->xpath->query($path, $context);
         } else {
             $list = $this->xpath->query($path);
         }
-        if ($list === FALSE)
+        if ($list === false)
             throw new QueryEngineException("Invalid XPath query: \"$path\", translated from: \"$query\".");
 
         return new NodeList($list, $this);
@@ -225,19 +225,19 @@ class QueryEngine extends \Dogma\Object {
      * Find one node
      * @param string
      * @param Element|\DOMNode
-     * @return \DOMNode|Element|NULL
+     * @return \DOMNode|Element|null
      */
-    public function findOne($query, $context = NULL) {
+    public function findOne($query, $context = null) {
         $path = $this->translateQuery($query, (bool) $context);
         if ($context) {
             $list = $this->xpath->query($path, $context);
         } else {
             $list = $this->xpath->query($path);
         }
-        if ($list === FALSE)
+        if ($list === false)
             throw new QueryEngineException("Invalid XPath query: \"$path\", translated from: \"$query\".");
 
-        if (!count($list)) return NULL;
+        if (!count($list)) return null;
 
         return $this->wrap($list->item(0));
     }
@@ -249,29 +249,29 @@ class QueryEngine extends \Dogma\Object {
      * @param Element|\DOMNode
      * @return string|int|float
      */
-    public function evaluate($query, $context = NULL) {
-        $path = $this->translateQuery($query, NULL);
+    public function evaluate($query, $context = null) {
+        $path = $this->translateQuery($query, null);
 
         if ($context) {
             $value = $this->xpath->evaluate($path, $context);
         } else {
             $value = $this->xpath->evaluate($path);
         }
-        if ($value === FALSE)
+        if ($value === false)
             throw new QueryEngineException("Invalid XPath query: \"$path\", translated from: \"$query\".");
 
         if (substr($query, 0, 5) === 'date(') {
-            return $value ? new \Dogma\Date($value) : NULL;
+            return $value ? new \Dogma\Date($value) : null;
 
         } elseif (substr($query, 0, 9) === 'datetime(') {
-            return $value ? new \Dogma\DateTime($value) : NULL;
+            return $value ? new \Dogma\DateTime($value) : null;
 
         } elseif (substr($query, 0, 4) === 'int(') {
-            if (!is_numeric($value)) return NULL;
+            if (!is_numeric($value)) return null;
             return (int) $value;
 
         } elseif (substr($query, 0, 5) === 'bool(' && isset($value)) {
-            if ($value === '') return NULL;
+            if ($value === '') return null;
             return (bool) $value;
 
         } else {
@@ -286,7 +286,7 @@ class QueryEngine extends \Dogma\Object {
      * @param Element|\DOMNode
      * @return string|string[]
      */
-    public function extract($queries, $context = NULL) {
+    public function extract($queries, $context = null) {
         if (is_string($queries)) {
             return $this->extractPath($queries, $context);
         }
@@ -322,7 +322,7 @@ class QueryEngine extends \Dogma\Object {
             return $node;
 
         } elseif (!$node) {
-            return NULL;
+            return null;
 
         } elseif ($node instanceof \DOMAttr) {
             return $node->value;
@@ -342,17 +342,17 @@ class QueryEngine extends \Dogma\Object {
     /**
      * Translates query to pure XPath syntax
      * @param string
-     * @param bool|NULL
+     * @param bool|null
      * @return string
      */
-    private function translateQuery($query, $context = FALSE) {
-        if ($context === TRUE) {
+    private function translateQuery($query, $context = false) {
+        if ($context === true) {
             if ($query[0] === '/') {
                 $query = '.' . $query;
             } elseif ($query[0] !== '.') {
                 $query = './/' . $query;
             }
-        } elseif ($context === FALSE) {
+        } elseif ($context === false) {
             if ($query[0] !== '/') $query = '//' . $query;
         }
 
@@ -409,7 +409,7 @@ class QueryEngine extends \Dogma\Object {
     static public function match($string, $pattern) {
         if ($m = Strings::match($string, $pattern)) return $m[0];
 
-        return NULL;
+        return null;
     }
 
 
@@ -464,14 +464,14 @@ class QueryEngine extends \Dogma\Object {
      * @param string
      * @param string
      * @param string
-     * @return bool|NULL
+     * @return bool|null
      */
-    static public function bool($string, $true = 'TRUE', $false = 'FALSE') {
+    static public function bool($string, $true = 'true', $false = 'false') {
         $string = strtoupper($string);
         if ($string === $false) return 0;
         if ($string === $true)  return 1;
 
-        return NULL;
+        return null;
     }
 
 }

@@ -49,7 +49,7 @@ class SqlPreprocessor {
         $this->remaining = array();
 
         $sql2 = Strings::replace($sql, '~\'.*?\'|".*?"|\?~s', array($this, 'splitCb'));
-        if (strpos($sql2, chr(0)) !== FALSE) { // placeholder mode
+        if (strpos($sql2, chr(0)) !== false) { // placeholder mode
             $args = $params;
             $bits = explode(chr(0), $sql2);
 
@@ -181,7 +181,7 @@ class SqlPreprocessor {
 
         } elseif ($mode === 'order') { // key, key DESC, ...
             foreach ($array as $k => $v) {
-                $desc = $v === FALSE || (is_numeric($v) && $v <= 0);
+                $desc = $v === false || (is_numeric($v) && $v <= 0);
                 $vx[] = $this->driver->delimite($k) . ($desc ? ' DESC' : '');
             }
             $this->sql .= implode(', ', $vx);

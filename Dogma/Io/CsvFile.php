@@ -23,7 +23,7 @@ use Dogma\Type;
  */
 final class CsvFile extends TextFile {
 
-    const AUTODETECT = NULL;
+    const AUTODETECT = null;
 
 
     /** @var string */
@@ -41,9 +41,9 @@ final class CsvFile extends TextFile {
     private $columns = array();
 
     /** @var bool autodetect types if no columns are defined? */
-    private $autodetect = FALSE;
+    private $autodetect = false;
     /** @var bool autodetect includes null? */
-    private $nullable = FALSE;
+    private $nullable = false;
 
 
     /** @var int row counter (reading) */
@@ -55,7 +55,7 @@ final class CsvFile extends TextFile {
 
     /**
      * Set CSV column delimiter
-     * @param string|NULL for autodetect
+     * @param string|null for autodetect
      * @return CsvFile
      */
     public function setDelimiter($delimiter) {
@@ -84,7 +84,7 @@ final class CsvFile extends TextFile {
      * @param bool
      * @return self
      */
-    public function autodetectTypes($autodetect = TRUE, $nullable = FALSE) {
+    public function autodetectTypes($autodetect = true, $nullable = false) {
         $this->autodetect = $autodetect;
         $this->nullable = $nullable;
 
@@ -111,10 +111,10 @@ final class CsvFile extends TextFile {
      * @param string $realName real column name in file
      * @param string $type column type (string|int|float|bool|date|datetime|bool)
      * @param bool $required
-     * @param bool NULL value allowed?
+     * @param bool null value allowed?
      * @return self
      */
-    public function addColumn($name, $realName = NULL, $type = Type::STRING, $required = TRUE, $nullable = FALSE) {
+    public function addColumn($name, $realName = null, $type = Type::STRING, $required = true, $nullable = false) {
         $this->columns[$name] = Nette\ArrayHash::from(array(
             'realName' => $realName ?: $name,
             'type' => $type,
@@ -130,7 +130,7 @@ final class CsvFile extends TextFile {
      * @param bool
      * @return self
      */
-    public function setRequired($required = TRUE) {
+    public function setRequired($required = true) {
         end($this->columns)->required = $required;
 
         return $this;
@@ -142,7 +142,7 @@ final class CsvFile extends TextFile {
      * @param bool
      * @return self
      */
-    public function setNullable($nullable = TRUE) {
+    public function setNullable($nullable = true) {
         end($this->columns)->nullable = $nullable;
 
         return $this;
@@ -189,7 +189,7 @@ final class CsvFile extends TextFile {
             }
         } else {
             foreach ($this->realColumns as $name => $i) {
-                $columns[$name] = NULL;
+                $columns[$name] = null;
             }
         }
 
@@ -220,14 +220,14 @@ final class CsvFile extends TextFile {
 
 
     /**
-     * Returns next CSV row or FALSE
+     * Returns next CSV row or false
      * @return array|bool
      */
     public function fetch() {
         if (!$this->realColumns) $this->initializeRead();
 
         $row = $this->getNextRow();
-        if (!$row) return FALSE;
+        if (!$row) return false;
 
         if (!$this->columns)
             return $this->assocRow($row);
@@ -237,7 +237,7 @@ final class CsvFile extends TextFile {
 
 
     /**
-     * Returns next CSV row or FALSE
+     * Returns next CSV row or false
      * @param string
      * @return mixed|bool
      */
@@ -245,7 +245,7 @@ final class CsvFile extends TextFile {
         if (!$this->realColumns) $this->initializeRead();
 
         $row = $this->getNextRow();
-        if (!$row) return FALSE;
+        if (!$row) return false;
 
         if (!$this->columns) {
             if (isset($this->realColumns[$name]))
@@ -273,13 +273,13 @@ final class CsvFile extends TextFile {
             $this->counter++;
             $row = fgetcsv($this->file, 0, $this->delimiter, $this->quoteChar, $this->escapeChar);
             if (!$row) {
-                return FALSE;
+                return false;
                 //throw new FileException("CsvFile: Error when reading a row from CSV file.");
             }
 
-        } while ($row === array(NULL) && !$this->eof()); // skip empty rows
+        } while ($row === array(null) && !$this->eof()); // skip empty rows
 
-        if ($row === array(NULL)) return FALSE; // eof
+        if ($row === array(null)) return false; // eof
 
         if (count($row) !== count($this->realColumns))
             throw new FileException("CsvFile: Wrong column count on line #$this->counter.");
@@ -315,7 +315,7 @@ final class CsvFile extends TextFile {
         $data = array();
         foreach ($this->columns as $name => $column) {
             if (!$column->required && !isset($this->realColumns[$column->realName])) {
-                $data[$name] = isset($column['default']) ? $column['default'] : NULL;
+                $data[$name] = isset($column['default']) ? $column['default'] : null;
                 continue;
             }
 
@@ -346,7 +346,7 @@ final class CsvFile extends TextFile {
                     if ($column->required)
                         throw new FileException("CsvFile: Required value $name is missing.");
 
-                    $row[] = $this->getNormalizer()->format(NULL);
+                    $row[] = $this->getNormalizer()->format(null);
                 } else {
                     $row[] = $this->encode(
                         $this->getNormalizer()->format($data[$name], $column->type, $column->nullable));

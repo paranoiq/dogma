@@ -24,9 +24,9 @@ class CollatorException extends \Exception { }
 class Collator extends \Nette\Object {
 
     /** param values */
-    const ON = TRUE,
-        OFF = FALSE,
-        AUTO = NULL;
+    const ON = true,
+        OFF = false,
+        AUTO = null;
 
     /** collation levels */
     const LETTER = 0,
@@ -87,7 +87,7 @@ class Collator extends \Nette\Object {
         if (!$this->collator) $this->init();
 
         $result = collator_compare($this->collator, (string) $str1, (string) $str2);
-        if ($result === FALSE) $this->throwError('Comparation');
+        if ($result === false) $this->throwError('Comparation');
         return $result;
     }
 
@@ -101,7 +101,7 @@ class Collator extends \Nette\Object {
         if (!$this->collator) return $this->locale;
 
         $result = collator_get_locale($this->collator, $type);
-        if ($result === FALSE) $this->throwError('Getting locale');
+        if ($result === false) $this->throwError('Getting locale');
         return $result;
     }
 
@@ -123,7 +123,7 @@ class Collator extends \Nette\Object {
         if (!$this->collator) return $this->level;
 
         $result = collator_get_strength($this->collator);
-        if ($result === FALSE) $this->throwError('Getting collation level');
+        if ($result === false) $this->throwError('Getting collation level');
         if ($result === self::LETTER && $this->getAttribute(\Collator::CASE_LEVEL) === \Collator::ON) {
             $result = self::LETTER_CASE;
         }
@@ -144,7 +144,7 @@ class Collator extends \Nette\Object {
             $level = self::LETTER;
         }
         $result = collator_set_strength($this->collator, $strenght);
-        if ($result === FALSE) $this->throwError('Setting collation level');
+        if ($result === false) $this->throwError('Setting collation level');
 
         return $this;
     }
@@ -159,7 +159,7 @@ class Collator extends \Nette\Object {
         if (!$this->collator) $this->init();
 
         $result = collator_get_attribute($this->collator, $name);
-        if ($result === FALSE) $this->throwError('Getting attribute');
+        if ($result === false) $this->throwError('Getting attribute');
         return $result === \Collator::ON ? self::ON : ($result === \Collator::OFF ? self::OFF : ($result === \Collator::DEFAULT_VALUE ? self::AUTO : $result));
     }
 
@@ -175,7 +175,7 @@ class Collator extends \Nette\Object {
 
         $value = $result === self::ON ? \Collator::ON : ($result === self::OFF ? \Collator::OFF : ($result === self::AUTO ? \Collator::DEFAULT_VALUE : $result));
         $result = collator_set_attribute($this->collator, $name, $value);
-        if ($result === FALSE) $this->throwError('Setting attribute');
+        if ($result === false) $this->throwError('Setting attribute');
 
         return $this;
     }

@@ -19,7 +19,7 @@ class BeanstalkClientExtended extends BeanstalkClient {
      * @param bool
      * @param IMetadataStorage
      */
-    public function __construct($host = '127.0.0.1', $port = 11300, $timeout = 1, $persistent = TRUE,
+    public function __construct($host = '127.0.0.1', $port = 11300, $timeout = 1, $persistent = true,
         IMetadataStorage $storage
     ) {
         parent::__construct($host, $port, $timeout, $persistent);
@@ -37,13 +37,13 @@ class BeanstalkClientExtended extends BeanstalkClient {
      * @param int $timeToRun worker timeout, before re-assigning job to another worker
      * @return int job id
      */
-    public function queueUnique($data, $delay = NULL, $priority = NULL, $timeToRun = NULL) {
+    public function queueUnique($data, $delay = null, $priority = null, $timeToRun = null) {
         if (!$this->storage) {
             throw new BeanstalkException("Storage must be set to insert unique tasks!");
         }
 
         if ($jobId = $this->storage->findJob($this->getSelectedQueue(), $data)) {
-            $job = $this->showJob($jobId, TRUE);
+            $job = $this->showJob($jobId, true);
             if (!$job) {
                 $this->storage->deleteJob($this->getSelectedQueue(), $jobId);
             } elseif (!$job->isReserved()) {

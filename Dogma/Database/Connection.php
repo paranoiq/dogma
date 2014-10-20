@@ -39,7 +39,7 @@ class Connection extends \Nette\Database\Connection {
      * @param array
      * @param \Nette\Database\IReflection
      */
-    public function __construct($dsn, $username = NULL, $password  = NULL, array $options = NULL, Debugging\MysqlDebugger $debugger = NULL) {
+    public function __construct($dsn, $username = null, $password  = null, array $options = null, Debugging\MysqlDebugger $debugger = null) {
         if ($debugger) {
             $debugger->setConnection($this);
             $debugger->suspend('warnings');
@@ -50,7 +50,7 @@ class Connection extends \Nette\Database\Connection {
             $driverClass = $options['driverClass'];
             unset($options['driverClass']);
         } else {
-            $driverClass = NULL;
+            $driverClass = null;
         }
 
         try {
@@ -108,7 +108,7 @@ class Connection extends \Nette\Database\Connection {
      * @return bool
      */
     public function queryArgs($statement, $params) {
-        if ($this->preprocessor && (count($params) || strpos($statement, ':') !== FALSE))
+        if ($this->preprocessor && (count($params) || strpos($statement, ':') !== false))
             list($statement, $params) = $this->preprocessor->process($statement, $params);
 
         try {
@@ -118,7 +118,7 @@ class Connection extends \Nette\Database\Connection {
                     if (($severity & error_reporting()) === $severity) {
                           throw new \PDOException($message, 0);
                     }
-                     return FALSE;
+                     return false;
                 });
             }
             $result = $this->prepare($statement)->execute($params);

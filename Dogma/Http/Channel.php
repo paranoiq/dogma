@@ -37,13 +37,13 @@ class Channel extends \Dogma\Object {
     private $lastIndex = 0;
 
     /** @var bool */
-    private $initiated = FALSE;
+    private $initiated = false;
 
     /** @var bool */
-    private $stopped = FALSE;
+    private $stopped = false;
 
     /** @var bool|int */
-    private $paused = FALSE;
+    private $paused = false;
 
 
     /** @var array */
@@ -170,10 +170,10 @@ class Channel extends \Dogma\Object {
      * Run a new job immediately and wait for the response.
      * @param string|array
      * @param mixed
-     * @return Response|NULL
+     * @return Response|null
      */
-    public function fetchJob($data, $context = NULL) {
-        $name = $this->addJob($data, $context, NULL, TRUE);
+    public function fetchJob($data, $context = null) {
+        $name = $this->addJob($data, $context, null, true);
 
         return $this->fetch($name);
     }
@@ -186,8 +186,8 @@ class Channel extends \Dogma\Object {
      * @param string|int
      * @return string|int
      */
-    public function runJob($data, $context = NULL, $name = NULL) {
-        return $this->addJob($data, $context, $name, TRUE);
+    public function runJob($data, $context = null, $name = null) {
+        return $this->addJob($data, $context, $name, true);
     }
 
 
@@ -198,14 +198,14 @@ class Channel extends \Dogma\Object {
      * @param string|int
      * @return string|int
      */
-    public function addJob($data, $context = NULL, $name = NULL, $forceStart = FALSE) {
+    public function addJob($data, $context = null, $name = null, $forceStart = false) {
         if (!is_string($data) && !is_array($data))
             throw new ChannelException('Illegal job data. Job data can be either string or array.');
 
         if (is_string($name) || is_int($name)) {
             $this->queue[$name] = $data;
 
-        } elseif ($name === NULL) {
+        } elseif ($name === null) {
             $name = ++$this->lastIndex;
             $this->queue[$name] = $data;
 
@@ -233,11 +233,11 @@ class Channel extends \Dogma\Object {
      * @param mixed
      * @return self
      */
-    public function addJobs(array $jobs, $context = NULL) {
+    public function addJobs(array $jobs, $context = null) {
         $useKeys = array_keys($jobs) !== range(0, count($jobs) - 1);
 
         foreach ($jobs as $name => $data) {
-            $this->addJob($data, $context, $useKeys ? $name : NULL);
+            $this->addJob($data, $context, $useKeys ? $name : null);
         }
 
         return $this;
@@ -258,12 +258,12 @@ class Channel extends \Dogma\Object {
      * @return bool
      */
     public function canStartJob() {
-        if (empty($this->queue)) return FALSE;
-        if ($this->stopped) return FALSE;
-        if ($this->isPaused()) return FALSE;
-        if (!empty($this->running) && count($this->running) >= $this->threadLimit) return FALSE;
+        if (empty($this->queue)) return false;
+        if ($this->stopped) return false;
+        if ($this->isPaused()) return false;
+        if (!empty($this->running) && count($this->running) >= $this->threadLimit) return false;
 
-        return TRUE;
+        return true;
     }
 
 
@@ -274,17 +274,17 @@ class Channel extends \Dogma\Object {
      * @param int
      * @return array
      */
-    public function startJob($name = NULL) {
-        if (!$this->canStartJob()) return NULL;
+    public function startJob($name = null) {
+        if (!$this->canStartJob()) return null;
 
-        if ($name === NULL) {
+        if ($name === null) {
             $name = array_keys($this->queue);
             $name = $name[0];
         }
 
         if (!$this->initiated) {
             $this->request->init();
-            $this->initiated = TRUE;
+            $this->initiated = true;
         }
 
         $request = clone $this->request;
@@ -342,10 +342,10 @@ class Channel extends \Dogma\Object {
 
     /**
      * @param string
-     * @return Response|NULL
+     * @return Response|null
      */
-    public function fetch($name = NULL) {
-        if ($name !== NULL)
+    public function fetch($name = null) {
+        if ($name !== null)
             return $this->fetchByName($name);
 
         if (!empty($this->finished)) {
@@ -355,7 +355,7 @@ class Channel extends \Dogma\Object {
         // start one job immediately
         if (empty($this->running)) {
             if (empty($this->queue))
-                return NULL;
+                return null;
 
             $this->startJob();
             $this->manager->read();
@@ -373,7 +373,7 @@ class Channel extends \Dogma\Object {
 
     /**
      * @param string|int
-     * @return Response|NULL
+     * @return Response|null
      */
     private function fetchByName($name) {
         if (!isset($this->queue[$name]) && !isset($this->running[$name]) && !isset($this->finished[$name]))
@@ -409,8 +409,8 @@ class Channel extends \Dogma\Object {
      * @param string
      * @return bool
      */
-    public function isFinished($name = NULL) {
-        if ($name === NULL) {
+    public function isFinished($name = null) {
+        if ($name === null) {
             return empty($this->running) && empty($this->queue);
         } else {
             return isset($this->finished[$name]);
@@ -432,7 +432,7 @@ class Channel extends \Dogma\Object {
 
 
     public function stop() {
-        $this->stopped = TRUE;
+        $this->stopped = true;
     }
 
 
@@ -448,7 +448,7 @@ class Channel extends \Dogma\Object {
         if ($seconds) {
             $this->paused = time() + $seconds;
         } else {
-            $this->paused = TRUE;
+            $this->paused = true;
         }
     }
 
@@ -458,15 +458,15 @@ class Channel extends \Dogma\Object {
      */
     public function isPaused() {
         if (is_int($this->paused) && $this->paused <= time()) {
-            $this->paused = FALSE;
+            $this->paused = false;
         }
         return (bool) $this->paused;
     }
 
 
     public function resume() {
-        $this->stopped = FALSE;
-        $this->paused = FALSE;
+        $this->stopped = false;
+        $this->paused = false;
     }
 
 

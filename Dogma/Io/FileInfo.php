@@ -67,7 +67,7 @@ class FileInfo extends \SplFileInfo {
      * @param resource
      * @return File
      */
-    public function open($mode = File::READ, $streamContext = NULL) {
+    public function open($mode = File::READ, $streamContext = null) {
         return new File($this->getRealPath(), $mode, $streamContext);
     }
 
@@ -77,7 +77,7 @@ class FileInfo extends \SplFileInfo {
      * @param resource
      * @return File
      */
-    public function openFile($mode = File::READ, $streamContext = NULL) {
+    public function openFile($mode = File::READ, $streamContext = null) {
         return $this->open($mode, $streamContext);
     }
 
@@ -122,14 +122,14 @@ class FileInfo extends \SplFileInfo {
      * @param  mixed   callback or closure
      * @return mixed
      */
-    public static function extensionMethod($name, $callback = NULL) {
-        if (strpos($name, '::') === FALSE) {
+    public static function extensionMethod($name, $callback = null) {
+        if (strpos($name, '::') === false) {
             $class = get_called_class();
         } else {
             list($class, $name) = explode('::', $name);
         }
         $class = new Nette\Reflection\ClassType($class);
-        if ($callback === NULL) {
+        if ($callback === null) {
             return $class->getExtensionMethod($name);
         } else {
             $class->setExtensionMethod($name, $callback);

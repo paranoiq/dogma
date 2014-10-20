@@ -63,7 +63,7 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
      * Get table selection
      * @return \Nette\Database\Table\Selection
      */
-    public function getTable($table = NULL) {
+    public function getTable($table = null) {
         if (empty($table)) {
             return $this->row->getTable();
         } else {

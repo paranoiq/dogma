@@ -21,7 +21,7 @@ class Date extends DateTime {
      * @param string
      * @param \DateTimeZone
      */
-    public function __construct($time = 'now', \DateTimeZone $timezone = NULL) {
+    public function __construct($time = 'now', \DateTimeZone $timezone = null) {
         parent::__construct($time, $timezone);
     }
 

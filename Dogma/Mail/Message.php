@@ -135,7 +135,7 @@ class Message extends \Dogma\Object {
     /**
      * Returns an email header.
      * @param string
-     * @return string|NULL
+     * @return string|null
      */
     public function getHeader($name) {
         if (!$this->headers) $this->getHeaders();
@@ -144,7 +144,7 @@ class Message extends \Dogma\Object {
             return $this->headers[$name];
         }
 
-        return NULL;
+        return null;
     }
 
 
@@ -166,7 +166,7 @@ class Message extends \Dogma\Object {
     /**
      * Returns message body of given type.
      * @param string
-     * @return string|NULL
+     * @return string|null
      */
     public function getBody($type = self::TEXT) {
         if ($type !== 'text/plain' && $type !== 'text/html')
@@ -180,7 +180,7 @@ class Message extends \Dogma\Object {
             break;
         }
 
-        return NULL;
+        return null;
     }
 
 
@@ -209,7 +209,7 @@ class Message extends \Dogma\Object {
      * @param bool
      * @return Attachement[]
      */
-    public function getAttachments($contentType = NULL, $inlines = TRUE) {
+    public function getAttachments($contentType = null, $inlines = true) {
         $dispositions = $inlines ? array('attachment', 'inline') : array('attachment');
         if (isset($contentType) && !is_array($contentType)) $contentType = array($contentType);
 
@@ -237,7 +237,7 @@ class Message extends \Dogma\Object {
 
         $name = Inflector::dasherize(Inflector::underscore($name));
         $val = isset($this->headers[$name]) ? $this->headers[$name]
-            : (isset($this->headers['x-' . $name]) ? $this->headers['x-' . $name] : NULL);
+            : (isset($this->headers['x-' . $name]) ? $this->headers['x-' . $name] : null);
 
         return $val;
     }
@@ -282,14 +282,14 @@ class Message extends \Dogma\Object {
 
             //
 
-            if (in_array($name, array('date', 'resent-date', 'delivery-date', 'expires'), TRUE)) {
+            if (in_array($name, array('date', 'resent-date', 'delivery-date', 'expires'), true)) {
                 $value = new \Dogma\DateTime($value);
                 $value->setDefaultTimezone();
 
-            } elseif (in_array($name, array('from', 'to', 'cc', 'bcc', 'reply-to', 'return-path', 'sender'), TRUE)) {
+            } elseif (in_array($name, array('from', 'to', 'cc', 'bcc', 'reply-to', 'return-path', 'sender'), true)) {
                 $value = self::parseAddressHeader($value);
 
-            } elseif (strpos($value, '=?') !== FALSE) {
+            } elseif (strpos($value, '=?') !== false) {
                 $value = $this->decodeHeader($value);
             }
         }
@@ -308,8 +308,8 @@ class Message extends \Dogma\Object {
         foreach ($data as $item) {
             list($name, $address, $group) = array_values($item);
 
-            $name = $address === $name ? NULL
-                : (strpos($name, '=?') !== FALSE ? $this->decodeHeader($name) : $name);
+            $name = $address === $name ? null
+                : (strpos($name, '=?') !== false ? $this->decodeHeader($name) : $name);
             $arr[] = call_user_func($this->addressFactory, $address, $name);
         }
 
@@ -390,7 +390,7 @@ class Message extends \Dogma\Object {
 
     /**
      * @param array
-     * @return string|NULL
+     * @return string|null
      */
     private function getPartBody($part) {
         $start = $part['starting-pos-body'];

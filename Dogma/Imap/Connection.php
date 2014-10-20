@@ -67,7 +67,7 @@ class Connection extends \Dogma\Object {
      * @param string
      * @param int
      */
-    public function __construct($user, $password, $host = '127.0.0.1', $port = 143, $ssl = FALSE) {
+    public function __construct($user, $password, $host = '127.0.0.1', $port = 143, $ssl = false) {
         $this->user = $user;
         $this->password = $password;
         $this->host = $host;
@@ -112,7 +112,7 @@ class Connection extends \Dogma\Object {
      * @return bool
      */
     public function isConnected() {
-        if (!$this->handler) return FALSE;
+        if (!$this->handler) return false;
 
         ///
         return imap_ping($this->handler);
@@ -153,7 +153,7 @@ class Connection extends \Dogma\Object {
      * @param bool
      * @return array
      */
-    public function getFolderStructure($filter = "*", $all = TRUE) {
+    public function getFolderStructure($filter = "*", $all = true) {
         $folders = $this->listFolders($filter, $all);
         $struct = array();
 
@@ -177,7 +177,7 @@ class Connection extends \Dogma\Object {
      * @param bool
      * @return array
      */
-    public function listFolders($filter = "*", $all = TRUE) {
+    public function listFolders($filter = "*", $all = true) {
         ///
         if ($all) {
             $folders = imap_list($this->handler, $this->ref, $filter);
@@ -201,7 +201,7 @@ class Connection extends \Dogma\Object {
      * @param bool
      * @return Folder[]
      */
-    public function getFolders($filter = "*", $all = TRUE) {
+    public function getFolders($filter = "*", $all = true) {
         ///
         if ($all) {
             $folders = imap_getmailboxes($this->handler, $this->ref, $filter);
@@ -262,11 +262,11 @@ class Connection extends \Dogma\Object {
      */
     public function listSubscribedFolders($filter = "*") {
         if ($filter === '*') {
-            if (!$this->subscribed) $this->subscribed = $this->listFolders('*', FALSE);
+            if (!$this->subscribed) $this->subscribed = $this->listFolders('*', false);
             return $this->subscribed;
         }
 
-        return $this->listFolders($filter, FALSE);
+        return $this->listFolders($filter, false);
     }
 
 
@@ -277,7 +277,7 @@ class Connection extends \Dogma\Object {
      */
     public function listUnsubscribedFolders($filter = "*") {
         $all = $this->listFolders($filter);
-        $sub = $this->listFolders($filter, FALSE);
+        $sub = $this->listFolders($filter, false);
 
         return array_diff($all, $sub);
     }
@@ -311,7 +311,7 @@ class Connection extends \Dogma\Object {
      * @return bool
      */
     public function isFolderSubscribed($name) {
-        if (!$this->subscribed) $this->subscribed = $this->listFolders('*', FALSE);
+        if (!$this->subscribed) $this->subscribed = $this->listFolders('*', false);
 
         return in_array($name, $this->subscribed);
     }
@@ -343,7 +343,7 @@ class Connection extends \Dogma\Object {
 
     /**
      * Returns name of selected folder
-     * @return string|NULL
+     * @return string|null
      */
     public function getSelectedFolder() {
         return $this->selectedFolder;
@@ -393,7 +393,7 @@ class Connection extends \Dogma\Object {
      * @param bool
      * @return Message[]
      */
-    public function getMessages($criteria = array(), $orderBy = NULL, $descending = FALSE) {
+    public function getMessages($criteria = array(), $orderBy = null, $descending = false) {
         static $ob = array(
             'date' => SORTDATE,
             'arrival' => SORTARRIVAL,

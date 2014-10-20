@@ -91,7 +91,7 @@ class Inflector {
     );
 
     /** @var bool  use Ruby on Rails ActiveRecord naming conventions? */
-    public static $railsStyle = FALSE;
+    public static $railsStyle = false;
 
 
     /**
@@ -118,7 +118,7 @@ class Inflector {
             if (preg_match($rule, $word))
                 return preg_replace($rule, $replacement, $word);
 
-        return FALSE;
+        return false;
     }
 
 
@@ -144,7 +144,7 @@ class Inflector {
             if (preg_match($rule, $word))
                 return preg_replace($rule, $replacement, $word);
 
-        return FALSE;
+        return false;
     }
 
 
@@ -156,7 +156,7 @@ class Inflector {
      */
     public static function isSingular($word) {
         if (!self::isCountable($word))
-            return TRUE;
+            return true;
 
         return !self::isPlural($word);
     }
@@ -172,16 +172,16 @@ class Inflector {
         $lower = Strings::lower($word);
 
         if (!self::isCountable($word))
-            return TRUE;
+            return true;
 
         if (self::isIrregular($word))
             return in_array($lower, array_values(self::$irregular));
 
         foreach (self::$plurals as $rule => $replacement)
             if (preg_match($rule, $word))
-                return TRUE;
+                return true;
 
-        return FALSE;
+        return false;
     }
 
 
@@ -233,14 +233,14 @@ class Inflector {
 
     /**
      * By default, camelize() converts strings to UpperCamelCase.
-     * If the second argument is set to FALSE then camelize() produces lowerCamelCase.
+     * If the second argument is set to false then camelize() produces lowerCamelCase.
      * camelize() will also convert '/' to '\' which is useful for converting paths to namespaces.
      *
      * @param string $word  lower case and underscored word
      * @param bool   $firstUpper  first letter in uppercase?
      * @return string
      */
-    public static function camelize($word, $firstUpper = TRUE) {
+    public static function camelize($word, $firstUpper = true) {
         $word = preg_replace(array('/(^|_)(.)/e', '/(\/)(.)/e'), array("strtoupper('\\2')", "strtoupper('\\2')"), strval($word));
         return $firstUpper ? ucfirst($word) : lcfirst($word);
     }

@@ -89,7 +89,7 @@ class Regexp extends \Dogma\Object {
      * @param  int
      * @return string
      */
-    public function replace($subject, $replacement = NULL, $limit = -1) {
+    public function replace($subject, $replacement = null, $limit = -1) {
         return Strings::replace($subject, $this->pattern, $replacement, $limit);
     }
 

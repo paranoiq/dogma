@@ -41,7 +41,7 @@ class Selection extends \Nette\Database\Table\Selection {
      * @param  bool
      * @return \Dogma\Model\ActiveEntity|ActiveRow|int|bool
      */
-    public function insert($data, $map = FALSE) {
+    public function insert($data, $map = false) {
         $row = parent::insert($data);
         return $map ? $this->map($row) : $row;
     }
@@ -53,7 +53,7 @@ class Selection extends \Nette\Database\Table\Selection {
      * @param  bool
      * @return \Dogma\Model\ActiveEntity|ActiveRow|int|bool
      */
-    public function insertIgnore($data, $map = FALSE) {
+    public function insertIgnore($data, $map = false) {
         if ($data instanceof \Nette\Database\Table\Selection) {
             $data = $data->getSql();
 
@@ -67,7 +67,7 @@ class Selection extends \Nette\Database\Table\Selection {
             return $return->rowCount();
         }
 
-        $this->checkReferenceNewKeys = TRUE;
+        $this->checkReferenceNewKeys = true;
 
         if (!isset($data[$this->primary]) && ($id = $this->connection->lastInsertId())) {
             $data[$this->primary] = $id;
@@ -95,7 +95,7 @@ class Selection extends \Nette\Database\Table\Selection {
 
         $return = $this->connection->query("REPLACE INTO $this->delimitedName", $data);
 
-        $this->rows = NULL;
+        $this->rows = null;
         if (!is_array($data)) {
             return $return->rowCount();
         }
@@ -107,9 +107,9 @@ class Selection extends \Nette\Database\Table\Selection {
     /**
      * Returns row specified by primary key.
      * @param  mixed
-     * @return ActiveRow or FALSE if there is no such row
+     * @return ActiveRow or false if there is no such row
      */
-    public function get($key, $map = FALSE) {
+    public function get($key, $map = false) {
         $row = parent::get($key);
         return $map ? $this->map($row) : $row;
     }
@@ -124,7 +124,7 @@ class Selection extends \Nette\Database\Table\Selection {
     /**
      * Returns specified row.
      * @param  string
-     * @return ActiveRow or NULL if there is no such row
+     * @return ActiveRow or null if there is no such row
      */
     public function offsetGet($key) {
         return parent::offsetGet($key); /// never map?
@@ -133,9 +133,9 @@ class Selection extends \Nette\Database\Table\Selection {
 
     /**
      * Returns next row of result.
-     * @return ActiveRow or FALSE if there is no row
+     * @return ActiveRow or false if there is no row
      */
-    public function fetch($map = FALSE) {
+    public function fetch($map = false) {
         $row = parent::fetch();
         return $map ? $this->map($row) : $row;
     }
