@@ -24,7 +24,7 @@ class Response extends \Dogma\Object {
     private $response;
 
     /** @var array */
-    protected $headers = array();
+    protected $headers = [];
 
     /** @var string */
     protected $body;
@@ -105,7 +105,7 @@ class Response extends \Dogma\Object {
     public function getCookies() {
         if ($this->response) $this->parseResponse();
 
-        $cookies = array();
+        $cookies = [];
 
         foreach ((array) @$this->headers['Set-Cookie'] as $cookie) {
             $s = explode(';', $cookie);
@@ -164,7 +164,7 @@ class Response extends \Dogma\Object {
      * @return array
      */
     public static function parseHeaders($headers) {
-        $found = array();
+        $found = [];
 
         // extract version and status
         $versionAndStatus = array_shift($headers);
@@ -182,7 +182,7 @@ class Response extends \Dogma\Object {
                 if (is_array($found[$m['header']])) {
                     $found[$m['header']][] = $m['value'];
                 } else {
-                    $found[$m['header']] = array($found[$m['header']]);
+                    $found[$m['header']] = [$found[$m['header']]];
                     $found[$m['header']][] = $m['value'];
                 }
             } else {

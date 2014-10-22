@@ -83,7 +83,7 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator {
      * @return string[]
      */
     private function formatRow(Element $row) {
-        $res = array();
+        $res = [];
         foreach ($row->find(":cell") as $i => $cell) {
             $res[$this->head[$i]] = $cell->textContent;
         }

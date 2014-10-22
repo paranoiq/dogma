@@ -39,7 +39,7 @@ class Message extends \Dogma\Object {
     public static $bigFileTreshold = 0x100000; // 1MB
 
     /** @var string[] */
-    private $parts = array();
+    private $parts = [];
 
     /** @var string[] */
     private $headers;
@@ -89,7 +89,7 @@ class Message extends \Dogma\Object {
             throw new ParsingException("Cannot parse email structure.");
         }
 
-        $this->parts = array();
+        $this->parts = [];
         foreach ($structure as $partId) {
             Debugger::tryError();
             $partHandler = mailparse_msg_get_part($handler, $partId);
@@ -152,7 +152,7 @@ class Message extends \Dogma\Object {
      * @return string[]
      */
     public function getContentTypes() {
-        $ct = array();
+        $ct = [];
         foreach ($this->parts as $part) {
             if (isset($part['content-disposition'])) continue;
             if (substr($part['content-type'], 0, 9) === 'multipart') continue;
@@ -195,10 +195,10 @@ class Message extends \Dogma\Object {
         foreach ($this->parts as $part) {
             if ($type !== $part['content-type']) continue;
 
-            return @$part['headers'] ?: array();
+            return @$part['headers'] ?: [];
         }
 
-        return array();
+        return [];
     }
 
 
@@ -209,10 +209,10 @@ class Message extends \Dogma\Object {
      * @return \Dogma\Mail\Attachment[]
      */
     public function getAttachments($contentType = null, $inlines = true) {
-        $dispositions = $inlines ? array('attachment', 'inline') : array('attachment');
-        if (isset($contentType) && !is_array($contentType)) $contentType = array($contentType);
+        $dispositions = $inlines ? ['attachment', 'inline'] : ['attachment'];
+        if (isset($contentType) && !is_array($contentType)) $contentType = [$contentType];
 
-        $attachments = array();
+        $attachments = [];
         foreach ($this->parts as $part) {
             if (!in_array(@$part['content-disposition'], $dispositions)) continue; // only on attachments
             if ($contentType && !in_array($part['content-type'], $contentType)) continue;
@@ -303,7 +303,7 @@ class Message extends \Dogma\Object {
     private function parseAddressHeader($header) {
         $data = mailparse_rfc822_parse_addresses($header);
 
-        $arr = array();
+        $arr = [];
         foreach ($data as $item) {
             list($name, $address, $group) = array_values($item);
 

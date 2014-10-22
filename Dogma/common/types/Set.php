@@ -15,15 +15,15 @@ namespace Dogma;
  */
 abstract class Set implements SimpleValueObject {
 
-    private static $values = array();
+    private static $values = [];
 
-    private $set = array();
+    private $set = [];
 
 
     /**
      * @param self|string|string[]
      */
-    final public function __construct($set = array()) {
+    final public function __construct($set = []) {
         $this->add($set);
     }
 

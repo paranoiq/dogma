@@ -35,19 +35,19 @@ class Normalizer extends \Dogma\Object {
 
 
     /** @var string[] */
-    private $formats = array(
+    private $formats = [
         'date' => 'Y-m-d',
         'dateTime' => 'Y-m-d H:i:s',
-        'true' => array('true', 't', 'on', 'yes', 'y'),
-        'false' => array('false', 'f', 'off', 'no', 'n'),
-        'null' => array('null', 'nil', 'n/a', 'na', 'unknown', 'undefined'),
+        'true' => ['true', 't', 'on', 'yes', 'y'],
+        'false' => ['false', 'f', 'off', 'no', 'n'],
+        'null' => ['null', 'nil', 'n/a', 'na', 'unknown', 'undefined'],
         'decimalPoint' => '.',
         'thousandSeparator' => '',
         'setSeparator' => ',',
-    );
+    ];
 
     /** @var string[] user types (Enum, Set, Validator…) */
-    private $types = array();
+    private $types = [];
 
 
     /**
@@ -58,7 +58,7 @@ class Normalizer extends \Dogma\Object {
         if (!isset($this->formats[$option]))
             throw new \InvalidArgumentException("Normalizer: Unknown formating option '$option' given.");
 
-        if (is_string($format) && in_array($option, array('true', 'false', 'null'))) {
+        if (is_string($format) && in_array($option, ['true', 'false', 'null'])) {
             $format = explode(',', $format);
         } elseif (is_array($format)) {
             $format = array_values($format);
@@ -85,16 +85,16 @@ class Normalizer extends \Dogma\Object {
      */
     public function addType($type) {
         if (is_subclass_of($type, 'Dogma\\Enum')) {
-            $this->types[] = array('Enum', $type);
+            $this->types[] = ['Enum', $type];
 
         } elseif (is_subclass_of($type, 'Dogma\\Set')) {
-            $this->types[] = array('Set', $type);
+            $this->types[] = ['Set', $type];
         /*
         } elseif (is_subclass_of($type, 'Dogma\\Validator')) {
-            $this->types[] = array('Validator', $type);
+            $this->types[] = ['Validator', $type];
 
         } elseif (is_subclass_of($type, 'Dogma\\Regexp')) {
-            $this->types[] = array('Regexp', $type);
+            $this->types[] = ['Regexp', $type];
         */
         } else {
             throw new \InvalidArgumentException("Unsupported type.");
@@ -205,7 +205,7 @@ class Normalizer extends \Dogma\Object {
             return null;
 
         return (float) str_replace(
-            array($this->formats['thousandSeparator'], $this->formats['decimalPoint']), array('', '.'), $value);
+            [$this->formats['thousandSeparator'], $this->formats['decimalPoint']], ['', '.'], $value);
     }
 
 

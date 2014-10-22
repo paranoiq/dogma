@@ -36,9 +36,9 @@ final class CsvFile extends TextFile {
 
 
     /** @var integer[] (string $realName => integer $i) real column names */
-    private $realColumns = array();
+    private $realColumns = [];
     /** @var mixed[][] (string $alias => mixed[] ($options)) user column options */
-    private $columns = array();
+    private $columns = [];
 
     /** @var boolean autodetect types if no columns are defined? */
     private $autodetect = false;
@@ -106,11 +106,12 @@ final class CsvFile extends TextFile {
      * @return self
      */
     public function addColumn($name, $realName = null, $type = Type::STRING, $required = true, $nullable = false) {
-        $this->columns[$name] = Nette\ArrayHash::from(array(
+        $this->columns[$name] = Nette\ArrayHash::from([
             'realName' => $realName ?: $name,
             'type' => $type,
             'required' => $required,
-            'nullable' => $nullable));
+            'nullable' => $nullable
+        ]);
 
         return $this;
     }
@@ -172,7 +173,7 @@ final class CsvFile extends TextFile {
      */
     public function getColumns() {
         if (!$this->realColumns) $this->initializeRead();
-        $columns = array();
+        $columns = [];
 
         if ($this->columns) {
             foreach ($this->columns as $name => $column) {
@@ -268,9 +269,9 @@ final class CsvFile extends TextFile {
                 //throw new FileException("CsvFile: Error when reading a row from CSV file.");
             }
 
-        } while ($row === array(null) && !$this->eof()); // skip empty rows
+        } while ($row === [null] && !$this->eof()); // skip empty rows
 
-        if ($row === array(null)) return false; // eof
+        if ($row === [null]) return false; // eof
 
         if (count($row) !== count($this->realColumns))
             throw new FileException("CsvFile: Wrong column count on line #$this->counter.");
@@ -285,7 +286,7 @@ final class CsvFile extends TextFile {
      * @return mixed[]
      */
     private function assocRow(array $row) {
-        $data = array();
+        $data = [];
         foreach ($this->realColumns as $realName => $i) {
             if ($this->autodetect) {
                 $data[$realName] = $this->getNormalizer()->autodetect($this->decode($row[$i]));
@@ -303,7 +304,7 @@ final class CsvFile extends TextFile {
      * @return mixed[]
      */
     private function normalizeRow(array $row) {
-        $data = array();
+        $data = [];
         foreach ($this->columns as $name => $column) {
             if (!$column->required && !isset($this->realColumns[$column->realName])) {
                 $data[$name] = isset($column['default']) ? $column['default'] : null;
@@ -328,7 +329,7 @@ final class CsvFile extends TextFile {
             $this->initializeWrite($data);
         }
 
-        $row = array();
+        $row = [];
 
         if ($this->columns) {
             foreach ($this->columns as $name => $column) {
@@ -363,7 +364,7 @@ final class CsvFile extends TextFile {
             throw new FileException("CsvFile: Delimiter must be set!");
 
         $this->columnCount = count($data);
-        $row = array();
+        $row = [];
 
         // header from definition
         if ($this->columns) {
@@ -452,7 +453,7 @@ final class CsvFile extends TextFile {
         if (!$row)
             throw new FileException("CsvFile: Error when reading CSV file header.");
 
-        $this->realColumns = array();
+        $this->realColumns = [];
         foreach ($row as $i => $name) {
             $this->realColumns[$this->decode($name)] = $i;
         }

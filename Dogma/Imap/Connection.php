@@ -47,10 +47,10 @@ class Connection extends \Dogma\Object {
     private $selectedFolder;
 
     /** @var \Dogma\Imap\Folder[] */
-    private $folders = array();
+    private $folders = [];
 
     /** @var \Dogma\Mail\Message[] */
-    private $messages = array();
+    private $messages = [];
 
     /** @var string[] cache of subscribed folders */
     private $subscribed;
@@ -140,7 +140,7 @@ class Connection extends \Dogma\Object {
         $q = imap_get_quotaroot($this->handler, 'INBOX');
         ///
 
-        return array($q['storage']);
+        return [$q['storage']];
     }
 
 
@@ -155,14 +155,14 @@ class Connection extends \Dogma\Object {
      */
     public function getFolderStructure($filter = "*", $all = true) {
         $folders = $this->listFolders($filter, $all);
-        $struct = array();
+        $struct = [];
 
         foreach ($folders as &$folder) {
             $parts = explode('/', $folder);
             $n = -1;
             $branch = &$struct;
             while (isset($parts[++$n])) {
-                if (!isset($branch[$parts[$n]])) $branch[$parts[$n]] = array();
+                if (!isset($branch[$parts[$n]])) $branch[$parts[$n]] = [];
                 $branch = &$branch[$parts[$n]];
             }
         }
@@ -210,7 +210,7 @@ class Connection extends \Dogma\Object {
         }
         ///
 
-        $info = array();
+        $info = [];
         foreach ($folders as &$folder) {
             $name = preg_replace("/^Inbox(?=\\W)/i", "INBOX", substr($this->decode($folder->name), strlen($this->ref)));
 
@@ -393,8 +393,8 @@ class Connection extends \Dogma\Object {
      * @param boolean
      * @return \Dogma\Mail\Message[]
      */
-    public function getMessages($criteria = array(), $orderBy = null, $descending = false) {
-        static $ob = array(
+    public function getMessages($criteria = [], $orderBy = null, $descending = false) {
+        static $ob = [
             'date' => SORTDATE,
             'arrival' => SORTARRIVAL,
             'from' => SORTFROM,
@@ -402,9 +402,9 @@ class Connection extends \Dogma\Object {
             'to' => SORTTO,
             'cc' => SORTCC,
             'size' => SORTSIZE,
-        );
+        ];
 
-        $crit = $criteria === array() ? "ALL" : $this->compileCriteria($criteria);
+        $crit = $criteria === [] ? "ALL" : $this->compileCriteria($criteria);
 
         if ($orderBy) {
             if (!isset($ob[$orderBy]))
@@ -417,7 +417,7 @@ class Connection extends \Dogma\Object {
         if (!$uids && $e = imap_errors())
             throw new ImapException("IMAP search failed: " . implode('; ', $e));
 
-        $messages = array();
+        $messages = [];
         foreach ($uids as $uid) {
             if (empty($this->messages[$uid])) {
                 $this->messages[$uid] = new MessageInfo($this, $uid);
@@ -437,15 +437,15 @@ class Connection extends \Dogma\Object {
      * @return string
      */
     private function compileCriteria($criteria) {
-        static $true = array('OLD', 'NEW', 'RECENT'); // NEW = RECENT & UNSEEN; OLD = NOT RECENT;
-        static $bool = array('ANSWERED', 'DELETED', 'FLAGGED', 'SEEN'/*, 'DRAFT'*/);
-        static $text = array('SUBJECT', 'BODY', 'TEXT', 'FROM', 'TO', 'CC', 'BCC');
-        static $date = array('ON', 'SINCE', 'BEFORE'/*, 'SENTON', 'SENTSINCE', 'SENTBEFORE'*/);
-        /*static $size = array('LARGER', 'SMALLER');*/
+        static $true = ['OLD', 'NEW', 'RECENT']; // NEW = RECENT & UNSEEN; OLD = NOT RECENT;
+        static $bool = ['ANSWERED', 'DELETED', 'FLAGGED', 'SEEN'/*, 'DRAFT'*/];
+        static $text = ['SUBJECT', 'BODY', 'TEXT', 'FROM', 'TO', 'CC', 'BCC'];
+        static $date = ['ON', 'SINCE', 'BEFORE'/*, 'SENTON', 'SENTSINCE', 'SENTBEFORE'*/];
+        /*static $size = ['LARGER', 'SMALLER'];*/
         // NOT %1
         // OR %1 %2
 
-        $query = array();
+        $query = [];
         foreach ($criteria as $name => $value) {
             $name = strtoupper($name);
 

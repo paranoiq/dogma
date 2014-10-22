@@ -38,13 +38,13 @@ class Request extends \Dogma\Object {
     protected $method = self::GET;
 
     /** @var array */
-    private $headers = array();
+    private $headers = [];
 
     /** @var array */
-    private $cookies = array();
+    private $cookies = [];
 
     /** @var array */
-    private $variables = array();
+    private $variables = [];
 
     /** @var string POST|PUT content */
     private $content;
@@ -432,7 +432,7 @@ class Request extends \Dogma\Object {
 
 
     private function prepareHeaders() {
-        $headers = array();
+        $headers = [];
         foreach ($this->headers as $key => $value) {
             if (is_int($key)) {
                 $headers[] = $value;
@@ -440,7 +440,7 @@ class Request extends \Dogma\Object {
             }
 
             // fix HTTP_ACCEPT_CHARSET to Accept-Charset
-            $key = Strings::replace($key, array('/^HTTP_/i' => '', '/_/' => '-'));
+            $key = Strings::replace($key, ['/^HTTP_/i' => '', '/_/' => '-']);
             $key = Strings::replace($key, '/(?P<word>[a-z]+)/i', function ($match) {
                 return ucfirst(strtolower(current($match)));
             });
@@ -516,7 +516,7 @@ class Request extends \Dogma\Object {
                 throw new RequestException("POST parameter '$name' must be filled.");
         }
         $this->setOption(CURLOPT_POSTFIELDS, $this->variables);
-        $this->variables = array();
+        $this->variables = [];
     }
 
 
@@ -524,7 +524,7 @@ class Request extends \Dogma\Object {
      * @return array
      */
     private function analyzeUrl() {
-        $params = array();
+        $params = [];
 
         if (preg_match_all('/\\W([0-9A-Za-z_]+)=%[^0-9A-Fa-f]/', $this->url, $mm, PREG_SET_ORDER)) {
             foreach ($mm as $m) {

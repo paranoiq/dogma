@@ -23,7 +23,7 @@ final class Prototyper {
      * @param array
      * @return object
      */
-    public static function createInstance($class, &$data, $aliases = array()) {
+    public static function createInstance($class, &$data, $aliases = []) {
         $object = self::getPrototype($class);
 
         foreach ($aliases as $orig => $alias) {
@@ -48,7 +48,7 @@ final class Prototyper {
         // deserializace je ca 1.9x pomalejší než klonování. zpomalení cast() o méně než 10%
         return unserialize(sprintf('O:%d:"%s":0:{}', strlen($class), $class));
 
-        //static $prototypes = array();
+        //static $prototypes = [];
         //
         //if (!isset($prototypes[$class])) {
         //    $prototypes[$class] = unserialize(sprintf('O:%d:"%s":0:{}', strlen($class), $class));

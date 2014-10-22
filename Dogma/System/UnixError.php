@@ -123,8 +123,8 @@ class UnixError extends \Dogma\Enum implements Error {
      */
     public function getDescription() {
         return ucfirst(str_replace(
-            array('non_socket', 'cant', 'references', 'rpc', 'nfs', 'prog_', '_'),
-            array('non-socket', 'can\'t', 'references:', 'RPC', 'NFS', 'prog. ', ' '),
+            ['non_socket', 'cant', 'references', 'rpc', 'nfs', 'prog_', '_'],
+            ['non-socket', 'can\'t', 'references:', 'RPC', 'NFS', 'prog. ', ' '],
             strtolower($this->getIdentifier())));
     }
 

@@ -18,8 +18,8 @@ namespace Dogma;
  */
 abstract class Enum implements SimpleValueObject, IndirectInstantiable {
 
-    private static $values = array();
-    private static $instances = array();
+    private static $values = [];
+    private static $instances = [];
 
     private $identifier;
     private $value;
@@ -110,7 +110,7 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
         if (!isset(self::$values[$class = get_called_class()])) self::init($class);
 
         foreach (self::$values[$class] as $name => $val) {
-            if ($value === $val) return self::__callStatic($name, array());
+            if ($value === $val) return self::__callStatic($name, []);
         }
 
         throw new \InvalidArgumentException("Invalid value '$value' for type " . get_called_class() . ".");
@@ -125,7 +125,7 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
     final public static function getInstanceByName($name) {
         if (!isset(self::$values[$class = get_called_class()])) self::init($class);
 
-        return self::__callStatic($name, array());
+        return self::__callStatic($name, []);
     }
 
 
@@ -136,7 +136,7 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
     final public static function getInstanceByIdentifier($identifier) {
         if (!isset(self::$values[$class = get_called_class()])) self::init($class);
 
-        return self::__callStatic($identifier, array());
+        return self::__callStatic($identifier, []);
     }
 
 
@@ -167,7 +167,7 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
     final private static function init($class) {
         $ref = new \ReflectionClass($class);
         self::$values[$class] = $ref->getConstants();
-        self::$instances[$class] = array();
+        self::$instances[$class] = [];
     }
 
 

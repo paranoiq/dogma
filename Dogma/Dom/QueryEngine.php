@@ -23,7 +23,7 @@ class QueryEngine extends \Dogma\Object {
     /**
      * @var string[] (string $pattern => string $replacement)
      */
-    private $translations = array(
+    private $translations = [
         // index: [n]
         "/\\[([0-9]+)..([0-9]+)\\]/" => '[position() >= $1 and position() <= $2]', // [m..n]
         "/\\[..([0-9]+)\\]/" => '[position() <= $1]', // [..n]
@@ -102,13 +102,13 @@ class QueryEngine extends \Dogma\Object {
         '/:link/'   => "a[@href]",
         '/:anchor/' => "*[@id or (name() = 'a' and @name)]",
         */
-    );
+    ];
 
 
     /**
      * @var string[]
      */
-    private $nativeFunctions = array(
+    private $nativeFunctions = [
         'position',
         'last',
         'count',
@@ -147,19 +147,19 @@ class QueryEngine extends \Dogma\Object {
         'date',
         'datetime',
         'bool'
-    );
+    ];
 
 
     /**
      * @var string[]
      */
-    private $userFunctions = array(
+    private $userFunctions = [
         'Dogma\\Dom\\QueryEngine::match',
         'Dogma\\Dom\\QueryEngine::replace',
         'Dogma\\Dom\\QueryEngine::date',
         'Dogma\\Dom\\QueryEngine::datetime',
         'Dogma\\Dom\\QueryEngine::bool',
-    );
+    ];
 
 
     /**
@@ -294,7 +294,7 @@ class QueryEngine extends \Dogma\Object {
             return $this->extractPath($queries, $context);
         }
 
-        $value = array();
+        $value = [];
         foreach ($queries as $i => $query) {
             if (is_array($query)) {
                 $value[$i] = $this->extract($query, $context);

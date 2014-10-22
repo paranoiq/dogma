@@ -28,7 +28,7 @@ Assert::same("test job 1", $job['body']);
 $jack->suspend($job['id']);
 
 $job = $jack->assign(0);
-Assert::same(array(), $job);
+Assert::same([], $job);
 
 $jack->restore(1);
 

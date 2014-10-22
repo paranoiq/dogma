@@ -39,7 +39,7 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
     private $totalTime = 0;
 
     /** @var array */
-    private $queries = array();
+    private $queries = [];
 
     /** @var string */
     public $name;
@@ -68,12 +68,12 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
             ) {
                 if (isset($row['function']) && strpos($row['function'], 'call_user_func') === 0) continue;
                 if (isset($row['class']) && is_subclass_of($row['class'], '\\Nette\\Database\\Connection')) continue;
-                $source = array($row['file'], (int) $row['line']);
+                $source = [$row['file'], (int) $row['line']];
                 break;
             }
         }
         $this->totalTime += $result->getTime();
-        $this->queries[] = array($result->queryString, $params, $result->getTime(), $result->rowCount(), $result->getConnection(), $source);
+        $this->queries[] = [$result->queryString, $params, $result->getTime(), $result->rowCount(), $result->getConnection(), $source];
     }
 
 
@@ -81,10 +81,10 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
     public static function renderException($e)
     {
         if ($e instanceof \PDOException && isset($e->queryString)) {
-            return array(
+            return [
                 'tab' => 'SQL',
                 'panel' => Helpers::dumpSql($e->queryString),
-            );
+            ];
         }
     }
 

@@ -26,10 +26,10 @@ class ChannelManager extends \Dogma\Object {
     private $sumPriorities = 0.0;
 
     /** @var \Dogma\Http\Channel[] */
-    private $channels = array();
+    private $channels = [];
 
     /** @var array ($resourceId => array($channelId, $jobName, $request)) */
-    private $resources = array();
+    private $resources = [];
 
 
 
@@ -188,7 +188,7 @@ class ChannelManager extends \Dogma\Object {
      * @param \Dogma\Http\Request
      */
     public function jobStarted($resource, $channel, $name, $request) {
-        $this->resources[(string) $resource] = array(spl_object_hash($channel), $name, $request);
+        $this->resources[(string) $resource] = [spl_object_hash($channel), $name, $request];
     }
 
 }

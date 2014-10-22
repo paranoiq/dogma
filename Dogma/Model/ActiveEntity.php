@@ -28,7 +28,7 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
     private $factory;
 
     /** @var mixed[] property objects cache */
-    private $props = array();
+    private $props = [];
 
 
     public function __construct(\Nette\Database\Table\ActiveRow $row, EntityFactory $factory) {
@@ -93,7 +93,7 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
             $var = $props[$name];
 
         } elseif (method_exists($this, "get$name")) {
-            $var = call_user_func(array($this, "get$name"));
+            $var = call_user_func([$this, "get$name"]);
 
         } elseif ($this->factory->hasMagicProperty($class = get_called_class(), $name)) {
             $var = $this->factory->createPropertyInstance($class, $name, $this->row);
@@ -113,7 +113,7 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
      */
     public function __set($name, $value) {
         if (method_exists($this, "set$name")) {
-            call_user_func(array($this, "set$name"), $value);
+            call_user_func([$this, "set$name"], $value);
 
         } elseif ($this->factory->hasMagicProperty($class = get_called_class(), $name)) {
             $this->props[$name] = $this->factory->updatePropertyInstance($class, $name, $value, $this->row);

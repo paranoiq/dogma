@@ -41,11 +41,11 @@ class DdbMetadataStorage extends \Dogma\Object implements IMetadataStorage {
 
     public function insertJob($queue, $jobId, $data) {
         $this->connection->exec(
-            "INSERT INTO " . $this->getTable($queue) . "VALUES ", array(
+            "INSERT INTO " . $this->getTable($queue) . "VALUES ", [
                 'job_id' => $jobId,
                 'data' => $data,
                 'insert_time' => new \DateTime
-        ));
+        ]);
     }
 
 

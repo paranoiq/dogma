@@ -25,7 +25,7 @@ class Statement extends \Nette\Database\Statement {
     protected function __construct(Connection $connection) {
         parent::__construct($connection);
         $this->connection = $connection;
-        $this->setFetchMode(\PDO::FETCH_CLASS, 'Nette\Database\Row', array($this));
+        $this->setFetchMode(\PDO::FETCH_CLASS, 'Nette\Database\Row', [$this]);
     }
 
 
@@ -93,7 +93,7 @@ class Statement extends \Nette\Database\Statement {
      * @return array
      */
     public function fetchColumnAll() {
-        $cols = array();
+        $cols = [];
         while ($col = $this->fetchColumn()) {
             $cols[] = $col;
         }

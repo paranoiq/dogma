@@ -23,7 +23,7 @@ class Collection extends ArrayObject {
      * @param object[] $array
      * @param string $acceptedClass
      */
-    public function __construct($array = array(), $acceptedClass = null) {
+    public function __construct($array = [], $acceptedClass = null) {
         parent::__construct($array);
 
         if ($acceptedClass) {

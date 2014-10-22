@@ -17,7 +17,7 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
 
 
     /** @var string[] */
-    public $list = array(
+    public $list = [
         'Dogma\\CompoundValueObject' => '/common/interfaces/CompoundValueObject',
         'Dogma\\IndirectInstantiable' => '/common/interfaces/IndirectInstantiable',
         'Dogma\\SimpleValueObject' => '/common/interfaces/SimpleValueObject',
@@ -45,7 +45,7 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
         'Dogma\\Io\\FileException' => '/Io/exceptions',
         'Dogma\\Io\\DirectoryException' => '/Io/exceptions',
         'Dogma\\Io\\StreamException' => '/Io/exceptions',
-    );
+    ];
 
 
 

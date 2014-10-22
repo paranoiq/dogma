@@ -15,9 +15,9 @@ use Nette\Reflection\ClassType;
 final class ReflectionCache {
 
 
-    private static $classes = array();
-    private static $properties = array();
-    private static $allProps = array();
+    private static $classes = [];
+    private static $properties = [];
+    private static $allProps = [];
 
 
     /**
@@ -57,7 +57,7 @@ final class ReflectionCache {
     /**
      * Returns class reflection and unlocked reflections of its properties.
      * @param string
-     * @return array(\ReflectionClass, array(\ReflectionProperty))
+     * @return array (\ReflectionClass, (\ReflectionProperty))
      */
     public static function getClassAndPropertyReflections($className) {
         if (!isset($allProps[$className])) {
@@ -68,7 +68,7 @@ final class ReflectionCache {
             }
             self::$allProps[$className] = $properties;
         }
-        return array(self::$classes[$className], self::$allProps[$className]);
+        return [self::$classes[$className], self::$allProps[$className]];
     }
 
 }

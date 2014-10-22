@@ -16,7 +16,7 @@ class SqlFragment {
     public $statement;
 
     /** @var array */
-    public $args = array();
+    public $args = [];
 
 
     /**

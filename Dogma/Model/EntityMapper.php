@@ -55,7 +55,7 @@ class EntityMapper extends \Nette\Object {
             $class = '\Dogma\Model\ActiveEntity';
         }
 
-        return $this->context->createInstance($class, array($row));
+        return $this->context->createInstance($class, [$row]);
         //return $this->factory->createEntity($row, $class);
     }
 

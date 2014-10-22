@@ -207,8 +207,8 @@ class ResponseStatus extends \Dogma\Enum {
         if ($id[0] === 'S' && $id[4] === '_') $id = substr($id, 5);
 
         return ucwords(str_replace(
-            array('http', 'ftp', 'ssh', 'ldap', 'tftp', 'rtsp', 'url', 'ok', '_'),
-            array('HTTP', 'FTP', 'SSH', 'LDAP', 'TFTP', 'RTSP', 'URL', 'OK', ' '), strtolower($id)));
+            ['http', 'ftp', 'ssh', 'ldap', 'tftp', 'rtsp', 'url', 'ok', '_'],
+            ['HTTP', 'FTP', 'SSH', 'LDAP', 'TFTP', 'RTSP', 'URL', 'OK', ' '], strtolower($id)));
     }
 
 
@@ -271,14 +271,14 @@ class ResponseStatus extends \Dogma\Enum {
      * @return boolean
      */
     public function isNetworkError() {
-        return in_array($this->value, array(
+        return in_array($this->value, [
             self::COULDNT_RESOLVE_PROXY,
             self::COULDNT_RESOLVE_HOST,
             self::COULDNT_CONNECT,
             self::SEND_ERROR, // is this network or system?
             self::RECV_ERROR, // is this network or system?
             self::TRY_AGAIN,
-        ));
+        ]);
     }
 
 
@@ -287,7 +287,7 @@ class ResponseStatus extends \Dogma\Enum {
      * @return boolean
      */
     public function isFatalError() {
-        return in_array($this->value, array(
+        return in_array($this->value, [
             self::FAILED_INIT,
             self::OUT_OF_MEMORY,
             self::UNKNOWN_OPTION,
@@ -299,7 +299,7 @@ class ResponseStatus extends \Dogma\Enum {
             //self::SEND_ERROR,
             //self::RECV_ERROR,
             self::CONV_REQD,
-        ));
+        ]);
     }
 
 }

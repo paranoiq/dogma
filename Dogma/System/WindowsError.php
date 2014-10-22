@@ -2770,8 +2770,8 @@ class WindowsError extends \Dogma\Enum implements Error {
      */
     public function getDescription() {
         return ucfirst(preg_replace('/^error /', '', str_replace(
-            array('crc', 'dos', 'eof', 'sem_', 'iopl', 'eas', 'ea_', 'rpc', 'dns', 'frs', '_'),
-            array('CRC', 'DOS', 'EOF', 'SEM ', 'IOPL', 'EAS', 'EA ', 'RPC', 'DNS', 'FRS', ' '),
+            ['crc', 'dos', 'eof', 'sem_', 'iopl', 'eas', 'ea_', 'rpc', 'dns', 'frs', '_'],
+            ['CRC', 'DOS', 'EOF', 'SEM ', 'IOPL', 'EAS', 'EA ', 'RPC', 'DNS', 'FRS', ' '],
             strtolower($this->getIdentifier()))));
     }
 

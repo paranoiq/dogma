@@ -52,7 +52,7 @@ class BeanstalkJob extends \Dogma\Object {
      * @param \Dogma\Queue\BeanstalkClient
      * @param array
      */
-    public function __construct($id, $data, $owned, BeanstalkClient $connection, $stats = array()) {
+    public function __construct($id, $data, $owned, BeanstalkClient $connection, $stats = []) {
         $this->id = $id;
         $this->data = $data;
         $this->owned = $owned;
@@ -166,7 +166,7 @@ class BeanstalkJob extends \Dogma\Object {
     public function __get($name) {
         if (!$this->stats) $this->loadStats();
 
-        static $fields = array(
+        static $fields = [
             'queue' => 'tube',
             'status' => 'state',
             'priority' => 'pri',
@@ -178,14 +178,14 @@ class BeanstalkJob extends \Dogma\Object {
             'released' => 'releases',
             'suspended' => 'buries',
             'restored' => 'kicks'
-        );
+        ];
 
-        static $states = array(
+        static $states = [
             'delayed' => self::DELAYED,
             'ready' => self::READY,
             'reserved' => self::RESERVED,
             'buried' => self::SUSPENDED
-        );
+        ];
 
         if (!isset($this->stats[$fields[$name]])) return parent::__get($name);
 

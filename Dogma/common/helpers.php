@@ -93,7 +93,7 @@ function array_separate_keys(&$array, $keys) {
  * @return boolean
  */
 // function like($string, $pattern) {
-//     return preg_match('/^' . str_replace(array('%', '_'), array('.*?', '.'),
+//     return preg_match('/^' . str_replace(['%', '_'], ['.*?', '.'],
 //         preg_quote($pattern, '/')) . '$/ui', $string);
 // }
 
@@ -105,7 +105,7 @@ function array_separate_keys(&$array, $keys) {
  * @param array
  * @return object
  */
-// function instance($class, &$data, $aliases = array()) {
+// function instance($class, &$data, $aliases = []) {
 //     return Dogma\Object\Prototyper::createInstance($class, $data, $aliases);
 // }
 

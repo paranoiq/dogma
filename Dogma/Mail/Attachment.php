@@ -47,7 +47,7 @@ class Attachment extends \Dogma\Object {
      * @param string
      * @param string[]
      */
-    public function __construct($data, $headers = array()) {
+    public function __construct($data, $headers = []) {
         if ($data instanceof File) {
             $this->file = $data;
         } else {

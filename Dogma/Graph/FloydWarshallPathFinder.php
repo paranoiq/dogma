@@ -29,10 +29,10 @@ class FloydWarshallPathFinder extends \Dogma\Object {
     private $nodeNames;
 
     /** @var array */
-    private $distances = array(array());
+    private $distances = [[]];
 
     /** @var array */
-    private $predecessors = array(array());
+    private $predecessors = [[]];
 
 
     /**
@@ -49,8 +49,8 @@ class FloydWarshallPathFinder extends \Dogma\Object {
         // hashmap: replace keys with numeric indexes
         } else {
             $n = 0;
-            $nodeNames = array();
-            $normalized = array();
+            $nodeNames = [];
+            $normalized = [];
             foreach ($weights as $i => $nodes) {
                 if (!isset($nodeNames[$i])) $nodeNames[$i] = $n++;
                 foreach ($nodes as $j => $weight) {
@@ -127,7 +127,7 @@ class FloydWarshallPathFinder extends \Dogma\Object {
             $j = $this->nodeNames[$j];
         }
 
-        $path = array();
+        $path = [];
         $k = $j;
         do {
             $path[] = $k;

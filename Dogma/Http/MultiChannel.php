@@ -23,11 +23,11 @@ class MultiChannel extends \Dogma\Object {
     /** @var integer */
     private $lastIndex = -1;
 
-    /** @var string[][] array($sjName: ($cName: $jobName)) */
-    private $queue = array();
+    /** @var string[][] (string $sjName => (string $cName => string $jobName)) */
+    private $queue = [];
 
-    /** @var \Dogma\Http\Response[][] array($jobName: ($cName: $response)) */
-    private $finished = array();
+    /** @var \Dogma\Http\Response[][] (string $jobName => (string $cName => \Dogma\Http\Response $response)) */
+    private $finished = [];
 
 
     /** @var \Nette\Callback */
@@ -203,7 +203,7 @@ class MultiChannel extends \Dogma\Object {
         foreach ($jobs as $channel => $job) {
             $jobs[$channel] = $this->channels[$channel]->runJob($job, $context, null);
         }
-        $responses = array();
+        $responses = [];
         foreach ($jobs as $channel => $sjName) {
             $responses[$channel] = $this->channels[$channel]->fetch($sjName);
         }
@@ -302,7 +302,7 @@ class MultiChannel extends \Dogma\Object {
     protected function dispatch($data) {
         if (is_string($data)) {
             // default - send copy to all channels
-            $jobs = array();
+            $jobs = [];
             foreach ($this->channels as $name => $channel) {
                 $jobs[$name] = $data;
             }

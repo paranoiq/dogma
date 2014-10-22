@@ -10,8 +10,8 @@ use Dogma\Language\Inflector;
 
 class EntityFactory extends \Dogma\Object {
 
-    /** @var array ($entityClass => array($propertyName => array($propertyClass, array($paramName => $paramType)))) */
-    private $meta = array();
+    /** @var array ($entityClass => ($propertyName => ($propertyClass, ($paramName => $paramType)))) */
+    private $meta = [];
 
     /** @var \Nette\Reflection\ClassType[] */
     private $reflections;
@@ -31,7 +31,7 @@ class EntityFactory extends \Dogma\Object {
      * @return \Dogma\Model\ActiveEntity
      */
     //public function createEntity(ActiveRow $row, $class) {
-    //    return $this->context->createInstance($class, array($row));
+    //    return $this->context->createInstance($class, [$row]);
     //}
 
 
@@ -45,7 +45,7 @@ class EntityFactory extends \Dogma\Object {
         $ns = preg_replace('/[^\\\\]+$/', '', $class);
         $ref = self::getReflection($class);
 
-        $props = array();
+        $props = [];
         foreach ($ref->getProperties() as $property) {
             if ($property->isPublic()
                 && ($meta = $property->getAnnotation('instance'))
@@ -54,10 +54,10 @@ class EntityFactory extends \Dogma\Object {
                 $type = $this->getClassName($ns, $type);
 
                 if ($meta === true) {
-                    $props[$property->getName()] = array($type, array($property->getName() => null));
+                    $props[$property->getName()] = [$type, [$property->getName() => null]];
 
                 } else {
-                    $params = array();
+                    $params = [];
                     foreach ($meta as $param) {
                         @list($a, $b) = explode(' ', $param);
                         $paramName = $b ?: $a;
@@ -65,7 +65,7 @@ class EntityFactory extends \Dogma\Object {
                         $params[str_replace('$', '', $paramName)] = $paramType;
                     }
 
-                    $props[$property->getName()] = array($type, $params);
+                    $props[$property->getName()] = [$type, $params];
                 }
             }
         }
@@ -94,11 +94,11 @@ class EntityFactory extends \Dogma\Object {
     public function createPropertyInstance($class, $property, $row) {
         list($type, $params) = $this->meta[$class][$property];
 
-        $args = array();
+        $args = [];
         foreach ($params as $paramName => $paramType) {
             $args[] = ($paramType === null)
                 ? $row[Inflector::underscore($paramName)]
-                : $this->createInstance($paramType, array($row[Inflector::underscore($paramName)]));
+                : $this->createInstance($paramType, [$row[Inflector::underscore($paramName)]]);
         }
 
         $instance = $this->createInstance($type, $args);
@@ -133,7 +133,7 @@ class EntityFactory extends \Dogma\Object {
             }
 
         } else {
-            $instance = $this->createInstance($type, array($value));
+            $instance = $this->createInstance($type, [$value]);
             $row[$property] = $instance;
         }
 
@@ -179,7 +179,7 @@ class EntityFactory extends \Dogma\Object {
         $ref = $this->getReflection($class);
 
         if ($ref->implementsInterface('Dogma\\IndirectInstantiable')) {
-            return call_user_func_array(array($class, 'getInstance'), $args);
+            return call_user_func_array([$class, 'getInstance'], $args);
 
         } else {
             return $ref->newInstanceArgs($args);

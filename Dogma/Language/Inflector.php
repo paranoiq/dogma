@@ -26,7 +26,7 @@ use Nette\Utils\Strings;
 class Inflector {
 
     /** @var string[] singular nouns as rule => replacement */
-    public static $singulars = array(
+    public static $singulars = [
         '/(quiz)$/i' => '\1zes',
         '/^(ox)$/i' => '\1en',
         '/([m|l])ouse$/i' => '\1ice',
@@ -44,10 +44,10 @@ class Inflector {
         '/(ax|test)is$/i' => '\1es',
         '/s$/i' => 's',
         '/$/' => 's',
-    );
+    ];
 
     /** @var string[] plural nouns as rule => replacement */
-    public static $plurals = array(
+    public static $plurals = [
         '/(database)s$/i' => '\1',
         '/(quiz)zes$/i' => '\1',
         '/(matr)ices$/i' => '\1ix',
@@ -73,22 +73,22 @@ class Inflector {
         '/([ti])a$/i' => '\1um',
         '/(n)ews$/i' => '\1ews',
         '/s$/i' => '',
-    );
+    ];
 
     /** @var string[] of irregular nouns */
-    public static $irregular = array(
+    public static $irregular = [
         'person' => 'people',
         'man' => 'men',
         'child' => 'children',
         'sex' => 'sexes',
         'move' => 'moves',
         'cow' => 'kine',
-    );
+    ];
 
     /** @var string[] of uncountable nouns */
-    public static $uncountable = array(
+    public static $uncountable = [
         'equipment', 'information', 'rice', 'money', 'species', 'series', 'fish', 'sheep',
-    );
+    ];
 
     /** @var boolean use Ruby on Rails ActiveRecord naming conventions? */
     public static $railsStyle = false;
@@ -241,7 +241,7 @@ class Inflector {
      * @return string
      */
     public static function camelize($word, $firstUpper = true) {
-        $word = preg_replace(array('/(^|_)(.)/e', '/(\/)(.)/e'), array("strtoupper('\\2')", "strtoupper('\\2')"), strval($word));
+        $word = preg_replace(['/(^|_)(.)/e', '/(\/)(.)/e'], ["strtoupper('\\2')", "strtoupper('\\2')"], strval($word));
         return $firstUpper ? ucfirst($word) : lcfirst($word);
     }
 
@@ -265,7 +265,7 @@ class Inflector {
      * @return string
      */
     public static function titleize($word) {
-        return preg_replace(array("/\b('?[a-z])/e"), array("ucfirst('\\1')"), self::humanize(self::underscore($word)));
+        return preg_replace(["/\b('?[a-z])/e"], ["ucfirst('\\1')"], self::humanize(self::underscore($word)));
     }
 
 
@@ -289,7 +289,7 @@ class Inflector {
      * @return string
      */
     public static function humanize($word) {
-        return ucfirst(strtolower(preg_replace(array('/_id$/', '/_/'), array('', ' '), $word)));
+        return ucfirst(strtolower(preg_replace(['/_id$/', '/_/'], ['', ' '], $word)));
     }
 
 

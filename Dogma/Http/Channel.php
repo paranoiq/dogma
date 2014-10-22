@@ -47,16 +47,16 @@ class Channel extends \Dogma\Object {
 
 
     /** @var array */
-    private $queue = array();
+    private $queue = [];
 
     /** @var array */
-    private $running = array();
+    private $running = [];
 
     /** @var \Dogma\Http\Response[] */
-    private $finished = array();
+    private $finished = [];
 
     /** @var array */
-    private $contexts = array();
+    private $contexts = [];
 
 
 

@@ -108,7 +108,7 @@ class BeanstalkClient extends \Dogma\Object {
 
         $function = $this->persistent ? 'pfsockopen' : 'fsockopen';
         $errNum = $errStr = '';
-        $params = array($this->host, $this->port, &$errNum, &$errStr);
+        $params = [$this->host, $this->port, &$errNum, &$errStr];
 
         if ($this->timeout) {
             $params[] = $this->timeout;
@@ -395,9 +395,9 @@ class BeanstalkClient extends \Dogma\Object {
                 break;
             case 'DEADLINE_SOON':
                 /// if ($this->onDeadline) $this->onDeadline();
-                return array();
+                return [];
             case 'TIMED_OUT':
-                return array();
+                return [];
             default:
                 throw new BeanstalkException("Error when claiming a job: " . $status);
         }
@@ -663,7 +663,7 @@ class BeanstalkClient extends \Dogma\Object {
         if ($stats) {
             $st = $this->getJobStats($id);
         } else {
-            $st = array();
+            $st = [];
         }
 
         return new BeanstalkJob($id, $data, false, $this, $st);
@@ -768,7 +768,7 @@ class BeanstalkClient extends \Dogma\Object {
      */
     private function decodeYaml($data) {
         $data = array_slice(explode("\n", $data), 1);
-        $result = array();
+        $result = [];
 
         foreach ($data as $key => $value) {
             if ($value[0] === '-') {

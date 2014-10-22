@@ -46,15 +46,15 @@ class SqlPreprocessor {
     public function process($sql, $params) {
 
         $this->sql = '';
-        $this->remaining = array();
+        $this->remaining = [];
 
-        $sql2 = Strings::replace($sql, '~\'.*?\'|".*?"|\?~s', array($this, 'splitCb'));
+        $sql2 = Strings::replace($sql, '~\'.*?\'|".*?"|\?~s', [$this, 'splitCb']);
         if (strpos($sql2, chr(0)) !== false) { // placeholder mode
             $args = $params;
             $bits = explode(chr(0), $sql2);
 
         } else { // alternate mode
-            $args = array();
+            $args = [];
             $bits[0] = $sql;
             foreach ($params as $param) {
                 if (count($bits) > count($args)) {
@@ -72,9 +72,9 @@ class SqlPreprocessor {
             $this->processArg($args[$i], $sql);
         }
 
-        //$this->sql = Strings::replace($this->sql, '~\'.*?\'|".*?"|:[a-zA-Z0-9_]+:~s', array($this, 'substituteCb'));
+        //$this->sql = Strings::replace($this->sql, '~\'.*?\'|".*?"|:[a-zA-Z0-9_]+:~s', [$this, 'substituteCb']);
 
-        return array($this->sql, $this->remaining);
+        return [$this->sql, $this->remaining];
     }
 
 
@@ -162,7 +162,7 @@ class SqlPreprocessor {
      * @param string
      */
     private function processArray($array, $mode) {
-        $vx = array();
+        $vx = [];
 
         if ($mode === 'insert') { // (key, key, ...) VALUES (value, value, ...)
             $this->processInsert($array);
@@ -196,7 +196,7 @@ class SqlPreprocessor {
      * @param array
      */
     private function processInsert($array) {
-        $vx = $kx = array();
+        $vx = $kx = [];
 
         // multiinsert?
         reset($array);
@@ -225,7 +225,7 @@ class SqlPreprocessor {
      * @param array
      */
     private function processWhere($array) {
-        $vx = array();
+        $vx = [];
 
         foreach ($array as $k => $v) {
             if (is_string($v)) {
@@ -297,7 +297,7 @@ class SqlPreprocessor {
 
         } elseif (is_array($value) || $value instanceof \Traversable) {
             // non-associative; value, value, value
-            $vx = array();
+            $vx = [];
             foreach ($value as $v) {
                 $vx[] = $this->formatValue($v);
             }

@@ -81,7 +81,7 @@ class CurlHelpers {
      * @return string|null
      */
     public static function getCurlInfoName($num) {
-        static $translate = array(
+        static $translate = [
             CURLINFO_EFFECTIVE_URL => 'url',
             CURLINFO_HTTP_CODE => 'http_code',
             CURLINFO_FILETIME => 'filetime',
@@ -103,7 +103,7 @@ class CurlHelpers {
             CURLINFO_CONTENT_LENGTH_DOWNLOAD => 'download_content_length',
             CURLINFO_CONTENT_LENGTH_UPLOAD => 'upload_content_length',
             CURLINFO_CONTENT_TYPE => 'content_type',
-        );
+        ];
         // CURLINFO_PRIVATE
         // certinfo
 

@@ -23,7 +23,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
 
 
     /** @var array */
-    protected $data = array();
+    protected $data = [];
 
     /** @var bool */
     public $preserveKeys = false;
@@ -32,7 +32,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
     /**
      * @param array|Traversable
      */
-    public function __construct($array = array()) {
+    public function __construct($array = []) {
         if (is_array($array)) {
             $this->data = $array;
 

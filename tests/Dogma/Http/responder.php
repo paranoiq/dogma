@@ -2,15 +2,15 @@
 
 set_time_limit(0);
 
-$options = array(
+$options = [
     'size' => 'range',
     'time' => 'range',
     'redir' => 'range',
     'status' => 'choose',
-);
+];
 
 
-$request = array();
+$request = [];
 
 foreach ($options as $option => $type) {
     if (!isset($_GET[$option])) continue;
@@ -27,7 +27,7 @@ foreach ($options as $option => $type) {
             if (strstr($mm[1], 'K') !== false) $max *= 1000;
             if (strstr($mm[1], 'M') !== false) $max *= 1000000;
 
-            if ($min > $max) list($min, $max) = array($max, $min);
+            if ($min > $max) list($min, $max) = [$max, $min];
 
             $request[$option] = rand($min, $max);
         } else {
@@ -44,7 +44,7 @@ foreach ($options as $option => $type) {
         $arr = explode(',', $_GET[$option]);
 
         if (count($arr) > 1) {
-            $rats = array();
+            $rats = [];
             $sum = 0.0;
             foreach ($arr as $st) {
                 $ratio = 1 / pow(10, strlen(preg_replace('/[^-]/', '', $st)));

@@ -66,7 +66,7 @@ class Connection extends \Nette\Database\Connection {
         }
 
         $this->preprocessor = new SqlPreprocessor($this);
-        $this->setAttribute(\PDO::ATTR_STATEMENT_CLASS, array('Dogma\Database\Statement', array($this)));
+        $this->setAttribute(\PDO::ATTR_STATEMENT_CLASS, ['Dogma\Database\Statement', [$this]]);
     }
 
 
@@ -150,7 +150,7 @@ class Connection extends \Nette\Database\Connection {
     public function fetchColumnAll($args) {
         $args = func_get_args();
         $res = $this->queryArgs(array_shift($args), $args);
-        $cols = array();
+        $cols = [];
         while ($col = $res->fetchColumn()) {
             $cols[] = $col;
         }

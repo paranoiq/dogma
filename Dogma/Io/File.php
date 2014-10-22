@@ -433,22 +433,21 @@ class File extends \Nette\Object {
     //}
 
 
-    /*Array(
-        [wrapper_data] => Array
-            (
-                [0] => HTTP/1.1 200 OK
-                [1] => Server: Apache/2.2.3 (Red Hat)
-                [2] => Last-Modified: Tue, 15 Nov 2005 13:24:10 GMT
-                [3] => ETag: "b300b4-1b6-4059a80bfd280"
-                [4] => Accept-Ranges: bytes
-                [5] => Content-Type: text/html; charset=UTF-8
-                [6] => Set-Cookie: FOO=BAR; expires=Fri, 21-Dec-2012 12:00:00 GMT; path=/; domain=.example.com
-                [6] => Connection: close
-                [7] => Date: Fri, 16 Oct 2009 12:00:00 GMT
-                [8] => Age: 1164
-                [9] => Content-Length: 438
-            )
-
+    /*
+    [
+        [wrapper_data] => [
+            [0] => HTTP/1.1 200 OK
+            [1] => Server: Apache/2.2.3 (Red Hat)
+            [2] => Last-Modified: Tue, 15 Nov 2005 13:24:10 GMT
+            [3] => ETag: "b300b4-1b6-4059a80bfd280"
+            [4] => Accept-Ranges: bytes
+            [5] => Content-Type: text/html; charset=UTF-8
+            [6] => Set-Cookie: FOO=BAR; expires=Fri, 21-Dec-2012 12:00:00 GMT; path=/; domain=.example.com
+            [6] => Connection: close
+            [7] => Date: Fri, 16 Oct 2009 12:00:00 GMT
+            [8] => Age: 1164
+            [9] => Content-Length: 438
+        ]
         [wrapper_type] => http
         [stream_type] => tcp_socket/ssl
         [mode] => r
@@ -458,7 +457,8 @@ class File extends \Nette\Object {
         [timed_out] =>
         [blocked] => 1
         [eof] =>
-    )*/
+    ]
+    */
 
 
     // factories -------------------------------------------------------------------------------------------------------
