@@ -287,7 +287,7 @@ class SqlPreprocessor {
             return $this->connection->quote((string) $value);
 
         } elseif ($value instanceof SqlFragment) {
-            $pre = new self($this->connection);
+            $pre = new static($this->connection);
             list($sql, $remaining) = $pre->process($value->statement, $value->params);
 
             if ($remaining) foreach ($remaining as $val) {

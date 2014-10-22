@@ -134,7 +134,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         } elseif ($filter instanceof Regexp) {
             $filter = function ($value) use ($filter) { return $filter->match($value); };
         } elseif (is_array($filter) || $filter instanceof ArrayObject || $filter instanceof \Traversable) {
-            $arr = new self($filter);
+            $arr = new static($filter);
             $filter = function ($value) use ($arr) { return $arr->contains($value); };
         } else {
             throw new \InvalidArgumentException('ArrayObject: Filter must be a valid callback, Regexp, Condition or array.');
