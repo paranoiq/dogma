@@ -76,51 +76,41 @@ class BeanstalkJob extends \Dogma\Object {
         return $this->id;
     }
 
-    /**
-     * @return self
-     */
+
     public function touch() {
         $this->connection->touch($this->id);
-        return $this;
     }
 
 
     /**
      * @param integer|\DateTime
      * @param integer
-     * @return self
      */
     public function release($delay = null, $priority = null) {
         $this->connection->release($this->id, $delay, $priority);
-        return $this;
     }
 
-    /** @return self */
+
     public function finish() {
         $this->connection->finish($this->id);
-        return $this;
     }
 
-    /** @return self */
+
     public function delete() {
         $this->connection->delete($this->id);
-        return $this;
     }
 
 
     /**
      * @param integer
-     * @return self
      */
     public function suspend($priority = null) {
         $this->connection->suspend($this->id, $priority);
-        return $this;
     }
 
-    /** @return self */
+
     public function restore() {
         $this->connection->restore($this->id);
-        return $this;
     }
 
 

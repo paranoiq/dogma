@@ -56,12 +56,9 @@ final class CsvFile extends TextFile {
     /**
      * Set CSV column delimiter
      * @param string|null for autodetect
-     * @return self
      */
     public function setDelimiter($delimiter) {
         $this->delimiter = (string) $delimiter;
-
-        return $this;
     }
 
 
@@ -69,12 +66,9 @@ final class CsvFile extends TextFile {
      * Set formating options
      * @param string
      * @param string
-     * @return self
      */
     public function setFormat($type, $format) {
         $this->getNormalizer()->setFormat($type, $format);
-
-        return $this;
     }
 
 
@@ -82,13 +76,10 @@ final class CsvFile extends TextFile {
      * Set type autodetection
      * @param boolean
      * @param boolean
-     * @return self
      */
     public function autodetectTypes($autodetect = true, $nullable = false) {
         $this->autodetect = $autodetect;
         $this->nullable = $nullable;
-
-        return $this;
     }
 
 
@@ -331,7 +322,6 @@ final class CsvFile extends TextFile {
      * Write data to CSV file
      * @param array
      * @param boolean
-     * @return self
      */
     public function writeData($data) {
         if (!$this->columnCount) {
@@ -361,8 +351,6 @@ final class CsvFile extends TextFile {
                 $row[] = $this->encode($this->getNormalizer()->format($value));
             }
         }
-
-        return $this;
     }
 
 

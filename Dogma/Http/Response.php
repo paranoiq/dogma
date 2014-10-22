@@ -48,12 +48,9 @@ class Response extends \Dogma\Object {
 
     /**
      * @param mixed Request context
-     * @return self
      */
     public function setContext($data) {
         $this->context = $data;
-
-        return $this;
     }
 
 

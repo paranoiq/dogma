@@ -134,7 +134,6 @@ class Collator extends \Nette\Object {
     /**
      * Set collation level
      * @param integer
-     * @return self
      */
     public function setCollationLevel($level) {
         if (!$this->collator) $this->init();
@@ -145,8 +144,6 @@ class Collator extends \Nette\Object {
         }
         $result = collator_set_strength($this->collator, $strenght);
         if ($result === false) $this->throwError('Setting collation level');
-
-        return $this;
     }
 
 
@@ -168,7 +165,6 @@ class Collator extends \Nette\Object {
      * Set attribute value
      * @param string
      * @param mixed
-     * @return self
      */
     public function setAttribute($name, $value) {
         if (!$this->collator) $this->init();
@@ -176,8 +172,6 @@ class Collator extends \Nette\Object {
         $value = $result === self::ON ? \Collator::ON : ($result === self::OFF ? \Collator::OFF : ($result === self::AUTO ? \Collator::DEFAULT_VALUE : $result));
         $result = collator_set_attribute($this->collator, $name, $value);
         if ($result === false) $this->throwError('Setting attribute');
-
-        return $this;
     }
 
 

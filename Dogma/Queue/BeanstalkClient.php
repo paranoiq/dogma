@@ -76,31 +76,25 @@ class BeanstalkClient extends \Dogma\Object {
 
     /**
      * @param integer
-     * @return self
      */
     public function setDefaultPriority($priority) {
         $this->defaultPriority = abs((int)$priority);
-        return $this;
     }
 
 
     /**
      * @param integer [seconds]
-     * @return self
      */
     public function setDefaultDelay($delay) {
         $this->defaultDelay = abs((int)$delay);
-        return $this;
     }
 
 
     /**
      * @param integer [seconds]
-     * @return self
      */
     public function setDefaultTimeToRun($timeToRun) {
         $this->defaultTimeToRun = abs((int)$timeToRun);
-        return $this;
     }
 
 
@@ -275,14 +269,12 @@ class BeanstalkClient extends \Dogma\Object {
      * Set callback to call when a "DEADLINE SOON" signal received.
      *
      * @param callback
-     * @return self
      */
     public function setOnDeadline($callback) {
         if (!is_callable($callback))
             throw new \InvalidArgumentException("Invalid callback onDeadline given.");
 
         $this->onDeadline = $callback;
-        return $this;
     }
 
 
@@ -290,11 +282,9 @@ class BeanstalkClient extends \Dogma\Object {
      * What to do if job is suspended by server.
      *
      * @param integer
-     * @return self
      */
     public function setOnSuspended($action) {
         $this->onSuspended = $action;
-        return $this;
     }
 
 
@@ -366,7 +356,6 @@ class BeanstalkClient extends \Dogma\Object {
      * Automatically creates queues.
      *
      * @param string $queue name (max 200 bytes)
-     * @return self
      */
     public function selectQueue($queue) {
         $this->send(sprintf('use %s', $queue));
@@ -378,8 +367,6 @@ class BeanstalkClient extends \Dogma\Object {
             default:
                 throw new BeanstalkException("Error when selecting a queue: " . $status);
         }
-
-        return $this;
     }
 
 
@@ -423,7 +410,6 @@ class BeanstalkClient extends \Dogma\Object {
      * Finishes job and removes it from the queue. [DELETE]
      *
      * @param integer
-     * @return self
      */
     public function finish($jobId) {
         $this->send(sprintf('delete %d', $jobId));
@@ -431,7 +417,7 @@ class BeanstalkClient extends \Dogma\Object {
 
         switch ($status) {
             case 'DELETED':
-                return $this;
+                return;
             case 'NOT_FOUND':
             default:
                 throw new BeanstalkException("Error when finishing a job: " . $status);
@@ -443,10 +429,9 @@ class BeanstalkClient extends \Dogma\Object {
      * Alias for finish().
      *
      * @param integer
-     * @return self
      */
     public function delete($jobId) {
-        return $this->finish($jobId);
+        $this->finish($jobId);
     }
 
 
@@ -456,7 +441,6 @@ class BeanstalkClient extends \Dogma\Object {
      * @param integer
      * @param integer|\DateTime
      * @param integer
-     * @return self
      */
     public function release($jobId, $delay = null, $priority = null) {
         if (!isset($priority)) $priority = $this->defaultPriority;
@@ -470,10 +454,10 @@ class BeanstalkClient extends \Dogma\Object {
 
         switch ($status) {
             case 'RELEASED':
-                return $this;
+                return;
             case 'BURIED':
                 $this->suspended($jobId);
-                return $this;
+                return;
             case 'NOT_FOUND':
             default:
                 throw new BeanstalkException("Error when releasing a job: " . $status);
@@ -486,7 +470,6 @@ class BeanstalkClient extends \Dogma\Object {
      *
      * @param integer
      * @param integer
-     * @return self
      */
     public function suspend($jobId, $priority = null) {
         if (!isset($priority)) $priority = $this->defaultPriority;
@@ -498,7 +481,7 @@ class BeanstalkClient extends \Dogma\Object {
 
         switch ($status) {
             case 'BURIED':
-                return $this;
+                return;
             case 'NOT_FOUND':
             default:
                 throw new BeanstalkException("Error when suspending a job: " . $status);
@@ -531,7 +514,6 @@ class BeanstalkClient extends \Dogma\Object {
      * Reset the "time to run" of the job. [TOUCH]
      *
      * @param integer
-     * @return self
      */
     public function touch($jobId) {
         $this->send(sprintf('touch %d', $jobId));
@@ -539,7 +521,7 @@ class BeanstalkClient extends \Dogma\Object {
 
         switch ($status) {
             case 'TOUCHED':
-                return $this;
+                return;
             case 'NOT_TOUCHED':
             default:
                 throw new BeanstalkException("Error when touching a job: " . $status);
@@ -551,7 +533,6 @@ class BeanstalkClient extends \Dogma\Object {
      * Watch queue. Jobs are claimed only from wathed queues. [WATCH]
      *
      * @param string
-     * @return self
      */
     public function watchQueue($queue) {
         $this->send(sprintf('watch %s', $queue));
@@ -559,7 +540,7 @@ class BeanstalkClient extends \Dogma\Object {
 
         switch ($status) {
             case 'WATCHING':
-                return $this;
+                return;
             default:
                 throw new BeanstalkException("Error when watching a queue: " . $status);
         }
@@ -570,7 +551,6 @@ class BeanstalkClient extends \Dogma\Object {
      * Ignore queue. Jobs are claimed only from wathed queues. [WATCH]
      *
      * @param string
-     * @return self
      */
     public function ignoreQueue($queue) {
         $this->send(sprintf('ignore %s', $queue));
@@ -578,7 +558,7 @@ class BeanstalkClient extends \Dogma\Object {
 
         switch ($status) {
             case 'WATCHING':
-                return $this;
+                return;
             case 'NOT_IGNORED':
             default:
                 throw new BeanstalkException("Error when ignoring a queue: " . $status);
@@ -591,7 +571,6 @@ class BeanstalkClient extends \Dogma\Object {
      *
      * @param string
      * @param integer|\DateTime seconds of delay or time to start
-     * @return self
      */
     public function pauseQueue($queue, $delay) {
         if (!is_int($delay)) $delay = $this->delayToSeconds($delay);
@@ -601,7 +580,7 @@ class BeanstalkClient extends \Dogma\Object {
 
         switch ($status) {
             case 'WATCHING':
-                return $this;
+                return;
             case 'NOT_IGNORED':
             default:
                 throw new BeanstalkException("Error when ignoring a queue: " . $status);

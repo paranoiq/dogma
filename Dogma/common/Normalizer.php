@@ -53,7 +53,6 @@ class Normalizer extends \Dogma\Object {
     /**
      * @param string
      * @param string
-     * @return self
      */
     public function setFormat($option, $format) {
         if (!isset($this->formats[$option]))
@@ -65,8 +64,6 @@ class Normalizer extends \Dogma\Object {
             $format = array_values($format);
         }
         $this->formats[$option] = $format;
-
-        return $this;
     }
 
 

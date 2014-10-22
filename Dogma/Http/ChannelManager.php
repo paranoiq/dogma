@@ -55,25 +55,19 @@ class ChannelManager extends \Dogma\Object {
     /**
      * Set maximum of request to run paralelly.
      * @param integer
-     * @return self
      */
     public function setThreadLimit($threads) {
         $this->threadLimit = abs($threads);
-
-        return $this;
     }
 
 
     /**
      * @param \Dogma\Http\Channel
-     * @return self
      */
     public function addChannel(Channel $channel) {
         $this->channels[spl_object_hash($channel)] = $channel;
         $this->updatePriorities();
         $this->startJobs();
-
-        return $this;
     }
 
 
@@ -86,14 +80,9 @@ class ChannelManager extends \Dogma\Object {
     }
 
 
-    /**
-     * @return self
-     */
     public function read() {
         $this->waitForResult();
         $this->readResults();
-
-        return $this;
     }
 
 

@@ -114,47 +114,35 @@ class MultiChannel extends \Dogma\Object {
     /**
      * Set callback handler for every response (even an error)
      * @param \Nette\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
-     * @return self
      */
     public function setResponseHandler(Callback $responseHandler) {
         $this->responseHandler = $responseHandler;
-
-        return $this;
     }
 
 
     /**
      * Set separate callback handler for redirects. ResponseHandler will no longer handle these.
      * @param \Nette\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
-     * @return self
      */
     public function setRedirectHandler(Callback $redirectHadler) {
         $this->redirectHandler = $redirectHadler;
-
-        return $this;
     }
 
 
     /**
      * Set separate callback handler for errors. ResponseHandler will no longer handle these.
      * @param \Nette\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
-     * @return self
      */
     public function setErrorHandler(Callback $errorHandler) {
         $this->errorHandler = $errorHandler;
-
-        return $this;
     }
 
 
     /**
      * @param callable(mixed $data, \Dogma\Http\Channel[] $channels)
-     * @return self
      */
     public function setDispatchFunction($function) {
         $this->dispatch = new Callback($function);
-
-        return $this;
     }
 
 
@@ -194,7 +182,6 @@ class MultiChannel extends \Dogma\Object {
      * Add more jobs to a channel. Array indexes are job names if they are strings.
      * @param array
      * @param mixed
-     * @return self
      */
     public function addJobs(array $jobs, $context = null) {
         $useKeys = array_keys($jobs) !== range(0, count($jobs) - 1);
@@ -202,8 +189,6 @@ class MultiChannel extends \Dogma\Object {
         foreach ($jobs as $name => $data) {
             $this->addJob($data, $context, $useKeys ? $name : null);
         }
-
-        return $this;
     }
 
 
@@ -283,41 +268,29 @@ class MultiChannel extends \Dogma\Object {
 
     /**
      * Wait till all jobs are finished.
-     * @return self
      */
     public function finish() {
         foreach ($this->channels as $channel) {
             $channel->finish();
         }
-
-        return $this;
     }
 
 
     /**
      * Check if all channels or a channel or a job are finished.
      * @param \Dogma\Http\Channel
-     * @return boolean
      */
     public function isFinished() {
         foreach ($this->channels as $channel) {
             if (!$channel->isFinished()) return false;
         }
-
-        return true;
     }
 
 
-    /**
-     * @return self
-     */
     public function read() {
         foreach ($this->channels as $channel) {
             $channel->read();
-            return $this;
         }
-
-        return $this;
     }
 
 

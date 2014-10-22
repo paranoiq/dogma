@@ -177,7 +177,6 @@ class QueryEngine extends \Dogma\Object {
      * @param string
      * @param string
      * @param boolean
-     * @return self
      */
     public function registerFuction($name, $alias = '', $expectNode = false) {
         if (!$alias) $alias = $name;
@@ -193,19 +192,15 @@ class QueryEngine extends \Dogma\Object {
         $this->userFunctions[] = $name;
 
         $this->xpath->registerPhpFunctions($this->userFunctions);
-
-        return $this;
     }
 
 
     /**
      * @param string
      * @param string
-     * @return self
      */
     public function registerNamespace($prefix, $uri) {
         $this->xpath->registerNamespace($prefix, $uri);
-        return $this;
     }
 
 

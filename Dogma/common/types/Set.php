@@ -30,7 +30,6 @@ abstract class Set implements SimpleValueObject {
 
     /**
      * @param self|string|string[]
-     * @return static
      */
     public function add($set) {
         $this->checkSet($set);
@@ -45,14 +44,11 @@ abstract class Set implements SimpleValueObject {
                 $this->set[] = $value;
             }
         }
-
-        return $this;
     }
 
 
     /**
      * @param self|string|string[]
-     * @return \Dogma\Set
      */
     public function remove($set) {
         $this->checkSet($set);
@@ -63,8 +59,6 @@ abstract class Set implements SimpleValueObject {
                 unset($this->set[$key]);
             }
         }
-
-        return $this;
     }
 
 
@@ -119,14 +113,11 @@ abstract class Set implements SimpleValueObject {
     /**
      * Set more values at once
      * @param boolean[] (string $name => bool $value)
-     * @return self
      */
     public function setValues($values) {
         foreach ($values as $name => $value) {
             $this->__set($name, $value);
         }
-
-        return $this;
     }
 
 

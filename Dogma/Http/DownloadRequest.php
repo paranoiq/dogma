@@ -41,37 +41,28 @@ class DownloadRequest extends Request {
 
     /**
      * @param string
-     * @return self
      */
     public function setDownloadDir($dir) {
         if (!is_dir($dir))
             throw new RequestException("Download directory $dir does not exist.");
 
         $this->downloadDir = rtrim($dir, '/');
-
-        return $this;
     }
 
 
     /**
      * @param string
-     * @return self
      */
     public function setFileName($name) {
         $this->fileName = $name;
-
-        return $this;
     }
 
 
     /**
      * @param string
-     * @return self
      */
     public function setFileSuffix($suffix) {
         $this->fileSuffix = $suffix;
-
-        return $this;
     }
 
 

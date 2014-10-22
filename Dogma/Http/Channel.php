@@ -92,47 +92,35 @@ class Channel extends \Dogma\Object {
     /**
      * Set callback handler for every response (even an error)
      * @param \Nette\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
-     * @return self
      */
     public function setResponseHandler(Callback $responseHandler) {
         $this->responseHandler = $responseHandler;
-
-        return $this;
     }
 
 
     /**
      * Set separate callback handler for redirects. ResponseHandler will no longer handle these.
      * @param \Nette\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
-     * @return self
      */
     public function setRedirectHandler(Callback $redirectHadler) {
         $this->redirectHandler = $redirectHadler;
-
-        return $this;
     }
 
 
     /**
      * Set separate callback handler for errors. ResponseHandler will no longer handle these.
      * @param \Nette\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
-     * @return self
      */
     public function setErrorHandler(Callback $errorHandler) {
         $this->errorHandler = $errorHandler;
-
-        return $this;
     }
 
 
     /**
      * @param integer
-     * @return self
      */
     public function setPriority($priority) {
         $this->priority = abs((int) $priority);
-
-        return $this;
     }
 
 
@@ -146,12 +134,9 @@ class Channel extends \Dogma\Object {
 
     /**
      * @param integer
-     * @return self
      */
     public function setThreadLimit($threads) {
         $this->threadLimit = abs((int) $threads);
-
-        return $this;
     }
 
 
@@ -231,7 +216,6 @@ class Channel extends \Dogma\Object {
      * Add more jobs to a channel. Array indexes are job names if they are strings.
      * @param string[]|string[][]
      * @param mixed
-     * @return self
      */
     public function addJobs(array $jobs, $context = null) {
         $useKeys = array_keys($jobs) !== range(0, count($jobs) - 1);
@@ -239,8 +223,6 @@ class Channel extends \Dogma\Object {
         foreach ($jobs as $name => $data) {
             $this->addJob($data, $context, $useKeys ? $name : null);
         }
-
-        return $this;
     }
 
 
@@ -420,14 +402,11 @@ class Channel extends \Dogma\Object {
 
     /**
      * Wait till all jobs are finished.
-     * @return self
      */
     public function finish() {
         while (!$this->isFinished()) {
             $this->manager->read();
         }
-
-        return $this;
     }
 
 
@@ -473,13 +452,8 @@ class Channel extends \Dogma\Object {
     }
 
 
-    /**
-     * @return self
-     */
     public function read() {
         $this->manager->read();
-
-        return $this;
     }
 
 }

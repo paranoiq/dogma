@@ -36,23 +36,17 @@ class TextFile extends File {
 
     /**
      * @param string
-     * @return self
      */
     public function setEncoding($encoding) {
         $this->encoding = strtolower($encoding);
-
-        return $this;
     }
 
 
     /**
      * @param string
-     * @return self
      */
     public function setLineEndings($nl) {
         $this->nl = $nl;
-
-        return $this;
     }
 
 
@@ -67,10 +61,9 @@ class TextFile extends File {
 
     /**
      * @param string
-     * @return self
      */
     /*public function writeChar($char) {
-        return $this->write($this->encode($char));
+        $this->write($this->encode($char));
     }*/
 
 
@@ -96,10 +89,9 @@ class TextFile extends File {
 
     /**
      * @param string
-     * @return self
      */
     public function writeLine($line) {
-        return $this->write($this->encode($line) . $this->nl);
+        $this->write($this->encode($line) . $this->nl);
     }
 
 

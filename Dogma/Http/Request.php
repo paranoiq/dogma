@@ -65,12 +65,9 @@ class Request extends \Dogma\Object {
 
     /**
      * @param mixed Request context
-     * @return self
      */
     public function setContext($data) {
         $this->context = $data;
-
-        return $this;
     }
 
 
@@ -84,12 +81,9 @@ class Request extends \Dogma\Object {
 
     /**
      * @param \Nette\Callback(\Dogma\Http\Request $request -> boolean)
-     * @return self
      */
     public function setInit(Callback $init) {
         $this->init = $init;
-
-        return $this;
     }
 
 
@@ -112,23 +106,17 @@ class Request extends \Dogma\Object {
 
     /**
      * @param string
-     * @return self
      */
     public function setUrl($url) {
         $this->url = $url;
-
-        return $this;
     }
 
 
     /**
      * @param string
-     * @return self
      */
     public function appendUrl($url) {
         $this->setUrl($this->url . $url);
-
-        return $this;
     }
 
 
@@ -159,7 +147,6 @@ class Request extends \Dogma\Object {
 
     /**
      * @param string
-     * @return self
      */
     public function setContent($data) {
         if ($this->method === self::POST || $this->method === self::PUT) {
@@ -168,26 +155,20 @@ class Request extends \Dogma\Object {
             //$this->appendUrl($data); // ?
             throw new \Nette\InvalidStateException("Cannot set content of a '$this->method' request.");
         }
-
-        return $this;
     }
 
 
     /**
      * Set URL or POST variables. Can be called repeatedly.
      * @param array
-     * @return self
      */
     public function setVariables(array $variables) {
         $this->variables = array_merge($this->variables, $variables);
-
-        return $this;
     }
 
 
     /**
      * @param string
-     * @return self
      */
     public function setMethod($method) {
         $this->method = strtolower($method);
@@ -214,15 +195,12 @@ class Request extends \Dogma\Object {
             default:
                 throw new RequestException("Unknown method '$this->method'!");
         }
-
-        return $this;
     }
 
 
     /**
      * @param string|integer option name or CURLOPT_ constant
      * @param mixed
-     * @return self
      */
     public function setOption($name, $value) {
         if (is_string($name)) {
@@ -239,8 +217,6 @@ class Request extends \Dogma\Object {
 
         if (!curl_setopt($this->curl, $num, $value))
             throw new RequestException("Invalid CURL option."); ///
-
-        return $this;
     }
 
 
@@ -250,7 +226,6 @@ class Request extends \Dogma\Object {
     /**
      * @param float|integer
      * @param float|integer
-     * @return self
      */
     public function setTimeout($timeout, $connectTimeout = null) {
         if ($timeout < 1) {
@@ -259,73 +234,56 @@ class Request extends \Dogma\Object {
             $this->setOption(CURLOPT_TIMEOUT, (int) $timeout);
         }
 
-        if (is_null($connectTimeout)) return $this;
+        if (is_null($connectTimeout)) return;
 
         if ($connectTimeout < 1) {
             $this->setOption(CURLOPT_CONNECTTIMEOUT_MS, (int)($connectTimeout / 1000));
         } else {
             $this->setOption(CURLOPT_CONNECTTIMEOUT, (int) $connectTimeout);
         }
-
-        return $this;
     }
 
 
     /**
      * @param boolean
      * @param integer
-     * @return self
      */
     public function setFollowRedirects($follow = true, $max = null) {
         $this->setOption(CURLOPT_FOLLOWLOCATION, $follow);
         if (!is_null($max)) $this->setOption(CURLOPT_MAXREDIRS, (int) $max);
-
-        return $this;
     }
 
 
     /**
      * @param string
      * @param string
-     * @return self
      */
     public function addHeader($name, $value) {
         $this->headers[$name] = $value;
-
-        return $this;
     }
 
 
     /**
      * @param array
-     * @return self
      */
     public function setHeaders(array $headers) {
         $this->headers = $headers;
-
-        return $this;
     }
 
 
     /**
      * @param string
-     * @return self
      */
     public function setReferrer($url) {
         $this->setOption(CURLOPT_REFERER, $url);
-
-        return $this;
     }
 
 
     /**
      * @param string
-     * @return self
      */
     public function setUserAgent($string) {
         $this->setOption(CURLOPT_USERAGENT, $string);
-
-        return $this;
     }
 
 
@@ -335,36 +293,27 @@ class Request extends \Dogma\Object {
     /**
      * @param string
      * @param string
-     * @return self
      */
     public function setCookieFile($inputFile, $outputFile = null) {
         if ($inputFile) $this->setOption(CURLOPT_COOKIEFILE, $inputFile);
         if ($outputFile) $this->setOption(CURLOPT_COOKIEJAR, $outputFile);
-
-        return $this;
     }
 
 
     /**
      * @param array
-     * @return self
      */
     public function setCookies(array $cookies) {
         $this->cookies = $cookies;
-
-        return $this;
     }
 
 
     /**
      * @param string
      * @param string
-     * @return self
      */
     public function addCookie($name, $value) {
         $this->cookies[$name] = $value;
-
-        return $this;
     }
 
 
@@ -372,13 +321,10 @@ class Request extends \Dogma\Object {
      * @param string
      * @param string
      * @param integer $method CURLAUTH_ constant
-     * @return self
      */
     public function setCredentials($userName, $password, $method = CURLAUTH_ANYSAFE) {
         $this->setOption(CURLOPT_USERPWD, $userName . ':' . $password);
         $this->setOption(CURLOPT_HTTPAUTH, $method);
-
-        return $this;
     }
 
 
@@ -386,27 +332,21 @@ class Request extends \Dogma\Object {
      * @param string
      * @param string
      * @param string (PEM|DER|ENG)
-     * @return self
      */
     public function setSslKey($keyFile, $password, $keyType = 'PEM') {
         $this->setOption(CURLOPT_SSLKEY, $keyFile);
         $this->setOption(CURLOPT_SSLKEYPASSWD, $password);
         $this->setOption(CURLOPT_SSLKEYTYPE, $keyType);
-
-        return $this;
     }
 
 
     /**
      * @param boolean
      * @param boolean
-     * @return self
      */
     public function setVerifySslCertificates($verifyPeer = true, $verifyHost = true) {
         $this->setOption(CURLOPT_SSL_VERIFYPEER, $verifyPeer);
         $this->setOption(CURLOPT_SSL_VERIFYHOST, $verifyHost);
-
-        return $this;
     }
 
 

@@ -115,7 +115,6 @@ class File extends \Nette\Object {
 
     /**
      * Close file
-     * @return self
      */
     public function close() {
         $this->testOpen();
@@ -130,8 +129,6 @@ class File extends \Nette\Object {
         }
         $this->stat = null;
         $this->file = null;
-
-        return $this;
     }
 
 
@@ -230,7 +227,6 @@ class File extends \Nette\Object {
     /**
      * Write binary data to file
      * @param string
-     * @return self
      */
     public function write($data) {
         $this->testOpen();
@@ -243,15 +239,12 @@ class File extends \Nette\Object {
         } elseif ($res === false) {
             throw new FileException("Cannot write data to file.");
         }
-
-        return $this;
     }
 
 
     /**
      * Truncate file and move pointer at the end
      * @param integer $size new file size in bytes
-     * @return self
      */
     public function truncate($size = 0) {
         $this->testOpen();
@@ -265,13 +258,12 @@ class File extends \Nette\Object {
             throw new FileException("Cannot truncate file.");
         }
 
-        return $this->setPosition($size);
+        $this->setPosition($size);
     }
 
 
     /**
      * Flush the file output buffer (fsync)
-     * @return self
      */
     public function flush() {
         $this->testOpen();
@@ -285,8 +277,6 @@ class File extends \Nette\Object {
             throw new FileException("Cannot flush file cache.");
         }
         $this->stat = null;
-
-        return $this;
     }
 
 
@@ -294,7 +284,6 @@ class File extends \Nette\Object {
      * Lock file. see PHP flock() documentation
      * @param integer $mode locking mode
      * @param integer $wouldBlock would block (in non blocking mode)
-     * @return self
      */
     public function lock($mode = self::SHARED, &$wouldBlock = null) {
         $this->testOpen();
@@ -317,14 +306,11 @@ class File extends \Nette\Object {
                 throw new FileException("Cannot lock file.");
             }
         }
-
-        return $this;
     }
 
 
     /**
      * Release file lock
-     * @return self
      */
     public function unlock() {
         $this->testOpen();
@@ -337,8 +323,6 @@ class File extends \Nette\Object {
         } elseif ($res === false) {
             throw new FileException("Cannot unlock file.");
         }
-
-        return $this;
     }
 
 
@@ -346,7 +330,6 @@ class File extends \Nette\Object {
      * Set the file pointer position
      * @param integer|boolean position in bytes or true for end of file
      * @param integer $from
-     * @return self
      */
     public function setPosition($position, $from = self::BEGINNING) {
         $this->testOpen();
@@ -364,8 +347,6 @@ class File extends \Nette\Object {
         } elseif ($res !== 0) {
             throw new FileException("Cannot set file pointer position.");
         }
-
-        return $this;
     }
 
 
