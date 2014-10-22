@@ -17,14 +17,13 @@ use Nette\Utils\Strings;
  */
 class Regexp extends \Dogma\Object {
 
-    const
-        DOLLAR_MATCH_END_ONLY = 'D',
-        CASE_INSENSITIVE = 'i',
-        MULTILINE = 'm',
-        DOT_MATCH_EOL = 's',
-        UNICODE = 'u',
-        UNGREEDY = 'U',
-        IGNORE_WHITE_SPACE = 'x';
+    const DOLLAR_MATCH_END_ONLY = 'D';
+    const CASE_INSENSITIVE = 'i';
+    const MULTILINE = 'm';
+    const DOT_MATCH_EOL = 's';
+    const UNICODE = 'u';
+    const UNGREEDY = 'U';
+    const IGNORE_WHITE_SPACE = 'x';
 
 
     /** @var string */

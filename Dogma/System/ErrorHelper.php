@@ -12,11 +12,10 @@ namespace Dogma\System;
 
 class ErrorHelper {
 
-    const
-        LOCAL = 0,
-        LINUX = 1,
-        UNIX  = 2,
-        WINDOWS = 3;
+    const LOCAL = 0;
+    const LINUX = 1;
+    const UNIX = 2;
+    const WINDOWS = 3;
 
 
     /**

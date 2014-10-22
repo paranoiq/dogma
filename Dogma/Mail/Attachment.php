@@ -25,9 +25,8 @@ class Attachment extends \Dogma\Object {
 
 
     /** Content disposition */
-    const
-        ATTACHMENT = 'attachment',
-        INLINE = 'inline';
+    const ATTACHMENT = 'attachment';
+    const INLINE = 'inline';
 
 
     /** @var string */

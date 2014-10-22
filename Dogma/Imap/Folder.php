@@ -12,14 +12,13 @@ namespace Dogma\Imap;
 
 class Folder extends \Dogma\Object {
 
-    const
-        NO_SUBFOLDERS = LATT_NOINFERIORS, // 1
-        NOT_SELECTABLE = LATT_NOSELECT, // 2
-        IS_MARKED = LATT_MARKED, // 4
-        IS_UNMARKED = LATT_UNMARKED, // 8
-        IS_REFERENCE = LATT_REFERRAL, // 16
-        HAS_CHILDREN = LATT_HASCHILDREN, // 32
-        HAS_NO_CHILDREN = LATT_HASNOCHILDREN; // 64
+    const NO_SUBFOLDERS = LATT_NOINFERIORS; // 1
+    const NOT_SELECTABLE = LATT_NOSELECT; // 2
+    const IS_MARKED = LATT_MARKED; // 4
+    const IS_UNMARKED = LATT_UNMARKED; // 8
+    const IS_REFERENCE = LATT_REFERRAL; // 16
+    const HAS_CHILDREN = LATT_HASCHILDREN; // 32
+    const HAS_NO_CHILDREN = LATT_HASNOCHILDREN; // 64
 
 
     /** @var \Dogma\Imap\Connection */

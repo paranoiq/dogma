@@ -32,9 +32,8 @@ use Dogma\Language\Inflector;
  */
 class Message extends \Dogma\Object {
 
-    const
-        TEXT = 'text/plain',
-        HTML = 'text/html';
+    const TEXT = 'text/plain';
+    const HTML = 'text/html';
 
     /** @var int bigger attachements will be treated using temporary files */
     public static $bigFileTreshold = 0x100000; // 1MB
