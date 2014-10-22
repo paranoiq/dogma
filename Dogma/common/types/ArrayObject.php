@@ -69,10 +69,12 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
     /**
      * Get values of array (reindex)
      * @param bool
+     * @return self|null
      */
     public function values($yourself = false) {
         if ($yourself) {
             $this->data = array_values($this->data);
+            return null;
         } else {
             return new static(array_values($this->data));
         }
@@ -92,7 +94,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
     /**
      * Search for given key.
      * @param string|integer
-     * @return bool
+     * @return boolean
      */
     public function hasKey($key) {
         return array_key_exists($key, $this->data);
@@ -107,7 +109,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
      * Get slice of array by offset and limit. Allways preserves keys.
      * @param integer
      * @param integer
-     * @param bool
+     * @param boolean
      * @return self
      */
     public function slice($offset, $limit, $yourself = false) {
@@ -123,7 +125,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
     /**
      * Filter items in array by callback function. Allways preserves keys.
      * @param callback|Regexp|ICondition|array
-     * @param bool
+     * @param boolean
      * @return self
      */
     public function filter($filter, $yourself = false) {
@@ -150,7 +152,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
     /**
      * Remove duplicit items from array. Allways preserves keys.
      * @param callback|Language\Collator|Regexp  optional
-     * @param bool
+     * @param boolean
      * @return self
      */
     public function unique($collator = null, $yourself = null) {
@@ -159,6 +161,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
             $collator = null;
         }
 
+        /** @var \Dogma\ArrayObject $arr */
         $arr = new static;
         foreach ($this->data as $key => $value) { /// n^2
             if (!$arr->contains($value, $collator)) $arr[$key] = $value;
@@ -333,14 +336,19 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
 
     /**
      * IteratorAggregate interface
-     * @return ArrayIterator
+     * @return \ArrayIterator
      */
     public function getIterator() {
         return new \ArrayIterator($this->data);
     }
 
 
-    /**#@+ ArrayAccess interface */
+    /**
+     * ArrayAccess interface
+     * @param int|string|null $key
+     * @param mixed $value
+     * @throws \InvalidArgumentException
+     */
     public function offsetSet($key, $value) {
         if ($key === null) {
             $this->data[] = $value;
@@ -358,18 +366,31 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         }
     }
 
+    /**
+     * ArrayAccess interface
+     * @param int|string|null $key
+     * @return mixed
+     */
     public function offsetGet($key) {
         return $this->data[$key];
     }
 
+    /**
+     * ArrayAccess interface
+     * @param int|string|null $key
+     * @return bool
+     */
     public function offsetExists($key) {
         return array_key_exists($key, $this->data);
     }
 
+    /**
+     * ArrayAccess interface
+     * @param int|string|null $key
+     */
     public function offsetUnset($key) {
         unset($this->data[$key]);
     }
-    /**#@-*/
 
 
     // other -----------------------------------------------------------------------------------------------------------

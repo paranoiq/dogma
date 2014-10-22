@@ -64,7 +64,7 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
 
     /**
      * @param mixed
-     * @return bool
+     * @return boolean
      */
     final public static function isValid($value) {
         if (!isset(self::$values[$class = get_called_class()])) self::init($class);
@@ -75,7 +75,7 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
 
     /**
      * Get possible values.
-     * @return array
+     * @return mixed[]
      */
     final public static function getAllowedValues() {
         if (!isset(self::$values[$class = get_called_class()])) self::init($class);

@@ -16,8 +16,8 @@ final class PropertyAccessor {
 
     /**
      * Get value from an object propperty or array key.
-     * @param  object|array
-     * @param  string
+     * @param object|array
+     * @param string
      * @return mixed
      */
     public static function getValue($object, $propertyName) {

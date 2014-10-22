@@ -24,10 +24,10 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
     /** @var \Nette\Database\Table\ActiveRow */
     protected $row;
 
-    /** @var EntityFactory */
+    /** @var \Dogma\Model\EntityFactory */
     private $factory;
 
-    /** @var array property objects cache */
+    /** @var mixed[] property objects cache */
     private $props = array();
 
 
@@ -43,7 +43,7 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
 
     /**
      * Save modification to database.
-     * @return bool
+     * @return boolean
      */
     public function save() {
         return (bool) $this->row->update();
@@ -52,7 +52,7 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
 
     /**
      * Delete entity from database.
-     * @return bool
+     * @return boolean
      */
     public function delete() {
         return (bool) $this->row->delete();
@@ -126,7 +126,7 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
 
     /**
      * @param string
-     * @return bool
+     * @return boolean
      */
     public function __isset($name) {
         return $this->row->__isset(Inflector::underscore($name));
@@ -161,7 +161,7 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
 
     /**
      * @param string
-     * @return bool
+     * @return boolean
      */
     public function offsetExists($name) {
         return $this->__isset($name);

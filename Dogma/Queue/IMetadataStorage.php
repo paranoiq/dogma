@@ -11,7 +11,7 @@ interface IMetadataStorage {
 
     /**
      * @param string
-     * @param int
+     * @param integer
      * @param string
      */
     function insertJob($queue, $jobId, $data);
@@ -21,14 +21,14 @@ interface IMetadataStorage {
      * Get job id by job data
      * @param string
      * @param string
-     * @return int
+     * @return integer
      */
     function findJob($queue, $data);
 
 
     /**
      * @param string
-     * @param int
+     * @param integer
      */
     function deleteJob($queue, $jobId);
 

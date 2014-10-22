@@ -17,7 +17,7 @@ class Response extends \Dogma\Object {
     /** @var array */
     protected $info;
 
-    /** @var ResponseStatus */
+    /** @var \Dogma\Http\ResponseStatus */
     private $status;
 
     /** @var string */
@@ -36,7 +36,7 @@ class Response extends \Dogma\Object {
     /**
      * @param string
      * @param array
-     * @param int
+     * @param integer
      */
     public function __construct($response, ResponseStatus $status, array $info) {
         $this->status = $status;
@@ -66,7 +66,7 @@ class Response extends \Dogma\Object {
 
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isSuccess() {
         return $this->status->isOk();
@@ -74,7 +74,7 @@ class Response extends \Dogma\Object {
 
 
     /**
-     * @return ResponseStatus
+     * @return \Dogma\Http\ResponseStatus
      */
     public function getStatus() {
         return $this->status;
@@ -121,7 +121,7 @@ class Response extends \Dogma\Object {
 
 
     /**
-     * @param string|int
+     * @param string|integer
      * @return string|array
      */
     public function getInfo($name = null) {

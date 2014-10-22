@@ -20,7 +20,7 @@ use Nette\Callback;
  */
 class File extends \Nette\Object {
 
-    /**#@+ File opening mode */
+    // File opening mode:
     // if not found: ERROR; keep content
     const READ = 'rb';
     const READ_WRITE = 'r+b';
@@ -36,22 +36,19 @@ class File extends \Nette\Object {
     // if not found: create; keep content
     const OPEN_CREATE_WRITE = 'cb';
     const OPEN_CREATE_READ_WRITE = 'c+b';
-    /**#@-*/
 
 
-    /**#@+ Position from */
+    // Position from:
     const BEGINNING = 0;
     const CURRENT = 1;
     const END = 2;
-    /**#@-*/
 
 
-    /**#@+ Lock type */
+    // Lock type:
     const SHARED = 1;
     const EXCLUSIVE = 2;
     const UNLOCK = 3;
     const NON_BLOCKING = 4;
-    /**#@-*/
 
 
     /**
@@ -69,7 +66,7 @@ class File extends \Nette\Object {
     /** @var resource file descriptor */
     protected $file;
 
-    /** @var FileStat */
+    /** @var \Dogma\Io\FileStat */
     private $stat;
 
 
@@ -109,7 +106,7 @@ class File extends \Nette\Object {
 
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isOpen() {
         return (bool) $this->file;
@@ -140,7 +137,7 @@ class File extends \Nette\Object {
 
     /**
      * End of file reached?
-     * @return bool
+     * @return boolean
      */
     public function eof() {
         $this->testOpen();
@@ -158,7 +155,7 @@ class File extends \Nette\Object {
 
     /**
      * Read binary data from file
-     * @param int $length maximal length of input
+     * @param integer $length maximal length of input
      * @return string
      */
     public function read($length = null) {
@@ -184,10 +181,10 @@ class File extends \Nette\Object {
 
     /**
      * Copy range of data to another File or callback
-     * @param File|callable
-     * @param int
-     * @param int
-     * @return int actual length of copied data
+     * @param \Dogma\Io\File|callable
+     * @param integer
+     * @param integer
+     * @return integer actual length of copied data
      */
     public function copyData($destination, $start = null, $length = 0, $chunkSize = null) {
         if (empty($chunkSize)) $chunkSize = self::$defaultChunkSize;
@@ -253,7 +250,7 @@ class File extends \Nette\Object {
 
     /**
      * Truncate file and move pointer at the end
-     * @param int $size new file size in bytes
+     * @param integer $size new file size in bytes
      * @return self
      */
     public function truncate($size = 0) {
@@ -295,8 +292,8 @@ class File extends \Nette\Object {
 
     /**
      * Lock file. see PHP flock() documentation
-     * @param int $mode locking mode
-     * @param int $wouldBlock would block (in non blocking mode)
+     * @param integer $mode locking mode
+     * @param integer $wouldBlock would block (in non blocking mode)
      * @return self
      */
     public function lock($mode = self::SHARED, &$wouldBlock = null) {
@@ -347,8 +344,8 @@ class File extends \Nette\Object {
 
     /**
      * Set the file pointer position
-     * @param int|bool position in bytes or true for end of file
-     * @param int $from
+     * @param integer|boolean position in bytes or true for end of file
+     * @param integer $from
      * @return self
      */
     public function setPosition($position, $from = self::BEGINNING) {
@@ -374,7 +371,7 @@ class File extends \Nette\Object {
 
     /**
      * Get file pointer position
-     * @return int
+     * @return integer
      */
     public function getPosition() {
         $this->testOpen();
@@ -408,7 +405,7 @@ class File extends \Nette\Object {
 
     /**
      * Get file info
-     * @return FileStat
+     * @return \Dogma\Io\FileStat
      */
     public function getInfo() {
         if (!$this->stat) {

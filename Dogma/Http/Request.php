@@ -83,7 +83,7 @@ class Request extends \Dogma\Object {
 
 
     /**
-     * @param Callback(@param Request, @return bool)
+     * @param \Nette\Callback(\Dogma\Http\Request $request -> boolean)
      * @return self
      */
     public function setInit(Callback $init) {
@@ -220,7 +220,7 @@ class Request extends \Dogma\Object {
 
 
     /**
-     * @param string|int option name or CURLOPT_ constant
+     * @param string|integer option name or CURLOPT_ constant
      * @param mixed
      * @return self
      */
@@ -248,8 +248,8 @@ class Request extends \Dogma\Object {
 
 
     /**
-     * @param float|int
-     * @param float|int
+     * @param float|integer
+     * @param float|integer
      * @return self
      */
     public function setTimeout($timeout, $connectTimeout = null) {
@@ -272,8 +272,8 @@ class Request extends \Dogma\Object {
 
 
     /**
-     * @param bool
-     * @param int
+     * @param boolean
+     * @param integer
      * @return self
      */
     public function setFollowRedirects($follow = true, $max = null) {
@@ -371,7 +371,7 @@ class Request extends \Dogma\Object {
     /**
      * @param string
      * @param string
-     * @param int $method CURLAUTH_ constant
+     * @param integer $method CURLAUTH_ constant
      * @return self
      */
     public function setCredentials($userName, $password, $method = CURLAUTH_ANYSAFE) {
@@ -398,8 +398,8 @@ class Request extends \Dogma\Object {
 
 
     /**
-     * @param bool
-     * @param bool
+     * @param boolean
+     * @param boolean
      * @return self
      */
     public function setVerifySslCertificates($verifyPeer = true, $verifyHost = true) {
@@ -415,7 +415,7 @@ class Request extends \Dogma\Object {
 
     /**
      * Execute request.
-     * @return Response
+     * @return \Dogma\Http\Response
      */
     public function execute() {
         $this->init();
@@ -457,9 +457,9 @@ class Request extends \Dogma\Object {
      * Called by RequestManager.
      * @internal
      *
-     * @param string|bool
-     * @param int
-     * @return Response
+     * @param string|boolean
+     * @param integer
+     * @return \Dogma\Http\Response
      */
     public function createResponse($response, $error) {
         $info = curl_getinfo($this->curl);

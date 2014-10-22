@@ -12,13 +12,17 @@ namespace Dogma\Dom;
 
 class Element extends \Dogma\Object {
 
-    /** @var QueryEngine */
+    /** @var \Dogma\Dom\QueryEngine */
     private $engine;
 
     /** @var \DOMElement */
     private $element;
 
 
+    /**
+     * @param \DOMNodeList
+     * @param \Dogma\Dom\QueryEngine
+     */
     public function __construct(\DOMElement $element, QueryEngine $engine) {
         $this->element = $element;
         $this->engine = $engine;
@@ -45,7 +49,7 @@ class Element extends \Dogma\Object {
 
     /**
      * @param string
-     * @return string|int|float
+     * @return string|integer|float
      */
     public function evaluate($xpath) {
         return $this->engine->evaluate($xpath, $this->element);
@@ -70,7 +74,7 @@ class Element extends \Dogma\Object {
 
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function remove() {
         $this->element->parentNode->removeChild($this->element);

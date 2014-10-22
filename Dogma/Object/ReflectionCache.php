@@ -22,7 +22,7 @@ final class ReflectionCache {
 
     /**
      * Returns class reflection.
-     * @param  string
+     * @param string
      * @return \ReflectionClass
      */
     public static function getClassReflection($className) {
@@ -35,10 +35,10 @@ final class ReflectionCache {
 
     /**
      * Returns unlocked reflection of an object property.
-     * @param  string
-     * @param  string
+     * @param string
+     * @param string
      * @return \ReflectionProperty
-     * @throws \MemberAccessException
+     * @throws \Nette\MemberAccessException
      */
     public static function getPropertyReflection($className, $propertyName) {
         if (!isset(self::$classes[$className])) {

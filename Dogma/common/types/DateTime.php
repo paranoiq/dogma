@@ -41,7 +41,6 @@ class DateTime extends \DateTime implements SimpleValueObject {
 
 
     /**
-     * @static
      * @param string
      * @param string
      * @param \DateTimeZone

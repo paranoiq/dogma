@@ -13,10 +13,10 @@ namespace Dogma\Dom;
 class Dumper {
 
     /**
-     * @param Element|\DOM\Node
-     * @param int
-     * @param int
-     * @param bool $only is the only child?
+     * @param \Dogma\Dom\Element|\DOMNode
+     * @param integer
+     * @param integer
+     * @param boolean $only is the only child?
      * @throws \Nette\NotImplementedException
      */
     public static function dump($node, $maxDepth = 15, $depth = 0, $only = false) {
@@ -60,6 +60,12 @@ class Dumper {
     }
 
 
+    /**
+     * @param \DOMNode $node
+     * @param integer $maxDepth
+     * @param integer $depth
+     * @param boolean $only
+     */
     private static function dumpElement($node, $maxDepth = 15, $depth = 0, $only = false) {
         if ($depth === 0) echo "<b>Element:</b>\n";
         if (!$only) echo str_repeat('    ', $depth);

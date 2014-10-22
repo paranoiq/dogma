@@ -75,7 +75,7 @@ class FileInfo extends \SplFileInfo {
     /**
      * @param string
      * @param resource
-     * @return File
+     * @return \Dogma\Io\File
      */
     public function openFile($mode = File::READ, $streamContext = null) {
         return $this->open($mode, $streamContext);
@@ -84,7 +84,7 @@ class FileInfo extends \SplFileInfo {
 
     /**
      * Is current or parent directory
-     * @return bool
+     * @return boolean
      */
     public function isDot() {
         return $this->getFilename() === '.' | $this->getFilename() === '..';
@@ -96,8 +96,8 @@ class FileInfo extends \SplFileInfo {
 
     /**
      * Call to undefined method.
-     * @param  string  method name
-     * @param  array   arguments
+     * @param string
+     * @param array
      * @return mixed
      */
     public function __call($name, $args) {
@@ -107,8 +107,8 @@ class FileInfo extends \SplFileInfo {
 
     /**
      * Call to undefined static method.
-     * @param  string  method name (in lower case!)
-     * @param  array   arguments
+     * @param string
+     * @param array
      * @return mixed
      */
     public static function __callStatic($name, $args) {
@@ -118,8 +118,8 @@ class FileInfo extends \SplFileInfo {
 
     /**
      * Adding method to class.
-     * @param  string  method name
-     * @param  mixed   callback or closure
+     * @param string
+     * @param mixed
      * @return mixed
      */
     public static function extensionMethod($name, $callback = null) {
@@ -139,8 +139,8 @@ class FileInfo extends \SplFileInfo {
 
     /**
      * Returns property value. Do not call directly.
-     * @param  string  property name
-     * @return mixed   property value
+     * @param string
+     * @return mixed
      */
     public function &__get($name) {
         return Nette\ObjectMixin::get($this, $name);
@@ -149,8 +149,8 @@ class FileInfo extends \SplFileInfo {
 
     /**
      * Sets value of a property. Do not call directly.
-     * @param  string  property name
-     * @param  mixed   property value
+     * @param string
+     * @param mixed
      * @return void
      */
     public function __set($name, $value) {
@@ -160,7 +160,7 @@ class FileInfo extends \SplFileInfo {
 
     /**
      * Is property defined?
-     * @param  string  property name
+     * @param string
      * @return bool
      */
     public function __isset($name) {
@@ -170,9 +170,7 @@ class FileInfo extends \SplFileInfo {
 
     /**
      * Access to undeclared property.
-     * @param  string  property name
-     * @return void
-     * @throws MemberAccessException
+     * @param string
      */
     public function __unset($name) {
         Nette\ObjectMixin::remove($this, $name);

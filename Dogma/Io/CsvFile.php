@@ -35,28 +35,28 @@ final class CsvFile extends TextFile {
     private $normalizer;
 
 
-    /** @var array(realName=>i) real column names */
+    /** @var integer[] (string $realName => integer $i) real column names */
     private $realColumns = array();
-    /** @var array(alias=>array(options)) user column options */
+    /** @var mixed[][] (string $alias => mixed[] ($options)) user column options */
     private $columns = array();
 
-    /** @var bool autodetect types if no columns are defined? */
+    /** @var boolean autodetect types if no columns are defined? */
     private $autodetect = false;
-    /** @var bool autodetect includes null? */
+    /** @var boolean autodetect includes null? */
     private $nullable = false;
 
 
-    /** @var int row counter (reading) */
+    /** @var integer row counter (reading) */
     private $counter = 1;
 
-    /** @var int column count (writing) */
+    /** @var integer column count (writing) */
     private $columnCount;
 
 
     /**
      * Set CSV column delimiter
      * @param string|null for autodetect
-     * @return CsvFile
+     * @return self
      */
     public function setDelimiter($delimiter) {
         $this->delimiter = (string) $delimiter;
@@ -80,8 +80,8 @@ final class CsvFile extends TextFile {
 
     /**
      * Set type autodetection
-     * @param bool
-     * @param bool
+     * @param boolean
+     * @param boolean
      * @return self
      */
     public function autodetectTypes($autodetect = true, $nullable = false) {
@@ -110,8 +110,8 @@ final class CsvFile extends TextFile {
      * @param string $name user column name
      * @param string $realName real column name in file
      * @param string $type column type (string|int|float|bool|date|datetime|bool)
-     * @param bool $required
-     * @param bool null value allowed?
+     * @param boolean $required
+     * @param boolean null value allowed?
      * @return self
      */
     public function addColumn($name, $realName = null, $type = Type::STRING, $required = true, $nullable = false) {
@@ -127,7 +127,7 @@ final class CsvFile extends TextFile {
 
     /**
      * Set required parameter for last inserted column
-     * @param bool
+     * @param boolean
      * @return self
      */
     public function setRequired($required = true) {
@@ -139,7 +139,7 @@ final class CsvFile extends TextFile {
 
     /**
      * Set nullable parameter for last inserted column
-     * @param bool
+     * @param boolean
      * @return self
      */
     public function setNullable($nullable = true) {
@@ -164,7 +164,7 @@ final class CsvFile extends TextFile {
     /**
      * Check if file has column
      * @param string
-     * @return bool
+     * @return boolean
      */
     public function hasColumn($name) {
         if (!$this->realColumns) $this->initializeRead();
@@ -177,7 +177,7 @@ final class CsvFile extends TextFile {
 
     /**
      * Returns list of columns
-     * @return array(name=>type)
+     * @return string[] (string $name => string $type)
      */
     public function getColumns() {
         if (!$this->realColumns) $this->initializeRead();
@@ -202,8 +202,8 @@ final class CsvFile extends TextFile {
 
     /**
      * Skip n rows
-     * @param int
-     * @return int actually skipped
+     * @param integer
+     * @return integer actually skipped
      */
     public function skip($rows = 1) {
         $rows = (int) $rows;
@@ -221,7 +221,7 @@ final class CsvFile extends TextFile {
 
     /**
      * Returns next CSV row or false
-     * @return array|bool
+     * @return array|boolean
      */
     public function fetch() {
         if (!$this->realColumns) $this->initializeRead();
@@ -239,7 +239,7 @@ final class CsvFile extends TextFile {
     /**
      * Returns next CSV row or false
      * @param string
-     * @return mixed|bool
+     * @return mixed|boolean
      */
     public function fetchColumn($name) {
         if (!$this->realColumns) $this->initializeRead();
@@ -266,7 +266,7 @@ final class CsvFile extends TextFile {
 
     /**
      * Get next row
-     * @return array
+     * @return mixed[]
      */
     private function getNextRow() {
         do {
@@ -290,8 +290,8 @@ final class CsvFile extends TextFile {
 
     /**
      * Format row as associative array
-     * @param array
-     * @return array
+     * @param mixed[]
+     * @return mixed[]
      */
     private function assocRow(array $row) {
         $data = array();
@@ -308,8 +308,8 @@ final class CsvFile extends TextFile {
 
     /**
      * Normalize row
-     * @param array
-     * @return array
+     * @param mixed[]
+     * @return mixed[]
      */
     private function normalizeRow(array $row) {
         $data = array();
@@ -330,8 +330,8 @@ final class CsvFile extends TextFile {
     /**
      * Write data to CSV file
      * @param array
-     * @param bool
-     * @return CsvFile
+     * @param boolean
+     * @return self
      */
     public function writeData($data) {
         if (!$this->columnCount) {

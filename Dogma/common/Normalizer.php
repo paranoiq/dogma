@@ -27,14 +27,14 @@ namespace Dogma;
  * @property-write string[] $null
  * @property-write string $date
  * @property-write string $dateTime
- * @property-write string $decimalPouint
+ * @property-write string $decimalPoint
  * @property-write string $thousandSeparator
  * @property-write string $setSeparator
  */
 class Normalizer extends \Dogma\Object {
 
 
-    /** @var array */
+    /** @var string[] */
     private $formats = array(
         'date' => 'Y-m-d',
         'dateTime' => 'Y-m-d H:i:s',
@@ -46,7 +46,7 @@ class Normalizer extends \Dogma\Object {
         'setSeparator' => ',',
     );
 
-    /** @var array user types (Enum, Set, Validator…) */
+    /** @var string[] user types (Enum, Set, Validator…) */
     private $types = array();
 
 
@@ -84,7 +84,6 @@ class Normalizer extends \Dogma\Object {
 
 
     /**
-     * @param string
      * @param object
      */
     public function addType($type) {
@@ -149,7 +148,7 @@ class Normalizer extends \Dogma\Object {
     /**
      * Detects null from string. Returns true on match, false otherwise.
      * @param string
-     * @return bool
+     * @return boolean
      */
     public function detectNull($value) {
         if (is_null($value)) return true;
@@ -165,7 +164,7 @@ class Normalizer extends \Dogma\Object {
     /**
      * Detects null from string. Returns true on success, false otherwise.
      * @param string
-     * @return bool
+     * @return boolean|null
      */
     public function detectBool($value) {
         if (is_bool($value)) return $value;
@@ -183,7 +182,7 @@ class Normalizer extends \Dogma\Object {
 
     /**
      * @param string
-     * @return int
+     * @return integer|null
      */
     public function detectInt($value) {
         if (is_int($value)) return $value;
@@ -197,7 +196,7 @@ class Normalizer extends \Dogma\Object {
 
     /**
      * @param string
-     * @return float
+     * @return float|null
      */
     public function detectFloat($value) {
         if (is_float($value)) return $value;
@@ -215,7 +214,7 @@ class Normalizer extends \Dogma\Object {
 
     /**
      * @param string
-     * @return \Dogma\Date
+     * @return \Dogma\Date|null
      */
     function detectDate($value) {
         if ($value instanceof Date) return $value;
@@ -230,7 +229,7 @@ class Normalizer extends \Dogma\Object {
 
     /**
      * @param string
-     * @return \Dogma\DateTime
+     * @return \Dogma\DateTime|null
      */
     function detectDateTime($value) {
         if ($value instanceof Date) return new DateTime($value);
@@ -247,7 +246,7 @@ class Normalizer extends \Dogma\Object {
      * Normalize value
      * @param string
      * @param string
-     * @param bool
+     * @param boolean
      * @return mixed
      */
     public function normalize($value, $type, $nullable = false) {

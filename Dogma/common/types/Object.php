@@ -17,10 +17,9 @@ abstract class Object {
 
     /**
      * Call to undefined method.
-     * @param  string $name method name
-     * @param  array
+     * @param string
+     * @param array
      * @return mixed
-     * @throws MemberAccessException
      */
     public function __call($name, $args) {
         return ObjectMixin::call($this, $name, $args);
@@ -29,10 +28,9 @@ abstract class Object {
 
     /**
      * Call to undefined static method.
-     * @param  string $name method name (in lower case!)
-     * @param  array
+     * @param string
+     * @param array
      * @return mixed
-     * @throws MemberAccessException
      */
     public static function __callStatic($name, $args) {
         return ObjectMixin::callStatic(get_called_class(), $name, $args);
@@ -41,9 +39,8 @@ abstract class Object {
 
     /**
      * Returns property value. Do not call directly.
-     * @param  string
+     * @param string
      * @return mixed
-     * @throws MemberAccessException if the property is not defined.
      */
     public function &__get($name) {
         return ObjectMixin::get($this, $name);
@@ -52,10 +49,9 @@ abstract class Object {
 
     /**
      * Sets value of a property. Do not call directly.
-     * @param  string
-     * @param  mixed
+     * @param string
+     * @param mixed
      * @return void
-     * @throws MemberAccessException if the property is not defined or is read-only
      */
     public function __set($name, $value) {
         ObjectMixin::set($this, $name, $value);
@@ -64,8 +60,8 @@ abstract class Object {
 
     /**
      * Is property defined?
-     * @param  string
-     * @return bool
+     * @param string
+     * @return boolean
      */
     public function __isset($name) {
         return ObjectMixin::has($this, $name);
@@ -74,9 +70,8 @@ abstract class Object {
 
     /**
      * Access to undeclared property.
-     * @param  string
+     * @param string
      * @return void
-     * @throws MemberAccessException
      */
     public function __unset($name) {
         ObjectMixin::remove($this, $name);

@@ -47,7 +47,7 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator {
 
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function valid() {
         return $this->position < count($this->rows);
@@ -55,7 +55,7 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator {
 
 
     /**
-     * @return int
+     * @return integer
      */
     public function key() {
         return $this->position;
@@ -79,7 +79,7 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator {
 
 
     /**
-     * @param DomElement
+     * @param \Dogma\Dom\Element
      * @return string[]
      */
     private function formatRow(Element $row) {

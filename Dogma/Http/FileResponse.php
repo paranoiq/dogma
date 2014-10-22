@@ -20,8 +20,8 @@ class FileResponse extends Response {
 
     /**
      * @param string
-     * @param array
-     * @param int
+     * @param mixed[]
+     * @param integer
      */
     public function __construct($fileName, array $info, $error) {
         parent::__construct(null, $info, $error);

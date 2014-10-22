@@ -15,9 +15,14 @@ use Dogma\Object\PropertyAccessor;
 class Collection extends ArrayObject {
 
 
+    /** @var string */
     protected $accepted;
 
 
+    /**
+     * @param object[] $array
+     * @param string $acceptedClass
+     */
     public function __construct($array = array(), $acceptedClass = null) {
         parent::__construct($array);
 
@@ -56,8 +61,7 @@ class Collection extends ArrayObject {
 
     /**
      * Check if object is of accepted class.
-     * @param  object
-     * @throws \InvalidArgumentException
+     * @param object
      */
     protected function checkAccepted($object) {
         if (!$object instanceof $this->accepted)
@@ -67,7 +71,7 @@ class Collection extends ArrayObject {
 
     /**
      * Adds items to the end of array.
-     * @param array
+     * @param object[]
      */
     public function append($items) {
         foreach ($items as $item) {
@@ -79,7 +83,7 @@ class Collection extends ArrayObject {
 
     /**
      * Adds items to the beginning of array. Does not preserve keys.
-     * @param array
+     * @param object[]
      */
     public function prepend($items) {
         foreach (array_reverse($items) as $item) {
@@ -91,7 +95,7 @@ class Collection extends ArrayObject {
 
     /**
      * Insert items at given position. Does not preserve keys.
-     * @param array
+     * @param object[]
      * @param integer
      */
     public function insertAt($items, $position) {
@@ -102,7 +106,11 @@ class Collection extends ArrayObject {
     }
 
 
-    /** ArrayAccess interface */
+    /**
+     * ArrayAccess interface
+     * @param integer
+     * @param object
+     */
     public function offsetSet($key, $value) {
         $this->checkAccepted($value);
         parent::offsetSet($key, $value);

@@ -17,7 +17,7 @@ interface IndirectInstantiable {
 
     /**
      * Returns new instance of the called class.
-     * @param mixed
+     * @param scalar
      * @return static
      */
     static function getInstance($value);

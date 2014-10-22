@@ -25,13 +25,13 @@ class BeanstalkClient extends \Dogma\Object {
     /** @var string */
     private $host;
 
-    /** @var int */
+    /** @var integer */
     private $port;
 
-    /** @var int */
+    /** @var integer */
     private $timeout;
 
-    /** @var bool */
+    /** @var boolean */
     private $persistent;
 
     /** @var resource */
@@ -48,7 +48,7 @@ class BeanstalkClient extends \Dogma\Object {
     const NOTICE = -1;
     const THROW_EXCEPTION = 0;
 
-    /** @var int */
+    /** @var integer */
     private $onSuspended = 0;
 
     /** @var callback */
@@ -57,9 +57,9 @@ class BeanstalkClient extends \Dogma\Object {
 
     /**
      * @param string $host server address
-     * @param int $port server port
-     * @param int $timeout connection timeout in seconds
-     * @param bool
+     * @param integer $port server port
+     * @param integer $timeout connection timeout in seconds
+     * @param boolean
      */
     public function __construct($host = '127.0.0.1', $port = 11300, $timeout = 1, $persistent = true) {
         $this->host = $host;
@@ -75,7 +75,7 @@ class BeanstalkClient extends \Dogma\Object {
 
 
     /**
-     * @param int
+     * @param integer
      * @return self
      */
     public function setDefaultPriority($priority) {
@@ -85,7 +85,7 @@ class BeanstalkClient extends \Dogma\Object {
 
 
     /**
-     * @param int [seconds]
+     * @param integer [seconds]
      * @return self
      */
     public function setDefaultDelay($delay) {
@@ -95,7 +95,7 @@ class BeanstalkClient extends \Dogma\Object {
 
 
     /**
-     * @param int [seconds]
+     * @param integer [seconds]
      * @return self
      */
     public function setDefaultTimeToRun($timeToRun) {
@@ -169,7 +169,7 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * Read a message from server.
      *
-     * @param int (bytes)
+     * @param integer (bytes)
      * @return string
      */
     private function receive($length = null) {
@@ -214,8 +214,8 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * Format delay argument to seconds.
      *
-     * @param numeric|DateTime
-     * @return int
+     * @param integer|float|string|\DateTime
+     * @return integer
      */
     private function delayToSeconds($delay) {
         if (is_numeric($delay)) {
@@ -242,7 +242,7 @@ class BeanstalkClient extends \Dogma\Object {
      * Try to serialize job data.
      * Throws exception for unsupported types (null, bool, resource)
      *
-     * @param array|object|int|float
+     * @param array|object|integer|float
      * @return string
      */
     private function serializeJob($data) {
@@ -289,7 +289,7 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * What to do if job is suspended by server.
      *
-     * @param int
+     * @param integer
      * @return self
      */
     public function setOnSuspended($action) {
@@ -301,7 +301,7 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * Handle case when a job is suspended *by server*.
      *
-     * @param int
+     * @param integer
      */
     private function suspended($jobId) {
         switch ($this->onSuspended) {
@@ -325,10 +325,10 @@ class BeanstalkClient extends \Dogma\Object {
      * All other types except string will be serialized.
      *
      * @param string $data job data
-     * @param int|\DateTime $delay seconds of delay or time to start
-     * @param int $priority [0-2^32]. lower number means higher priority
-     * @param int $timeToRun worker timeout, before re-assigning job to another worker
-     * @return int job id
+     * @param integer|\DateTime $delay seconds of delay or time to start
+     * @param integer $priority [0-2^32]. lower number means higher priority
+     * @param integer $timeToRun worker timeout, before re-assigning job to another worker
+     * @return integer job id
      */
     public function queue($data, $delay = null, $priority = null, $timeToRun = null) {
         if (!isset($priority)) $priority = $this->defaultPriority;
@@ -390,8 +390,8 @@ class BeanstalkClient extends \Dogma\Object {
      * Ask for a job to assign. Job is reserved until finished, released or timed-out. [RESERVE]
      * When no timeout is given, waits until some job is ready.
      *
-     * @param int $timeout seconds to wait if queue is empty. 0 returns immediately.
-     * @return array(int $jobId, string $data)
+     * @param integer $timeout seconds to wait if queue is empty. 0 returns immediately.
+     * @return \Dogma\Queue\BeanstalkJob
      */
     public function assign($timeout = null) {
         if (isset($timeout)) {
@@ -422,7 +422,7 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * Finishes job and removes it from the queue. [DELETE]
      *
-     * @param int
+     * @param integer
      * @return self
      */
     public function finish($jobId) {
@@ -442,7 +442,7 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * Alias for finish().
      *
-     * @param int
+     * @param integer
      * @return self
      */
     public function delete($jobId) {
@@ -453,9 +453,9 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * Puts a reserved job back into the ready queue. [RELEASE]
      *
-     * @param int
-     * @param int|DateTime
-     * @param int
+     * @param integer
+     * @param integer|\DateTime
+     * @param integer
      * @return self
      */
     public function release($jobId, $delay = null, $priority = null) {
@@ -484,8 +484,8 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * Suspend a job. Job cannot be assigned to a worker until it is restored. [BURY]
      *
-     * @param int
-     * @param int
+     * @param integer
+     * @param integer
      * @return self
      */
     public function suspend($jobId, $priority = null) {
@@ -509,8 +509,8 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * Restore a previously suspended job. It can be assigned to a worker now. [KICK*]
      *
-     * @param int $jobs max number of jobs to restore
-     * @return int number of jobs actualy restored
+     * @param integer $jobs max number of jobs to restore
+     * @return integer number of jobs actualy restored
      */
     public function restore($jobs) {
         /// check for suspended (do not kick delayed jobs!)
@@ -530,7 +530,7 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * Reset the "time to run" of the job. [TOUCH]
      *
-     * @param int
+     * @param integer
      * @return self
      */
     public function touch($jobId) {
@@ -590,7 +590,7 @@ class BeanstalkClient extends \Dogma\Object {
      * Pause queue. No jobs from this queue will be assigned until the given time. [PAUSE-TUBE]
      *
      * @param string
-     * @param int|\DateTime seconds of delay or time to start
+     * @param integer|\DateTime seconds of delay or time to start
      * @return self
      */
     public function pauseQueue($queue, $delay) {
@@ -615,9 +615,9 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * Show a job. [PEEK]
      *
-     * @param int
-     * @param bool $stats with statistics
-     * @return BeanstalkJob|null
+     * @param integer
+     * @param boolean $stats with statistics
+     * @return \Dogma\Queue\BeanstalkJob|null
      */
     public function showJob($jobId, $stats = false) {
         $this->send(sprintf('peek %d', $jobId));
@@ -628,8 +628,8 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * Show the next ready job. [PEEK-READY]
      *
-     * @param bool $stats with statistics
-     * @return BeanstalkJob|null
+     * @param boolean $stats with statistics
+     * @return \Dogma\Queue\BeanstalkJob|null
      */
     public function showNextReadyJob($stats = false) {
         $this->send('peek-ready');
@@ -640,8 +640,8 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * Show the job with the shortest delay left. [PEEK-DELAYED]
      *
-     * @param bool $stats with statistics
-     * @return BeanstalkJob|null
+     * @param boolean $stats with statistics
+     * @return \Dogma\Queue\BeanstalkJob|null
      */
     public function showNextDelayedJob($stats = false) {
         $this->send('peek-delayed');
@@ -652,8 +652,8 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * Inspect the next job in the list of buried jobs. [PEEK-BURIED]
      *
-     * @param bool $stats with statistics
-     * @return BeanstalkJob|null
+     * @param boolean $stats with statistics
+     * @return \Dogma\Queue\BeanstalkJob|null
      */
     public function showNextSuspendedJob($stats = false) {
         $this->send('peek-buried');
@@ -664,8 +664,8 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * Handles response for all show methods.
      *
-     * @param bool $stats with statistics
-     * @return BeanstalkJob|null
+     * @param boolean $stats with statistics
+     * @return \Dogma\Queue\BeanstalkJob|null
      */
     private function readJob($stats) {
         $status = strtok($this->receive(), ' ');
@@ -697,7 +697,7 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * Get statistical information about a job. [STATS-JOB]
      *
-     * @param int
+     * @param integer
      * @return array
      */
     public function getJobStats($jobId) {
@@ -754,7 +754,7 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * Get list of fatched queues. [LIST-TUBES-WATCHED]
      *
-     * @return array.
+     * @return array
      */
     public function getWatchedQueues() {
         $this->send('list-tubes-watched');

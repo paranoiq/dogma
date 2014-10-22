@@ -16,7 +16,7 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
     private static $instance;
 
 
-    /** @var array */
+    /** @var string[] */
     public $list = array(
         'Dogma\\CompoundValueObject' => '/common/interfaces/CompoundValueObject',
         'Dogma\\IndirectInstantiable' => '/common/interfaces/IndirectInstantiable',
@@ -64,7 +64,7 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
 
     /**
      * Handles autoloading of classes or interfaces.
-     * @param  string
+     * @param string
      */
     public function tryLoad($type) {
         $type = ltrim($type, '\\');

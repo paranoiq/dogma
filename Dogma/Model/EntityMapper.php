@@ -14,10 +14,10 @@ namespace Dogma\Model;
  */
 class EntityMapper extends \Nette\Object {
 
-    /** @var array table => class map */
+    /** @var string[] (string $table => string $class) */
     private $map;
 
-    /** @var EntityFactory */
+    /** @var \Dogma\Model\EntityFactory */
     private $factory;
 
     /** @var \Nette\DI\Container */
@@ -26,7 +26,8 @@ class EntityMapper extends \Nette\Object {
 
     /**
      * Set mapping of tables to classes (descendants of ActiveRow)
-     * @param array (table => class)
+     * @param \Nette\DI\Container
+     * @param string[] (string $table => class)
      */
     public function __construct(\Nette\DI\Container $context, array $map) {
         $this->map = $map;
@@ -39,7 +40,7 @@ class EntityMapper extends \Nette\Object {
      * Translate table name to class name
      * @param string
      * @param \Nette\Database\Table\ActiveRow
-     * @return ActiveEntity
+     * @return \Dogma\Model\ActiveEntity
      */
     public function getInstance($table, $row) {
         if ($row === false)

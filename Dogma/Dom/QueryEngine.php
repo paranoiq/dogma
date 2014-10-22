@@ -20,7 +20,9 @@ class QueryEngine extends \Dogma\Object {
     /** @var \DOMXPath */
     private $xpath;
 
-
+    /**
+     * @var string[] (string $pattern => string $replacement)
+     */
     private $translations = array(
         // index: [n]
         "/\\[([0-9]+)..([0-9]+)\\]/" => '[position() >= $1 and position() <= $2]', // [m..n]
@@ -103,6 +105,9 @@ class QueryEngine extends \Dogma\Object {
     );
 
 
+    /**
+     * @var string[]
+     */
     private $nativeFunctions = array(
         'position',
         'last',
@@ -145,6 +150,9 @@ class QueryEngine extends \Dogma\Object {
     );
 
 
+    /**
+     * @var string[]
+     */
     private $userFunctions = array(
         'Dogma\\Dom\\QueryEngine::match',
         'Dogma\\Dom\\QueryEngine::replace',
@@ -168,7 +176,7 @@ class QueryEngine extends \Dogma\Object {
     /**
      * @param string
      * @param string
-     * @param bool
+     * @param boolean
      * @return self
      */
     public function registerFuction($name, $alias = '', $expectNode = false) {
@@ -205,7 +213,7 @@ class QueryEngine extends \Dogma\Object {
      * Find nodes
      * @param string
      * @param \DOMNode
-     * @return NodeList
+     * @return \Dogma\Dom\NodeList
      */
     public function find($query, $context = null) {
         $path = $this->translateQuery($query, (bool) $context);
@@ -224,8 +232,8 @@ class QueryEngine extends \Dogma\Object {
     /**
      * Find one node
      * @param string
-     * @param Element|\DOMNode
-     * @return \DOMNode|Element|null
+     * @param \Dogma\Dom\Element|\DOMNode
+     * @return \DOMNode|\Dogma\Dom\Element|null
      */
     public function findOne($query, $context = null) {
         $path = $this->translateQuery($query, (bool) $context);
@@ -246,8 +254,8 @@ class QueryEngine extends \Dogma\Object {
     /**
      * Evaluate a query
      * @param string
-     * @param Element|\DOMNode
-     * @return string|int|float
+     * @param \Dogma\Dom\Element|\DOMNode
+     * @return string|integer|float
      */
     public function evaluate($query, $context = null) {
         $path = $this->translateQuery($query, null);
@@ -283,7 +291,7 @@ class QueryEngine extends \Dogma\Object {
     /**
      * Extract values from paths defined by one or more queries
      * @param string|string[]
-     * @param Element|\DOMNode
+     * @param \Dogma\Dom\Element|\DOMNode
      * @return string|string[]
      */
     public function extract($queries, $context = null) {
@@ -308,8 +316,8 @@ class QueryEngine extends \Dogma\Object {
 
     /**
      * @param string
-     * @param Element|\DOMNode
-     * @return string|int|float|\DateTime|null
+     * @param \Dogma\Dom\Element|\DOMNode
+     * @return string|integer|float|\DateTime|null
      */
     private function extractPath($query, $context) {
         if (Strings::match($query, '/^[a-zA-Z0-9_-]+\\(/')) {
@@ -342,7 +350,7 @@ class QueryEngine extends \Dogma\Object {
     /**
      * Translates query to pure XPath syntax
      * @param string
-     * @param bool|null
+     * @param boolean|null
      * @return string
      */
     private function translateQuery($query, $context = false) {
@@ -386,7 +394,7 @@ class QueryEngine extends \Dogma\Object {
     /**
      * Wrap element in DomElement object
      * @param \DOMNode
-     * @return Element|\DOMNode
+     * @return \Dogma\Dom\Element|\DOMNode
      */
     private function wrap($node) {
         if ($node instanceof \DOMElement) {
@@ -464,7 +472,7 @@ class QueryEngine extends \Dogma\Object {
      * @param string
      * @param string
      * @param string
-     * @return bool|null
+     * @return boolean|null
      */
     static public function bool($string, $true = 'true', $false = 'false') {
         $string = strtoupper($string);

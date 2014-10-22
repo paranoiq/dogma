@@ -49,9 +49,9 @@ class Regexp extends \Dogma\Object {
 
     /**
      * Splits string by a regular expression.
-     * @param  string
-     * @param  int
-     * @return array
+     * @param string
+     * @param integer
+     * @return string[]
      */
     public function split($subject, $flags = 0) {
         return Strings::split($subject, $this->pattern, $flags);
@@ -60,10 +60,10 @@ class Regexp extends \Dogma\Object {
 
     /**
      * Performs a regular expression match.
-     * @param  string
-     * @param  int
-     * @param  int
-     * @return mixed
+     * @param string
+     * @param integer
+     * @param integer
+     * @return string[]
      */
     public function match($subject, $flags = 0, $offset = 0) {
         return Strings::match($subject, $this->pattern, $flags, $offset);
@@ -72,10 +72,10 @@ class Regexp extends \Dogma\Object {
 
     /**
      * Performs a global regular expression match.
-     * @param  string
-     * @param  int  (PREG_SET_ORDER is default)
-     * @param  int
-     * @return array
+     * @param string
+     * @param integer (PREG_SET_ORDER is default)
+     * @param integer
+     * @return string[][]
      */
     public function matchAll($subject, $flags = 0, $offset = 0) {
         return Strings::matchAll($subject, $this->pattern, $flags, $offset);
@@ -84,9 +84,9 @@ class Regexp extends \Dogma\Object {
 
     /**
      * Perform a regular expression search and replace.
-     * @param  string
-     * @param  string|callback
-     * @param  int
+     * @param string
+     * @param string|callback
+     * @param integer
      * @return string
      */
     public function replace($subject, $replacement = null, $limit = -1) {

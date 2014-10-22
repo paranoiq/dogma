@@ -19,13 +19,13 @@ class ChannelManager extends \Dogma\Object {
     /** @var resource */
     private $handler;
 
-    /** @var int maximum threads for all channles */
+    /** @var integer maximum threads for all channles */
     private $threadLimit = 20;
 
     /** @var float sum of priorities of all channels */
     private $sumPriorities = 0.0;
 
-    /** @var Channel[] */
+    /** @var \Dogma\Http\Channel[] */
     private $channels = array();
 
     /** @var array ($resourceId => array($channelId, $jobName, $request)) */
@@ -54,7 +54,7 @@ class ChannelManager extends \Dogma\Object {
 
     /**
      * Set maximum of request to run paralelly.
-     * @param int
+     * @param integer
      * @return self
      */
     public function setThreadLimit($threads) {
@@ -65,7 +65,7 @@ class ChannelManager extends \Dogma\Object {
 
 
     /**
-     * @param Channel
+     * @param \Dogma\Http\Channel
      * @return self
      */
     public function addChannel(Channel $channel) {
@@ -99,7 +99,7 @@ class ChannelManager extends \Dogma\Object {
 
     /**
      * Wait for any request to finish. Blocking.
-     * @return int
+     * @return integer
      */
     private function waitForResult() {
         $run = false;
@@ -121,7 +121,7 @@ class ChannelManager extends \Dogma\Object {
 
 
     /**
-     * @return int
+     * @return integer
      */
     public function exec() {
         do {
@@ -168,7 +168,7 @@ class ChannelManager extends \Dogma\Object {
 
     /**
      * Select channel to spawn new connection, taking in account channel priorities.
-     * @return int|null
+     * @return integer|null
      */
     private function selectChannel() {
         if (count($this->resources) >= $this->threadLimit) return null;
@@ -194,9 +194,9 @@ class ChannelManager extends \Dogma\Object {
     /**
      * Save data for later use.
      * @param resource
-     * @param Channel
-     * @param string|int
-     * @param Request
+     * @param \Dogma\Http\Channel
+     * @param string|integer
+     * @param \Dogma\Http\Request
      */
     public function jobStarted($resource, $channel, $name, $request) {
         $this->resources[(string) $resource] = array(spl_object_hash($channel), $name, $request);

@@ -74,8 +74,8 @@ class String implements \ArrayAccess {
 
     /**
      * Append to the end of string
-     * @param string|String
-     * @return String
+     * @param string|\Dogma\String
+     * @return \Dogma\String
      */
     public function append($string) {
         $this->string .= static::normalize($string);
@@ -85,8 +85,8 @@ class String implements \ArrayAccess {
 
     /**
      * Prepend to the beginning of string
-     * @param string|String
-     * @return String
+     * @param string|\Dogma\String
+     * @return \Dogma\String
      */
     public function prepend($string) {
         $this->string = static::normalize($string) . $this->string;
@@ -195,7 +195,10 @@ class String implements \ArrayAccess {
     // Array Access ----------------------------------------------------------------------------------------------------
 
 
-    /**#@+ ArrayAccess interface */
+    /**
+     * ArrayAccess interface
+     * @param integer
+     */
     public function offsetSet($key, $value) {
         if ($key === null) {
             $this->append($value);
@@ -204,21 +207,31 @@ class String implements \ArrayAccess {
         }
     }
 
-
+    /**
+     * ArrayAccess interface
+     * @param integer $key
+     * @return string
+     */
     public function offsetGet($key) {
         return mb_substr($this->string, $key, 1);
     }
 
-
+    /**
+     * ArrayAccess interface
+     * @param integer $key
+     * @return boolean
+     */
     public function offsetExists($key) {
         return is_string(mb_substr($this->string, $key, 1));
     }
 
-
+    /**
+     * ArrayAccess interface
+     * @param integer $key
+     */
     public function offsetUnset($key) {
         throw new \LogicException('String: Cannot unset a string offset.');
     }
-    /**#@-*/
 
 
 }

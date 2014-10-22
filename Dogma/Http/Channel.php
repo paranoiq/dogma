@@ -21,28 +21,28 @@ use Nette\Callback;
  */
 class Channel extends \Dogma\Object {
 
-    /** @var ChannelManager */
+    /** @var \Dogma\Http\ChannelManager */
     protected $manager;
 
-    /** @var Request */
+    /** @var \Dogma\Http\Request */
     private $request;
 
-    /** @var int */
+    /** @var integer */
     private $priority = 1;
 
-    /** @var int */
+    /** @var integer */
     private $threadLimit = 10;
 
-    /** @var int */
+    /** @var integer */
     private $lastIndex = 0;
 
-    /** @var bool */
+    /** @var boolean */
     private $initiated = false;
 
-    /** @var bool */
+    /** @var boolean */
     private $stopped = false;
 
-    /** @var bool|int */
+    /** @var boolean|integer */
     private $paused = false;
 
 
@@ -52,7 +52,7 @@ class Channel extends \Dogma\Object {
     /** @var array */
     private $running = array();
 
-    /** @var Response[] */
+    /** @var \Dogma\Http\Response[] */
     private $finished = array();
 
     /** @var array */
@@ -72,8 +72,8 @@ class Channel extends \Dogma\Object {
 
 
     /**
-     * @param ChannelManager
-     * @param Request
+     * @param \Dogma\Http\ChannelManager
+     * @param \Dogma\Http\Request
      */
     public function  __construct(ChannelManager $manager, Request $request) {
         $this->manager = $manager;
@@ -82,7 +82,7 @@ class Channel extends \Dogma\Object {
 
 
     /**
-     * @return Request
+     * @return \Dogma\Http\Request
      */
     public function getRequestPrototype() {
         return $this->request;
@@ -91,7 +91,7 @@ class Channel extends \Dogma\Object {
 
     /**
      * Set callback handler for every response (even an error)
-     * @param Callback(@param Response, @param Channel, @param string $name)
+     * @param \Nette\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      * @return self
      */
     public function setResponseHandler(Callback $responseHandler) {
@@ -103,7 +103,7 @@ class Channel extends \Dogma\Object {
 
     /**
      * Set separate callback handler for redirects. ResponseHandler will no longer handle these.
-     * @param Callback(@param Response, @param Channel, @param string $name)
+     * @param \Nette\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      * @return self
      */
     public function setRedirectHandler(Callback $redirectHadler) {
@@ -115,7 +115,7 @@ class Channel extends \Dogma\Object {
 
     /**
      * Set separate callback handler for errors. ResponseHandler will no longer handle these.
-     * @param Callback(@param Response, @param Channel, @param string $name)
+     * @param \Nette\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      * @return self
      */
     public function setErrorHandler(Callback $errorHandler) {
@@ -126,7 +126,7 @@ class Channel extends \Dogma\Object {
 
 
     /**
-     * @param int
+     * @param integer
      * @return self
      */
     public function setPriority($priority) {
@@ -137,7 +137,7 @@ class Channel extends \Dogma\Object {
 
 
     /**
-     * @return int
+     * @return integer
      */
     public function getPriority() {
         return $this->priority;
@@ -145,7 +145,7 @@ class Channel extends \Dogma\Object {
 
 
     /**
-     * @param int
+     * @param integer
      * @return self
      */
     public function setThreadLimit($threads) {
@@ -156,7 +156,7 @@ class Channel extends \Dogma\Object {
 
 
     /**
-     * @return int
+     * @return integer
      */
     public function getThreadLimit() {
         return $this->threadLimit;
@@ -168,9 +168,9 @@ class Channel extends \Dogma\Object {
 
     /**
      * Run a new job immediately and wait for the response.
-     * @param string|array
+     * @param string|string[]
      * @param mixed
-     * @return Response|null
+     * @return \Dogma\Http\Response|null
      */
     public function fetchJob($data, $context = null) {
         $name = $this->addJob($data, $context, null, true);
@@ -181,7 +181,7 @@ class Channel extends \Dogma\Object {
 
     /**
      * Run a new job immediatelly. Don't wait for response.
-     * @param string|array
+     * @param string|string[]
      * @param mixed
      * @param string|int
      * @return string|int
@@ -193,10 +193,10 @@ class Channel extends \Dogma\Object {
 
     /**
      * Add new job to channel queue.
-     * @param string|array
+     * @param string|string[]
      * @param mixed
-     * @param string|int
-     * @return string|int
+     * @param string|integer
+     * @return string|integer
      */
     public function addJob($data, $context = null, $name = null, $forceStart = false) {
         if (!is_string($data) && !is_array($data))
@@ -229,7 +229,7 @@ class Channel extends \Dogma\Object {
 
     /**
      * Add more jobs to a channel. Array indexes are job names if they are strings.
-     * @param array
+     * @param string[]|string[][]
      * @param mixed
      * @return self
      */
@@ -245,7 +245,7 @@ class Channel extends \Dogma\Object {
 
 
     /**
-     * @return int
+     * @return integer
      */
     public function getRunningJobCount() {
         return count($this->running);
@@ -255,7 +255,7 @@ class Channel extends \Dogma\Object {
     /**
      * Decide if channel can start a job.
      * @param string
-     * @return bool
+     * @return boolean
      */
     public function canStartJob() {
         if (empty($this->queue)) return false;
@@ -271,7 +271,7 @@ class Channel extends \Dogma\Object {
      * Start a request in CURL. Called by ChannelManager
      * @internal
      *
-     * @param int
+     * @param integer
      * @return array
      */
     public function startJob($name = null) {
@@ -314,9 +314,9 @@ class Channel extends \Dogma\Object {
      * Called by ChannelManager.
      * @internal
      *
-     * @param string|int
+     * @param string|integer
      * @param array
-     * @param Request
+     * @param \Dogma\Http\Request
      */
     public function jobFinished($name, $minfo, Request $request) {
         unset($this->running[$name]);
@@ -342,7 +342,7 @@ class Channel extends \Dogma\Object {
 
     /**
      * @param string
-     * @return Response|null
+     * @return \Dogma\Http\Response|null
      */
     public function fetch($name = null) {
         if ($name !== null)
@@ -372,8 +372,8 @@ class Channel extends \Dogma\Object {
 
 
     /**
-     * @param string|int
-     * @return Response|null
+     * @param string|integer
+     * @return \Dogma\Http\Response|null
      */
     private function fetchByName($name) {
         if (!isset($this->queue[$name]) && !isset($this->running[$name]) && !isset($this->finished[$name]))
@@ -405,9 +405,9 @@ class Channel extends \Dogma\Object {
 
     /**
      * Check if all channels or a channel or a job are finished.
-     * @param Channel
+     * @param \Dogma\Http\Channel
      * @param string
-     * @return bool
+     * @return boolean
      */
     public function isFinished($name = null) {
         if ($name === null) {
@@ -437,13 +437,16 @@ class Channel extends \Dogma\Object {
 
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isStopped() {
         return $this->stopped;
     }
 
 
+    /**
+     * @param integer
+     */
     public function pause($seconds = 0) {
         if ($seconds) {
             $this->paused = time() + $seconds;
@@ -454,7 +457,7 @@ class Channel extends \Dogma\Object {
 
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isPaused() {
         if (is_int($this->paused) && $this->paused <= time()) {

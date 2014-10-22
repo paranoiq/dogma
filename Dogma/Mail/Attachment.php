@@ -33,16 +33,16 @@ class Attachment extends \Dogma\Object {
     /** @var string */
     private $data;
 
-    /** @var File */
+    /** @var \Dogma\Io\File */
     private $file;
 
-    /** @var array */
+    /** @var string[] */
     private $headers;
 
 
 
     /**
-     * @param File|string
+     * @param \Dogma\Io\File|string
      * @param string
      * @param string
      * @param string
@@ -99,7 +99,7 @@ class Attachment extends \Dogma\Object {
 
 
     /**
-     * @return int
+     * @return integer
      */
     public function getLength() {
         if ($this->data) {
@@ -125,7 +125,7 @@ class Attachment extends \Dogma\Object {
 
     /**
      * Get File object.
-     * @return File
+     * @return \Dogma\Io\File
      */
     public function getFile() {
         if ($this->file) {

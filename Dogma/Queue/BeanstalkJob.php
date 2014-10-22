@@ -32,13 +32,13 @@ class BeanstalkJob extends \Dogma\Object {
     /** @var BeanstalkClient */
     private $connection;
 
-    /** @var int */
+    /** @var integer */
     private $id;
 
     /** @var mixed */
     private $data;
 
-    /** @var bool */
+    /** @var boolean */
     private $owned;
 
     /** @var array */
@@ -46,10 +46,10 @@ class BeanstalkJob extends \Dogma\Object {
 
 
     /**
-     * @param int
+     * @param integer
      * @param mixed
-     * @param bool
-     * @param BeanstalkClient
+     * @param boolean
+     * @param \Dogma\Queue\BeanstalkClient
      * @param array
      */
     public function __construct($id, $data, $owned, BeanstalkClient $connection, $stats = array()) {
@@ -61,18 +61,24 @@ class BeanstalkJob extends \Dogma\Object {
     }
 
 
-    /** @return mixed */
+    /**
+     * @return mixed
+     */
     public function getData() {
         return $this->data;
     }
 
 
-    /** @return int */
+    /**
+     * @return integer
+     */
     public function getId() {
         return $this->id;
     }
 
-    /** @return self */
+    /**
+     * @return self
+     */
     public function touch() {
         $this->connection->touch($this->id);
         return $this;
@@ -80,8 +86,8 @@ class BeanstalkJob extends \Dogma\Object {
 
 
     /**
-     * @param int|\DateTime
-     * @param int
+     * @param integer|\DateTime
+     * @param integer
      * @return self
      */
     public function release($delay = null, $priority = null) {
@@ -103,7 +109,7 @@ class BeanstalkJob extends \Dogma\Object {
 
 
     /**
-     * @param int
+     * @param integer
      * @return self
      */
     public function suspend($priority = null) {
@@ -121,28 +127,38 @@ class BeanstalkJob extends \Dogma\Object {
     // job info & statistics -------------------------------------------------------------------------------------------
 
 
-    /** @return bool */
+    /**
+     * @return boolean
+     */
     public function isOwned() {
         return $this->owned;
     }
 
-    /** @return bool */
+    /**
+     * @return boolean
+     */
     public function isDelayed() {
         return $this->__get('status') === self::DELAYED;
     }
 
-    /** @return bool */
+    /**
+     * @return boolean
+     */
     public function isReady() {
         return $this->__get('status') === self::READY;
     }
 
-    /** @return bool */
+    /**
+     * @return boolean
+     */
     public function isReserved() {
         if ($this->isOwned()) return true;
         return $this->__get('status') === self::RESERVED;
     }
 
-    /** @return bool */
+    /**
+     * @return boolean
+     */
     public function isSuspended() {
         return $this->__get('status') === self::SUSPENDED;
     }

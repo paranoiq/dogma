@@ -43,13 +43,13 @@ class Collator extends \Nette\Object {
     /** @var string */
     protected $locale;
 
-    /** @var int */
+    /** @var integer */
     protected $level;
 
 
     /**
      * @param string
-     * @param int
+     * @param integer
      */
     public function __construct($locale, $collationLevel = self::ACCENT_CASE) {
         $this->locale = $locale;
@@ -70,7 +70,7 @@ class Collator extends \Nette\Object {
      * Comparison callback
      * @param string
      * @param string
-     * @return int (-1,0,1)
+     * @return integer (-1,0,1)
      */
     public function __invoke($str1, $str2) {
         return $this->compare($str1, $str2);
@@ -81,7 +81,7 @@ class Collator extends \Nette\Object {
      * Comapre two strings
      * @param string
      * @param string
-     * @return int (-1,0,1)
+     * @return integer (-1,0,1)
      */
     public function compare($str1, $str2) {
         if (!$this->collator) $this->init();
@@ -94,7 +94,7 @@ class Collator extends \Nette\Object {
 
     /**
      * Get locale code
-     * @param int
+     * @param integer
      * @return string
      */
     public function getLocale($type = \Locale::ACTUAL_LOCALE) {
@@ -117,7 +117,7 @@ class Collator extends \Nette\Object {
 
     /**
      * Get collation level
-     * @return int
+     * @return integer
      */
     public function getCollationLevel() {
         if (!$this->collator) return $this->level;
@@ -133,8 +133,8 @@ class Collator extends \Nette\Object {
 
     /**
      * Set collation level
-     * @param int
-     * @return Collator
+     * @param integer
+     * @return self
      */
     public function setCollationLevel($level) {
         if (!$this->collator) $this->init();
@@ -168,7 +168,7 @@ class Collator extends \Nette\Object {
      * Set attribute value
      * @param string
      * @param mixed
-     * @return Collator
+     * @return self
      */
     public function setAttribute($name, $value) {
         if (!$this->collator) $this->init();

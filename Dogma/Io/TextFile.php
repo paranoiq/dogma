@@ -17,12 +17,11 @@ use Nette\Diagnostics\Debugger;
  */
 class TextFile extends File {
 
-    /**#@+ Line endings */
+    // Line endings:
     const UNIX = "\n";
     const WINDOWS = "\r\n";
     const MAC = "\r";
     const AUTODETECT = null;
-    /**#@-*/
 
 
     /** @var string */
@@ -36,7 +35,7 @@ class TextFile extends File {
 
 
     /**
-     * @param $encoding
+     * @param string
      * @return self
      */
     public function setEncoding($encoding) {

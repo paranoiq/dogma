@@ -10,7 +10,7 @@
 
 /**
  * ArrayObject constructor helper
- * @param mixed  list of items
+ * @param mixed $args list of items
  * @return Dogma\ArrayObject
  */
 function arr() {
@@ -22,7 +22,7 @@ function arr() {
 
 /**
  * Collection constructor helper
- * @param mixed  list of items
+ * @param mixed $args list of items
  * @return Dogma\Collection
  */
 // function coll() {
@@ -47,6 +47,11 @@ if (!function_exists('is_traversable')) {
 }
 
 
+/**
+ * @param mixed[] $array
+ * @param mixed[]|string $keys
+ * @return mixed[]
+ */
 function array_separate_keys(&$array, $keys) {
     if (is_string($keys)) {
         $keys = array_flip(explode(',', $keys));
@@ -69,8 +74,8 @@ function array_separate_keys(&$array, $keys) {
  * Call: in($value, $param1, $param2, ...)
  *
  * @param mixed
- * @param mixed multiple
- * @return bool
+ * @param mixed $params
+ * @return boolean
  */
 // function in($value, $params) {
 //    $params = func_get_args();
@@ -85,7 +90,7 @@ function array_separate_keys(&$array, $keys) {
  *
  * @param string
  * @param string
- * @return bool
+ * @return boolean
  */
 // function like($string, $pattern) {
 //     return preg_match('/^' . str_replace(array('%', '_'), array('.*?', '.'),

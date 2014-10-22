@@ -8,16 +8,16 @@ namespace Dogma\Queue;
  */
 class BeanstalkClientExtended extends BeanstalkClient {
 
-    /** @var IMetadataStorage */
+    /** @var \Dogma\Queue\IMetadataStorage */
     private $storage;
 
 
     /**
      * @param string $host server address
-     * @param int $port server port
-     * @param int $timeout connection timeout in seconds
-     * @param bool
-     * @param IMetadataStorage
+     * @param integer $port server port
+     * @param integer $timeout connection timeout in seconds
+     * @param boolean
+     * @param \Dogma\Queue\IMetadataStorage
      */
     public function __construct($host = '127.0.0.1', $port = 11300, $timeout = 1, $persistent = true,
         IMetadataStorage $storage
@@ -32,10 +32,10 @@ class BeanstalkClientExtended extends BeanstalkClient {
      * All other types except string will be serialized.
      *
      * @param string $data
-     * @param int $delay seconds of delay or time to start
-     * @param int $priority [0-2^32]. lower number means higher priority
-     * @param int $timeToRun worker timeout, before re-assigning job to another worker
-     * @return int job id
+     * @param integer $delay seconds of delay or time to start
+     * @param integer $priority [0-2^32]. lower number means higher priority
+     * @param integer $timeToRun worker timeout, before re-assigning job to another worker
+     * @return integer job id
      */
     public function queueUnique($data, $delay = null, $priority = null, $timeToRun = null) {
         if (!$this->storage) {

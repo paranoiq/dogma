@@ -20,16 +20,16 @@ class MessageInfo extends \Dogma\Object {
     /** @var \Dogma\Imap\Connection */
     private $imap;
 
-    /** @var int */
+    /** @var integer */
     private $uid;
 
-    /** @var Message */
+    /** @var \Dogma\Mail\Message */
     private $message;
 
 
     /**
-     * @param Connection
-     * @param int
+     * @param \Dogma\Imap\Connection
+     * @param integer
      */
     public function __construct(Connection $imap, $uid) {
         $this->imap = $imap;

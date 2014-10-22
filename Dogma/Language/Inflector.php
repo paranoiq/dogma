@@ -25,7 +25,7 @@ use Nette\Utils\Strings;
  */
 class Inflector {
 
-    /** @var array  of singular nouns as rule => replacement */
+    /** @var string[] singular nouns as rule => replacement */
     public static $singulars = array(
         '/(quiz)$/i' => '\1zes',
         '/^(ox)$/i' => '\1en',
@@ -46,7 +46,7 @@ class Inflector {
         '/$/' => 's',
     );
 
-    /** @var array  of plural nouns as rule => replacement */
+    /** @var string[] plural nouns as rule => replacement */
     public static $plurals = array(
         '/(database)s$/i' => '\1',
         '/(quiz)zes$/i' => '\1',
@@ -75,7 +75,7 @@ class Inflector {
         '/s$/i' => '',
     );
 
-    /** @var array  of irregular nouns */
+    /** @var string[] of irregular nouns */
     public static $irregular = array(
         'person' => 'people',
         'man' => 'men',
@@ -85,19 +85,19 @@ class Inflector {
         'cow' => 'kine',
     );
 
-    /** @var array  of uncountable nouns */
+    /** @var string[] of uncountable nouns */
     public static $uncountable = array(
         'equipment', 'information', 'rice', 'money', 'species', 'series', 'fish', 'sheep',
     );
 
-    /** @var bool  use Ruby on Rails ActiveRecord naming conventions? */
+    /** @var boolean use Ruby on Rails ActiveRecord naming conventions? */
     public static $railsStyle = false;
 
 
     /**
      * The reverse of pluralize, returns the singular form of a word.
      *
-     * @param string $word
+     * @param string
      * @return string
      */
     public static function singularize($word) {
@@ -125,7 +125,7 @@ class Inflector {
     /**
      * Returns the plural form of the word.
      *
-     * @param string $word
+     * @param string
      * @return string
      */
     public static function pluralize($word) {
@@ -151,8 +151,8 @@ class Inflector {
     /**
      * Is given string singular noun?
      *
-     * @param string $word
-     * @return bool
+     * @param string
+     * @return boolean
      */
     public static function isSingular($word) {
         if (!self::isCountable($word))
@@ -165,8 +165,8 @@ class Inflector {
     /**
      * Is given string plural noun?
      *
-     * @param string $word
-     * @return bool
+     * @param string
+     * @return boolean
      */
     public static function isPlural($word) {
         $lower = Strings::lower($word);
@@ -188,8 +188,8 @@ class Inflector {
     /**
      * Is given string countable noun?
      *
-     * @param string $word
-     * @return bool
+     * @param string
+     * @return boolean
      */
     public static function isCountable($word) {
         $lower = Strings::lower($word);
@@ -200,8 +200,8 @@ class Inflector {
     /**
      * Is given string irregular noun?
      *
-     * @param string $word
-     * @return bool
+     * @param string
+     * @return boolean
      */
     public static function isIrregular($word) {
         $lower = Strings::lower($word);
@@ -213,7 +213,7 @@ class Inflector {
      * Ordinalize turns a number into an ordinal string used to denote
      * the position in an ordered sequence such as 1st, 2nd, 3rd, 4th.
      *
-     * @param int $number
+     * @param integer
      * @return string
      */
     public static function ordinalize($number) {
@@ -236,8 +236,8 @@ class Inflector {
      * If the second argument is set to false then camelize() produces lowerCamelCase.
      * camelize() will also convert '/' to '\' which is useful for converting paths to namespaces.
      *
-     * @param string $word  lower case and underscored word
-     * @param bool   $firstUpper  first letter in uppercase?
+     * @param string
+     * @param boolean
      * @return string
      */
     public static function camelize($word, $firstUpper = true) {
@@ -249,7 +249,7 @@ class Inflector {
     /**
      * Replaces underscores with dashes in the string.
      *
-     * @param  string $word  underscored word
+     * @param string
      * @return string
      */
     public static function dasherize($word) {
@@ -261,7 +261,7 @@ class Inflector {
      * Capitalizes all the words and replaces some characters in the string to create a nicer looking title.
      * Titleize() is meant for creating pretty output.
      *
-     * @param  string $word  underscored word
+     * @param string
      * @return string
      */
     public static function titleize($word) {
@@ -273,7 +273,7 @@ class Inflector {
      * The reverse of camelize(). Makes an underscored form from the expression in the string.
      * Changes '::' to '/' to convert namespaces to paths.
      *
-     * @param string $word  camel cased word
+     * @param string
      * @return string
      */
     public static function underscore($word) {
@@ -285,7 +285,7 @@ class Inflector {
      * Capitalizes the first word and turns underscores into spaces and strips _id.
      * Like titleize(), this is meant for creating pretty output.
      *
-     * @param string $word  lower case and underscored word
+     * @param string
      * @return string
      */
     public static function humanize($word) {
@@ -296,7 +296,7 @@ class Inflector {
     /**
      * Removes the namespace part from the expression in the string.
      *
-     * @param  string|object $class  class name in namespace
+     * @param string|object
      * @return string
      */
     public static function demodulize($class) {
@@ -311,7 +311,7 @@ class Inflector {
      * Create the name of a table like Rails does for models to table names.
      * This method uses the pluralize method on the last word in the string.
      *
-     * @param  string $class  class name
+     * @param string
      * @return string
      */
     public static function tableize($class) {
@@ -326,7 +326,7 @@ class Inflector {
      * Note that this returns a string and not a Class.
      * To convert to an actual class follow classify() with constantize().
      *
-     * @param  string $table  table name
+     * @param string
      * @return string
      */
     public static function classify($table) {
@@ -338,7 +338,7 @@ class Inflector {
      * Creates a foreign key name from a class name.
      * Second parametr sets whether the method should put '_' between the name and 'id'/'Id'.
      *
-     * @param  string $class  class name
+     * @param string
      * @return string
      */
     public static function foreignKey($class) {
@@ -349,8 +349,8 @@ class Inflector {
     /**
      * Create a name of intersect entity of M:N relation of given tables.
      *
-     * @param string $local
-     * @param string $referenced
+     * @param string
+     * @param string
      * @return string
      */
     public static function intersectEntity($local, $referenced) {

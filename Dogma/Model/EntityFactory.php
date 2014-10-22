@@ -13,7 +13,7 @@ class EntityFactory extends \Dogma\Object {
     /** @var array ($entityClass => array($propertyName => array($propertyClass, array($paramName => $paramType)))) */
     private $meta = array();
 
-    /** @var ClassType[] */
+    /** @var \Nette\Reflection\ClassType[] */
     private $reflections;
 
     /** @var \Nette\DI\Container */
@@ -26,9 +26,9 @@ class EntityFactory extends \Dogma\Object {
 
 
     /**
-     * @param ActiveRow
+     * @param \Nette\Database\Table\ActiveRow
      * @param string
-     * @return ActiveEntity
+     * @return \Dogma\Model\ActiveEntity
      */
     //public function createEntity(ActiveRow $row, $class) {
     //    return $this->context->createInstance($class, array($row));
@@ -78,7 +78,7 @@ class EntityFactory extends \Dogma\Object {
     /**
      * @param string
      * @param string
-     * @return bool
+     * @return boolean
      */
     public function hasMagicProperty($class, $property) {
         return isset($this->meta[$class][$property]);
@@ -88,7 +88,7 @@ class EntityFactory extends \Dogma\Object {
     /**
      * @param string
      * @param string
-     * @param ActiveRow|array
+     * @param \Nette\Database\Table\ActiveRow|array
      * @return object
      */
     public function createPropertyInstance($class, $property, $row) {
@@ -111,7 +111,7 @@ class EntityFactory extends \Dogma\Object {
      * @param string
      * @param string
      * @param mixed
-     * @param ActiveRow|array
+     * @param \Nette\Database\Table\ActiveRow|array
      * @return object
      */
     public function updatePropertyInstance($class, $property, $value, $row) {
@@ -172,7 +172,7 @@ class EntityFactory extends \Dogma\Object {
 
     /**
      * @param string
-     * @param array
+     * @param mixed[]
      * @return object
      */
     public function createInstance($class, $args) {

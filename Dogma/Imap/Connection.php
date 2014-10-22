@@ -17,7 +17,7 @@ use Dogma\Mail\Message;
  */
 class Connection extends \Dogma\Object {
 
-    /** @var int */
+    /** @var integer */
     public static $connectionRetries = 1;
 
 
@@ -30,10 +30,10 @@ class Connection extends \Dogma\Object {
     /** @var string */
     private $host;
 
-    /** @var int */
+    /** @var integer */
     private $port;
 
-    /** @var bool */
+    /** @var boolean */
     private $ssl;
 
     /** @var string */
@@ -46,17 +46,17 @@ class Connection extends \Dogma\Object {
     /** @var string */
     private $selectedFolder;
 
-    /** @var Folder[] */
+    /** @var \Dogma\Imap\Folder[] */
     private $folders = array();
 
-    /** @var Message[] */
+    /** @var \Dogma\Mail\Message[] */
     private $messages = array();
 
     /** @var string[] cache of subscribed folders */
     private $subscribed;
 
 
-    /** @var callback(@param string $data, @return Message) */
+    /** @var callback(string $data -> \Dogma\Mail\Message) */
     private $messageFactory = 'Dogma\\Imap\\Connection::createMessage';
 
 
@@ -65,7 +65,7 @@ class Connection extends \Dogma\Object {
      * @param string
      * @param string
      * @param string
-     * @param int
+     * @param integer
      */
     public function __construct($user, $password, $host = '127.0.0.1', $port = 143, $ssl = false) {
         $this->user = $user;
@@ -109,7 +109,7 @@ class Connection extends \Dogma\Object {
 
     /**
      * Check if still connected
-     * @return bool
+     * @return boolean
      */
     public function isConnected() {
         if (!$this->handler) return false;
@@ -150,7 +150,7 @@ class Connection extends \Dogma\Object {
     /**
      * Get tree structure of folders in mailbox
      * @param string
-     * @param bool
+     * @param boolean
      * @return array
      */
     public function getFolderStructure($filter = "*", $all = true) {
@@ -174,7 +174,7 @@ class Connection extends \Dogma\Object {
     /**
      * Return list of folders in mailbox
      * @param string
-     * @param bool
+     * @param boolean
      * @return array
      */
     public function listFolders($filter = "*", $all = true) {
@@ -198,8 +198,8 @@ class Connection extends \Dogma\Object {
     /**
      * Get info about folders
      * @param string
-     * @param bool
-     * @return Folder[]
+     * @param boolean
+     * @return \Dogma\Imap\Folder[]
      */
     public function getFolders($filter = "*", $all = true) {
         ///
@@ -308,7 +308,7 @@ class Connection extends \Dogma\Object {
     /**
      * Tells if given folder is subscribed
      * @param string
-     * @return bool
+     * @return boolean
      */
     public function isFolderSubscribed($name) {
         if (!$this->subscribed) $this->subscribed = $this->listFolders('*', false);
@@ -323,7 +323,7 @@ class Connection extends \Dogma\Object {
     /**
      * Select folder and return a Folder object
      * @param string
-     * @return Folder
+     * @return \Dogma\Imap\Folder
      */
     public function selectFolder($name) {
         ///
@@ -390,8 +390,8 @@ class Connection extends \Dogma\Object {
      * Get list of messages from current folde.
      * @param array
      * @param string (date|arrival|from|subject|to|cc|size)
-     * @param bool
-     * @return Message[]
+     * @param boolean
+     * @return \Dogma\Mail\Message[]
      */
     public function getMessages($criteria = array(), $orderBy = null, $descending = false) {
         static $ob = array(
@@ -492,8 +492,8 @@ class Connection extends \Dogma\Object {
 
     /**
      * Get Message object
-     * @param int
-     * @return Message
+     * @param integer
+     * @return \Dogma\Mail\Message
      */
     public function getMessage($uid) {
         return call_user_func($this->messageFactory, $this->getRawMessageHeader($uid) . "\r\n\r\n" . $this->getMessageBody($uid));
@@ -502,7 +502,7 @@ class Connection extends \Dogma\Object {
 
     /**
      * Retrieve message body.
-     * @param int
+     * @param integer
      * @return string
      */
     public function getMessageBody($uid) {

@@ -215,7 +215,7 @@ class ResponseStatus extends \Dogma\Enum {
 
     /**
      * Is an information/handshaking HTTP response code (1xx)
-     * @return bool
+     * @return boolean
      */
     public function isInfo() {
         return $this->value >= 100 && $this->value < 200;
@@ -224,7 +224,7 @@ class ResponseStatus extends \Dogma\Enum {
 
     /**
      * Is a positive HTTP response code (2xx)
-     * @return bool
+     * @return boolean
      */
     public function isOk() {
         return $this->value >= 200 && $this->value < 300;
@@ -233,7 +233,7 @@ class ResponseStatus extends \Dogma\Enum {
 
     /**
      * Is a HTTP redirection code (3xx)
-     * @return bool
+     * @return boolean
      */
     public function isRedirect() {
         return ($this->value >= 300 && $this->value < 400) || $this->value == self::TOO_MANY_REDIRECTS;
@@ -242,7 +242,7 @@ class ResponseStatus extends \Dogma\Enum {
 
     /**
      * Is an HTTP error response code (4xx or 5xx)
-     * @return bool
+     * @return boolean
      */
     public function isHttpError() {
         return $this->value >= 400 && $this->value < 600;
@@ -251,7 +251,7 @@ class ResponseStatus extends \Dogma\Enum {
 
     /**
      * Is a CURL error code
-     * @return bool
+     * @return boolean
      */
     public function isCurlError() {
         return $this->value < 100;
@@ -260,7 +260,7 @@ class ResponseStatus extends \Dogma\Enum {
 
     /**
      * Is an HTTP or CURL error code
-     * @return bool
+     * @return boolean
      */
     public function isError() {
         return $this->isCurlError() || $this->isHttpError();
@@ -269,7 +269,7 @@ class ResponseStatus extends \Dogma\Enum {
 
     /**
      * Is a network connection error. Possibility of succesful retry
-     * @return bool
+     * @return boolean
      */
     public function isNetworkError() {
         return in_array($this->value, array(
@@ -285,7 +285,7 @@ class ResponseStatus extends \Dogma\Enum {
 
     /**
      * CURL errors which should throw an exception immediately. Something is very wrong
-     * @return bool
+     * @return boolean
      */
     public function isFatalError() {
         return in_array($this->value, array(

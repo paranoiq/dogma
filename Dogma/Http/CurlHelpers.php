@@ -17,7 +17,7 @@ class CurlHelpers {
 
 
     /**
-     * @param int
+     * @param integer
      * @return string
      */
     public static function getCurlErrorName($error) {
@@ -31,7 +31,7 @@ class CurlHelpers {
 
 
     /**
-     * @param int
+     * @param integer
      * @return string
      */
     public static function getCurlMultiErrorName($error) {
@@ -50,7 +50,7 @@ class CurlHelpers {
 
     /**
      * @param string
-     * @return int
+     * @return integer
      */
     public static function getCurlOptionNumber($name) {
         $name = strtoupper($name);
@@ -61,7 +61,7 @@ class CurlHelpers {
 
     /**
      * @param string
-     * @return int
+     * @return integer
      */
     public static function getCurlOptionName($option) {
         $consts = get_defined_constants(true);
@@ -77,7 +77,7 @@ class CurlHelpers {
 
 
     /**
-     * @param int
+     * @param integer
      * @return string|null
      */
     public static function getCurlInfoName($num) {

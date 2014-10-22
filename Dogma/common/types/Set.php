@@ -52,7 +52,7 @@ abstract class Set implements SimpleValueObject {
 
     /**
      * @param self|string|string[]
-     * @return Set
+     * @return \Dogma\Set
      */
     public function remove($set) {
         $this->checkSet($set);
@@ -70,7 +70,7 @@ abstract class Set implements SimpleValueObject {
 
     /**
      * @param self|string|string[]
-     * @return bool
+     * @return boolean
      */
     public function contains($set) {
         $this->checkSet($set);
@@ -109,7 +109,7 @@ abstract class Set implements SimpleValueObject {
 
 
     /**
-     * @return array
+     * @return mixed[]
      */
     final public function getValues() {
         return $this->set;
@@ -118,7 +118,7 @@ abstract class Set implements SimpleValueObject {
 
     /**
      * Set more values at once
-     * @param array(name=>bool)
+     * @param boolean[] (string $name => bool $value)
      * @return self
      */
     public function setValues($values) {
@@ -135,7 +135,7 @@ abstract class Set implements SimpleValueObject {
 
     /**
      * @param string|string[]
-     * @return bool
+     * @return boolean
      */
     final public static function isValid($value) {
         if (!isset(self::$values[$class = get_called_class()])) self::init($class);

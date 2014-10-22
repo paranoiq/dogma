@@ -28,7 +28,10 @@ class DownloadRequest extends Request {
     private $file;
 
 
-
+    /**
+     * @param string $url
+     * @param string $downloadDir
+     */
     public function __construct($url, $downloadDir) {
         parent::__construct($url);
 
@@ -79,7 +82,7 @@ class DownloadRequest extends Request {
      * Execute request.
      * @param string
      * @param string
-     * @return FileResponse
+     * @return \Dogma\Http\FileResponse
      */
     public function execute($urlSuffix = null, $fileName = null) {
         $fileName = $this->prepare($urlSuffix, $fileName);
@@ -95,7 +98,7 @@ class DownloadRequest extends Request {
      *
      * @param string
      * @param string
-     * @param bool
+     * @param boolean
      * @return string downloaded file name
      */
     public function prepare($urlSuffix = null, $fileName = null) {
@@ -125,9 +128,9 @@ class DownloadRequest extends Request {
      * @internal
      *
      * @param string|bool
-     * @param int
+     * @param integer
      * @param string
-     * @return FileResponse
+     * @return \Dogma\Http\FileResponse
      */
     public function createResponse($response, $error, $fileName) {
         $info = curl_getinfo($this->curl);

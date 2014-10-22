@@ -22,31 +22,36 @@ class Folder extends \Dogma\Object {
         HAS_NO_CHILDREN = LATT_HASNOCHILDREN; // 64
 
 
-    /** @var Connection */
+    /** @var \Dogma\Imap\Connection */
     private $imap;
 
     /** @var string */
     private $name;
 
-    /** @var int */
+    /** @var integer */
     private $attr;
 
-    /** @var int */
+    /** @var integer */
     private $messages;
 
-    /** @var int */
+    /** @var integer */
     private $recent;
 
-    /** @var int */
+    /** @var integer */
     private $unread;
 
-    /** @var int */
+    /** @var integer */
     private $deleted;
 
-    /** @var int */
+    /** @var integer */
     private $size;
 
 
+    /**
+     * @param \Dogma\Imap\Connection
+     * @param string
+     * @param integer
+     */
     public function __construct(Connection $imap, $name, $attributes) {
         $this->imap = $imap;
         $this->name = $name;
@@ -56,7 +61,7 @@ class Folder extends \Dogma\Object {
 
     /**
      * Open (select) this folder.
-     * @return Folder
+     * @return \Dogma\Imap\Folder
      */
     public function select() {
         return $this->imap->selectFolder($this->name);
@@ -67,7 +72,7 @@ class Folder extends \Dogma\Object {
 
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isSelected() {
         return $this->imap->getSelectedFolder() === $this->name;
@@ -75,7 +80,7 @@ class Folder extends \Dogma\Object {
 
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isSelectable() {
         return !($this->attr & self::NOT_SELECTABLE);
@@ -83,7 +88,7 @@ class Folder extends \Dogma\Object {
 
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function hasSubfolders() {
         return (bool) $this->attr & self::HAS_CHILDREN;
@@ -91,7 +96,7 @@ class Folder extends \Dogma\Object {
 
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function canHaveSubfolders() {
         return !($this->attr & self::NO_SUBFOLDERS);
@@ -99,7 +104,7 @@ class Folder extends \Dogma\Object {
 
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isSubscribed() {
         return $this->imap->isFolderSubscribed($this->name);
@@ -107,7 +112,7 @@ class Folder extends \Dogma\Object {
 
 
     /**
-     * @return int
+     * @return integer
      */
     public function getMessageCount() {
         if (empty($this->messages)) $this->loadStatus();
@@ -116,7 +121,7 @@ class Folder extends \Dogma\Object {
 
 
     /**
-     * @return int
+     * @return integer
      */
     public function getRecentCount() {
         if (empty($this->recent)) $this->loadStatus();
@@ -125,7 +130,7 @@ class Folder extends \Dogma\Object {
 
 
     /**
-     * @return int
+     * @return integer
      */
     public function getUnreadCount() {
         if (empty($this->unread)) $this->loadStatus();
@@ -134,7 +139,7 @@ class Folder extends \Dogma\Object {
 
 
     /**
-     * @return int
+     * @return integer
      */
     public function getDeletedCount() {
         if (empty($this->deleted)) $this->loadInfo();
@@ -143,7 +148,7 @@ class Folder extends \Dogma\Object {
 
 
     /**
-     * @return int
+     * @return integer
      */
     public function getSize() {
         if (empty($this->size)) $this->loadInfo();
@@ -156,7 +161,7 @@ class Folder extends \Dogma\Object {
 
     /**
      * @param string
-     * @param bool
+     * @param boolean
      * @return string[]
      */
     public function listSubfolders($filter = "*", $all = true) {
@@ -166,8 +171,8 @@ class Folder extends \Dogma\Object {
 
     /**
      * @param string
-     * @param bool
-     * @return Folder[]
+     * @param boolean
+     * @return \Dogma\Imap\Folder[]
      */
     public function getSubfolders($filter = "*", $all = true) {
         return $this->imap->getFolders($this->name . '/' . $filter, $all);

@@ -24,7 +24,7 @@ class DirectoryIterator extends FilesystemIterator {
 
     /**
      * @param string
-     * @param int
+     * @param integer
      */
     public function __construct($path, $flags = null) {
         if (isset($flags))
@@ -44,7 +44,7 @@ class DirectoryIterator extends FilesystemIterator {
 
 
     /**
-     * @param int
+     * @param integer
      */
     public function setFlags($flags) {
         $this->flags = $flags;
@@ -57,7 +57,7 @@ class DirectoryIterator extends FilesystemIterator {
 
 
     /**
-     * @return FileInfo|mixed
+     * @return \Dogma\Io\FileInfo|mixed
      */
     public function current() {
         if ($this->flags & FilesystemIterator::CURRENT_AS_FILEINFO) {

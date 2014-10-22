@@ -12,7 +12,7 @@ namespace Dogma\Dom;
 
 class Document extends \DomDocument {
 
-    /** @var QueryEngine */
+    /** @var \Dogma\Dom\QueryEngine */
     private $engine;
 
 
@@ -47,7 +47,7 @@ class Document extends \DomDocument {
 
 
     /**
-     * @param QueryEngine
+     * @param \Dogma\Dom\QueryEngine
      */
     public function setQueryEngine(QueryEngine $engine) {
         $this->engine = $engine;
@@ -55,7 +55,7 @@ class Document extends \DomDocument {
 
 
     /**
-     * @return QueryEngine
+     * @return \Dogma\Dom\QueryEngine
      */
     public function getQueryEngine() {
         return $this->engine;
@@ -64,8 +64,8 @@ class Document extends \DomDocument {
 
     /**
      * @param string
-     * @param int
-     * @return bool
+     * @param integer
+     * @return boolean
      */
     public function loadXml($source, $options = 0) {
         libxml_use_internal_errors(true);
@@ -79,7 +79,7 @@ class Document extends \DomDocument {
 
     /**
      * @param string
-     * @return bool
+     * @return boolean
      */
     public function loadHtml($source) {
         libxml_use_internal_errors(true);
@@ -93,7 +93,7 @@ class Document extends \DomDocument {
 
     /**
      * @param string
-     * @return bool
+     * @return boolean
      */
     public function loadHtmlFile($fileName) {
         libxml_use_internal_errors(true);
@@ -107,7 +107,7 @@ class Document extends \DomDocument {
 
     /**
      * @param string
-     * @return Element|\DOMNode|null
+     * @return \Dogma\Dom\Element|\DOMNode|null
      */
     public function getElementById($id) {
         $el = parent::getElementById($id);
@@ -118,7 +118,7 @@ class Document extends \DomDocument {
 
     /**
      * @param string
-     * @return NodeList
+     * @return \Dogma\Dom\NodeList
      */
     public function find($xpath) {
         return $this->engine->find($xpath);
@@ -127,7 +127,7 @@ class Document extends \DomDocument {
 
     /**
      * @param string
-     * @return Element|\DOMNode
+     * @return \Dogma\Dom\Element|\DOMNode
      */
     public function findOne($xpath) {
         return $this->engine->findOne($xpath);
@@ -136,7 +136,7 @@ class Document extends \DomDocument {
 
     /**
      * @param string
-     * @return string|int|float
+     * @return string|integer|float
      */
     public function evaluate($xpath) {
         return $this->engine->evaluate($xpath);
@@ -159,7 +159,7 @@ class Document extends \DomDocument {
 
     /**
      * @param \DOMNode
-     * @return Element|\DOMNode
+     * @return \Dogma\Dom\Element|\DOMNode
      */
     private function wrap($node) {
         if ($node instanceof \DOMElement) {

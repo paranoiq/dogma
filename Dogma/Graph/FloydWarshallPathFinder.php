@@ -36,7 +36,7 @@ class FloydWarshallPathFinder extends \Dogma\Object {
 
 
     /**
-     * @param int[][] graph edge weights. may be sparse
+     * @param integer[][] graph edge weights. may be sparse
      */
     function __construct($weights) {
 
@@ -101,9 +101,9 @@ class FloydWarshallPathFinder extends \Dogma\Object {
 
     /**
      * Get total cost (distance) between point a and b
-     * @param int|string
-     * @param int|string
-     * @return int
+     * @param integer|string
+     * @param integer|string
+     * @return integer
      */
     public function getDistance($i, $j) {
         if (!empty($this->nodeNames)) {
@@ -117,9 +117,9 @@ class FloydWarshallPathFinder extends \Dogma\Object {
 
     /**
      * Get nodes between a and b
-     * @param int|string
-     * @param int|string
-     * @return int[]|string[]
+     * @param integer|string
+     * @param integer|string
+     * @return integer[]|string[]
      */
     public function getPath($i, $j) {
         if (!empty($this->nodeNames)) {

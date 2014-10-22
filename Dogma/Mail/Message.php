@@ -39,25 +39,25 @@ class Message extends \Dogma\Object {
     /** @var int bigger attachements will be treated using temporary files */
     public static $bigFileTreshold = 0x100000; // 1MB
 
-    /** @var array */
+    /** @var string[] */
     private $parts = array();
 
-    /** @var array */
+    /** @var string[] */
     private $headers;
 
-    /** @var File */
+    /** @var \Dogma\Io\File */
     private $file;
 
     /** @var string */
     private $data;
 
 
-    /** @var callback(@param string $address, @param string $name, @return Address) */
+    /** @var callback(string $address, string $name -> \Dogma\Mail\Address) */
     private $addressFactory;
 
 
     /**
-     * @param string|File
+     * @param string|\Dogma\Io\File
      */
     public function __construct($message) {
         if ($message instanceof File) {
@@ -120,7 +120,7 @@ class Message extends \Dogma\Object {
 
     /**
      * Returns all email headers.
-     * @return array
+     * @return string[]
      */
     public function getHeaders() {
         if (!$this->headers) {
@@ -206,8 +206,8 @@ class Message extends \Dogma\Object {
     /**
      * Returns attachments. May be filtered by mime type.
      * @param string|string[]
-     * @param bool
-     * @return Attachement[]
+     * @param boolean
+     * @return \Dogma\Mail\Attachment[]
      */
     public function getAttachments($contentType = null, $inlines = true) {
         $dispositions = $inlines ? array('attachment', 'inline') : array('attachment');
@@ -271,7 +271,7 @@ class Message extends \Dogma\Object {
 
     /**
      * Find and decode encoded headers (format: =?charset?te?header?=)
-     * @param array
+     * @param string[]
      */
     private function decodeHeaders(&$headers) {
         foreach ($headers as $name => &$value) {
@@ -299,7 +299,7 @@ class Message extends \Dogma\Object {
     /**
      * Parse addresses from mail header (from, to, cc, bcc, reply-to, return-path, delivered-to, sender…)
      * @param string
-     * @return Address[]
+     * @return \Dogma\Mail\Address[]
      */
     private function parseAddressHeader($header) {
         $data = mailparse_rfc822_parse_addresses($header);
@@ -369,8 +369,8 @@ class Message extends \Dogma\Object {
 
 
     /**
-     * @param array
-     * @return array
+     * @param string[]
+     * @return string[]
      */
     private function getParsedPartHeaders($part) {
         $headers = $part;
@@ -389,7 +389,7 @@ class Message extends \Dogma\Object {
 
 
     /**
-     * @param array
+     * @param string[]
      * @return string|null
      */
     private function getPartBody($part) {
@@ -408,8 +408,8 @@ class Message extends \Dogma\Object {
 
     /**
      * Get attachment data as string or temporary File object (see File::$bigFileTreshold).
-     * @param array
-     * @return string|File
+     * @param string[]
+     * @return string|\Dogma\Io\File
      */
     private function getAttachmentData($part) {
         $encoding = array_key_exists('content-transfer-encoding', $part['headers']) ? $part['headers']['content-transfer-encoding'] : '';

@@ -19,7 +19,7 @@ final class Prototyper {
     /**
      * Create instance of class and inject it with data.
      * @param string
-     * @param array &
+     * @param array
      * @param array
      * @return object
      */
@@ -61,7 +61,7 @@ final class Prototyper {
      * Injects data into object properties
      * @param object
      * @param array  injected keys will be removed from array
-     * @param bool   set fo false if you want inject private property without the concern of definer class
+     * @param boolean  set fo false if you want inject private property without the concern of definer class
      * @return object
      */
     public static function injectData($object, &$data, $respectPrivatePropertyDefiner = true) {
