@@ -10,11 +10,10 @@
 namespace Dogma;
 
 
-class DogmaLoader extends \Nette\Loaders\AutoLoader {
+class DogmaLoader {
 
     /** @var static */
     private static $instance;
-
 
     /** @var string[] */
     public $list = [
@@ -47,10 +46,8 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
         'Dogma\\Io\\StreamException' => '/Io/exceptions',
     ];
 
-
-
     /**
-     * Returns singleton instance with lazy instantiation.
+     * Returns singleton instance with lazy instantiation
      * @return static
      */
     public static function getInstance() {
@@ -60,21 +57,29 @@ class DogmaLoader extends \Nette\Loaders\AutoLoader {
         return self::$instance;
     }
 
-
+    /**
+     * Register autoloader
+     * @param bool
+     * @return void
+     */
+    public function register($prepend = FALSE)
+    {
+        spl_autoload_register(array($this, 'tryLoad'), TRUE, (bool) $prepend);
+    }
 
     /**
      * Handles autoloading of classes or interfaces.
-     * @param string
+     * @param  string
+     * @return void
      */
-    public function tryLoad($type) {
+    public function tryLoad($type)
+    {
         $type = ltrim($type, '\\');
         if (isset($this->list[$type])) {
-            \Nette\Utils\LimitedScope::load(DOGMA_DIR . $this->list[$type] . '.php');
-            self::$count++;
+            require __DIR__ . '/../' . $this->list[$type] . '.php';
 
-        } elseif (substr($type, 0, 6) === 'Dogma\\') {
-            \Nette\Utils\LimitedScope::load(DOGMA_DIR . strtr(substr($type, 5), '\\', '/') . '.php');
-            self::$count++;
+        } elseif (substr($type, 0, 6) === 'Dogma\\' && is_file($file = __DIR__ . '/../' . strtr(substr($type, 5), '\\', '/') . '.php')) {
+            require $file;
         }
     }
 
