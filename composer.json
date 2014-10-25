@@ -13,15 +13,23 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "nette/nette": ">=2.0.0"
+        "nette/di": "~2.2",
+        "nette/utils": "~2.2",
+        "nette/database": "~2.2",
+        "nette/reflection": "~2.2",
+        "tracy/tracy": "dev-master as 2.2.99"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git://github.com/paranoiq/dogma.git"
-        }
-    ],
+    "require-dev": {
+        "nette/tester": "1.3.0",
+        "phing/phing": "2.8.2",
+        "squizlabs/php_codesniffer": "1.5.3",
+        "jakub-onderka/php-console-highlighter": "0.3.1",
+        "jakub-onderka/php-parallel-lint": "0.8.0"
+    },
     "autoload": {
         "files": ["Dogma/loader.php"]
+    },
+    "config": {
+        "bin-dir": "bin"
     }
 }
