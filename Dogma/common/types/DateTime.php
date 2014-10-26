@@ -13,16 +13,20 @@ namespace Dogma;
 /**
  * Date and time class
  */
-class DateTime extends \DateTime implements SimpleValueObject {
+class DateTime extends \DateTime implements SimpleValueObject
+{
+
 
     /**
      * @param string
      * @param \DateTimeZone
      */
-    public function __construct($time = 'now', \DateTimeZone $timezone = null) {
-        if ($time instanceof \DateTime)
+    public function __construct($time = 'now', \DateTimeZone $timezone = null)
+    {
+        if ($time instanceof \DateTime) {
             /** @noinspection PhpUndefinedMethodInspection */
-            $time = $time->format("Y-m-d H:i:s");
+            $time = $time->format('Y-m-d H:i:s');
+        }
 
         if ($timezone) {
             parent::__construct($time, $timezone);
@@ -35,7 +39,8 @@ class DateTime extends \DateTime implements SimpleValueObject {
     /**
      * @return self
      */
-    public function setDefaultTimezone() {
+    public function setDefaultTimezone()
+    {
         return $this->setTimezone(new \DateTimeZone(date_default_timezone_get()));
     }
 
@@ -46,7 +51,8 @@ class DateTime extends \DateTime implements SimpleValueObject {
      * @param \DateTimeZone
      * @return self
      */
-    public static function createFromFormat($format, $time, /*\DateTimeZone*/ $timezone = null) {
+    public static function createFromFormat($format, $time, /*\DateTimeZone*/ $timezone = null)
+    {
         if ($timezone) {
             $date = new static(parent::createFromFormat($format, $time, $timezone), $timezone);
         } else {
@@ -60,7 +66,8 @@ class DateTime extends \DateTime implements SimpleValueObject {
     /**
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->format('Y-m-d H:i:s');
     }
 
@@ -71,7 +78,8 @@ class DateTime extends \DateTime implements SimpleValueObject {
      * @param  array  $args arguments
      * @return mixed
      */
-    public function __call($name, $args) {
+    public function __call($name, $args)
+    {
         return \Nette\ObjectMixin::call($this, $name, $args);
     }
 

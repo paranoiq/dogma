@@ -7,11 +7,11 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Imap;
+namespace Dogma\Database;
 
 
-class ImapException extends \RuntimeException {
-
-    ///
+/** Server is temporarily unavailable. Connection refused or aborted. */
+class ServiceUnavailableException extends DatabaseException
+{
 
 }

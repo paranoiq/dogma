@@ -13,7 +13,9 @@ use Nette\Utils\ObjectMixin;
 use Nette\MemberAccessException;
 
 
-abstract class Object {
+abstract class Object
+{
+
 
     /**
      * Call to undefined method.
@@ -21,7 +23,8 @@ abstract class Object {
      * @param array
      * @return mixed
      */
-    public function __call($name, $args) {
+    public function __call($name, $args)
+    {
         return ObjectMixin::call($this, $name, $args);
     }
 
@@ -32,7 +35,8 @@ abstract class Object {
      * @param array
      * @return mixed
      */
-    public static function __callStatic($name, $args) {
+    public static function __callStatic($name, $args)
+    {
         return ObjectMixin::callStatic(get_called_class(), $name, $args);
     }
 
@@ -42,7 +46,8 @@ abstract class Object {
      * @param string
      * @return mixed
      */
-    public function &__get($name) {
+    public function &__get($name)
+    {
         return ObjectMixin::get($this, $name);
     }
 
@@ -53,7 +58,8 @@ abstract class Object {
      * @param mixed
      * @return void
      */
-    public function __set($name, $value) {
+    public function __set($name, $value)
+    {
         ObjectMixin::set($this, $name, $value);
     }
 
@@ -63,7 +69,8 @@ abstract class Object {
      * @param string
      * @return boolean
      */
-    public function __isset($name) {
+    public function __isset($name)
+    {
         return ObjectMixin::has($this, $name);
     }
 
@@ -73,7 +80,8 @@ abstract class Object {
      * @param string
      * @return void
      */
-    public function __unset($name) {
+    public function __unset($name)
+    {
         ObjectMixin::remove($this, $name);
     }
 

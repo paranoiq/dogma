@@ -14,14 +14,16 @@ namespace Dogma;
  *
  * @todo: strip time formats from format()
  */
-class Date extends DateTime {
+class Date extends DateTime
+{
 
 
     /**
      * @param string
      * @param \DateTimeZone
      */
-    public function __construct($time = 'now', \DateTimeZone $timezone = null) {
+    public function __construct($time = 'now', \DateTimeZone $timezone = null)
+    {
         parent::__construct($time, $timezone);
     }
 
@@ -29,7 +31,8 @@ class Date extends DateTime {
     /**
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->format('Y-m-d');
     }
 

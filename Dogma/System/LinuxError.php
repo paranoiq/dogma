@@ -13,7 +13,8 @@ namespace Dogma\System;
  * Linux system errors
  * @property-read string $description
  */
-class LinuxError extends \Dogma\Enum implements Error {
+class LinuxError extends \Dogma\Enum implements Error
+{
 
     // common with Unix:
     const SUCCESS = 0;
@@ -150,16 +151,17 @@ class LinuxError extends \Dogma\Enum implements Error {
     const STATE_NOT_RECOVERABLE = 131;
 
 
-
     /**
      * Get formated error description
      * @return string
      */
-    public function getDescription() {
+    public function getDescription()
+    {
         return ucfirst(str_replace(
             ['dot_lib', 'a_out', 'io', 'cross_device', 'readonly', 'non_socket', 'references', 'csi', 'rfs', 'nfs', 'xenix', '_'],
             ['.lib', 'a.out', 'I/O', 'cross-device', 'read-only', 'non-socket', 'references:', 'CSI', 'RFS', 'NFS', 'XENIX', ' '],
-            strtolower($this->getIdentifier())));
+            strtolower($this->getIdentifier())
+        ));
     }
 
 }

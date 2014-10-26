@@ -40,17 +40,18 @@ word count?
 /**
  * Basic object for a UTF-8 string. MESS. DO NOT USE!
  */
-class String implements \ArrayAccess {
+class String implements \ArrayAccess
+{
 
     /** @var string */
     protected $string = '';
 
 
-
     /**
      * @param string
      */
-    public function __construct($string) {
+    public function __construct($string)
+    {
         $this->append($string);
     }
 
@@ -58,7 +59,8 @@ class String implements \ArrayAccess {
     /**
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->string;
     }
 
@@ -67,7 +69,8 @@ class String implements \ArrayAccess {
      * Get string legnth
      * @return int
      */
-    public function length() {
+    public function length()
+    {
         return mb_strlen($this->string);
     }
 
@@ -77,7 +80,8 @@ class String implements \ArrayAccess {
      * @param string|\Dogma\String
      * @return \Dogma\String
      */
-    public function append($string) {
+    public function append($string)
+    {
         $this->string .= static::normalize($string);
         return $this;
     }
@@ -88,7 +92,8 @@ class String implements \ArrayAccess {
      * @param string|\Dogma\String
      * @return \Dogma\String
      */
-    public function prepend($string) {
+    public function prepend($string)
+    {
         $this->string = static::normalize($string) . $this->string;
         return $this;
     }
@@ -102,7 +107,8 @@ class String implements \ArrayAccess {
      * @param string
      * @param string|Collator
      */
-    public function equalsTo($string, $collator = null) {
+    public function equalsTo($string, $collator = null)
+    {
         return $this->compareTo($string, $collator) === 0;
     }
 
@@ -112,21 +118,28 @@ class String implements \ArrayAccess {
      * @param string
      * @param string|Collator
      */
-    public function compareTo($string, $collator = null) {
-        if ($collator === null) strcmp($this->string, $string);
+    public function compareTo($string, $collator = null)
+    {
+        if ($collator === null) {
+            strcmp($this->string, $string);
+        }
 
-        if (!$collator instanceof Language\Collator) $collator = new Language\Collator($collator);
+        if (!$collator instanceof Language\Collator) {
+            $collator = new Language\Collator($collator);
+        }
         return $collator->compare($this->string, $string);
     }
 
 
-    public function contains($string, $collation = null) {
+    public function contains($string, $collation = null)
+    {
         ///
     }
 
 
     ///
-    /*private function testWithCollator($value) {
+    /*private function testWithCollator($value)
+    {
         switch ($this->operator) {
 
         case self::EQUAL:
@@ -176,7 +189,8 @@ class String implements \ArrayAccess {
      * Normalize string
      * @return string
      */
-    public static function normalize($string) {
+    public static function normalize($string)
+    {
         if ($string instanceof String) {
             return $string->string;
 
@@ -199,7 +213,8 @@ class String implements \ArrayAccess {
      * ArrayAccess interface
      * @param integer
      */
-    public function offsetSet($key, $value) {
+    public function offsetSet($key, $value)
+    {
         if ($key === null) {
             $this->append($value);
         } else {
@@ -212,7 +227,8 @@ class String implements \ArrayAccess {
      * @param integer $key
      * @return string
      */
-    public function offsetGet($key) {
+    public function offsetGet($key)
+    {
         return mb_substr($this->string, $key, 1);
     }
 
@@ -221,7 +237,8 @@ class String implements \ArrayAccess {
      * @param integer $key
      * @return boolean
      */
-    public function offsetExists($key) {
+    public function offsetExists($key)
+    {
         return is_string(mb_substr($this->string, $key, 1));
     }
 
@@ -229,7 +246,8 @@ class String implements \ArrayAccess {
      * ArrayAccess interface
      * @param integer $key
      */
-    public function offsetUnset($key) {
+    public function offsetUnset($key)
+    {
         throw new \LogicException('String: Cannot unset a string offset.');
     }
 

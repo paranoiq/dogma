@@ -21,7 +21,8 @@ use Dogma\Io\File;
  * @property-read $disposition
  * @property-read $length
  */
-class Attachment extends \Dogma\Object {
+class Attachment extends \Dogma\Object
+{
 
 
     /** Content disposition */
@@ -39,7 +40,6 @@ class Attachment extends \Dogma\Object {
     private $headers;
 
 
-
     /**
      * @param \Dogma\Io\File|string
      * @param string
@@ -47,7 +47,8 @@ class Attachment extends \Dogma\Object {
      * @param string
      * @param string[]
      */
-    public function __construct($data, $headers = []) {
+    public function __construct($data, $headers = [])
+    {
         if ($data instanceof File) {
             $this->file = $data;
         } else {
@@ -60,7 +61,8 @@ class Attachment extends \Dogma\Object {
     /**
      * @return string
      */
-    public function getFileName() {
+    public function getFileName()
+    {
         return @$this->headers['disposition-filename']; // not on 'inline'
     }
 
@@ -68,7 +70,8 @@ class Attachment extends \Dogma\Object {
     /**
      * @return string
      */
-    public function getContentType() {
+    public function getContentType()
+    {
         return $this->headers['content-type'];
     }
 
@@ -76,7 +79,8 @@ class Attachment extends \Dogma\Object {
     /**
      * @return string
      */
-    public function getCharset() {
+    public function getCharset()
+    {
         return @$this->headers['content-charset']; // not on binary
     }
 
@@ -84,7 +88,8 @@ class Attachment extends \Dogma\Object {
     /**
      * @return string
      */
-    public function getDisposition() {
+    public function getDisposition()
+    {
         return $this->headers['content-disposition'];
     }
 
@@ -92,7 +97,8 @@ class Attachment extends \Dogma\Object {
     /**
      * @return string
      */
-    public function getHeaders() {
+    public function getHeaders()
+    {
         return $this->headers;
     }
 
@@ -100,7 +106,8 @@ class Attachment extends \Dogma\Object {
     /**
      * @return integer
      */
-    public function getLength() {
+    public function getLength()
+    {
         if ($this->data) {
             return strlen($this->data);
         } else {
@@ -113,7 +120,8 @@ class Attachment extends \Dogma\Object {
      * Get file content.
      * @return string
      */
-    public function getContent() {
+    public function getContent()
+    {
         if ($this->data) {
             return $this->data;
         } else {
@@ -126,7 +134,8 @@ class Attachment extends \Dogma\Object {
      * Get File object.
      * @return \Dogma\Io\File
      */
-    public function getFile() {
+    public function getFile()
+    {
         if ($this->file) {
             return $this->file;
         } else {

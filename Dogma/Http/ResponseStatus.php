@@ -14,7 +14,8 @@ namespace Dogma\Http;
  * HTTP 1.1 response status codes and CURL error codes
  * @property-read $description
  */
-class ResponseStatus extends \Dogma\Enum {
+class ResponseStatus extends \Dogma\Enum
+{
 
 
     const S100_CONTINUE = 100;
@@ -40,7 +41,7 @@ class ResponseStatus extends \Dogma\Enum {
     const S304_NOT_MODIFIED = 304;
     const S305_USE_PROXY = 305;
     const S306_SWITCH_PROXY = 306;
-    const S307_TEMPORARY_REDIRECT= 307;
+    const S307_TEMPORARY_REDIRECT = 307;
     const S308_RESUME_INCOMPLETE = 308;
 
     const S400_BAD_REQUEST = 400;
@@ -90,8 +91,8 @@ class ResponseStatus extends \Dogma\Enum {
 
 
     // system & CURL internals
-    const FAILED_INIT           =  2; // Very early initialization code failed. This is likely to be an internal error or problem; or a resource problem where something fundamental couldn't get done at init time.
-    const NOT_BUILT_IN          =  4; // (CURLE_URL_MALFORMAT_USER) A requested feature; protocol or option was not found built-in in this libcurl due to a build-time decision. This means that a feature or option was not enabled or explicitly disabled when libcurl was built and in order to get it to function you have to get a rebuilt libcurl.
+    const FAILED_INIT           = 2;  // Very early initialization code failed. This is likely to be an internal error or problem; or a resource problem where something fundamental couldn't get done at init time.
+    const NOT_BUILT_IN          = 4;  // (CURLE_URL_MALFORMAT_USER) A requested feature; protocol or option was not found built-in in this libcurl due to a build-time decision. This means that a feature or option was not enabled or explicitly disabled when libcurl was built and in order to get it to function you have to get a rebuilt libcurl.
     const OUT_OF_MEMORY         = 27; // A memory allocation request failed. This is serious badness and things are severely screwed up if this ever occurs.
     const HTTP_POST_ERROR       = 34; // This is an odd error that mainly occurs due to internal confusion.
     const FUNCTION_NOT_FOUND    = 41; // Function not found. A required zlib function was not found.
@@ -103,12 +104,12 @@ class ResponseStatus extends \Dogma\Enum {
     // file system
     const READ_ERROR            = 26; // There was a problem reading a local file or an error returned by the read callback.
     const WRITE_ERROR           = 23; // An error occurred when writing received data to a local file; or an error was returned to libcurl from a write callback.
-    const FILE_COULDNT_READ_FILE = 37;// A file given with FILE:// couldn't be opened. Most likely because the file path doesn't identify an existing file. Did you check file permissions?
+    const FILE_COULDNT_READ_FILE = 37; // A file given with FILE:// couldn't be opened. Most likely because the file path doesn't identify an existing file. Did you check file permissions?
     const FILESIZE_EXCEEDED     = 63; // Maximum file size exceeded.
 
     // user error
-    const UNSUPPORTED_PROTOCOL  =  1; // The URL you passed to libcurl used a protocol that this libcurl does not support. The support might be a compile-time option that you didn't use; it can be a misspelled protocol string or just a protocol libcurl has no code for.
-    const URL_MALFORMAT         =  3; // The URL was not properly formatted.
+    const UNSUPPORTED_PROTOCOL  = 1;  // The URL you passed to libcurl used a protocol that this libcurl does not support. The support might be a compile-time option that you didn't use; it can be a misspelled protocol string or just a protocol libcurl has no code for.
+    const URL_MALFORMAT         = 3;  // The URL was not properly formatted.
     const HTTP_RETURNED_ERROR   = 22; // (CURLE_HTTP_NOT_FOUND) This is returned if CURLOPT_FAILONERROR is set TRUE and the HTTP server returns an error code that is >= 400.
     const BAD_DOWNLOAD_RESUME   = 36; // (CURLE_FTP_BAD_DOWNLOAD_RESUME) The download could not be resumed because the specified offset was out of the file boundary.
     const UNKNOWN_OPTION        = 48; // (CURLE_UNKNOWN_TELNET_OPTION) An option passed to libcurl is not recognized/known. Refer to the appropriate documentation. This is most likely a problem in the program that uses libcurl. The error buffer might contain more specific information about which exact option it concerns.
@@ -117,9 +118,9 @@ class ResponseStatus extends \Dogma\Enum {
     const REMOTE_FILE_NOT_FOUND = 78; // The resource referenced in the URL does not exist.
 
     // network/socket
-    const COULDNT_RESOLVE_PROXY =  5; // Couldn't resolve proxy. The given proxy host could not be resolved.
-    const COULDNT_RESOLVE_HOST  =  6; // Couldn't resolve host. The given remote host was not resolved.
-    const COULDNT_CONNECT       =  7; // Failed to connect() to host or proxy.
+    const COULDNT_RESOLVE_PROXY = 5;  // Couldn't resolve proxy. The given proxy host could not be resolved.
+    const COULDNT_RESOLVE_HOST  = 6;  // Couldn't resolve host. The given remote host was not resolved.
+    const COULDNT_CONNECT       = 7;  // Failed to connect() to host or proxy.
     const INTERFACE_FAILED      = 45; // (CURLE_HTTP_PORT_FAILED) Interface error. A specified outgoing interface could not be used. Set which interface to use for outgoing connections' source IP address with CURLOPT_INTERFACE.
     const SEND_ERROR            = 55; // Failed sending network data.
     const RECV_ERROR            = 56; // Failure with receiving network data.
@@ -155,7 +156,7 @@ class ResponseStatus extends \Dogma\Enum {
 
     // FTP
     const FTP_WEIRD_SERVER_REPLY = 8; // After connecting to a FTP server; libcurl expects to get a certain reply back. This error code implies that it got a strange or bad reply. The given remote server is probably not an OK FTP server.
-    const FTP_ACCESS_DENIED     =  9; // We were denied access to the resource given in the URL. For FTP; this occurs while trying to change to the remote directory.
+    const FTP_ACCESS_DENIED     = 9;  // We were denied access to the resource given in the URL. For FTP; this occurs while trying to change to the remote directory.
     const FTP_ACCEPT_FAILED     = 10; // (CURLE_FTP_USER_PASSWORD_INCORRECT) While waiting for the server to connect back when an active FTP session is used; an error code was sent over the control connection or similar.
     const FTP_WEIRD_PASS_REPLY  = 11; // After having sent the FTP password to the server; libcurl expects a proper reply. This error code indicates that an unexpected code was returned.
     const FTP_ACCEPT_TIMEOUT    = 12; // (CURLE_FTP_WEIRD_USER_REPLY) During an active FTP session while waiting for the server to connect; the CURLOPT_ACCEPTTIMOUT_MS (or the internal default) timeout expired.
@@ -202,13 +203,18 @@ class ResponseStatus extends \Dogma\Enum {
      * Get formated status name
      * @return string
      */
-    public function getDescription() {
+    public function getDescription()
+    {
         $id = $this->getIdentifier();
-        if ($id[0] === 'S' && $id[4] === '_') $id = substr($id, 5);
+        if ($id[0] === 'S' && $id[4] === '_') {
+            $id = substr($id, 5);
+        }
 
         return ucwords(str_replace(
             ['http', 'ftp', 'ssh', 'ldap', 'tftp', 'rtsp', 'url', 'ok', '_'],
-            ['HTTP', 'FTP', 'SSH', 'LDAP', 'TFTP', 'RTSP', 'URL', 'OK', ' '], strtolower($id)));
+            ['HTTP', 'FTP', 'SSH', 'LDAP', 'TFTP', 'RTSP', 'URL', 'OK', ' '],
+            strtolower($id)
+        ));
     }
 
 
@@ -216,7 +222,8 @@ class ResponseStatus extends \Dogma\Enum {
      * Is an information/handshaking HTTP response code (1xx)
      * @return boolean
      */
-    public function isInfo() {
+    public function isInfo()
+    {
         return $this->value >= 100 && $this->value < 200;
     }
 
@@ -225,7 +232,8 @@ class ResponseStatus extends \Dogma\Enum {
      * Is a positive HTTP response code (2xx)
      * @return boolean
      */
-    public function isOk() {
+    public function isOk()
+    {
         return $this->value >= 200 && $this->value < 300;
     }
 
@@ -234,7 +242,8 @@ class ResponseStatus extends \Dogma\Enum {
      * Is a HTTP redirection code (3xx)
      * @return boolean
      */
-    public function isRedirect() {
+    public function isRedirect()
+    {
         return ($this->value >= 300 && $this->value < 400) || $this->value == self::TOO_MANY_REDIRECTS;
     }
 
@@ -243,7 +252,8 @@ class ResponseStatus extends \Dogma\Enum {
      * Is an HTTP error response code (4xx or 5xx)
      * @return boolean
      */
-    public function isHttpError() {
+    public function isHttpError()
+    {
         return $this->value >= 400 && $this->value < 600;
     }
 
@@ -252,7 +262,8 @@ class ResponseStatus extends \Dogma\Enum {
      * Is a CURL error code
      * @return boolean
      */
-    public function isCurlError() {
+    public function isCurlError()
+    {
         return $this->value < 100;
     }
 
@@ -261,7 +272,8 @@ class ResponseStatus extends \Dogma\Enum {
      * Is an HTTP or CURL error code
      * @return boolean
      */
-    public function isError() {
+    public function isError()
+    {
         return $this->isCurlError() || $this->isHttpError();
     }
 
@@ -270,7 +282,8 @@ class ResponseStatus extends \Dogma\Enum {
      * Is a network connection error. Possibility of succesful retry
      * @return boolean
      */
-    public function isNetworkError() {
+    public function isNetworkError()
+    {
         return in_array($this->value, [
             self::COULDNT_RESOLVE_PROXY,
             self::COULDNT_RESOLVE_HOST,
@@ -286,7 +299,8 @@ class ResponseStatus extends \Dogma\Enum {
      * CURL errors which should throw an exception immediately. Something is very wrong
      * @return boolean
      */
-    public function isFatalError() {
+    public function isFatalError()
+    {
         return in_array($this->value, [
             self::FAILED_INIT,
             self::OUT_OF_MEMORY,

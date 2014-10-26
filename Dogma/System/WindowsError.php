@@ -13,7 +13,8 @@ namespace Dogma\System;
  * Windows system errors (@see http://msdn.microsoft.com/en-us/library/windows/desktop/ms681382(v=vs.85).aspx)
  * @property-read string $description
  */
-class WindowsError extends \Dogma\Enum implements Error {
+class WindowsError extends \Dogma\Enum implements Error
+{
 
     const ERROR_SUCCESS = 0;
     const ERROR_INVALID_FUNCTION = 1;
@@ -163,12 +164,12 @@ class WindowsError extends \Dogma\Enum implements Error {
     const ERROR_INVALID_EXE_SIGNATURE = 191;
     const ERROR_EXE_MARKED_INVALID = 192;
     const ERROR_BAD_EXE_FORMAT = 193;
-    const ERROR_ITERATED_DATA_EXCEEDS_64k = 194;
+    const ERROR_ITERATED_DATA_EXCEEDS_64K = 194;
     const ERROR_INVALID_MINALLOCSIZE = 195;
     const ERROR_DYNLINK_FROM_INVALID_RING = 196;
     const ERROR_IOPL_NOT_ENABLED = 197;
     const ERROR_INVALID_SEGDPL = 198;
-    const ERROR_AUTODATASEG_EXCEEDS_64k = 199;
+    const ERROR_AUTODATASEG_EXCEEDS_64K = 199;
     const ERROR_RING2SEG_MUST_BE_MOVABLE = 200;
     const ERROR_RELOC_CHAIN_XEEDS_SEGLIM = 201;
     const ERROR_INFLOOP_IN_RELOC_CHAIN = 202;
@@ -2763,16 +2764,17 @@ class WindowsError extends \Dogma\Enum implements Error {
     const ERROR_API_UNAVAILABLE = 15841;
 
 
-
     /**
      * Get formated error description
      * @return string
      */
-    public function getDescription() {
+    public function getDescription()
+    {
         return ucfirst(preg_replace('/^error /', '', str_replace(
             ['crc', 'dos', 'eof', 'sem_', 'iopl', 'eas', 'ea_', 'rpc', 'dns', 'frs', '_'],
             ['CRC', 'DOS', 'EOF', 'SEM ', 'IOPL', 'EAS', 'EA ', 'RPC', 'DNS', 'FRS', ' '],
-            strtolower($this->getIdentifier()))));
+            strtolower($this->getIdentifier())
+        )));
     }
 
 }

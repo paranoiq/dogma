@@ -13,7 +13,8 @@ namespace Dogma;
 /**
  * Set type. Similar to 'set' from MySql. Allowed values are defined as class constants.
  */
-abstract class Set implements SimpleValueObject {
+abstract class Set implements SimpleValueObject
+{
 
     private static $values = [];
 
@@ -23,7 +24,8 @@ abstract class Set implements SimpleValueObject {
     /**
      * @param self|string|string[]
      */
-    final public function __construct($set = []) {
+    final public function __construct($set = [])
+    {
         $this->add($set);
     }
 
@@ -31,14 +33,18 @@ abstract class Set implements SimpleValueObject {
     /**
      * @param self|string|string[]
      */
-    public function add($set) {
+    public function add($set)
+    {
         $this->checkSet($set);
 
         foreach ($set as $value) {
-            if ($value === "") continue;
+            if ($value === '') {
+                continue;
+            }
 
-            if (!self::isValid($value))
-                throw new \InvalidArgumentException("Invalid value given.");
+            if (!self::isValid($value)) {
+                throw new \InvalidArgumentException('Invalid value given.');
+            }
 
             if (!in_array($value, $this->set)) {
                 $this->set[] = $value;
@@ -50,7 +56,8 @@ abstract class Set implements SimpleValueObject {
     /**
      * @param self|string|string[]
      */
-    public function remove($set) {
+    public function remove($set)
+    {
         $this->checkSet($set);
 
         foreach ($set as $value) {
@@ -66,12 +73,14 @@ abstract class Set implements SimpleValueObject {
      * @param self|string|string[]
      * @return boolean
      */
-    public function contains($set) {
+    public function contains($set)
+    {
         $this->checkSet($set);
 
         foreach ($set as $value) {
-            if (!in_array($value, $this->set))
+            if (!in_array($value, $this->set)) {
                 return false;
+            }
         }
 
         return true;
@@ -81,7 +90,8 @@ abstract class Set implements SimpleValueObject {
     /**
      * @param self|string|string[]
      */
-    private function checkSet(&$set) {
+    private function checkSet(&$set)
+    {
         if (is_string($set)) {
             $set = explode(',', $set);
 
@@ -89,7 +99,7 @@ abstract class Set implements SimpleValueObject {
             $set = $set->getValues();
 
         } elseif (!is_array($set)) {
-            throw new \InvalidArgumentException("Value must be a string, array or a Set.");
+            throw new \InvalidArgumentException('Value must be a string, array or a Set.');
         }
     }
 
@@ -97,7 +107,8 @@ abstract class Set implements SimpleValueObject {
     /**
      * @return string
      */
-    final public function __toString() {
+    final public function __toString()
+    {
         return implode(',', $this->set);
     }
 
@@ -105,7 +116,8 @@ abstract class Set implements SimpleValueObject {
     /**
      * @return mixed[]
      */
-    final public function getValues() {
+    final public function getValues()
+    {
         return $this->set;
     }
 
@@ -114,7 +126,8 @@ abstract class Set implements SimpleValueObject {
      * Set more values at once
      * @param boolean[] (string $name => bool $value)
      */
-    public function setValues($values) {
+    public function setValues($values)
+    {
         foreach ($values as $name => $value) {
             $this->__set($name, $value);
         }
@@ -128,13 +141,17 @@ abstract class Set implements SimpleValueObject {
      * @param string|string[]
      * @return boolean
      */
-    final public static function isValid($value) {
-        if (!isset(self::$values[$class = get_called_class()])) self::init($class);
+    final public static function isValid($value)
+    {
+        if (!isset(self::$values[$class = get_called_class()])) {
+            self::init($class);
+        }
 
         if (is_array($value)) {
             foreach ($value as $val) {
-                if (!self::isValid($val))
+                if (!self::isValid($val)) {
                     return false;
+                }
             }
             return true;
         }
@@ -147,8 +164,11 @@ abstract class Set implements SimpleValueObject {
      * Get possible values.
      * @return \ArrayIterator
      */
-    public static function getAllowedValues() {
-        if (!isset(self::$values[$class = get_called_class()])) self::init($class);
+    public static function getAllowedValues()
+    {
+        if (!isset(self::$values[$class = get_called_class()])) {
+            self::init($class);
+        }
 
         return new \ArrayIterator(self::$values[$class]);
     }
@@ -157,7 +177,8 @@ abstract class Set implements SimpleValueObject {
     /**
      * @param string
      */
-    final private static function init($class) {
+    final private static function init($class)
+    {
         $ref = new \ReflectionClass($class);
         self::$values[$class] = $ref->getConstants();
     }
@@ -170,9 +191,11 @@ abstract class Set implements SimpleValueObject {
      * @param string
      * @return mixed
      */
-    final public function __get($name) {
-        if (self::isValid($name))
+    final public function __get($name)
+    {
+        if (self::isValid($name)) {
             return $this->contains($name);
+        }
 
         return \Nette\ObjectMixin::get($this, $name);
     }
@@ -182,9 +205,11 @@ abstract class Set implements SimpleValueObject {
      * @param string
      * @return mixed
      */
-    final public function __isset($name) {
-        if (self::isValid($name))
+    final public function __isset($name)
+    {
+        if (self::isValid($name)) {
             return $this->contains($name);
+        }
 
         return \Nette\ObjectMixin::has($this, $name);
     }
@@ -194,12 +219,15 @@ abstract class Set implements SimpleValueObject {
      * @param string
      * @param mixed
      */
-    final public function __set($name, $value) {
+    final public function __set($name, $value)
+    {
         if (self::isValid($name)) {
             if (is_string($value)) {
                 $norm = new Normalizer;
                 $bool = $norm->detectBool($value);
-                if (isset($bool)) $value = $bool;
+                if (isset($bool)) {
+                    $value = $bool;
+                }
             }
 
             $value ? $this->add($name) : $this->remove($name);
@@ -214,7 +242,8 @@ abstract class Set implements SimpleValueObject {
      * @param string
      * @param mixed
      */
-    final public function __unset($name) {
+    final public function __unset($name)
+    {
         if (self::isValid($name)) {
             $this->remove($name);
             return;
@@ -224,13 +253,15 @@ abstract class Set implements SimpleValueObject {
     }
 
 
-    final public function __sleep() {
-        throw new \Exception("Set type cannot be serialized. Use its values instead.");
+    final public function __sleep()
+    {
+        throw new \Exception('Set type cannot be serialized. Use its values instead.');
     }
 
 
-    final public function __wakeup() {
-        throw new \Exception("Set type cannot be serialized. Use its values instead.");
+    final public function __wakeup()
+    {
+        throw new \Exception('Set type cannot be serialized. Use its values instead.');
     }
 
 }

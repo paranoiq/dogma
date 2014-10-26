@@ -12,8 +12,8 @@ namespace Dogma;
 use Dogma\Object\PropertyAccessor;
 
 
-class Collection extends ArrayObject {
-
+class Collection extends ArrayObject
+{
 
     /** @var string */
     protected $accepted;
@@ -23,7 +23,8 @@ class Collection extends ArrayObject {
      * @param object[] $array
      * @param string $acceptedClass
      */
-    public function __construct($array = [], $acceptedClass = null) {
+    public function __construct($array = [], $acceptedClass = null)
+    {
         parent::__construct($array);
 
         if ($acceptedClass) {
@@ -40,7 +41,8 @@ class Collection extends ArrayObject {
      * $col->indexItems(string $column);
      * @param string
      */
-    public function indexItemsBy($propertyName) {
+    public function indexItemsBy($propertyName)
+    {
         foreach ($this->data as $key => $object) {
             PropertyAccessor::setValue($object, $propertyName, $key);
         }
@@ -54,7 +56,8 @@ class Collection extends ArrayObject {
      * Returns name of accepted class.
      * @return string
      */
-    public function getAcceptedClass() {
+    public function getAcceptedClass()
+    {
         return $this->accepted;
     }
 
@@ -63,9 +66,11 @@ class Collection extends ArrayObject {
      * Check if object is of accepted class.
      * @param object
      */
-    protected function checkAccepted($object) {
-        if (!$object instanceof $this->accepted)
-            throw new \InvalidArgumentException("Collection: Inserted object is not of the accepted class.");
+    protected function checkAccepted($object)
+    {
+        if (!$object instanceof $this->accepted) {
+            throw new \InvalidArgumentException('Collection: Inserted object is not of the accepted class.');
+        }
     }
 
 
@@ -73,7 +78,8 @@ class Collection extends ArrayObject {
      * Adds items to the end of array.
      * @param object[]
      */
-    public function append($items) {
+    public function append($items)
+    {
         foreach ($items as $item) {
             $this->checkAccepted($item);
         }
@@ -85,7 +91,8 @@ class Collection extends ArrayObject {
      * Adds items to the beginning of array. Does not preserve keys.
      * @param object[]
      */
-    public function prepend($items) {
+    public function prepend($items)
+    {
         foreach (array_reverse($items) as $item) {
             $this->checkAccepted($item);
         }
@@ -98,7 +105,8 @@ class Collection extends ArrayObject {
      * @param object[]
      * @param integer
      */
-    public function insertAt($items, $position) {
+    public function insertAt($items, $position)
+    {
         foreach ($items as $item) {
             $this->checkAccepted($item);
         }
@@ -111,7 +119,8 @@ class Collection extends ArrayObject {
      * @param integer
      * @param object
      */
-    public function offsetSet($key, $value) {
+    public function offsetSet($key, $value)
+    {
         $this->checkAccepted($value);
         parent::offsetSet($key, $value);
     }

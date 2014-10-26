@@ -11,7 +11,8 @@ namespace Dogma\Queue;
  * - data varchar
  * - insert_time datetime
  */
-class DdbMetadataStorage extends \Dogma\Object implements IMetadataStorage {
+class DdbMetadataStorage extends \Dogma\Object implements IMetadataStorage
+{
 
     /** @var \Dogma\Database\Connection */
     private $connection;
@@ -23,7 +24,8 @@ class DdbMetadataStorage extends \Dogma\Object implements IMetadataStorage {
     private $database;
 
 
-    public function __construct(\Dogma\Database\Connection $connection, $tablePrefix = 'queue_', $database = '') {
+    public function __construct(\Dogma\Database\Connection $connection, $tablePrefix = 'queue_', $database = '')
+    {
         $this->connection = $connection;
         $this->tablePrefix = $tablePrefix;
         $this->database = $database;
@@ -34,40 +36,43 @@ class DdbMetadataStorage extends \Dogma\Object implements IMetadataStorage {
      * @param string
      * @return string
      */
-    private function getTable($queue) {
+    private function getTable($queue)
+    {
         return $this->database . '.' . $this->tablePrefix . $queue;
     }
 
 
-    public function insertJob($queue, $jobId, $data) {
+    public function insertJob($queue, $jobId, $data)
+    {
         $this->connection->exec(
-            "INSERT INTO " . $this->getTable($queue) . "VALUES ", [
+            'INSERT INTO ' . $this->getTable($queue) . 'VALUES ',
+            [
                 'job_id' => $jobId,
                 'data' => $data,
                 'insert_time' => new \DateTime
-        ]);
+            ]
+        );
     }
 
 
-    public function findJob($queue, $data) {
-        return $this->connection->fetchColumn(
-            "SELECT `job_id` FROM " . $this->getTable($queue) . "WHERE `data` = ", $data);
+    public function findJob($queue, $data)
+    {
+        return $this->connection->fetchColumn('SELECT `job_id` FROM ' . $this->getTable($queue) . 'WHERE `data` = ', $data);
     }
 
 
-    public function deleteJob($queue, $jobId) {
-        $this->connection->exec(
-            "DELETE " . $this->getTable($queue) . "WHERE `job_id` = ", $jobId);
+    public function deleteJob($queue, $jobId)
+    {
+        $this->connection->exec('DELETE ' . $this->getTable($queue) . 'WHERE `job_id` = ', $jobId);
     }
 
 
-    public function clear($queue, \DateTime $time = null) {
+    public function clear($queue, \DateTime $time = null)
+    {
         if ($time) {
-            $this->connection->exec(
-                "DELETE " . $this->getTable($queue) . "WHERE `insert_time` <= ", $time);
+            $this->connection->exec('DELETE ' . $this->getTable($queue) . 'WHERE `insert_time` <= ', $time);
         } else {
-            $this->connection->exec(
-                "DELETE " . $this->getTable($queue));
+            $this->connection->exec('DELETE ' . $this->getTable($queue));
         }
     }
 

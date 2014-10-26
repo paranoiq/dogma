@@ -7,11 +7,11 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Mail;
+namespace Dogma\Database;
 
 
-class ParsingException extends \RuntimeException {
-
-    //
+/** Distributed 'XA' transaction error. */
+class XaException extends DatabaseException
+{
 
 }

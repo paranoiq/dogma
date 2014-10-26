@@ -16,7 +16,8 @@ namespace Dogma;
  * @property-read $identifier
  * @property-read $value
  */
-abstract class Enum implements SimpleValueObject, IndirectInstantiable {
+abstract class Enum implements SimpleValueObject, IndirectInstantiable
+{
 
     private static $values = [];
     private static $instances = [];
@@ -29,7 +30,8 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
      * @param string
      * @param mixed
      */
-    final private function __construct($identifier, $value) {
+    final private function __construct($identifier, $value)
+    {
         $this->identifier = $identifier;
         $this->value = $value;
     }
@@ -38,7 +40,8 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
     /**
      * @return string
      */
-    final public function __toString() {
+    final public function __toString()
+    {
         return (string) $this->value;
     }
 
@@ -46,7 +49,8 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
     /**
      * @return mixed
      */
-    final public function getValue() {
+    final public function getValue()
+    {
         return $this->value;
     }
 
@@ -54,7 +58,8 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
     /**
      * @return mixed
      */
-    final public function getIdentifier() {
+    final public function getIdentifier()
+    {
         return $this->identifier;
     }
 
@@ -66,8 +71,11 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
      * @param mixed
      * @return boolean
      */
-    final public static function isValid($value) {
-        if (!isset(self::$values[$class = get_called_class()])) self::init($class);
+    final public static function isValid($value)
+    {
+        if (!isset(self::$values[$class = get_called_class()])) {
+            self::init($class);
+        }
 
         return in_array($value, self::$values[$class]);
     }
@@ -77,8 +85,11 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
      * Get possible values.
      * @return mixed[]
      */
-    final public static function getAllowedValues() {
-        if (!isset(self::$values[$class = get_called_class()])) self::init($class);
+    final public static function getAllowedValues()
+    {
+        if (!isset(self::$values[$class = get_called_class()])) {
+            self::init($class);
+        }
 
         return self::$values[$class];
     }
@@ -88,13 +99,17 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
      * Get all values as Enum objects.
      * @return \ArrayIterator
      */
-    final public static function enumerate() {
-        if (!isset(self::$values[$class = get_called_class()])) self::init($class);
+    final public static function enumerate()
+    {
+        if (!isset(self::$values[$class = get_called_class()])) {
+            self::init($class);
+        }
 
         if (count(self::$values[$class]) !== count(self::$instances[$class])) {
             foreach (self::$values[$class] as $identifier => $value) {
-                if (!isset(self::$instances[$class][$identifier]))
+                if (!isset(self::$instances[$class][$identifier])) {
                     self::$instances[$class][$identifier] = new static($identifier, self::$values[$class][$identifier]);
+                }
             }
         }
 
@@ -106,14 +121,19 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
      * @param scalar
      * @return static
      */
-    final public static function getInstance($value) {
-        if (!isset(self::$values[$class = get_called_class()])) self::init($class);
-
-        foreach (self::$values[$class] as $name => $val) {
-            if ($value === $val) return self::__callStatic($name, []);
+    final public static function getInstance($value)
+    {
+        if (!isset(self::$values[$class = get_called_class()])) {
+            self::init($class);
         }
 
-        throw new \InvalidArgumentException("Invalid value '$value' for type " . get_called_class() . ".");
+        foreach (self::$values[$class] as $name => $val) {
+            if ($value === $val) {
+                return self::__callStatic($name, []);
+            }
+        }
+
+        throw new \InvalidArgumentException("Invalid value '$value' for type " . get_called_class() . '.');
     }
 
 
@@ -122,8 +142,11 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
      * @return static
      * @deprecated
      */
-    final public static function getInstanceByName($name) {
-        if (!isset(self::$values[$class = get_called_class()])) self::init($class);
+    final public static function getInstanceByName($name)
+    {
+        if (!isset(self::$values[$class = get_called_class()])) {
+            self::init($class);
+        }
 
         return self::__callStatic($name, []);
     }
@@ -133,8 +156,11 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
      * @param scalar
      * @return static
      */
-    final public static function getInstanceByIdentifier($identifier) {
-        if (!isset(self::$values[$class = get_called_class()])) self::init($class);
+    final public static function getInstanceByIdentifier($identifier)
+    {
+        if (!isset(self::$values[$class = get_called_class()])) {
+            self::init($class);
+        }
 
         return self::__callStatic($identifier, []);
     }
@@ -145,11 +171,15 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
      * @param array
      * @return static
      */
-    final public static function __callStatic($name, $args) {
-        if (!isset(self::$values[$class = get_called_class()])) self::init($class);
+    final public static function __callStatic($name, $args)
+    {
+        if (!isset(self::$values[$class = get_called_class()])) {
+            self::init($class);
+        }
 
-        if (!isset(self::$values[$class][$name]))
-            throw new \InvalidArgumentException("Invalid name '$name' for type " . get_called_class() . ".");
+        if (!isset(self::$values[$class][$name])) {
+            throw new \InvalidArgumentException("Invalid name '$name' for type " . get_called_class() . '.');
+        }
 
         if (isset(self::$instances[$class][$name])) {
             return self::$instances[$class][$name];
@@ -164,7 +194,8 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
     /**
      * @param string
      */
-    final private static function init($class) {
+    final private static function init($class)
+    {
         $ref = new \ReflectionClass($class);
         self::$values[$class] = $ref->getConstants();
         self::$instances[$class] = [];
@@ -178,7 +209,8 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
      * @param string
      * @return mixed
      */
-    final public function __get($name) {
+    final public function __get($name)
+    {
         return \Nette\ObjectMixin::get($this, $name);
     }
 
@@ -187,7 +219,8 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
      * @param string
      * @return mixed
      */
-    final public function __isset($name) {
+    final public function __isset($name)
+    {
         return \Nette\ObjectMixin::has($this, $name);
     }
 
@@ -196,31 +229,36 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable {
      * @param string
      * @param mixed
      */
-    final public function __set($name, $value) {
-        throw new \Nette\MemberAccessException("Properties of Enum type are read-only.");
+    final public function __set($name, $value)
+    {
+        throw new \Nette\MemberAccessException('Properties of Enum type are read-only.');
     }
 
 
     /**
      * @param string
      */
-    final public function __unset($name) {
-        throw new \Nette\MemberAccessException("Properties of Enum type are read-only.");
+    final public function __unset($name)
+    {
+        throw new \Nette\MemberAccessException('Properties of Enum type are read-only.');
     }
 
 
-    final public function __sleep() {
-        throw new \Exception("Enum type cannot be serialized. Use its value instead.");
+    final public function __sleep()
+    {
+        throw new \Exception('Enum type cannot be serialized. Use its value instead.');
     }
 
 
-    final public function __wakeup() {
-        throw new \Exception("Enum type cannot be serialized. Use its value instead.");
+    final public function __wakeup()
+    {
+        throw new \Exception('Enum type cannot be serialized. Use its value instead.');
     }
 
 
-    final public function __clone() {
-        throw new \Exception("Enum type cannot be cloned. There can be only one instance of each value.");
+    final public function __clone()
+    {
+        throw new \Exception('Enum type cannot be cloned. There can be only one instance of each value.');
     }
 
 }

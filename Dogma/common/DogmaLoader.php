@@ -10,7 +10,8 @@
 namespace Dogma;
 
 
-class DogmaLoader {
+class DogmaLoader
+{
 
     /** @var static */
     private static $instance;
@@ -46,11 +47,13 @@ class DogmaLoader {
         'Dogma\\Io\\StreamException' => '/Io/exceptions',
     ];
 
+
     /**
      * Returns singleton instance with lazy instantiation
      * @return static
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$instance === null) {
             self::$instance = new static;
         }
@@ -62,9 +65,9 @@ class DogmaLoader {
      * @param bool
      * @return void
      */
-    public function register($prepend = FALSE)
+    public function register($prepend = false)
     {
-        spl_autoload_register(array($this, 'tryLoad'), TRUE, (bool) $prepend);
+        spl_autoload_register(array($this, 'tryLoad'), true, (bool) $prepend);
     }
 
     /**

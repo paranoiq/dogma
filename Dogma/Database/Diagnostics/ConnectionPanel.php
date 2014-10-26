@@ -9,12 +9,13 @@
 
 namespace Dogma\Database\Diagnostics;
 
-use Nette,
-    Nette\Database\Helpers,
-    Nette\Diagnostics\Debugger;
+use Nette;
+use Nette\Database\Helpers;
+use Nette\Diagnostics\Debugger;
 
 
-class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
+class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel
+{
 
     public $maxQueries = 100;
 
@@ -51,11 +52,12 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
     public $disabled = false;
 
 
-
     public function logQuery(Nette\Database\Statement $result, array $params = null)
     {
         $this->counter++;
-        if ($this->counter > $this->maxQueries) return;
+        if ($this->counter > $this->maxQueries) {
+            return;
+        }
 
         if ($this->disabled) {
             return;
@@ -66,8 +68,12 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
                 && strpos($row['file'], NETTE_DIR . DIRECTORY_SEPARATOR) !== 0
                 && strpos($row['file'], DOGMA_DIR . DIRECTORY_SEPARATOR) !== 0
             ) {
-                if (isset($row['function']) && strpos($row['function'], 'call_user_func') === 0) continue;
-                if (isset($row['class']) && is_subclass_of($row['class'], '\\Nette\\Database\\Connection')) continue;
+                if (isset($row['function']) && strpos($row['function'], 'call_user_func') === 0) {
+                    continue;
+                }
+                if (isset($row['class']) && is_subclass_of($row['class'], '\\Nette\\Database\\Connection')) {
+                    continue;
+                }
                 $source = [$row['file'], (int) $row['line']];
                 break;
             }
@@ -92,7 +98,7 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
 
     public function getTab()
     {
-        return '<span title="Nette\\Database ' . htmlSpecialChars($this->name) . '">'
+        return '<span title="Nette\\Database ' . htmlspecialchars($this->name) . '">'
             . '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAEYSURBVBgZBcHPio5hGAfg6/2+R980k6wmJgsJ5U/ZOAqbSc2GnXOwUg7BESgLUeIQ1GSjLFnMwsKGGg1qxJRmPM97/1zXFAAAAEADdlfZzr26miup2svnelq7d2aYgt3rebl585wN6+K3I1/9fJe7O/uIePP2SypJkiRJ0vMhr55FLCA3zgIAOK9uQ4MS361ZOSX+OrTvkgINSjS/HIvhjxNNFGgQsbSmabohKDNoUGLohsls6BaiQIMSs2FYmnXdUsygQYmumy3Nhi6igwalDEOJEjPKP7CA2aFNK8Bkyy3fdNCg7r9/fW3jgpVJbDmy5+PB2IYp4MXFelQ7izPrhkPHB+P5/PjhD5gCgCenx+VR/dODEwD+A3T7nqbxwf1HAAAAAElFTkSuQmCC" />'
             . count($this->queries) . ' queries'
             . ($this->totalTime ? ' / ' . sprintf('%0.1f', $this->totalTime * 1000) . 'ms' : '')
@@ -114,7 +120,9 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
                 try {
                     $cmd = is_string($this->explain) ? $this->explain : 'EXPLAIN';
                     $explain = $connection->queryArgs("$cmd $sql", $params)->fetchAll();
-                } catch (\PDOException $e) {}
+                } catch (\PDOException $e) {
+
+                }
             }
 
             $s .= '<tr><td>' . sprintf('%0.3f', $time * 1000);
@@ -130,15 +138,15 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
                 foreach ($explain[0] as $col => $foo) {
                     $s .= "<th>{$h($col)}</th>";
                 }
-                $s .= "</tr>";
+                $s .= '</tr>';
                 foreach ($explain as $row) {
-                    $s .= "<tr>";
+                    $s .= '<tr>';
                     foreach ($row as $col) {
                         $s .= "<td>{$h($col)}</td>";
                     }
-                    $s .= "</tr>";
+                    $s .= '</tr>';
                 }
-                $s .= "</table>";
+                $s .= '</table>';
             }
             if ($source) {
                 $s .= Nette\Diagnostics\Helpers::editorLink($source[0], $source[1])->class('nette-DbConnectionPanel-source');
@@ -163,6 +171,5 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel {
             </table>
             </div>';
     }
-
 
 }

@@ -23,7 +23,8 @@ use Nette\Utils\Strings;
  * @copyright  Copyright (c) 2005 Flinn Mueller (http://actsasflinn.com)
  * @license    New BSD License
  */
-class Inflector {
+class Inflector
+{
 
     /** @var string[] singular nouns as rule => replacement */
     public static $singulars = [
@@ -100,23 +101,31 @@ class Inflector {
      * @param string
      * @return string
      */
-    public static function singularize($word) {
+    public static function singularize($word)
+    {
         $lower = Strings::lower($word);
 
-        if (self::isSingular($word))
+        if (self::isSingular($word)) {
             return $word;
+        }
 
-        if (!self::isCountable($word))
+        if (!self::isCountable($word)) {
             return $word;
+        }
 
-        if (self::isIrregular($word))
-            foreach (self::$irregular as $single => $plural)
-                if ($lower == $plural)
+        if (self::isIrregular($word)) {
+            foreach (self::$irregular as $single => $plural) {
+                if ($lower == $plural) {
                     return $single;
+                }
+            }
+        }
 
-        foreach (self::$plurals as $rule => $replacement)
-            if (preg_match($rule, $word))
+        foreach (self::$plurals as $rule => $replacement) {
+            if (preg_match($rule, $word)) {
                 return preg_replace($rule, $replacement, $word);
+            }
+        }
 
         return false;
     }
@@ -128,21 +137,27 @@ class Inflector {
      * @param string
      * @return string
      */
-    public static function pluralize($word) {
+    public static function pluralize($word)
+    {
         $lower = Strings::lower($word);
 
-        if (self::isPlural($word))
+        if (self::isPlural($word)) {
             return $word;
+        }
 
-        if (!self::isCountable($word))
+        if (!self::isCountable($word)) {
             return $word;
+        }
 
-        if (self::isIrregular($word))
+        if (self::isIrregular($word)) {
             return self::$irregular[$lower];
+        }
 
-        foreach (self::$singulars as $rule => $replacement)
-            if (preg_match($rule, $word))
+        foreach (self::$singulars as $rule => $replacement) {
+            if (preg_match($rule, $word)) {
                 return preg_replace($rule, $replacement, $word);
+            }
+        }
 
         return false;
     }
@@ -154,9 +169,11 @@ class Inflector {
      * @param string
      * @return boolean
      */
-    public static function isSingular($word) {
-        if (!self::isCountable($word))
+    public static function isSingular($word)
+    {
+        if (!self::isCountable($word)) {
             return true;
+        }
 
         return !self::isPlural($word);
     }
@@ -168,18 +185,23 @@ class Inflector {
      * @param string
      * @return boolean
      */
-    public static function isPlural($word) {
+    public static function isPlural($word)
+    {
         $lower = Strings::lower($word);
 
-        if (!self::isCountable($word))
+        if (!self::isCountable($word)) {
             return true;
+        }
 
-        if (self::isIrregular($word))
+        if (self::isIrregular($word)) {
             return in_array($lower, array_values(self::$irregular));
+        }
 
-        foreach (self::$plurals as $rule => $replacement)
-            if (preg_match($rule, $word))
+        foreach (self::$plurals as $rule => $replacement) {
+            if (preg_match($rule, $word)) {
                 return true;
+            }
+        }
 
         return false;
     }
@@ -191,7 +213,8 @@ class Inflector {
      * @param string
      * @return boolean
      */
-    public static function isCountable($word) {
+    public static function isCountable($word)
+    {
         $lower = Strings::lower($word);
         return (bool) !in_array($lower, self::$uncountable);
     }
@@ -203,7 +226,8 @@ class Inflector {
      * @param string
      * @return boolean
      */
-    public static function isIrregular($word) {
+    public static function isIrregular($word)
+    {
         $lower = Strings::lower($word);
         return (bool) in_array($lower, self::$irregular) || array_key_exists($lower, self::$irregular);
     }
@@ -216,18 +240,24 @@ class Inflector {
      * @param integer
      * @return string
      */
-    public static function ordinalize($number) {
+    public static function ordinalize($number)
+    {
         $number = (int) $number;
 
-        if ($number % 100 >= 11 && $number % 100 <= 13)
+        if ($number % 100 >= 11 && $number % 100 <= 13) {
             return "{$number}th";
-        else
+        } else {
             switch ($number % 10) {
-                case 1: return "{$number}st";
-                case 2: return "{$number}nd";
-                case 3: return "{$number}rd";
-                default: return "{$number}th";
+                case 1:
+                    return "{$number}st";
+                case 2:
+                    return "{$number}nd";
+                case 3:
+                    return "{$number}rd";
+                default:
+                    return "{$number}th";
             }
+        }
     }
 
 
@@ -240,7 +270,8 @@ class Inflector {
      * @param boolean
      * @return string
      */
-    public static function camelize($word, $firstUpper = true) {
+    public static function camelize($word, $firstUpper = true)
+    {
         $word = preg_replace(['/(^|_)(.)/e', '/(\/)(.)/e'], ["strtoupper('\\2')", "strtoupper('\\2')"], strval($word));
         return $firstUpper ? ucfirst($word) : lcfirst($word);
     }
@@ -252,7 +283,8 @@ class Inflector {
      * @param string
      * @return string
      */
-    public static function dasherize($word) {
+    public static function dasherize($word)
+    {
         return preg_replace('/_/', '-', strval($word));
     }
 
@@ -264,7 +296,8 @@ class Inflector {
      * @param string
      * @return string
      */
-    public static function titleize($word) {
+    public static function titleize($word)
+    {
         return preg_replace(["/\b('?[a-z])/e"], ["ucfirst('\\1')"], self::humanize(self::underscore($word)));
     }
 
@@ -276,8 +309,9 @@ class Inflector {
      * @param string
      * @return string
      */
-    public static function underscore($word) {
-        return strtolower(preg_replace('/([A-Z]+)([A-Z])/','\1_\2', preg_replace('/([a-z\d])([A-Z])/','\1_\2', $word)));
+    public static function underscore($word)
+    {
+        return strtolower(preg_replace('/([A-Z]+)([A-Z])/', '\1_\2', preg_replace('/([a-z\d])([A-Z])/', '\1_\2', $word)));
     }
 
 
@@ -288,7 +322,8 @@ class Inflector {
      * @param string
      * @return string
      */
-    public static function humanize($word) {
+    public static function humanize($word)
+    {
         return ucfirst(strtolower(preg_replace(['/_id$/', '/_/'], ['', ' '], $word)));
     }
 
@@ -299,10 +334,12 @@ class Inflector {
      * @param string|object
      * @return string
      */
-    public static function demodulize($class) {
+    public static function demodulize($class)
+    {
         $class = ltrim(strval($class), '\\');
-        if ($a = strrpos($class, '\\'))
-            $class = substr($class, $a+1);
+        if ($a = strrpos($class, '\\')) {
+            $class = substr($class, $a + 1);
+        }
         return preg_replace('/^.*::/', '', $class);
     }
 
@@ -314,7 +351,8 @@ class Inflector {
      * @param string
      * @return string
      */
-    public static function tableize($class) {
+    public static function tableize($class)
+    {
         $class = substr_count($class, 'Model', 1) ? preg_replace('/Model$/', '', $class) : $class;
         $table = self::pluralize($class);
         return self::$railsStyle ? self::underscore($table) : self::camelize($table);
@@ -329,7 +367,8 @@ class Inflector {
      * @param string
      * @return string
      */
-    public static function classify($table) {
+    public static function classify($table)
+    {
         return self::camelize(self::singularize($table));
     }
 
@@ -341,8 +380,9 @@ class Inflector {
      * @param string
      * @return string
      */
-    public static function foreignKey($class) {
-        return self::underscore((self::isPlural($class) ? self::singularize($class) : self::demodulize($class))) . (self::$railsStyle ? "_id" : "Id");
+    public static function foreignKey($class)
+    {
+        return self::underscore((self::isPlural($class) ? self::singularize($class) : self::demodulize($class))) . (self::$railsStyle ? '_id' : 'Id');
     }
 
 
@@ -353,7 +393,9 @@ class Inflector {
      * @param string
      * @return string
      */
-    public static function intersectEntity($local, $referenced) {
+    public static function intersectEntity($local, $referenced)
+    {
         return self::tableize(self::demodulize($local)) . (self::$railsStyle ? '_' : '') . self::tableize(self::demodulize($referenced));
     }
+
 }

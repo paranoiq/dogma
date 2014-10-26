@@ -13,7 +13,8 @@
  * @param mixed $args list of items
  * @return Dogma\ArrayObject
  */
-function arr() {
+function arr()
+{
     $args = func_get_args();
 
     return new Dogma\ArrayObject($args);
@@ -25,7 +26,8 @@ function arr() {
  * @param mixed $args list of items
  * @return Dogma\Collection
  */
-// function coll() {
+// function coll()
+// {
 //     $args = func_get_args();
 //
 //     return new Dogma\Collection($args);
@@ -33,13 +35,16 @@ function arr() {
 
 
 if (!function_exists('is_traversable')) {
+
+
     /**
      * Returns true if variable is array or traversable object.
      *
      * @param mixed
      * @return boolean
      */
-    function is_traversable($var) {
+    function is_traversable($var)
+    {
         return is_array($var) || $var instanceof Traversable;
     }
 } else {
@@ -52,7 +57,8 @@ if (!function_exists('is_traversable')) {
  * @param mixed[]|string $keys
  * @return mixed[]
  */
-function array_separate_keys(&$array, $keys) {
+function array_separate_keys(&$array, $keys)
+{
     if (is_string($keys)) {
         $keys = array_flip(explode(',', $keys));
 
@@ -77,7 +83,8 @@ function array_separate_keys(&$array, $keys) {
  * @param mixed $params
  * @return boolean
  */
-// function in($value, $params) {
+// function in($value, $params)
+// {
 //    $params = func_get_args();
 //    array_shift($params);
 //
@@ -92,11 +99,11 @@ function array_separate_keys(&$array, $keys) {
  * @param string
  * @return boolean
  */
-// function like($string, $pattern) {
+// function like($string, $pattern)
+// {
 //     return preg_match('/^' . str_replace(['%', '_'], ['.*?', '.'],
 //         preg_quote($pattern, '/')) . '$/ui', $string);
 // }
-
 
 
 /**
@@ -105,14 +112,18 @@ function array_separate_keys(&$array, $keys) {
  * @param array
  * @return object
  */
-// function instance($class, &$data, $aliases = []) {
+// function instance($class, &$data, $aliases = [])
+// {
 //     return Dogma\Object\Prototyper::createInstance($class, $data, $aliases);
 // }
 
 
-function abbr($s, $maxLen, $append = "\xE2\x80\xA6") {
-    if (Nette\Utils\Strings::length($s) <= $maxLen) return htmlspecialchars($s);
+function abbr($s, $maxLen, $append = "\xE2\x80\xA6")
+{
+    if (Nette\Utils\Strings::length($s) <= $maxLen) {
+        return htmlspecialchars($s);
+    }
 
-    return "<abbr title='" . htmlspecialchars($s) . "'>"
-        . htmlspecialchars(Nette\Utils\Strings::truncate($s, $maxLen, $append)) . "</abbr>";
+    return '<abbr title="' . htmlspecialchars($s) . '">'
+        . htmlspecialchars(Nette\Utils\Strings::truncate($s, $maxLen, $append)) . '</abbr>';
 }

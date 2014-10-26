@@ -15,7 +15,8 @@ namespace Dogma\Mail;
  * @property-read $address
  * @property-read $name
  */
-class Address extends \Dogma\Object {
+class Address extends \Dogma\Object
+{
 
     /** @var string */
     private $name;
@@ -31,25 +32,29 @@ class Address extends \Dogma\Object {
      * @param string
      * @param string
      */
-    public function __construct($address, $name = null) {
+    public function __construct($address, $name = null)
+    {
         $this->address = strtolower($address);
         $this->name = $name;
     }
 
 
     /** @return string */
-    public function getAddress() {
+    public function getAddress()
+    {
         return $this->address;
     }
 
 
     /** @return string */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->name ? "\"$this->name\" <$this->address>" : $this->address;
     }
 

@@ -21,7 +21,8 @@ use Dogma\Type;
  * @todo implement regexp validator?
  * @todo implement enum validator?
  */
-final class CsvFile extends TextFile {
+final class CsvFile extends TextFile
+{
 
     const AUTODETECT = null;
 
@@ -57,7 +58,8 @@ final class CsvFile extends TextFile {
      * Set CSV column delimiter
      * @param string|null for autodetect
      */
-    public function setDelimiter($delimiter) {
+    public function setDelimiter($delimiter)
+    {
         $this->delimiter = (string) $delimiter;
     }
 
@@ -67,7 +69,8 @@ final class CsvFile extends TextFile {
      * @param string
      * @param string
      */
-    public function setFormat($type, $format) {
+    public function setFormat($type, $format)
+    {
         $this->getNormalizer()->setFormat($type, $format);
     }
 
@@ -77,7 +80,8 @@ final class CsvFile extends TextFile {
      * @param boolean
      * @param boolean
      */
-    public function autodetectTypes($autodetect = true, $nullable = false) {
+    public function autodetectTypes($autodetect = true, $nullable = false)
+    {
         $this->autodetect = $autodetect;
         $this->nullable = $nullable;
     }
@@ -86,8 +90,11 @@ final class CsvFile extends TextFile {
     /**
      * @return \Dogma\Normalizer
      */
-    private function getNormalizer() {
-        if (!$this->normalizer) $this->normalizer = new \Dogma\Normalizer;
+    private function getNormalizer()
+    {
+        if (!$this->normalizer) {
+            $this->normalizer = new \Dogma\Normalizer;
+        }
 
         return $this->normalizer;
     }
@@ -105,7 +112,8 @@ final class CsvFile extends TextFile {
      * @param boolean null value allowed?
      * @return self
      */
-    public function addColumn($name, $realName = null, $type = Type::STRING, $required = true, $nullable = false) {
+    public function addColumn($name, $realName = null, $type = Type::STRING, $required = true, $nullable = false)
+    {
         $this->columns[$name] = Nette\ArrayHash::from([
             'realName' => $realName ?: $name,
             'type' => $type,
@@ -122,7 +130,8 @@ final class CsvFile extends TextFile {
      * @param boolean
      * @return self
      */
-    public function setRequired($required = true) {
+    public function setRequired($required = true)
+    {
         end($this->columns)->required = $required;
 
         return $this;
@@ -134,7 +143,8 @@ final class CsvFile extends TextFile {
      * @param boolean
      * @return self
      */
-    public function setNullable($nullable = true) {
+    public function setNullable($nullable = true)
+    {
         end($this->columns)->nullable = $nullable;
 
         return $this;
@@ -146,7 +156,8 @@ final class CsvFile extends TextFile {
      * @param mixed
      * @return self
      */
-    public function setDefault($default) {
+    public function setDefault($default)
+    {
         end($this->columns)->default = $default;
 
         return $this;
@@ -158,10 +169,15 @@ final class CsvFile extends TextFile {
      * @param string
      * @return boolean
      */
-    public function hasColumn($name) {
-        if (!$this->realColumns) $this->initializeRead();
+    public function hasColumn($name)
+    {
+        if (!$this->realColumns) {
+            $this->initializeRead();
+        }
 
-        if ($this->columns) return isset($this->columns[$name]);
+        if ($this->columns) {
+            return isset($this->columns[$name]);
+        }
 
         return isset($this->realColumns[$name]);
     }
@@ -171,8 +187,11 @@ final class CsvFile extends TextFile {
      * Returns list of columns
      * @return string[] (string $name => string $type)
      */
-    public function getColumns() {
-        if (!$this->realColumns) $this->initializeRead();
+    public function getColumns()
+    {
+        if (!$this->realColumns) {
+            $this->initializeRead();
+        }
         $columns = [];
 
         if ($this->columns) {
@@ -197,10 +216,12 @@ final class CsvFile extends TextFile {
      * @param integer
      * @return integer actually skipped
      */
-    public function skip($rows = 1) {
+    public function skip($rows = 1)
+    {
         $rows = (int) $rows;
-        if ($rows < 0)
-            throw new FileException("CsvFile: Cannot skip negative number of rows.");
+        if ($rows < 0) {
+            throw new FileException('CsvFile: Cannot skip negative number of rows.');
+        }
 
         $skipped = 0;
         while ($this->getNextRow() && --$rows) {
@@ -215,14 +236,20 @@ final class CsvFile extends TextFile {
      * Returns next CSV row or false
      * @return array|boolean
      */
-    public function fetch() {
-        if (!$this->realColumns) $this->initializeRead();
+    public function fetch()
+    {
+        if (!$this->realColumns) {
+            $this->initializeRead();
+        }
 
         $row = $this->getNextRow();
-        if (!$row) return false;
+        if (!$row) {
+            return false;
+        }
 
-        if (!$this->columns)
+        if (!$this->columns) {
             return $this->assocRow($row);
+        }
 
         return $this->normalizeRow($row);
     }
@@ -233,26 +260,36 @@ final class CsvFile extends TextFile {
      * @param string
      * @return mixed|boolean
      */
-    public function fetchColumn($name) {
-        if (!$this->realColumns) $this->initializeRead();
+    public function fetchColumn($name)
+    {
+        if (!$this->realColumns) {
+            $this->initializeRead();
+        }
 
         $row = $this->getNextRow();
-        if (!$row) return false;
+        if (!$row) {
+            return false;
+        }
 
         if (!$this->columns) {
-            if (isset($this->realColumns[$name]))
-                throw new FileException("CsvFile: Column $name was not found.");
+            if (isset($this->realColumns[$name])) {
+                throw new FileException('CsvFile: Column $name was not found.');
+            }
 
             return $row[$this->realColumns[$name]];
         }
 
-        if (isset($this->columns[$name]))
-            throw new FileException("CsvFile: Column $name was not found.");
+        if (isset($this->columns[$name])) {
+            throw new FileException('CsvFile: Column $name was not found.');
+        }
 
         $column = $this->columns[$name];
 
         return $this->getNormalizer()->normalize(
-            $this->decode($row[$this->realColumns[$column->realName]]), $column->type, $column->nullable);
+            $this->decode($row[$this->realColumns[$column->realName]]),
+            $column->type,
+            $column->nullable
+        );
     }
 
 
@@ -260,7 +297,8 @@ final class CsvFile extends TextFile {
      * Get next row
      * @return mixed[]
      */
-    private function getNextRow() {
+    private function getNextRow()
+    {
         do {
             $this->counter++;
             $row = fgetcsv($this->file, 0, $this->delimiter, $this->quoteChar, $this->escapeChar);
@@ -271,10 +309,13 @@ final class CsvFile extends TextFile {
 
         } while ($row === [null] && !$this->eof()); // skip empty rows
 
-        if ($row === [null]) return false; // eof
+        if ($row === [null]) {
+            return false; // eof
+        }
 
-        if (count($row) !== count($this->realColumns))
+        if (count($row) !== count($this->realColumns)) {
             throw new FileException("CsvFile: Wrong column count on line #$this->counter.");
+        }
 
         return $row;
     }
@@ -285,7 +326,8 @@ final class CsvFile extends TextFile {
      * @param mixed[]
      * @return mixed[]
      */
-    private function assocRow(array $row) {
+    private function assocRow(array $row)
+    {
         $data = [];
         foreach ($this->realColumns as $realName => $i) {
             if ($this->autodetect) {
@@ -303,7 +345,8 @@ final class CsvFile extends TextFile {
      * @param mixed[]
      * @return mixed[]
      */
-    private function normalizeRow(array $row) {
+    private function normalizeRow(array $row)
+    {
         $data = [];
         foreach ($this->columns as $name => $column) {
             if (!$column->required && !isset($this->realColumns[$column->realName])) {
@@ -313,7 +356,10 @@ final class CsvFile extends TextFile {
 
             $columnId = $this->realColumns[$column->realName];
             $data[$name] = $this->getNormalizer()->normalize(
-                $this->decode($row[$columnId]), $column->type, $column->nullable);
+                $this->decode($row[$columnId]),
+                $column->type,
+                $column->nullable
+            );
         }
         return $data;
     }
@@ -324,7 +370,8 @@ final class CsvFile extends TextFile {
      * @param array
      * @param boolean
      */
-    public function writeData($data) {
+    public function writeData($data)
+    {
         if (!$this->columnCount) {
             $this->initializeWrite($data);
         }
@@ -334,19 +381,22 @@ final class CsvFile extends TextFile {
         if ($this->columns) {
             foreach ($this->columns as $name => $column) {
                 if (!array_key_exists($name, $data)) {
-                    if ($column->required)
+                    if ($column->required) {
                         throw new FileException("CsvFile: Required value $name is missing.");
+                    }
 
                     $row[] = $this->getNormalizer()->format(null);
                 } else {
                     $row[] = $this->encode(
-                        $this->getNormalizer()->format($data[$name], $column->type, $column->nullable));
+                        $this->getNormalizer()->format($data[$name], $column->type, $column->nullable)
+                    );
                 }
             }
 
         } else {
-            if (count($data) !== $this->columnCount)
-                throw new FileException("CsvFile: Data count does not match column count.");
+            if (count($data) !== $this->columnCount) {
+                throw new FileException('CsvFile: Data count does not match column count.');
+            }
 
             foreach ($data as $value) {
                 $row[] = $this->encode($this->getNormalizer()->format($value));
@@ -359,9 +409,11 @@ final class CsvFile extends TextFile {
      * Detect format of file
      * @param array
      */
-    private function initializeWrite($data) {
-        if (!$this->delimiter)
-            throw new FileException("CsvFile: Delimiter must be set!");
+    private function initializeWrite($data)
+    {
+        if (!$this->delimiter) {
+            throw new FileException('CsvFile: Delimiter must be set!');
+        }
 
         $this->columnCount = count($data);
         $row = [];
@@ -383,20 +435,26 @@ final class CsvFile extends TextFile {
             return;
         }
 
-        if (!fputcsv($this->file, $row, $this->delimiter, $this->quoteChar))
-            throw new FileException("CsvFile: Error when writing file header.");
+        if (!fputcsv($this->file, $row, $this->delimiter, $this->quoteChar)) {
+            throw new FileException('CsvFile: Error when writing file header.');
+        }
     }
 
 
     /**
      * Detect format of file
      */
-    private function initializeRead() {
-        if (!$this->delimiter) $this->detectDelimiter();
+    private function initializeRead()
+    {
+        if (!$this->delimiter) {
+            $this->detectDelimiter();
+        }
 
         $this->detectRealColumns();
 
-        if ($this->columns) $this->checkRequiredColumns();
+        if ($this->columns) {
+            $this->checkRequiredColumns();
+        }
 
         $this->counter = 1;
     }
@@ -405,13 +463,14 @@ final class CsvFile extends TextFile {
     /**
      * Detect delimiter from fist row of file. Detects [,] [;] [|] and [tab]
      */
-    private function detectDelimiter() {
+    private function detectDelimiter()
+    {
         $this->setPosition(0);
-        $row = fgetcsv($this->file, 0, ",", $this->quoteChar, $this->escapeChar);
+        $row = fgetcsv($this->file, 0, ',', $this->quoteChar, $this->escapeChar);
         $comma = count($row);
 
         $this->setPosition(0);
-        $row = fgetcsv($this->file, 0, ";", $this->quoteChar, $this->escapeChar);
+        $row = fgetcsv($this->file, 0, ';', $this->quoteChar, $this->escapeChar);
         $semi = count($row);
 
         $this->setPosition(0);
@@ -419,15 +478,15 @@ final class CsvFile extends TextFile {
         $tab = count($row);
 
         $this->setPosition(0);
-        $row = fgetcsv($this->file, 0, "|", $this->quoteChar, $this->escapeChar);
+        $row = fgetcsv($this->file, 0, '|', $this->quoteChar, $this->escapeChar);
         $pipe = count($row);
 
         if ($comma && $comma > $semi && $comma > $tab && $comma > $pipe) {
-            $this->delimiter = ",";
+            $this->delimiter = ',';
             return;
 
         } elseif ($semi && $semi > $comma && $semi > $tab && $semi > $pipe) {
-            $this->delimiter = ";";
+            $this->delimiter = ';';
             return;
 
         } elseif ($tab && $tab > $comma && $tab > $semi && $tab > $pipe) {
@@ -435,11 +494,11 @@ final class CsvFile extends TextFile {
             return;
 
         } elseif ($pipe && $pipe > $comma && $pipe > $semi && $pipe > $tab) {
-            $this->delimiter = "|";
+            $this->delimiter = '|';
             return;
 
         } else {
-            throw new FileException("CsvFile: Cannot detect CSV delimiter.");
+            throw new FileException('CsvFile: Cannot detect CSV delimiter.');
         }
     }
 
@@ -447,11 +506,13 @@ final class CsvFile extends TextFile {
     /**
      * Detect real column names from file
      */
-    private function detectRealColumns() {
+    private function detectRealColumns()
+    {
         $this->setPosition(0);
         $row = fgetcsv($this->file, 0, $this->delimiter, $this->quoteChar, $this->escapeChar);
-        if (!$row)
-            throw new FileException("CsvFile: Error when reading CSV file header.");
+        if (!$row) {
+            throw new FileException('CsvFile: Error when reading CSV file header.');
+        }
 
         $this->realColumns = [];
         foreach ($row as $i => $name) {
@@ -463,10 +524,12 @@ final class CsvFile extends TextFile {
     /**
      * Check if all required columns are present
      */
-    private function checkRequiredColumns() {
+    private function checkRequiredColumns()
+    {
         foreach ($this->columns as $name => $column) {
-            if ($column->required && !isset($this->realColumns[$column->realName]))
+            if ($column->required && !isset($this->realColumns[$column->realName])) {
                 throw new FileException("CsvFile: Required column $name was not fund.");
+            }
         }
     }
 

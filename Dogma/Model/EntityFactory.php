@@ -8,7 +8,8 @@ use Nette\Database\Table\ActiveRow;
 use Dogma\Language\Inflector;
 
 
-class EntityFactory extends \Dogma\Object {
+class EntityFactory extends \Dogma\Object
+{
 
     /** @var array ($entityClass => ($propertyName => ($propertyClass, ($paramName => $paramType)))) */
     private $meta = [];
@@ -20,7 +21,8 @@ class EntityFactory extends \Dogma\Object {
     //private $context;
 
 
-    //public function __construct(\Nette\DI\Container $context) {
+    //public function __construct(\Nette\DI\Container $context)
+    //{
     //    $this->context = $context;
     //}
 
@@ -30,7 +32,8 @@ class EntityFactory extends \Dogma\Object {
      * @param string
      * @return \Dogma\Model\ActiveEntity
      */
-    //public function createEntity(ActiveRow $row, $class) {
+    //public function createEntity(ActiveRow $row, $class)
+    //{
     //    return $this->context->createInstance($class, [$row]);
     //}
 
@@ -38,9 +41,11 @@ class EntityFactory extends \Dogma\Object {
     /**
      * @return string[]
      */
-    public function getMagicProperties($class) {
-        if (array_key_exists($class, $this->meta))
+    public function getMagicProperties($class)
+    {
+        if (array_key_exists($class, $this->meta)) {
             return array_keys($this->meta[$class]);
+        }
 
         $ns = preg_replace('/[^\\\\]+$/', '', $class);
         $ref = self::getReflection($class);
@@ -80,7 +85,8 @@ class EntityFactory extends \Dogma\Object {
      * @param string
      * @return boolean
      */
-    public function hasMagicProperty($class, $property) {
+    public function hasMagicProperty($class, $property)
+    {
         return isset($this->meta[$class][$property]);
     }
 
@@ -91,7 +97,8 @@ class EntityFactory extends \Dogma\Object {
      * @param \Nette\Database\Table\ActiveRow|array
      * @return object
      */
-    public function createPropertyInstance($class, $property, $row) {
+    public function createPropertyInstance($class, $property, $row)
+    {
         list($type, $params) = $this->meta[$class][$property];
 
         $args = [];
@@ -114,7 +121,8 @@ class EntityFactory extends \Dogma\Object {
      * @param \Nette\Database\Table\ActiveRow|array
      * @return object
      */
-    public function updatePropertyInstance($class, $property, $value, $row) {
+    public function updatePropertyInstance($class, $property, $value, $row)
+    {
         list($type, $params) = $this->meta[$class][$property];
 
         if ($value instanceof $type) {
@@ -122,8 +130,9 @@ class EntityFactory extends \Dogma\Object {
 
             if ($value instanceof \Dogma\CompoundValueObject) {
                 $parts = array_combine(array_keys($params), array_values($value->toArray()));
-                if (!$parts)
-                    throw new \LogicException("Count of fields returned by CompoundValueObject does not fit the count of fields in constructor.");
+                if (!$parts) {
+                    throw new \LogicException('Count of fields returned by CompoundValueObject does not fit the count of fields in constructor.');
+                }
 
                 foreach ($parts as $key => $val) {
                     $row[$key] = $val;
@@ -145,12 +154,15 @@ class EntityFactory extends \Dogma\Object {
      * @param object|string
      * @return \Nette\Reflection\ClassType
      */
-    public function getReflection($class) {
-        if (is_object($class))
+    public function getReflection($class)
+    {
+        if (is_object($class)) {
             $class = get_class($class);
+        }
 
-        if (!isset($this->reflections[$class]))
+        if (!isset($this->reflections[$class])) {
             $this->reflections[$class] = new ClassType($class);
+        }
 
         return $this->reflections[$class];
     }
@@ -161,10 +173,12 @@ class EntityFactory extends \Dogma\Object {
      * @param string
      * @return string
      */
-    public static function getClassName($namespace, $type) {
+    public static function getClassName($namespace, $type)
+    {
         @list($type) = preg_split('/[\\s|]/', $type);
-        if ($type[0] === '\\')
+        if ($type[0] === '\\') {
             return $type;
+        }
 
         return $namespace . $type;
     }
@@ -175,7 +189,8 @@ class EntityFactory extends \Dogma\Object {
      * @param mixed[]
      * @return object
      */
-    public function createInstance($class, $args) {
+    public function createInstance($class, $args)
+    {
         $ref = $this->getReflection($class);
 
         if ($ref->implementsInterface('Dogma\\IndirectInstantiable')) {

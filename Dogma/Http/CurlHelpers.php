@@ -10,7 +10,8 @@
 namespace Dogma\Http;
 
 
-class CurlHelpers {
+class CurlHelpers
+{
 
 
     // Errors ----------------------------------------------------------------------------------------------------------
@@ -20,10 +21,13 @@ class CurlHelpers {
      * @param integer
      * @return string
      */
-    public static function getCurlErrorName($error) {
+    public static function getCurlErrorName($error)
+    {
         $consts = get_defined_constants(true);
         foreach ($consts['curl'] as $name => $value) {
-            if ($value === $error && substr($name, 0, 6) === 'CURLE_') return $name;
+            if ($value === $error && substr($name, 0, 6) === 'CURLE_') {
+                return $name;
+            }
         }
 
         return 'UNKNOWN_ERROR';
@@ -34,11 +38,14 @@ class CurlHelpers {
      * @param integer
      * @return string
      */
-    public static function getCurlMultiErrorName($error) {
+    public static function getCurlMultiErrorName($error)
+    {
         $consts = get_defined_constants(true);
         $curl = $consts['curl'];
         foreach ($curl as $name => $value) {
-            if ($value === $error && substr($name, 0, 6) === 'CURLM_') return $name;
+            if ($value === $error && substr($name, 0, 6) === 'CURLM_') {
+                return $name;
+            }
         }
 
         return 'UNKNOWN_ERROR';
@@ -52,7 +59,8 @@ class CurlHelpers {
      * @param string
      * @return integer
      */
-    public static function getCurlOptionNumber($name) {
+    public static function getCurlOptionNumber($name)
+    {
         $name = strtoupper($name);
 
         return constant('CURLOPT_' . $name);
@@ -63,10 +71,13 @@ class CurlHelpers {
      * @param string
      * @return integer
      */
-    public static function getCurlOptionName($option) {
+    public static function getCurlOptionName($option)
+    {
         $consts = get_defined_constants(true);
         foreach ($consts['curl'] as $name => $value) {
-            if ($value === $option && substr($name, 0, 8) === 'CURLOPT_') return $name;
+            if ($value === $option && substr($name, 0, 8) === 'CURLOPT_') {
+                return $name;
+            }
         }
 
         return null;
@@ -80,7 +91,8 @@ class CurlHelpers {
      * @param integer
      * @return string|null
      */
-    public static function getCurlInfoName($num) {
+    public static function getCurlInfoName($num)
+    {
         static $translate = [
             CURLINFO_EFFECTIVE_URL => 'url',
             CURLINFO_HTTP_CODE => 'http_code',
@@ -109,12 +121,12 @@ class CurlHelpers {
 
         $consts = get_defined_constants(true);
         foreach ($consts['curl'] as $name => $value) {
-            if ($value === $num && substr($name, 0, 9) === 'CURLINFO_')
+            if ($value === $num && substr($name, 0, 9) === 'CURLINFO_') {
                 return $translate[$name];
+            }
         }
 
         return null;
     }
-
 
 }

@@ -6,7 +6,8 @@ namespace Dogma\Queue;
 /**
  * An interface to Beanstalk queue service
  */
-class BeanstalkClientExtended extends BeanstalkClient {
+class BeanstalkClientExtended extends BeanstalkClient
+{
 
     /** @var \Dogma\Queue\IMetadataStorage */
     private $storage;
@@ -19,8 +20,12 @@ class BeanstalkClientExtended extends BeanstalkClient {
      * @param boolean
      * @param \Dogma\Queue\IMetadataStorage
      */
-    public function __construct($host = '127.0.0.1', $port = 11300, $timeout = 1, $persistent = true,
-        IMetadataStorage $storage
+    public function __construct(
+        IMetadataStorage $storage,
+        $host = '127.0.0.1',
+        $port = 11300,
+        $timeout = 1,
+        $persistent = true
     ) {
         parent::__construct($host, $port, $timeout, $persistent);
         $this->storage = $storage;
@@ -37,9 +42,10 @@ class BeanstalkClientExtended extends BeanstalkClient {
      * @param integer $timeToRun worker timeout, before re-assigning job to another worker
      * @return integer job id
      */
-    public function queueUnique($data, $delay = null, $priority = null, $timeToRun = null) {
+    public function queueUnique($data, $delay = null, $priority = null, $timeToRun = null)
+    {
         if (!$this->storage) {
-            throw new BeanstalkException("Storage must be set to insert unique tasks!");
+            throw new BeanstalkException('Storage must be set to insert unique tasks!');
         }
 
         if ($jobId = $this->storage->findJob($this->getSelectedQueue(), $data)) {

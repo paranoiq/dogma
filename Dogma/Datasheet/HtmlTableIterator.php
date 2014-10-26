@@ -12,7 +12,8 @@ namespace Dogma\Datasheet;
 use Dogma\Dom\Element;
 
 
-class HtmlTableIterator extends \Dogma\Object implements \Iterator {
+class HtmlTableIterator extends \Dogma\Object implements \Iterator
+{
 
     /** @var Element */
     private $table;
@@ -27,21 +28,27 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator {
     private $position;
 
 
-    public function __construct(Element $table) {
-        if ($table->nodeName !== 'table')
+    public function __construct(Element $table)
+    {
+        if ($table->nodeName !== 'table') {
             throw new \InvalidArgumentException("Element must be a table. $table->nodeName given!");
+        }
 
         $this->table = $table;
     }
 
 
-    public function rewind() {
-        if (!$this->head) $this->processTable();
+    public function rewind()
+    {
+        if (!$this->head) {
+            $this->processTable();
+        }
         $this->position = 0;
     }
 
 
-    public function next() {
+    public function next()
+    {
         $this->position++;
     }
 
@@ -49,7 +56,8 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator {
     /**
      * @return boolean
      */
-    public function valid() {
+    public function valid()
+    {
         return $this->position < count($this->rows);
     }
 
@@ -57,7 +65,8 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator {
     /**
      * @return integer
      */
-    public function key() {
+    public function key()
+    {
         return $this->position;
     }
 
@@ -65,16 +74,18 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator {
     /**
      * @return string[]
      */
-    public function current() {
+    public function current()
+    {
         return $this->formatRow($this->rows->item($this->position));
     }
 
 
-    private function processTable() {
-        foreach ($this->table->find(":headrow/:cell") as $cell) {
+    private function processTable()
+    {
+        foreach ($this->table->find(':headrow/:cell') as $cell) {
             $this->head[] = $cell->textContent;
         }
-        $this->rows = $this->table->find(":bodyrow");
+        $this->rows = $this->table->find(':bodyrow');
     }
 
 
@@ -82,9 +93,10 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator {
      * @param \Dogma\Dom\Element
      * @return string[]
      */
-    private function formatRow(Element $row) {
+    private function formatRow(Element $row)
+    {
         $res = [];
-        foreach ($row->find(":cell") as $i => $cell) {
+        foreach ($row->find(':cell') as $i => $cell) {
             $res[$this->head[$i]] = $cell->textContent;
         }
         return $res;

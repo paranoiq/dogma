@@ -15,7 +15,8 @@ use Nette\Diagnostics\Debugger;
 /**
  * Text file reader/writer
  */
-class TextFile extends File {
+class TextFile extends File
+{
 
     // Line endings:
     const UNIX = "\n";
@@ -37,7 +38,8 @@ class TextFile extends File {
     /**
      * @param string
      */
-    public function setEncoding($encoding) {
+    public function setEncoding($encoding)
+    {
         $this->encoding = strtolower($encoding);
     }
 
@@ -45,7 +47,8 @@ class TextFile extends File {
     /**
      * @param string
      */
-    public function setLineEndings($nl) {
+    public function setLineEndings($nl)
+    {
         $this->nl = $nl;
     }
 
@@ -53,7 +56,8 @@ class TextFile extends File {
     /**
      * @return string
      */
-    /*public function readChar() {
+    /*public function readChar()
+    {
         /// handle multibyte encodings!
         return $this->decode(fgetc($this->file));
     }*/
@@ -62,7 +66,8 @@ class TextFile extends File {
     /**
      * @param string
      */
-    /*public function writeChar($char) {
+    /*public function writeChar($char)
+    {
         $this->write($this->encode($char));
     }*/
 
@@ -70,17 +75,18 @@ class TextFile extends File {
     /**
      * @return string
      */
-    public function readLine() {
+    public function readLine()
+    {
         Debugger::tryError();
         $line = fgets($this->file);
 
         if (Debugger::catchError($error)) {
-            throw new FileException("Cannot read data from file: " . $error->getMessage() . ".", 0, $error);
+            throw new FileException('Cannot read data from file: ' . $error->getMessage() . '.', 0, $error);
         } elseif ($line === false) {
             if ($this->eof()) {
-                throw new FileException("Cannot read data from file. End of file was reached.");
+                throw new FileException('Cannot read data from file. End of file was reached.');
             } else {
-                throw new FileException("Cannot read data from file.");
+                throw new FileException('Cannot read data from file.');
             }
         }
         return $this->decode($line);
@@ -90,7 +96,8 @@ class TextFile extends File {
     /**
      * @param string
      */
-    public function writeLine($line) {
+    public function writeLine($line)
+    {
         $this->write($this->encode($line) . $this->nl);
     }
 
@@ -99,9 +106,11 @@ class TextFile extends File {
      * @param string
      * @return string
      */
-    protected function encode($string) {
-        if ($this->encoding === self::$internalEncoding)
+    protected function encode($string)
+    {
+        if ($this->encoding === self::$internalEncoding) {
             return $string;
+        }
 
         return iconv($this->encoding, self::$internalEncoding, $string);
     }
@@ -111,9 +120,11 @@ class TextFile extends File {
      * @param string
      * @return string
      */
-    protected function decode($string) {
-        if ($this->encoding === self::$internalEncoding)
+    protected function decode($string)
+    {
+        if ($this->encoding === self::$internalEncoding) {
             return $string;
+        }
 
         return iconv(self::$internalEncoding, $this->encoding, $string);
     }

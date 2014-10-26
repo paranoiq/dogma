@@ -13,7 +13,8 @@ namespace Dogma;
 /**
  * Common type enumeration
  */
-final class Type extends Enum {
+final class Type extends Enum
+{
 
     const NULL = 'null';
     const BOOL = 'bool';

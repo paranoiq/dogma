@@ -13,7 +13,8 @@ namespace Dogma\Object;
 /**
  * Creates and manages object prototypes
  */
-final class Prototyper {
+final class Prototyper
+{
 
 
     /**
@@ -23,7 +24,8 @@ final class Prototyper {
      * @param array
      * @return object
      */
-    public static function createInstance($class, &$data, $aliases = []) {
+    public static function createInstance($class, &$data, $aliases = [])
+    {
         $object = self::getPrototype($class);
 
         foreach ($aliases as $orig => $alias) {
@@ -32,8 +34,9 @@ final class Prototyper {
         }
 
         self::injectData($object, $data, false);
-        if ($data)
+        if ($data) {
             throw new \InvalidArgumentException('Prototyper: Incomplete data injection.');
+        }
 
         return $object;
     }
@@ -44,7 +47,8 @@ final class Prototyper {
      * @param string
      * @return object
      */
-    public static function getPrototype($class) {
+    public static function getPrototype($class)
+    {
         // deserializace je ca 1.9x pomalejší než klonování. zpomalení cast() o méně než 10%
         return unserialize(sprintf('O:%d:"%s":0:{}', strlen($class), $class));
 
@@ -64,12 +68,15 @@ final class Prototyper {
      * @param boolean  set fo false if you want inject private property without the concern of definer class
      * @return object
      */
-    public static function injectData($object, &$data, $respectPrivatePropertyDefiner = true) {
+    public static function injectData($object, &$data, $respectPrivatePropertyDefiner = true)
+    {
         list($class, $properties) = ReflectionCache::getClassAndPropertyReflections(get_class($object));
 
         do {
             foreach ($properties as $property) {
-                if ($property->isStatic()) continue;
+                if ($property->isStatic()) {
+                    continue;
+                }
 
                 $value = $respectPrivatePropertyDefiner && $property->isPrivate()
                     ? self::extractPrivateValue($data, $property->getName(), $class->getName())
@@ -78,7 +85,9 @@ final class Prototyper {
                     $property->setValue($object, $value);
                 }
             }
-            if (!$class = $class->getParentClass()) break;
+            if (!$class = $class->getParentClass()) {
+                break;
+            }
             list($class, $properties) = ReflectionCache::getClassAndPropertyReflections($class->getName());
         } while (true);
 
@@ -92,7 +101,8 @@ final class Prototyper {
      * @param array
      * @return mixed
      */
-    private static function extractValue(&$data, $propertyName) {
+    private static function extractValue(&$data, $propertyName)
+    {
         if (array_key_exists($propertyName, $data)) {
             $value = $data[$propertyName];
             unset($data[$propertyName]);
@@ -115,7 +125,8 @@ final class Prototyper {
      * @param string
      * @return mixed
      */
-    private static function extractPrivateValue(&$data, $propertyName, $className) {
+    private static function extractPrivateValue(&$data, $propertyName, $className)
+    {
         $key = "\x00$className\x00$propertyName";
         if (array_key_exists($key, $data)) {
             $value = $data[$key];

@@ -13,13 +13,15 @@ namespace Dogma;
 /**
  * Object which cannot be instantiated through keyword 'new'.
  */
-interface IndirectInstantiable {
+interface IndirectInstantiable
+{
+
 
     /**
      * Returns new instance of the called class.
      * @param scalar
      * @return static
      */
-    static function getInstance($value);
+    public static function getInstance($value);
 
 }

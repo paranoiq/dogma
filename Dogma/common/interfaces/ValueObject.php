@@ -14,6 +14,7 @@ namespace Dogma;
  * Abstract interface for value objects.
  * @abstract
  */
-interface ValueObject {
+interface ValueObject
+{
 
 }

@@ -12,7 +12,8 @@ namespace Dogma\Object;
 use Nette\Reflection\ClassType;
 
 
-final class ReflectionCache {
+final class ReflectionCache
+{
 
 
     private static $classes = [];
@@ -25,7 +26,8 @@ final class ReflectionCache {
      * @param string
      * @return \ReflectionClass
      */
-    public static function getClassReflection($className) {
+    public static function getClassReflection($className)
+    {
         if (!isset(self::$classes[$className])) {
             self::$classes[$className] = new ClassType($className);
         }
@@ -40,7 +42,8 @@ final class ReflectionCache {
      * @return \ReflectionProperty
      * @throws \Nette\MemberAccessException
      */
-    public static function getPropertyReflection($className, $propertyName) {
+    public static function getPropertyReflection($className, $propertyName)
+    {
         if (!isset(self::$classes[$className])) {
             $class = self::getClassReflection($className);
             if ($property = $class->getProperty($propertyName)) {
@@ -59,7 +62,8 @@ final class ReflectionCache {
      * @param string
      * @return array (\ReflectionClass, (\ReflectionProperty))
      */
-    public static function getClassAndPropertyReflections($className) {
+    public static function getClassAndPropertyReflections($className)
+    {
         if (!isset($allProps[$className])) {
             $class = self::getClassReflection($className);
             $properties = $class->getProperties();

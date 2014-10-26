@@ -10,7 +10,8 @@
 namespace Dogma\System;
 
 
-class ErrorHelper {
+class ErrorHelper
+{
 
     const LOCAL = 0;
     const LINUX = 1;
@@ -24,9 +25,14 @@ class ErrorHelper {
      * @param string
      * @return \Dogma\System\Error  (false if not found)
      */
-    public static function getError($errno, $system = self::LOCAL) {
-        if (!$system || !is_int($system)) $system = self::detectSystem($system);
-        if (!$system) return false;
+    public static function getError($errno, $system = self::LOCAL)
+    {
+        if (!$system || !is_int($system)) {
+            $system = self::detectSystem($system);
+        }
+        if (!$system) {
+            return false;
+        }
 
         try {
             switch ($system) {
@@ -51,7 +57,8 @@ class ErrorHelper {
      * @param string
      * @return string  (false if not found)
      */
-    public static function getErrorDescription($errno, $system = self::LOCAL) {
+    public static function getErrorDescription($errno, $system = self::LOCAL)
+    {
         if ($error = self::getError($errno, $system)) {
             return $error->getDescription();
         }
@@ -65,8 +72,11 @@ class ErrorHelper {
      * @param string
      * @return string
      */
-    public static function detectSystem($string = null) {
-        if (!$string) $string = PHP_OS;
+    public static function detectSystem($string = null)
+    {
+        if (!$string) {
+            $string = PHP_OS;
+        }
         $string = strtolower($string);
 
         if (strpos($string, 'linux') !== false) {

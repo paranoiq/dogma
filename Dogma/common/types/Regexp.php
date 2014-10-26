@@ -15,7 +15,8 @@ use Nette\Utils\Strings;
 /**
  * Regular expression object
  */
-class Regexp extends \Dogma\Object {
+class Regexp extends \Dogma\Object
+{
 
     const DOLLAR_MATCH_END_ONLY = 'D';
     const CASE_INSENSITIVE = 'i';
@@ -33,7 +34,8 @@ class Regexp extends \Dogma\Object {
     /**
      * @param string
      */
-    public function __construct($pattern) {
+    public function __construct($pattern)
+    {
         $this->pattern = $pattern;
     }
 
@@ -41,7 +43,8 @@ class Regexp extends \Dogma\Object {
     /**
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->pattern;
     }
 
@@ -52,7 +55,8 @@ class Regexp extends \Dogma\Object {
      * @param integer
      * @return string[]
      */
-    public function split($subject, $flags = 0) {
+    public function split($subject, $flags = 0)
+    {
         return Strings::split($subject, $this->pattern, $flags);
     }
 
@@ -64,7 +68,8 @@ class Regexp extends \Dogma\Object {
      * @param integer
      * @return string[]
      */
-    public function match($subject, $flags = 0, $offset = 0) {
+    public function match($subject, $flags = 0, $offset = 0)
+    {
         return Strings::match($subject, $this->pattern, $flags, $offset);
     }
 
@@ -76,7 +81,8 @@ class Regexp extends \Dogma\Object {
      * @param integer
      * @return string[][]
      */
-    public function matchAll($subject, $flags = 0, $offset = 0) {
+    public function matchAll($subject, $flags = 0, $offset = 0)
+    {
         return Strings::matchAll($subject, $this->pattern, $flags, $offset);
     }
 
@@ -88,7 +94,8 @@ class Regexp extends \Dogma\Object {
      * @param integer
      * @return string
      */
-    public function replace($subject, $replacement = null, $limit = -1) {
+    public function replace($subject, $replacement = null, $limit = -1)
+    {
         return Strings::replace($subject, $this->pattern, $replacement, $limit);
     }
 

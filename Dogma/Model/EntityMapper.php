@@ -12,7 +12,8 @@ namespace Dogma\Model;
 /**
  * Maps database tables on entity classes. Creates entity instances from rows.
  */
-class EntityMapper extends \Nette\Object {
+class EntityMapper extends \Nette\Object
+{
 
     /** @var string[] (string $table => string $class) */
     private $map;
@@ -29,7 +30,8 @@ class EntityMapper extends \Nette\Object {
      * @param \Nette\DI\Container
      * @param string[] (string $table => class)
      */
-    public function __construct(\Nette\DI\Container $context, array $map) {
+    public function __construct(\Nette\DI\Container $context, array $map)
+    {
         $this->map = $map;
         $this->context = $context;
         $this->factory = $context->getService('entityFactory');
@@ -42,9 +44,11 @@ class EntityMapper extends \Nette\Object {
      * @param \Nette\Database\Table\ActiveRow
      * @return \Dogma\Model\ActiveEntity
      */
-    public function getInstance($table, $row) {
-        if ($row === false)
+    public function getInstance($table, $row)
+    {
+        if ($row === false) {
             return false;
+        }
 
         if (array_key_exists($table, $this->map)) {
             $class = $this->map[$table];

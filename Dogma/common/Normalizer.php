@@ -31,7 +31,8 @@ namespace Dogma;
  * @property-write string $thousandSeparator
  * @property-write string $setSeparator
  */
-class Normalizer extends \Dogma\Object {
+class Normalizer extends \Dogma\Object
+{
 
 
     /** @var string[] */
@@ -54,9 +55,11 @@ class Normalizer extends \Dogma\Object {
      * @param string
      * @param string
      */
-    public function setFormat($option, $format) {
-        if (!isset($this->formats[$option]))
+    public function setFormat($option, $format)
+    {
+        if (!isset($this->formats[$option])) {
             throw new \InvalidArgumentException("Normalizer: Unknown formating option '$option' given.");
+        }
 
         if (is_string($format) && in_array($option, ['true', 'false', 'null'])) {
             $format = explode(',', $format);
@@ -71,7 +74,8 @@ class Normalizer extends \Dogma\Object {
      * @param string
      * @param string|string[]
      */
-    public function __set($name, $value) {
+    public function __set($name, $value)
+    {
         if (isset($this->formats[$name])) {
             $this->setFormat($name, $value);
         } else {
@@ -83,7 +87,8 @@ class Normalizer extends \Dogma\Object {
     /**
      * @param object
      */
-    public function addType($type) {
+    public function addType($type)
+    {
         if (is_subclass_of($type, 'Dogma\\Enum')) {
             $this->types[] = ['Enum', $type];
 
@@ -97,7 +102,7 @@ class Normalizer extends \Dogma\Object {
             $this->types[] = ['Regexp', $type];
         */
         } else {
-            throw new \InvalidArgumentException("Unsupported type.");
+            throw new \InvalidArgumentException('Unsupported type.');
         }
     }
 
@@ -107,7 +112,8 @@ class Normalizer extends \Dogma\Object {
      * @param string
      * @return mixed
      */
-    public function autodetect($value) {
+    public function autodetect($value)
+    {
         if (null !== $val = $this->detectInt($value)) {
             return $val;
 
@@ -133,8 +139,9 @@ class Normalizer extends \Dogma\Object {
 
             } elseif ($type === 'Set') {
                 $set = explode($this->setSeparator, $value);
-                if (call_user_func($name . '::isValid', $set))
+                if (call_user_func($name . '::isValid', $set)) {
                     return new $name($value);
+                }
             }
         }
 
@@ -147,11 +154,16 @@ class Normalizer extends \Dogma\Object {
      * @param string
      * @return boolean
      */
-    public function detectNull($value) {
-        if (is_null($value)) return true;
+    public function detectNull($value)
+    {
+        if (is_null($value)) {
+            return true;
+        }
 
         foreach ($this->formats['null'] as $v) {
-            if (preg_match('/^' . preg_quote($v, '/') . '$/iu', $value)) return true;
+            if (preg_match('/^' . preg_quote($v, '/') . '$/iu', $value)) {
+                return true;
+            }
         }
 
         return false;
@@ -163,14 +175,21 @@ class Normalizer extends \Dogma\Object {
      * @param string
      * @return boolean|null
      */
-    public function detectBool($value) {
-        if (is_bool($value)) return $value;
+    public function detectBool($value)
+    {
+        if (is_bool($value)) {
+            return $value;
+        }
 
         foreach ($this->formats['true'] as $v) {
-            if (preg_match('/^' . preg_quote($v, '/') . '$/iu', $value)) return true;
+            if (preg_match('/^' . preg_quote($v, '/') . '$/iu', $value)) {
+                return true;
+            }
         }
         foreach ($this->formats['false'] as $v) {
-            if (preg_match('/^' . preg_quote($v, '/') . '$/iu', $value)) return false;
+            if (preg_match('/^' . preg_quote($v, '/') . '$/iu', $value)) {
+                return false;
+            }
         }
 
         return null;
@@ -181,11 +200,15 @@ class Normalizer extends \Dogma\Object {
      * @param string
      * @return integer|null
      */
-    public function detectInt($value) {
-        if (is_int($value)) return $value;
+    public function detectInt($value)
+    {
+        if (is_int($value)) {
+            return $value;
+        }
 
-        if (!preg_match('/^-?[0-9]{1,3}(' . preg_quote($this->formats['thousandSeparator'], '/') . '[0-9]{3})*$/', $value))
+        if (!preg_match('/^-?[0-9]{1,3}(' . preg_quote($this->formats['thousandSeparator'], '/') . '[0-9]{3})*$/', $value)) {
             return null;
+        }
 
         return (int) str_replace($this->formats['thousandSeparator'], '', $value);
     }
@@ -195,17 +218,25 @@ class Normalizer extends \Dogma\Object {
      * @param string
      * @return float|null
      */
-    public function detectFloat($value) {
-        if (is_float($value)) return $value;
-        if (is_int($value)) return (float) $value;
+    public function detectFloat($value)
+    {
+        if (is_float($value)) {
+            return $value;
+        }
+        if (is_int($value)) {
+            return (float) $value;
+        }
 
-        if (!preg_match('/^-?[0-9]{1,3}(?:' .
+        if (!preg_match(
+            '/^-?[0-9]{1,3}(?:' .
             preg_quote($this->formats['thousandSeparator'], '/') . '[0-9]{3})*(?:' .
-            preg_quote($this->formats['decimalPoint'], '/') . '[0-9]+)?([Ee][+-][0-9]+)?$/', $value))
+            preg_quote($this->formats['decimalPoint'], '/') . '[0-9]+)?([Ee][+-][0-9]+)?$/',
+            $value
+        )) {
             return null;
+        }
 
-        return (float) str_replace(
-            [$this->formats['thousandSeparator'], $this->formats['decimalPoint']], ['', '.'], $value);
+        return (float) str_replace([$this->formats['thousandSeparator'], $this->formats['decimalPoint']], ['', '.'], $value);
     }
 
 
@@ -213,12 +244,18 @@ class Normalizer extends \Dogma\Object {
      * @param string
      * @return \Dogma\Date|null
      */
-    function detectDate($value) {
-        if ($value instanceof Date) return $value;
-        if ($value instanceof DateTime) return new Date($value);
+    public function detectDate($value)
+    {
+        if ($value instanceof Date) {
+            return $value;
+        }
+        if ($value instanceof DateTime) {
+            return new Date($value);
+        }
 
-        if (!$date = Date::createFromFormat($this->formats['date'], $value))
+        if (!$date = Date::createFromFormat($this->formats['date'], $value)) {
             return null;
+        }
 
         return $date;
     }
@@ -228,12 +265,18 @@ class Normalizer extends \Dogma\Object {
      * @param string
      * @return \Dogma\DateTime|null
      */
-    function detectDateTime($value) {
-        if ($value instanceof Date) return new DateTime($value);
-        if ($value instanceof DateTime) return $value;
+    public function detectDateTime($value)
+    {
+        if ($value instanceof Date) {
+            return new DateTime($value);
+        }
+        if ($value instanceof DateTime) {
+            return $value;
+        }
 
-        if (!$datetime = DateTime::createFromFormat($this->formats['dateTime'], $value))
+        if (!$datetime = DateTime::createFromFormat($this->formats['dateTime'], $value)) {
             return null;
+        }
 
         return $datetime;
     }
@@ -246,38 +289,46 @@ class Normalizer extends \Dogma\Object {
      * @param boolean
      * @return mixed
      */
-    public function normalize($value, $type, $nullable = false) {
-        if ($nullable && $this->detectNull($value) === true) return null;
+    public function normalize($value, $type, $nullable = false)
+    {
+        if ($nullable && $this->detectNull($value) === true) {
+            return null;
+        }
 
         switch ($type) {
             case Type::INT:
                 $value = $this->detectInt(trim($value));
-                if ($value === null)
+                if ($value === null) {
                     throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to integer.");
+                }
                 return $value;
 
             case Type::FLOAT:
                 $value = $this->detectFloat($value);
-                if ($value === null)
+                if ($value === null) {
                     throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to float.");
+                }
                 return $value;
 
             case Type::BOOL:
                 $value = $this->detectBool($value);
-                if ($value === null)
+                if ($value === null) {
                     throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to boolean.");
+                }
                 return $value;
 
             case Type::DATE:
                 $value = $this->detectDate($value);
-                if ($value === null)
+                if ($value === null) {
                     throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to Date.");
+                }
                 return $value;
 
             case Type::DATETIME:
                 $value = $this->detectDateTime($value);
-                if ($value === null)
+                if ($value === null) {
                     throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to DateTime.");
+                }
                 return $value;
 
             case Type::STRING:
@@ -298,37 +349,42 @@ class Normalizer extends \Dogma\Object {
      * @param bool
      * @return string
      */
-    public function format($value, $type = null, $nullable = false) {
-
+    public function format($value, $type = null, $nullable = false)
+    {
         if (is_int($value) || is_numeric($value) && $type === Type::INT) {
             return number_format((int) $value, 0, '.', $this->formats['thousandSeparator']);
 
         } elseif (is_float($value) || is_numeric($value) && $type === Type::FLOAT) {
-            return rtrim(rtrim(number_format((float) $value, 20,
-                $this->formats['decimalPoint'],
-                $this->formats['thousandSeparator']), '0'), $this->formats['decimalPoint']);
+            return rtrim(
+                rtrim(number_format((float) $value, 20, $this->formats['decimalPoint'], $this->formats['thousandSeparator']), '0'),
+                $this->formats['decimalPoint']
+            );
 
         } elseif ($value instanceof \Dogma\Date) {
-            if (isset($type) && $type !== Type::DATE)
+            if (isset($type) && $type !== Type::DATE) {
                 throw new \InvalidArgumentException("Normalizer: Wrong data type Date. $type expected.");
+            }
 
             return $this->formatDate($value);
 
         } elseif ($value instanceof \DateTime) {
-            if (isset($type) && $type !== Type::DATETIME)
+            if (isset($type) && $type !== Type::DATETIME) {
                 throw new \InvalidArgumentException("Normalizer: Wrong data type DateTime. $type expected.");
+            }
 
             return $this->formatDateTime($value);
 
         } elseif (is_bool($value)) {
-            if (isset($type) && $type !== Type::BOOL)
+            if (isset($type) && $type !== Type::BOOL) {
                 throw new \InvalidArgumentException("Normalizer: Wrong data type bool. $type expected.");
+            }
 
             return $value ? $this->formats['true'][0] : $this->formats['false'][0];
 
         } elseif (is_null($value)) {
-            if (!$nullable)
-                throw new \InvalidArgumentException("Normalizer: Null value is not allowed.");
+            if (!$nullable) {
+                throw new \InvalidArgumentException('Normalizer: Null value is not allowed.');
+            }
 
             return $this->formats['null'][0];
 
@@ -342,7 +398,8 @@ class Normalizer extends \Dogma\Object {
      * @param \DateTime
      * @return string
      */
-    public function formatDate(\DateTime $date) {
+    public function formatDate(\DateTime $date)
+    {
         return $date->format($this->formats['date']);
     }
 
@@ -351,7 +408,8 @@ class Normalizer extends \Dogma\Object {
      * @param \DateTime
      * @return string
      */
-    public function formatDateTime(\DateTime $date) {
+    public function formatDateTime(\DateTime $date)
+    {
         return $date->format($this->formats['dateTime']);
     }
 

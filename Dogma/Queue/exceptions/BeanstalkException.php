@@ -6,7 +6,8 @@ namespace Dogma\Queue;
 /**
  * BeanstalkCLient Exception
  */
-class BeanstalkException extends \RuntimeException {
+class BeanstalkException extends \RuntimeException
+{
 
     //
 

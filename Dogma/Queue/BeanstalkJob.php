@@ -20,7 +20,8 @@ namespace Dogma\Queue;
  * @property-read $suspended
  * @property-read $restored
  */
-class BeanstalkJob extends \Dogma\Object {
+class BeanstalkJob extends \Dogma\Object
+{
 
 
     const DELAYED = 'delayed';
@@ -52,7 +53,8 @@ class BeanstalkJob extends \Dogma\Object {
      * @param \Dogma\Queue\BeanstalkClient
      * @param array
      */
-    public function __construct($id, $data, $owned, BeanstalkClient $connection, $stats = []) {
+    public function __construct($id, $data, $owned, BeanstalkClient $connection, $stats = [])
+    {
         $this->id = $id;
         $this->data = $data;
         $this->owned = $owned;
@@ -64,7 +66,8 @@ class BeanstalkJob extends \Dogma\Object {
     /**
      * @return mixed
      */
-    public function getData() {
+    public function getData()
+    {
         return $this->data;
     }
 
@@ -72,12 +75,14 @@ class BeanstalkJob extends \Dogma\Object {
     /**
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
 
-    public function touch() {
+    public function touch()
+    {
         $this->connection->touch($this->id);
     }
 
@@ -86,17 +91,20 @@ class BeanstalkJob extends \Dogma\Object {
      * @param integer|\DateTime
      * @param integer
      */
-    public function release($delay = null, $priority = null) {
+    public function release($delay = null, $priority = null)
+    {
         $this->connection->release($this->id, $delay, $priority);
     }
 
 
-    public function finish() {
+    public function finish()
+    {
         $this->connection->finish($this->id);
     }
 
 
-    public function delete() {
+    public function delete()
+    {
         $this->connection->delete($this->id);
     }
 
@@ -104,12 +112,14 @@ class BeanstalkJob extends \Dogma\Object {
     /**
      * @param integer
      */
-    public function suspend($priority = null) {
+    public function suspend($priority = null)
+    {
         $this->connection->suspend($this->id, $priority);
     }
 
 
-    public function restore() {
+    public function restore()
+    {
         $this->connection->restore($this->id);
     }
 
@@ -120,41 +130,49 @@ class BeanstalkJob extends \Dogma\Object {
     /**
      * @return boolean
      */
-    public function isOwned() {
+    public function isOwned()
+    {
         return $this->owned;
     }
 
     /**
      * @return boolean
      */
-    public function isDelayed() {
+    public function isDelayed()
+    {
         return $this->__get('status') === self::DELAYED;
     }
 
     /**
      * @return boolean
      */
-    public function isReady() {
+    public function isReady()
+    {
         return $this->__get('status') === self::READY;
     }
 
     /**
      * @return boolean
      */
-    public function isReserved() {
-        if ($this->isOwned()) return true;
+    public function isReserved()
+    {
+        if ($this->isOwned()) {
+            return true;
+        }
         return $this->__get('status') === self::RESERVED;
     }
 
     /**
      * @return boolean
      */
-    public function isSuspended() {
+    public function isSuspended()
+    {
         return $this->__get('status') === self::SUSPENDED;
     }
 
 
-    private function loadStats() {
+    private function loadStats()
+    {
         $this->stats = $this->connection->getJobStats($this->id);
     }
 
@@ -163,8 +181,11 @@ class BeanstalkJob extends \Dogma\Object {
      * @param string
      * @return mixed
      */
-    public function __get($name) {
-        if (!$this->stats) $this->loadStats();
+    public function __get($name)
+    {
+        if (!$this->stats) {
+            $this->loadStats();
+        }
 
         static $fields = [
             'queue' => 'tube',
@@ -187,10 +208,14 @@ class BeanstalkJob extends \Dogma\Object {
             'buried' => self::SUSPENDED
         ];
 
-        if (!isset($this->stats[$fields[$name]])) return parent::__get($name);
+        if (!isset($this->stats[$fields[$name]])) {
+            return parent::__get($name);
+        }
 
         $val = $this->stats[$fields[$name]];
-        if ($name === 'status') $val = $states[$val];
+        if ($name === 'status') {
+            $val = $states[$val];
+        }
 
         return $val;
     }

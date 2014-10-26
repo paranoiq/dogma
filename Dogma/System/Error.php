@@ -10,12 +10,16 @@
 namespace Dogma\System;
 
 
-interface Error {
+interface Error
+{
 
-    function getValue();
 
-    function getIdentifier();
+    public function getValue();
 
-    function getDescription();
+
+    public function getIdentifier();
+
+
+    public function getDescription();
 
 }

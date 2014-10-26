@@ -18,7 +18,8 @@ use Dogma\Language\Inflector;
  * - transforms and validates value-objects (@instance)
  * - translates names from underscore to camel case
  */
-class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggregate {
+class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggregate
+{
 
 
     /** @var \Nette\Database\Table\ActiveRow */
@@ -31,7 +32,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
     private $props = [];
 
 
-    public function __construct(\Nette\Database\Table\ActiveRow $row, EntityFactory $factory) {
+    public function __construct(\Nette\Database\Table\ActiveRow $row, EntityFactory $factory)
+    {
         $this->row = $row;
         $this->factory = $factory;
 
@@ -45,7 +47,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
      * Save modification to database.
      * @return boolean
      */
-    public function save() {
+    public function save()
+    {
         return (bool) $this->row->update();
     }
 
@@ -54,7 +57,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
      * Delete entity from database.
      * @return boolean
      */
-    public function delete() {
+    public function delete()
+    {
         return (bool) $this->row->delete();
     }
 
@@ -63,7 +67,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
      * Get table selection
      * @return \Nette\Database\Table\Selection
      */
-    public function getTable($table = null) {
+    public function getTable($table = null)
+    {
         if (empty($table)) {
             return $this->row->getTable();
         } else {
@@ -78,7 +83,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
     /**
      * @return \ArrayIterator
      */
-    public function getIterator() {
+    public function getIterator()
+    {
         /// iterate entity fields?
         return $this->row->getIterator();
     }
@@ -88,7 +94,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
      * @param string
      * @return mixed
      */
-    public function &__get($name) {
+    public function &__get($name)
+    {
         if (isset($props[$name])) {
             $var = $props[$name];
 
@@ -111,7 +118,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
      * @param string
      * @param mixed
      */
-    public function __set($name, $value) {
+    public function __set($name, $value)
+    {
         if (method_exists($this, "set$name")) {
             call_user_func([$this, "set$name"], $value);
 
@@ -128,7 +136,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
      * @param string
      * @return boolean
      */
-    public function __isset($name) {
+    public function __isset($name)
+    {
         return $this->row->__isset(Inflector::underscore($name));
     }
 
@@ -136,7 +145,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
     /**
      * @param string
      */
-    public function __unset($name) {
+    public function __unset($name)
+    {
         $this->row->__unset(Inflector::underscore($name));
     }
 
@@ -145,7 +155,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
      * @param string
      * @return mixed
      */
-    public function offsetGet($name) {
+    public function offsetGet($name)
+    {
         return $this->__get($name);
     }
 
@@ -154,7 +165,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
      * @param string
      * @param mixed
      */
-    public function offsetSet($name, $value) {
+    public function offsetSet($name, $value)
+    {
         $this->__set($name, $value);
     }
 
@@ -163,7 +175,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
      * @param string
      * @return boolean
      */
-    public function offsetExists($name) {
+    public function offsetExists($name)
+    {
         return $this->__isset($name);
     }
 
@@ -171,7 +184,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
     /**
      * @param string
      */
-    public function offsetUnset($name) {
+    public function offsetUnset($name)
+    {
         $this->__unset($name);
     }
 
@@ -179,7 +193,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
     /**
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->row->__toString();
     }
 

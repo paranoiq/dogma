@@ -12,7 +12,8 @@ namespace Dogma\Http;
 use Nette\Utils\Strings;
 
 
-class FileResponse extends Response {
+class FileResponse extends Response
+{
 
     /** @var string */
     private $fileName;
@@ -23,7 +24,8 @@ class FileResponse extends Response {
      * @param mixed[]
      * @param integer
      */
-    public function __construct($fileName, array $info, $error) {
+    public function __construct($fileName, array $info, $error)
+    {
         parent::__construct(null, $info, $error);
 
         $this->fileName = $fileName;
@@ -33,8 +35,11 @@ class FileResponse extends Response {
     /**
      * @return array
      */
-    public function getHeaders() {
-        if (!$this->headers) $this->parseFile();
+    public function getHeaders()
+    {
+        if (!$this->headers) {
+            $this->parseFile();
+        }
 
         return $this->headers;
     }
@@ -43,8 +48,11 @@ class FileResponse extends Response {
     /**
      * @return string
      */
-    public function getBody() {
-        if (!$this->headers) $this->parseFile();
+    public function getBody()
+    {
+        if (!$this->headers) {
+            $this->parseFile();
+        }
 
         return file_get_contents($this->fileName);
     }
@@ -53,7 +61,8 @@ class FileResponse extends Response {
     /**
      * @return string
      */
-    public function getFileName() {
+    public function getFileName()
+    {
         return $this->fileName;
     }
 
@@ -61,7 +70,8 @@ class FileResponse extends Response {
     /**
      * Remove headers from downloaded file
      */
-    private function parseFile() {
+    private function parseFile()
+    {
         if (($fp = @fopen($this->fileName . '.tmp', 'rb')) === false) {
             throw new ResponseException("Fopen error for file '$this->fileName.tmp'");
         }
@@ -90,7 +100,7 @@ class FileResponse extends Response {
         chmod($this->fileName, 0755);
 
         if (!$this->headers) {
-            throw new RequestException("Headers parsing failed");
+            throw new RequestException('Headers parsing failed');
         }
     }
 

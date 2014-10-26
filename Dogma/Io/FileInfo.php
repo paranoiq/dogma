@@ -15,7 +15,8 @@ use Nette;
 /**
  * File Info
  */
-class FileInfo extends \SplFileInfo {
+class FileInfo extends \SplFileInfo
+{
 
     /* inherits:
     getATime()
@@ -52,7 +53,8 @@ class FileInfo extends \SplFileInfo {
     /**
      * @param string
      */
-    /*public function __construct($name) {
+    /*public function __construct($name)
+    {
         try {
             parent::construct($name);
         } catch (\Exception $e) {
@@ -67,7 +69,8 @@ class FileInfo extends \SplFileInfo {
      * @param resource
      * @return File
      */
-    public function open($mode = File::READ, $streamContext = null) {
+    public function open($mode = File::READ, $streamContext = null)
+    {
         return new File($this->getRealPath(), $mode, $streamContext);
     }
 
@@ -77,7 +80,8 @@ class FileInfo extends \SplFileInfo {
      * @param resource
      * @return \Dogma\Io\File
      */
-    public function openFile($mode = File::READ, $streamContext = null) {
+    public function openFile($mode = File::READ, $streamContext = null)
+    {
         return $this->open($mode, $streamContext);
     }
 
@@ -86,7 +90,8 @@ class FileInfo extends \SplFileInfo {
      * Is current or parent directory
      * @return boolean
      */
-    public function isDot() {
+    public function isDot()
+    {
         return $this->getFilename() === '.' | $this->getFilename() === '..';
     }
 
@@ -100,7 +105,8 @@ class FileInfo extends \SplFileInfo {
      * @param array
      * @return mixed
      */
-    public function __call($name, $args) {
+    public function __call($name, $args)
+    {
         return Nette\ObjectMixin::call($this, $name, $args);
     }
 
@@ -111,7 +117,8 @@ class FileInfo extends \SplFileInfo {
      * @param array
      * @return mixed
      */
-    public static function __callStatic($name, $args) {
+    public static function __callStatic($name, $args)
+    {
         return Nette\ObjectMixin::callStatic(get_called_class(), $name, $args);
     }
 
@@ -122,7 +129,8 @@ class FileInfo extends \SplFileInfo {
      * @param mixed
      * @return mixed
      */
-    public static function extensionMethod($name, $callback = null) {
+    public static function extensionMethod($name, $callback = null)
+    {
         if (strpos($name, '::') === false) {
             $class = get_called_class();
         } else {
@@ -142,7 +150,8 @@ class FileInfo extends \SplFileInfo {
      * @param string
      * @return mixed
      */
-    public function &__get($name) {
+    public function &__get($name)
+    {
         return Nette\ObjectMixin::get($this, $name);
     }
 
@@ -153,7 +162,8 @@ class FileInfo extends \SplFileInfo {
      * @param mixed
      * @return void
      */
-    public function __set($name, $value) {
+    public function __set($name, $value)
+    {
         Nette\ObjectMixin::set($this, $name, $value);
     }
 
@@ -163,7 +173,8 @@ class FileInfo extends \SplFileInfo {
      * @param string
      * @return bool
      */
-    public function __isset($name) {
+    public function __isset($name)
+    {
         return Nette\ObjectMixin::has($this, $name);
     }
 
@@ -172,7 +183,8 @@ class FileInfo extends \SplFileInfo {
      * Access to undeclared property.
      * @param string
      */
-    public function __unset($name) {
+    public function __unset($name)
+    {
         Nette\ObjectMixin::remove($this, $name);
     }
 

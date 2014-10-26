@@ -7,11 +7,11 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Dom;
+namespace Dogma\Database;
 
 
-class DomException extends \DOMException {
-
-    //
+/** Wrong or unreadable configuration file. */
+class ConfigException extends FailureException
+{
 
 }

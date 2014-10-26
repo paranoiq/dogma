@@ -10,7 +10,8 @@
 namespace Dogma\Dom;
 
 
-class Document extends \DomDocument {
+class Document extends \DomDocument
+{
 
     /** @var \Dogma\Dom\QueryEngine */
     private $engine;
@@ -21,10 +22,13 @@ class Document extends \DomDocument {
      * @param string
      * @param string
      */
-    public function __construct($document = null, $version = '1.0', $encoding = 'utf-8') {
+    public function __construct($document = null, $version = '1.0', $encoding = 'utf-8')
+    {
         parent::__construct($version, $encoding);
 
-        if (!$document) return;
+        if (!$document) {
+            return;
+        }
 
         if (substr($document, 0, 1) === '@') {
 
@@ -49,7 +53,8 @@ class Document extends \DomDocument {
     /**
      * @param \Dogma\Dom\QueryEngine
      */
-    public function setQueryEngine(QueryEngine $engine) {
+    public function setQueryEngine(QueryEngine $engine)
+    {
         $this->engine = $engine;
     }
 
@@ -57,7 +62,8 @@ class Document extends \DomDocument {
     /**
      * @return \Dogma\Dom\QueryEngine
      */
-    public function getQueryEngine() {
+    public function getQueryEngine()
+    {
         return $this->engine;
     }
 
@@ -67,12 +73,13 @@ class Document extends \DomDocument {
      * @param integer
      * @return boolean
      */
-    public function loadXml($source, $options = 0) {
+    public function loadXml($source, $options = 0)
+    {
         libxml_use_internal_errors(true);
         libxml_clear_errors();
         if (!parent::loadXML($source, $options)) {
             $error = libxml_get_last_error();
-            throw new DomException("Cannot load HTML document: " . trim($error->message) . " on line #" . $error->line, $error->code);
+            throw new DomException('Cannot load HTML document: ' . trim($error->message) . ' on line #' . $error->line, $error->code);
         }
     }
 
@@ -81,12 +88,13 @@ class Document extends \DomDocument {
      * @param string
      * @return boolean
      */
-    public function loadHtml($source) {
+    public function loadHtml($source)
+    {
         libxml_use_internal_errors(true);
         libxml_clear_errors();
         if (!parent::loadHTML($source)) {
             $error = libxml_get_last_error();
-            throw new DomException("Cannot load HTML document: " . trim($error->message) . " on line #" . $error->line, $error->code);
+            throw new DomException('Cannot load HTML document: ' . trim($error->message) . ' on line #' . $error->line, $error->code);
         }
     }
 
@@ -95,12 +103,13 @@ class Document extends \DomDocument {
      * @param string
      * @return boolean
      */
-    public function loadHtmlFile($fileName) {
+    public function loadHtmlFile($fileName)
+    {
         libxml_use_internal_errors(true);
         libxml_clear_errors();
         if (!parent::loadHTMLFile($fileName)) {
             $error = libxml_get_last_error();
-            throw new DomException("Cannot load HTML document: " . trim($error->message) . " on line #" . $error->line, $error->code);
+            throw new DomException('Cannot load HTML document: ' . trim($error->message) . ' on line #' . $error->line, $error->code);
         }
     }
 
@@ -109,7 +118,8 @@ class Document extends \DomDocument {
      * @param string
      * @return \Dogma\Dom\Element|\DOMNode|null
      */
-    public function getElementById($id) {
+    public function getElementById($id)
+    {
         $el = parent::getElementById($id);
 
         return $el ? $this->wrap($el) : null;
@@ -120,7 +130,8 @@ class Document extends \DomDocument {
      * @param string
      * @return \Dogma\Dom\NodeList
      */
-    public function find($xpath) {
+    public function find($xpath)
+    {
         return $this->engine->find($xpath);
     }
 
@@ -129,7 +140,8 @@ class Document extends \DomDocument {
      * @param string
      * @return \Dogma\Dom\Element|\DOMNode
      */
-    public function findOne($xpath) {
+    public function findOne($xpath)
+    {
         return $this->engine->findOne($xpath);
     }
 
@@ -138,7 +150,8 @@ class Document extends \DomDocument {
      * @param string
      * @return string|integer|float
      */
-    public function evaluate($xpath) {
+    public function evaluate($xpath)
+    {
         return $this->engine->evaluate($xpath);
     }
 
@@ -147,12 +160,14 @@ class Document extends \DomDocument {
      * @param string|string[]
      * @return string|string[]
      */
-    public function extract($target) {
+    public function extract($target)
+    {
         return $this->engine->extract($target);
     }
 
 
-    public function dump() {
+    public function dump()
+    {
         Dumper::dump($this);
     }
 
@@ -161,7 +176,8 @@ class Document extends \DomDocument {
      * @param \DOMNode
      * @return \Dogma\Dom\Element|\DOMNode
      */
-    private function wrap($node) {
+    private function wrap($node)
+    {
         if ($node instanceof \DOMElement) {
             return new Element($node, $this->engine);
         } else {

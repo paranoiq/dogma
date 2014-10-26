@@ -15,7 +15,8 @@ use Nette\Utils\Strings;
 /**
  * Simple query engine based on XPath 1.0
  */
-class QueryEngine extends \Dogma\Object {
+class QueryEngine extends \Dogma\Object
+{
 
     /** @var \DOMXPath */
     private $xpath;
@@ -25,21 +26,21 @@ class QueryEngine extends \Dogma\Object {
      */
     private $translations = [
         // index: [n]
-        "/\\[([0-9]+)..([0-9]+)\\]/" => '[position() >= $1 and position() <= $2]', // [m..n]
-        "/\\[..([0-9]+)\\]/" => '[position() <= $1]', // [..n]
-        "/\\[([0-9]+)..\\]/" => '[position() >= $1]', // [n..]
-        "/\\[-([0-9]+)\\]/"  => '[position() = last() + 1 - $1]', // nth from end: [-n]
-        "/\\[:first\\]/" => '[1]', // [:first]
-        "/\\[:last\\]/"  => '[last()]', // [:last]
-        "/\\[:even\\]/"  => '[position() mod 2]', // [:even]
-        "/\\[:odd\\]/"   => '[not(position() mod 2)]', // [:odd]
-        "/\\[:only\\]/"  => '[position() = 1 and position() = last()]', // [:only]
+        '/\\[([0-9]+)..([0-9]+)\\]/' => '[position() >= $1 and position() <= $2]', // [m..n]
+        '/\\[..([0-9]+)\\]/' => '[position() <= $1]', // [..n]
+        '/\\[([0-9]+)..\\]/' => '[position() >= $1]', // [n..]
+        '/\\[-([0-9]+)\\]/'  => '[position() = last() + 1 - $1]', // nth from end: [-n]
+        '/\\[:first\\]/' => '[1]', // [:first]
+        '/\\[:last\\]/'  => '[last()]', // [:last]
+        '/\\[:even\\]/'  => '[position() mod 2]', // [:even]
+        '/\\[:odd\\]/'   => '[not(position() mod 2)]', // [:odd]
+        '/\\[:only\\]/'  => '[position() = 1 and position() = last()]', // [:only]
 
         // class: [.foo]
-        "/\\[\\.([A-Za-z0-9_-]+)\\]/" => '[contains(concat(" ", normalize-space(@class), " "), " $1 ")]',
+        '/\\[\\.([A-Za-z0-9_-]+)\\]/' => '[contains(concat(" ", normalize-space(@class), " "), " $1 ")]',
 
         // id: [#foo]
-        "/\\[#([A-Za-z0-9_-]+)\\]/" => '[@id = "$1"]',
+        '/\\[#([A-Za-z0-9_-]+)\\]/' => '[@id = "$1"]',
 
         // name: ["foo"]
         '/\\["([^"]+)"\\]/' => '[@name = "$1"]',
@@ -66,8 +67,8 @@ class QueryEngine extends \Dogma\Object {
                 (@type = "button" and normalize-space() = \'$1\')]',
 
         // axes 'next' and 'previous'
-        "#/previous::([A-Za-z0-9_-]+)#" => '/preceding-sibling::$1[last()]',
-        "#/next::([A-Za-z0-9_-]+)#"     => '/following-sibling::$1[1]',
+        '#/previous::([A-Za-z0-9_-]+)#' => '/preceding-sibling::$1[last()]',
+        '#/next::([A-Za-z0-9_-]+)#'     => '/following-sibling::$1[1]',
 
         // table shortcuts
         '/:headrow/' => "tr[name(..) = 'thead' or (name(..) = 'table' and not(../thead) and position() = 1)]",
@@ -76,13 +77,13 @@ class QueryEngine extends \Dogma\Object {
         '/:cell/'    => "*[name() = 'td' or name() = 'th']",
 
         // function shortcuts
-        '/int\\(/'      => "number(.//",
-        '/float\\(/'    => "number(.//",
-        '/bool\\(/'     => "php:functionString('Dogma\\Dom\\QueryEngine::bool', .//",
-        '/date\\(/'     => "php:functionString('Dogma\\Dom\\QueryEngine::date', .//",
-        '/datetime\\(/' => "php:functionString('Dogma\\Dom\\QueryEngine::datetime', .//",
-        '/match\\(/'    => "php:functionString('Dogma\\Dom\\QueryEngine::match', .//",
-        '/replace\\(/'  => "php:functionString('Dogma\\Dom\\QueryEngine::replace', .//",
+        '/int\\(/'      => 'number(.//',
+        '/float\\(/'    => 'number(.//',
+        '/bool\\(/'     => 'php:functionString("Dogma\\Dom\\QueryEngine::bool", .//',
+        '/date\\(/'     => 'php:functionString("Dogma\\Dom\\QueryEngine::date", .//',
+        '/datetime\\(/' => 'php:functionString("Dogma\\Dom\\QueryEngine::datetime", .//',
+        '/match\\(/'    => 'php:functionString("Dogma\\Dom\\QueryEngine::match", .//',
+        '/replace\\(/'  => 'php:functionString("Dogma\\Dom\\QueryEngine::replace", .//',
 
         // jQuery-like shortcuts
         /*
@@ -165,10 +166,11 @@ class QueryEngine extends \Dogma\Object {
     /**
      * @param \DOMDocument
      */
-    public function __construct(\DOMDocument $dom) {
+    public function __construct(\DOMDocument $dom)
+    {
         $this->xpath = new \DOMXPath($dom);
 
-        $this->xpath->registerNamespace("php", "http://php.net/xpath");
+        $this->xpath->registerNamespace('php', 'http://php.net/xpath');
         $this->xpath->registerPhpFunctions($this->userFunctions);
     }
 
@@ -178,10 +180,14 @@ class QueryEngine extends \Dogma\Object {
      * @param string
      * @param boolean
      */
-    public function registerFuction($name, $alias = '', $expectNode = false) {
-        if (!$alias) $alias = $name;
-        if (in_array($alias, $this->nativeFunctions))
+    public function registerFuction($name, $alias = '', $expectNode = false)
+    {
+        if (!$alias) {
+            $alias = $name;
+        }
+        if (in_array($alias, $this->nativeFunctions)) {
             throw new QueryEngineException("Function '$alias' is already registered.");
+        }
 
         if ($expectNode) {
             $this->translations["/$alias\\(/"] = "php:function('$name', .//";
@@ -199,7 +205,8 @@ class QueryEngine extends \Dogma\Object {
      * @param string
      * @param string
      */
-    public function registerNamespace($prefix, $uri) {
+    public function registerNamespace($prefix, $uri)
+    {
         $this->xpath->registerNamespace($prefix, $uri);
     }
 
@@ -210,15 +217,17 @@ class QueryEngine extends \Dogma\Object {
      * @param \DOMNode
      * @return \Dogma\Dom\NodeList
      */
-    public function find($query, $context = null) {
+    public function find($query, $context = null)
+    {
         $path = $this->translateQuery($query, (bool) $context);
         if ($context) {
             $list = $this->xpath->query($path, $context);
         } else {
             $list = $this->xpath->query($path);
         }
-        if ($list === false)
+        if ($list === false) {
             throw new QueryEngineException("Invalid XPath query: \"$path\", translated from: \"$query\".");
+        }
 
         return new NodeList($list, $this);
     }
@@ -230,17 +239,21 @@ class QueryEngine extends \Dogma\Object {
      * @param \Dogma\Dom\Element|\DOMNode
      * @return \DOMNode|\Dogma\Dom\Element|null
      */
-    public function findOne($query, $context = null) {
+    public function findOne($query, $context = null)
+    {
         $path = $this->translateQuery($query, (bool) $context);
         if ($context) {
             $list = $this->xpath->query($path, $context);
         } else {
             $list = $this->xpath->query($path);
         }
-        if ($list === false)
+        if ($list === false) {
             throw new QueryEngineException("Invalid XPath query: \"$path\", translated from: \"$query\".");
+        }
 
-        if (!count($list)) return null;
+        if (!count($list)) {
+            return null;
+        }
 
         return $this->wrap($list->item(0));
     }
@@ -252,7 +265,8 @@ class QueryEngine extends \Dogma\Object {
      * @param \Dogma\Dom\Element|\DOMNode
      * @return string|integer|float
      */
-    public function evaluate($query, $context = null) {
+    public function evaluate($query, $context = null)
+    {
         $path = $this->translateQuery($query, null);
 
         if ($context) {
@@ -260,8 +274,9 @@ class QueryEngine extends \Dogma\Object {
         } else {
             $value = $this->xpath->evaluate($path);
         }
-        if ($value === false)
+        if ($value === false) {
             throw new QueryEngineException("Invalid XPath query: \"$path\", translated from: \"$query\".");
+        }
 
         if (substr($query, 0, 5) === 'date(') {
             return $value ? new \Dogma\Date($value) : null;
@@ -270,11 +285,15 @@ class QueryEngine extends \Dogma\Object {
             return $value ? new \Dogma\DateTime($value) : null;
 
         } elseif (substr($query, 0, 4) === 'int(') {
-            if (!is_numeric($value)) return null;
+            if (!is_numeric($value)) {
+                return null;
+            }
             return (int) $value;
 
         } elseif (substr($query, 0, 5) === 'bool(' && isset($value)) {
-            if ($value === '') return null;
+            if ($value === '') {
+                return null;
+            }
             return (bool) $value;
 
         } else {
@@ -289,7 +308,8 @@ class QueryEngine extends \Dogma\Object {
      * @param \Dogma\Dom\Element|\DOMNode
      * @return string|string[]
      */
-    public function extract($queries, $context = null) {
+    public function extract($queries, $context = null)
+    {
         if (is_string($queries)) {
             return $this->extractPath($queries, $context);
         }
@@ -314,7 +334,8 @@ class QueryEngine extends \Dogma\Object {
      * @param \Dogma\Dom\Element|\DOMNode
      * @return string|integer|float|\DateTime|null
      */
-    private function extractPath($query, $context) {
+    private function extractPath($query, $context)
+    {
         if (Strings::match($query, '/^[a-zA-Z0-9_-]+\\(/')) {
             $node = $this->evaluate($query, $context);
         } else {
@@ -348,7 +369,8 @@ class QueryEngine extends \Dogma\Object {
      * @param boolean|null
      * @return string
      */
-    private function translateQuery($query, $context = false) {
+    private function translateQuery($query, $context = false)
+    {
         if ($context === true) {
             if ($query[0] === '/') {
                 $query = '.' . $query;
@@ -356,7 +378,9 @@ class QueryEngine extends \Dogma\Object {
                 $query = './/' . $query;
             }
         } elseif ($context === false) {
-            if ($query[0] !== '/') $query = '//' . $query;
+            if ($query[0] !== '/') {
+                $query = '//' . $query;
+            }
         }
 
         $query = Strings::replace($query, $this->translations);
@@ -369,7 +393,9 @@ class QueryEngine extends \Dogma\Object {
 
         $nativeFunctions = $this->nativeFunctions;
         $userFunctions = $this->userFunctions;
-        $query = Strings::replace($query, '/(?<![A-Za-z0-9_-])([A-Za-z0-9_-]+)\\(/',
+        $query = Strings::replace(
+            $query,
+            '/(?<![A-Za-z0-9_-])([A-Za-z0-9_-]+)\\(/',
             function ($match) use ($nativeFunctions, $userFunctions) {
                 if (in_array($match[1], $nativeFunctions)) {
                     return $match[1] . '(';
@@ -380,7 +406,8 @@ class QueryEngine extends \Dogma\Object {
                 } else {
                     throw new \DOMException("XPath compilation failure: Functions '$match[1]' is not enabled.");
                 }
-            });
+            }
+        );
 
         return $query;
     }
@@ -391,7 +418,8 @@ class QueryEngine extends \Dogma\Object {
      * @param \DOMNode
      * @return \Dogma\Dom\Element|\DOMNode
      */
-    private function wrap($node) {
+    private function wrap($node)
+    {
         if ($node instanceof \DOMElement) {
             return new Element($node, $this);
         } else {
@@ -409,8 +437,11 @@ class QueryEngine extends \Dogma\Object {
      * @param string
      * @return string
      */
-    static public function match($string, $pattern) {
-        if ($m = Strings::match($string, $pattern)) return $m[0];
+    public static function match($string, $pattern)
+    {
+        if ($m = Strings::match($string, $pattern)) {
+            return $m[0];
+        }
 
         return null;
     }
@@ -423,7 +454,8 @@ class QueryEngine extends \Dogma\Object {
      * @param string
      * @return string
      */
-    static public function replace($string, $pattern, $replacement) {
+    public static function replace($string, $pattern, $replacement)
+    {
         return Strings::replace($string, $pattern, $replacement);
     }
 
@@ -434,12 +466,16 @@ class QueryEngine extends \Dogma\Object {
      * @param string
      * @return string
      */
-    static public function date($string, $format = 'Y-m-d') {
-        if (!$string) return "";
+    public static function date($string, $format = 'Y-m-d')
+    {
+        if (!$string) {
+            return '';
+        }
 
         $date = \DateTime::createFromFormat($format, $string);
-        if (!$date)
+        if (!$date) {
             throw new QueryEngineException("Cannot create DateTime object from '$string' using format '$format'.");
+        }
 
         return $date->format('Y-m-d');
     }
@@ -451,12 +487,16 @@ class QueryEngine extends \Dogma\Object {
      * @param string
      * @return string
      */
-    static public function datetime($string, $format = 'Y-m-d H:i:s') {
-        if (!$string) return "";
+    public static function datetime($string, $format = 'Y-m-d H:i:s')
+    {
+        if (!$string) {
+            return '';
+        }
 
         $date = \DateTime::createFromFormat($format, $string);
-        if (!$date)
+        if (!$date) {
             throw new QueryEngineException("Cannot create DateTime object from '$string' using format '$format'.");
+        }
 
         return $date->format('Y-m-d H:i:s');
     }
@@ -469,10 +509,15 @@ class QueryEngine extends \Dogma\Object {
      * @param string
      * @return boolean|null
      */
-    static public function bool($string, $true = 'true', $false = 'false') {
+    public static function bool($string, $true = 'true', $false = 'false')
+    {
         $string = strtoupper($string);
-        if ($string === $false) return 0;
-        if ($string === $true)  return 1;
+        if ($string === $false) {
+            return 0;
+        }
+        if ($string === $true) {
+            return 1;
+        }
 
         return null;
     }

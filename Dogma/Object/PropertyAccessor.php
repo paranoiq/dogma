@@ -12,7 +12,9 @@ namespace Dogma\Object;
 /**
  * Property Accessor
  */
-final class PropertyAccessor {
+final class PropertyAccessor
+{
+
 
     /**
      * Get value from an object propperty or array key.
@@ -20,7 +22,8 @@ final class PropertyAccessor {
      * @param string
      * @return mixed
      */
-    public static function getValue($object, $propertyName) {
+    public static function getValue($object, $propertyName)
+    {
         if (is_array($object)) {
             if (array_key_exists($propertyName, $data)) {
                 return $object[$propertyName];
@@ -47,7 +50,8 @@ final class PropertyAccessor {
      * @param mixed
      * @return mixed
      */
-    public static function setValue($object, $propertyName, $value) {
+    public static function setValue($object, $propertyName, $value)
+    {
         if (is_array($object)) {
             if (array_key_exists($propertyName, $object)) {
                 $object[$propertyName] = $value;

@@ -14,19 +14,19 @@ use Nette;
 use PDO;
 
 
-class Selection extends \Nette\Database\Table\Selection {
-
+class Selection extends \Nette\Database\Table\Selection
+{
 
     /** @var \Dogma\Database\Connection */
     protected $connection;
-
 
 
     /**
      * @param array
      * @return \Dogma\Model\ActiveEntity|ActiveRow
      */
-    protected function map($row) {
+    protected function map($row)
+    {
         if ($mapper = $this->connection->getMapper()) {
             return $mapper->getInstance($this->name, $row);
         } else {
@@ -41,7 +41,8 @@ class Selection extends \Nette\Database\Table\Selection {
      * @param  bool
      * @return \Dogma\Model\ActiveEntity|ActiveRow|int|bool
      */
-    public function insert($data, $map = false) {
+    public function insert($data, $map = false)
+    {
         $row = parent::insert($data);
         return $map ? $this->map($row) : $row;
     }
@@ -53,7 +54,8 @@ class Selection extends \Nette\Database\Table\Selection {
      * @param  bool
      * @return \Dogma\Model\ActiveEntity|ActiveRow|int|bool
      */
-    public function insertIgnore($data, $map = false) {
+    public function insertIgnore($data, $map = false)
+    {
         if ($data instanceof \Nette\Database\Table\Selection) {
             $data = $data->getSql();
 
@@ -85,7 +87,8 @@ class Selection extends \Nette\Database\Table\Selection {
      * @param array|Traversable|Table\Selection
      * @return int
      */
-    public function replace($data) {
+    public function replace($data)
+    {
         if ($data instanceof \Nette\Database\Table\Selection) {
             $data = $data->getSql();
 
@@ -109,14 +112,16 @@ class Selection extends \Nette\Database\Table\Selection {
      * @param  mixed
      * @return ActiveRow or false if there is no such row
      */
-    public function get($key, $map = false) {
+    public function get($key, $map = false)
+    {
         $row = parent::get($key);
         return $map ? $this->map($row) : $row;
     }
 
 
     /** @return ActiveRow */
-    public function current() {
+    public function current()
+    {
         return $this->map(parent::current()); /// always map?
     }
 
@@ -126,7 +131,8 @@ class Selection extends \Nette\Database\Table\Selection {
      * @param  string
      * @return ActiveRow or null if there is no such row
      */
-    public function offsetGet($key) {
+    public function offsetGet($key)
+    {
         return parent::offsetGet($key); /// never map?
     }
 
@@ -135,7 +141,8 @@ class Selection extends \Nette\Database\Table\Selection {
      * Returns next row of result.
      * @return ActiveRow or false if there is no row
      */
-    public function fetch($map = false) {
+    public function fetch($map = false)
+    {
         $row = parent::fetch();
         return $map ? $this->map($row) : $row;
     }

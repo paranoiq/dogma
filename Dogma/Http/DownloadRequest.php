@@ -13,7 +13,8 @@ namespace Dogma\Http;
 /**
  * File download request.
  */
-class DownloadRequest extends Request {
+class DownloadRequest extends Request
+{
 
     /** @var string */
     private $downloadDir;
@@ -32,7 +33,8 @@ class DownloadRequest extends Request {
      * @param string $url
      * @param string $downloadDir
      */
-    public function __construct($url, $downloadDir) {
+    public function __construct($url, $downloadDir)
+    {
         parent::__construct($url);
 
         $this->setDownloadDir($downloadDir);
@@ -42,9 +44,11 @@ class DownloadRequest extends Request {
     /**
      * @param string
      */
-    public function setDownloadDir($dir) {
-        if (!is_dir($dir))
+    public function setDownloadDir($dir)
+    {
+        if (!is_dir($dir)) {
             throw new RequestException("Download directory $dir does not exist.");
+        }
 
         $this->downloadDir = rtrim($dir, '/');
     }
@@ -53,7 +57,8 @@ class DownloadRequest extends Request {
     /**
      * @param string
      */
-    public function setFileName($name) {
+    public function setFileName($name)
+    {
         $this->fileName = $name;
     }
 
@@ -61,7 +66,8 @@ class DownloadRequest extends Request {
     /**
      * @param string
      */
-    public function setFileSuffix($suffix) {
+    public function setFileSuffix($suffix)
+    {
         $this->fileSuffix = $suffix;
     }
 
@@ -75,7 +81,8 @@ class DownloadRequest extends Request {
      * @param string
      * @return \Dogma\Http\FileResponse
      */
-    public function execute($urlSuffix = null, $fileName = null) {
+    public function execute($urlSuffix = null, $fileName = null)
+    {
         $fileName = $this->prepare($urlSuffix, $fileName);
         $response = curl_exec($this->curl);
         $error = curl_errno($this->curl);
@@ -92,19 +99,23 @@ class DownloadRequest extends Request {
      * @param boolean
      * @return string downloaded file name
      */
-    public function prepare($urlSuffix = null, $fileName = null) {
+    public function prepare($urlSuffix = null, $fileName = null)
+    {
         parent::prepare($urlSuffix);
 
-        if (is_null($fileName)) $fileName = $this->fileName;
+        if (is_null($fileName)) {
+            $fileName = $this->fileName;
+        }
         if (is_null($fileName)) {
             $b = explode('?', $urlSuffix);
             $b = explode('#', $b[0]);
             $fileName = basename($b[0]);
         }
 
-        $this->file = fopen($this->downloadDir . "/" . $fileName . $this->fileSuffix . ".tmp", 'wb');
-        if ($this->file === false)
+        $this->file = fopen($this->downloadDir . '/' . $fileName . $this->fileSuffix . '.tmp', 'wb');
+        if ($this->file === false) {
             throw new RequestException("File $fileName cannot be open!");
+        }
 
 
         $this->setOption(CURLOPT_FILE, $this->file);
@@ -123,10 +134,12 @@ class DownloadRequest extends Request {
      * @param string
      * @return \Dogma\Http\FileResponse
      */
-    public function createResponse($response, $error, $fileName) {
+    public function createResponse($response, $error, $fileName)
+    {
         $info = curl_getinfo($this->curl);
-        if ($info === false)
-            throw new RequestException("Info cannot be obtained from CURL.");
+        if ($info === false) {
+            throw new RequestException('Info cannot be obtained from CURL.');
+        }
 
         fclose($this->file);
         unset($this->file);

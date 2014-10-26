@@ -12,7 +12,8 @@ namespace Dogma\Http;
 use Nette\Utils\Strings;
 
 
-class Response extends \Dogma\Object {
+class Response extends \Dogma\Object
+{
 
     /** @var array */
     protected $info;
@@ -38,18 +39,22 @@ class Response extends \Dogma\Object {
      * @param array
      * @param integer
      */
-    public function __construct($response, ResponseStatus $status, array $info) {
+    public function __construct($response, ResponseStatus $status, array $info)
+    {
         $this->status = $status;
         $this->info = $info;
 
-        if ($response) $this->response = $response;
+        if ($response) {
+            $this->response = $response;
+        }
     }
 
 
     /**
      * @param mixed Request context
      */
-    public function setContext($data) {
+    public function setContext($data)
+    {
         $this->context = $data;
     }
 
@@ -57,7 +62,8 @@ class Response extends \Dogma\Object {
     /**
      * @return mixed
      */
-    public function getContext() {
+    public function getContext()
+    {
         return $this->context;
     }
 
@@ -65,7 +71,8 @@ class Response extends \Dogma\Object {
     /**
      * @return boolean
      */
-    public function isSuccess() {
+    public function isSuccess()
+    {
         return $this->status->isOk();
     }
 
@@ -73,7 +80,8 @@ class Response extends \Dogma\Object {
     /**
      * @return \Dogma\Http\ResponseStatus
      */
-    public function getStatus() {
+    public function getStatus()
+    {
         return $this->status;
     }
 
@@ -81,8 +89,11 @@ class Response extends \Dogma\Object {
     /**
      * @return string
      */
-    public function getBody() {
-        if ($this->response) $this->parseResponse();
+    public function getBody()
+    {
+        if ($this->response) {
+            $this->parseResponse();
+        }
 
         return $this->body;
     }
@@ -91,8 +102,11 @@ class Response extends \Dogma\Object {
     /**
      * @return array
      */
-    public function getHeaders() {
-        if ($this->response) $this->parseResponse();
+    public function getHeaders()
+    {
+        if ($this->response) {
+            $this->parseResponse();
+        }
 
         return $this->headers;
     }
@@ -102,8 +116,11 @@ class Response extends \Dogma\Object {
      * Get all cookies received with this response.
      * @return array
      */
-    public function getCookies() {
-        if ($this->response) $this->parseResponse();
+    public function getCookies()
+    {
+        if ($this->response) {
+            $this->parseResponse();
+        }
 
         $cookies = [];
 
@@ -121,16 +138,20 @@ class Response extends \Dogma\Object {
      * @param string|integer
      * @return string|array
      */
-    public function getInfo($name = null) {
-        if (is_null($name)) return $this->info;
+    public function getInfo($name = null)
+    {
+        if (is_null($name)) {
+            return $this->info;
+        }
 
         if (is_int($name)) {
             $tname = CurlHelpers::getCurlInfoName($name);
         } else {
             $tname = $name;
         }
-        if (is_null($tname))
+        if (is_null($tname)) {
             throw new ResponseException("Unknown CURL info '$name'!");
+        }
 
         return $this->info[$tname];
     }
@@ -139,7 +160,8 @@ class Response extends \Dogma\Object {
     /**
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return (string) $this->getBody();
     }
 
@@ -150,7 +172,8 @@ class Response extends \Dogma\Object {
     /**
      * Remove headers from response.
      */
-    private function parseResponse() {
+    private function parseResponse()
+    {
         $headers = Strings::split(substr($this->response, 0, $this->info['header_size']), "~[\n\r]+~", PREG_SPLIT_NO_EMPTY);
         $this->headers = static::parseHeaders($headers);
         $this->body = substr($this->response, $this->info['header_size']);
@@ -163,7 +186,8 @@ class Response extends \Dogma\Object {
      * @param array
      * @return array
      */
-    public static function parseHeaders($headers) {
+    public static function parseHeaders($headers)
+    {
         $found = [];
 
         // extract version and status

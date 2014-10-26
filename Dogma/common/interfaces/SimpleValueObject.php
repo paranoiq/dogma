@@ -13,12 +13,14 @@ namespace Dogma;
 /**
  * Value object consisting of just one value.
  */
-interface SimpleValueObject extends ValueObject {
+interface SimpleValueObject extends ValueObject
+{
+
 
     /**
      * Returns string value of the value object.
      * @return string
      */
-    function __toString();
+    public function __toString();
 
 }

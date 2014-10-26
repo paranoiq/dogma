@@ -15,7 +15,8 @@ use Dogma\Mail\Message;
 /**
  * IMAP message info.
  */
-class MessageInfo extends \Dogma\Object {
+class MessageInfo extends \Dogma\Object
+{
 
     /** @var \Dogma\Imap\Connection */
     private $imap;
@@ -31,7 +32,8 @@ class MessageInfo extends \Dogma\Object {
      * @param \Dogma\Imap\Connection
      * @param integer
      */
-    public function __construct(Connection $imap, $uid) {
+    public function __construct(Connection $imap, $uid)
+    {
         $this->imap = $imap;
         $this->uid = $uid;
     }
@@ -41,8 +43,11 @@ class MessageInfo extends \Dogma\Object {
      * Get the Message
      * @return \Dogma\Mail\Message
      */
-    public function getMessage() {
-        if (!$this->message) $this->message = $this->imap->getMessage($this->uid);
+    public function getMessage()
+    {
+        if (!$this->message) {
+            $this->message = $this->imap->getMessage($this->uid);
+        }
 
         return $this->message;
     }
@@ -51,7 +56,8 @@ class MessageInfo extends \Dogma\Object {
     /**
      * @return string
      */
-    /*public function getBody() {
+    /*public function getBody()
+    {
         return $this->imap->getMessageBody($this->uid);
     }*/
 
@@ -59,7 +65,8 @@ class MessageInfo extends \Dogma\Object {
     /**
      * @return string
      */
-    /*public function getRawHeader() {
+    /*public function getRawHeader()
+    {
         return $this->imap->getRawMessageHeader($this->uid);
     }*/
 

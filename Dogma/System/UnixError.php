@@ -13,7 +13,8 @@ namespace Dogma\System;
  * UNIX system errors (from FreeBSD)
  * @property-read string $description
  */
-class UnixError extends \Dogma\Enum implements Error {
+class UnixError extends \Dogma\Enum implements Error
+{
 
     // common with Linux:
     const SUCCESS = 0;
@@ -116,16 +117,17 @@ class UnixError extends \Dogma\Enum implements Error {
     const MUST_BE_EQUAL_LARGEST_ERRNO = 94;
 
 
-
     /**
      * Get formated error description
      * @return string
      */
-    public function getDescription() {
+    public function getDescription()
+    {
         return ucfirst(str_replace(
             ['non_socket', 'cant', 'references', 'rpc', 'nfs', 'prog_', '_'],
             ['non-socket', 'can\'t', 'references:', 'RPC', 'NFS', 'prog. ', ' '],
-            strtolower($this->getIdentifier())));
+            strtolower($this->getIdentifier())
+        ));
     }
 
 }

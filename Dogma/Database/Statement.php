@@ -12,7 +12,8 @@ namespace Dogma\Database;
 use Nette\Database\IReflection;
 
 
-class Statement extends \Nette\Database\Statement {
+class Statement extends \Nette\Database\Statement
+{
 
 
     /** @var Connection */
@@ -22,7 +23,8 @@ class Statement extends \Nette\Database\Statement {
     private $types;
 
 
-    protected function __construct(Connection $connection) {
+    protected function __construct(Connection $connection)
+    {
         parent::__construct($connection);
         $this->connection = $connection;
         $this->setFetchMode(\PDO::FETCH_CLASS, 'Nette\Database\Row', [$this]);
@@ -34,9 +36,11 @@ class Statement extends \Nette\Database\Statement {
      * @param  array
      * @return array
      */
-    public function normalizeRow($row) {
-        if ($this->types === null)
+    public function normalizeRow($row)
+    {
+        if ($this->types === null) {
             $this->types = $this->detectColumnTypes();
+        }
 
         // convert DATETIME, DATE and SET
         foreach ($this->types as $key => $type) {
@@ -83,7 +87,8 @@ class Statement extends \Nette\Database\Statement {
      * Returns count of rows in result
      * @return int
      */
-    public function count() {
+    public function count()
+    {
         return parent::rowCount();
     }
 
@@ -92,7 +97,8 @@ class Statement extends \Nette\Database\Statement {
      * @param  mixed
      * @return array
      */
-    public function fetchColumnAll() {
+    public function fetchColumnAll()
+    {
         $cols = [];
         while ($col = $this->fetchColumn()) {
             $cols[] = $col;

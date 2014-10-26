@@ -17,7 +17,8 @@ namespace Dogma\Graph;
  * @see http://en.wikipedia.org/wiki/Floyd–Warshall_algorithm
  * @see https://github.com/pierre-fromager/PeopleFloydWarshall/blob/4731f8d1e6dd5e659f5945d03ddf8746a578a665/class/floyd-warshall.class.php
  */
-class FloydWarshallPathFinder extends \Dogma\Object {
+class FloydWarshallPathFinder extends \Dogma\Object
+{
 
     /** @var array */
     private $weights;
@@ -38,8 +39,8 @@ class FloydWarshallPathFinder extends \Dogma\Object {
     /**
      * @param integer[][] graph edge weights. may be sparse
      */
-    function __construct($weights) {
-
+    public function __construct($weights)
+    {
         // array: assumption, that all nodes has an outgoing edge
         if (array_keys($weights) === range(0, count($weights))) {
             $this->weights = $weights;
@@ -52,9 +53,13 @@ class FloydWarshallPathFinder extends \Dogma\Object {
             $nodeNames = [];
             $normalized = [];
             foreach ($weights as $i => $nodes) {
-                if (!isset($nodeNames[$i])) $nodeNames[$i] = $n++;
+                if (!isset($nodeNames[$i])) {
+                    $nodeNames[$i] = $n++;
+                }
                 foreach ($nodes as $j => $weight) {
-                    if (!isset($nodeNames[$j])) $nodeNames[$j] = $n++;
+                    if (!isset($nodeNames[$j])) {
+                        $nodeNames[$j] = $n++;
+                    }
                     $normalized[$nodeNames[$i]][$nodeNames[$j]] = $weight;
                 }
             }
@@ -70,7 +75,8 @@ class FloydWarshallPathFinder extends \Dogma\Object {
     /**
      * Implementation of Floyd-Warshall algorithm
      */
-    private function calculatePaths() {
+    private function calculatePaths()
+    {
         // init
         for ($i = 0; $i < $this->nodeCount; $i++) {
             for ($j = 0; $j < $this->nodeCount; $j++) {
@@ -105,7 +111,8 @@ class FloydWarshallPathFinder extends \Dogma\Object {
      * @param integer|string
      * @return integer
      */
-    public function getDistance($i, $j) {
+    public function getDistance($i, $j)
+    {
         if (!empty($this->nodeNames)) {
             $i = $this->nodeNames[$i];
             $j = $this->nodeNames[$j];
@@ -121,7 +128,8 @@ class FloydWarshallPathFinder extends \Dogma\Object {
      * @param integer|string
      * @return integer[]|string[]
      */
-    public function getPath($i, $j) {
+    public function getPath($i, $j)
+    {
         if (!empty($this->nodeNames)) {
             $i = $this->nodeNames[$i];
             $j = $this->nodeNames[$j];
@@ -142,27 +150,28 @@ class FloydWarshallPathFinder extends \Dogma\Object {
      * Print out the original Graph matrice
      * @return string html table
      */
-    public function printGraphMatrix() {
+    public function printGraphMatrix()
+    {
         $rt = "<table>\n";
         if (!empty($this->nodeNames)) {
-            $rt .= "<tr>";
-            $rt .= "<td>&nbsp;</td>";
+            $rt .= '<tr>';
+            $rt .= '<td>&nbsp;</td>';
             for ($n = 0; $n < $this->nodeCount; $n++) {
-                $rt .= "<td>" . $this->nodeNames[$n] . "</td>";
+                $rt .= '<td>' . $this->nodeNames[$n] . '</td>';
             }
         }
-        $rt .= "</tr>";
+        $rt .= '</tr>';
         for ($i = 0; $i < $this->nodeCount; $i++) {
-            $rt .= "<tr>";
+            $rt .= '<tr>';
             if (!empty($this->nodeNames)) {
-                $rt .= "<td>" . $this->nodeNames[$i] . "</td>";
+                $rt .= '<td>' . $this->nodeNames[$i] . '</td>';
             }
             for ($j = 0; $j < $this->nodeCount; $j++) {
-                $rt .= "<td>" . $this->weights[$i][$j] . "</td>";
+                $rt .= '<td>' . $this->weights[$i][$j] . '</td>';
             }
-            $rt .= "</tr>";
+            $rt .= '</tr>';
         }
-        $rt .= "</table>";
+        $rt .= '</table>';
         return $rt;
     }
 
@@ -171,25 +180,26 @@ class FloydWarshallPathFinder extends \Dogma\Object {
      * Print out distances matrice
      * @return string html table
      */
-    public function printDistances() {
+    public function printDistances()
+    {
         $rt = "<table>\n";
-        if (! empty($this->nodeNames) ) {
-            $rt .= "<tr>";
+        if (!empty($this->nodeNames)) {
+            $rt .= '<tr>';
             $rt .= "<td>&nbsp;</td>\n";
             for ($n = 0; $n < $this->nodeCount; $n++) {
-                $rt .= "<td>" . $this->nodeNames[$n] . "</td>";
+                $rt .= '<td>' . $this->nodeNames[$n] . '</td>';
             }
         }
-        $rt .= "</tr>";
+        $rt .= '</tr>';
         for ($i = 0; $i < $this->nodeCount; $i++) {
-            $rt .= "<tr>";
-            if (! empty($this->nodeNames) ) {
-                $rt .= "<td>" . $this->nodeNames[$i] . "</td>\n";
+            $rt .= '<tr>';
+            if (!empty($this->nodeNames)) {
+                $rt .= '<td>' . $this->nodeNames[$i] . "</td>\n";
             }
             for ($j = 0; $j < $this->nodeCount; $j++) {
-                $rt .= "<td>" . $this->distances[$i][$j] . "</td>\n";
+                $rt .= '<td>' . $this->distances[$i][$j] . "</td>\n";
             }
-            $rt .= "</tr>";
+            $rt .= '</tr>';
         }
         $rt .= "</table>\n";
         return $rt;
@@ -200,23 +210,24 @@ class FloydWarshallPathFinder extends \Dogma\Object {
      * Print out predecessors matrice
      * @return string html table
      */
-    public function printPredecessors() {
+    public function printPredecessors()
+    {
         $rt = "<table>\n";
         if (!empty($this->nodeNames)) {
-            $rt .= "<tr>";
-            $rt .= "<td>&nbsp;</td>";
+            $rt .= '<tr>';
+            $rt .= '<td>&nbsp;</td>';
             for ($n = 0; $n < $this->nodeCount; $n++) {
-                $rt .= "<td>" . $this->nodeNames[$n] . "</td>\n";
+                $rt .= '<td>' . $this->nodeNames[$n] . "</td>\n";
             }
         }
-        $rt .= "</tr>";
+        $rt .= '</tr>';
         for ($i = 0; $i < $this->nodeCount; $i++) {
-            $rt .= "<tr>";
+            $rt .= '<tr>';
             if (!empty($this->nodeNames)) {
-                $rt .= "<td>" . $this->nodeNames[$i] . "[$i]</td>\n";
+                $rt .= '<td>' . $this->nodeNames[$i] . "[$i]</td>\n";
             }
             for ($j = 0; $j < $this->nodeCount; $j++) {
-                $rt .= "<td>" . $this->predecessors[$i][$j] . "</td>\n";
+                $rt .= '<td>' . $this->predecessors[$i][$j] . "</td>\n";
             }
             $rt .= "</tr>\n";
         }

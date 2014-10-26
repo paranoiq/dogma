@@ -25,106 +25,122 @@ namespace Dogma\Io;
  * @property-read integer $blockSize
  * @property-read integer $blocks
  */
-class FileStat extends \Dogma\Object {
+class FileStat extends \Dogma\Object
+{
 
     /** @var array */
     private $stat;
 
+
     /**
      * @param array
      */
-    public function __construct($stat) {
+    public function __construct($stat)
+    {
         $this->stat = $stat;
     }
 
     /**
      * @return integer
      */
-    public function getDeviceId() {
+    public function getDeviceId()
+    {
         return $this->stat['dev'];
     }
 
     /**
      * @return integer
      */
-    public function getInode() {
+    public function getInode()
+    {
         return $this->stat['ino'];
     }
 
     /**
      * @return integer
      */
-    public function getPerms() {
+    public function getPerms()
+    {
         return $this->stat['mode'];
     }
 
     /**
      * @return integer
      */
-    public function getLinksCount() {
+    public function getLinksCount()
+    {
         return $this->stat['nlinks'];
     }
 
     /**
      * @return integer
      */
-    public function getOwner() {
+    public function getOwner()
+    {
         return $this->stat['uid'];
     }
 
     /**
      * @return integer
      */
-    public function getGroup() {
+    public function getGroup()
+    {
         return $this->stat['gid'];
     }
 
     /**
      * @return string
      */
-    public function getDeviceType() {
+    public function getDeviceType()
+    {
         return $this->stat['rdev'];
     }
 
     /**
      * @return integer
      */
-    public function getSize() {
+    public function getSize()
+    {
         return $this->stat['size'];
     }
 
     /**
      * @return integer
      */
-    public function getATime() {
+    public function getATime()
+    {
         return $this->stat['atime'];
     }
 
     /**
      * @return integer
      */
-    public function getMTime() {
+    public function getMTime()
+    {
         return $this->stat['mtime'];
     }
 
     /**
      * @return integer
      */
-    public function getCTime() {
+    public function getCTime()
+    {
         return $this->stat['ctime'];
     }
 
     /**
      * @return integer
      */
-    public function getBlockSize() {
+    public function getBlockSize()
+    {
         return $this->stat['blksize'];
     }
 
     /**
      * @return integer
      */
-    public function getBlocks() {
+    public function getBlocks()
+    {
         return $this->stat['blocks'];
     }
 

@@ -10,7 +10,8 @@
 namespace Dogma\Database;
 
 
-class SqlFragment {
+class SqlFragment
+{
 
     /** @var string */
     public $statement;
@@ -24,7 +25,8 @@ class SqlFragment {
      * @param  string  statement
      * @param  mixed   [parameters, ...]
      */
-    public function __construct($statement) {
+    public function __construct($statement)
+    {
         $args = func_get_args();
         $this->statement = (string) array_shift($args);
         $this->args($args);

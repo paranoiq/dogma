@@ -12,7 +12,8 @@ namespace Dogma\Queue;
  *
  * @author Vlasta Neubauer [paranoi@centrum.cz]
  */
-class BeanstalkClient extends \Dogma\Object {
+class BeanstalkClient extends \Dogma\Object
+{
 
     // job priority
     const TOP_PRIORITY = 0;
@@ -61,7 +62,8 @@ class BeanstalkClient extends \Dogma\Object {
      * @param integer $timeout connection timeout in seconds
      * @param boolean
      */
-    public function __construct($host = '127.0.0.1', $port = 11300, $timeout = 1, $persistent = true) {
+    public function __construct($host = '127.0.0.1', $port = 11300, $timeout = 1, $persistent = true)
+    {
         $this->host = $host;
         $this->port = $port;
         $this->timeout = $timeout;
@@ -69,7 +71,8 @@ class BeanstalkClient extends \Dogma\Object {
     }
 
 
-    public function __destruct() {
+    public function __destruct()
+    {
         $this->quit();
     }
 
@@ -77,31 +80,35 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * @param integer
      */
-    public function setDefaultPriority($priority) {
-        $this->defaultPriority = abs((int)$priority);
+    public function setDefaultPriority($priority)
+    {
+        $this->defaultPriority = abs((int) $priority);
     }
 
 
     /**
      * @param integer [seconds]
      */
-    public function setDefaultDelay($delay) {
-        $this->defaultDelay = abs((int)$delay);
+    public function setDefaultDelay($delay)
+    {
+        $this->defaultDelay = abs((int) $delay);
     }
 
 
     /**
      * @param integer [seconds]
      */
-    public function setDefaultTimeToRun($timeToRun) {
-        $this->defaultTimeToRun = abs((int)$timeToRun);
+    public function setDefaultTimeToRun($timeToRun)
+    {
+        $this->defaultTimeToRun = abs((int) $timeToRun);
     }
 
 
     /**
      * Initiate a socket connection to Beanstalk server.
      */
-    private function connect() {
+    private function connect()
+    {
         if (isset($this->connection)) {
             $this->disconnect();
         }
@@ -122,7 +129,7 @@ class BeanstalkClient extends \Dogma\Object {
 
         if (!is_resource($this->connection)) {
             $this->connection = null;
-            throw new BeanstalkException("Cannot create connection to Beanstalk server.");
+            throw new BeanstalkException('Cannot create connection to Beanstalk server.');
         }
 
         // no timeout (blocking reads)
@@ -133,7 +140,8 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * Close connection to Beanstalk server.
      */
-    private function disconnect() {
+    private function disconnect()
+    {
         if (is_resource($this->connection)) {
             fclose($this->connection);
         }
@@ -147,7 +155,8 @@ class BeanstalkClient extends \Dogma\Object {
      *
      * @param string
      */
-    private function send($data) {
+    private function send($data)
+    {
         if (!$this->connection) {
             $this->connect();
         }
@@ -155,7 +164,7 @@ class BeanstalkClient extends \Dogma\Object {
         $res = fwrite($this->connection, $data . "\r\n", strlen($data) + 2);
 
         if ($res === false) {
-            throw new BeanstalkException("Cannot send message to Beanstalk server.");
+            throw new BeanstalkException('Cannot send message to Beanstalk server.');
         }
     }
 
@@ -166,16 +175,17 @@ class BeanstalkClient extends \Dogma\Object {
      * @param integer (bytes)
      * @return string
      */
-    private function receive($length = null) {
+    private function receive($length = null)
+    {
         if ($length) {
             if (feof($this->connection)) {
-                throw new BeanstalkException("No reply from Beanstalk server.");
+                throw new BeanstalkException('No reply from Beanstalk server.');
             }
             $data = fread($this->connection, $length + 2);
             $meta = stream_get_meta_data($this->connection);
 
             if ($meta['timed_out']) {
-                throw new BeanstalkException("Connection to Beanstalk server timed out.");
+                throw new BeanstalkException('Connection to Beanstalk server timed out.');
             }
             $data = rtrim($data, "\r\n");
             echo "   $data\n";
@@ -183,7 +193,7 @@ class BeanstalkClient extends \Dogma\Object {
         } else {
             $data = stream_get_line($this->connection, 16384, "\r\n");
             if ($data === false) {
-                throw new BeanstalkException("No reply from Beanstalk server.");
+                throw new BeanstalkException('No reply from Beanstalk server.');
             }
             echo "   $data\n";
         }
@@ -195,9 +205,12 @@ class BeanstalkClient extends \Dogma\Object {
     /**
      * Send [QUIT] command and disconnect.
      */
-    public function quit() {
+    public function quit()
+    {
         try {
-            if ($this->connection) $this->send('quit');
+            if ($this->connection) {
+                $this->send('quit');
+            }
         } catch (BeanstalkException $e) {
             // pass
         }
@@ -211,23 +224,28 @@ class BeanstalkClient extends \Dogma\Object {
      * @param integer|float|string|\DateTime
      * @return integer
      */
-    private function delayToSeconds($delay) {
+    private function delayToSeconds($delay)
+    {
         if (is_numeric($delay)) {
-            if ((int)$delay < 0)
+            if ((int) $delay < 0) {
                 trigger_error("BeanstalkClient: Job delay should not be negative. $delay given.", E_USER_WARNING);
+            }
 
-            return abs((int)$delay);
+            return abs((int) $delay);
 
         } elseif (is_string($delay) || $delay instanceof \DateTime) {
-            if (is_string($delay)) $delay = new \DateTime($delay);
+            if (is_string($delay)) {
+                $delay = new \DateTime($delay);
+            }
             $seconds = $delay->getTimestamp() - time();
-            if ($seconds < 0)
+            if ($seconds < 0) {
                 trigger_error("BeanstalkClient: Job delay should not be negative. $seconds given.", E_USER_WARNING);
+            }
 
             return abs($seconds);
 
         } else {
-            throw new \InvalidArgumentException("Unsupported delay parameter given.");
+            throw new \InvalidArgumentException('Unsupported delay parameter given.');
         }
     }
 
@@ -239,11 +257,12 @@ class BeanstalkClient extends \Dogma\Object {
      * @param array|object|integer|float
      * @return string
      */
-    private function serializeJob($data) {
+    private function serializeJob($data)
+    {
         if (is_object($data) || is_array($data) || is_int($data) || is_float($data)) {
             return serialize($data);
         } else {
-            throw new \InvalidArgumentException("Unsupported job data type.");
+            throw new \InvalidArgumentException('Unsupported job data type.');
         }
     }
 
@@ -254,7 +273,8 @@ class BeanstalkClient extends \Dogma\Object {
      * @param string
      * @return string|array|object
      */
-    private function unserializeJob($data) {
+    private function unserializeJob($data)
+    {
         $job = @unserialize($data);
 
         if ($job === false) {
@@ -270,9 +290,11 @@ class BeanstalkClient extends \Dogma\Object {
      *
      * @param callback
      */
-    public function setOnDeadline($callback) {
-        if (!is_callable($callback))
-            throw new \InvalidArgumentException("Invalid callback onDeadline given.");
+    public function setOnDeadline($callback)
+    {
+        if (!is_callable($callback)) {
+            throw new \InvalidArgumentException('Invalid callback onDeadline given.');
+        }
 
         $this->onDeadline = $callback;
     }
@@ -283,7 +305,8 @@ class BeanstalkClient extends \Dogma\Object {
      *
      * @param integer
      */
-    public function setOnSuspended($action) {
+    public function setOnSuspended($action)
+    {
         $this->onSuspended = $action;
     }
 
@@ -293,14 +316,15 @@ class BeanstalkClient extends \Dogma\Object {
      *
      * @param integer
      */
-    private function suspended($jobId) {
+    private function suspended($jobId)
+    {
         switch ($this->onSuspended) {
-            case self::IGNORE;
+            case self::IGNORE:
                 break;
-            case self::NOTICE;
+            case self::NOTICE:
                 trigger_error("BeanstalkClient: Job $jobId was suspended by server. Check and restore the suspended jobs!");
                 break;
-            case self::THROW_EXCEPTION;
+            case self::THROW_EXCEPTION:
             default:
                 throw new BeanstalkException("BeanstalkClient: Job $jobId was suspended by server. Check and restore the suspended jobs!");
         }
@@ -320,16 +344,27 @@ class BeanstalkClient extends \Dogma\Object {
      * @param integer $timeToRun worker timeout, before re-assigning job to another worker
      * @return integer job id
      */
-    public function queue($data, $delay = null, $priority = null, $timeToRun = null) {
-        if (!isset($priority)) $priority = $this->defaultPriority;
-        if (!isset($timeToRun)) $timeToRun = $this->defaultTimeToRun;
-        if (!isset($delay)) $delay = $this->defaultDelay;
+    public function queue($data, $delay = null, $priority = null, $timeToRun = null)
+    {
+        if (!isset($priority)) {
+            $priority = $this->defaultPriority;
+        }
+        if (!isset($timeToRun)) {
+            $timeToRun = $this->defaultTimeToRun;
+        }
+        if (!isset($delay)) {
+            $delay = $this->defaultDelay;
+        }
 
-        $priority  = abs((int)$priority);
-        $timeToRun = abs((int)$timeToRun);
-        if (!is_int($delay)) $delay = $this->delayToSeconds($delay);
+        $priority  = abs((int) $priority);
+        $timeToRun = abs((int) $timeToRun);
+        if (!is_int($delay)) {
+            $delay = $this->delayToSeconds($delay);
+        }
 
-        if (!is_string($data)) $data = $this->serializeJob($data);
+        if (!is_string($data)) {
+            $data = $this->serializeJob($data);
+        }
 
         $this->send(sprintf('put %d %d %d %d', $priority, $delay, $timeToRun, strlen($data)));
         $this->send($data);
@@ -338,15 +373,14 @@ class BeanstalkClient extends \Dogma\Object {
 
         switch ($status) {
             case 'INSERTED':
-                return (int)strtok(' '); // job id
+                return (int) strtok(' '); // job id
             case 'BURIED':
-                $this->suspended((int)strtok(' '));
+                $this->suspended((int) strtok(' '));
                 return -1;
-                break;
             case 'EXPECTED_CRLF':
             case 'JOB_TOO_BIG':
             default:
-                throw new BeanstalkException("Error when queueing a job: " . $status);
+                throw new BeanstalkException('Error when queueing a job: ' . $status);
         }
     }
 
@@ -357,7 +391,8 @@ class BeanstalkClient extends \Dogma\Object {
      *
      * @param string $queue name (max 200 bytes)
      */
-    public function selectQueue($queue) {
+    public function selectQueue($queue)
+    {
         $this->send(sprintf('use %s', $queue));
         $status = strtok($this->receive(), ' ');
 
@@ -365,7 +400,7 @@ class BeanstalkClient extends \Dogma\Object {
             case 'USING':
                 break;
             default:
-                throw new BeanstalkException("Error when selecting a queue: " . $status);
+                throw new BeanstalkException('Error when selecting a queue: ' . $status);
         }
     }
 
@@ -380,7 +415,8 @@ class BeanstalkClient extends \Dogma\Object {
      * @param integer $timeout seconds to wait if queue is empty. 0 returns immediately.
      * @return \Dogma\Queue\BeanstalkJob
      */
-    public function assign($timeout = null) {
+    public function assign($timeout = null)
+    {
         if (isset($timeout)) {
             $this->send(sprintf('reserve-with-timeout %d', $timeout));
         } else {
@@ -390,8 +426,8 @@ class BeanstalkClient extends \Dogma\Object {
 
         switch ($status) {
             case 'RESERVED':
-                $id = (int)strtok(' ');
-                $body = $this->unserializeJob($this->receive((int)strtok(' ')));
+                $id = (int) strtok(' ');
+                $body = $this->unserializeJob($this->receive((int) strtok(' ')));
                 break;
             case 'DEADLINE_SOON':
                 /// if ($this->onDeadline) $this->onDeadline();
@@ -399,7 +435,7 @@ class BeanstalkClient extends \Dogma\Object {
             case 'TIMED_OUT':
                 return [];
             default:
-                throw new BeanstalkException("Error when claiming a job: " . $status);
+                throw new BeanstalkException('Error when claiming a job: ' . $status);
         }
 
         return new BeanstalkJob($id, $body, true, $this);
@@ -411,7 +447,8 @@ class BeanstalkClient extends \Dogma\Object {
      *
      * @param integer
      */
-    public function finish($jobId) {
+    public function finish($jobId)
+    {
         $this->send(sprintf('delete %d', $jobId));
         $status = $this->receive();
 
@@ -420,7 +457,7 @@ class BeanstalkClient extends \Dogma\Object {
                 return;
             case 'NOT_FOUND':
             default:
-                throw new BeanstalkException("Error when finishing a job: " . $status);
+                throw new BeanstalkException('Error when finishing a job: ' . $status);
         }
     }
 
@@ -430,7 +467,8 @@ class BeanstalkClient extends \Dogma\Object {
      *
      * @param integer
      */
-    public function delete($jobId) {
+    public function delete($jobId)
+    {
         $this->finish($jobId);
     }
 
@@ -442,12 +480,19 @@ class BeanstalkClient extends \Dogma\Object {
      * @param integer|\DateTime
      * @param integer
      */
-    public function release($jobId, $delay = null, $priority = null) {
-        if (!isset($priority)) $priority = $this->defaultPriority;
-        if (!isset($delay)) $delay = $this->defaultDelay;
+    public function release($jobId, $delay = null, $priority = null)
+    {
+        if (!isset($priority)) {
+            $priority = $this->defaultPriority;
+        }
+        if (!isset($delay)) {
+            $delay = $this->defaultDelay;
+        }
 
-        $priority = abs((int)$priority);
-        if (!is_int($delay)) $delay = $this->delayToSeconds($delay);
+        $priority = abs((int) $priority);
+        if (!is_int($delay)) {
+            $delay = $this->delayToSeconds($delay);
+        }
 
         $this->send(sprintf('release %d %d %d', $jobId, $priority, $delay));
         $status = $this->receive();
@@ -460,7 +505,7 @@ class BeanstalkClient extends \Dogma\Object {
                 return;
             case 'NOT_FOUND':
             default:
-                throw new BeanstalkException("Error when releasing a job: " . $status);
+                throw new BeanstalkException('Error when releasing a job: ' . $status);
         }
     }
 
@@ -471,10 +516,13 @@ class BeanstalkClient extends \Dogma\Object {
      * @param integer
      * @param integer
      */
-    public function suspend($jobId, $priority = null) {
-        if (!isset($priority)) $priority = $this->defaultPriority;
+    public function suspend($jobId, $priority = null)
+    {
+        if (!isset($priority)) {
+            $priority = $this->defaultPriority;
+        }
 
-        $priority = abs((int)$priority);
+        $priority = abs((int) $priority);
 
         $this->send(sprintf('bury %d %d', $jobId, $priority));
         $status = $this->receive();
@@ -484,7 +532,7 @@ class BeanstalkClient extends \Dogma\Object {
                 return;
             case 'NOT_FOUND':
             default:
-                throw new BeanstalkException("Error when suspending a job: " . $status);
+                throw new BeanstalkException('Error when suspending a job: ' . $status);
         }
     }
 
@@ -495,7 +543,8 @@ class BeanstalkClient extends \Dogma\Object {
      * @param integer $jobs max number of jobs to restore
      * @return integer number of jobs actualy restored
      */
-    public function restore($jobs) {
+    public function restore($jobs)
+    {
         /// check for suspended (do not kick delayed jobs!)
 
         $this->send(sprintf('kick %d', $jobs));
@@ -503,9 +552,9 @@ class BeanstalkClient extends \Dogma\Object {
 
         switch ($status) {
             case 'KICKED':
-                return (int)strtok(' ');
+                return (int) strtok(' ');
             default:
-                throw new BeanstalkException("Error when restoring jobs: " . $status);
+                throw new BeanstalkException('Error when restoring jobs: ' . $status);
         }
     }
 
@@ -515,7 +564,8 @@ class BeanstalkClient extends \Dogma\Object {
      *
      * @param integer
      */
-    public function touch($jobId) {
+    public function touch($jobId)
+    {
         $this->send(sprintf('touch %d', $jobId));
         $status = $this->receive();
 
@@ -524,7 +574,7 @@ class BeanstalkClient extends \Dogma\Object {
                 return;
             case 'NOT_TOUCHED':
             default:
-                throw new BeanstalkException("Error when touching a job: " . $status);
+                throw new BeanstalkException('Error when touching a job: ' . $status);
         }
     }
 
@@ -534,7 +584,8 @@ class BeanstalkClient extends \Dogma\Object {
      *
      * @param string
      */
-    public function watchQueue($queue) {
+    public function watchQueue($queue)
+    {
         $this->send(sprintf('watch %s', $queue));
         $status = strtok($this->receive(), ' ');
 
@@ -542,7 +593,7 @@ class BeanstalkClient extends \Dogma\Object {
             case 'WATCHING':
                 return;
             default:
-                throw new BeanstalkException("Error when watching a queue: " . $status);
+                throw new BeanstalkException('Error when watching a queue: ' . $status);
         }
     }
 
@@ -552,7 +603,8 @@ class BeanstalkClient extends \Dogma\Object {
      *
      * @param string
      */
-    public function ignoreQueue($queue) {
+    public function ignoreQueue($queue)
+    {
         $this->send(sprintf('ignore %s', $queue));
         $status = strtok($this->receive(), ' ');
 
@@ -561,7 +613,7 @@ class BeanstalkClient extends \Dogma\Object {
                 return;
             case 'NOT_IGNORED':
             default:
-                throw new BeanstalkException("Error when ignoring a queue: " . $status);
+                throw new BeanstalkException('Error when ignoring a queue: ' . $status);
         }
     }
 
@@ -572,8 +624,11 @@ class BeanstalkClient extends \Dogma\Object {
      * @param string
      * @param integer|\DateTime seconds of delay or time to start
      */
-    public function pauseQueue($queue, $delay) {
-        if (!is_int($delay)) $delay = $this->delayToSeconds($delay);
+    public function pauseQueue($queue, $delay)
+    {
+        if (!is_int($delay)) {
+            $delay = $this->delayToSeconds($delay);
+        }
 
         $this->send(sprintf('pause-tube %s %d', $queue, $delay));
         $status = strtok($this->receive(), ' ');
@@ -583,7 +638,7 @@ class BeanstalkClient extends \Dogma\Object {
                 return;
             case 'NOT_IGNORED':
             default:
-                throw new BeanstalkException("Error when ignoring a queue: " . $status);
+                throw new BeanstalkException('Error when ignoring a queue: ' . $status);
         }
     }
 
@@ -598,7 +653,8 @@ class BeanstalkClient extends \Dogma\Object {
      * @param boolean $stats with statistics
      * @return \Dogma\Queue\BeanstalkJob|null
      */
-    public function showJob($jobId, $stats = false) {
+    public function showJob($jobId, $stats = false)
+    {
         $this->send(sprintf('peek %d', $jobId));
         return $this->readJob($stats);
     }
@@ -610,7 +666,8 @@ class BeanstalkClient extends \Dogma\Object {
      * @param boolean $stats with statistics
      * @return \Dogma\Queue\BeanstalkJob|null
      */
-    public function showNextReadyJob($stats = false) {
+    public function showNextReadyJob($stats = false)
+    {
         $this->send('peek-ready');
         return $this->readJob($stats);
     }
@@ -622,7 +679,8 @@ class BeanstalkClient extends \Dogma\Object {
      * @param boolean $stats with statistics
      * @return \Dogma\Queue\BeanstalkJob|null
      */
-    public function showNextDelayedJob($stats = false) {
+    public function showNextDelayedJob($stats = false)
+    {
         $this->send('peek-delayed');
         return $this->readJob($stats);
     }
@@ -634,7 +692,8 @@ class BeanstalkClient extends \Dogma\Object {
      * @param boolean $stats with statistics
      * @return \Dogma\Queue\BeanstalkJob|null
      */
-    public function showNextSuspendedJob($stats = false) {
+    public function showNextSuspendedJob($stats = false)
+    {
         $this->send('peek-buried');
         return $this->readJob($stats);
     }
@@ -646,18 +705,19 @@ class BeanstalkClient extends \Dogma\Object {
      * @param boolean $stats with statistics
      * @return \Dogma\Queue\BeanstalkJob|null
      */
-    private function readJob($stats) {
+    private function readJob($stats)
+    {
         $status = strtok($this->receive(), ' ');
 
         switch ($status) {
             case 'FOUND':
-                $id = (int)strtok(' ');
-                $data = $this->unserializeJob($this->receive((int)strtok(' ')));
+                $id = (int) strtok(' ');
+                $data = $this->unserializeJob($this->receive((int) strtok(' ')));
                 break;
             case 'NOT_FOUND':
                 return null;
             default:
-                throw new BeanstalkException("Error when reading a job: " . $status);
+                throw new BeanstalkException('Error when reading a job: ' . $status);
         }
 
         if ($stats) {
@@ -679,7 +739,8 @@ class BeanstalkClient extends \Dogma\Object {
      * @param integer
      * @return array
      */
-    public function getJobStats($jobId) {
+    public function getJobStats($jobId)
+    {
         $this->send(sprintf('stats-job %d', $jobId));
         return $this->readStats();
     }
@@ -691,7 +752,8 @@ class BeanstalkClient extends \Dogma\Object {
      * @param string $queue name
      * @return array
      */
-    public function getQueueStats($queue) {
+    public function getQueueStats($queue)
+    {
         $this->send(sprintf('stats-tube %s', $queue));
         return $this->readStats();
     }
@@ -702,7 +764,8 @@ class BeanstalkClient extends \Dogma\Object {
      *
      * @return array
      */
-    public function getServerStats() {
+    public function getServerStats()
+    {
         $this->send('stats');
         return $this->readStats();
     }
@@ -713,7 +776,8 @@ class BeanstalkClient extends \Dogma\Object {
      *
      * @return array
      */
-    public function getQueues() {
+    public function getQueues()
+    {
         $this->send('list-tubes');
         return $this->readStats();
     }
@@ -724,7 +788,8 @@ class BeanstalkClient extends \Dogma\Object {
      *
      * @return string
      */
-    public function getSelectedQueue() {
+    public function getSelectedQueue()
+    {
         $this->send('list-tube-used');
         return $this->readStats();
     }
@@ -735,7 +800,8 @@ class BeanstalkClient extends \Dogma\Object {
      *
      * @return array
      */
-    public function getWatchedQueues() {
+    public function getWatchedQueues()
+    {
         $this->send('list-tubes-watched');
         return $this->readStats();
     }
@@ -746,15 +812,16 @@ class BeanstalkClient extends \Dogma\Object {
      *
      * @return array|string
      */
-    private function readStats() {
+    private function readStats()
+    {
         $status = strtok($this->receive(), ' ');
 
         switch ($status) {
             case 'OK':
-                $response = $this->receive((int)strtok(' '));
+                $response = $this->receive((int) strtok(' '));
                 return $this->decodeYaml($response);
             default:
-                throw new BeanstalkException("Error when reading stats: " . $status);
+                throw new BeanstalkException('Error when reading stats: ' . $status);
         }
     }
 
@@ -766,7 +833,8 @@ class BeanstalkClient extends \Dogma\Object {
      * @param string $data Yaml list or dictionary
      * @return array
      */
-    private function decodeYaml($data) {
+    private function decodeYaml($data)
+    {
         $data = array_slice(explode("\n", $data), 1);
         $result = [];
 

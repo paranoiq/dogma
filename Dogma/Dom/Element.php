@@ -10,7 +10,8 @@
 namespace Dogma\Dom;
 
 
-class Element extends \Dogma\Object {
+class Element extends \Dogma\Object
+{
 
     /** @var \Dogma\Dom\QueryEngine */
     private $engine;
@@ -23,7 +24,8 @@ class Element extends \Dogma\Object {
      * @param \DOMNodeList
      * @param \Dogma\Dom\QueryEngine
      */
-    public function __construct(\DOMElement $element, QueryEngine $engine) {
+    public function __construct(\DOMElement $element, QueryEngine $engine)
+    {
         $this->element = $element;
         $this->engine = $engine;
     }
@@ -33,7 +35,8 @@ class Element extends \Dogma\Object {
      * @param string
      * @return \DOMNode
      */
-    public function find($xpath) {
+    public function find($xpath)
+    {
         return $this->engine->find($xpath, $this->element);
     }
 
@@ -42,7 +45,8 @@ class Element extends \Dogma\Object {
      * @param string
      * @return \DOMNode
      */
-    public function findOne($xpath) {
+    public function findOne($xpath)
+    {
         return $this->engine->findOne($xpath, $this->element);
     }
 
@@ -51,7 +55,8 @@ class Element extends \Dogma\Object {
      * @param string
      * @return string|integer|float
      */
-    public function evaluate($xpath) {
+    public function evaluate($xpath)
+    {
         return $this->engine->evaluate($xpath, $this->element);
     }
 
@@ -60,7 +65,8 @@ class Element extends \Dogma\Object {
      * @param string|string[]
      * @return string|string[]
      */
-    public function extract($target) {
+    public function extract($target)
+    {
         return $this->engine->extract($target, $this->element);
     }
 
@@ -68,7 +74,8 @@ class Element extends \Dogma\Object {
     /**
      * @return \DOMElement
      */
-    public function getElement() {
+    public function getElement()
+    {
         return $this->element;
     }
 
@@ -76,25 +83,29 @@ class Element extends \Dogma\Object {
     /**
      * @return boolean
      */
-    public function remove() {
+    public function remove()
+    {
         $this->element->parentNode->removeChild($this->element);
         return true;
     }
 
 
-    public function &__get($name) {
+    public function &__get($name)
+    {
         $val = $this->element->$name;
         return $val;
     }
 
 
-    public function __call($name, $arg) {
+    public function __call($name, $arg)
+    {
         $args = func_get_args();
         return call_user_func(array($this->element, $name), array_shift($args));
     }
 
 
-    public function dump() {
+    public function dump()
+    {
         Dumper::dump($this);
     }
 

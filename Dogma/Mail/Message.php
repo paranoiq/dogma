@@ -30,7 +30,8 @@ use Dogma\Language\Inflector;
  * @property-read string $messageId
  * @property-read string $inReplyTo
  */
-class Message extends \Dogma\Object {
+class Message extends \Dogma\Object
+{
 
     const TEXT = 'text/plain';
     const HTML = 'text/html';
@@ -58,7 +59,8 @@ class Message extends \Dogma\Object {
     /**
      * @param string|\Dogma\Io\File
      */
-    public function __construct($message) {
+    public function __construct($message)
+    {
         if ($message instanceof File) {
             $this->file = $message;
             Debugger::tryError();
@@ -66,7 +68,7 @@ class Message extends \Dogma\Object {
             if (Debugger::catchError($error)) {
                 throw new ParsingException("Cannot parse email file: $error->message.", 0, $error);
             } elseif (!$handler) {
-                throw new ParsingException("Cannot parse email file.");
+                throw new ParsingException('Cannot parse email file.');
             }
 
         } else {
@@ -76,7 +78,7 @@ class Message extends \Dogma\Object {
             if (Debugger::catchError($error)) {
                 throw new ParsingException("Cannot parse email message: $error->message.", 0, $error);
             } elseif (!$handler || !$res) {
-                throw new ParsingException("Cannot parse email message.");
+                throw new ParsingException('Cannot parse email message.');
             }
             $this->data = $message;
         }
@@ -86,7 +88,7 @@ class Message extends \Dogma\Object {
         if (Debugger::catchError($error)) {
             throw new ParsingException("Cannot parse email structure: $error->message.", 0, $error);
         } elseif (!$structure) {
-            throw new ParsingException("Cannot parse email structure.");
+            throw new ParsingException('Cannot parse email structure.');
         }
 
         $this->parts = [];
@@ -97,7 +99,7 @@ class Message extends \Dogma\Object {
             if (Debugger::catchError($error)) {
                 throw new ParsingException("Cannot get email part data: $error->message.", 0, $error);
             } elseif (!$partHandler || !$partData) {
-                throw new ParsingException("Cannot get email part data.");
+                throw new ParsingException('Cannot get email part data.');
             }
             $this->parts[$partId] = $partData;
         }
@@ -109,9 +111,11 @@ class Message extends \Dogma\Object {
     /**
      * @param callable
      */
-    public function setAddressFactory($factory) {
-        if (!is_callable($factory))
-            throw new \InvalidArgumentException("Message factory must be callable.");
+    public function setAddressFactory($factory)
+    {
+        if (!is_callable($factory)) {
+            throw new \InvalidArgumentException('Message factory must be callable.');
+        }
 
         $this->addressFactory = $factory;
     }
@@ -121,7 +125,8 @@ class Message extends \Dogma\Object {
      * Returns all email headers.
      * @return string[]
      */
-    public function getHeaders() {
+    public function getHeaders()
+    {
         if (!$this->headers) {
             $this->headers = $this->parts[1]['headers'];
             $this->decodeHeaders($this->headers);
@@ -136,8 +141,11 @@ class Message extends \Dogma\Object {
      * @param string
      * @return string|null
      */
-    public function getHeader($name) {
-        if (!$this->headers) $this->getHeaders();
+    public function getHeader($name)
+    {
+        if (!$this->headers) {
+            $this->getHeaders();
+        }
 
         if (isset($this->headers[$name])) {
             return $this->headers[$name];
@@ -151,11 +159,16 @@ class Message extends \Dogma\Object {
      * Return content types of body (usualy text/plain and text/html).
      * @return string[]
      */
-    public function getContentTypes() {
+    public function getContentTypes()
+    {
         $ct = [];
         foreach ($this->parts as $part) {
-            if (isset($part['content-disposition'])) continue;
-            if (substr($part['content-type'], 0, 9) === 'multipart') continue;
+            if (isset($part['content-disposition'])) {
+                continue;
+            }
+            if (substr($part['content-type'], 0, 9) === 'multipart') {
+                continue;
+            }
         }
 
         return $ct;
@@ -167,16 +180,21 @@ class Message extends \Dogma\Object {
      * @param string
      * @return string|null
      */
-    public function getBody($type = self::TEXT) {
-        if ($type !== 'text/plain' && $type !== 'text/html')
+    public function getBody($type = self::TEXT)
+    {
+        if ($type !== 'text/plain' && $type !== 'text/html') {
             throw new ParsingException('Invalid content type specified. Type can either be "text/plain" or "text/html".');
+        }
 
         foreach ($this->parts as $part) {
-            if ($type !== $part['content-type']) continue;
-            if (isset($part['content-disposition'])) continue;
+            if ($type !== $part['content-type']) {
+                continue;
+            }
+            if (isset($part['content-disposition'])) {
+                continue;
+            }
 
             return $this->decode($this->getPartBody($part), @$part['headers']['content-transfer-encoding'] ?: '');
-            break;
         }
 
         return null;
@@ -188,12 +206,16 @@ class Message extends \Dogma\Object {
      * @param string
      * @return string[]
      */
-    public function getBodyHeaders($type = self::TEXT) {
-        if ($type !== 'text/plain' && $type !== 'text/html')
+    public function getBodyHeaders($type = self::TEXT)
+    {
+        if ($type !== 'text/plain' && $type !== 'text/html') {
             throw new ParsingException('Invalid content type specified. Type can either be "text/plain" or "text/html".');
+        }
 
         foreach ($this->parts as $part) {
-            if ($type !== $part['content-type']) continue;
+            if ($type !== $part['content-type']) {
+                continue;
+            }
 
             return @$part['headers'] ?: [];
         }
@@ -208,14 +230,21 @@ class Message extends \Dogma\Object {
      * @param boolean
      * @return \Dogma\Mail\Attachment[]
      */
-    public function getAttachments($contentType = null, $inlines = true) {
+    public function getAttachments($contentType = null, $inlines = true)
+    {
         $dispositions = $inlines ? ['attachment', 'inline'] : ['attachment'];
-        if (isset($contentType) && !is_array($contentType)) $contentType = [$contentType];
+        if (isset($contentType) && !is_array($contentType)) {
+            $contentType = [$contentType];
+        }
 
         $attachments = [];
         foreach ($this->parts as $part) {
-            if (!in_array(@$part['content-disposition'], $dispositions)) continue; // only on attachments
-            if ($contentType && !in_array($part['content-type'], $contentType)) continue;
+            if (!in_array(@$part['content-disposition'], $dispositions)) {
+                continue; // only on attachments
+            }
+            if ($contentType && !in_array($part['content-type'], $contentType)) {
+                continue;
+            }
 
             $attachments[] = new Attachment(
                 $this->getAttachmentData($part),
@@ -231,8 +260,11 @@ class Message extends \Dogma\Object {
      * @param string
      * @return string|\DateTime
      */
-    public function &__get($name) {
-        if (!$this->headers) $this->getHeaders();
+    public function &__get($name)
+    {
+        if (!$this->headers) {
+            $this->getHeaders();
+        }
 
         $name = Inflector::dasherize(Inflector::underscore($name));
         $val = isset($this->headers[$name]) ? $this->headers[$name]
@@ -252,7 +284,8 @@ class Message extends \Dogma\Object {
      * @param string
      * @return string
      */
-    public function decode($data, $encoding) {
+    public function decode($data, $encoding)
+    {
         if (strtolower($encoding) === 'base64') {
             return base64_decode($data);
 
@@ -263,7 +296,7 @@ class Message extends \Dogma\Object {
             return $data;
 
         } else {
-            throw new ParsingException("Unknown transfer encoding.");
+            throw new ParsingException('Unknown transfer encoding.');
         }
     }
 
@@ -272,7 +305,8 @@ class Message extends \Dogma\Object {
      * Find and decode encoded headers (format: =?charset?te?header?=)
      * @param string[]
      */
-    private function decodeHeaders(&$headers) {
+    private function decodeHeaders(&$headers)
+    {
         foreach ($headers as $name => &$value) {
             if (is_array($value)) {
                 $this->decodeHeaders($value);
@@ -300,7 +334,8 @@ class Message extends \Dogma\Object {
      * @param string
      * @return \Dogma\Mail\Address[]
      */
-    private function parseAddressHeader($header) {
+    private function parseAddressHeader($header)
+    {
         $data = mailparse_rfc822_parse_addresses($header);
 
         $arr = [];
@@ -320,7 +355,8 @@ class Message extends \Dogma\Object {
      * @param string
      * @param string
      */
-    private static function createAddress($address, $name) {
+    private static function createAddress($address, $name)
+    {
         return new Address($address, $name);
     }
 
@@ -331,7 +367,8 @@ class Message extends \Dogma\Object {
      * @param string
      * @return string
      */
-    private function decodeHeader($header) {
+    private function decodeHeader($header)
+    {
         // =?utf-8?q?Test=3a=20P=c5=99=c3=...?=
         $that = $this;
         $header = Strings::replace($header, '/(=\\?[^?]+\\?[^?]\\?[^?]+\\?=)/', function ($match) use ($that) {
@@ -359,9 +396,11 @@ class Message extends \Dogma\Object {
      * @param string
      * @return string
      */
-    public static function convertCharset($string, $charset) {
-        if ($charset === 'utf-8')
+    public static function convertCharset($string, $charset)
+    {
+        if ($charset === 'utf-8') {
             return $string;
+        }
 
         return iconv('utf-8', $charset, $string);
     }
@@ -371,7 +410,8 @@ class Message extends \Dogma\Object {
      * @param string[]
      * @return string[]
      */
-    private function getParsedPartHeaders($part) {
+    private function getParsedPartHeaders($part)
+    {
         $headers = $part;
         unset($headers['headers']);
         unset($headers['starting-pos']);
@@ -391,7 +431,8 @@ class Message extends \Dogma\Object {
      * @param string[]
      * @return string|null
      */
-    private function getPartBody($part) {
+    private function getPartBody($part)
+    {
         $start = $part['starting-pos-body'];
         $length = $part['ending-pos-body'] - $start;
 
@@ -410,7 +451,8 @@ class Message extends \Dogma\Object {
      * @param string[]
      * @return string|\Dogma\Io\File
      */
-    private function getAttachmentData($part) {
+    private function getAttachmentData($part)
+    {
         $encoding = array_key_exists('content-transfer-encoding', $part['headers']) ? $part['headers']['content-transfer-encoding'] : '';
 
         if ($this->data) {

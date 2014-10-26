@@ -16,7 +16,8 @@ use Dogma;
 /**
  * Recursive directory iterator
  */
-class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator {
+class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
+{
 
 
     private $flags;
@@ -26,9 +27,11 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator {
      * @param string
      * @param integer
      */
-    public function __construct($path, $flags = null) {
-        if (isset($flags))
+    public function __construct($path, $flags = null)
+    {
+        if (isset($flags)) {
             $flags = FilesystemIterator::KEY_AS_PATHNAME | FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::SKIP_DOTS;
+        }
 
         $this->flags = $flags;
         try {
@@ -46,7 +49,8 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator {
     /**
      * @param integer
      */
-    public function setFlags($flags) {
+    public function setFlags($flags)
+    {
         $this->flags = $flags;
         if ($flags & FilesystemIterator::CURRENT_AS_FILEINFO) {
             parent::setFlags($flags | FilesystemIterator::CURRENT_AS_PATHNAME);
@@ -59,7 +63,8 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator {
     /**
      * @return \Dogma\Io\FileInfo|mixed
      */
-    public function current() {
+    public function current()
+    {
         if ($this->flags & FilesystemIterator::CURRENT_AS_FILEINFO) {
             return new FileInfo(parent::current());
         }

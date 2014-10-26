@@ -13,12 +13,14 @@ namespace Dogma;
 /**
  * Value object consisting of two or more values.
  */
-interface CompoundValueObject extends ValueObject {
+interface CompoundValueObject extends ValueObject
+{
+
 
     /**
      * Returns value components in order of constructor parameters.
      * @return array
      */
-    function toArray();
+    public function toArray();
 
 }

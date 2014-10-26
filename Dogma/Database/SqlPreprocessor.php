@@ -14,7 +14,8 @@ use Nette\Database\SqlLiteral;
 use Nette\Database\Table\ActiveRow;
 
 
-class SqlPreprocessor {
+class SqlPreprocessor
+{
 
 
     /** @var Connection */
@@ -30,8 +31,8 @@ class SqlPreprocessor {
     private $remaining;
 
 
-
-    public function __construct(Connection $connection) {
+    public function __construct(Connection $connection)
+    {
         $this->connection = $connection;
         $this->driver = $connection->getSupplementalDriver();
     }
@@ -43,8 +44,8 @@ class SqlPreprocessor {
      * @param mixed
      * @return array
      */
-    public function process($sql, $params) {
-
+    public function process($sql, $params)
+    {
         $this->sql = '';
         $this->remaining = [];
 
@@ -67,7 +68,9 @@ class SqlPreprocessor {
 
         foreach ($bits as $i => $sql) {
             $this->sql .= $sql;
-            if (!array_key_exists($i, $args)) continue;
+            if (!array_key_exists($i, $args)) {
+                continue;
+            }
 
             $this->processArg($args[$i], $sql);
         }
@@ -79,7 +82,8 @@ class SqlPreprocessor {
 
 
     /** @internal */
-    public function splitCb($m) {
+    public function splitCb($m)
+    {
         $m = $m[0];
         if ($m[0] === "'" || $m[0] === '"') { // string
             return $m;
@@ -94,7 +98,8 @@ class SqlPreprocessor {
 
 
     //** @internal */
-    /*public function substituteCb($m) {
+    /*public function substituteCb($m)
+    {
         $m = $m[0];
         if ($m[0] === "'" || $m[0] === '"') { // string
             return $m;
@@ -111,7 +116,8 @@ class SqlPreprocessor {
      * @param mixed
      * @param string
      */
-    private function processArg($arg, $sql) {
+    private function processArg($arg, $sql)
+    {
         if ($arg instanceof \Dogma\SimpleValueObject || $arg instanceof ActiveRow) {
             $this->sql .= $this->formatValue($arg);
 
@@ -132,7 +138,8 @@ class SqlPreprocessor {
      * @param string
      * @return string
      */
-    private function detectArrayMode($sql) {
+    private function detectArrayMode($sql)
+    {
         $sql = strtoupper($sql);
 
         if (Strings::match($sql, '/(?:SET|UPDATE)\\s*$/')) {
@@ -161,7 +168,8 @@ class SqlPreprocessor {
      * @param array
      * @param string
      */
-    private function processArray($array, $mode) {
+    private function processArray($array, $mode)
+    {
         $vx = [];
 
         if ($mode === 'insert') { // (key, key, ...) VALUES (value, value, ...)
@@ -195,7 +203,8 @@ class SqlPreprocessor {
     /**
      * @param array
      */
-    private function processInsert($array) {
+    private function processInsert($array)
+    {
         $vx = $kx = [];
 
         // multiinsert?
@@ -224,7 +233,8 @@ class SqlPreprocessor {
     /**
      * @param array
      */
-    private function processWhere($array) {
+    private function processWhere($array)
+    {
         $vx = [];
 
         foreach ($array as $k => $v) {
@@ -254,8 +264,8 @@ class SqlPreprocessor {
      * @param mixed
      * @return string
      */
-    private function formatValue($value) {
-
+    private function formatValue($value)
+    {
         if (is_string($value)) {
             if (strlen($value) > 20) {
                 $this->remaining[] = $value;
@@ -290,8 +300,10 @@ class SqlPreprocessor {
             $pre = new static($this->connection);
             list($sql, $remaining) = $pre->process($value->statement, $value->params);
 
-            if ($remaining) foreach ($remaining as $val) {
-                $this->remaining[] = $val;
+            if ($remaining) {
+                foreach ($remaining as $val) {
+                    $this->remaining[] = $val;
+                }
             }
             return $sql;
 
@@ -301,11 +313,13 @@ class SqlPreprocessor {
             foreach ($value as $v) {
                 $vx[] = $this->formatValue($v);
             }
-            if (!$vx) return 'NULL'; // empty array
+            if (!$vx) {
+                return 'NULL'; // empty array
+            }
             return implode(', ', $vx);
 
         } elseif (is_object($value)) {
-            throw new DatabaseException("Unsupported parameter type: " . get_class($value) . ".");
+            throw new DatabaseException('Unsupported parameter type: ' . get_class($value) . '.');
 
         } else {
             $this->remaining[] = $value;
