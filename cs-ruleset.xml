@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<ruleset name="Dogma">
+    <rule ref="Generic.Classes.DuplicateClassName"/>
+    <rule ref="Generic.CodeAnalysis.ForLoopShouldBeWhileLoop"/>
+    <rule ref="Generic.CodeAnalysis.UnconditionalIfStatement"/>
+    <rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier"/>
+    <rule ref="Generic.Formatting.SpaceAfterCast"/>
+    <rule ref="Generic.Functions.CallTimePassByReference"/>
+    <!--<rule ref="Generic.Functions.OpeningFunctionBraceBsdAllman"/>--><!-- want to use ") {" -->
+    <rule ref="Generic.NamingConventions.ConstructorName"/>
+    <rule ref="Generic.PHP.DeprecatedFunctions"/>
+    <rule ref="Generic.PHP.ForbiddenFunctions"/>
+    <rule ref="Generic.WhiteSpace.ScopeIndent"/>
+    <rule ref="PEAR.Classes.ClassDeclaration"/>
+    <rule ref="PEAR.Commenting.InlineComment"/>
+    <rule ref="PEAR.Formatting.MultiLineAssignment"/>
+    <rule ref="PEAR.WhiteSpace.ObjectOperatorIndent"/>
+    <rule ref="Squiz.Commenting.DocCommentAlignment"/>
+    <!--<rule ref="Squiz.Functions.GlobalFunction"/>--><!-- fuck off; i like global functions -->
+    <rule ref="Squiz.PHP.GlobalKeyword"/>
+    <rule ref="Squiz.PHP.Heredoc"/>
+    <rule ref="Squiz.PHP.InnerFunctions"/>
+    <rule ref="Squiz.PHP.LowercasePHPFunctions"/>
+    <rule ref="Squiz.PHP.NonExecutableCode"/>
+    <rule ref="Squiz.Scope.StaticThisUsage"/>
+    <rule ref="Squiz.Strings.DoubleQuoteUsage">
+        <exclude name="Squiz.Strings.DoubleQuoteUsage.ContainsVar"/><!-- not yet -->
+    </rule>
+    <!--<rule ref="Squiz.Strings.DoubleQuoteUsage.ContainsVar">
+        <message>Variable "%s" not allowed in double quoted string; use sprintf() instead</message>
+    </rule>-->
+    <rule ref="Squiz.WhiteSpace.CastSpacing"/>
+    <rule ref="Squiz.WhiteSpace.FunctionOpeningBraceSpace"/>
+    <rule ref="Squiz.WhiteSpace.FunctionSpacing">
+        <properties>
+            <property name="spacing" value="2"/>
+        </properties>
+        <exclude name="Squiz.WhiteSpace.FunctionSpacing.After"/><!-- does not allow PHPUnit ignore comments -->
+    </rule>
+    <rule ref="Squiz.WhiteSpace.LanguageConstructSpacing"/>
+    <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>
+    <!--<rule ref="Squiz.WhiteSpace.MemberVarSpacing"/>--><!-- meh -->
+    <rule ref="Squiz.WhiteSpace.ObjectOperatorSpacing">
+        <exclude name="Squiz.WhiteSpace.ObjectOperatorSpacing.Before"/><!-- clashes in multiline calls -->
+    </rule>
+    <rule ref="Squiz.WhiteSpace.OperatorSpacing">
+        <exclude name="Squiz.WhiteSpace.OperatorSpacing.SpacingBefore"/><!-- does not work for operators on beginning of the line -->
+    </rule>
+    <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
+    <rule ref="PSR2">
+        <exclude name="Generic.Files.LineLength"/><!-- warning. can not be suppressed -->
+        <exclude name="PSR1.Files.SideEffects.FoundWithSymbols"/><!-- warning. cannot use optional declaration of functions -->
+        <exclude name="PSR2.Namespaces.UseDeclaration.SpaceAfterLastUse"/><!-- i like it with two spaces -->
+        <exclude name="PSR2.ControlStructures.SwitchDeclaration.caseIndent"/><!-- checked by more generic Generic.WhiteSpace.ScopeIndent.Incorrect -->
+        <exclude name="PSR2.ControlStructures.SwitchDeclaration.defaultIndent"/><!-- checked by more generic Generic.WhiteSpace.ScopeIndent.Incorrect -->
+        <exclude name="PSR2.Classes.ClassDeclaration"/><!-- we want whitespace around class body and rules for extends and implements, using PEAR instead -->
+        <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.NewlineBeforeOpenBrace"/><!-- clashes with OpeningFunctionBraceBsdAllman -->
+    </rule>
+</ruleset>
