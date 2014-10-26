@@ -291,10 +291,13 @@ class SqlPreprocessor
         } elseif ($value instanceof \DateTime) {
             return $this->driver->formatDateTime($value);
 
-        } elseif ($value instanceof SqlLiteral || $value instanceof ActiveRow
+        } elseif ($value instanceof ActiveRow
             || $value instanceof \Dogma\Model\ActiveEntity
             || $value instanceof \Dogma\SimpleValueObject) {
             return $this->connection->quote((string) $value);
+
+        } elseif ($value instanceof SqlLiteral) {
+            return (string) $value;
 
         } elseif ($value instanceof SqlFragment) {
             $pre = new static($this->connection);
