@@ -1,24 +1,27 @@
 <?php
 
-require __DIR__ . "/../../Test/Assert.php";
-require __DIR__ . "/../../Test/TestCase.php";
-require __DIR__ . "/../../../BeanstalkClient/BeanstalkClient.php";
+use Dogma\Queue\BeanstalkClient;
+use Tester\Environment;
 
-$jack = new Jack\BeanstalkClient;
+require __DIR__ . '/../bootstrap.php';
 
-echo "<pre><code>";
-//var_export($jack);
-//echo "\n";
+$jack = new BeanstalkClient;
+
+echo '<pre><code>';
 
 $testQueue = 'Jack-Beanstalk-Client-Testing-Queue';
 
-$jack->watchQueue($testQueue);
-$jack->ignoreQueue('default');
+try {
+    $jack->watchQueue($testQueue);
+    $jack->ignoreQueue('default');
 
-$jack->selectQueue($testQueue);
+    $jack->selectQueue($testQueue);
 
-// cleaning
-while ($job = $jack->assign(0)) {
-    $jack->delete($job['id']);
+    // cleaning
+    while ($job = $jack->assign(0)) {
+        $jack->delete($job['id']);
+    }
+} catch (\Dogma\Queue\BeanstalkException $e) {
+    Environment::skip();
+    exit;
 }
-

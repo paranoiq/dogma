@@ -1,12 +1,11 @@
 <?php
-
 /**
  * Test: Nette\Database\SqlPreprocessor: multiinsert
  *
- * @author     Vlasta Neubauer
- * @package    Nette\Database
- * @subpackage UnitTests
+ * @author Vlasta Neubauer
  */
+
+use Tester\Assert;
 
 require_once __DIR__ . '/../connect.inc.php';
 
@@ -14,8 +13,10 @@ require_once __DIR__ . '/../connect.inc.php';
 $processor = $connection->getSqlPreprocessor();
 
 
-Assert::same(array("INSERT INTO table (col1, col2) VALUES (123, 456), (456, 789)", array()), 
-	$processor->process("INSERT INTO table (col1, col2) VALUES ?", 
+Assert::same(
+    array('INSERT INTO table (col1, col2) VALUES (123, 456), (456, 789)', array()),
+	$processor->process(
+        'INSERT INTO table (col1, col2) VALUES ?',
 		array(
 			array(
 				array(123, 456),
@@ -25,8 +26,10 @@ Assert::same(array("INSERT INTO table (col1, col2) VALUES (123, 456), (456, 789)
 	)
 );
 
-Assert::same(array("INSERT INTO table (`col1`, `col2`) VALUES (123, 456), (456, 789)", array()), 
-	$processor->process("INSERT INTO table ?", 
+Assert::same(
+    array('INSERT INTO table (`col1`, `col2`) VALUES (123, 456), (456, 789)', array()),
+	$processor->process(
+        'INSERT INTO table ?',
 		array(
 			array(
 				array('col1' => 123, 'col2' => 456),
@@ -36,8 +39,10 @@ Assert::same(array("INSERT INTO table (`col1`, `col2`) VALUES (123, 456), (456, 
 	)
 );
 
-Assert::same(array("INSERT INTO table (col1, col2) VALUES (123, 456), (456, 789)", array()), 
-	$processor->process("INSERT INTO table (col1, col2) VALUES ", 
+Assert::same(
+    array('INSERT INTO table (col1, col2) VALUES (123, 456), (456, 789)', array()),
+	$processor->process(
+        'INSERT INTO table (col1, col2) VALUES ',
 		array(
 			array(
 				array(123, 456),
@@ -47,8 +52,10 @@ Assert::same(array("INSERT INTO table (col1, col2) VALUES (123, 456), (456, 789)
 	)
 );
 
-Assert::same(array("INSERT INTO table (`col1`, `col2`) VALUES (123, 456), (456, 789)", array()), 
-	$processor->process("INSERT INTO table ", 
+Assert::same(
+    array('INSERT INTO table (`col1`, `col2`) VALUES (123, 456), (456, 789)', array()),
+	$processor->process(
+        'INSERT INTO table ',
 		array(
 			array(
 				array('col1' => 123, 'col2' => 456),

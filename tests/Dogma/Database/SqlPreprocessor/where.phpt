@@ -1,12 +1,11 @@
 <?php
-
 /**
  * Test: Nette\Database\SqlPreprocessor: where
  *
- * @author     Vlasta Neubauer
- * @package    Nette\Database
- * @subpackage UnitTests
+ * @author Vlasta Neubauer
  */
+
+use Tester\Assert;
 
 require_once __DIR__ . '/../connect.inc.php';
 
@@ -16,7 +15,8 @@ $processor = $connection->getSqlPreprocessor();
 
 Assert::same(
 	array("UPDATE table WHERE (`a` IS NULL AND `b`=123 AND `c` LIKE 'text' AND `d` IN (123, 456))", array()),
-	$processor->process("UPDATE table WHERE ?",
+	$processor->process(
+        'UPDATE table WHERE ?',
 		array(
 			array(
 				'a' => null,
@@ -29,7 +29,8 @@ Assert::same(
 
 Assert::same(
 	array("UPDATE table WHERE (`a` IS NULL AND `b`=123 AND `c` LIKE 'text' AND `d` IN (123, 456))", array()),
-	$processor->process("UPDATE table WHERE ",
+	$processor->process(
+        'UPDATE table WHERE ',
 		array(
 			array(
 				'a' => null,

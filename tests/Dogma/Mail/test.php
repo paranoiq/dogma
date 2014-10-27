@@ -1,16 +1,17 @@
 <?php
+
+use Tracy\Debugger;
+use Dogma\Mail;
+use Dogma\Io;
+
 ob_start();
 require_once __DIR__ . '/../bootstrap.php';
 require_once __DIR__ . '/../../../Dogma/loader.php';
 
-use Nette\Diagnostics\Debugger;
-use Dogma\Mail;
-use Dogma\Io;
-
 Debugger::enable(Debugger::DEVELOPMENT, __DIR__);
 Debugger::$maxDepth = 5;
 
-header("Content-Type: text/html; charset=utf-8");
+header('Content-Type: text/html; charset=utf-8');
 
 
 $mail = new Mail\Message(new Io\File(__DIR__ . '/test.eml'));

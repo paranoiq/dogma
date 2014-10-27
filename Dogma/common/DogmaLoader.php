@@ -35,16 +35,6 @@ class DogmaLoader
         'Dogma\\Type' => '/common/types/Type',
 
         'Dogma\\Normalizer' => '/common/Normalizer',
-
-        'Dogma\\Http\\HttpException' => '/Http/exceptions',
-        'Dogma\\Http\\ChannelException' => '/Http/exceptions',
-        'Dogma\\Http\\RequestException' => '/Http/exceptions',
-        'Dogma\\Http\\ResponseException' => '/Http/exceptions',
-
-        'Dogma\\Io\\IoException' => '/Io/exceptions',
-        'Dogma\\Io\\FileException' => '/Io/exceptions',
-        'Dogma\\Io\\DirectoryException' => '/Io/exceptions',
-        'Dogma\\Io\\StreamException' => '/Io/exceptions',
     ];
 
 
@@ -72,17 +62,36 @@ class DogmaLoader
 
     /**
      * Handles autoloading of classes or interfaces.
-     * @param  string
-     * @return void
+     * @param string
      */
     public function tryLoad($type)
     {
         $type = ltrim($type, '\\');
         if (isset($this->list[$type])) {
-            require __DIR__ . '/../' . $this->list[$type] . '.php';
+            require dirname(__DIR__) . '/' . $this->list[$type] . '.php';
+            return;
+        }
 
-        } elseif (substr($type, 0, 6) === 'Dogma\\' && is_file($file = __DIR__ . '/../' . strtr(substr($type, 5), '\\', '/') . '.php')) {
+        if (substr($type, 0, 6) !== 'Dogma\\') {
+            return;
+        }
+
+        $file = dirname(__DIR__) . '/' . strtr(substr($type, 5), '\\', '/') . '.php';
+        if (is_file($file)) {
             require $file;
+            return;
+        }
+
+        if (substr($type, -9) === 'Exception') {
+            $parts = explode('\\', substr($type, 5));
+            $last = array_pop($parts);
+            $parts[] = 'exceptions';
+            $parts[] = $last;
+            $file = dirname(__DIR__) . '/' . implode('/', $parts) . '.php';
+            if (is_file($file)) {
+                require $file;
+                return;
+            }
         }
     }
 

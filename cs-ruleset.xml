@@ -21,7 +21,7 @@
     <rule ref="Squiz.PHP.Heredoc"/>
     <rule ref="Squiz.PHP.InnerFunctions"/>
     <rule ref="Squiz.PHP.LowercasePHPFunctions"/>
-    <rule ref="Squiz.PHP.NonExecutableCode"/>
+    <!--<rule ref="Squiz.PHP.NonExecutableCode"/>-->
     <rule ref="Squiz.Scope.StaticThisUsage"/>
     <rule ref="Squiz.Strings.DoubleQuoteUsage">
         <exclude name="Squiz.Strings.DoubleQuoteUsage.ContainsVar"/><!-- not yet -->
