@@ -23,9 +23,7 @@
     <rule ref="Squiz.PHP.LowercasePHPFunctions"/>
     <!--<rule ref="Squiz.PHP.NonExecutableCode"/>-->
     <rule ref="Squiz.Scope.StaticThisUsage"/>
-    <rule ref="Squiz.Strings.DoubleQuoteUsage">
-        <exclude name="Squiz.Strings.DoubleQuoteUsage.ContainsVar"/><!-- not yet -->
-    </rule>
+    <rule ref="Squiz.Strings.DoubleQuoteUsage"/>
     <!--<rule ref="Squiz.Strings.DoubleQuoteUsage.ContainsVar">
         <message>Variable "%s" not allowed in double quoted string; use sprintf() instead</message>
     </rule>-->

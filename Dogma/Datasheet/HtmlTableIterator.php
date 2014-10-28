@@ -31,7 +31,7 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator
     public function __construct(Element $table)
     {
         if ($table->nodeName !== 'table') {
-            throw new \InvalidArgumentException("Element must be a table. $table->nodeName given!");
+            throw new \InvalidArgumentException(sprintf('Element must be a table. %s given!', $table->nodeName));
         }
 
         $this->table = $table;

@@ -124,7 +124,7 @@ class BeanstalkClient extends \Dogma\Object
 
         if (!empty($errNum) || !empty($errStr)) {
             $this->connection = null;
-            throw new BeanstalkException("Socket: $errStr", $errNum);
+            throw new BeanstalkException(sprintf('Socket: %s', $errStr), $errNum);
         }
 
         if (!is_resource($this->connection)) {
@@ -160,7 +160,6 @@ class BeanstalkClient extends \Dogma\Object
         if (!$this->connection) {
             $this->connect();
         }
-        echo ">> $data\n";
         $res = fwrite($this->connection, $data . "\r\n", strlen($data) + 2);
 
         if ($res === false) {
@@ -188,14 +187,12 @@ class BeanstalkClient extends \Dogma\Object
                 throw new BeanstalkException('Connection to Beanstalk server timed out.');
             }
             $data = rtrim($data, "\r\n");
-            echo "   $data\n";
 
         } else {
             $data = stream_get_line($this->connection, 16384, "\r\n");
             if ($data === false) {
                 throw new BeanstalkException('No reply from Beanstalk server.');
             }
-            echo "   $data\n";
         }
 
         return $data;
@@ -228,7 +225,7 @@ class BeanstalkClient extends \Dogma\Object
     {
         if (is_numeric($delay)) {
             if ((int) $delay < 0) {
-                trigger_error("BeanstalkClient: Job delay should not be negative. $delay given.", E_USER_WARNING);
+                trigger_error(sprintf('BeanstalkClient: Job delay should not be negative. %d given.', $delay), E_USER_WARNING);
             }
 
             return abs((int) $delay);
@@ -239,7 +236,7 @@ class BeanstalkClient extends \Dogma\Object
             }
             $seconds = $delay->getTimestamp() - time();
             if ($seconds < 0) {
-                trigger_error("BeanstalkClient: Job delay should not be negative. $seconds given.", E_USER_WARNING);
+                trigger_error(sprintf('BeanstalkClient: Job delay should not be negative. %d given.', $seconds), E_USER_WARNING);
             }
 
             return abs($seconds);
@@ -322,11 +319,11 @@ class BeanstalkClient extends \Dogma\Object
             case self::IGNORE:
                 break;
             case self::NOTICE:
-                trigger_error("BeanstalkClient: Job $jobId was suspended by server. Check and restore the suspended jobs!");
+                trigger_error(sprintf('BeanstalkClient: Job %s was suspended by server. Check and restore the suspended jobs!', $jobId));
                 break;
             case self::THROW_EXCEPTION:
             default:
-                throw new BeanstalkException("BeanstalkClient: Job $jobId was suspended by server. Check and restore the suspended jobs!");
+                throw new BeanstalkException(sprintf('BeanstalkClient: Job %s was suspended by server. Check and restore the suspended jobs!', $jobId));
         }
     }
 
@@ -380,7 +377,7 @@ class BeanstalkClient extends \Dogma\Object
             case 'EXPECTED_CRLF':
             case 'JOB_TOO_BIG':
             default:
-                throw new BeanstalkException('Error when queueing a job: ' . $status);
+                throw new BeanstalkException(sprintf('Error when queueing a job: %s', $status));
         }
     }
 
@@ -400,7 +397,7 @@ class BeanstalkClient extends \Dogma\Object
             case 'USING':
                 break;
             default:
-                throw new BeanstalkException('Error when selecting a queue: ' . $status);
+                throw new BeanstalkException(sprintf('Error when selecting a queue: %s', $status));
         }
     }
 
@@ -435,7 +432,7 @@ class BeanstalkClient extends \Dogma\Object
             case 'TIMED_OUT':
                 return [];
             default:
-                throw new BeanstalkException('Error when claiming a job: ' . $status);
+                throw new BeanstalkException(sprintf('Error when claiming a job: %s', $status));
         }
 
         return new BeanstalkJob($id, $body, true, $this);
@@ -457,7 +454,7 @@ class BeanstalkClient extends \Dogma\Object
                 return;
             case 'NOT_FOUND':
             default:
-                throw new BeanstalkException('Error when finishing a job: ' . $status);
+                throw new BeanstalkException(sprintf('Error when finishing a job: %s', $status));
         }
     }
 
@@ -505,7 +502,7 @@ class BeanstalkClient extends \Dogma\Object
                 return;
             case 'NOT_FOUND':
             default:
-                throw new BeanstalkException('Error when releasing a job: ' . $status);
+                throw new BeanstalkException(sprintf('Error when releasing a job: %s', $status));
         }
     }
 
@@ -532,7 +529,7 @@ class BeanstalkClient extends \Dogma\Object
                 return;
             case 'NOT_FOUND':
             default:
-                throw new BeanstalkException('Error when suspending a job: ' . $status);
+                throw new BeanstalkException(sprintf('Error when suspending a job: %s', $status));
         }
     }
 
@@ -554,7 +551,7 @@ class BeanstalkClient extends \Dogma\Object
             case 'KICKED':
                 return (int) strtok(' ');
             default:
-                throw new BeanstalkException('Error when restoring jobs: ' . $status);
+                throw new BeanstalkException(sprintf('Error when restoring jobs: %s', $status));
         }
     }
 
@@ -574,7 +571,7 @@ class BeanstalkClient extends \Dogma\Object
                 return;
             case 'NOT_TOUCHED':
             default:
-                throw new BeanstalkException('Error when touching a job: ' . $status);
+                throw new BeanstalkException(sprintf('Error when touching a job: %s', $status));
         }
     }
 
@@ -593,7 +590,7 @@ class BeanstalkClient extends \Dogma\Object
             case 'WATCHING':
                 return;
             default:
-                throw new BeanstalkException('Error when watching a queue: ' . $status);
+                throw new BeanstalkException(sprintf('Error when watching a queue: %s', $status));
         }
     }
 
@@ -613,7 +610,7 @@ class BeanstalkClient extends \Dogma\Object
                 return;
             case 'NOT_IGNORED':
             default:
-                throw new BeanstalkException('Error when ignoring a queue: ' . $status);
+                throw new BeanstalkException(sprintf('Error when ignoring a queue: %s', $status));
         }
     }
 
@@ -638,7 +635,7 @@ class BeanstalkClient extends \Dogma\Object
                 return;
             case 'NOT_IGNORED':
             default:
-                throw new BeanstalkException('Error when ignoring a queue: ' . $status);
+                throw new BeanstalkException(sprintf('Error when ignoring a queue: %s', $status));
         }
     }
 
@@ -717,7 +714,7 @@ class BeanstalkClient extends \Dogma\Object
             case 'NOT_FOUND':
                 return null;
             default:
-                throw new BeanstalkException('Error when reading a job: ' . $status);
+                throw new BeanstalkException(sprintf('Error when reading a job: %s', $status));
         }
 
         if ($stats) {
@@ -821,7 +818,7 @@ class BeanstalkClient extends \Dogma\Object
                 $response = $this->receive((int) strtok(' '));
                 return $this->decodeYaml($response);
             default:
-                throw new BeanstalkException('Error when reading stats: ' . $status);
+                throw new BeanstalkException(sprintf('Error when reading stats: %s', $status));
         }
     }
 

@@ -58,7 +58,7 @@ class Normalizer extends \Dogma\Object
     public function setFormat($option, $format)
     {
         if (!isset($this->formats[$option])) {
-            throw new \InvalidArgumentException("Normalizer: Unknown formating option '$option' given.");
+            throw new \InvalidArgumentException(sprintf('Normalizer: Unknown formating option \'%s\' given.', $option));
         }
 
         if (is_string($format) && in_array($option, ['true', 'false', 'null'])) {
@@ -299,35 +299,35 @@ class Normalizer extends \Dogma\Object
             case Type::INT:
                 $value = $this->detectInt(trim($value));
                 if ($value === null) {
-                    throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to integer.");
+                    throw new \InvalidArgumentException(sprintf('Normalizer: Cannot convert value \'%s\' to integer.', $value));
                 }
                 return $value;
 
             case Type::FLOAT:
                 $value = $this->detectFloat($value);
                 if ($value === null) {
-                    throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to float.");
+                    throw new \InvalidArgumentException(sprintf('Normalizer: Cannot convert value \'%s\' to float.', $value));
                 }
                 return $value;
 
             case Type::BOOL:
                 $value = $this->detectBool($value);
                 if ($value === null) {
-                    throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to boolean.");
+                    throw new \InvalidArgumentException(sprintf('Normalizer: Cannot convert value \'%s\' to boolean.', $value));
                 }
                 return $value;
 
             case Type::DATE:
                 $value = $this->detectDate($value);
                 if ($value === null) {
-                    throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to Date.");
+                    throw new \InvalidArgumentException(sprintf('Normalizer: Cannot convert value \'%s\' to Date.', $value));
                 }
                 return $value;
 
             case Type::DATETIME:
                 $value = $this->detectDateTime($value);
                 if ($value === null) {
-                    throw new \InvalidArgumentException("Normalizer: Cannot convert value '$value' to DateTime.");
+                    throw new \InvalidArgumentException(sprintf('Normalizer: Cannot convert value \'%s\' to DateTime.', $value));
                 }
                 return $value;
 
@@ -335,7 +335,7 @@ class Normalizer extends \Dogma\Object
                 return $value;
 
             default:
-                throw new \InvalidArgumentException("Normalizer: Unsupported type '$type'.");
+                throw new \InvalidArgumentException(sprintf('Normalizer: Unsupported type \'%s\'.', $type));
         }
     }
 
@@ -362,21 +362,21 @@ class Normalizer extends \Dogma\Object
 
         } elseif ($value instanceof \Dogma\Date) {
             if (isset($type) && $type !== Type::DATE) {
-                throw new \InvalidArgumentException("Normalizer: Wrong data type Date. $type expected.");
+                throw new \InvalidArgumentException(sprintf('Normalizer: Wrong data type Date. %s expected.', $type));
             }
 
             return $this->formatDate($value);
 
         } elseif ($value instanceof \DateTime) {
             if (isset($type) && $type !== Type::DATETIME) {
-                throw new \InvalidArgumentException("Normalizer: Wrong data type DateTime. $type expected.");
+                throw new \InvalidArgumentException(sprintf('Normalizer: Wrong data type DateTime. %s expected.', $type));
             }
 
             return $this->formatDateTime($value);
 
         } elseif (is_bool($value)) {
             if (isset($type) && $type !== Type::BOOL) {
-                throw new \InvalidArgumentException("Normalizer: Wrong data type bool. $type expected.");
+                throw new \InvalidArgumentException(sprintf('Normalizer: Wrong data type bool. %s expected.', $type));
             }
 
             return $value ? $this->formats['true'][0] : $this->formats['false'][0];

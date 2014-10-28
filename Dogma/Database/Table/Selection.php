@@ -63,7 +63,7 @@ class Selection extends \Nette\Database\Table\Selection
             $data = iterator_to_array($data);
         }
 
-        $return = $this->connection->query("INSERT IGNORE INTO $this->delimitedName", $data);
+        $return = $this->connection->query(sprintf('INSERT IGNORE INTO %s', $this->delimitedName), $data);
 
         if (!is_array($data)) {
             return $return->rowCount();
@@ -96,7 +96,7 @@ class Selection extends \Nette\Database\Table\Selection
             $data = iterator_to_array($data);
         }
 
-        $return = $this->connection->query("REPLACE INTO $this->delimitedName", $data);
+        $return = $this->connection->query(sprintf('REPLACE INTO %s', $this->delimitedName), $data);
 
         $this->rows = null;
         if (!is_array($data)) {

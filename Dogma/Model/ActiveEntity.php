@@ -99,8 +99,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
         if (isset($props[$name])) {
             $var = $props[$name];
 
-        } elseif (method_exists($this, "get$name")) {
-            $var = call_user_func([$this, "get$name"]);
+        } elseif (method_exists($this, $method = sprintf('get%s', $name))) {
+            $var = call_user_func([$this, $method]);
 
         } elseif ($this->factory->hasMagicProperty($class = get_called_class(), $name)) {
             $var = $this->factory->createPropertyInstance($class, $name, $this->row);
@@ -120,8 +120,8 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
      */
     public function __set($name, $value)
     {
-        if (method_exists($this, "set$name")) {
-            call_user_func([$this, "set$name"], $value);
+        if (method_exists($this, $method = sprintf('set%s', $name))) {
+            call_user_func([$this, $method], $value);
 
         } elseif ($this->factory->hasMagicProperty($class = get_called_class(), $name)) {
             $this->props[$name] = $this->factory->updatePropertyInstance($class, $name, $value, $this->row);

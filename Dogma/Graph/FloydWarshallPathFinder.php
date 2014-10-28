@@ -224,7 +224,7 @@ class FloydWarshallPathFinder extends \Dogma\Object
         for ($i = 0; $i < $this->nodeCount; $i++) {
             $rt .= '<tr>';
             if (!empty($this->nodeNames)) {
-                $rt .= '<td>' . $this->nodeNames[$i] . "[$i]</td>\n";
+                $rt .= sprintf('<td>%s[%s]</td>', $this->nodeNames[$i], $i) . "\n";
             }
             for ($j = 0; $j < $this->nodeCount; $j++) {
                 $rt .= '<td>' . $this->predecessors[$i][$j] . "</td>\n";

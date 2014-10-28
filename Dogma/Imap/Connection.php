@@ -105,7 +105,7 @@ class Connection extends \Dogma\Object
 
         ///
         $this->handler = imap_open(
-            '{'. "$this->host:$this->port$params}$this->selectedFolder",
+            sprintf('{%s:%s%s}%s', $this->host, $this->port, $params, $this->selectedFolder),
             $this->user,
             $this->password,
             $options,
@@ -113,10 +113,10 @@ class Connection extends \Dogma\Object
         );
         ///
         if (!$this->handler) {
-            throw new ImapException('Cannot connect to server: ' . imap_last_error());
+            throw new ImapException(sprintf('Cannot connect to server: %s', imap_last_error()));
         }
 
-        $this->ref = '{' . "$this->host:$this->port}";
+        $this->ref = sprintf('{%s:%s}', $this->host, $this->port);
     }
 
 
@@ -451,7 +451,7 @@ class Connection extends \Dogma\Object
 
         if ($orderBy) {
             if (!isset($ob[$orderBy])) {
-                throw new \InvalidArgumentException("Unknown sort criterion: $orderBy");
+                throw new \InvalidArgumentException(sprintf('Unknown sort criterion: %s', $orderBy));
             }
 
             $uids = imap_sort($this->handler, $ob[$orderBy], ($descending ? 1 : 0), SE_UID, $crit, 'UTF-8');
@@ -509,7 +509,7 @@ class Connection extends \Dogma\Object
                     $value = new \DateTime($value);
                 }
                 if (!$value instanceof \DateTime) {
-                    throw new \InvalidArgumentException("Given value of '$name' must be a DateTime or string.");
+                    throw new \InvalidArgumentException(sprintf('Given value of \'%s\' must be a DateTime or string.', $name));
                 }
                 $query[] = $name . ' ' . $value->format('d-M-Y');
             /*
@@ -531,7 +531,7 @@ class Connection extends \Dogma\Object
                 $query[] = 'UID "' . implode(',', $value) . '"';
             */
             } else {
-                throw new \InvalidArgumentException("Unknown search option '$name' given.");
+                throw new \InvalidArgumentException(sprintf('Unknown search option \'%s\' given.', $name));
             }
         }
 

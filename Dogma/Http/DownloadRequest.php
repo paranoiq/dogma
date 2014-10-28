@@ -47,7 +47,7 @@ class DownloadRequest extends Request
     public function setDownloadDir($dir)
     {
         if (!is_dir($dir)) {
-            throw new RequestException("Download directory $dir does not exist.");
+            throw new RequestException(sprintf('Download directory %s does not exist.', $dir));
         }
 
         $this->downloadDir = rtrim($dir, '/');
@@ -114,7 +114,7 @@ class DownloadRequest extends Request
 
         $this->file = fopen($this->downloadDir . '/' . $fileName . $this->fileSuffix . '.tmp', 'wb');
         if ($this->file === false) {
-            throw new RequestException("File $fileName cannot be open!");
+            throw new RequestException(sprintf('File %s cannot be open!', $fileName));
         }
 
 

@@ -314,7 +314,7 @@ final class CsvFile extends TextFile
         }
 
         if (count($row) !== count($this->realColumns)) {
-            throw new FileException("CsvFile: Wrong column count on line #$this->counter.");
+            throw new FileException(sprintf('CsvFile: Wrong column count on line #%d.', $this->counter));
         }
 
         return $row;
@@ -382,7 +382,7 @@ final class CsvFile extends TextFile
             foreach ($this->columns as $name => $column) {
                 if (!array_key_exists($name, $data)) {
                     if ($column->required) {
-                        throw new FileException("CsvFile: Required value $name is missing.");
+                        throw new FileException(sprintf('CsvFile: Required value %s is missing.', $name));
                     }
 
                     $row[] = $this->getNormalizer()->format(null);
@@ -528,7 +528,7 @@ final class CsvFile extends TextFile
     {
         foreach ($this->columns as $name => $column) {
             if ($column->required && !isset($this->realColumns[$column->realName])) {
-                throw new FileException("CsvFile: Required column $name was not fund.");
+                throw new FileException(sprintf('CsvFile: Required column %s was not fund.', $name));
             }
         }
     }

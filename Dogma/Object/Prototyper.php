@@ -109,7 +109,7 @@ final class Prototyper
             return $value;
         }
 
-        $key = "\x00*\x00$propertyName";
+        $key = sprintf('\x00*\x00%s', $propertyName);
         if (array_key_exists($key, $data)) {
             $value = $data[$key];
             unset($data[$key]);
@@ -127,7 +127,7 @@ final class Prototyper
      */
     private static function extractPrivateValue(&$data, $propertyName, $className)
     {
-        $key = "\x00$className\x00$propertyName";
+        $key = sprintf('\x00%s\x00%s', $className, $propertyName);
         if (array_key_exists($key, $data)) {
             $value = $data[$key];
             unset($data[$key]);

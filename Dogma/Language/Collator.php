@@ -208,10 +208,9 @@ class Collator extends \Nette\Object
 
     private function throwError($action)
     {
+        $message = ucfirst(strtolower(preg_replace(['/^U_/', '/_/'], [' ', ''], collator_get_error_message($this->collator))));
         throw new CollatorException(
-            "Collator: $action failed with message: "
-            . ucfirst(strtolower(preg_replace(['/^U_/', '/_/'], [' ', ''], collator_get_error_message($this->collator))))
-            . ' (' . collator_get_error_code($this->collator) . ').'
+            sprintf('Collator: %s failed with message: %s (%s).', $action, $message, collator_get_error_code($this->collator))
         );
     }
 

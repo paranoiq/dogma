@@ -263,7 +263,7 @@ class MultiChannel extends \Dogma\Object
     private function fetchNamedJob($name)
     {
         if (!isset($this->queue[$name]) && !isset($this->finished[$name])) {
-            throw new ChannelException("Job named '$name' was not found.");
+            throw new ChannelException(sprintf('Job named \'%s\' was not found.', $name));
         }
 
         if (isset($this->finished[$name]) && count($this->finished[$name]) === count($this->channels)) {

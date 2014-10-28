@@ -99,7 +99,7 @@ class File extends \Nette\Object
         }
 
         if (Debugger::catchError($error)) {
-            throw new FileException("Cannot open file in mode '$mode': " . $error->getMessage() . '.', 0, $error);
+            throw new FileException(sprintf('Cannot open file in mode \'%s\': %s.', $mode, $error->getMessage()), 0, $error);
         }
     }
 
@@ -321,7 +321,7 @@ class File extends \Nette\Object
             if ($wb) {
                 throw new FileException('Non-blocking lock cannot be acquired: ' . $error->getMessage() . '.', 0, $error);
             } else {
-                throw new FileException("Cannot lock file: $error->message.", 0, $error);
+                throw new FileException(sprintf('Cannot lock file: %s.', $error->message), 0, $error);
             }
         } elseif ($res === false) {
             if ($wb) {

@@ -39,7 +39,7 @@ final class PropertyAccessor
             return $property->getValue($object);
         }
 
-        throw new \Nette\MemberAccessException("PropertyAccessor: Property '$propertyName' was not found.");
+        throw new \Nette\MemberAccessException(sprintf('PropertyAccessor: Property \'%s\' was not found.', $propertyName));
     }
 
 
@@ -67,7 +67,7 @@ final class PropertyAccessor
             return $property->getValue($object);
         }
 
-        throw new \MemberAccessException("PropertyAccessor: Property '$propertyName' was not found.");
+        throw new \MemberAccessException(sprintf('PropertyAccessor: Property \'%s\' was not found.', $propertyName));
     }
 
 }

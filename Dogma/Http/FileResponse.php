@@ -73,7 +73,7 @@ class FileResponse extends Response
     private function parseFile()
     {
         if (($fp = @fopen($this->fileName . '.tmp', 'rb')) === false) {
-            throw new ResponseException("Fopen error for file '$this->fileName.tmp'");
+            throw new ResponseException(sprintf('Fopen error for file \'%s.tmp\'.', $this->fileName));
         }
 
         $headers = Strings::split(@fread($fp, $this->info['header_size']), "~[\n\r]+~", PREG_SPLIT_NO_EMPTY);
@@ -82,7 +82,7 @@ class FileResponse extends Response
         @fseek($fp, $this->info['header_size']);
 
         if (($ft = @fopen($this->fileName, 'wb')) === false) {
-            throw new ResponseException("Write error for file '$this->fileName' ");
+            throw new ResponseException(sprintf('Write error for file \'%s\'.', $this->fileName));
         }
 
         while (!feof($fp)) {
@@ -94,7 +94,7 @@ class FileResponse extends Response
         @fclose($ft);
 
         if (!@unlink($this->fileName . '.tmp')) {
-            throw new ResponseException("Error while deleting file $this->fileName.");
+            throw new ResponseException(sprintf('Error while deleting file \'%s\'.', $this->fileName));
         }
 
         chmod($this->fileName, 0755);

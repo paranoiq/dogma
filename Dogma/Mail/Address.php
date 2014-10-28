@@ -55,7 +55,7 @@ class Address extends \Dogma\Object
 
     public function __toString()
     {
-        return $this->name ? "\"$this->name\" <$this->address>" : $this->address;
+        return $this->name ? sprintf('"%s" <%s>', $this->name, $this->address) : $this->address;
     }
 
 }

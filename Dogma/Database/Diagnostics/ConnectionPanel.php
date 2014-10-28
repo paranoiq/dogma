@@ -111,7 +111,6 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel
     {
         $this->disabled = true;
         $s = '';
-        $h = 'htmlSpecialChars';
         foreach ($this->queries as $i => $query) {
             list($sql, $params, $time, $rows, $connection, $source) = $query;
 
@@ -119,7 +118,7 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel
             if ($this->explain && preg_match('#\s*\(?\s*SELECT\s#iA', $sql)) {
                 try {
                     $cmd = is_string($this->explain) ? $this->explain : 'EXPLAIN';
-                    $explain = $connection->queryArgs("$cmd $sql", $params)->fetchAll();
+                    $explain = $connection->queryArgs($cmd . ' ' . $sql, $params)->fetchAll();
                 } catch (\PDOException $e) {
 
                 }
@@ -129,20 +128,20 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel
             if ($explain) {
                 static $counter;
                 $counter++;
-                $s .= "<br /><a href='#' class='nette-toggler' rel='#nette-DbConnectionPanel-row-$counter'>explain&nbsp;&#x25ba;</a>";
+                $s .= sprintf('<br /><a href="#" class="nette-toggler" rel="#nette-DbConnectionPanel-row-%d">explain&nbsp;&#x25ba;</a>', $counter);
             }
 
             $s .= '</td><td class="nette-DbConnectionPanel-sql">' . Helpers::dumpSql(self::$maxLength ? Nette\Utils\Strings::truncate($sql, self::$maxLength) : $sql);
             if ($explain) {
-                $s .= "<table id='nette-DbConnectionPanel-row-$counter' class='nette-collapsed'><tr>";
+                $s .= sprintf('<table id="nette-DbConnectionPanel-row-%d" class="nette-collapsed"><tr>', $counter);
                 foreach ($explain[0] as $col => $foo) {
-                    $s .= "<th>{$h($col)}</th>";
+                    $s .= '<th>' . htmlspecialchars($col) . '</th>';
                 }
                 $s .= '</tr>';
                 foreach ($explain as $row) {
                     $s .= '<tr>';
                     foreach ($row as $col) {
-                        $s .= "<td>{$h($col)}</td>";
+                        $s .= '<td>' . htmlspecialchars($col) . '</td>';
                     }
                     $s .= '</tr>';
                 }
@@ -150,7 +149,7 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel
             }
             if ($source) {
                 $s .= Nette\Diagnostics\Helpers::editorLink($source[0], $source[1])->class('nette-DbConnectionPanel-source');
-                $s .= " <small style='color: silver'>: $source[1]</small>";
+                $s .= sprintf(' <small style="color: silver">: %s</small>', $source[1]);
             }
 
             $s .= '</td><td>';

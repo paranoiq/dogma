@@ -393,7 +393,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
 
         } elseif (is_integer($key)) {
             if ($key < 0) {
-                throw new \InvalidArgumentException("ArrayObject: Array index must a non-negative integer. '$key' given.");
+                throw new \InvalidArgumentException(sprintf('ArrayObject: Array index must a non-negative integer. \'%s\' given.', $key));
             }
             $this->data[$key] = $value;
 

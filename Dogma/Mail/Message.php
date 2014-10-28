@@ -66,7 +66,7 @@ class Message extends \Dogma\Object
             Debugger::tryError();
             $handler = mailparse_msg_parse_file($this->file->getName());
             if (Debugger::catchError($error)) {
-                throw new ParsingException("Cannot parse email file: $error->message.", 0, $error);
+                throw new ParsingException(sprintf('Cannot parse email file: %s.', $error->message), 0, $error);
             } elseif (!$handler) {
                 throw new ParsingException('Cannot parse email file.');
             }
@@ -76,7 +76,7 @@ class Message extends \Dogma\Object
             $handler = mailparse_msg_create();
             $res = mailparse_msg_parse($handler, $message);
             if (Debugger::catchError($error)) {
-                throw new ParsingException("Cannot parse email message: $error->message.", 0, $error);
+                throw new ParsingException(sprintf('Cannot parse email message: %s.', $error->message), 0, $error);
             } elseif (!$handler || !$res) {
                 throw new ParsingException('Cannot parse email message.');
             }
@@ -86,7 +86,7 @@ class Message extends \Dogma\Object
         Debugger::tryError();
         $structure = mailparse_msg_get_structure($handler);
         if (Debugger::catchError($error)) {
-            throw new ParsingException("Cannot parse email structure: $error->message.", 0, $error);
+            throw new ParsingException(sprintf('Cannot parse email structure: %s.', $error->message), 0, $error);
         } elseif (!$structure) {
             throw new ParsingException('Cannot parse email structure.');
         }
@@ -97,7 +97,7 @@ class Message extends \Dogma\Object
             $partHandler = mailparse_msg_get_part($handler, $partId);
             $partData = mailparse_msg_get_part_data($partHandler);
             if (Debugger::catchError($error)) {
-                throw new ParsingException("Cannot get email part data: $error->message.", 0, $error);
+                throw new ParsingException(sprintf('Cannot get email part data: %s.', $error->message), 0, $error);
             } elseif (!$partHandler || !$partData) {
                 throw new ParsingException('Cannot get email part data.');
             }
@@ -381,7 +381,7 @@ class Message extends \Dogma\Object
                 $message = quoted_printable_decode($message);
 
             } else {
-                throw new ParsingException("Unknown header encoding '$encoding'.");
+                throw new ParsingException(sprintf('Unknown header encoding \'%s\'.', $encoding));
             }
 
             return $that->convertCharset($message, strtolower($charset));

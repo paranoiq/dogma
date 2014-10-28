@@ -133,7 +133,7 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
             }
         }
 
-        throw new \InvalidArgumentException("Invalid value '$value' for type " . get_called_class() . '.');
+        throw new \InvalidArgumentException(sprintf('Invalid value \'%s\' for type %s.', $value, get_called_class()));
     }
 
 
@@ -178,7 +178,7 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
         }
 
         if (!isset(self::$values[$class][$name])) {
-            throw new \InvalidArgumentException("Invalid name '$name' for type " . get_called_class() . '.');
+            throw new \InvalidArgumentException(sprintf('Invalid name \'%s\' for type %s.', $name, get_called_class()));
         }
 
         if (isset(self::$instances[$class][$name])) {

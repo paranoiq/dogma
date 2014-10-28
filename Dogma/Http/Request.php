@@ -169,7 +169,7 @@ class Request extends \Dogma\Object
             $this->content = $data;
         } else {
             //$this->appendUrl($data); // ?
-            throw new \Nette\InvalidStateException("Cannot set content of a '$this->method' request.");
+            throw new \Nette\InvalidStateException(sprintf('Cannot set content of a \'%s\' request.', $this->method));
         }
     }
 
@@ -211,7 +211,7 @@ class Request extends \Dogma\Object
                 $this->setOption(CURLOPT_CUSTOMREQUEST, $this->method);
                 break;
             default:
-                throw new RequestException("Unknown method '$this->method'!");
+                throw new RequestException(sprintf('Unknown method \'%s\'!', $this->method));
         }
     }
 
@@ -225,7 +225,7 @@ class Request extends \Dogma\Object
         if (is_string($name)) {
             $num = CurlHelpers::getCurlOptionNumber($name);
             if (is_null($num)) {
-                throw new RequestException("Unknown CURL option '$name'!");
+                throw new RequestException(sprintf('Unknown CURL option \'%s\'!', $name));
             }
 
         } elseif (!is_int($name)) {
@@ -470,7 +470,7 @@ class Request extends \Dogma\Object
         }
 
         if ($status->isFatalError()) {
-            throw new RequestException("Fatal error occured during request execution: $status->identifier", $status->value);
+            throw new RequestException(sprintf('Fatal error occured during request execution: %s', $status->identifier), $status->value);
         }
 
         $response = new Response($response, $status, $info);
@@ -515,7 +515,7 @@ class Request extends \Dogma\Object
     {
         $cookie = '';
         foreach ($this->cookies as $name => $value) {
-            $cookie .= "; $name=$value";
+            $cookie .= sprintf('; %s=%s', $name, $value);
         }
 
         $this->setOption(CURLOPT_COOKIE, substr($cookie, 2));
@@ -563,7 +563,7 @@ class Request extends \Dogma\Object
             $fileName = substr($this->content, 1);
             $file = fopen($fileName, 'r');
             if (!$file) {
-                throw new RequestException("Could not open file $fileName.");
+                throw new RequestException(sprintf('Could not open file %s.', $fileName));
             }
 
             $this->setOption(CURLOPT_INFILE, $file);
@@ -579,7 +579,7 @@ class Request extends \Dogma\Object
     {
         foreach ($this->variables as $name => $value) {
             if ($value === null) {
-                throw new RequestException("POST parameter '$name' must be filled.");
+                throw new RequestException(sprintf('POST parameter \'%s\' must be filled.', $name));
             }
         }
         $this->setOption(CURLOPT_POSTFIELDS, $this->variables);
@@ -616,13 +616,13 @@ class Request extends \Dogma\Object
     {
         foreach ($vars as $name => $short) {
             if (!isset($this->variables[$name])) {
-                throw new RequestException("URL variable '$name' is missing in request data.");
+                throw new RequestException(sprintf('URL variable \'%s\' is missing in request data.', $name));
             }
 
             if ($short) {
-                $this->url = preg_replace("/(?<=\\W$name=)%(?=[^0-9A-Fa-f])/", urlencode($this->variables[$name]), $this->url);
+                $this->url = preg_replace(sprintf('/(?<=\\W%s=)%(?=[^0-9A-Fa-f])/', $name), urlencode($this->variables[$name]), $this->url);
             } else {
-                $this->url = preg_replace("/\\{%$name\\}/", urlencode($this->variables[$name]), $this->url);
+                $this->url = preg_replace(sprintf('/\\{%%%s\\}/', $name), urlencode($this->variables[$name]), $this->url);
             }
 
             unset($this->variables[$name]);

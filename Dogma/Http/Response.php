@@ -150,7 +150,7 @@ class Response extends \Dogma\Object
             $tname = $name;
         }
         if (is_null($tname)) {
-            throw new ResponseException("Unknown CURL info '$name'!");
+            throw new ResponseException(sprintf('Unknown CURL info \'%s\'!', $name));
         }
 
         return $this->info[$tname];

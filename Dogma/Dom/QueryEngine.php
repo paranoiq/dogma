@@ -186,13 +186,13 @@ class QueryEngine extends \Dogma\Object
             $alias = $name;
         }
         if (in_array($alias, $this->nativeFunctions)) {
-            throw new QueryEngineException("Function '$alias' is already registered.");
+            throw new QueryEngineException(sprintf('Function \'%s\' is already registered.', $alias));
         }
 
         if ($expectNode) {
-            $this->translations["/$alias\\(/"] = "php:function('$name', .//";
+            $this->translations['/' . $alias . '\\(/'] = sprintf('php:function(\'%s\', .//', $name);
         } else {
-            $this->translations["/$alias\\(/"] = "php:functionString('$name', .//";
+            $this->translations['/' . $alias . '\\(/'] = sprintf('php:functionString(\'%s\', .//', $name);
         }
         $this->nativeFunctions[] = $alias;
         $this->userFunctions[] = $name;
@@ -226,7 +226,7 @@ class QueryEngine extends \Dogma\Object
             $list = $this->xpath->query($path);
         }
         if ($list === false) {
-            throw new QueryEngineException("Invalid XPath query: \"$path\", translated from: \"$query\".");
+            throw new QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
         }
 
         return new NodeList($list, $this);
@@ -248,7 +248,7 @@ class QueryEngine extends \Dogma\Object
             $list = $this->xpath->query($path);
         }
         if ($list === false) {
-            throw new QueryEngineException("Invalid XPath query: \"$path\", translated from: \"$query\".");
+            throw new QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
         }
 
         if (!count($list)) {
@@ -275,7 +275,7 @@ class QueryEngine extends \Dogma\Object
             $value = $this->xpath->evaluate($path);
         }
         if ($value === false) {
-            throw new QueryEngineException("Invalid XPath query: \"$path\", translated from: \"$query\".");
+            throw new QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
         }
 
         if (substr($query, 0, 5) === 'date(') {
@@ -401,10 +401,10 @@ class QueryEngine extends \Dogma\Object
                     return $match[1] . '(';
 
                 } elseif (in_array($match[1], $userFunctions)) {
-                    return "php:functionString('$match[1]', ";
+                    return sprintf('php:functionString(\'%s\', ', $match[1]);
 
                 } else {
-                    throw new \DOMException("XPath compilation failure: Functions '$match[1]' is not enabled.");
+                    throw new \DOMException(sprintf('XPath compilation failure: Functions \'%s\' is not enabled.', $match[1]));
                 }
             }
         );
@@ -474,7 +474,9 @@ class QueryEngine extends \Dogma\Object
 
         $date = \DateTime::createFromFormat($format, $string);
         if (!$date) {
-            throw new QueryEngineException("Cannot create DateTime object from '$string' using format '$format'.");
+            throw new QueryEngineException(
+                sprintf('Cannot create DateTime object from \'%s\' using format \'%s\'.', $string, $format)
+            );
         }
 
         return $date->format('Y-m-d');
@@ -495,7 +497,9 @@ class QueryEngine extends \Dogma\Object
 
         $date = \DateTime::createFromFormat($format, $string);
         if (!$date) {
-            throw new QueryEngineException("Cannot create DateTime object from '$string' using format '$format'.");
+            throw new QueryEngineException(
+                sprintf('Cannot create DateTime object from \'%s\' using format \'%s\'.', $string, $format)
+            );
         }
 
         return $date->format('Y-m-d H:i:s');
