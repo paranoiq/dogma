@@ -13,27 +13,43 @@ $options = [
 $request = [];
 
 foreach ($options as $option => $type) {
-    if (!isset($_GET[$option])) continue;
+    if (!isset($_GET[$option])) {
+        continue;
+    }
 
     // select random value within range. eg: "100K-20M" for response between 100 kB and 20 MB
     if ($type === 'range') {
         $mm = explode('-', strtoupper($_GET[$option]));
         if (count($mm) > 1) {
             $min = abs((int) $mm[0]);
-            if (strstr($mm[0], 'K') !== false) $min *= 1000;
-            if (strstr($mm[0], 'M') !== false) $min *= 1000000;
+            if (strstr($mm[0], 'K') !== false) {
+                $min *= 1000;
+            }
+            if (strstr($mm[0], 'M') !== false) {
+                $min *= 1000000;
+            }
 
             $max = abs((int) $mm[1]);
-            if (strstr($mm[1], 'K') !== false) $max *= 1000;
-            if (strstr($mm[1], 'M') !== false) $max *= 1000000;
+            if (strstr($mm[1], 'K') !== false) {
+                $max *= 1000;
+            }
+            if (strstr($mm[1], 'M') !== false) {
+                $max *= 1000000;
+            }
 
-            if ($min > $max) list($min, $max) = [$max, $min];
+            if ($min > $max) {
+                list($min, $max) = [$max, $min];
+            }
 
             $request[$option] = rand($min, $max);
         } else {
             $size = abs((int) $_GET[$option]);
-            if (strstr($_GET[$option], 'K') !== false) $size *= 1000;
-            if (strstr($_GET[$option], 'M') !== false) $size *= 1000000;
+            if (strstr($_GET[$option], 'K') !== false) {
+                $size *= 1000;
+            }
+            if (strstr($_GET[$option], 'M') !== false) {
+                $size *= 1000000;
+            }
 
             $request[$option] = $size;
         }
@@ -77,21 +93,31 @@ $protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : '
 // redirect
 if (!empty($request['redir'])) {
     $request['redir']--;
-    if ($request['status'] === 200) unset($request['status']);
-    if ($request['redir'] < 1) unset($request['redir']);
+    if ($request['status'] === 200) {
+        unset($request['status']);
+    }
+    if ($request['redir'] < 1) {
+        unset($request['redir']);
+    }
 
-    $urlx = explode('?', $_SERVER["REQUEST_URI"]);
+    $urlx = explode('?', $_SERVER['REQUEST_URI']);
     $url = $urlx[0] . '?' . http_build_query($request);
     header($protocol . ' ' . 301, true, 301);
-    header("Location: " . $url);
+    header('Location: ' . $url);
     exit;
 }
 
 
 // defaults
-if (empty($request['size'])) $request['size'] = 20000;
-if (empty($request['time'])) $request['time'] = 0;
-if (empty($request['status'])) $request['status'] = 200;
+if (empty($request['size'])) {
+    $request['size'] = 20000;
+}
+if (empty($request['time'])) {
+    $request['time'] = 0;
+}
+if (empty($request['status'])) {
+    $request['status'] = 200;
+}
 
 
 // response status
@@ -103,9 +129,9 @@ if ($request['status'] !== 200) {
 echo "<!DOCTYPE HTML>\n";
 echo "<html>\n<head><title></title></head>\n<body><pre>\n";
 echo "<h1>Testing response:</h1>\n";
-echo "Size: " . number_format($request['size']) . "\n";
-echo "Time: $request[time]\n";
-echo "Status: $request[status]\n";
+echo sprintf("Size: %s\n", number_format($request['size']));
+echo sprintf("Time: %s\n", $request['time']);
+echo sprintf("Status: %s\n", $request['status']);
 
 $chars = 'QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklxcvbnm1234567890[](){}+|\,.-~@#$%^&*\'"=/`;:_?!';
 $chars = str_split($chars);
@@ -118,7 +144,9 @@ if ($request['time']) {
         }
         if ($n % 100 === 0) {
             echo "\n";
-            if ($n % 1000 === 0) echo "\n";
+            if ($n % 1000 === 0) {
+                echo "\n";
+            }
         }
         echo $chars[rand(0, 90)];
     }
@@ -126,12 +154,14 @@ if ($request['time']) {
     for ($n = 0; $n < $request['size']; $n++) {
         if ($n % 100 === 0) {
             echo "\n";
-            if ($n % 1000 === 0) echo "\n";
+            if ($n % 1000 === 0) {
+                echo "\n";
+            }
         }
         echo $chars[rand(0, 90)];
     }
 }
 
 
-echo "<h2>Done!</h2>";
+echo '<h2>Done!</h2>';
 echo "<pre>\n</body>\n</html>";

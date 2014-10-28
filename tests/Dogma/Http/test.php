@@ -36,17 +36,17 @@ $channelG->setPriority(6.0);
 $channelH->setPriority(12.0);
 
 while (@$m++ < 20) {
-    $channelA->addJob('?size=100&redir=3', "A$m");
+    $channelA->addJob('?size=100&redir=3', 'A' . $m);
 }
 
 while (@$n++ < 100) {
-    $channelB->addJob('?size=10000', "B$n");
-    $channelC->addJob('?size=10000', "C$n");
-    $channelD->addJob('?size=10000', "D$n");
-    $channelE->addJob('?size=10000', "E$n");
-    $channelF->addJob('?size=10000', "F$n");
-    $channelG->addJob('?size=10000', "G$n");
-    $channelH->addJob('?size=10000', "H$n");
+    $channelB->addJob('?size=10000', 'B' . $n);
+    $channelC->addJob('?size=10000', 'C' . $n);
+    $channelD->addJob('?size=10000', 'D' . $n);
+    $channelE->addJob('?size=10000', 'E' . $n);
+    $channelF->addJob('?size=10000', 'F' . $n);
+    $channelG->addJob('?size=10000', 'G' . $n);
+    $channelH->addJob('?size=10000', 'H' . $n);
 }
 
 while ($response = $channelA->fetch()) {

@@ -9,44 +9,32 @@
     <property name="path.phplint.executable" value="${path.bin}/parallel-lint"/>
     <property name="path.root" value="${project.basedir}"/>
     <property name="path.src" value="${path.root}/Dogma"/>
+    <property name="path.tests" value="${path.root}/tests/Dogma"/>
 
     <target name="check-php" depends="phplint,phpcs"/>
 
     <target name="composer">
-        <exec
-                executable="${path.composer.executable}"
-                logoutput="true"
-                passthru="true"
-                checkreturn="true"
-                >
+        <exec executable="${path.composer.executable}" logoutput="true" passthru="true" checkreturn="true">
             <arg value="install"/>
         </exec>
     </target>
 
     <target name="phpcs">
-        <exec
-                executable="${path.phpcs.executable}"
-                logoutput="true"
-                passthru="true"
-                checkreturn="true"
-                >
+        <exec executable="${path.phpcs.executable}" logoutput="true" passthru="true" checkreturn="true">
             <arg value="--standard=${path.phpcs.ruleset}"/>
             <arg value="--extensions=php"/>
             <arg value="--encoding=utf-8"/>
             <arg value="--tab-width=4"/>
             <arg value="-sp"/>
             <arg path="${path.src}"/>
+            <arg path="${path.tests}"/>
         </exec>
     </target>
 
     <target name="phplint">
-        <exec
-                executable="${path.phplint.executable}"
-                logoutput="true"
-                passthru="true"
-                checkreturn="true"
-                >
+        <exec executable="${path.phplint.executable}" logoutput="true" passthru="true" checkreturn="true">
             <arg path="${path.src}"/>
+            <arg path="${path.tests}"/>
         </exec>
     </target>
 
