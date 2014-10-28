@@ -9,10 +9,9 @@
 
 namespace Dogma\Mail;
 
-use Nette\Diagnostics\Debugger;
-use Nette\Utils\Strings;
 use Dogma\Io\File;
 use Dogma\Language\Inflector;
+use Nette\Utils\Strings;
 
 
 /**
@@ -63,42 +62,34 @@ class Message extends \Dogma\Object
     {
         if ($message instanceof File) {
             $this->file = $message;
-            Debugger::tryError();
+            ///
             $handler = mailparse_msg_parse_file($this->file->getName());
-            if (Debugger::catchError($error)) {
-                throw new ParsingException(sprintf('Cannot parse email file: %s.', $error->message), 0, $error);
-            } elseif (!$handler) {
+            if (!$handler) {
                 throw new ParsingException('Cannot parse email file.');
             }
 
         } else {
-            Debugger::tryError();
+            ///
             $handler = mailparse_msg_create();
             $res = mailparse_msg_parse($handler, $message);
-            if (Debugger::catchError($error)) {
-                throw new ParsingException(sprintf('Cannot parse email message: %s.', $error->message), 0, $error);
-            } elseif (!$handler || !$res) {
+            if (!$handler || !$res) {
                 throw new ParsingException('Cannot parse email message.');
             }
             $this->data = $message;
         }
 
-        Debugger::tryError();
+        ///
         $structure = mailparse_msg_get_structure($handler);
-        if (Debugger::catchError($error)) {
-            throw new ParsingException(sprintf('Cannot parse email structure: %s.', $error->message), 0, $error);
-        } elseif (!$structure) {
+        if (!$structure) {
             throw new ParsingException('Cannot parse email structure.');
         }
 
         $this->parts = [];
         foreach ($structure as $partId) {
-            Debugger::tryError();
+            ///
             $partHandler = mailparse_msg_get_part($handler, $partId);
             $partData = mailparse_msg_get_part_data($partHandler);
-            if (Debugger::catchError($error)) {
-                throw new ParsingException(sprintf('Cannot get email part data: %s.', $error->message), 0, $error);
-            } elseif (!$partHandler || !$partData) {
+            if (!$partHandler || !$partData) {
                 throw new ParsingException('Cannot get email part data.');
             }
             $this->parts[$partId] = $partData;

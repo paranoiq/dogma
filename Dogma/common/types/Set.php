@@ -9,6 +9,8 @@
 
 namespace Dogma;
 
+use Nette\Utils\ObjectMixin;
+
 
 /**
  * Set type. Similar to 'set' from MySql. Allowed values are defined as class constants.
@@ -197,7 +199,7 @@ abstract class Set implements SimpleValueObject
             return $this->contains($name);
         }
 
-        return \Nette\ObjectMixin::get($this, $name);
+        return ObjectMixin::get($this, $name);
     }
 
 
@@ -211,7 +213,7 @@ abstract class Set implements SimpleValueObject
             return $this->contains($name);
         }
 
-        return \Nette\ObjectMixin::has($this, $name);
+        return ObjectMixin::has($this, $name);
     }
 
 
@@ -234,7 +236,7 @@ abstract class Set implements SimpleValueObject
             return;
         }
 
-        \Nette\ObjectMixin::set($this, $name, $value);
+        ObjectMixin::set($this, $name, $value);
     }
 
 
@@ -249,7 +251,7 @@ abstract class Set implements SimpleValueObject
             return;
         }
 
-        \Nette\ObjectMixin::remove($this, $name);
+        ObjectMixin::remove($this, $name);
     }
 
 

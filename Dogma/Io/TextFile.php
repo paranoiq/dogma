@@ -9,8 +9,6 @@
 
 namespace Dogma\Io;
 
-use Nette\Diagnostics\Debugger;
-
 
 /**
  * Text file reader/writer
@@ -77,12 +75,10 @@ class TextFile extends File
      */
     public function readLine()
     {
-        Debugger::tryError();
+        ///
         $line = fgets($this->file);
 
-        if (Debugger::catchError($error)) {
-            throw new FileException('Cannot read data from file: ' . $error->getMessage() . '.', 0, $error);
-        } elseif ($line === false) {
+        if ($line === false) {
             if ($this->eof()) {
                 throw new FileException('Cannot read data from file. End of file was reached.');
             } else {

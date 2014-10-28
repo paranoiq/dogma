@@ -9,8 +9,7 @@
 
 namespace Dogma\Io;
 
-use Nette\Diagnostics\Debugger;
-use Nette\Callback;
+use Tracy\Debugger;
 
 
 /**
@@ -90,7 +89,7 @@ class File extends \Nette\Object
 
         $this->name = (string) $file;
 
-        Debugger::tryError();
+        ///
         if ($streamContext) {
             $this->streamContext = $streamContext;
             $this->file = fopen($this->name, $mode, false, $streamContext);
@@ -98,8 +97,8 @@ class File extends \Nette\Object
             $this->file = fopen($this->name, $mode, false);
         }
 
-        if (Debugger::catchError($error)) {
-            throw new FileException(sprintf('Cannot open file in mode \'%s\': %s.', $mode, $error->getMessage()), 0, $error);
+        if ($this->file === false) {
+            throw new FileException(sprintf('Cannot open file in mode \'%s\'.', $mode), 0);
         }
     }
 
@@ -128,12 +127,10 @@ class File extends \Nette\Object
     {
         $this->testOpen();
 
-        Debugger::tryError();
-        $res = fclose($this->file);
+        ///
+        $result = fclose($this->file);
 
-        if (Debugger::catchError($error)) {
-            throw new FileException('Cannot close file: ' . $error->getMessage() . '.', 0, $error);
-        } elseif (!$res) {
+        if ($result === false) {
             throw new FileException('Cannot close file.');
         }
         $this->stat = null;
@@ -149,12 +146,9 @@ class File extends \Nette\Object
     {
         $this->testOpen();
 
-        Debugger::tryError();
+        ///
         $feof = feof($this->file);
-
-        if (Debugger::catchError($error)) {
-            throw new FileException('Error whn checking End Of File: ' . $error->getMessage() . '.', 0, $error);
-        }
+        ///
 
         return $feof;
     }
@@ -172,12 +166,10 @@ class File extends \Nette\Object
         }
         $this->testOpen();
 
-        Debugger::tryError();
+        ///
         $data = fread($this->file, $length);
 
-        if (Debugger::catchError($error)) {
-            throw new FileException('Cannot read data from file: ' . $error->getMessage() . '.', 0, $error);
-        } elseif ($data === false) {
+        if ($data === false) {
             if ($this->eof()) {
                 throw new FileException('Cannot read data from file. End of file was reached.');
             } else {
@@ -253,12 +245,10 @@ class File extends \Nette\Object
     {
         $this->testOpen();
 
-        Debugger::tryError();
-        $res = fwrite($this->file, $data);
+        ///
+        $result = fwrite($this->file, $data);
 
-        if (Debugger::catchError($error)) {
-            throw new FileException('Cannot write data to file: ' . $error->getMessage() . '.', 0, $error);
-        } elseif ($res === false) {
+        if ($result === false) {
             throw new FileException('Cannot write data to file.');
         }
     }
@@ -272,12 +262,10 @@ class File extends \Nette\Object
     {
         $this->testOpen();
 
-        Debugger::tryError();
-        $res = ftruncate($this->file, $size);
+        ///
+        $result = ftruncate($this->file, $size);
 
-        if (Debugger::catchError($error)) {
-            throw new FileException('Cannot truncate file: ' . $error->getMessage() . '.', 0, $error);
-        } elseif ($res === false) {
+        if ($result === false) {
             throw new FileException('Cannot truncate file.');
         }
 
@@ -292,12 +280,10 @@ class File extends \Nette\Object
     {
         $this->testOpen();
 
-        Debugger::tryError();
-        $res = fflush($this->file);
+        ///
+        $result = fflush($this->file);
 
-        if (Debugger::catchError($error)) {
-            throw new FileException('Cannot flush file cache: ' . $error->getMessage() . '.', 0, $error);
-        } elseif ($res === false) {
+        if ($result === false) {
             throw new FileException('Cannot flush file cache.');
         }
         $this->stat = null;
@@ -314,16 +300,10 @@ class File extends \Nette\Object
         $this->testOpen();
 
         $wb = null;
-        Debugger::tryError();
-        $res = flock($this->file, $mode, $wb);
+        ///
+        $result = flock($this->file, $mode, $wb);
 
-        if (Debugger::catchError($error)) {
-            if ($wb) {
-                throw new FileException('Non-blocking lock cannot be acquired: ' . $error->getMessage() . '.', 0, $error);
-            } else {
-                throw new FileException(sprintf('Cannot lock file: %s.', $error->message), 0, $error);
-            }
-        } elseif ($res === false) {
+        if ($result === false) {
             if ($wb) {
                 $wouldBlock = $wb;
                 throw new FileException('Non-blocking lock cannot be acquired.');
@@ -341,12 +321,10 @@ class File extends \Nette\Object
     {
         $this->testOpen();
 
-        Debugger::tryError();
-        $res = flock($this->file, LOCK_UN);
+        ///
+        $result = flock($this->file, LOCK_UN);
 
-        if (Debugger::catchError($error)) {
-            throw new FileException('Cannot unlock file: ' . $error->getMessage() . '.', 0, $error);
-        } elseif ($res === false) {
+        if ($result === false) {
             throw new FileException('Cannot unlock file.');
         }
     }
@@ -366,12 +344,10 @@ class File extends \Nette\Object
             $from = SEEK_END;
         }
 
-        Debugger::tryError();
-        $res = fseek($this->file, $position, $from);
+        ///
+        $result = fseek($this->file, $position, $from);
 
-        if (Debugger::catchError($error)) {
-            throw new FileException('Cannot set file pointer position: ' . $error->getMessage() . '.', 0, $error);
-        } elseif ($res !== 0) {
+        if ($result !== 0) {
             throw new FileException('Cannot set file pointer position.');
         }
     }
@@ -385,16 +361,14 @@ class File extends \Nette\Object
     {
         $this->testOpen();
 
-        Debugger::tryError();
-        $pos = ftell($this->file);
+        ///
+        $position = ftell($this->file);
 
-        if (Debugger::catchError($error)) {
-            throw new FileException('Cannot get file pointer position: ' . $error->getMessage() . '.', 0, $error);
-        } elseif ($pos === false) {
+        if ($position === false) {
             throw new FileException('Cannot get file pointer position.');
         }
 
-        return $pos;
+        return $position;
     }
 
 
@@ -504,12 +478,10 @@ class File extends \Nette\Object
      */
     public static function createTemporaryFile()
     {
-        Debugger::tryError();
+        ///
         $fd = tmpfile();
 
-        if (Debugger::catchError($error)) {
-            throw new FileException('Cannot create a temporary file: ' . $error->getMessage() . '.', 0, $error);
-        } elseif (!$fd) {
+        if (!$fd) {
             throw new FileException('Cannot create a temporary file.');
         }
         $file = new static(null, 'w+');

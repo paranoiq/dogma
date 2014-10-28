@@ -10,6 +10,7 @@
 namespace Dogma\Io;
 
 use Nette;
+use Nette\Utils\ArrayHash;
 use Dogma\Type;
 
 
@@ -114,7 +115,7 @@ final class CsvFile extends TextFile
      */
     public function addColumn($name, $realName = null, $type = Type::STRING, $required = true, $nullable = false)
     {
-        $this->columns[$name] = Nette\ArrayHash::from([
+        $this->columns[$name] = ArrayHash::from([
             'realName' => $realName ?: $name,
             'type' => $type,
             'required' => $required,

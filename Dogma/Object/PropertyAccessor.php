@@ -25,7 +25,7 @@ final class PropertyAccessor
     public static function getValue($object, $propertyName)
     {
         if (is_array($object)) {
-            if (array_key_exists($propertyName, $data)) {
+            if (array_key_exists($propertyName, $object)) {
                 return $object[$propertyName];
             }
 
@@ -67,7 +67,7 @@ final class PropertyAccessor
             return $property->getValue($object);
         }
 
-        throw new \MemberAccessException(sprintf('PropertyAccessor: Property \'%s\' was not found.', $propertyName));
+        throw new \Nette\MemberAccessException(sprintf('PropertyAccessor: Property \'%s\' was not found.', $propertyName));
     }
 
 }

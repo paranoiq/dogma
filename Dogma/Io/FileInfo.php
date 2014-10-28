@@ -9,7 +9,7 @@
 
 namespace Dogma\Io;
 
-use Nette;
+use Nette\Utils\ObjectMixin;
 
 
 /**
@@ -107,7 +107,7 @@ class FileInfo extends \SplFileInfo
      */
     public function __call($name, $args)
     {
-        return Nette\ObjectMixin::call($this, $name, $args);
+        return ObjectMixin::call($this, $name, $args);
     }
 
 
@@ -119,29 +119,7 @@ class FileInfo extends \SplFileInfo
      */
     public static function __callStatic($name, $args)
     {
-        return Nette\ObjectMixin::callStatic(get_called_class(), $name, $args);
-    }
-
-
-    /**
-     * Adding method to class.
-     * @param string
-     * @param mixed
-     * @return mixed
-     */
-    public static function extensionMethod($name, $callback = null)
-    {
-        if (strpos($name, '::') === false) {
-            $class = get_called_class();
-        } else {
-            list($class, $name) = explode('::', $name);
-        }
-        $class = new Nette\Reflection\ClassType($class);
-        if ($callback === null) {
-            return $class->getExtensionMethod($name);
-        } else {
-            $class->setExtensionMethod($name, $callback);
-        }
+        ObjectMixin::callStatic(get_called_class(), $name, $args);
     }
 
 
@@ -152,7 +130,7 @@ class FileInfo extends \SplFileInfo
      */
     public function &__get($name)
     {
-        return Nette\ObjectMixin::get($this, $name);
+        return ObjectMixin::get($this, $name);
     }
 
 
@@ -164,7 +142,7 @@ class FileInfo extends \SplFileInfo
      */
     public function __set($name, $value)
     {
-        Nette\ObjectMixin::set($this, $name, $value);
+        ObjectMixin::set($this, $name, $value);
     }
 
 
@@ -175,7 +153,7 @@ class FileInfo extends \SplFileInfo
      */
     public function __isset($name)
     {
-        return Nette\ObjectMixin::has($this, $name);
+        return ObjectMixin::has($this, $name);
     }
 
 
@@ -185,7 +163,7 @@ class FileInfo extends \SplFileInfo
      */
     public function __unset($name)
     {
-        Nette\ObjectMixin::remove($this, $name);
+        ObjectMixin::remove($this, $name);
     }
 
 }

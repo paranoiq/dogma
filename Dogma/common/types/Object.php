@@ -10,7 +10,6 @@
 namespace Dogma;
 
 use Nette\Utils\ObjectMixin;
-use Nette\MemberAccessException;
 
 
 abstract class Object
@@ -37,7 +36,7 @@ abstract class Object
      */
     public static function __callStatic($name, $args)
     {
-        return ObjectMixin::callStatic(get_called_class(), $name, $args);
+        ObjectMixin::callStatic(get_called_class(), $name, $args);
     }
 
 

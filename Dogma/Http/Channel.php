@@ -9,7 +9,7 @@
 
 namespace Dogma\Http;
 
-use Nette\Callback;
+use Nette\Utils\Callback;
 
 
 
@@ -61,13 +61,13 @@ class Channel extends \Dogma\Object
 
 
 
-    /** @var \Nette\Callback */
+    /** @var \Nette\Utils\Callback */
     private $responseHandler;
 
-    /** @var \Nette\Callback */
+    /** @var \Nette\Utils\Callback */
     private $redirectHandler;
 
-    /** @var \Nette\Callback */
+    /** @var \Nette\Utils\Callback */
     private $errorHandler;
 
 
@@ -93,7 +93,7 @@ class Channel extends \Dogma\Object
 
     /**
      * Set callback handler for every response (even an error)
-     * @param \Nette\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
+     * @param \Nette\Utils\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      */
     public function setResponseHandler(Callback $responseHandler)
     {
@@ -103,7 +103,7 @@ class Channel extends \Dogma\Object
 
     /**
      * Set separate callback handler for redirects. ResponseHandler will no longer handle these.
-     * @param \Nette\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
+     * @param \Nette\Utils\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      */
     public function setRedirectHandler(Callback $redirectHadler)
     {
@@ -113,7 +113,7 @@ class Channel extends \Dogma\Object
 
     /**
      * Set separate callback handler for errors. ResponseHandler will no longer handle these.
-     * @param \Nette\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
+     * @param \Nette\Utils\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      */
     public function setErrorHandler(Callback $errorHandler)
     {

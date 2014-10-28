@@ -9,6 +9,8 @@
 
 namespace Dogma;
 
+use Nette\Utils\ObjectMixin;
+
 
 /**
  * Enum type. Simillar to Enum from Java. Allowed values are defined as class constants.
@@ -211,7 +213,7 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
      */
     final public function __get($name)
     {
-        return \Nette\ObjectMixin::get($this, $name);
+        return ObjectMixin::get($this, $name);
     }
 
 
@@ -221,7 +223,7 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
      */
     final public function __isset($name)
     {
-        return \Nette\ObjectMixin::has($this, $name);
+        return ObjectMixin::has($this, $name);
     }
 
 

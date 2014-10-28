@@ -9,7 +9,6 @@
 
 namespace Dogma;
 
-use Nette\Utils\Strings;
 
 /*
 //z condition:

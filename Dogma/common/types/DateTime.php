@@ -9,6 +9,8 @@
 
 namespace Dogma;
 
+use Nette\Utils\ObjectMixin;
+
 
 /**
  * Date and time class
@@ -80,7 +82,7 @@ class DateTime extends \DateTime implements SimpleValueObject
      */
     public function __call($name, $args)
     {
-        return \Nette\ObjectMixin::call($this, $name, $args);
+        return ObjectMixin::call($this, $name, $args);
     }
 
 }

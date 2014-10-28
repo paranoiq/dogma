@@ -63,13 +63,15 @@ final class Prototyper
 
     /**
      * Injects data into object properties
-     * @param object
-     * @param array  injected keys will be removed from array
-     * @param boolean  set fo false if you want inject private property without the concern of definer class
+     * @param object $object
+     * @param array $data injected keys will be removed from array
+     * @param boolean $respectPrivatePropertyDefiner set fo false if you want inject private property without the concern of definer class
      * @return object
      */
     public static function injectData($object, &$data, $respectPrivatePropertyDefiner = true)
     {
+        /** @var \ReflectionClass $class */
+        /** @var \ReflectionProperty[] $properties */
         list($class, $properties) = ReflectionCache::getClassAndPropertyReflections(get_class($object));
 
         do {
@@ -115,6 +117,8 @@ final class Prototyper
             unset($data[$key]);
             return $value;
         }
+
+        return null;
     }
 
 
@@ -133,6 +137,8 @@ final class Prototyper
             unset($data[$key]);
             return $value;
         }
+
+        return null;
     }
 
 }

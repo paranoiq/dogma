@@ -9,8 +9,8 @@
 
 namespace Dogma\Http;
 
+use Nette\Utils\Callback;
 use Nette\Utils\Strings;
-use Nette\Callback;
 
 
 /**
@@ -53,7 +53,7 @@ class Request extends \Dogma\Object
     /** @var mixed Request context */
     private $context;
 
-    /** @var \Nette\Callback */
+    /** @var \Nette\Utils\Callback */
     private $init;
 
 
@@ -86,7 +86,7 @@ class Request extends \Dogma\Object
 
 
     /**
-     * @param \Nette\Callback(\Dogma\Http\Request $request -> boolean)
+     * @param \Nette\Utils\Callback(\Dogma\Http\Request $request -> boolean)
      */
     public function setInit(Callback $init)
     {
