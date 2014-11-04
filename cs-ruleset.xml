@@ -31,7 +31,7 @@
     <rule ref="Squiz.WhiteSpace.FunctionOpeningBraceSpace"/>
     <rule ref="Squiz.WhiteSpace.FunctionSpacing">
         <properties>
-            <property name="spacing" value="2"/>
+            <property name="spacing" value="1"/>
         </properties>
         <exclude name="Squiz.WhiteSpace.FunctionSpacing.After"/><!-- does not allow PHPUnit ignore comments -->
     </rule>

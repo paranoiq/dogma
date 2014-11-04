@@ -94,7 +94,6 @@ class Inflector
     /** @var boolean use Ruby on Rails ActiveRecord naming conventions? */
     public static $railsStyle = false;
 
-
     /**
      * The reverse of pluralize, returns the singular form of a word.
      *
@@ -130,7 +129,6 @@ class Inflector
         return false;
     }
 
-
     /**
      * Returns the plural form of the word.
      *
@@ -162,7 +160,6 @@ class Inflector
         return false;
     }
 
-
     /**
      * Is given string singular noun?
      *
@@ -177,7 +174,6 @@ class Inflector
 
         return !self::isPlural($word);
     }
-
 
     /**
      * Is given string plural noun?
@@ -206,7 +202,6 @@ class Inflector
         return false;
     }
 
-
     /**
      * Is given string countable noun?
      *
@@ -219,7 +214,6 @@ class Inflector
         return (bool) !in_array($lower, self::$uncountable);
     }
 
-
     /**
      * Is given string irregular noun?
      *
@@ -231,7 +225,6 @@ class Inflector
         $lower = Strings::lower($word);
         return (bool) in_array($lower, self::$irregular) || array_key_exists($lower, self::$irregular);
     }
-
 
     /**
      * Ordinalize turns a number into an ordinal string used to denote
@@ -260,7 +253,6 @@ class Inflector
         }
     }
 
-
     /**
      * By default, camelize() converts strings to UpperCamelCase.
      * If the second argument is set to false then camelize() produces lowerCamelCase.
@@ -276,7 +268,6 @@ class Inflector
         return $firstUpper ? ucfirst($word) : lcfirst($word);
     }
 
-
     /**
      * Replaces underscores with dashes in the string.
      *
@@ -287,7 +278,6 @@ class Inflector
     {
         return preg_replace('/_/', '-', strval($word));
     }
-
 
     /**
      * Capitalizes all the words and replaces some characters in the string to create a nicer looking title.
@@ -301,7 +291,6 @@ class Inflector
         return preg_replace(["/\b('?[a-z])/e"], ["ucfirst('\\1')"], self::humanize(self::underscore($word)));
     }
 
-
     /**
      * The reverse of camelize(). Makes an underscored form from the expression in the string.
      * Changes '::' to '/' to convert namespaces to paths.
@@ -314,7 +303,6 @@ class Inflector
         return strtolower(preg_replace('/([A-Z]+)([A-Z])/', '\1_\2', preg_replace('/([a-z\d])([A-Z])/', '\1_\2', $word)));
     }
 
-
     /**
      * Capitalizes the first word and turns underscores into spaces and strips _id.
      * Like titleize(), this is meant for creating pretty output.
@@ -326,7 +314,6 @@ class Inflector
     {
         return ucfirst(strtolower(preg_replace(['/_id$/', '/_/'], ['', ' '], $word)));
     }
-
 
     /**
      * Removes the namespace part from the expression in the string.
@@ -343,7 +330,6 @@ class Inflector
         return preg_replace('/^.*::/', '', $class);
     }
 
-
     /**
      * Create the name of a table like Rails does for models to table names.
      * This method uses the pluralize method on the last word in the string.
@@ -358,7 +344,6 @@ class Inflector
         return self::$railsStyle ? self::underscore($table) : self::camelize($table);
     }
 
-
     /**
      * Create a class name from a plural table name like Rails does for table names to models.
      * Note that this returns a string and not a Class.
@@ -372,7 +357,6 @@ class Inflector
         return self::camelize(self::singularize($table));
     }
 
-
     /**
      * Creates a foreign key name from a class name.
      * Second parametr sets whether the method should put '_' between the name and 'id'/'Id'.
@@ -384,7 +368,6 @@ class Inflector
     {
         return self::underscore((self::isPlural($class) ? self::singularize($class) : self::demodulize($class))) . (self::$railsStyle ? '_id' : 'Id');
     }
-
 
     /**
      * Create a name of intersect entity of M:N relation of given tables.

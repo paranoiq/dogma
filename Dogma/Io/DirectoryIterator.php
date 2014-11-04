@@ -22,7 +22,6 @@ class DirectoryIterator extends FilesystemIterator
 
     private $flags;
 
-
     /**
      * @param string
      * @param integer
@@ -45,7 +44,6 @@ class DirectoryIterator extends FilesystemIterator
         }
     }
 
-
     /**
      * @param integer
      */
@@ -58,7 +56,6 @@ class DirectoryIterator extends FilesystemIterator
             parent::setFlags($flags);
         }
     }
-
 
     /**
      * @return \Dogma\Io\FileInfo|mixed

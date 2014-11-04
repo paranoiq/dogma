@@ -69,7 +69,6 @@ class File extends \Nette\Object
     /** @var \Dogma\Io\FileStat */
     private $stat;
 
-
     /**
      * Open file
      * @param string file name or stream resource
@@ -102,14 +101,12 @@ class File extends \Nette\Object
         }
     }
 
-
     public function __destruct()
     {
         if ($this->file) {
             fclose($this->file);
         }
     }
-
 
     /**
      * @return boolean
@@ -118,7 +115,6 @@ class File extends \Nette\Object
     {
         return (bool) $this->file;
     }
-
 
     /**
      * Close file
@@ -137,7 +133,6 @@ class File extends \Nette\Object
         $this->file = null;
     }
 
-
     /**
      * End of file reached?
      * @return boolean
@@ -152,7 +147,6 @@ class File extends \Nette\Object
 
         return $feof;
     }
-
 
     /**
      * Read binary data from file
@@ -179,7 +173,6 @@ class File extends \Nette\Object
 
         return $data;
     }
-
 
     /**
      * Copy range of data to another File or callback
@@ -217,7 +210,6 @@ class File extends \Nette\Object
         return $done;
     }
 
-
     /**
      * Get entire content of file. Beware of BIG files!
      * @return string
@@ -236,7 +228,6 @@ class File extends \Nette\Object
         return $str;
     }
 
-
     /**
      * Write binary data to file
      * @param string
@@ -252,7 +243,6 @@ class File extends \Nette\Object
             throw new FileException('Cannot write data to file.');
         }
     }
-
 
     /**
      * Truncate file and move pointer at the end
@@ -272,7 +262,6 @@ class File extends \Nette\Object
         $this->setPosition($size);
     }
 
-
     /**
      * Flush the file output buffer (fsync)
      */
@@ -288,7 +277,6 @@ class File extends \Nette\Object
         }
         $this->stat = null;
     }
-
 
     /**
      * Lock file. see PHP flock() documentation
@@ -313,7 +301,6 @@ class File extends \Nette\Object
         }
     }
 
-
     /**
      * Release file lock
      */
@@ -328,7 +315,6 @@ class File extends \Nette\Object
             throw new FileException('Cannot unlock file.');
         }
     }
-
 
     /**
      * Set the file pointer position
@@ -352,7 +338,6 @@ class File extends \Nette\Object
         }
     }
 
-
     /**
      * Get file pointer position
      * @return integer
@@ -371,7 +356,6 @@ class File extends \Nette\Object
         return $position;
     }
 
-
     /**
      * Get file name
      * @return string
@@ -385,7 +369,6 @@ class File extends \Nette\Object
 
         return $this->name;
     }
-
 
     /**
      * Get file info
@@ -413,7 +396,6 @@ class File extends \Nette\Object
         return $this->stat;
     }
 
-
     /**
      * Get stream meta data for files opened via HTTP, FTP…
      * @return array
@@ -422,7 +404,6 @@ class File extends \Nette\Object
     {
         return stream_get_meta_data($this->file);
     }
-
 
     /**
      * Get stream wraper headers (HTTP)
@@ -434,7 +415,6 @@ class File extends \Nette\Object
 
         return $data['wraper_data'];
     }
-
 
     //public function getResponseContext()
     //{
@@ -469,9 +449,7 @@ class File extends \Nette\Object
     ]
     */
 
-
     // factories -------------------------------------------------------------------------------------------------------
-
 
     /**
      * @return self
@@ -490,9 +468,7 @@ class File extends \Nette\Object
         return $file;
     }
 
-
     // internals -------------------------------------------------------------------------------------------------------
-
 
     private function testOpen()
     {

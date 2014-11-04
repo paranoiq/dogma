@@ -18,7 +18,6 @@ use Nette\Utils\ObjectMixin;
 class DateTime extends \DateTime implements SimpleValueObject
 {
 
-
     /**
      * @param string
      * @param \DateTimeZone
@@ -37,7 +36,6 @@ class DateTime extends \DateTime implements SimpleValueObject
         }
     }
 
-
     /**
      * @return self
      */
@@ -45,7 +43,6 @@ class DateTime extends \DateTime implements SimpleValueObject
     {
         return $this->setTimezone(new \DateTimeZone(date_default_timezone_get()));
     }
-
 
     /**
      * @param string
@@ -64,7 +61,6 @@ class DateTime extends \DateTime implements SimpleValueObject
         return $date;
     }
 
-
     /**
      * @return string
      */
@@ -72,7 +68,6 @@ class DateTime extends \DateTime implements SimpleValueObject
     {
         return $this->format('Y-m-d H:i:s');
     }
-
 
     /**
      * Call to undefined method.

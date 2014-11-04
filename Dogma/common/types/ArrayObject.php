@@ -29,7 +29,6 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
     /** @var bool */
     public $preserveKeys = false;
 
-
     /**
      * @param array|Traversable
      */
@@ -49,7 +48,6 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         }
     }
 
-
     /**
      * Set array to preserve-keys mode.
      * @param bool
@@ -59,7 +57,6 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         $this->preserveKeys = $preserveKeys;
     }
 
-
     /**
      * Returns array data.
      * @return array
@@ -68,7 +65,6 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
     {
         return $this->data;
     }
-
 
     /**
      * Get values of array (reindex)
@@ -85,7 +81,6 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         }
     }
 
-
     /**
      * Apply callback on each item. Calls: callback($item, $key, $param)
      * @param callback
@@ -95,7 +90,6 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
     {
         array_walk($this->data, $callback, $param);
     }
-
 
     /**
      * Search for given key.
@@ -107,10 +101,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         return array_key_exists($key, $this->data);
     }
 
-
-
     // filtering -------------------------------------------------------------------------------------------------------
-
 
     /**
      * Get slice of array by offset and limit. Allways preserves keys.
@@ -128,7 +119,6 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
             return new static(array_slice($this->data, $offset, $limit, $this->preserveKeys));
         }
     }
-
 
     /**
      * Filter items in array by callback function. Allways preserves keys.
@@ -161,7 +151,6 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         }
     }
 
-
     /**
      * Remove duplicit items from array. Allways preserves keys.
      * @param callback|Language\Collator|Regexp  optional
@@ -191,9 +180,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         }
     }
 
-
     // sorting ---------------------------------------------------------------------------------------------------------
-
 
     /**
      * Sort array using Collator, callback or standard sort function.
@@ -214,7 +201,6 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         }
     }
 
-
     /**
      * Reverse the order of items.
      */
@@ -223,9 +209,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         $this->data = array_reverse($this->data, $this->preserveKeys);
     }
 
-
     // items -----------------------------------------------------------------------------------------------------------
-
 
     /**
      * Search for item in array and return its key. Returns false if not found.
@@ -266,7 +250,6 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         return false;
     }
 
-
     /**
      * Whether the array contains the item.
      * @param mixed
@@ -277,7 +260,6 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
     {
         return $this->search($item, $collator) === false ? false : true;
     }
-
 
     /**
      * Adds items to the end of array.
@@ -290,7 +272,6 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         }
     }
 
-
     /**
      * Adds items to the beginning of array. Does not preserve keys.
      * @param array
@@ -302,7 +283,6 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
             array_unshift($this->data, $item);
         }
     }
-
 
     /**
      * Insert items at given position. Does not preserve keys.
@@ -321,7 +301,6 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         }
     }
 
-
     /**
      * Removes and returns first item. Does not preserve keys.
      * @param mixed
@@ -331,7 +310,6 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         return array_shift($this->data);
     }
 
-
     /**
      * Removes and returns last item. Does not preserve keys.
      * @param mixed
@@ -340,7 +318,6 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
     {
         return array_pop($this->data);
     }
-
 
     /**
      * Removes and returns item at given position. Allways preserves keys.
@@ -353,9 +330,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         return $buff;
     }
 
-
     // interfaces ------------------------------------------------------------------------------------------------------
-
 
     /**
      * Countable interface
@@ -366,7 +341,6 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         return count($this->data);
     }
 
-
     /**
      * IteratorAggregate interface
      * @return \ArrayIterator
@@ -375,7 +349,6 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
     {
         return new \ArrayIterator($this->data);
     }
-
 
     /**
      * ArrayAccess interface
@@ -431,9 +404,7 @@ class ArrayObject extends \Nette\Object implements \Countable, \IteratorAggregat
         unset($this->data[$key]);
     }
 
-
     // other -----------------------------------------------------------------------------------------------------------
-
 
     /**
      * Convert ArrayObject or Iterator to array.

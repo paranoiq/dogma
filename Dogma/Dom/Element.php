@@ -19,7 +19,6 @@ class Element extends \Dogma\Object
     /** @var \DOMElement */
     private $element;
 
-
     /**
      * @param \DOMNodeList
      * @param \Dogma\Dom\QueryEngine
@@ -30,7 +29,6 @@ class Element extends \Dogma\Object
         $this->engine = $engine;
     }
 
-
     /**
      * @param string
      * @return \DOMNode
@@ -39,7 +37,6 @@ class Element extends \Dogma\Object
     {
         return $this->engine->find($xpath, $this->element);
     }
-
 
     /**
      * @param string
@@ -50,7 +47,6 @@ class Element extends \Dogma\Object
         return $this->engine->findOne($xpath, $this->element);
     }
 
-
     /**
      * @param string
      * @return string|integer|float
@@ -59,7 +55,6 @@ class Element extends \Dogma\Object
     {
         return $this->engine->evaluate($xpath, $this->element);
     }
-
 
     /**
      * @param string|string[]
@@ -70,7 +65,6 @@ class Element extends \Dogma\Object
         return $this->engine->extract($target, $this->element);
     }
 
-
     /**
      * @return \DOMElement
      */
@@ -78,7 +72,6 @@ class Element extends \Dogma\Object
     {
         return $this->element;
     }
-
 
     /**
      * @return boolean
@@ -89,20 +82,17 @@ class Element extends \Dogma\Object
         return true;
     }
 
-
     public function &__get($name)
     {
         $val = $this->element->$name;
         return $val;
     }
 
-
     public function __call($name, $arg)
     {
         $args = func_get_args();
         return call_user_func(array($this->element, $name), array_shift($args));
     }
-
 
     public function dump()
     {

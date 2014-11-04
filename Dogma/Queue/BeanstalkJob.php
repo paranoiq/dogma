@@ -23,12 +23,10 @@ namespace Dogma\Queue;
 class BeanstalkJob extends \Dogma\Object
 {
 
-
     const DELAYED = 'delayed';
     const READY = 'ready';
     const RESERVED = 'reserved';
     const SUSPENDED = 'suspended';
-
 
     /** @var BeanstalkClient */
     private $connection;
@@ -44,7 +42,6 @@ class BeanstalkJob extends \Dogma\Object
 
     /** @var array */
     private $stats;
-
 
     /**
      * @param integer
@@ -62,7 +59,6 @@ class BeanstalkJob extends \Dogma\Object
         $this->stats = $stats;
     }
 
-
     /**
      * @return mixed
      */
@@ -70,7 +66,6 @@ class BeanstalkJob extends \Dogma\Object
     {
         return $this->data;
     }
-
 
     /**
      * @return integer
@@ -80,12 +75,10 @@ class BeanstalkJob extends \Dogma\Object
         return $this->id;
     }
 
-
     public function touch()
     {
         $this->connection->touch($this->id);
     }
-
 
     /**
      * @param integer|\DateTime
@@ -96,18 +89,15 @@ class BeanstalkJob extends \Dogma\Object
         $this->connection->release($this->id, $delay, $priority);
     }
 
-
     public function finish()
     {
         $this->connection->finish($this->id);
     }
 
-
     public function delete()
     {
         $this->connection->delete($this->id);
     }
-
 
     /**
      * @param integer
@@ -117,15 +107,12 @@ class BeanstalkJob extends \Dogma\Object
         $this->connection->suspend($this->id, $priority);
     }
 
-
     public function restore()
     {
         $this->connection->restore($this->id);
     }
 
-
     // job info & statistics -------------------------------------------------------------------------------------------
-
 
     /**
      * @return boolean
@@ -170,12 +157,10 @@ class BeanstalkJob extends \Dogma\Object
         return $this->__get('status') === self::SUSPENDED;
     }
 
-
     private function loadStats()
     {
         $this->stats = $this->connection->getJobStats($this->id);
     }
-
 
     /**
      * @param string

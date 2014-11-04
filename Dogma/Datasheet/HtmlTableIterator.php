@@ -27,7 +27,6 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator
     /** @var int */
     private $position;
 
-
     public function __construct(Element $table)
     {
         if ($table->nodeName !== 'table') {
@@ -37,7 +36,6 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator
         $this->table = $table;
     }
 
-
     public function rewind()
     {
         if (!$this->head) {
@@ -46,12 +44,10 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator
         $this->position = 0;
     }
 
-
     public function next()
     {
         $this->position++;
     }
-
 
     /**
      * @return boolean
@@ -61,7 +57,6 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator
         return $this->position < count($this->rows);
     }
 
-
     /**
      * @return integer
      */
@@ -69,7 +64,6 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator
     {
         return $this->position;
     }
-
 
     /**
      * @return string[]
@@ -79,7 +73,6 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator
         return $this->formatRow($this->rows->item($this->position));
     }
 
-
     private function processTable()
     {
         foreach ($this->table->find(':headrow/:cell') as $cell) {
@@ -87,7 +80,6 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator
         }
         $this->rows = $this->table->find(':bodyrow');
     }
-
 
     /**
      * @param \Dogma\Dom\Element

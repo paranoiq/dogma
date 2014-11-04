@@ -162,7 +162,6 @@ class QueryEngine extends \Dogma\Object
         'Dogma\\Dom\\QueryEngine::bool',
     ];
 
-
     /**
      * @param \DOMDocument
      */
@@ -173,7 +172,6 @@ class QueryEngine extends \Dogma\Object
         $this->xpath->registerNamespace('php', 'http://php.net/xpath');
         $this->xpath->registerPhpFunctions($this->userFunctions);
     }
-
 
     /**
      * @param string
@@ -200,7 +198,6 @@ class QueryEngine extends \Dogma\Object
         $this->xpath->registerPhpFunctions($this->userFunctions);
     }
 
-
     /**
      * @param string
      * @param string
@@ -209,7 +206,6 @@ class QueryEngine extends \Dogma\Object
     {
         $this->xpath->registerNamespace($prefix, $uri);
     }
-
 
     /**
      * Find nodes
@@ -231,7 +227,6 @@ class QueryEngine extends \Dogma\Object
 
         return new NodeList($list, $this);
     }
-
 
     /**
      * Find one node
@@ -257,7 +252,6 @@ class QueryEngine extends \Dogma\Object
 
         return $this->wrap($list->item(0));
     }
-
 
     /**
      * Evaluate a query
@@ -301,7 +295,6 @@ class QueryEngine extends \Dogma\Object
         }
     }
 
-
     /**
      * Extract values from paths defined by one or more queries
      * @param string|string[]
@@ -325,9 +318,7 @@ class QueryEngine extends \Dogma\Object
         return $value;
     }
 
-
     // internals -------------------------------------------------------------------------------------------------------
-
 
     /**
      * @param string
@@ -361,7 +352,6 @@ class QueryEngine extends \Dogma\Object
             return $node->textContent;
         }
     }
-
 
     /**
      * Translates query to pure XPath syntax
@@ -412,7 +402,6 @@ class QueryEngine extends \Dogma\Object
         return $query;
     }
 
-
     /**
      * Wrap element in DomElement object
      * @param \DOMNode
@@ -427,9 +416,7 @@ class QueryEngine extends \Dogma\Object
         }
     }
 
-
     // extension functions ---------------------------------------------------------------------------------------------
-
 
     /**
      * Test with regular expression and return matching string
@@ -446,7 +433,6 @@ class QueryEngine extends \Dogma\Object
         return null;
     }
 
-
     /**
      * Replace substring with regular expression
      * @param string
@@ -458,7 +444,6 @@ class QueryEngine extends \Dogma\Object
     {
         return Strings::replace($string, $pattern, $replacement);
     }
-
 
     /**
      * Format date in standard ISO format Y-m-d
@@ -482,7 +467,6 @@ class QueryEngine extends \Dogma\Object
         return $date->format('Y-m-d');
     }
 
-
     /**
      * Format date in standard ISO format Y-m-d H:i:s
      * @param string
@@ -504,7 +488,6 @@ class QueryEngine extends \Dogma\Object
 
         return $date->format('Y-m-d H:i:s');
     }
-
 
     /**
      * Detect boolean value

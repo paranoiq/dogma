@@ -42,7 +42,6 @@ class Collator extends \Nette\Object
     /** @var integer */
     protected $level;
 
-
     /**
      * @param string
      * @param integer
@@ -52,7 +51,6 @@ class Collator extends \Nette\Object
         $this->locale = $locale;
         $this->level = $collationLevel;
     }
-
 
     private function init()
     {
@@ -64,7 +62,6 @@ class Collator extends \Nette\Object
         $this->setCollationLevel($this->level);
     }
 
-
     /**
      * Comparison callback
      * @param string
@@ -75,7 +72,6 @@ class Collator extends \Nette\Object
     {
         return $this->compare($str1, $str2);
     }
-
 
     /**
      * Comapre two strings
@@ -96,7 +92,6 @@ class Collator extends \Nette\Object
         return $result;
     }
 
-
     /**
      * Get locale code
      * @param integer
@@ -115,7 +110,6 @@ class Collator extends \Nette\Object
         return $result;
     }
 
-
     /**
      * Returns ISO language code
      * @return string
@@ -124,7 +118,6 @@ class Collator extends \Nette\Object
     {
         return substr($this->getLocale(), 0, 2);
     }
-
 
     /**
      * Get collation level
@@ -146,7 +139,6 @@ class Collator extends \Nette\Object
         return $result;
     }
 
-
     /**
      * Set collation level
      * @param integer
@@ -167,7 +159,6 @@ class Collator extends \Nette\Object
         }
     }
 
-
     /**
      * Get attribute value
      * @param string
@@ -186,7 +177,6 @@ class Collator extends \Nette\Object
         return $result === \Collator::ON ? self::ON : ($result === \Collator::OFF ? self::OFF : ($result === \Collator::DEFAULT_VALUE ? self::AUTO : $result));
     }
 
-
     /**
      * Set attribute value
      * @param string
@@ -204,7 +194,6 @@ class Collator extends \Nette\Object
             $this->throwError('Setting attribute');
         }
     }
-
 
     private function throwError($action)
     {

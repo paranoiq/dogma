@@ -37,7 +37,6 @@ class DogmaLoader
         'Dogma\\Normalizer' => '/common/Normalizer',
     ];
 
-
     /**
      * Returns singleton instance with lazy instantiation
      * @return static

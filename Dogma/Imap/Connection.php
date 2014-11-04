@@ -60,7 +60,6 @@ class Connection extends \Dogma\Object
     /** @var callback(string $data -> \Dogma\Mail\Message) */
     private $messageFactory = 'Dogma\\Imap\\Connection::createMessage';
 
-
     /**
      * @param string
      * @param string
@@ -77,7 +76,6 @@ class Connection extends \Dogma\Object
         $this->ssl = $ssl;
     }
 
-
     /**
      * @param callable
      */
@@ -89,7 +87,6 @@ class Connection extends \Dogma\Object
 
         $this->messageFactory = $factory;
     }
-
 
     /**
      * Connect to server
@@ -119,7 +116,6 @@ class Connection extends \Dogma\Object
         $this->ref = sprintf('{%s:%s}', $this->host, $this->port);
     }
 
-
     /**
      * Check if still connected
      * @return boolean
@@ -135,7 +131,6 @@ class Connection extends \Dogma\Object
         ///
     }
 
-
     /**
      * Disconnect from server
      */
@@ -149,7 +144,6 @@ class Connection extends \Dogma\Object
         }
     }
 
-
     /**
      * @return array
      */
@@ -162,9 +156,7 @@ class Connection extends \Dogma\Object
         return [$q['storage']];
     }
 
-
     // folders ---------------------------------------------------------------------------------------------------------
-
 
     /**
      * Get tree structure of folders in mailbox
@@ -192,7 +184,6 @@ class Connection extends \Dogma\Object
         return $struct;
     }
 
-
     /**
      * Return list of folders in mailbox
      * @param string
@@ -216,7 +207,6 @@ class Connection extends \Dogma\Object
 
         return $folders;
     }
-
 
     /**
      * Get info about folders
@@ -248,7 +238,6 @@ class Connection extends \Dogma\Object
         return array_values($info);
     }
 
-
     /**
      * Get IMAP folder status.
      * @param string
@@ -260,7 +249,6 @@ class Connection extends \Dogma\Object
         return imap_status($this->handler, $this->ref . $this->encode($name), SA_ALL);
         ///
     }
-
 
     /**
      * Get IMAP folder info.
@@ -278,9 +266,7 @@ class Connection extends \Dogma\Object
         ///
     }
 
-
     // subscriptions ---------------------------------------------------------------------------------------------------
-
 
     /**
      * Return list of subscribed folders in mailbox
@@ -299,7 +285,6 @@ class Connection extends \Dogma\Object
         return $this->listFolders($filter, false);
     }
 
-
     /**
      * Return list of unsubscribed folders in mailbox
      * @param string
@@ -313,7 +298,6 @@ class Connection extends \Dogma\Object
         return array_diff($all, $sub);
     }
 
-
     /**
      * Mark folder as subscribed (visible)
      * @param string
@@ -325,7 +309,6 @@ class Connection extends \Dogma\Object
         ///
     }
 
-
     /**
      * Mark folder as unsubscribed (invidible)
      * @param string
@@ -336,7 +319,6 @@ class Connection extends \Dogma\Object
         imap_unsubscribe($this->handler, $this->ref . $this->encode($path));
         ///
     }
-
 
     /**
      * Tells if given folder is subscribed
@@ -352,9 +334,7 @@ class Connection extends \Dogma\Object
         return in_array($name, $this->subscribed);
     }
 
-
     // folder manipulation ---------------------------------------------------------------------------------------------
-
 
     /**
      * Select folder and return a Folder object
@@ -378,7 +358,6 @@ class Connection extends \Dogma\Object
         return $this->folders[$name] = new Folder($this, $name, $f[0]->attributes);
     }
 
-
     /**
      * Returns name of selected folder
      * @return string|null
@@ -387,7 +366,6 @@ class Connection extends \Dogma\Object
     {
         return $this->selectedFolder;
     }
-
 
     /**
      * Create new folder in mailbox
@@ -400,7 +378,6 @@ class Connection extends \Dogma\Object
         ///
     }
 
-
     /**
      * Delete folder from mailbox
      * @param string
@@ -411,7 +388,6 @@ class Connection extends \Dogma\Object
         imap_deletemailbox($this->handler, $this->ref . $this->encode($path));
         ///
     }
-
 
     /**
      * Rename folder to a new name
@@ -424,9 +400,7 @@ class Connection extends \Dogma\Object
         ///
     }
 
-
     // messages --------------------------------------------------------------------------------------------------------
-
 
     /**
      * Get list of messages from current folde.
@@ -472,7 +446,6 @@ class Connection extends \Dogma\Object
 
         return array_values($messages);
     }
-
 
     /**
      * Compile IMAP search criteria
@@ -538,7 +511,6 @@ class Connection extends \Dogma\Object
         return implode(' ', $query);
     }
 
-
     /**
      * Get Message object
      * @param integer
@@ -548,7 +520,6 @@ class Connection extends \Dogma\Object
     {
         return call_user_func($this->messageFactory, $this->getRawMessageHeader($uid) . "\r\n\r\n" . $this->getMessageBody($uid));
     }
-
 
     /**
      * Retrieve message body.
@@ -562,7 +533,6 @@ class Connection extends \Dogma\Object
         ///
     }
 
-
     public function getRawMessageHeader($uid)
     {
         ///
@@ -570,9 +540,7 @@ class Connection extends \Dogma\Object
         ///
     }
 
-
     // internals -------------------------------------------------------------------------------------------------------
-
 
     /**
      * Encode from UTF-8 to UTF-7
@@ -584,7 +552,6 @@ class Connection extends \Dogma\Object
         return mb_convert_encoding($str, 'UTF7-IMAP', 'UTF-8');
     }
 
-
     /**
      * Decode from UTF-7 to UTF-8
      * @param string
@@ -594,7 +561,6 @@ class Connection extends \Dogma\Object
     {
         return mb_convert_encoding($str, 'UTF-8', 'UTF7-IMAP');
     }
-
 
     /**
      * @param string

@@ -18,7 +18,6 @@ class ErrorHelper
     const UNIX = 2;
     const WINDOWS = 3;
 
-
     /**
      * Get error object for given error number.
      * @param integer|string
@@ -50,7 +49,6 @@ class ErrorHelper
         return false;
     }
 
-
     /**
      * Get error message for given error number.
      * @param integer
@@ -65,7 +63,6 @@ class ErrorHelper
 
         return false;
     }
-
 
     /**
      * Detect underlying operation system family.

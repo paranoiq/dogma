@@ -54,7 +54,6 @@ class Message extends \Dogma\Object
     /** @var callback(string $address, string $name -> \Dogma\Mail\Address) */
     private $addressFactory;
 
-
     /**
      * @param string|\Dogma\Io\File
      */
@@ -98,7 +97,6 @@ class Message extends \Dogma\Object
         mailparse_msg_free($handler);
     }
 
-
     /**
      * @param callable
      */
@@ -110,7 +108,6 @@ class Message extends \Dogma\Object
 
         $this->addressFactory = $factory;
     }
-
 
     /**
      * Returns all email headers.
@@ -125,7 +122,6 @@ class Message extends \Dogma\Object
 
         return $this->headers;
     }
-
 
     /**
      * Returns an email header.
@@ -145,7 +141,6 @@ class Message extends \Dogma\Object
         return null;
     }
 
-
     /**
      * Return content types of body (usualy text/plain and text/html).
      * @return string[]
@@ -164,7 +159,6 @@ class Message extends \Dogma\Object
 
         return $ct;
     }
-
 
     /**
      * Returns message body of given type.
@@ -191,7 +185,6 @@ class Message extends \Dogma\Object
         return null;
     }
 
-
     /**
      * Get the headers for the message body part.
      * @param string
@@ -213,7 +206,6 @@ class Message extends \Dogma\Object
 
         return [];
     }
-
 
     /**
      * Returns attachments. May be filtered by mime type.
@@ -246,7 +238,6 @@ class Message extends \Dogma\Object
         return $attachments;
     }
 
-
     /**
      * @param string
      * @return string|\DateTime
@@ -264,9 +255,7 @@ class Message extends \Dogma\Object
         return $val;
     }
 
-
     // internals -------------------------------------------------------------------------------------------------------
-
 
     /**
      * Decode message part from transfer encoding.
@@ -290,7 +279,6 @@ class Message extends \Dogma\Object
             throw new ParsingException('Unknown transfer encoding.');
         }
     }
-
 
     /**
      * Find and decode encoded headers (format: =?charset?te?header?=)
@@ -319,7 +307,6 @@ class Message extends \Dogma\Object
         }
     }
 
-
     /**
      * Parse addresses from mail header (from, to, cc, bcc, reply-to, return-path, delivered-to, sender…)
      * @param string
@@ -341,7 +328,6 @@ class Message extends \Dogma\Object
         return $arr;
     }
 
-
     /**
      * @param string
      * @param string
@@ -350,7 +336,6 @@ class Message extends \Dogma\Object
     {
         return new Address($address, $name);
     }
-
 
     /**
      * Decode email header.
@@ -381,7 +366,6 @@ class Message extends \Dogma\Object
         return $header;
     }
 
-
     /**
      * @internal
      * @param string
@@ -395,7 +379,6 @@ class Message extends \Dogma\Object
 
         return iconv('utf-8', $charset, $string);
     }
-
 
     /**
      * @param string[]
@@ -417,7 +400,6 @@ class Message extends \Dogma\Object
         return $headers;
     }
 
-
     /**
      * @param string[]
      * @return string|null
@@ -435,7 +417,6 @@ class Message extends \Dogma\Object
             return $this->file->read($length);
         }
     }
-
 
     /**
      * Get attachment data as string or temporary File object (see File::$bigFileTreshold).

@@ -28,7 +28,6 @@ class Connection extends \Nette\Database\Connection
     /** @var Debugging\MysqlDebugger */
     private $debugger;
 
-
     /**
      * @param string
      * @param string
@@ -74,7 +73,6 @@ class Connection extends \Nette\Database\Connection
         $this->setAttribute(\PDO::ATTR_STATEMENT_CLASS, ['Dogma\Database\Statement', [$this]]);
     }
 
-
     /**
      * @param SimpleMapper
      */
@@ -82,7 +80,6 @@ class Connection extends \Nette\Database\Connection
     {
         $this->mapper = $mapper;
     }
-
 
     /**
      * @return EntityMapper
@@ -92,7 +89,6 @@ class Connection extends \Nette\Database\Connection
         return $this->mapper;
     }
 
-
     /**
      * @param Normalizer
      */
@@ -101,7 +97,6 @@ class Connection extends \Nette\Database\Connection
         $this->normalizer = $normalizer;
     }
 
-
     /**
      * @return Normalizer
      */
@@ -109,7 +104,6 @@ class Connection extends \Nette\Database\Connection
     {
         return $this->normalizer;
     }
-
 
     /**
      * @param string
@@ -156,7 +150,6 @@ class Connection extends \Nette\Database\Connection
         }
     }
 
-
     /**
      * @param  string statement
      * @param  mixed
@@ -173,7 +166,6 @@ class Connection extends \Nette\Database\Connection
         return $cols;
     }
 
-
     /**
      * Creates selector for table.
      * @param  string
@@ -184,7 +176,6 @@ class Connection extends \Nette\Database\Connection
         return new Table\Selection($table, $this);
     }
 
-
     /**
      * Alias for beginTransaction()
      * @return bool
@@ -193,7 +184,6 @@ class Connection extends \Nette\Database\Connection
     {
         return $this->beginTransaction();
     }
-
 
     // QueryComposer ---------------------------------------------------------------------------------------------------
 

@@ -49,7 +49,6 @@ class FileInfo extends \SplFileInfo
     __toString() ???
     */
 
-
     /**
      * @param string
      */
@@ -62,7 +61,6 @@ class FileInfo extends \SplFileInfo
         }
     }*/
 
-
     /**
      * Open the file
      * @param string
@@ -74,7 +72,6 @@ class FileInfo extends \SplFileInfo
         return new File($this->getRealPath(), $mode, $streamContext);
     }
 
-
     /**
      * @param string
      * @param resource
@@ -85,7 +82,6 @@ class FileInfo extends \SplFileInfo
         return $this->open($mode, $streamContext);
     }
 
-
     /**
      * Is current or parent directory
      * @return boolean
@@ -95,9 +91,7 @@ class FileInfo extends \SplFileInfo
         return $this->getFilename() === '.' | $this->getFilename() === '..';
     }
 
-
     // Nette\Object magic ----------------------------------------------------------------------------------------------
-
 
     /**
      * Call to undefined method.
@@ -110,7 +104,6 @@ class FileInfo extends \SplFileInfo
         return ObjectMixin::call($this, $name, $args);
     }
 
-
     /**
      * Call to undefined static method.
      * @param string
@@ -122,7 +115,6 @@ class FileInfo extends \SplFileInfo
         ObjectMixin::callStatic(get_called_class(), $name, $args);
     }
 
-
     /**
      * Returns property value. Do not call directly.
      * @param string
@@ -132,7 +124,6 @@ class FileInfo extends \SplFileInfo
     {
         return ObjectMixin::get($this, $name);
     }
-
 
     /**
      * Sets value of a property. Do not call directly.
@@ -145,7 +136,6 @@ class FileInfo extends \SplFileInfo
         ObjectMixin::set($this, $name, $value);
     }
 
-
     /**
      * Is property defined?
      * @param string
@@ -155,7 +145,6 @@ class FileInfo extends \SplFileInfo
     {
         return ObjectMixin::has($this, $name);
     }
-
 
     /**
      * Access to undeclared property.

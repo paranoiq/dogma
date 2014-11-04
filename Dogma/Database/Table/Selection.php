@@ -20,7 +20,6 @@ class Selection extends \Nette\Database\Table\Selection
     /** @var \Dogma\Database\Connection */
     protected $connection;
 
-
     /**
      * @param array
      * @return \Dogma\Model\ActiveEntity|ActiveRow
@@ -34,7 +33,6 @@ class Selection extends \Nette\Database\Table\Selection
         }
     }
 
-
     /**
      * Inserts row in a table.
      * @param  array|\Traversable|Table\Selection
@@ -46,7 +44,6 @@ class Selection extends \Nette\Database\Table\Selection
         $row = parent::insert($data);
         return $map ? $this->map($row) : $row;
     }
-
 
     /**
      * Inserts row in a table.
@@ -82,7 +79,6 @@ class Selection extends \Nette\Database\Table\Selection
         return $map ? $this->map($row) : $row;
     }
 
-
     /**
      * @param array|Traversable|Table\Selection
      * @return int
@@ -106,7 +102,6 @@ class Selection extends \Nette\Database\Table\Selection
         return 0;
     }
 
-
     /**
      * Returns row specified by primary key.
      * @param  mixed
@@ -118,13 +113,11 @@ class Selection extends \Nette\Database\Table\Selection
         return $map ? $this->map($row) : $row;
     }
 
-
     /** @return ActiveRow */
     public function current()
     {
         return $this->map(parent::current()); /// always map?
     }
-
 
     /**
      * Returns specified row.
@@ -135,7 +128,6 @@ class Selection extends \Nette\Database\Table\Selection
     {
         return parent::offsetGet($key); /// never map?
     }
-
 
     /**
      * Returns next row of result.

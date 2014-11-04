@@ -19,7 +19,6 @@ class SqlFragment
     /** @var array */
     public $args = [];
 
-
     /**
      * SQL query Fragment.
      * @param  string  statement

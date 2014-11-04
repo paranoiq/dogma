@@ -12,7 +12,6 @@ class BeanstalkClientExtended extends BeanstalkClient
     /** @var \Dogma\Queue\IMetadataStorage */
     private $storage;
 
-
     /**
      * @param string $host server address
      * @param integer $port server port
@@ -30,7 +29,6 @@ class BeanstalkClientExtended extends BeanstalkClient
         parent::__construct($host, $port, $timeout, $persistent);
         $this->storage = $storage;
     }
-
 
     /**
      * Insert a job into the queue. Do not insert if it is already there.

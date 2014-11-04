@@ -27,7 +27,6 @@ class Address extends \Dogma\Object
     //** @var bool */
     //private $group;
 
-
     /**
      * @param string
      * @param string
@@ -38,20 +37,17 @@ class Address extends \Dogma\Object
         $this->name = $name;
     }
 
-
     /** @return string */
     public function getAddress()
     {
         return $this->address;
     }
 
-
     /** @return string */
     public function getName()
     {
         return $this->name;
     }
-
 
     public function __toString()
     {

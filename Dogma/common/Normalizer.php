@@ -50,7 +50,6 @@ class Normalizer extends \Dogma\Object
     /** @var string[] user types (Enum, Set, Validator…) */
     private $types = [];
 
-
     /**
      * @param string
      * @param string
@@ -69,7 +68,6 @@ class Normalizer extends \Dogma\Object
         $this->formats[$option] = $format;
     }
 
-
     /**
      * @param string
      * @param string|string[]
@@ -82,7 +80,6 @@ class Normalizer extends \Dogma\Object
             parent::__set($name, $value);
         }
     }
-
 
     /**
      * @param object
@@ -105,7 +102,6 @@ class Normalizer extends \Dogma\Object
             throw new \InvalidArgumentException('Unsupported type.');
         }
     }
-
 
     /**
      * Autodetect type and normalize
@@ -148,7 +144,6 @@ class Normalizer extends \Dogma\Object
         return $value;
     }
 
-
     /**
      * Detects null from string. Returns true on match, false otherwise.
      * @param string
@@ -168,7 +163,6 @@ class Normalizer extends \Dogma\Object
 
         return false;
     }
-
 
     /**
      * Detects null from string. Returns true on success, false otherwise.
@@ -195,7 +189,6 @@ class Normalizer extends \Dogma\Object
         return null;
     }
 
-
     /**
      * @param string
      * @return integer|null
@@ -212,7 +205,6 @@ class Normalizer extends \Dogma\Object
 
         return (int) str_replace($this->formats['thousandSeparator'], '', $value);
     }
-
 
     /**
      * @param string
@@ -239,7 +231,6 @@ class Normalizer extends \Dogma\Object
         return (float) str_replace([$this->formats['thousandSeparator'], $this->formats['decimalPoint']], ['', '.'], $value);
     }
 
-
     /**
      * @param string
      * @return \Dogma\Date|null
@@ -260,7 +251,6 @@ class Normalizer extends \Dogma\Object
         return $date;
     }
 
-
     /**
      * @param string
      * @return \Dogma\DateTime|null
@@ -280,7 +270,6 @@ class Normalizer extends \Dogma\Object
 
         return $datetime;
     }
-
 
     /**
      * Normalize value
@@ -339,7 +328,6 @@ class Normalizer extends \Dogma\Object
         }
     }
 
-
     /**
      * Format value to string
      * @todo tolerantní nebo striktní chování?
@@ -393,7 +381,6 @@ class Normalizer extends \Dogma\Object
         }
     }
 
-
     /**
      * @param \DateTime
      * @return string
@@ -402,7 +389,6 @@ class Normalizer extends \Dogma\Object
     {
         return $date->format($this->formats['date']);
     }
-
 
     /**
      * @param \DateTime

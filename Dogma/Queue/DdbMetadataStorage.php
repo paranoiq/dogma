@@ -23,14 +23,12 @@ class DdbMetadataStorage extends \Dogma\Object implements IMetadataStorage
     /** @var string */
     private $database;
 
-
     public function __construct(\Dogma\Database\Connection $connection, $tablePrefix = 'queue_', $database = '')
     {
         $this->connection = $connection;
         $this->tablePrefix = $tablePrefix;
         $this->database = $database;
     }
-
 
     /**
      * @param string
@@ -40,7 +38,6 @@ class DdbMetadataStorage extends \Dogma\Object implements IMetadataStorage
     {
         return $this->database . '.' . $this->tablePrefix . $queue;
     }
-
 
     public function insertJob($queue, $jobId, $data)
     {
@@ -54,18 +51,15 @@ class DdbMetadataStorage extends \Dogma\Object implements IMetadataStorage
         );
     }
 
-
     public function findJob($queue, $data)
     {
         return $this->connection->fetchColumn('SELECT `job_id` FROM ' . $this->getTable($queue) . 'WHERE `data` = ', $data);
     }
 
-
     public function deleteJob($queue, $jobId)
     {
         $this->connection->exec('DELETE ' . $this->getTable($queue) . 'WHERE `job_id` = ', $jobId);
     }
-
 
     public function clear($queue, \DateTime $time = null)
     {

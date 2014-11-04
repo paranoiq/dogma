@@ -20,12 +20,10 @@ class EntityFactory extends \Dogma\Object
     /** @var \Nette\DI\Container */
     //private $context;
 
-
     //public function __construct(\Nette\DI\Container $context)
     //{
     //    $this->context = $context;
     //}
-
 
     /**
      * @param \Nette\Database\Table\ActiveRow
@@ -36,7 +34,6 @@ class EntityFactory extends \Dogma\Object
     //{
     //    return $this->context->createInstance($class, [$row]);
     //}
-
 
     /**
      * @return string[]
@@ -79,7 +76,6 @@ class EntityFactory extends \Dogma\Object
         return array_keys($props);
     }
 
-
     /**
      * @param string
      * @param string
@@ -89,7 +85,6 @@ class EntityFactory extends \Dogma\Object
     {
         return isset($this->meta[$class][$property]);
     }
-
 
     /**
      * @param string
@@ -112,7 +107,6 @@ class EntityFactory extends \Dogma\Object
 
         return $instance;
     }
-
 
     /**
      * @param string
@@ -149,7 +143,6 @@ class EntityFactory extends \Dogma\Object
         return $instance;
     }
 
-
     /**
      * @param object|string
      * @return \Nette\Reflection\ClassType
@@ -167,7 +160,6 @@ class EntityFactory extends \Dogma\Object
         return $this->reflections[$class];
     }
 
-
     /**
      * @param string
      * @param string
@@ -182,7 +174,6 @@ class EntityFactory extends \Dogma\Object
 
         return $namespace . $type;
     }
-
 
     /**
      * @param string

@@ -19,9 +19,7 @@ use Dogma;
 class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
 {
 
-
     private $flags;
-
 
     /**
      * @param string
@@ -45,7 +43,6 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
         }
     }
 
-
     /**
      * @param integer
      */
@@ -58,7 +55,6 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
             parent::setFlags($flags);
         }
     }
-
 
     /**
      * @return \Dogma\Io\FileInfo|mixed

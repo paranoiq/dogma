@@ -21,7 +21,6 @@ use Dogma\Language\Inflector;
 class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggregate
 {
 
-
     /** @var \Nette\Database\Table\ActiveRow */
     protected $row;
 
@@ -30,7 +29,6 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
 
     /** @var mixed[] property objects cache */
     private $props = [];
-
 
     public function __construct(\Nette\Database\Table\ActiveRow $row, EntityFactory $factory)
     {
@@ -42,7 +40,6 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
         }
     }
 
-
     /**
      * Save modification to database.
      * @return boolean
@@ -52,7 +49,6 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
         return (bool) $this->row->update();
     }
 
-
     /**
      * Delete entity from database.
      * @return boolean
@@ -61,7 +57,6 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
     {
         return (bool) $this->row->delete();
     }
-
 
     /**
      * Get table selection
@@ -76,9 +71,7 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
         }
     }
 
-
     // interfaces ------------------------------------------------------------------------------------------------------
-
 
     /**
      * @return \ArrayIterator
@@ -88,7 +81,6 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
         /// iterate entity fields?
         return $this->row->getIterator();
     }
-
 
     /**
      * @param string
@@ -113,7 +105,6 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
         return $var;
     }
 
-
     /**
      * @param string
      * @param mixed
@@ -131,7 +122,6 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
         }
     }
 
-
     /**
      * @param string
      * @return boolean
@@ -141,7 +131,6 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
         return $this->row->__isset(Inflector::underscore($name));
     }
 
-
     /**
      * @param string
      */
@@ -149,7 +138,6 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
     {
         $this->row->__unset(Inflector::underscore($name));
     }
-
 
     /**
      * @param string
@@ -160,7 +148,6 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
         return $this->__get($name);
     }
 
-
     /**
      * @param string
      * @param mixed
@@ -169,7 +156,6 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
     {
         $this->__set($name, $value);
     }
-
 
     /**
      * @param string
@@ -180,7 +166,6 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
         return $this->__isset($name);
     }
 
-
     /**
      * @param string
      */
@@ -188,7 +173,6 @@ class ActiveEntity extends \Dogma\Object implements \ArrayAccess, \IteratorAggre
     {
         $this->__unset($name);
     }
-
 
     /**
      * @return string

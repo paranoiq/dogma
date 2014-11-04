@@ -32,7 +32,6 @@ class TextFile extends File
     /** @var string */
     protected $nl = self::UNIX;
 
-
     /**
      * @param string
      */
@@ -41,7 +40,6 @@ class TextFile extends File
         $this->encoding = strtolower($encoding);
     }
 
-
     /**
      * @param string
      */
@@ -49,7 +47,6 @@ class TextFile extends File
     {
         $this->nl = $nl;
     }
-
 
     /**
      * @return string
@@ -60,7 +57,6 @@ class TextFile extends File
         return $this->decode(fgetc($this->file));
     }*/
 
-
     /**
      * @param string
      */
@@ -68,7 +64,6 @@ class TextFile extends File
     {
         $this->write($this->encode($char));
     }*/
-
 
     /**
      * @return string
@@ -88,7 +83,6 @@ class TextFile extends File
         return $this->decode($line);
     }
 
-
     /**
      * @param string
      */
@@ -96,7 +90,6 @@ class TextFile extends File
     {
         $this->write($this->encode($line) . $this->nl);
     }
-
 
     /**
      * @param string
@@ -110,7 +103,6 @@ class TextFile extends File
 
         return iconv($this->encoding, self::$internalEncoding, $string);
     }
-
 
     /**
      * @param string

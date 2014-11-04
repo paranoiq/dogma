@@ -20,7 +20,6 @@ final class ReflectionCache
     private static $properties = [];
     private static $allProps = [];
 
-
     /**
      * Returns class reflection.
      * @param string
@@ -33,7 +32,6 @@ final class ReflectionCache
         }
         return self::$classes[$className];
     }
-
 
     /**
      * Returns unlocked reflection of an object property.
@@ -55,7 +53,6 @@ final class ReflectionCache
         }
         return self::$properties[$className][$propertyName];
     }
-
 
     /**
      * Returns class reflection and unlocked reflections of its properties.

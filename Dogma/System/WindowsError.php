@@ -2763,7 +2763,6 @@ class WindowsError extends \Dogma\Enum implements Error
     const ERROR_STATE_CONTAINER_NAME_SIZE_LIMIT_EXCEEDED = 15818;
     const ERROR_API_UNAVAILABLE = 15841;
 
-
     /**
      * Get formated error description
      * @return string

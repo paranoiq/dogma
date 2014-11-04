@@ -30,13 +30,11 @@ class SqlPreprocessor
     /** @var array of parameters to be processed by PDO */
     private $remaining;
 
-
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
         $this->driver = $connection->getSupplementalDriver();
     }
-
 
     /**
      * Format parameters and compile the query.
@@ -80,7 +78,6 @@ class SqlPreprocessor
         return [$this->sql, $this->remaining];
     }
 
-
     /** @internal */
     public function splitCb($m)
     {
@@ -96,7 +93,6 @@ class SqlPreprocessor
         }
     }
 
-
     //** @internal */
     /*public function substituteCb($m)
     {
@@ -109,7 +105,6 @@ class SqlPreprocessor
             return isset($this->connection->substitutions[$s]) ? $this->connection->substitutions[$s] : $m;
         }
     }*/
-
 
     /**
      * Format each argument depending on its context.
@@ -131,7 +126,6 @@ class SqlPreprocessor
             $this->sql .= $this->formatValue($arg);
         }
     }
-
 
     /**
      * Detect array mode from previous part of statement.
@@ -161,7 +155,6 @@ class SqlPreprocessor
             return '';
         }
     }
-
 
     /**
      * Process array argument.
@@ -199,7 +192,6 @@ class SqlPreprocessor
         }
     }
 
-
     /**
      * @param array
      */
@@ -229,7 +221,6 @@ class SqlPreprocessor
         }
     }
 
-
     /**
      * @param array
      */
@@ -257,7 +248,6 @@ class SqlPreprocessor
         }
         $this->sql .= '(' . implode(' AND ', $vx) . ')';
     }
-
 
     /**
      * Format a value for use in statement.

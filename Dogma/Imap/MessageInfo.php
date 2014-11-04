@@ -25,7 +25,6 @@ class MessageInfo extends \Dogma\Object
     /** @var \Dogma\Mail\Message */
     private $message;
 
-
     /**
      * @param \Dogma\Imap\Connection
      * @param integer
@@ -35,7 +34,6 @@ class MessageInfo extends \Dogma\Object
         $this->imap = $imap;
         $this->uid = $uid;
     }
-
 
     /**
      * Get the Message
@@ -50,7 +48,6 @@ class MessageInfo extends \Dogma\Object
         return $this->message;
     }
 
-
     /**
      * @return string
      */
@@ -58,7 +55,6 @@ class MessageInfo extends \Dogma\Object
     {
         return $this->imap->getMessageBody($this->uid);
     }*/
-
 
     /**
      * @return string

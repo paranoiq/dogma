@@ -13,7 +13,6 @@ namespace Dogma\Dom;
 class Dumper
 {
 
-
     /**
      * @param \Dogma\Dom\Element|\DOMNode
      * @param integer
@@ -75,7 +74,6 @@ class Dumper
             echo '<code></pre>';
         }
     }
-
 
     /**
      * @param \DOMNode $node

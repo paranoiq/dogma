@@ -45,7 +45,6 @@ class String implements \ArrayAccess
     /** @var string */
     protected $string = '';
 
-
     /**
      * @param string
      */
@@ -53,7 +52,6 @@ class String implements \ArrayAccess
     {
         $this->append($string);
     }
-
 
     /**
      * @return string
@@ -63,7 +61,6 @@ class String implements \ArrayAccess
         return $this->string;
     }
 
-
     /**
      * Get string legnth
      * @return int
@@ -72,7 +69,6 @@ class String implements \ArrayAccess
     {
         return mb_strlen($this->string);
     }
-
 
     /**
      * Append to the end of string
@@ -85,7 +81,6 @@ class String implements \ArrayAccess
         return $this;
     }
 
-
     /**
      * Prepend to the beginning of string
      * @param string|\Dogma\String
@@ -97,9 +92,7 @@ class String implements \ArrayAccess
         return $this;
     }
 
-
     ///
-
 
     /**
      * Test equality with another string
@@ -110,7 +103,6 @@ class String implements \ArrayAccess
     {
         return $this->compareTo($string, $collator) === 0;
     }
-
 
     /**
      * Compare to another string
@@ -129,12 +121,10 @@ class String implements \ArrayAccess
         return $collator->compare($this->string, $string);
     }
 
-
     public function contains($string, $collation = null)
     {
         ///
     }
-
 
     ///
     /*private function testWithCollator($value)
@@ -183,7 +173,6 @@ class String implements \ArrayAccess
         }
     }*/
 
-
     /**
      * Normalize string
      * @return string
@@ -204,9 +193,7 @@ class String implements \ArrayAccess
         }
     }
 
-
     // Array Access ----------------------------------------------------------------------------------------------------
-
 
     /**
      * ArrayAccess interface
@@ -249,6 +236,5 @@ class String implements \ArrayAccess
     {
         throw new \LogicException('String: Cannot unset a string offset.');
     }
-
 
 }

@@ -16,7 +16,6 @@ namespace Dogma;
 interface IndirectInstantiable
 {
 
-
     /**
      * Returns new instance of the called class.
      * @param scalar

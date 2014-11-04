@@ -55,7 +55,6 @@ class BeanstalkClient extends \Dogma\Object
     /** @var callback */
     private $onDeadline;
 
-
     /**
      * @param string $host server address
      * @param integer $port server port
@@ -70,12 +69,10 @@ class BeanstalkClient extends \Dogma\Object
         $this->persistent = $persistent;
     }
 
-
     public function __destruct()
     {
         $this->quit();
     }
-
 
     /**
      * @param integer
@@ -85,7 +82,6 @@ class BeanstalkClient extends \Dogma\Object
         $this->defaultPriority = abs((int) $priority);
     }
 
-
     /**
      * @param integer [seconds]
      */
@@ -94,7 +90,6 @@ class BeanstalkClient extends \Dogma\Object
         $this->defaultDelay = abs((int) $delay);
     }
 
-
     /**
      * @param integer [seconds]
      */
@@ -102,7 +97,6 @@ class BeanstalkClient extends \Dogma\Object
     {
         $this->defaultTimeToRun = abs((int) $timeToRun);
     }
-
 
     /**
      * Initiate a socket connection to Beanstalk server.
@@ -136,7 +130,6 @@ class BeanstalkClient extends \Dogma\Object
         stream_set_timeout($this->connection, -1);
     }
 
-
     /**
      * Close connection to Beanstalk server.
      */
@@ -148,7 +141,6 @@ class BeanstalkClient extends \Dogma\Object
 
         $this->connection = null;
     }
-
 
     /**
      * Send a message to server.
@@ -166,7 +158,6 @@ class BeanstalkClient extends \Dogma\Object
             throw new BeanstalkException('Cannot send message to Beanstalk server.');
         }
     }
-
 
     /**
      * Read a message from server.
@@ -198,7 +189,6 @@ class BeanstalkClient extends \Dogma\Object
         return $data;
     }
 
-
     /**
      * Send [QUIT] command and disconnect.
      */
@@ -213,7 +203,6 @@ class BeanstalkClient extends \Dogma\Object
         }
         $this->disconnect();
     }
-
 
     /**
      * Format delay argument to seconds.
@@ -246,7 +235,6 @@ class BeanstalkClient extends \Dogma\Object
         }
     }
 
-
     /**
      * Try to serialize job data.
      * Throws exception for unsupported types (null, bool, resource)
@@ -262,7 +250,6 @@ class BeanstalkClient extends \Dogma\Object
             throw new \InvalidArgumentException('Unsupported job data type.');
         }
     }
-
 
     /**
      * Try to unserialize job data.
@@ -281,7 +268,6 @@ class BeanstalkClient extends \Dogma\Object
         }
     }
 
-
     /**
      * Set callback to call when a "DEADLINE SOON" signal received.
      *
@@ -296,7 +282,6 @@ class BeanstalkClient extends \Dogma\Object
         $this->onDeadline = $callback;
     }
 
-
     /**
      * What to do if job is suspended by server.
      *
@@ -306,7 +291,6 @@ class BeanstalkClient extends \Dogma\Object
     {
         $this->onSuspended = $action;
     }
-
 
     /**
      * Handle case when a job is suspended *by server*.
@@ -327,9 +311,7 @@ class BeanstalkClient extends \Dogma\Object
         }
     }
 
-
     // Producer Commands -----------------------------------------------------------------------------------------------
-
 
     /**
      * Insert a job into the queue. [PUT]
@@ -381,7 +363,6 @@ class BeanstalkClient extends \Dogma\Object
         }
     }
 
-
     /**
      * Select queue for inserting jobs. Default queue is "default". [USE]
      * Automatically creates queues.
@@ -401,9 +382,7 @@ class BeanstalkClient extends \Dogma\Object
         }
     }
 
-
     // Worker Commands -------------------------------------------------------------------------------------------------
-
 
     /**
      * Ask for a job to assign. Job is reserved until finished, released or timed-out. [RESERVE]
@@ -438,7 +417,6 @@ class BeanstalkClient extends \Dogma\Object
         return new BeanstalkJob($id, $body, true, $this);
     }
 
-
     /**
      * Finishes job and removes it from the queue. [DELETE]
      *
@@ -458,7 +436,6 @@ class BeanstalkClient extends \Dogma\Object
         }
     }
 
-
     /**
      * Alias for finish().
      *
@@ -468,7 +445,6 @@ class BeanstalkClient extends \Dogma\Object
     {
         $this->finish($jobId);
     }
-
 
     /**
      * Puts a reserved job back into the ready queue. [RELEASE]
@@ -506,7 +482,6 @@ class BeanstalkClient extends \Dogma\Object
         }
     }
 
-
     /**
      * Suspend a job. Job cannot be assigned to a worker until it is restored. [BURY]
      *
@@ -533,7 +508,6 @@ class BeanstalkClient extends \Dogma\Object
         }
     }
 
-
     /**
      * Restore a previously suspended job. It can be assigned to a worker now. [KICK*]
      *
@@ -555,7 +529,6 @@ class BeanstalkClient extends \Dogma\Object
         }
     }
 
-
     /**
      * Reset the "time to run" of the job. [TOUCH]
      *
@@ -575,7 +548,6 @@ class BeanstalkClient extends \Dogma\Object
         }
     }
 
-
     /**
      * Watch queue. Jobs are claimed only from wathed queues. [WATCH]
      *
@@ -593,7 +565,6 @@ class BeanstalkClient extends \Dogma\Object
                 throw new BeanstalkException(sprintf('Error when watching a queue: %s', $status));
         }
     }
-
 
     /**
      * Ignore queue. Jobs are claimed only from wathed queues. [WATCH]
@@ -613,7 +584,6 @@ class BeanstalkClient extends \Dogma\Object
                 throw new BeanstalkException(sprintf('Error when ignoring a queue: %s', $status));
         }
     }
-
 
     /**
      * Pause queue. No jobs from this queue will be assigned until the given time. [PAUSE-TUBE]
@@ -639,9 +609,7 @@ class BeanstalkClient extends \Dogma\Object
         }
     }
 
-
     // Show Commands --------------------------------------------------------------------------------------------------
-
 
     /**
      * Show a job. [PEEK]
@@ -656,7 +624,6 @@ class BeanstalkClient extends \Dogma\Object
         return $this->readJob($stats);
     }
 
-
     /**
      * Show the next ready job. [PEEK-READY]
      *
@@ -668,7 +635,6 @@ class BeanstalkClient extends \Dogma\Object
         $this->send('peek-ready');
         return $this->readJob($stats);
     }
-
 
     /**
      * Show the job with the shortest delay left. [PEEK-DELAYED]
@@ -682,7 +648,6 @@ class BeanstalkClient extends \Dogma\Object
         return $this->readJob($stats);
     }
 
-
     /**
      * Inspect the next job in the list of buried jobs. [PEEK-BURIED]
      *
@@ -694,7 +659,6 @@ class BeanstalkClient extends \Dogma\Object
         $this->send('peek-buried');
         return $this->readJob($stats);
     }
-
 
     /**
      * Handles response for all show methods.
@@ -726,9 +690,7 @@ class BeanstalkClient extends \Dogma\Object
         return new BeanstalkJob($id, $data, false, $this, $st);
     }
 
-
     // Stats Commands --------------------------------------------------------------------------------------------------
-
 
     /**
      * Get statistical information about a job. [STATS-JOB]
@@ -742,7 +704,6 @@ class BeanstalkClient extends \Dogma\Object
         return $this->readStats();
     }
 
-
     /**
      * Get statistical information about a queue. [STATS-TUBE]
      *
@@ -755,7 +716,6 @@ class BeanstalkClient extends \Dogma\Object
         return $this->readStats();
     }
 
-
     /**
      * Get statistical information about the server. [STATS]
      *
@@ -766,7 +726,6 @@ class BeanstalkClient extends \Dogma\Object
         $this->send('stats');
         return $this->readStats();
     }
-
 
     /**
      * Get a list of all server queues. [LIST-TUBES]
@@ -779,7 +738,6 @@ class BeanstalkClient extends \Dogma\Object
         return $this->readStats();
     }
 
-
     /**
      * Get selected queue. [LIST-TUBE-USED]
      *
@@ -791,7 +749,6 @@ class BeanstalkClient extends \Dogma\Object
         return $this->readStats();
     }
 
-
     /**
      * Get list of fatched queues. [LIST-TUBES-WATCHED]
      *
@@ -802,7 +759,6 @@ class BeanstalkClient extends \Dogma\Object
         $this->send('list-tubes-watched');
         return $this->readStats();
     }
-
 
     /**
      * Handles responses for all stat methods.
@@ -821,7 +777,6 @@ class BeanstalkClient extends \Dogma\Object
                 throw new BeanstalkException(sprintf('Error when reading stats: %s', $status));
         }
     }
-
 
     /**
      * Decodes YAML data. This is a super naive decoder which just works on a

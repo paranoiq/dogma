@@ -27,7 +27,6 @@ abstract class Object
         return ObjectMixin::call($this, $name, $args);
     }
 
-
     /**
      * Call to undefined static method.
      * @param string
@@ -39,7 +38,6 @@ abstract class Object
         ObjectMixin::callStatic(get_called_class(), $name, $args);
     }
 
-
     /**
      * Returns property value. Do not call directly.
      * @param string
@@ -49,7 +47,6 @@ abstract class Object
     {
         return ObjectMixin::get($this, $name);
     }
-
 
     /**
      * Sets value of a property. Do not call directly.
@@ -62,7 +59,6 @@ abstract class Object
         ObjectMixin::set($this, $name, $value);
     }
 
-
     /**
      * Is property defined?
      * @param string
@@ -72,7 +68,6 @@ abstract class Object
     {
         return ObjectMixin::has($this, $name);
     }
-
 
     /**
      * Access to undeclared property.

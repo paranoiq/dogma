@@ -16,7 +16,6 @@ namespace Dogma\Object;
 final class Prototyper
 {
 
-
     /**
      * Create instance of class and inject it with data.
      * @param string
@@ -41,7 +40,6 @@ final class Prototyper
         return $object;
     }
 
-
     /**
      * Returns prototype of object of given class without calling constructor and clonning
      * @param string
@@ -59,7 +57,6 @@ final class Prototyper
         //}
         //return clone $prototypes[$class];
     }
-
 
     /**
      * Injects data into object properties
@@ -96,7 +93,6 @@ final class Prototyper
         return $object;
     }
 
-
     /**
      * Takes value of property from given array
      * @param string
@@ -120,7 +116,6 @@ final class Prototyper
 
         return null;
     }
-
 
     /**
      * Takes value of private property from given array

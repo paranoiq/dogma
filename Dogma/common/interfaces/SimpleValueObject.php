@@ -16,7 +16,6 @@ namespace Dogma;
 interface SimpleValueObject extends ValueObject
 {
 
-
     /**
      * Returns string value of the value object.
      * @return string

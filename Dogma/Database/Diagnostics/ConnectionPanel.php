@@ -21,7 +21,6 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel
 
     private $counter = 0;
 
-
     /*public function logQuery(\Nette\Database\Statement $result, array $params = null) {
         $this->counter++;
         if ($this->counter > $this->maxQueries) return;
@@ -50,7 +49,6 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel
 
     /** @var bool */
     public $disabled = false;
-
 
     public function logQuery(Nette\Database\Statement $result, array $params = null)
     {
@@ -82,8 +80,6 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel
         $this->queries[] = [$result->queryString, $params, $result->getTime(), $result->rowCount(), $result->getConnection(), $source];
     }
 
-
-
     public static function renderException($e)
     {
         if ($e instanceof \PDOException && isset($e->queryString)) {
@@ -94,8 +90,6 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel
         }
     }
 
-
-
     public function getTab()
     {
         return '<span title="Nette\\Database ' . htmlspecialchars($this->name) . '">'
@@ -104,8 +98,6 @@ class ConnectionPanel extends \Nette\Database\Diagnostics\ConnectionPanel
             . ($this->totalTime ? ' / ' . sprintf('%0.1f', $this->totalTime * 1000) . 'ms' : '')
             . '</span>';
     }
-
-
 
     public function getPanel()
     {

@@ -24,7 +24,6 @@ class EntityMapper extends \Nette\Object
     /** @var \Nette\DI\Container */
     private $context;
 
-
     /**
      * Set mapping of tables to classes (descendants of ActiveRow)
      * @param \Nette\DI\Container
@@ -36,7 +35,6 @@ class EntityMapper extends \Nette\Object
         $this->context = $context;
         $this->factory = $context->getService('entityFactory');
     }
-
 
     /**
      * Translate table name to class name

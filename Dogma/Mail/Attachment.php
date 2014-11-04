@@ -24,7 +24,6 @@ use Dogma\Io\File;
 class Attachment extends \Dogma\Object
 {
 
-
     /** Content disposition */
     const ATTACHMENT = 'attachment';
     const INLINE = 'inline';
@@ -38,7 +37,6 @@ class Attachment extends \Dogma\Object
 
     /** @var string[] */
     private $headers;
-
 
     /**
      * @param \Dogma\Io\File|string
@@ -57,7 +55,6 @@ class Attachment extends \Dogma\Object
         $this->headers = $headers;
     }
 
-
     /**
      * @return string
      */
@@ -65,7 +62,6 @@ class Attachment extends \Dogma\Object
     {
         return @$this->headers['disposition-filename']; // not on 'inline'
     }
-
 
     /**
      * @return string
@@ -75,7 +71,6 @@ class Attachment extends \Dogma\Object
         return $this->headers['content-type'];
     }
 
-
     /**
      * @return string
      */
@@ -83,7 +78,6 @@ class Attachment extends \Dogma\Object
     {
         return @$this->headers['content-charset']; // not on binary
     }
-
 
     /**
      * @return string
@@ -93,7 +87,6 @@ class Attachment extends \Dogma\Object
         return $this->headers['content-disposition'];
     }
 
-
     /**
      * @return string
      */
@@ -101,7 +94,6 @@ class Attachment extends \Dogma\Object
     {
         return $this->headers;
     }
-
 
     /**
      * @return integer
@@ -115,7 +107,6 @@ class Attachment extends \Dogma\Object
         }
     }
 
-
     /**
      * Get file content.
      * @return string
@@ -128,7 +119,6 @@ class Attachment extends \Dogma\Object
             return $this->file->getContent();
         }
     }
-
 
     /**
      * Get File object.

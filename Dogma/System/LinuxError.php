@@ -150,7 +150,6 @@ class LinuxError extends \Dogma\Enum implements Error
     const OWNER_DIED = 130;
     const STATE_NOT_RECOVERABLE = 131;
 
-
     /**
      * Get formated error description
      * @return string

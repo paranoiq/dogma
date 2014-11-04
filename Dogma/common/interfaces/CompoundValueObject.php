@@ -16,7 +16,6 @@ namespace Dogma;
 interface CompoundValueObject extends ValueObject
 {
 
-
     /**
      * Returns value components in order of constructor parameters.
      * @return array

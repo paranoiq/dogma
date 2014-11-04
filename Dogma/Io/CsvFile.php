@@ -54,7 +54,6 @@ final class CsvFile extends TextFile
     /** @var integer column count (writing) */
     private $columnCount;
 
-
     /**
      * Set CSV column delimiter
      * @param string|null for autodetect
@@ -63,7 +62,6 @@ final class CsvFile extends TextFile
     {
         $this->delimiter = (string) $delimiter;
     }
-
 
     /**
      * Set formating options
@@ -75,7 +73,6 @@ final class CsvFile extends TextFile
         $this->getNormalizer()->setFormat($type, $format);
     }
 
-
     /**
      * Set type autodetection
      * @param boolean
@@ -86,7 +83,6 @@ final class CsvFile extends TextFile
         $this->autodetect = $autodetect;
         $this->nullable = $nullable;
     }
-
 
     /**
      * @return \Dogma\Normalizer
@@ -100,9 +96,7 @@ final class CsvFile extends TextFile
         return $this->normalizer;
     }
 
-
     // Column handling -------------------------------------------------------------------------------------------------
-
 
     /**
      * Add a column
@@ -125,7 +119,6 @@ final class CsvFile extends TextFile
         return $this;
     }
 
-
     /**
      * Set required parameter for last inserted column
      * @param boolean
@@ -137,7 +130,6 @@ final class CsvFile extends TextFile
 
         return $this;
     }
-
 
     /**
      * Set nullable parameter for last inserted column
@@ -151,7 +143,6 @@ final class CsvFile extends TextFile
         return $this;
     }
 
-
     /**
      * Set default value for last inserted column
      * @param mixed
@@ -163,7 +154,6 @@ final class CsvFile extends TextFile
 
         return $this;
     }
-
 
     /**
      * Check if file has column
@@ -182,7 +172,6 @@ final class CsvFile extends TextFile
 
         return isset($this->realColumns[$name]);
     }
-
 
     /**
      * Returns list of columns
@@ -208,9 +197,7 @@ final class CsvFile extends TextFile
         return $columns;
     }
 
-
     // Data access------------------------------------------------------------------------------------------------------
-
 
     /**
      * Skip n rows
@@ -231,7 +218,6 @@ final class CsvFile extends TextFile
 
         return $skipped;
     }
-
 
     /**
      * Returns next CSV row or false
@@ -254,7 +240,6 @@ final class CsvFile extends TextFile
 
         return $this->normalizeRow($row);
     }
-
 
     /**
      * Returns next CSV row or false
@@ -293,7 +278,6 @@ final class CsvFile extends TextFile
         );
     }
 
-
     /**
      * Get next row
      * @return mixed[]
@@ -321,7 +305,6 @@ final class CsvFile extends TextFile
         return $row;
     }
 
-
     /**
      * Format row as associative array
      * @param mixed[]
@@ -339,7 +322,6 @@ final class CsvFile extends TextFile
         }
         return $data;
     }
-
 
     /**
      * Normalize row
@@ -364,7 +346,6 @@ final class CsvFile extends TextFile
         }
         return $data;
     }
-
 
     /**
      * Write data to CSV file
@@ -405,7 +386,6 @@ final class CsvFile extends TextFile
         }
     }
 
-
     /**
      * Detect format of file
      * @param array
@@ -441,7 +421,6 @@ final class CsvFile extends TextFile
         }
     }
 
-
     /**
      * Detect format of file
      */
@@ -459,7 +438,6 @@ final class CsvFile extends TextFile
 
         $this->counter = 1;
     }
-
 
     /**
      * Detect delimiter from fist row of file. Detects [,] [;] [|] and [tab]
@@ -503,7 +481,6 @@ final class CsvFile extends TextFile
         }
     }
 
-
     /**
      * Detect real column names from file
      */
@@ -520,7 +497,6 @@ final class CsvFile extends TextFile
             $this->realColumns[$this->decode($name)] = $i;
         }
     }
-
 
     /**
      * Check if all required columns are present

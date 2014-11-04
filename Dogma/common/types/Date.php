@@ -17,7 +17,6 @@ namespace Dogma;
 class Date extends DateTime
 {
 
-
     /**
      * @param string
      * @param \DateTimeZone
@@ -26,7 +25,6 @@ class Date extends DateTime
     {
         parent::__construct($time, $timezone);
     }
-
 
     /**
      * @return string

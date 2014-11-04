@@ -16,7 +16,6 @@ class Document extends \DomDocument
     /** @var \Dogma\Dom\QueryEngine */
     private $engine;
 
-
     /**
      * @param string $document XML or HTML content or file path prefixed with '@'
      * @param string
@@ -49,7 +48,6 @@ class Document extends \DomDocument
         $this->engine = new QueryEngine($this);
     }
 
-
     /**
      * @param \Dogma\Dom\QueryEngine
      */
@@ -58,7 +56,6 @@ class Document extends \DomDocument
         $this->engine = $engine;
     }
 
-
     /**
      * @return \Dogma\Dom\QueryEngine
      */
@@ -66,7 +63,6 @@ class Document extends \DomDocument
     {
         return $this->engine;
     }
-
 
     /**
      * @param string
@@ -83,7 +79,6 @@ class Document extends \DomDocument
         }
     }
 
-
     /**
      * @param string
      * @return boolean
@@ -97,7 +92,6 @@ class Document extends \DomDocument
             throw new DomException('Cannot load HTML document: ' . trim($error->message) . ' on line #' . $error->line, $error->code);
         }
     }
-
 
     /**
      * @param string
@@ -113,7 +107,6 @@ class Document extends \DomDocument
         }
     }
 
-
     /**
      * @param string
      * @return \Dogma\Dom\Element|\DOMNode|null
@@ -125,7 +118,6 @@ class Document extends \DomDocument
         return $el ? $this->wrap($el) : null;
     }
 
-
     /**
      * @param string
      * @return \Dogma\Dom\NodeList
@@ -134,7 +126,6 @@ class Document extends \DomDocument
     {
         return $this->engine->find($xpath);
     }
-
 
     /**
      * @param string
@@ -145,7 +136,6 @@ class Document extends \DomDocument
         return $this->engine->findOne($xpath);
     }
 
-
     /**
      * @param string
      * @return string|integer|float
@@ -154,7 +144,6 @@ class Document extends \DomDocument
     {
         return $this->engine->evaluate($xpath);
     }
-
 
     /**
      * @param string|string[]
@@ -165,12 +154,10 @@ class Document extends \DomDocument
         return $this->engine->extract($target);
     }
 
-
     public function dump()
     {
         Dumper::dump($this);
     }
-
 
     /**
      * @param \DOMNode

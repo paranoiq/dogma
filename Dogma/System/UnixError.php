@@ -116,7 +116,6 @@ class UnixError extends \Dogma\Enum implements Error
     const NOT_PERMITTED_IN_CAPABILITY_MODE = 94;
     const MUST_BE_EQUAL_LARGEST_ERRNO = 94;
 
-
     /**
      * Get formated error description
      * @return string

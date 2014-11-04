@@ -19,7 +19,6 @@ abstract class EntityRepository extends \Dogma\Object
     /** @var string */
     protected $table;
 
-
     /**
      * @param \Dogma\Database\Connection
      */
@@ -28,7 +27,6 @@ abstract class EntityRepository extends \Dogma\Object
         $this->db = $db;
     }
 
-
     /**
      * @param int|string
      */
@@ -36,7 +34,6 @@ abstract class EntityRepository extends \Dogma\Object
     {
         return $this->db->table($this->table)->get($id);
     }
-
 
     public function getEntityClass(\Nette\Database\Table\ActiveRow $row)
     {

@@ -18,7 +18,6 @@ class Collection extends ArrayObject
     /** @var string */
     protected $accepted;
 
-
     /**
      * @param object[] $array
      * @param string $acceptedClass
@@ -35,7 +34,6 @@ class Collection extends ArrayObject
         }
     }
 
-
     /**
      * Save order in the properties of items.
      * $col->indexItems(string $column);
@@ -48,9 +46,7 @@ class Collection extends ArrayObject
         }
     }
 
-
     // class acceptance ------------------------------------------------------------------------------------------------
-
 
     /**
      * Returns name of accepted class.
@@ -60,7 +56,6 @@ class Collection extends ArrayObject
     {
         return $this->accepted;
     }
-
 
     /**
      * Check if object is of accepted class.
@@ -72,7 +67,6 @@ class Collection extends ArrayObject
             throw new \InvalidArgumentException('Collection: Inserted object is not of the accepted class.');
         }
     }
-
 
     /**
      * Adds items to the end of array.
@@ -86,7 +80,6 @@ class Collection extends ArrayObject
         parent::append($items);
     }
 
-
     /**
      * Adds items to the beginning of array. Does not preserve keys.
      * @param object[]
@@ -98,7 +91,6 @@ class Collection extends ArrayObject
         }
         parent::prepend($items);
     }
-
 
     /**
      * Insert items at given position. Does not preserve keys.
@@ -112,7 +104,6 @@ class Collection extends ArrayObject
         }
         parent::insertAt($items, $position);
     }
-
 
     /**
      * ArrayAccess interface

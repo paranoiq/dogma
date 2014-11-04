@@ -32,7 +32,6 @@ class ChannelManager extends \Dogma\Object
     /** @var array ($resourceId => array($channelId, $jobName, $request)) */
     private $resources = [];
 
-
     public function __construct()
     {
         if (!$this->handler = curl_multi_init()) {
@@ -40,14 +39,12 @@ class ChannelManager extends \Dogma\Object
         }
     }
 
-
     public function __destruct()
     {
         if ($this->handler) {
             curl_multi_close($this->handler);
         }
     }
-
 
     /**
      * @return resource
@@ -57,7 +54,6 @@ class ChannelManager extends \Dogma\Object
         return $this->handler;
     }
 
-
     /**
      * Set maximum of request to run paralelly.
      * @param integer
@@ -66,7 +62,6 @@ class ChannelManager extends \Dogma\Object
     {
         $this->threadLimit = abs($threads);
     }
-
 
     /**
      * @param \Dogma\Http\Channel
@@ -78,7 +73,6 @@ class ChannelManager extends \Dogma\Object
         $this->startJobs();
     }
 
-
     public function updatePriorities()
     {
         $sum = 0;
@@ -88,13 +82,11 @@ class ChannelManager extends \Dogma\Object
         $this->sumPriorities = $sum;
     }
 
-
     public function read()
     {
         $this->waitForResult();
         $this->readResults();
     }
-
 
     /**
      * Wait for any request to finish. Blocking.
@@ -125,7 +117,6 @@ class ChannelManager extends \Dogma\Object
         return 0;
     }
 
-
     /**
      * @return integer
      */
@@ -140,7 +131,6 @@ class ChannelManager extends \Dogma\Object
 
         return $active;
     }
-
 
     /**
      * Read finished results from CURL.
@@ -162,7 +152,6 @@ class ChannelManager extends \Dogma\Object
         $this->startJobs();
     }
 
-
     /**
      * Start requests according to their priorities.
      */
@@ -173,7 +162,6 @@ class ChannelManager extends \Dogma\Object
         }
         $this->exec();
     }
-
 
     /**
      * Select channel to spawn new connection, taking in account channel priorities.
@@ -205,7 +193,6 @@ class ChannelManager extends \Dogma\Object
 
         return $selected;
     }
-
 
     /**
      * Save data for later use.

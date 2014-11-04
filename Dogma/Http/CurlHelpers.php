@@ -13,9 +13,7 @@ namespace Dogma\Http;
 class CurlHelpers
 {
 
-
     // Errors ----------------------------------------------------------------------------------------------------------
-
 
     /**
      * @param integer
@@ -32,7 +30,6 @@ class CurlHelpers
 
         return 'UNKNOWN_ERROR';
     }
-
 
     /**
      * @param integer
@@ -51,9 +48,7 @@ class CurlHelpers
         return 'UNKNOWN_ERROR';
     }
 
-
     // Options ---------------------------------------------------------------------------------------------------------
-
 
     /**
      * @param string
@@ -65,7 +60,6 @@ class CurlHelpers
 
         return constant('CURLOPT_' . $name);
     }
-
 
     /**
      * @param string
@@ -83,9 +77,7 @@ class CurlHelpers
         return null;
     }
 
-
     // Info ------------------------------------------------------------------------------------------------------------
-
 
     /**
      * @param integer

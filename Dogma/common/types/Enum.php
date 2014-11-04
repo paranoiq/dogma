@@ -27,7 +27,6 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
     private $identifier;
     private $value;
 
-
     /**
      * @param string
      * @param mixed
@@ -38,7 +37,6 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
         $this->value = $value;
     }
 
-
     /**
      * @return string
      */
@@ -46,7 +44,6 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
     {
         return (string) $this->value;
     }
-
 
     /**
      * @return mixed
@@ -56,7 +53,6 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
         return $this->value;
     }
 
-
     /**
      * @return mixed
      */
@@ -65,9 +61,7 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
         return $this->identifier;
     }
 
-
     // static ----------------------------------------------------------------------------------------------------------
-
 
     /**
      * @param mixed
@@ -82,7 +76,6 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
         return in_array($value, self::$values[$class]);
     }
 
-
     /**
      * Get possible values.
      * @return mixed[]
@@ -95,7 +88,6 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
 
         return self::$values[$class];
     }
-
 
     /**
      * Get all values as Enum objects.
@@ -118,7 +110,6 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
         return new \ArrayIterator(self::$instances[$class]);
     }
 
-
     /**
      * @param scalar
      * @return static
@@ -138,7 +129,6 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
         throw new \InvalidArgumentException(sprintf('Invalid value \'%s\' for type %s.', $value, get_called_class()));
     }
 
-
     /**
      * @param scalar
      * @return static
@@ -153,7 +143,6 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
         return self::__callStatic($name, []);
     }
 
-
     /**
      * @param scalar
      * @return static
@@ -166,7 +155,6 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
 
         return self::__callStatic($identifier, []);
     }
-
 
     /**
      * @param string
@@ -192,7 +180,6 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
         }
     }
 
-
     /**
      * @param string
      */
@@ -203,9 +190,7 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
         self::$instances[$class] = [];
     }
 
-
     // magic motherfucker ----------------------------------------------------------------------------------------------
-
 
     /**
      * @param string
@@ -216,7 +201,6 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
         return ObjectMixin::get($this, $name);
     }
 
-
     /**
      * @param string
      * @return mixed
@@ -225,7 +209,6 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
     {
         return ObjectMixin::has($this, $name);
     }
-
 
     /**
      * @param string
@@ -236,7 +219,6 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
         throw new \Nette\MemberAccessException('Properties of Enum type are read-only.');
     }
 
-
     /**
      * @param string
      */
@@ -245,18 +227,15 @@ abstract class Enum implements SimpleValueObject, IndirectInstantiable
         throw new \Nette\MemberAccessException('Properties of Enum type are read-only.');
     }
 
-
     final public function __sleep()
     {
         throw new \Exception('Enum type cannot be serialized. Use its value instead.');
     }
 
-
     final public function __wakeup()
     {
         throw new \Exception('Enum type cannot be serialized. Use its value instead.');
     }
-
 
     final public function __clone()
     {

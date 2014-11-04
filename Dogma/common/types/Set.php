@@ -22,7 +22,6 @@ abstract class Set implements SimpleValueObject
 
     private $set = [];
 
-
     /**
      * @param self|string|string[]
      */
@@ -30,7 +29,6 @@ abstract class Set implements SimpleValueObject
     {
         $this->add($set);
     }
-
 
     /**
      * @param self|string|string[]
@@ -54,7 +52,6 @@ abstract class Set implements SimpleValueObject
         }
     }
 
-
     /**
      * @param self|string|string[]
      */
@@ -69,7 +66,6 @@ abstract class Set implements SimpleValueObject
             }
         }
     }
-
 
     /**
      * @param self|string|string[]
@@ -88,7 +84,6 @@ abstract class Set implements SimpleValueObject
         return true;
     }
 
-
     /**
      * @param self|string|string[]
      */
@@ -105,7 +100,6 @@ abstract class Set implements SimpleValueObject
         }
     }
 
-
     /**
      * @return string
      */
@@ -114,7 +108,6 @@ abstract class Set implements SimpleValueObject
         return implode(',', $this->set);
     }
 
-
     /**
      * @return mixed[]
      */
@@ -122,7 +115,6 @@ abstract class Set implements SimpleValueObject
     {
         return $this->set;
     }
-
 
     /**
      * Set more values at once
@@ -135,9 +127,7 @@ abstract class Set implements SimpleValueObject
         }
     }
 
-
     // static ----------------------------------------------------------------------------------------------------------
-
 
     /**
      * @param string|string[]
@@ -161,7 +151,6 @@ abstract class Set implements SimpleValueObject
         return in_array($value, self::$values[$class]);
     }
 
-
     /**
      * Get possible values.
      * @return \ArrayIterator
@@ -175,7 +164,6 @@ abstract class Set implements SimpleValueObject
         return new \ArrayIterator(self::$values[$class]);
     }
 
-
     /**
      * @param string
      */
@@ -185,9 +173,7 @@ abstract class Set implements SimpleValueObject
         self::$values[$class] = $ref->getConstants();
     }
 
-
     // magic motherfucker ----------------------------------------------------------------------------------------------
-
 
     /**
      * @param string
@@ -202,7 +188,6 @@ abstract class Set implements SimpleValueObject
         return ObjectMixin::get($this, $name);
     }
 
-
     /**
      * @param string
      * @return mixed
@@ -215,7 +200,6 @@ abstract class Set implements SimpleValueObject
 
         return ObjectMixin::has($this, $name);
     }
-
 
     /**
      * @param string
@@ -239,7 +223,6 @@ abstract class Set implements SimpleValueObject
         ObjectMixin::set($this, $name, $value);
     }
 
-
     /**
      * @param string
      * @param mixed
@@ -254,12 +237,10 @@ abstract class Set implements SimpleValueObject
         ObjectMixin::remove($this, $name);
     }
 
-
     final public function __sleep()
     {
         throw new \Exception('Set type cannot be serialized. Use its values instead.');
     }
-
 
     final public function __wakeup()
     {

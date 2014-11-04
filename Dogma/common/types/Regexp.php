@@ -30,7 +30,6 @@ class Regexp extends \Dogma\Object
     /** @var string */
     private $pattern;
 
-
     /**
      * @param string
      */
@@ -39,7 +38,6 @@ class Regexp extends \Dogma\Object
         $this->pattern = $pattern;
     }
 
-
     /**
      * @return string
      */
@@ -47,7 +45,6 @@ class Regexp extends \Dogma\Object
     {
         return $this->pattern;
     }
-
 
     /**
      * Splits string by a regular expression.
@@ -59,7 +56,6 @@ class Regexp extends \Dogma\Object
     {
         return Strings::split($subject, $this->pattern, $flags);
     }
-
 
     /**
      * Performs a regular expression match.
@@ -73,7 +69,6 @@ class Regexp extends \Dogma\Object
         return Strings::match($subject, $this->pattern, $flags, $offset);
     }
 
-
     /**
      * Performs a global regular expression match.
      * @param string
@@ -85,7 +80,6 @@ class Regexp extends \Dogma\Object
     {
         return Strings::matchAll($subject, $this->pattern, $flags, $offset);
     }
-
 
     /**
      * Perform a regular expression search and replace.

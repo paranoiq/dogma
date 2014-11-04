@@ -33,7 +33,6 @@ class Response extends \Dogma\Object
     /** @var mixed Request context */
     protected $context;
 
-
     /**
      * @param string
      * @param array
@@ -49,7 +48,6 @@ class Response extends \Dogma\Object
         }
     }
 
-
     /**
      * @param mixed Request context
      */
@@ -57,7 +55,6 @@ class Response extends \Dogma\Object
     {
         $this->context = $data;
     }
-
 
     /**
      * @return mixed
@@ -67,7 +64,6 @@ class Response extends \Dogma\Object
         return $this->context;
     }
 
-
     /**
      * @return boolean
      */
@@ -76,7 +72,6 @@ class Response extends \Dogma\Object
         return $this->status->isOk();
     }
 
-
     /**
      * @return \Dogma\Http\ResponseStatus
      */
@@ -84,7 +79,6 @@ class Response extends \Dogma\Object
     {
         return $this->status;
     }
-
 
     /**
      * @return string
@@ -98,7 +92,6 @@ class Response extends \Dogma\Object
         return $this->body;
     }
 
-
     /**
      * @return array
      */
@@ -110,7 +103,6 @@ class Response extends \Dogma\Object
 
         return $this->headers;
     }
-
 
     /**
      * Get all cookies received with this response.
@@ -132,7 +124,6 @@ class Response extends \Dogma\Object
 
         return $cookies;
     }
-
 
     /**
      * @param string|integer
@@ -156,7 +147,6 @@ class Response extends \Dogma\Object
         return $this->info[$tname];
     }
 
-
     /**
      * @return string
      */
@@ -165,9 +155,7 @@ class Response extends \Dogma\Object
         return (string) $this->getBody();
     }
 
-
     // internals -------------------------------------------------------------------------------------------------------
-
 
     /**
      * Remove headers from response.
@@ -179,7 +167,6 @@ class Response extends \Dogma\Object
         $this->body = substr($this->response, $this->info['header_size']);
         $this->response = null;
     }
-
 
     /**
      * Parses headers from given list

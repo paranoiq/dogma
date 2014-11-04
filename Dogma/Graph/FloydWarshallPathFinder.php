@@ -35,7 +35,6 @@ class FloydWarshallPathFinder extends \Dogma\Object
     /** @var array */
     private $predecessors = [[]];
 
-
     /**
      * @param integer[][] graph edge weights. may be sparse
      */
@@ -71,7 +70,6 @@ class FloydWarshallPathFinder extends \Dogma\Object
         $this->calculatePaths();
     }
 
-
     /**
      * Implementation of Floyd-Warshall algorithm
      */
@@ -104,7 +102,6 @@ class FloydWarshallPathFinder extends \Dogma\Object
         }
     }
 
-
     /**
      * Get total cost (distance) between point a and b
      * @param integer|string
@@ -120,7 +117,6 @@ class FloydWarshallPathFinder extends \Dogma\Object
 
         return $this->distances[$i][$j];
     }
-
 
     /**
      * Get nodes between a and b
@@ -144,7 +140,6 @@ class FloydWarshallPathFinder extends \Dogma\Object
 
         return array_reverse($path);
     }
-
 
     /**
      * Print out the original Graph matrice
@@ -175,7 +170,6 @@ class FloydWarshallPathFinder extends \Dogma\Object
         return $rt;
     }
 
-
     /**
      * Print out distances matrice
      * @return string html table
@@ -204,7 +198,6 @@ class FloydWarshallPathFinder extends \Dogma\Object
         $rt .= "</table>\n";
         return $rt;
     }
-
 
     /**
      * Print out predecessors matrice

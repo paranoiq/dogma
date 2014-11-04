@@ -15,7 +15,6 @@ namespace Dogma\Object;
 final class PropertyAccessor
 {
 
-
     /**
      * Get value from an object propperty or array key.
      * @param object|array
@@ -41,7 +40,6 @@ final class PropertyAccessor
 
         throw new \Nette\MemberAccessException(sprintf('PropertyAccessor: Property \'%s\' was not found.', $propertyName));
     }
-
 
     /**
      * Set value to an object property or array key.

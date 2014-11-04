@@ -28,7 +28,6 @@ class DownloadRequest extends Request
     /** @var resource */
     private $file;
 
-
     /**
      * @param string $url
      * @param string $downloadDir
@@ -39,7 +38,6 @@ class DownloadRequest extends Request
 
         $this->setDownloadDir($downloadDir);
     }
-
 
     /**
      * @param string
@@ -53,7 +51,6 @@ class DownloadRequest extends Request
         $this->downloadDir = rtrim($dir, '/');
     }
 
-
     /**
      * @param string
      */
@@ -61,7 +58,6 @@ class DownloadRequest extends Request
     {
         $this->fileName = $name;
     }
-
 
     /**
      * @param string
@@ -71,9 +67,7 @@ class DownloadRequest extends Request
         $this->fileSuffix = $suffix;
     }
 
-
     // output handling -------------------------------------------------------------------------------------------------
-
 
     /**
      * Execute request.
@@ -88,7 +82,6 @@ class DownloadRequest extends Request
         $error = curl_errno($this->curl);
         return $this->createResponse($response, $error, $fileName);
     }
-
 
     /**
      * Called by RequestManager.
@@ -123,7 +116,6 @@ class DownloadRequest extends Request
 
         return $fileName;
     }
-
 
     /**
      * Called by RequestManager.

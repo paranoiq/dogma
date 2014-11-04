@@ -12,7 +12,6 @@ namespace Dogma\Http;
 use Nette\Utils\Callback;
 
 
-
 /**
  * HTTP channel for multiple similar requests.
  *
@@ -70,7 +69,6 @@ class Channel extends \Dogma\Object
     /** @var \Nette\Utils\Callback */
     private $errorHandler;
 
-
     /**
      * @param \Dogma\Http\ChannelManager
      * @param \Dogma\Http\Request
@@ -81,7 +79,6 @@ class Channel extends \Dogma\Object
         $this->request = $request;
     }
 
-
     /**
      * @return \Dogma\Http\Request
      */
@@ -89,7 +86,6 @@ class Channel extends \Dogma\Object
     {
         return $this->request;
     }
-
 
     /**
      * Set callback handler for every response (even an error)
@@ -100,7 +96,6 @@ class Channel extends \Dogma\Object
         $this->responseHandler = $responseHandler;
     }
 
-
     /**
      * Set separate callback handler for redirects. ResponseHandler will no longer handle these.
      * @param \Nette\Utils\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
@@ -109,7 +104,6 @@ class Channel extends \Dogma\Object
     {
         $this->redirectHandler = $redirectHadler;
     }
-
 
     /**
      * Set separate callback handler for errors. ResponseHandler will no longer handle these.
@@ -120,7 +114,6 @@ class Channel extends \Dogma\Object
         $this->errorHandler = $errorHandler;
     }
 
-
     /**
      * @param integer
      */
@@ -128,7 +121,6 @@ class Channel extends \Dogma\Object
     {
         $this->priority = abs((int) $priority);
     }
-
 
     /**
      * @return integer
@@ -138,7 +130,6 @@ class Channel extends \Dogma\Object
         return $this->priority;
     }
 
-
     /**
      * @param integer
      */
@@ -146,7 +137,6 @@ class Channel extends \Dogma\Object
     {
         $this->threadLimit = abs((int) $threads);
     }
-
 
     /**
      * @return integer
@@ -156,9 +146,7 @@ class Channel extends \Dogma\Object
         return $this->threadLimit;
     }
 
-
     // jobs ------------------------------------------------------------------------------------------------------------
-
 
     /**
      * Run a new job immediately and wait for the response.
@@ -173,7 +161,6 @@ class Channel extends \Dogma\Object
         return $this->fetch($name);
     }
 
-
     /**
      * Run a new job immediatelly. Don't wait for response.
      * @param string|string[]
@@ -185,7 +172,6 @@ class Channel extends \Dogma\Object
     {
         return $this->addJob($data, $context, $name, true);
     }
-
 
     /**
      * Add new job to channel queue.
@@ -224,7 +210,6 @@ class Channel extends \Dogma\Object
         return $name;
     }
 
-
     /**
      * Add more jobs to a channel. Array indexes are job names if they are strings.
      * @param string[]|string[][]
@@ -239,7 +224,6 @@ class Channel extends \Dogma\Object
         }
     }
 
-
     /**
      * @return integer
      */
@@ -247,7 +231,6 @@ class Channel extends \Dogma\Object
     {
         return count($this->running);
     }
-
 
     /**
      * Decide if channel can start a job.
@@ -271,7 +254,6 @@ class Channel extends \Dogma\Object
 
         return true;
     }
-
 
     /**
      * Start a request in CURL. Called by ChannelManager
@@ -315,9 +297,7 @@ class Channel extends \Dogma\Object
         $this->manager->jobStarted($handler, $this, $name, $request);
     }
 
-
     // -----------------------------------------------------------------------------------------------------------------
-
 
     /**
      * Called by ChannelManager.
@@ -348,7 +328,6 @@ class Channel extends \Dogma\Object
             unset($this->finished[$name]);
         }
     }
-
 
     /**
      * @param string
@@ -383,7 +362,6 @@ class Channel extends \Dogma\Object
         return array_shift($this->finished);
     }
 
-
     /**
      * @param string|integer
      * @return \Dogma\Http\Response|null
@@ -417,7 +395,6 @@ class Channel extends \Dogma\Object
         return $response;
     }
 
-
     /**
      * Check if all channels or a channel or a job are finished.
      * @param \Dogma\Http\Channel
@@ -433,7 +410,6 @@ class Channel extends \Dogma\Object
         }
     }
 
-
     /**
      * Wait till all jobs are finished.
      */
@@ -444,12 +420,10 @@ class Channel extends \Dogma\Object
         }
     }
 
-
     public function stop()
     {
         $this->stopped = true;
     }
-
 
     /**
      * @return boolean
@@ -458,7 +432,6 @@ class Channel extends \Dogma\Object
     {
         return $this->stopped;
     }
-
 
     /**
      * @param integer
@@ -472,7 +445,6 @@ class Channel extends \Dogma\Object
         }
     }
 
-
     /**
      * @return boolean
      */
@@ -484,13 +456,11 @@ class Channel extends \Dogma\Object
         return (bool) $this->paused;
     }
 
-
     public function resume()
     {
         $this->stopped = false;
         $this->paused = false;
     }
-
 
     public function read()
     {

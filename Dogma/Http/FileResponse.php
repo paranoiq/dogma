@@ -18,7 +18,6 @@ class FileResponse extends Response
     /** @var string */
     private $fileName;
 
-
     /**
      * @param string
      * @param mixed[]
@@ -30,7 +29,6 @@ class FileResponse extends Response
 
         $this->fileName = $fileName;
     }
-
 
     /**
      * @return array
@@ -44,7 +42,6 @@ class FileResponse extends Response
         return $this->headers;
     }
 
-
     /**
      * @return string
      */
@@ -57,7 +54,6 @@ class FileResponse extends Response
         return file_get_contents($this->fileName);
     }
 
-
     /**
      * @return string
      */
@@ -65,7 +61,6 @@ class FileResponse extends Response
     {
         return $this->fileName;
     }
-
 
     /**
      * Remove headers from downloaded file

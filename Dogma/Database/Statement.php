@@ -22,14 +22,12 @@ class Statement extends \Nette\Database\Statement
     /** @var array */
     private $types;
 
-
     protected function __construct(Connection $connection)
     {
         parent::__construct($connection);
         $this->connection = $connection;
         $this->setFetchMode(\PDO::FETCH_CLASS, 'Nette\Database\Row', [$this]);
     }
-
 
     /**
      * Normalizes result row.
@@ -82,7 +80,6 @@ class Statement extends \Nette\Database\Statement
         return $this->connection->getSupplementalDriver()->normalizeRow($row, $this);
     }
 
-
     /**
      * Returns count of rows in result
      * @return int
@@ -91,7 +88,6 @@ class Statement extends \Nette\Database\Statement
     {
         return parent::rowCount();
     }
-
 
     /**
      * @param  mixed

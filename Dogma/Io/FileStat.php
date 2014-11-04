@@ -31,7 +31,6 @@ class FileStat extends \Dogma\Object
     /** @var array */
     private $stat;
 
-
     /**
      * @param array
      */

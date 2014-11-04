@@ -198,7 +198,6 @@ class ResponseStatus extends \Dogma\Enum
     const RTSP_CSEQ_ERROR       = 85; // Mismatch of RTSP CSeq numbers.
     const RTSP_SESSION_ERROR    = 86; // Mismatch of RTSP Session Identifiers.
 
-
     /**
      * Get formated status name
      * @return string
@@ -217,7 +216,6 @@ class ResponseStatus extends \Dogma\Enum
         ));
     }
 
-
     /**
      * Is an information/handshaking HTTP response code (1xx)
      * @return boolean
@@ -226,7 +224,6 @@ class ResponseStatus extends \Dogma\Enum
     {
         return $this->value >= 100 && $this->value < 200;
     }
-
 
     /**
      * Is a positive HTTP response code (2xx)
@@ -237,7 +234,6 @@ class ResponseStatus extends \Dogma\Enum
         return $this->value >= 200 && $this->value < 300;
     }
 
-
     /**
      * Is a HTTP redirection code (3xx)
      * @return boolean
@@ -246,7 +242,6 @@ class ResponseStatus extends \Dogma\Enum
     {
         return ($this->value >= 300 && $this->value < 400) || $this->value == self::TOO_MANY_REDIRECTS;
     }
-
 
     /**
      * Is an HTTP error response code (4xx or 5xx)
@@ -257,7 +252,6 @@ class ResponseStatus extends \Dogma\Enum
         return $this->value >= 400 && $this->value < 600;
     }
 
-
     /**
      * Is a CURL error code
      * @return boolean
@@ -267,7 +261,6 @@ class ResponseStatus extends \Dogma\Enum
         return $this->value < 100;
     }
 
-
     /**
      * Is an HTTP or CURL error code
      * @return boolean
@@ -276,7 +269,6 @@ class ResponseStatus extends \Dogma\Enum
     {
         return $this->isCurlError() || $this->isHttpError();
     }
-
 
     /**
      * Is a network connection error. Possibility of succesful retry
@@ -293,7 +285,6 @@ class ResponseStatus extends \Dogma\Enum
             self::TRY_AGAIN,
         ]);
     }
-
 
     /**
      * CURL errors which should throw an exception immediately. Something is very wrong

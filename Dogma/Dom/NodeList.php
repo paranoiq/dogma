@@ -22,7 +22,6 @@ class NodeList extends \Dogma\Object implements \Countable, \Iterator
     /** @var integer */
     private $offset = 0;
 
-
     /**
      * @param \DOMNodeList
      * @param \Dogma\Dom\QueryEngine
@@ -33,7 +32,6 @@ class NodeList extends \Dogma\Object implements \Countable, \Iterator
         $this->engine = $engine;
     }
 
-
     /**
      * @param integer $offset
      * @return \Dogma\Dom\Element|\DOMNode
@@ -42,7 +40,6 @@ class NodeList extends \Dogma\Object implements \Countable, \Iterator
     {
         return $this->wrap($this->nodeList->item($offset));
     }
-
 
     /**
      * @return integer
@@ -57,7 +54,6 @@ class NodeList extends \Dogma\Object implements \Countable, \Iterator
         return $n;
     }
 
-
     /**
      * @return \Dogma\Dom\Element|\DOMNode
      */
@@ -65,7 +61,6 @@ class NodeList extends \Dogma\Object implements \Countable, \Iterator
     {
         return $this->wrap($this->nodeList->item($this->offset));
     }
-
 
     /**
      * @return integer
@@ -75,18 +70,15 @@ class NodeList extends \Dogma\Object implements \Countable, \Iterator
         return $this->offset;
     }
 
-
     public function next()
     {
         $this->offset++;
     }
 
-
     public function rewind()
     {
         $this->offset = 0;
     }
-
 
     /**
      * @return boolean
@@ -96,7 +88,6 @@ class NodeList extends \Dogma\Object implements \Countable, \Iterator
         // PHP bug - cannot iterate through items
         return $this->nodeList->item($this->offset) !== null;
     }
-
 
     /**
      * @param \DOMNode
@@ -110,7 +101,6 @@ class NodeList extends \Dogma\Object implements \Countable, \Iterator
             return $node;
         }
     }
-
 
     public function dump()
     {

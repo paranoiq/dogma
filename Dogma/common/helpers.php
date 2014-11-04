@@ -7,7 +7,6 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-
 /**
  * ArrayObject constructor helper
  * @param mixed $args list of items
@@ -19,7 +18,6 @@ function arr()
 
     return new Dogma\ArrayObject($args);
 }
-
 
 /**
  * Collection constructor helper
@@ -33,9 +31,7 @@ function arr()
 //     return new Dogma\Collection($args);
 // }
 
-
 if (!function_exists('is_traversable')) {
-
 
     /**
      * Returns true if variable is array or traversable object.
@@ -50,7 +46,6 @@ if (!function_exists('is_traversable')) {
 } else {
     trigger_error('Duplicite declaration of function is_traversable().');
 }
-
 
 /**
  * @param mixed[] $array
@@ -74,7 +69,6 @@ function array_separate_keys(&$array, $keys)
     return $remainder;
 }
 
-
 /**
  * Shortcut for in_array($value, array(...)) similar to SQL operator IN
  * Call: in($value, $param1, $param2, ...)
@@ -91,7 +85,6 @@ function array_separate_keys(&$array, $keys)
 //    return in_array($value, $params);
 // }
 
-
 /**
  * SQL operator LIKE
  *
@@ -105,7 +98,6 @@ function array_separate_keys(&$array, $keys)
 //         preg_quote($pattern, '/')) . '$/ui', $string);
 // }
 
-
 /**
  * Object instantiation helper
  * @param string
@@ -116,7 +108,6 @@ function array_separate_keys(&$array, $keys)
 // {
 //     return Dogma\Object\Prototyper::createInstance($class, $data, $aliases);
 // }
-
 
 function abbr($s, $maxLen, $append = "\xE2\x80\xA6")
 {
