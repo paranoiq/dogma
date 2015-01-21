@@ -10,32 +10,19 @@
 namespace Dogma;
 
 
-class DogmaLoader
+final class DogmaLoader
 {
 
     /** @var static */
     private static $instance;
 
     /** @var string[] */
-    public $list = [
-        'Dogma\\CompoundValueObject' => '/common/interfaces/CompoundValueObject',
-        'Dogma\\IndirectInstantiable' => '/common/interfaces/IndirectInstantiable',
-        'Dogma\\SimpleValueObject' => '/common/interfaces/SimpleValueObject',
-        'Dogma\\ValueObject' => '/common/interfaces/ValueObject',
+    private $classMap = [];
 
-        'Dogma\\ArrayObject' => '/common/types/ArrayObject',
-        'Dogma\\Collection' => '/common/types/Collection',
-        'Dogma\\Date' => '/common/types/Date',
-        'Dogma\\DateTime' => '/common/types/DateTime',
-        'Dogma\\Enum' => '/common/types/Enum',
-        'Dogma\\Object' => '/common/types/Object',
-        'Dogma\\Set' => '/common/types/Set',
-        'Dogma\\Regexp' => '/common/types/Regexp',
-        'Dogma\\String' => '/common/types/String',
-        'Dogma\\Type' => '/common/types/Type',
-
-        'Dogma\\Normalizer' => '/common/Normalizer',
-    ];
+    private function __construct()
+    {
+        $this->scan(__DIR__);
+    }
 
     /**
      * Returns singleton instance with lazy instantiation
@@ -63,33 +50,58 @@ class DogmaLoader
      * Handles autoloading of classes or interfaces.
      * @param string
      */
-    public function tryLoad($type)
+    public function tryLoad($class)
     {
-        $type = ltrim($type, '\\');
-        if (isset($this->list[$type])) {
-            require dirname(__DIR__) . '/' . $this->list[$type] . '.php';
+        $class = ltrim($class, '\\');
+        if (isset($this->classMap[$class])) {
+            require $this->classMap[$class];
             return;
         }
 
-        if (substr($type, 0, 6) !== 'Dogma\\') {
+        if (substr($class, 0, 6) !== 'Dogma\\') {
             return;
         }
 
-        $file = dirname(__DIR__) . '/' . strtr(substr($type, 5), '\\', '/') . '.php';
+        $file = dirname(__DIR__) . DIRECTORY_SEPARATOR . strtr(substr($class, 5), '\\', DIRECTORY_SEPARATOR) . '.php';
         if (is_file($file)) {
             require $file;
             return;
         }
 
-        if (substr($type, -9) === 'Exception') {
-            $parts = explode('\\', substr($type, 5));
+        if (substr($class, -9) === 'Exception') {
+            $parts = explode('\\', substr($class, 5));
             $last = array_pop($parts);
             $parts[] = 'exceptions';
             $parts[] = $last;
-            $file = dirname(__DIR__) . '/' . implode('/', $parts) . '.php';
+            $file = dirname(__DIR__) . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $parts) . '.php';
             if (is_file($file)) {
                 require $file;
                 return;
+            }
+        }
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getClassMap()
+    {
+        return $this->classMap;
+    }
+
+    /**
+     * @param string $dir
+     */
+    private function scan($dir)
+    {
+        foreach (glob($dir . '\\*') as $path) {
+            if (is_dir($path)) {
+                $this->scan($path);
+            } elseif (is_file($path)) {
+                $parts = explode(DIRECTORY_SEPARATOR, str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path));
+                $file = array_pop($parts);
+                $class = substr($file, 0, -4);
+                $this->classMap[sprintf('Dogma\\%s', $class)] = $path;
             }
         }
     }
