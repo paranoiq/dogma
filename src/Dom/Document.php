@@ -79,12 +79,14 @@ class Document extends \DOMDocument
      */
     public function loadHtml($source, $options = null): void
     {
-        libxml_use_internal_errors(true);
+        $previousState = libxml_use_internal_errors(true);
         libxml_clear_errors();
         if (!parent::loadHTML($source, $options)) {
             $error = libxml_get_last_error();
+            libxml_use_internal_errors($previousState);
             throw new DomException('Cannot load HTML document: ' . trim($error->message) . ' on line #' . $error->line, $error->code);
         }
+        libxml_use_internal_errors($previousState);
     }
 
     /**
