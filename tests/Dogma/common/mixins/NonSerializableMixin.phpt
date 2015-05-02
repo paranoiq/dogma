@@ -3,7 +3,7 @@
 namespace Dogma\Tests\NonSerializableMixin;
 
 use Dogma\NonSerializableMixin;
-use Tester\Assert;
+use Dogma\Tester\Assert;
 
 require_once __DIR__ . '/../../bootstrap.php';
 

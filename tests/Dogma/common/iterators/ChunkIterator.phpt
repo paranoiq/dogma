@@ -3,7 +3,7 @@
 namespace Dogma\Tests\ChunkIterator;
 
 use Dogma\ChunkIterator;
-use Tester\Assert;
+use Dogma\Tester\Assert;
 
 require_once __DIR__ . '/../../bootstrap.php';
 

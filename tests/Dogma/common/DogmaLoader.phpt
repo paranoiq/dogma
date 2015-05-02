@@ -3,8 +3,8 @@
 namespace Dogma\Tests\DogmaLoader;
 
 use Dogma\DogmaLoader;
+use Dogma\Tester\Assert;
 use Dogma\Type;
-use Tester\Assert;
 
 require_once __DIR__ . '/../bootstrap.php';
 

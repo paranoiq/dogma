@@ -3,7 +3,7 @@
 namespace Dogma\Tests\ArrayIterator;
 
 use Dogma\ArrayIterator;
-use Tester\Assert;
+use Dogma\Tester\Assert;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
