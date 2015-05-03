@@ -36,11 +36,11 @@ class ErrorHelper
         try {
             switch ($system) {
                 case self::LINUX:
-                    return LinuxError::getInstance($errno);
+                    return LinuxError::get($errno);
                 case self::UNIX:
-                    return UnixError::getInstance($errno);
+                    return UnixError::get($errno);
                 case self::WINDOWS:
-                    return WindowsError::getInstance($errno);
+                    return WindowsError::get($errno);
             }
         } catch (\Exception $e) {
             return false;

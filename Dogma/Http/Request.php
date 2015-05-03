@@ -426,13 +426,13 @@ class Request extends \Dogma\Object
         }
 
         if ($error) {
-            $status = ResponseStatus::getInstance($error);
+            $status = ResponseStatus::get($error);
 
         } else {
             try {
-                $status = ResponseStatus::getInstance($info['http_code']);
+                $status = ResponseStatus::get($info['http_code']);
             } catch (\Exception $e) {
-                $status = ResponseStatus::getInstance(ResponseStatus::UNKNOWN_RESPONSE_CODE);
+                $status = ResponseStatus::get(ResponseStatus::UNKNOWN_RESPONSE_CODE);
             }
         }
 
