@@ -408,6 +408,35 @@ final class Check
 
     /**
      * @param mixed $value
+     * @param string[] $types
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     */
+    public static function tuple($value, $types)
+    {
+        self::object($value, Tuple::class);
+        self::range(count($value), $length = count($types), $length);
+        foreach ($value as $i => $val) {
+            self::type($val, $types[$i]);
+        }
+    }
+
+    /**
+     * @param mixed $value
+     * @param string[] $types
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     */
+    public function nullableTuple($value, $types)
+    {
+        if ($value === null) {
+            return;
+        }
+        self::tuple($value, $types);
+    }
+
+    /**
+     * @param mixed $value
      * @param string|null $className
      * @throws \Dogma\InvalidTypeException
      */
