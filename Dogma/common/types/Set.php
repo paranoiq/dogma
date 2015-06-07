@@ -15,7 +15,7 @@ use Nette\Utils\ObjectMixin;
 /**
  * Set type. Similar to 'set' from MySql. Allowed values are defined as class constants.
  */
-abstract class Set implements SimpleValueObject
+abstract class Set
 {
 
     private static $values = [];
