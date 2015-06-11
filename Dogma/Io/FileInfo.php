@@ -74,11 +74,13 @@ class FileInfo extends \SplFileInfo
 
     /**
      * @param string
+     * @param string
      * @param resource
      * @return \Dogma\Io\File
      */
-    public function openFile($mode = File::READ, $streamContext = null)
+    public function openFile($mode = File::READ, $includePath = null, $streamContext = null)
     {
+        /// include path!
         return $this->open($mode, $streamContext);
     }
 

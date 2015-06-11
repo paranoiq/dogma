@@ -11,9 +11,8 @@ namespace Dogma\System;
 
 /**
  * UNIX system errors (from FreeBSD)
- * @property-read string $description
  */
-class UnixError extends \Dogma\Enum implements Error
+class UnixError extends \Dogma\Enum implements \Dogma\System\Error
 {
 
     // common with Linux:
@@ -125,7 +124,7 @@ class UnixError extends \Dogma\Enum implements Error
         return ucfirst(str_replace(
             ['non_socket', 'cant', 'references', 'rpc', 'nfs', 'prog_', '_'],
             ['non-socket', 'can\'t', 'references:', 'RPC', 'NFS', 'prog. ', ' '],
-            strtolower($this->getIdentifier())
+            strtolower($this->getConstantName())
         ));
     }
 

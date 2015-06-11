@@ -416,9 +416,10 @@ class Request extends \Dogma\Object
      *
      * @param string|boolean
      * @param integer
+     * @param string
      * @return \Dogma\Http\Response
      */
-    public function createResponse($response, $error)
+    public function createResponse($response, $error, $name = null)
     {
         $info = curl_getinfo($this->curl);
         if ($info === false) {
@@ -437,7 +438,7 @@ class Request extends \Dogma\Object
         }
 
         if ($status->isFatalError()) {
-            throw new RequestException(sprintf('Fatal error occured during request execution: %s', $status->identifier), $status->value);
+            throw new RequestException(sprintf('Fatal error occured during request execution: %s', $status->getConstantName()), $status->getValue());
         }
 
         $response = new Response($response, $status, $info);

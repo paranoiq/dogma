@@ -15,8 +15,6 @@ interface Error
 
     public function getValue();
 
-    public function getIdentifier();
-
     public function getDescription();
 
 }

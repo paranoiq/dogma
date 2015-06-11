@@ -11,9 +11,8 @@ namespace Dogma\System;
 
 /**
  * Linux system errors
- * @property-read string $description
  */
-class LinuxError extends \Dogma\Enum implements Error
+class LinuxError extends \Dogma\Enum implements \Dogma\System\Error
 {
 
     // common with Unix:
@@ -159,7 +158,7 @@ class LinuxError extends \Dogma\Enum implements Error
         return ucfirst(str_replace(
             ['dot_lib', 'a_out', 'io', 'cross_device', 'readonly', 'non_socket', 'references', 'csi', 'rfs', 'nfs', 'xenix', '_'],
             ['.lib', 'a.out', 'I/O', 'cross-device', 'read-only', 'non-socket', 'references:', 'CSI', 'RFS', 'NFS', 'XENIX', ' '],
-            strtolower($this->getIdentifier())
+            strtolower($this->getConstantName())
         ));
     }
 

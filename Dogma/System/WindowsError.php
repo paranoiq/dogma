@@ -11,9 +11,8 @@ namespace Dogma\System;
 
 /**
  * Windows system errors (@see http://msdn.microsoft.com/en-us/library/windows/desktop/ms681382(v=vs.85).aspx)
- * @property-read string $description
  */
-class WindowsError extends \Dogma\Enum implements Error
+class WindowsError extends \Dogma\Enum implements \Dogma\System\Error
 {
 
     const ERROR_SUCCESS = 0;
@@ -2772,7 +2771,7 @@ class WindowsError extends \Dogma\Enum implements Error
         return ucfirst(preg_replace('/^error /', '', str_replace(
             ['crc', 'dos', 'eof', 'sem_', 'iopl', 'eas', 'ea_', 'rpc', 'dns', 'frs', '_'],
             ['CRC', 'DOS', 'EOF', 'SEM ', 'IOPL', 'EAS', 'EA ', 'RPC', 'DNS', 'FRS', ' '],
-            strtolower($this->getIdentifier())
+            strtolower($this->getConstantName())
         )));
     }
 

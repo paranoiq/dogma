@@ -126,7 +126,7 @@ class DownloadRequest extends Request
      * @param string
      * @return \Dogma\Http\FileResponse
      */
-    public function createResponse($response, $error, $fileName)
+    public function createResponse($response, $error, $fileName = null)
     {
         $info = curl_getinfo($this->curl);
         if ($info === false) {

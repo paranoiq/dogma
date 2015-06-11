@@ -166,7 +166,7 @@ class BeanstalkJob extends \Dogma\Object
      * @param string
      * @return mixed
      */
-    public function __get($name)
+    public function &__get($name)
     {
         if (!$this->stats) {
             $this->loadStats();

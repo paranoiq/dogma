@@ -69,7 +69,7 @@ class Document extends \DomDocument
      * @param integer
      * @return boolean
      */
-    public function loadXml($source, $options = 0)
+    public function loadXml($source, $options = null)
     {
         libxml_use_internal_errors(true);
         libxml_clear_errors();
@@ -81,13 +81,14 @@ class Document extends \DomDocument
 
     /**
      * @param string
+     * @param integer
      * @return boolean
      */
-    public function loadHtml($source)
+    public function loadHtml($source, $options = null)
     {
         libxml_use_internal_errors(true);
         libxml_clear_errors();
-        if (!parent::loadHTML($source)) {
+        if (!parent::loadHTML($source, $options)) {
             $error = libxml_get_last_error();
             throw new DomException('Cannot load HTML document: ' . trim($error->message) . ' on line #' . $error->line, $error->code);
         }
@@ -95,9 +96,10 @@ class Document extends \DomDocument
 
     /**
      * @param string
+     * @param integer
      * @return boolean
      */
-    public function loadHtmlFile($fileName)
+    public function loadHtmlFile($fileName, $options = null)
     {
         libxml_use_internal_errors(true);
         libxml_clear_errors();

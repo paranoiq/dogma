@@ -46,7 +46,7 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
     /**
      * @param integer
      */
-    public function setFlags($flags)
+    public function setFlags($flags = null)
     {
         $this->flags = $flags;
         if ($flags & FilesystemIterator::CURRENT_AS_FILEINFO) {

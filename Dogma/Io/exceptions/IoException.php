@@ -13,7 +13,7 @@ namespace Dogma\Io;
 /**
  * Filesystem or stream exception
  */
-class IoException extends \Nette\IOException
+class IoException extends \Dogma\Exception
 {
     ///
 }

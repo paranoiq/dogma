@@ -17,8 +17,9 @@ use Tracy\Debugger;
  *
  * @property FileStat $info
  */
-class File extends \Nette\Object
+class File
 {
+    use \Dogma\StrictBehaviorMixin;
 
     // File opening mode:
     // if not found: ERROR; keep content
