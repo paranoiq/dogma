@@ -1,0 +1,26 @@
+<?php
+/**
+ * This file is part of the Dogma library (https://github.com/paranoiq/dogma)
+ *
+ * Copyright (c) 2012 Vlasta Neubauer (@paranoiq)
+ *
+ * For the full copyright and license information read the file 'license.md', distributed with this source code
+ */
+
+namespace Dogma\Transaction;
+
+class TransactionDeadlockException extends \Dogma\Exception implements \Dogma\Transaction\Exception
+{
+    use \Dogma\StrictBehaviorMixin;
+
+    /** @var \Dogma\Transaction\Transaction */
+    private $transaction;
+
+    public function __construct(Transaction $transaction, ?\Throwable $previous = null)
+    {
+        parent::__construct(sprintf('Transaction %s was deadlocked and cannot be persisted.', $transaction->getName()), $previous);
+
+        $this->transaction = $transaction;
+    }
+
+}
