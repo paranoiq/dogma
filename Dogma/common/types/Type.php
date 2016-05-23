@@ -18,8 +18,8 @@ class Type
     use NonSerializableMixin;
 
     // types
-    const BOOLEAN = 'boolean';
-    const INTEGER = 'integer';
+    const BOOLEAN = 'bool';
+    const INTEGER = 'int';
     const FLOAT = 'float';
     const STRING = 'string';
     const PHP_ARRAY = 'array';
@@ -94,10 +94,10 @@ class Type
 
     /**
      * @param string|self $itemType
-     * @param boolean $nullable
+     * @param bool $nullable
      * @return self
      */
-    public static function arrayOf($itemType, $nullable = false)
+    public static function arrayOf($itemType, bool $nullable = false): self
     {
         return self::collectionOf(self::PHP_ARRAY, $itemType, $nullable);
     }
@@ -105,12 +105,11 @@ class Type
     /**
      * @param string $type
      * @param string|self $itemType
-     * @param boolean $nullable
+     * @param bool $nullable
      * @return self
      */
-    public static function collectionOf($type, $itemType, $nullable = false)
+    public static function collectionOf(string $type, $itemType, bool $nullable = false): self
     {
-        Check::string($type);
         Check::types($itemType, [Type::STRING, Type::class]);
 
         if (!$itemType instanceof self) {
@@ -128,10 +127,10 @@ class Type
 
     /**
      * @param string|self ...$itemTypes
-     * @param boolean $nullable
+     * @param bool $nullable
      * @return self
      */
-    public static function tupleOf(...$arguments)
+    public static function tupleOf(...$arguments): self
     {
         $nullable = false;
         if (end($arguments) === true) {
@@ -246,61 +245,40 @@ class Type
         return in_array($this->type, self::listScalarTypes());
     }
 
-    /**
-     * @return boolean
-     */
-    public function isArray()
+    public function isArray(): bool
     {
         return $this->type === Type::PHP_ARRAY;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isCollection()
+    public function isCollection(): bool
     {
         return $this->itemType && $this->type !== Type::PHP_ARRAY && $this->type !== Tuple::class;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isTuple()
+    public function isTuple(): bool
     {
         return $this->type === Tuple::class;
     }
 
-    /**
-     * @param string $typeName
-     * @return boolean
-     */
-    public function is($typeName)
+    public function is(string $typeName): bool
     {
         return $this->type === $typeName;
     }
 
-    /**
-     * @param $interfaceName
-     * @return boolean
-     */
-    public function isImplementing($interfaceName)
+    public function isImplementing(string $interfaceName): bool
     {
         return $this->type === $interfaceName || is_subclass_of($this->type, $interfaceName);
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->type;
     }
 
     /**
      * Returns base of the type (without nullable and items)
-     * @return self
      */
-    public function getBaseType()
+    public function getBaseType(): self
     {
         return self::get($this->type);
     }
@@ -308,7 +286,7 @@ class Type
     /**
      * @return self
      */
-    public function getNonNullableType()
+    public function getNonNullableType(): self
     {
         switch (true) {
             case !$this->nullable:
@@ -335,7 +313,7 @@ class Type
      * List of types and pseudotypes, that can be used in annotations. Does not include 'null' and 'void'
      * @return string[]
      */
-    public static function listTypes()
+    public static function listTypes(): array
     {
         static $types = [
             self::BOOLEAN,
@@ -358,7 +336,7 @@ class Type
      * List of native PHP types. Does not include 'null'.
      * @return string[]
      */
-    public static function listNativeTypes()
+    public static function listNativeTypes(): array
     {
         static $types = [
             self::BOOLEAN,
@@ -378,7 +356,7 @@ class Type
      * List of native PHP scalar types and pseudotype 'numeric'.
      * @return string[]
      */
-    public static function listScalarTypes()
+    public static function listScalarTypes(): array
     {
         static $types = [
             self::BOOLEAN,

@@ -18,8 +18,10 @@ use Nette\Utils\ObjectMixin;
 abstract class Set
 {
 
+    /** @var mixed[] */
     private static $values = [];
 
+    /** @var mixed[] */
     private $set = [];
 
     /**
@@ -69,9 +71,9 @@ abstract class Set
 
     /**
      * @param self|string|string[]
-     * @return boolean
+     * @return bool
      */
-    public function contains($set)
+    public function contains($set): bool
     {
         $this->checkSet($set);
 
@@ -100,10 +102,7 @@ abstract class Set
         }
     }
 
-    /**
-     * @return string
-     */
-    final public function __toString()
+    final public function __toString(): string
     {
         return implode(',', $this->set);
     }
@@ -111,16 +110,16 @@ abstract class Set
     /**
      * @return mixed[]
      */
-    final public function getValues()
+    final public function getValues(): array
     {
         return $this->set;
     }
 
     /**
      * Set more values at once
-     * @param boolean[] (string $name => bool $value)
+     * @param bool[] (string $name => bool $value)
      */
-    public function setValues($values)
+    public function setValues(array $values)
     {
         foreach ($values as $name => $value) {
             $this->__set($name, $value);
@@ -131,9 +130,9 @@ abstract class Set
 
     /**
      * @param string|string[]
-     * @return boolean
+     * @return bool
      */
-    final public static function isValid($value)
+    final public static function isValid($value): bool
     {
         if (!isset(self::$values[$class = get_called_class()])) {
             self::init($class);
@@ -151,23 +150,16 @@ abstract class Set
         return in_array($value, self::$values[$class]);
     }
 
-    /**
-     * Get possible values.
-     * @return \ArrayIterator
-     */
-    public static function getAllowedValues()
+    public static function getAllowedValues(): array
     {
         if (!isset(self::$values[$class = get_called_class()])) {
             self::init($class);
         }
 
-        return new \ArrayIterator(self::$values[$class]);
+        return self::$values[$class];
     }
 
-    /**
-     * @param string
-     */
-    final private static function init($class)
+    final private static function init(string $class)
     {
         $ref = new \ReflectionClass($class);
         self::$values[$class] = $ref->getConstants();
@@ -179,7 +171,7 @@ abstract class Set
      * @param string
      * @return mixed
      */
-    final public function __get($name)
+    final public function __get(string $name)
     {
         if (self::isValid($name)) {
             return $this->contains($name);
@@ -192,7 +184,7 @@ abstract class Set
      * @param string
      * @return mixed
      */
-    final public function __isset($name)
+    final public function __isset(string $name)
     {
         if (self::isValid($name)) {
             return $this->contains($name);
@@ -205,7 +197,7 @@ abstract class Set
      * @param string
      * @param mixed
      */
-    final public function __set($name, $value)
+    final public function __set(string $name, $value)
     {
         if (self::isValid($name)) {
             if (is_string($value)) {
@@ -227,7 +219,7 @@ abstract class Set
      * @param string
      * @param mixed
      */
-    final public function __unset($name)
+    final public function __unset(string $name)
     {
         if (self::isValid($name)) {
             $this->remove($name);

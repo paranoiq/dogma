@@ -40,12 +40,9 @@ class Attachment extends \Dogma\Object
 
     /**
      * @param \Dogma\Io\File|string
-     * @param string
-     * @param string
-     * @param string
      * @param string[]
      */
-    public function __construct($data, $headers = [])
+    public function __construct($data, array $headers = [])
     {
         if ($data instanceof File) {
             $this->file = $data;
@@ -55,50 +52,32 @@ class Attachment extends \Dogma\Object
         $this->headers = $headers;
     }
 
-    /**
-     * @return string
-     */
-    public function getFileName()
+    public function getFileName(): string
     {
         return @$this->headers['disposition-filename']; // not on 'inline'
     }
 
-    /**
-     * @return string
-     */
-    public function getContentType()
+    public function getContentType(): string
     {
         return $this->headers['content-type'];
     }
 
-    /**
-     * @return string
-     */
-    public function getCharset()
+    public function getCharset(): string
     {
         return @$this->headers['content-charset']; // not on binary
     }
 
-    /**
-     * @return string
-     */
-    public function getDisposition()
+    public function getDisposition(): string
     {
         return $this->headers['content-disposition'];
     }
 
-    /**
-     * @return string
-     */
-    public function getHeaders()
+    public function getHeaders(): string
     {
         return $this->headers;
     }
 
-    /**
-     * @return integer
-     */
-    public function getLength()
+    public function getLength(): int
     {
         if ($this->data) {
             return strlen($this->data);
@@ -109,9 +88,8 @@ class Attachment extends \Dogma\Object
 
     /**
      * Get file content.
-     * @return string
      */
-    public function getContent()
+    public function getContent(): string
     {
         if ($this->data) {
             return $this->data;
@@ -122,9 +100,8 @@ class Attachment extends \Dogma\Object
 
     /**
      * Get File object.
-     * @return \Dogma\Io\File
      */
-    public function getFile()
+    public function getFile(): File
     {
         if ($this->file) {
             return $this->file;

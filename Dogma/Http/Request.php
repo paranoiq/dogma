@@ -56,7 +56,7 @@ class Request extends \Dogma\Object
     /** @var \Nette\Utils\Callback */
     private $init;
 
-    public function __construct($url = null)
+    public function __construct(string $url = null)
     {
         $this->curl = curl_init();
         $this->setOption(CURLOPT_HEADER, true);
@@ -109,7 +109,7 @@ class Request extends \Dogma\Object
     /**
      * @param string
      */
-    public function setUrl($url)
+    public function setUrl(string $url)
     {
         $this->url = $url;
     }
@@ -117,7 +117,7 @@ class Request extends \Dogma\Object
     /**
      * @param string
      */
-    public function appendUrl($url)
+    public function appendUrl(string $url)
     {
         $this->setUrl($this->url . $url);
     }
@@ -149,10 +149,7 @@ class Request extends \Dogma\Object
         }
     }
 
-    /**
-     * @param string
-     */
-    public function setContent($data)
+    public function setContent(string $data)
     {
         if ($this->method === self::POST || $this->method === self::PUT) {
             $this->content = $data;
@@ -164,17 +161,14 @@ class Request extends \Dogma\Object
 
     /**
      * Set URL or POST variables. Can be called repeatedly.
-     * @param array
+     * @param mixed[]
      */
     public function setVariables(array $variables)
     {
         $this->variables = array_merge($this->variables, $variables);
     }
 
-    /**
-     * @param string
-     */
-    public function setMethod($method)
+    public function setMethod(string $method)
     {
         $this->method = strtolower($method);
 
@@ -203,7 +197,7 @@ class Request extends \Dogma\Object
     }
 
     /**
-     * @param string|integer option name or CURLOPT_ constant
+     * @param string|int option name or CURLOPT_ constant
      * @param mixed
      */
     public function setOption($name, $value)
@@ -229,8 +223,8 @@ class Request extends \Dogma\Object
     // connection options ----------------------------------------------------------------------------------------------
 
     /**
-     * @param float|integer
-     * @param float|integer
+     * @param float|int
+     * @param float|int
      */
     public function setTimeout($timeout, $connectTimeout = null)
     {
@@ -251,11 +245,7 @@ class Request extends \Dogma\Object
         }
     }
 
-    /**
-     * @param boolean
-     * @param integer
-     */
-    public function setFollowRedirects($follow = true, $max = null)
+    public function setFollowRedirects(bool $follow = true, int $max = null)
     {
         $this->setOption(CURLOPT_FOLLOWLOCATION, $follow);
         if (!is_null($max)) {
@@ -263,46 +253,32 @@ class Request extends \Dogma\Object
         }
     }
 
-    /**
-     * @param string
-     * @param string
-     */
-    public function addHeader($name, $value)
+    public function addHeader(string $name, string $value)
     {
         $this->headers[$name] = $value;
     }
 
     /**
-     * @param array
+     * @param string[]
      */
     public function setHeaders(array $headers)
     {
         $this->headers = $headers;
     }
 
-    /**
-     * @param string
-     */
-    public function setReferrer($url)
+    public function setReferrer(string $url)
     {
         $this->setOption(CURLOPT_REFERER, $url);
     }
 
-    /**
-     * @param string
-     */
-    public function setUserAgent($string)
+    public function setUserAgent(string $string)
     {
         $this->setOption(CURLOPT_USERAGENT, $string);
     }
 
     // cookies, authentication & secure connection ---------------------------------------------------------------------
 
-    /**
-     * @param string
-     * @param string
-     */
-    public function setCookieFile($inputFile, $outputFile = null)
+    public function setCookieFile(string $inputFile, string $outputFile = null)
     {
         if ($inputFile) {
             $this->setOption(CURLOPT_COOKIEFILE, $inputFile);
@@ -313,50 +289,32 @@ class Request extends \Dogma\Object
     }
 
     /**
-     * @param array
+     * @param string[]
      */
     public function setCookies(array $cookies)
     {
         $this->cookies = $cookies;
     }
 
-    /**
-     * @param string
-     * @param string
-     */
-    public function addCookie($name, $value)
+    public function addCookie(string $name, string $value)
     {
         $this->cookies[$name] = $value;
     }
 
-    /**
-     * @param string
-     * @param string
-     * @param integer $method CURLAUTH_ constant
-     */
-    public function setCredentials($userName, $password, $method = CURLAUTH_ANYSAFE)
+    public function setCredentials(string $userName, string $password, int $method = CURLAUTH_ANYSAFE)
     {
         $this->setOption(CURLOPT_USERPWD, $userName . ':' . $password);
         $this->setOption(CURLOPT_HTTPAUTH, $method);
     }
 
-    /**
-     * @param string
-     * @param string
-     * @param string (PEM|DER|ENG)
-     */
-    public function setSslKey($keyFile, $password, $keyType = 'PEM')
+    public function setSslKey(string $keyFile, string $password, string $keyType = 'PEM')
     {
         $this->setOption(CURLOPT_SSLKEY, $keyFile);
         $this->setOption(CURLOPT_SSLKEYPASSWD, $password);
         $this->setOption(CURLOPT_SSLKEYTYPE, $keyType);
     }
 
-    /**
-     * @param boolean
-     * @param boolean
-     */
-    public function setVerifySslCertificates($verifyPeer = true, $verifyHost = true)
+    public function setVerifySslCertificates(bool $verifyPeer = true, bool $verifyHost = true)
     {
         $this->setOption(CURLOPT_SSL_VERIFYPEER, $verifyPeer);
         $this->setOption(CURLOPT_SSL_VERIFYHOST, $verifyHost);
@@ -366,9 +324,8 @@ class Request extends \Dogma\Object
 
     /**
      * Execute request.
-     * @return \Dogma\Http\Response
      */
-    public function execute()
+    public function execute(): Response
     {
         $this->init();
         $this->prepare();
@@ -414,12 +371,12 @@ class Request extends \Dogma\Object
      * Called by RequestManager.
      * @internal
      *
-     * @param string|boolean
-     * @param integer
+     * @param string|bool
+     * @param int
      * @param string
      * @return \Dogma\Http\Response
      */
-    public function createResponse($response, $error, $name = null)
+    public function createResponse($response, int $error, string $name = null)
     {
         $info = curl_getinfo($this->curl);
         if ($info === false) {
@@ -432,7 +389,7 @@ class Request extends \Dogma\Object
         } else {
             try {
                 $status = ResponseStatus::get($info['http_code']);
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $status = ResponseStatus::get(ResponseStatus::UNKNOWN_RESPONSE_CODE);
             }
         }
@@ -487,7 +444,7 @@ class Request extends \Dogma\Object
     }
 
     /**
-     * @param array
+     * @param mixed[]
      */
     private function prepareData(array $vars)
     {
@@ -549,9 +506,9 @@ class Request extends \Dogma\Object
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
-    private function analyzeUrl()
+    private function analyzeUrl(): array
     {
         $params = [];
 
@@ -570,7 +527,7 @@ class Request extends \Dogma\Object
     }
 
     /**
-     * @param array
+     * @param mixed[]
      */
     private function fillUrlVariables(array $vars)
     {

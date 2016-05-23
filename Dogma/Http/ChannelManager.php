@@ -20,7 +20,7 @@ class ChannelManager extends \Dogma\Object
     /** @var resource */
     private $handler;
 
-    /** @var integer maximum threads for all channles */
+    /** @var int maximum threads for all channles */
     private $threadLimit = 20;
 
     /** @var float sum of priorities of all channels */
@@ -56,16 +56,12 @@ class ChannelManager extends \Dogma\Object
 
     /**
      * Set maximum of request to run paralelly.
-     * @param integer
      */
-    public function setThreadLimit($threads)
+    public function setThreadLimit(int $threads)
     {
         $this->threadLimit = abs($threads);
     }
 
-    /**
-     * @param \Dogma\Http\Channel
-     */
     public function addChannel(Channel $channel)
     {
         $this->channels[spl_object_hash($channel)] = $channel;
@@ -90,9 +86,8 @@ class ChannelManager extends \Dogma\Object
 
     /**
      * Wait for any request to finish. Blocking.
-     * @return integer
      */
-    private function waitForResult()
+    private function waitForResult(): int
     {
         $run = false;
         foreach ($this->channels as $channel) {
@@ -117,10 +112,7 @@ class ChannelManager extends \Dogma\Object
         return 0;
     }
 
-    /**
-     * @return integer
-     */
-    public function exec()
+    public function exec(): int
     {
         do {
             $err = curl_multi_exec($this->handler, $active);
@@ -165,7 +157,7 @@ class ChannelManager extends \Dogma\Object
 
     /**
      * Select channel to spawn new connection, taking in account channel priorities.
-     * @return integer|null
+     * @return int|null
      */
     private function selectChannel()
     {
@@ -198,10 +190,10 @@ class ChannelManager extends \Dogma\Object
      * Save data for later use.
      * @param resource
      * @param \Dogma\Http\Channel
-     * @param string|integer
+     * @param string|int
      * @param \Dogma\Http\Request
      */
-    public function jobStarted($resource, $channel, $name, $request)
+    public function jobStarted($resource, Channel $channel, $name, Request $request)
     {
         $this->resources[(string) $resource] = [spl_object_hash($channel), $name, $request];
     }

@@ -27,7 +27,7 @@ abstract class Enum implements \Dogma\NonIterable
     private $value;
 
     /**
-     * @param string
+     * @param int|string
      * @param mixed
      */
     final private function __construct($value)
@@ -36,7 +36,7 @@ abstract class Enum implements \Dogma\NonIterable
     }
 
     /**
-     * @param scalar
+     * @param int|string
      * @return static
      */
     final public static function get($value)
@@ -76,7 +76,7 @@ abstract class Enum implements \Dogma\NonIterable
     /**
      * @param mixed|\Dogma\Enum $value
      */
-    final public function equals($value)
+    final public function equals($value): bool
     {
         if (is_scalar($value)) {
             $value = static::get($value);
@@ -87,11 +87,7 @@ abstract class Enum implements \Dogma\NonIterable
         return $this->getValue() === $value->getValue();
     }
 
-    /**
-     * @param mixed
-     * @return boolean
-     */
-    final public static function isValid($value)
+    final public static function isValid($value): bool
     {
         if (empty(self::$availableValues[$class = get_called_class()])) {
             self::init($class);
@@ -104,7 +100,7 @@ abstract class Enum implements \Dogma\NonIterable
      * Get possible values.
      * @return mixed[]
      */
-    final public static function getAllowedValues()
+    final public static function getAllowedValues(): array
     {
         if (empty(self::$availableValues[$class = get_called_class()])) {
             self::init($class);
@@ -117,7 +113,7 @@ abstract class Enum implements \Dogma\NonIterable
      * Get all values as Enum objects.
      * @return static[]
      */
-    final public static function getInstances()
+    final public static function getInstances(): array
     {
         if (empty(self::$availableValues[$class = get_called_class()])) {
             self::init($class);
@@ -134,10 +130,7 @@ abstract class Enum implements \Dogma\NonIterable
         return self::$instances[$class];
     }
 
-    /**
-     * @param string
-     */
-    final private static function init($class)
+    final private static function init(string $class)
     {
         $ref = new \ReflectionClass($class);
         self::$availableValues[$class] = $ref->getConstants();

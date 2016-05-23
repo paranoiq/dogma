@@ -6,12 +6,12 @@ class ValueOutOfRangeException extends \Dogma\InvalidValueException
 {
 
     /**
-     * @param integer|float
-     * @param integer|float|null
-     * @param integer|float|null
-     * @param \Exception|null
+     * @param int|float
+     * @param int|float|null
+     * @param int|float|null
+     * @param \Throwable|null
      */
-    public function __construct($value, $min, $max, \Exception $previous = null)
+    public function __construct($value, $min, $max, \Throwable $previous = null)
     {
         if ($min === null) {
             Exception::__construct(

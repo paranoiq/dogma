@@ -84,15 +84,10 @@ class DownloadRequest extends Request
     }
 
     /**
-     * Called by RequestManager.
+     * Called by RequestManager. Returns downloaded file name.
      * @internal
-     *
-     * @param string
-     * @param string
-     * @param boolean
-     * @return string downloaded file name
      */
-    public function prepare($urlSuffix = null, $fileName = null)
+    public function prepare(string $urlSuffix = null, string $fileName = null): string
     {
         parent::prepare($urlSuffix);
 
@@ -122,11 +117,11 @@ class DownloadRequest extends Request
      * @internal
      *
      * @param string|bool
-     * @param integer
+     * @param int
      * @param string
      * @return \Dogma\Http\FileResponse
      */
-    public function createResponse($response, $error, $fileName = null)
+    public function createResponse($response, int $error, string $fileName = null): FileResponse
     {
         $info = curl_getinfo($this->curl);
         if ($info === false) {

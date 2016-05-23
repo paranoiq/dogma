@@ -50,7 +50,7 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function valid()
     {
@@ -58,7 +58,7 @@ class HtmlTableIterator extends \Dogma\Object implements \Iterator
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function key()
     {

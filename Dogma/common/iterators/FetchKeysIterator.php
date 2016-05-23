@@ -6,10 +6,10 @@ class FetchKeysIterator extends \IteratorIterator
 {
     use StrictBehaviorMixin;
 
-    /** @var mixed */
+    /** @var int|string */
     private $keysKey;
 
-    /** @var mixed */
+    /** @var int|string */
     private $valuesKey;
 
     /**
@@ -31,9 +31,6 @@ class FetchKeysIterator extends \IteratorIterator
         $this->valuesKey = $valuesKey;
     }
 
-    /**
-     * @return mixed
-     */
     public function current()
     {
         if ($this->valuesKey === null) {
@@ -48,7 +45,7 @@ class FetchKeysIterator extends \IteratorIterator
     }
 
     /**
-     * @return mixed
+     * @return string|int
      */
     public function key()
     {

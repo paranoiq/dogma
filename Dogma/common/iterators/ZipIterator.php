@@ -45,10 +45,7 @@ class ZipIterator implements \Iterator
         $this->values->next();
     }
 
-    /**
-     * @return boolean
-     */
-    public function valid()
+    public function valid(): bool
     {
         return $this->keys->valid() && $this->values->valid();
     }
@@ -62,7 +59,7 @@ class ZipIterator implements \Iterator
     }
 
     /**
-     * @return mixed|null
+     * @return int|string|null
      */
     public function key()
     {

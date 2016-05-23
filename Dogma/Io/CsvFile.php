@@ -9,10 +9,11 @@
 
 namespace Dogma\Io;
 
+
 use Nette;
 use Nette\Utils\ArrayHash;
 use Dogma\Type;
-
+use Dogma\Check;
 
 /**
  * CSV file reader/writer
@@ -37,48 +38,43 @@ final class CsvFile extends TextFile
     private $normalizer;
 
 
-    /** @var integer[] (string $realName => integer $i) real column names */
+    /** @var int[] (string $realName => integer $i) real column names */
     private $realColumns = [];
     /** @var mixed[][] (string $alias => mixed[] ($options)) user column options */
     private $columns = [];
 
-    /** @var boolean autodetect types if no columns are defined? */
+    /** @var bool autodetect types if no columns are defined? */
     private $autodetect = false;
-    /** @var boolean autodetect includes null? */
+
+    /** @var bool autodetect includes null? */
     private $nullable = false;
 
-
-    /** @var integer row counter (reading) */
+    /** @var int row counter (reading) */
     private $counter = 1;
 
-    /** @var integer column count (writing) */
+    /** @var int column count (writing) */
     private $columnCount;
 
     /**
      * Set CSV column delimiter
-     * @param string|null for autodetect
      */
-    public function setDelimiter($delimiter)
+    public function setDelimiter(string $delimiter)
     {
-        $this->delimiter = (string) $delimiter;
+        $this->delimiter = $delimiter;
     }
 
     /**
      * Set formating options
-     * @param string
-     * @param string
      */
-    public function setFormat($type, $format)
+    public function setFormat(string $type, string $format)
     {
         $this->getNormalizer()->setFormat($type, $format);
     }
 
     /**
      * Set type autodetection
-     * @param boolean
-     * @param boolean
      */
-    public function autodetectTypes($autodetect = true, $nullable = false)
+    public function autodetectTypes(bool $autodetect = true, bool $nullable = false)
     {
         $this->autodetect = $autodetect;
         $this->nullable = $nullable;
@@ -100,12 +96,6 @@ final class CsvFile extends TextFile
 
     /**
      * Add a column
-     * @param string $name user column name
-     * @param string $realName real column name in file
-     * @param string $type column type (string|int|float|bool|date|datetime|bool)
-     * @param boolean $required
-     * @param boolean null value allowed?
-     * @return self
      */
     public function addColumn($name, $realName = null, $type = Type::STRING, $required = true, $nullable = false)
     {
@@ -157,10 +147,8 @@ final class CsvFile extends TextFile
 
     /**
      * Check if file has column
-     * @param string
-     * @return boolean
      */
-    public function hasColumn($name)
+    public function hasColumn(string $name): bool
     {
         if (!$this->realColumns) {
             $this->initializeRead();
@@ -177,7 +165,7 @@ final class CsvFile extends TextFile
      * Returns list of columns
      * @return string[] (string $name => string $type)
      */
-    public function getColumns()
+    public function getColumns(): array
     {
         if (!$this->realColumns) {
             $this->initializeRead();
@@ -200,11 +188,9 @@ final class CsvFile extends TextFile
     // Data access------------------------------------------------------------------------------------------------------
 
     /**
-     * Skip n rows
-     * @param integer
-     * @return integer actually skipped
+     * Skip n rows. Return actually skipped rows.
      */
-    public function skip($rows = 1)
+    public function skip(int $rows = 1): int
     {
         $rows = (int) $rows;
         if ($rows < 0) {
@@ -221,7 +207,7 @@ final class CsvFile extends TextFile
 
     /**
      * Returns next CSV row or false
-     * @return array|boolean
+     * @return mixed[]|bool
      */
     public function fetch()
     {
@@ -244,9 +230,9 @@ final class CsvFile extends TextFile
     /**
      * Returns next CSV row or false
      * @param string
-     * @return mixed|boolean
+     * @return mixed|bool
      */
-    public function fetchColumn($name)
+    public function fetchColumn(string $name)
     {
         if (!$this->realColumns) {
             $this->initializeRead();
@@ -282,7 +268,7 @@ final class CsvFile extends TextFile
      * Get next row
      * @return mixed[]
      */
-    private function getNextRow()
+    private function getNextRow(): array
     {
         do {
             $this->counter++;
@@ -310,7 +296,7 @@ final class CsvFile extends TextFile
      * @param mixed[]
      * @return mixed[]
      */
-    private function assocRow(array $row)
+    private function assocRow(array $row): array
     {
         $data = [];
         foreach ($this->realColumns as $realName => $i) {
@@ -328,7 +314,7 @@ final class CsvFile extends TextFile
      * @param mixed[]
      * @return mixed[]
      */
-    private function normalizeRow(array $row)
+    private function normalizeRow(array $row): array
     {
         $data = [];
         foreach ($this->columns as $name => $column) {
@@ -349,10 +335,10 @@ final class CsvFile extends TextFile
 
     /**
      * Write data to CSV file
-     * @param array
-     * @param boolean
+     * @param mixed[]
+     * @param bool
      */
-    public function writeData($data)
+    public function writeData(array $data): bool
     {
         if (!$this->columnCount) {
             $this->initializeWrite($data);
@@ -388,9 +374,9 @@ final class CsvFile extends TextFile
 
     /**
      * Detect format of file
-     * @param array
+     * @param mixed[]
      */
-    private function initializeWrite($data)
+    private function initializeWrite(array $data)
     {
         if (!$this->delimiter) {
             throw new FileException('CsvFile: Delimiter must be set!');

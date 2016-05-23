@@ -13,8 +13,8 @@ namespace Dogma\System;
 interface Error
 {
 
-    public function getValue();
+    public function getValue(): int;
 
-    public function getDescription();
+    public function getDescription(): string;
 
 }

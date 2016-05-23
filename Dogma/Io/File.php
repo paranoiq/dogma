@@ -72,11 +72,11 @@ class File
 
     /**
      * Open file
-     * @param string file name or stream resource
+     * @param string|resource
      * @param string
      * @param resource
      */
-    public function __construct($file, $mode = self::READ_WRITE, $streamContext = null)
+    public function __construct($file, string $mode = self::READ_WRITE, $streamContext = null)
     {
         if ($file === null) {
             return;
@@ -109,10 +109,7 @@ class File
         }
     }
 
-    /**
-     * @return boolean
-     */
-    public function isOpen()
+    public function isOpen(): bool
     {
         return (bool) $this->file;
     }
@@ -136,9 +133,8 @@ class File
 
     /**
      * End of file reached?
-     * @return boolean
      */
-    public function eof()
+    public function eof(): bool
     {
         $this->testOpen();
 
@@ -151,10 +147,8 @@ class File
 
     /**
      * Read binary data from file
-     * @param integer $length maximal length of input
-     * @return string
      */
-    public function read($length = null)
+    public function read(int $length = null): string
     {
         if (empty($length)) {
             $length = self::$defaultChunkSize;
@@ -176,13 +170,13 @@ class File
     }
 
     /**
-     * Copy range of data to another File or callback
+     * Copy range of data to another File or callback. Returns actual length of copied data.
      * @param \Dogma\Io\File|callable
-     * @param integer
-     * @param integer
-     * @return integer actual length of copied data
+     * @param int
+     * @param int
+     * @return int
      */
-    public function copyData($destination, $start = null, $length = 0, $chunkSize = null)
+    public function copyData($destination, int $start = null, int $length = 0, int $chunkSize = null): int
     {
         if (empty($chunkSize)) {
             $chunkSize = self::$defaultChunkSize;
@@ -213,9 +207,8 @@ class File
 
     /**
      * Get entire content of file. Beware of BIG files!
-     * @return string
      */
-    public function getContent()
+    public function getContent(): string
     {
         if ($this->getPosition()) {
             $this->setPosition(0); // ?
@@ -231,9 +224,8 @@ class File
 
     /**
      * Write binary data to file
-     * @param string
      */
-    public function write($data)
+    public function write(string $data)
     {
         $this->testOpen();
 
@@ -247,9 +239,8 @@ class File
 
     /**
      * Truncate file and move pointer at the end
-     * @param integer $size new file size in bytes
      */
-    public function truncate($size = 0)
+    public function truncate(int $size = 0)
     {
         $this->testOpen();
 
@@ -281,10 +272,8 @@ class File
 
     /**
      * Lock file. see PHP flock() documentation
-     * @param integer $mode locking mode
-     * @param integer $wouldBlock would block (in non blocking mode)
      */
-    public function lock($mode = self::SHARED, &$wouldBlock = null)
+    public function lock(int $mode = self::SHARED, int &$wouldBlock = null)
     {
         $this->testOpen();
 
@@ -319,8 +308,8 @@ class File
 
     /**
      * Set the file pointer position
-     * @param integer|boolean position in bytes or true for end of file
-     * @param integer $from
+     * @param int|bool position in bytes or true for end of file
+     * @param int $from
      */
     public function setPosition($position, $from = self::BEGINNING)
     {
@@ -341,9 +330,8 @@ class File
 
     /**
      * Get file pointer position
-     * @return integer
      */
-    public function getPosition()
+    public function getPosition(): int
     {
         $this->testOpen();
 
@@ -359,9 +347,8 @@ class File
 
     /**
      * Get file name
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         if (empty($this->name)) {
             $meta = $this->getMetaData();
@@ -373,9 +360,8 @@ class File
 
     /**
      * Get file info
-     * @return \Dogma\Io\FileStat
      */
-    public function getInfo()
+    public function getInfo(): FileStat
     {
         if (!$this->stat) {
             if ($this->file) {
@@ -399,18 +385,18 @@ class File
 
     /**
      * Get stream meta data for files opened via HTTP, FTP…
-     * @return array
+     * @return mixed[]
      */
-    public function getMetaData()
+    public function getMetaData(): array
     {
         return stream_get_meta_data($this->file);
     }
 
     /**
-     * Get stream wraper headers (HTTP)
-     * @return array
+     * Get stream wrapper headers (HTTP)
+     * @return mixed[]
      */
-    public function getWraperData()
+    public function getWrapperData(): array
     {
         $data = stream_get_meta_data($this->file);
 
@@ -452,10 +438,7 @@ class File
 
     // factories -------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return self
-     */
-    public static function createTemporaryFile()
+    public static function createTemporaryFile(): self
     {
         ///
         $fd = tmpfile();

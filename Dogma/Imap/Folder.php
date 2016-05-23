@@ -28,30 +28,25 @@ class Folder extends \Dogma\Object
     /** @var string */
     private $name;
 
-    /** @var integer */
+    /** @var int */
     private $attr;
 
-    /** @var integer */
+    /** @var int */
     private $messages;
 
-    /** @var integer */
+    /** @var int */
     private $recent;
 
-    /** @var integer */
+    /** @var int */
     private $unread;
 
-    /** @var integer */
+    /** @var int */
     private $deleted;
 
-    /** @var integer */
+    /** @var int */
     private $size;
 
-    /**
-     * @param \Dogma\Imap\Connection
-     * @param string
-     * @param integer
-     */
-    public function __construct(Connection $imap, $name, $attributes)
+    public function __construct(Connection $imap, string $name, int $attributes)
     {
         $this->imap = $imap;
         $this->name = $name;
@@ -60,59 +55,40 @@ class Folder extends \Dogma\Object
 
     /**
      * Open (select) this folder.
-     * @return \Dogma\Imap\Folder
      */
-    public function select()
+    public function select(): Folder
     {
         return $this->imap->selectFolder($this->name);
     }
 
     // info ------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return boolean
-     */
-    public function isSelected()
+    public function isSelected(): bool
     {
         return $this->imap->getSelectedFolder() === $this->name;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isSelectable()
+    public function isSelectable(): bool
     {
         return !($this->attr & self::NOT_SELECTABLE);
     }
 
-    /**
-     * @return boolean
-     */
-    public function hasSubfolders()
+    public function hasSubfolders(): bool
     {
         return (bool) $this->attr & self::HAS_CHILDREN;
     }
 
-    /**
-     * @return boolean
-     */
-    public function canHaveSubfolders()
+    public function canHaveSubfolders(): bool
     {
         return !($this->attr & self::NO_SUBFOLDERS);
     }
 
-    /**
-     * @return boolean
-     */
-    public function isSubscribed()
+    public function isSubscribed(): bool
     {
         return $this->imap->isFolderSubscribed($this->name);
     }
 
-    /**
-     * @return integer
-     */
-    public function getMessageCount()
+    public function getMessageCount(): int
     {
         if (empty($this->messages)) {
             $this->loadStatus();
@@ -120,10 +96,7 @@ class Folder extends \Dogma\Object
         return $this->messages;
     }
 
-    /**
-     * @return integer
-     */
-    public function getRecentCount()
+    public function getRecentCount(): int
     {
         if (empty($this->recent)) {
             $this->loadStatus();
@@ -131,10 +104,7 @@ class Folder extends \Dogma\Object
         return $this->recent;
     }
 
-    /**
-     * @return integer
-     */
-    public function getUnreadCount()
+    public function getUnreadCount(): int
     {
         if (empty($this->unread)) {
             $this->loadStatus();
@@ -142,10 +112,7 @@ class Folder extends \Dogma\Object
         return $this->unread;
     }
 
-    /**
-     * @return integer
-     */
-    public function getDeletedCount()
+    public function getDeletedCount(): int
     {
         if (empty($this->deleted)) {
             $this->loadInfo();
@@ -153,10 +120,7 @@ class Folder extends \Dogma\Object
         return $this->deleted;
     }
 
-    /**
-     * @return integer
-     */
-    public function getSize()
+    public function getSize(): int
     {
         if (empty($this->size)) {
             $this->loadInfo();
@@ -168,20 +132,20 @@ class Folder extends \Dogma\Object
 
     /**
      * @param string
-     * @param boolean
+     * @param bool
      * @return string[]
      */
-    public function listSubfolders($filter = '*', $all = true)
+    public function listSubfolders(string $filter = '*', bool $all = true): array
     {
         return $this->imap->listFolders($this->name . '/' . $filter, $all);
     }
 
     /**
      * @param string
-     * @param boolean
+     * @param bool
      * @return \Dogma\Imap\Folder[]
      */
-    public function getSubfolders($filter = '*', $all = true)
+    public function getSubfolders(string $filter = '*', bool $all = true): array
     {
         return $this->imap->getFolders($this->name . '/' . $filter, $all);
     }

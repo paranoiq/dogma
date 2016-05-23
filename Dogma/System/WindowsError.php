@@ -2764,9 +2764,8 @@ class WindowsError extends \Dogma\Enum implements \Dogma\System\Error
 
     /**
      * Get formated error description
-     * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return ucfirst(preg_replace('/^error /', '', str_replace(
             ['crc', 'dos', 'eof', 'sem_', 'iopl', 'eas', 'ea_', 'rpc', 'dns', 'frs', '_'],

@@ -37,13 +37,13 @@ Assert::same($array->lastIndexOf(2), 3);
 Assert::same($array->lastIndexOf(2, 2), 1);
 
 // indexWhere()
-Assert::null($array->indexWhere(function () {
+Assert::null($array->indexWhere(function (): bool {
     return false;
 }));
-Assert::same($array->indexWhere(function ($v) {
+Assert::same($array->indexWhere(function (int $v): bool {
     return $v === 2;
 }), 1);
-Assert::same($array->indexWhere(function ($v) {
+Assert::same($array->indexWhere(function (int $v): bool {
     return $v === 2;
 }, 2), 3);
 
@@ -51,10 +51,10 @@ Assert::same($array->indexWhere(function ($v) {
 Assert::null($array->lastIndexWhere(function () {
     return false;
 }));
-Assert::same($array->lastIndexWhere(function ($v) {
+Assert::same($array->lastIndexWhere(function (int $v): bool {
     return $v === 2;
 }), 3);
-Assert::same($array->lastIndexWhere(function ($v) {
+Assert::same($array->lastIndexWhere(function (int $v): bool {
     return $v === 2;
 }, 2), 1);
 
@@ -63,35 +63,35 @@ Assert::false($array->containsKey(5));
 Assert::true($array->containsKey(2));
 
 // exists()
-Assert::false($array->exists(function ($v) {
+Assert::false($array->exists(function (int $v): bool {
     return $v > 5;
 }));
-Assert::true($array->exists(function ($v) {
+Assert::true($array->exists(function (int $v): bool {
     return $v > 1;
 }));
 
 // forAll()
-Assert::false($array->forAll(function ($v) {
+Assert::false($array->forAll(function (int $v): bool {
     return $v > 1;
 }));
-Assert::true($array->forAll(function ($v) {
+Assert::true($array->forAll(function (int $v): bool {
     return $v < 5;
 }));
 
 // find()
-Assert::null($array->find(function ($v) {
+Assert::null($array->find(function (int $v): bool {
     return $v * $v === 25;
 }));
-Assert::same($array->find(function ($v) {
+Assert::same($array->find(function (int $v): bool {
     return $v * $v === 4;
 }), 2);
 
 // prefixLength()
-Assert::same((new ImmutableArray([2, 2, 2, 1]))->prefixLength(function ($v) {
+Assert::same((new ImmutableArray([2, 2, 2, 1]))->prefixLength(function (int $v): bool {
     return $v === 2;
 }), 3);
 
 // segmentLength()
-Assert::same((new ImmutableArray([2, 2, 2, 1]))->segmentLength(function ($v) {
+Assert::same((new ImmutableArray([2, 2, 2, 1]))->segmentLength(function (int $v): bool {
     return $v === 2;
 }, 1), 2);

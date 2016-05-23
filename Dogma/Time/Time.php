@@ -23,11 +23,11 @@ class Time implements \Dogma\NonIterable
 
     const SECONDS_IN_A_DAY = 86400;
 
-    /** @var integer */
+    /** @var int */
     private $secondsSinceMidnight;
 
     /**
-     * @param string|integer $time
+     * @param string|int $time
      */
     public function __construct($time)
     {
@@ -37,7 +37,7 @@ class Time implements \Dogma\NonIterable
         } else {
             try {
                 $dateTime = new \DateTime($time);
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 throw new \Dogma\Time\InvalidDateTimeException($e);
             }
             $hours = (int) $dateTime->format('h');
@@ -47,13 +47,7 @@ class Time implements \Dogma\NonIterable
         }
     }
 
-    /**
-     * @param integer $hours
-     * @param integer $minutes
-     * @param integer $seconds
-     * @return static
-     */
-    public static function createFromParts($hours, $minutes, $seconds = 0)
+    public static function createFromParts(int $hours, int $minutes, int $seconds = 0): self
     {
         Check::integer($hours, 0, 23);
         Check::integer($minutes, 0, 59);
@@ -62,21 +56,12 @@ class Time implements \Dogma\NonIterable
         return new static($hours * 3600 + $minutes * 60 + $seconds);
     }
 
-    /**
-     * @param integer $secondsSinceMidnight
-     * @return static
-     */
-    public static function createFromSeconds($secondsSinceMidnight)
+    public static function createFromSeconds(int $secondsSinceMidnight): self
     {
         return new static($secondsSinceMidnight);
     }
 
-    /**
-     * @param string $format
-     * @param string $timeString
-     * @return static
-     */
-    public static function createFromFormat($format, $timeString)
+    public static function createFromFormat(string $format, string $timeString): self
     {
         Check::string($format);
         Check::string($timeString);
@@ -89,53 +74,37 @@ class Time implements \Dogma\NonIterable
         return new static($dateTime->format(self::DEFAULT_FORMAT));
     }
 
-    /**
-     * @param string $format
-     * @return string
-     */
-    public function format($format = self::DEFAULT_FORMAT)
+    public function format(string $format = self::DEFAULT_FORMAT): string
     {
         $midnightTimestamp = mktime(0, 0, 0);
         return date($format, $midnightTimestamp + $this->secondsSinceMidnight);
     }
 
-    /**
-     * @return integer
-     */
-    public function getSecondsSinceMidnight()
+    public function getSecondsSinceMidnight(): int
     {
         return $this->secondsSinceMidnight;
     }
 
-    /**
-     * @return integer
-     */
-    public function getHours()
+    public function getHours(): int
     {
         return (int) floor($this->secondsSinceMidnight / 3600);
     }
 
-    /**
-     * @return integer
-     */
-    public function getMinutes()
+    public function getMinutes(): int
     {
         return floor($this->secondsSinceMidnight / 60) % 60;
     }
 
-    /**
-     * @return integer
-     */
-    public function getSeconds()
+    public function getSeconds(): int
     {
         return $this->secondsSinceMidnight % 60;
     }
 
     /**
-     * @param \Dogma\Time\Time|string|integer $time
-     * @return boolean
+     * @param \Dogma\Time\Time|string|int $time
+     * @return bool
      */
-    public function isEqual($time)
+    public function isEqual($time): bool
     {
         if (!$time instanceof Time) {
             $time = new static($time);
@@ -144,11 +113,11 @@ class Time implements \Dogma\NonIterable
     }
 
     /**
-     * @param \Dogma\Time\Time|string|integer $since
-     * @param \Dogma\Time\Time|string|integer $until
-     * @return boolean
+     * @param \Dogma\Time\Time|string|int $since
+     * @param \Dogma\Time\Time|string|int $until
+     * @return bool
      */
-    public function isBetween($since, $until)
+    public function isBetween($since, $until): bool
     {
         if (!$since instanceof Time) {
             $since = new static($since);

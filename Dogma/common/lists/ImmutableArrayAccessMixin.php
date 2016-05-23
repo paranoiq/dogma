@@ -7,7 +7,7 @@ trait ImmutableArrayAccessMixin
 
     /**
      * @param mixed $key
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($key)
     {

@@ -10,6 +10,7 @@
 namespace Dogma\Time;
 
 use DateTimeInterface;
+use DateTimeZone;
 use Dogma\Check;
 
 /**
@@ -25,32 +26,21 @@ class Date implements \Dogma\NonIterable
     /** @var \DateTime */
     private $dateTime;
 
-    /**
-     * @param string $dateString
-     */
-    public function __construct($dateString = 'today 00:00:00')
+    public function __construct(string $dateString = 'today 00:00:00')
     {
         try {
             $this->dateTime = new \DateTime($dateString);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             throw new \Dogma\Time\InvalidDateTimeException($e);
         }
     }
 
-    /**
-     * @param integer $timestamp
-     * @return \Dogma\Time\Date
-     */
-    public static function createFromTimestamp($timestamp)
+    public static function createFromTimestamp(int $timestamp): Date
     {
         return DateTime::createFromTimestamp($timestamp)->getDate();
     }
 
-    /**
-     * @param \DateTimeInterface $dateTime
-     * @return \Dogma\Time\Date
-     */
-    public static function createFromDateTimeInterface(DateTimeInterface $dateTime)
+    public static function createFromDateTimeInterface(DateTimeInterface $dateTime): Date
     {
         if ($dateTime instanceof DateTime) {
             return $dateTime->getDate();
@@ -64,95 +54,60 @@ class Date implements \Dogma\NonIterable
         $this->dateTime = clone($this->dateTime);
     }
 
-    /**
-     * @param string $format
-     * @return string
-     */
-    public function format($format = self::DEFAULT_FORMAT)
+    public function format(string $format = self::DEFAULT_FORMAT): string
     {
         return $this->dateTime->format($format);
     }
 
     /**
      * @param \DateTimeInterface|\Dogma\Time\Date $date
-     * @param boolean $absolute
+     * @param bool $absolute
      */
-    public function diff($date, $absolute = false)
+    public function diff($date, bool $absolute = false)
     {
         Check::types($date, [DateTimeInterface::class, Date::class]);
 
         return (new \DateTime($this->format()))->diff(new \DateTime($date->format(self::DEFAULT_FORMAT)), $absolute);
     }
 
-    /**
-     * @param \DateTimeZone|null $timeZone
-     * @return integer
-     */
-    public function getMidnightTimestamp($timeZone = null)
+    public function getMidnightTimestamp(DateTimeZone $timeZone = null): int
     {
         return (new \DateTime($this->format(), $timeZone))->setTime(0, 0, 0)->getTimestamp();
     }
 
-    /**
-     * @param \Dogma\Time\Date $date
-     * @return integer
-     */
-    public function compare(Date $date)
+    public function compare(Date $date): int
     {
         return $this->isAfter($date) ? 1 : ($this->isBefore($date) ? -1 : 0);
     }
 
-    /**
-     * @param \Dogma\Time\Date $date
-     * @return boolean
-     */
-    public function isEqual(Date $date)
+    public function isEqual(Date $date): bool
     {
         return $this->format() === $date->format();
     }
 
-    /**
-     * @param \Dogma\Time\Date $date
-     * @return boolean
-     */
-    public function isBefore(Date $date)
+    public function isBefore(Date $date): bool
     {
         return $this->format() < $date->format();
     }
 
-    /**
-     * @param \Dogma\Time\Date $date
-     * @return boolean
-     */
-    public function isAfter(Date $date)
+    public function isAfter(Date $date): bool
     {
         return $this->format() > $date->format();
     }
 
-    /**
-     * @param \Dogma\Time\Date $sinceDate
-     * @param \Dogma\Time\Date $untilDate
-     * @return boolean
-     */
-    public function isBetween(Date $sinceDate, Date $untilDate)
+    public function isBetween(Date $sinceDate, Date $untilDate): bool
     {
         $thisDate = $this->format();
 
         return $thisDate >= $sinceDate->format() && $thisDate <= $untilDate->format();
     }
 
-    /**
-     * @return boolean
-     */
-    public function isFuture()
+    public function isFuture(): bool
     {
         return $this->format() > (new static('today'))->format();
     }
 
-    /**
-     * @return boolean
-     */
-    public function isPast()
+    public function isPast(): bool
     {
         return $this->format() < (new static('today'))->format();
     }

@@ -21,7 +21,7 @@ class MultiChannel extends \Dogma\Object
     /** @var string[] */
     private $cids;
 
-    /** @var integer */
+    /** @var int */
     private $lastIndex = -1;
 
     /** @var string[][] (string $sjName => (string $cName => string $jobName)) */
@@ -57,12 +57,7 @@ class MultiChannel extends \Dogma\Object
         }
     }
 
-    /**
-     * @param \Dogma\Http\Response
-     * @param \Dogma\Http\Channel
-     * @param string
-     */
-    public function responseHandler(Response $response, Channel $channel, $sjName)
+    public function responseHandler(Response $response, Channel $channel, string $sjName)
     {
         $cid = spl_object_hash($channel);
         $cName = $this->cids[$cid];
@@ -80,7 +75,7 @@ class MultiChannel extends \Dogma\Object
     }
 
     /**
-     * @param string|integer
+     * @param string|int
      */
     private function jobFinished($jobName)
     {
@@ -111,7 +106,7 @@ class MultiChannel extends \Dogma\Object
     /**
      * @return \Dogma\Http\Channel[]
      */
-    public function getChannels()
+    public function getChannels(): array
     {
         return $this->channels;
     }
@@ -154,9 +149,9 @@ class MultiChannel extends \Dogma\Object
     /**
      * Add new job to channel queue.
      * @param string|array
-     * @param string
-     * @param mixed Request context
-     * @return string|integer
+     * @param mixed
+     * @param string|int
+     * @return string|int
      */
     public function addJob($data, $context = null, $name = null)
     {
@@ -184,7 +179,7 @@ class MultiChannel extends \Dogma\Object
 
     /**
      * Add more jobs to a channel. Array indexes are job names if they are strings.
-     * @param array
+     * @param mixed[]
      * @param mixed
      */
     public function addJobs(array $jobs, $context = null)
@@ -216,7 +211,7 @@ class MultiChannel extends \Dogma\Object
     }
 
     /**
-     * @param string
+     * @param string|int
      * @return \Dogma\Http\Response[]|null
      */
     public function fetch($name = null)
@@ -244,7 +239,7 @@ class MultiChannel extends \Dogma\Object
     }
 
     /**
-     * @param string|integer
+     * @param string|int
      * @return \Dogma\Http\Response[]|null
      */
     private function fetchNamedJob($name)
@@ -285,15 +280,15 @@ class MultiChannel extends \Dogma\Object
 
     /**
      * Check if all channels or a channel or a job are finished.
-     * @param \Dogma\Http\Channel
      */
-    public function isFinished()
+    public function isFinished(): bool
     {
         foreach ($this->channels as $channel) {
             if (!$channel->isFinished()) {
                 return false;
             }
         }
+        return true;
     }
 
     public function read()
@@ -308,7 +303,7 @@ class MultiChannel extends \Dogma\Object
      * @param string|array
      * @return array
      */
-    protected function dispatch($data)
+    protected function dispatch($data): array
     {
         if (is_string($data)) {
             // default - send copy to all channels

@@ -8,9 +8,9 @@ class InvalidTypeException extends \Dogma\Exception
     /**
      * @param string|string[]
      * @param string|object
-     * @param \Exception|null
+     * @param \Throwable|null
      */
-    public function __construct($expectedType, $actualType, \Exception $previous = null)
+    public function __construct($expectedType, $actualType, \Throwable $previous = null)
     {
         if (is_array($expectedType)) {
             $expectedType = implode(' or ', $expectedType);

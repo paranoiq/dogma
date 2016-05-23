@@ -19,13 +19,10 @@ use Dogma;
 class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
 {
 
+    /** @var int */
     private $flags;
 
-    /**
-     * @param string
-     * @param integer
-     */
-    public function __construct($path, $flags = null)
+    public function __construct(string $path, int $flags = null)
     {
         if (isset($flags)) {
             $flags = FilesystemIterator::KEY_AS_PATHNAME | FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::SKIP_DOTS;
@@ -44,9 +41,9 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
     }
 
     /**
-     * @param integer
+     * @param int|null $flags
      */
-    public function setFlags($flags = null)
+    public function setFlags($flags = null) // compat
     {
         $this->flags = $flags;
         if ($flags & FilesystemIterator::CURRENT_AS_FILEINFO) {

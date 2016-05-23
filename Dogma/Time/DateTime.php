@@ -26,10 +26,10 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
     /**
      * @param string $format
      * @param string $timeString
-     * @param \DateTimeZone $timeZone
-     * @return static
+     * @param \DateTimeZone|null $timeZone
+     * @return \Dogma\Time\DateTime
      */
-    public static function createFromFormat($format, $timeString, $timeZone = null)
+    public static function createFromFormat($format, $timeString, $timeZone = null): self
     {
         // due to invalid typehint in parent class...
         Check::nullableObject($timeZone, DateTimeZone::class);
@@ -44,24 +44,14 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
         return new static($dateTime->format(self::DEFAULT_FORMAT), $timeZone);
     }
 
-    /**
-     * @param integer $timestamp
-     * @param \DateTimeZone $timeZone
-     * @return static
-     */
-    public static function createFromTimestamp($timestamp, DateTimeZone $timeZone = null)
+    public static function createFromTimestamp(int $timestamp, DateTimeZone $timeZone = null): self
     {
         Check::integer($timestamp);
 
         return static::createFromFormat('U', $timestamp, $timeZone);
     }
 
-    /**
-     * @p(8aram \DateTimeInterface $dateTime
-     * @param \DateTimeZone $timeZone
-     * @return static
-     */
-    public static function createFromDateTimeInterface(DateTimeInterface $dateTime, DateTimeZone $timeZone = null)
+    public static function createFromDateTimeInterface(DateTimeInterface $dateTime, DateTimeZone $timeZone = null): self
     {
         if ($timeZone === null) {
             $timeZone = $dateTime->getTimezone();
@@ -69,13 +59,7 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
         return new static($dateTime->format(self::DEFAULT_FORMAT), $timeZone);
     }
 
-    /**
-     * @param \Dogma\Time\Date $date
-     * @param \Dogma\Time\Time $time
-     * @param \DateTimeZone|null $timeZone
-     * @return static
-     */
-    public static function createFromDateAndTime(Date $date, Time $time, DateTimeZone $timeZone = null)
+    public static function createFromDateAndTime(Date $date, Time $time, DateTimeZone $timeZone = null): self
     {
         return new static($date->format(Date::DEFAULT_FORMAT) . ' ' . $time->format(Time::DEFAULT_FORMAT), $timeZone);
     }
@@ -84,31 +68,25 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
      * @param string $format
      * @return string
      */
-    public function format($format = self::DEFAULT_FORMAT)
+    public function format($format = self::DEFAULT_FORMAT): string
     {
         return parent::format($format);
     }
 
-    /**
-     * @return \Dogma\Time\Date
-     */
-    public function getDate()
+    public function getDate(): Date
     {
         return new Date($this->format(Date::DEFAULT_FORMAT));
     }
 
-    /**
-     * @return \Dogma\Time\Time
-     */
-    public function getTime()
+    public function getTime(): Time
     {
         return new Time($this->format(Time::DEFAULT_FORMAT));
     }
 
     /**
-     * @param \Dogma\Time\Time|integer $time|$hours
-     * @param integer|null $minutes
-     * @param integer|null $seconds
+     * @param \Dogma\Time\Time|int $time|$hours
+     * @param int|null $minutes
+     * @param int|null $seconds
      * @return bool|\DateTimeImmutable
      */
     public function setTime($time, $minutes = null, $seconds = null)
@@ -120,73 +98,46 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
         }
     }
 
-    /**
-     * @param \DateTimeInterface $dateTime
-     * @return integer
-     */
-    public function compare(DateTimeInterface $dateTime)
+    public function compare(DateTimeInterface $dateTime): int
     {
         return $this > $dateTime ? 1 : ($dateTime > $this ? -1 : 0);
     }
 
-    /**
-     * @param \DateTimeInterface $dateTime
-     * @return boolean
-     */
-    public function isEqual(DateTimeInterface $dateTime)
+    public function isEqual(DateTimeInterface $dateTime): bool
     {
         return $this->getTimestamp() === $dateTime->getTimestamp();
     }
 
-    /**
-     * @param \DateTimeInterface $dateTime
-     * @return boolean
-     */
-    public function isBefore(DateTimeInterface $dateTime)
+    public function isBefore(DateTimeInterface $dateTime): bool
     {
         return $this < $dateTime;
     }
 
-    /**
-     * @param \DateTimeInterface $dateTime
-     * @return boolean
-     */
-    public function isAfter(DateTimeInterface $dateTime)
+    public function isAfter(DateTimeInterface $dateTime): bool
     {
         return $this > $dateTime;
     }
 
-    /**
-     * @param \DateTimeInterface $sinceTime
-     * @param \DateTimeInterface $untilTime
-     * @return boolean
-     */
-    public function isBetween(DateTimeInterface $sinceTime, DateTimeInterface $untilTime)
+    public function isBetween(DateTimeInterface $sinceTime, DateTimeInterface $untilTime): bool
     {
         return $this >= $sinceTime && $this <= $untilTime;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isFuture()
+    public function isFuture(): bool
     {
         return $this > new self;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isPast()
+    public function isPast(): bool
     {
         return $this < new self;
     }
 
     /**
      * @param \DateTimeInterface|\Dogma\Time\Date $date
-     * @return boolean
+     * @return bool
      */
-    public function isSameDay($date)
+    public function isSameDay($date): bool
     {
         Check::types($date, [DateTimeInterface::class, Date::class]);
 
@@ -195,9 +146,9 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
 
     /**
      * @param \DateTimeInterface|\Dogma\Time\Date $date
-     * @return boolean
+     * @return bool
      */
-    public function isBeforeDay($date)
+    public function isBeforeDay($date): bool
     {
         Check::types($date, [DateTimeInterface::class, Date::class]);
 
@@ -206,9 +157,9 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
 
     /**
      * @param \DateTimeInterface|\Dogma\Time\Date $date
-     * @return boolean
+     * @return bool
      */
-    public function isAfterDay($date)
+    public function isAfterDay($date): bool
     {
         Check::types($date, [DateTimeInterface::class, Date::class]);
 
@@ -218,9 +169,9 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
     /**
      * @param \DateTimeInterface|\Dogma\Time\Date $sinceDate
      * @param \DateTimeInterface|\Dogma\Time\Date $untilDate
-     * @return boolean
+     * @return bool
      */
-    public function isBetweenDays($sinceDate, $untilDate)
+    public function isBetweenDays($sinceDate, $untilDate): bool
     {
         Check::types($sinceDate, [DateTimeInterface::class, Date::class]);
         Check::types($untilDate, [DateTimeInterface::class, Date::class]);
@@ -231,26 +182,17 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
             && $thisDate <= $untilDate->format(Date::DEFAULT_FORMAT);
     }
 
-    /**
-     * @return boolean
-     */
-    public function isToday()
+    public function isToday(): bool
     {
         return $this->isBetween(new static('today'), new static('tomorrow -1 second'));
     }
 
-    /**
-     * @return boolean
-     */
-    public function isYesterday()
+    public function isYesterday(): bool
     {
         return $this->isBetween(new static('yesterday'), new static('today -1 second'));
     }
 
-    /**
-     * @return boolean
-     */
-    public function isTomorrow()
+    public function isTomorrow(): bool
     {
         return $this->isBetween(new static('tomorrow'), new static('tomorrow +1 day -1 second'));
     }

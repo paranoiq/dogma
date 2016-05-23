@@ -31,26 +31,26 @@ class BeanstalkJob extends \Dogma\Object
     /** @var BeanstalkClient */
     private $connection;
 
-    /** @var integer */
+    /** @var int */
     private $id;
 
     /** @var mixed */
     private $data;
 
-    /** @var boolean */
+    /** @var bool */
     private $owned;
 
     /** @var array */
     private $stats;
 
     /**
-     * @param integer
+     * @param int
      * @param mixed
-     * @param boolean
+     * @param bool
      * @param \Dogma\Queue\BeanstalkClient
      * @param array
      */
-    public function __construct($id, $data, $owned, BeanstalkClient $connection, $stats = [])
+    public function __construct(int $id, $data, bool $owned, BeanstalkClient $connection, array $stats = [])
     {
         $this->id = $id;
         $this->data = $data;
@@ -67,10 +67,7 @@ class BeanstalkJob extends \Dogma\Object
         return $this->data;
     }
 
-    /**
-     * @return integer
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -81,10 +78,10 @@ class BeanstalkJob extends \Dogma\Object
     }
 
     /**
-     * @param integer|\DateTime
-     * @param integer
+     * @param int|\DateTime
+     * @param int
      */
-    public function release($delay = null, $priority = null)
+    public function release($delay = null, int $priority = null)
     {
         $this->connection->release($this->id, $delay, $priority);
     }
@@ -99,10 +96,7 @@ class BeanstalkJob extends \Dogma\Object
         $this->connection->delete($this->id);
     }
 
-    /**
-     * @param integer
-     */
-    public function suspend($priority = null)
+    public function suspend(int $priority = null)
     {
         $this->connection->suspend($this->id, $priority);
     }
@@ -114,34 +108,22 @@ class BeanstalkJob extends \Dogma\Object
 
     // job info & statistics -------------------------------------------------------------------------------------------
 
-    /**
-     * @return boolean
-     */
-    public function isOwned()
+    public function isOwned(): bool
     {
         return $this->owned;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isDelayed()
+    public function isDelayed(): bool
     {
         return $this->__get('status') === self::DELAYED;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isReady()
+    public function isReady(): bool
     {
         return $this->__get('status') === self::READY;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isReserved()
+    public function isReserved(): bool
     {
         if ($this->isOwned()) {
             return true;
@@ -149,10 +131,7 @@ class BeanstalkJob extends \Dogma\Object
         return $this->__get('status') === self::RESERVED;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isSuspended()
+    public function isSuspended(): bool
     {
         return $this->__get('status') === self::SUSPENDED;
     }
@@ -163,10 +142,10 @@ class BeanstalkJob extends \Dogma\Object
     }
 
     /**
-     * @param string
+     * @param string $name
      * @return mixed
      */
-    public function &__get($name)
+    public function &__get(string $name)
     {
         if (!$this->stats) {
             $this->loadStats();

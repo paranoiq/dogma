@@ -91,16 +91,13 @@ class Inflector
         'equipment', 'information', 'rice', 'money', 'species', 'series', 'fish', 'sheep',
     ];
 
-    /** @var boolean use Ruby on Rails ActiveRecord naming conventions? */
+    /** @var bool use Ruby on Rails ActiveRecord naming conventions? */
     public static $railsStyle = false;
 
     /**
      * The reverse of pluralize, returns the singular form of a word.
-     *
-     * @param string
-     * @return string
      */
-    public static function singularize($word)
+    public static function singularize(string $word): string
     {
         $lower = Strings::lower($word);
 
@@ -131,11 +128,8 @@ class Inflector
 
     /**
      * Returns the plural form of the word.
-     *
-     * @param string
-     * @return string
      */
-    public static function pluralize($word)
+    public static function pluralize(string $word): string
     {
         $lower = Strings::lower($word);
 
@@ -162,11 +156,8 @@ class Inflector
 
     /**
      * Is given string singular noun?
-     *
-     * @param string
-     * @return boolean
      */
-    public static function isSingular($word)
+    public static function isSingular(string $word): bool
     {
         if (!self::isCountable($word)) {
             return true;
@@ -177,11 +168,8 @@ class Inflector
 
     /**
      * Is given string plural noun?
-     *
-     * @param string
-     * @return boolean
      */
-    public static function isPlural($word)
+    public static function isPlural(string $word): bool
     {
         $lower = Strings::lower($word);
 
@@ -204,11 +192,8 @@ class Inflector
 
     /**
      * Is given string countable noun?
-     *
-     * @param string
-     * @return boolean
      */
-    public static function isCountable($word)
+    public static function isCountable(string $word): bool
     {
         $lower = Strings::lower($word);
         return (bool) !in_array($lower, self::$uncountable);
@@ -216,11 +201,8 @@ class Inflector
 
     /**
      * Is given string irregular noun?
-     *
-     * @param string
-     * @return boolean
      */
-    public static function isIrregular($word)
+    public static function isIrregular(string $word): bool
     {
         $lower = Strings::lower($word);
         return (bool) in_array($lower, self::$irregular) || array_key_exists($lower, self::$irregular);
@@ -229,11 +211,8 @@ class Inflector
     /**
      * Ordinalize turns a number into an ordinal string used to denote
      * the position in an ordered sequence such as 1st, 2nd, 3rd, 4th.
-     *
-     * @param integer
-     * @return string
      */
-    public static function ordinalize($number)
+    public static function ordinalize(int $number): string
     {
         $number = (int) $number;
 
@@ -257,12 +236,8 @@ class Inflector
      * By default, camelize() converts strings to UpperCamelCase.
      * If the second argument is set to false then camelize() produces lowerCamelCase.
      * camelize() will also convert '/' to '\' which is useful for converting paths to namespaces.
-     *
-     * @param string
-     * @param boolean
-     * @return string
      */
-    public static function camelize($word, $firstUpper = true)
+    public static function camelize(string $word, bool $firstUpper = true): string
     {
         $word = preg_replace(['/(^|_)(.)/e', '/(\/)(.)/e'], ["strtoupper('\\2')", "strtoupper('\\2')"], strval($word));
         return $firstUpper ? ucfirst($word) : lcfirst($word);
@@ -270,11 +245,8 @@ class Inflector
 
     /**
      * Replaces underscores with dashes in the string.
-     *
-     * @param string
-     * @return string
      */
-    public static function dasherize($word)
+    public static function dasherize(string $word): string
     {
         return preg_replace('/_/', '-', strval($word));
     }
@@ -282,11 +254,8 @@ class Inflector
     /**
      * Capitalizes all the words and replaces some characters in the string to create a nicer looking title.
      * Titleize() is meant for creating pretty output.
-     *
-     * @param string
-     * @return string
      */
-    public static function titleize($word)
+    public static function titleize(string $word): string
     {
         return preg_replace(["/\b('?[a-z])/e"], ["ucfirst('\\1')"], self::humanize(self::underscore($word)));
     }
@@ -294,11 +263,8 @@ class Inflector
     /**
      * The reverse of camelize(). Makes an underscored form from the expression in the string.
      * Changes '::' to '/' to convert namespaces to paths.
-     *
-     * @param string
-     * @return string
      */
-    public static function underscore($word)
+    public static function underscore(string $word): string
     {
         return strtolower(preg_replace('/([A-Z]+)([A-Z])/', '\1_\2', preg_replace('/([a-z\d])([A-Z])/', '\1_\2', $word)));
     }
@@ -306,11 +272,8 @@ class Inflector
     /**
      * Capitalizes the first word and turns underscores into spaces and strips _id.
      * Like titleize(), this is meant for creating pretty output.
-     *
-     * @param string
-     * @return string
      */
-    public static function humanize($word)
+    public static function humanize(string $word): string
     {
         return ucfirst(strtolower(preg_replace(['/_id$/', '/_/'], ['', ' '], $word)));
     }

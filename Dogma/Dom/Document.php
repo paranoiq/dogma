@@ -10,18 +10,16 @@
 namespace Dogma\Dom;
 
 
-class Document extends \DomDocument
+class Document extends \DOMDocument
 {
 
     /** @var \Dogma\Dom\QueryEngine */
     private $engine;
 
     /**
-     * @param string $document XML or HTML content or file path prefixed with '@'
-     * @param string
-     * @param string
+     * XML or HTML content or file path prefixed with '@'
      */
-    public function __construct($document = null, $version = '1.0', $encoding = 'utf-8')
+    public function __construct(string $document = null, string $version = '1.0', string $encoding = 'utf-8')
     {
         parent::__construct($version, $encoding);
 
@@ -48,28 +46,21 @@ class Document extends \DomDocument
         $this->engine = new QueryEngine($this);
     }
 
-    /**
-     * @param \Dogma\Dom\QueryEngine
-     */
     public function setQueryEngine(QueryEngine $engine)
     {
         $this->engine = $engine;
     }
 
-    /**
-     * @return \Dogma\Dom\QueryEngine
-     */
-    public function getQueryEngine()
+    public function getQueryEngine(): QueryEngine
     {
         return $this->engine;
     }
 
     /**
-     * @param string
-     * @param integer
-     * @return boolean
+     * @param string $source
+     * @param int|null $options
      */
-    public function loadXml($source, $options = null)
+    public function loadXml($source, $options = null) // compat
     {
         libxml_use_internal_errors(true);
         libxml_clear_errors();
@@ -80,11 +71,10 @@ class Document extends \DomDocument
     }
 
     /**
-     * @param string
-     * @param integer
-     * @return boolean
+     * @param string $source
+     * @param int|null $options
      */
-    public function loadHtml($source, $options = null)
+    public function loadHtml($source, $options = null) // compat
     {
         libxml_use_internal_errors(true);
         libxml_clear_errors();
@@ -95,11 +85,10 @@ class Document extends \DomDocument
     }
 
     /**
-     * @param string
-     * @param integer
-     * @return boolean
+     * @param string $fileName
+     * @param int|null $options
      */
-    public function loadHtmlFile($fileName, $options = null)
+    public function loadHtmlFile($fileName, $options = null) // compat
     {
         libxml_use_internal_errors(true);
         libxml_clear_errors();
@@ -113,7 +102,7 @@ class Document extends \DomDocument
      * @param string
      * @return \Dogma\Dom\Element|\DOMNode|null
      */
-    public function getElementById($id)
+    public function getElementById($id) // compat
     {
         $el = parent::getElementById($id);
 
@@ -124,7 +113,7 @@ class Document extends \DomDocument
      * @param string
      * @return \Dogma\Dom\NodeList
      */
-    public function find($xpath)
+    public function find(string $xpath)
     {
         return $this->engine->find($xpath);
     }
@@ -133,16 +122,16 @@ class Document extends \DomDocument
      * @param string
      * @return \Dogma\Dom\Element|\DOMNode
      */
-    public function findOne($xpath)
+    public function findOne(string $xpath)
     {
         return $this->engine->findOne($xpath);
     }
 
     /**
      * @param string
-     * @return string|integer|float
+     * @return string|int|float
      */
-    public function evaluate($xpath)
+    public function evaluate(string $xpath)
     {
         return $this->engine->evaluate($xpath);
     }
@@ -165,7 +154,7 @@ class Document extends \DomDocument
      * @param \DOMNode
      * @return \Dogma\Dom\Element|\DOMNode
      */
-    private function wrap($node)
+    private function wrap(\DOMNode $node)
     {
         if ($node instanceof \DOMElement) {
             return new Element($node, $this->engine);

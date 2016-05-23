@@ -8,9 +8,9 @@ class InvalidInterfaceException extends \Dogma\InvalidTypeException
     /**
      * @param string
      * @param mixed
-     * @param \Exception|null
+     * @param \Throwable|null
      */
-    public function __construct($expectedInterface, $value, \Exception $previous = null)
+    public function __construct(string $expectedInterface, $value, \Throwable $previous = null)
     {
         if (is_object($value)) {
             $type = get_class($value);

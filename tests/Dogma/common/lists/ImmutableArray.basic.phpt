@@ -82,7 +82,7 @@ Assert::contains($array->getValues()->toArray(), $array->randomValue());
 
 // doForEach()
 $x = 0;
-$array->doForEach(function ($v) use (&$x) {
+$array->doForEach(function (int $v) use (&$x) {
     $x += $v;
 });
 Assert::same($x, 6);

@@ -6,10 +6,10 @@ class ChunkIterator extends \IteratorIterator
 {
     use StrictBehaviorMixin;
 
-    /** @var integer */
+    /** @var int */
     private $chunkSize;
 
-    /** @var integer */
+    /** @var int */
     private $key;
 
     /** @var mixed[] */
@@ -17,9 +17,9 @@ class ChunkIterator extends \IteratorIterator
 
     /**
      * @param mixed[]|\Traversable $traversable
-     * @param integer $chunkSize
+     * @param int $chunkSize
      */
-    public function __construct($traversable, $chunkSize)
+    public function __construct($traversable, int $chunkSize)
     {
         Check::natural($chunkSize);
         Check::traversable($traversable);
@@ -51,25 +51,19 @@ class ChunkIterator extends \IteratorIterator
     }
 
     /**
-     * @return \mixed[]
+     * @return mixed[]
      */
-    public function current()
+    public function current(): array
     {
         return $this->chunk;
     }
 
-    /**
-     * @return integer
-     */
-    public function key()
+    public function key(): int
     {
         return $this->key;
     }
 
-    /**
-     * @return boolean
-     */
-    public function valid()
+    public function valid(): bool
     {
         return (bool) $this->chunk;
     }

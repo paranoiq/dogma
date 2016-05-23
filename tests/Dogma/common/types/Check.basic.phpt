@@ -162,7 +162,7 @@ Assert::exception(function () use ($short) {
 class TestTraversable implements \IteratorAggregate
 {
 
-    public function getIterator()
+    public function getIterator(): array
     {
         return [];
     }

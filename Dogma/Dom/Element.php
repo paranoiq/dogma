@@ -19,39 +19,27 @@ class Element extends \Dogma\Object
     /** @var \DOMElement */
     private $element;
 
-    /**
-     * @param \DOMNodeList
-     * @param \Dogma\Dom\QueryEngine
-     */
     public function __construct(\DOMElement $element, QueryEngine $engine)
     {
         $this->element = $element;
         $this->engine = $engine;
     }
 
-    /**
-     * @param string
-     * @return \DOMNode
-     */
-    public function find($xpath)
+    public function find(string $xpath): \DOMNode
     {
         return $this->engine->find($xpath, $this->element);
     }
 
-    /**
-     * @param string
-     * @return \DOMNode
-     */
-    public function findOne($xpath)
+    public function findOne(string $xpath): \DOMNode
     {
         return $this->engine->findOne($xpath, $this->element);
     }
 
     /**
      * @param string
-     * @return string|integer|float
+     * @return string|int|float
      */
-    public function evaluate($xpath)
+    public function evaluate(string $xpath)
     {
         return $this->engine->evaluate($xpath, $this->element);
     }
@@ -65,32 +53,29 @@ class Element extends \Dogma\Object
         return $this->engine->extract($target, $this->element);
     }
 
-    /**
-     * @return \DOMElement
-     */
-    public function getElement()
+    public function getElement(): \DOMElement
     {
         return $this->element;
     }
 
-    /**
-     * @return boolean
-     */
-    public function remove()
+    public function remove(): bool
     {
         $this->element->parentNode->removeChild($this->element);
+
         return true;
     }
 
-    public function &__get($name)
+    public function &__get(string $name)
     {
         $val = $this->element->$name;
+
         return $val;
     }
 
-    public function __call($name, $arg)
+    public function __call(string $name, $arg)
     {
         $args = func_get_args();
+
         return call_user_func(array($this->element, $name), array_shift($args));
     }
 

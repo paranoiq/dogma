@@ -19,17 +19,13 @@ class MessageInfo extends \Dogma\Object
     /** @var \Dogma\Imap\Connection */
     private $imap;
 
-    /** @var integer */
+    /** @var int */
     private $uid;
 
     /** @var \Dogma\Mail\Message */
     private $message;
 
-    /**
-     * @param \Dogma\Imap\Connection
-     * @param integer
-     */
-    public function __construct(Connection $imap, $uid)
+    public function __construct(Connection $imap, int $uid)
     {
         $this->imap = $imap;
         $this->uid = $uid;
@@ -37,9 +33,8 @@ class MessageInfo extends \Dogma\Object
 
     /**
      * Get the Message
-     * @return \Dogma\Mail\Message
      */
-    public function getMessage()
+    public function getMessage(): MessageInfo
     {
         if (!$this->message) {
             $this->message = $this->imap->getMessage($this->uid);

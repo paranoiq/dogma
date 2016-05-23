@@ -15,12 +15,12 @@ class Dumper
 
     /**
      * @param \Dogma\Dom\Element|\DOMNode
-     * @param integer
-     * @param integer
-     * @param boolean $only is the only child?
+     * @param int
+     * @param int
+     * @param bool $only is the only child?
      * @throws \Nette\NotImplementedException
      */
-    public static function dump($node, $maxDepth = 15, $depth = 0, $only = false)
+    public static function dump($node, int $maxDepth = 15, int $depth = 0, bool $only = false)
     {
         if ($depth > $maxDepth) {
             echo '…';
@@ -75,13 +75,7 @@ class Dumper
         }
     }
 
-    /**
-     * @param \DOMNode $node
-     * @param integer $maxDepth
-     * @param integer $depth
-     * @param boolean $only
-     */
-    private static function dumpElement($node, $maxDepth = 15, $depth = 0, $only = false)
+    private static function dumpElement(\DOMNode $node, int $maxDepth = 15, int $depth = 0, bool $only = false)
     {
         if ($depth === 0) {
             echo "<b>Element:</b>\n";

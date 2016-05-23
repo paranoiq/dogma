@@ -200,9 +200,8 @@ class ResponseStatus extends \Dogma\Enum
 
     /**
      * Get formated status name
-     * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         $id = $this->getIdentifier();
         if ($id[0] === 'S' && $id[4] === '_') {
@@ -218,63 +217,56 @@ class ResponseStatus extends \Dogma\Enum
 
     /**
      * Is an information/handshaking HTTP response code (1xx)
-     * @return boolean
      */
-    public function isInfo()
+    public function isInfo(): bool
     {
         return $this->value >= 100 && $this->value < 200;
     }
 
     /**
      * Is a positive HTTP response code (2xx)
-     * @return boolean
      */
-    public function isOk()
+    public function isOk(): bool
     {
         return $this->value >= 200 && $this->value < 300;
     }
 
     /**
      * Is a HTTP redirection code (3xx)
-     * @return boolean
      */
-    public function isRedirect()
+    public function isRedirect(): bool
     {
         return ($this->value >= 300 && $this->value < 400) || $this->value == self::TOO_MANY_REDIRECTS;
     }
 
     /**
      * Is an HTTP error response code (4xx or 5xx)
-     * @return boolean
      */
-    public function isHttpError()
+    public function isHttpError(): bool
     {
         return $this->value >= 400 && $this->value < 600;
     }
 
     /**
      * Is a CURL error code
-     * @return boolean
      */
-    public function isCurlError()
+    public function isCurlError(): bool
     {
         return $this->value < 100;
     }
 
     /**
      * Is an HTTP or CURL error code
-     * @return boolean
      */
-    public function isError()
+    public function isError(): bool
     {
         return $this->isCurlError() || $this->isHttpError();
     }
 
     /**
      * Is a network connection error. Possibility of succesful retry
-     * @return boolean
      */
-    public function isNetworkError()
+    public function isNetworkError(): bool
     {
         return in_array($this->value, [
             self::COULDNT_RESOLVE_PROXY,
@@ -288,9 +280,8 @@ class ResponseStatus extends \Dogma\Enum
 
     /**
      * CURL errors which should throw an exception immediately. Something is very wrong
-     * @return boolean
      */
-    public function isFatalError()
+    public function isFatalError(): bool
     {
         return in_array($this->value, [
             self::FAILED_INIT,

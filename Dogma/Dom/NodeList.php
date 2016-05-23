@@ -19,13 +19,9 @@ class NodeList extends \Dogma\Object implements \Countable, \Iterator
     /** @var \Dogma\Dom\QueryEngine */
     private $engine;
 
-    /** @var integer */
+    /** @var int */
     private $offset = 0;
 
-    /**
-     * @param \DOMNodeList
-     * @param \Dogma\Dom\QueryEngine
-     */
     public function __construct(\DOMNodeList $nodeList, QueryEngine $engine)
     {
         $this->nodeList = $nodeList;
@@ -33,18 +29,15 @@ class NodeList extends \Dogma\Object implements \Countable, \Iterator
     }
 
     /**
-     * @param integer $offset
+     * @param int $offset
      * @return \Dogma\Dom\Element|\DOMNode
      */
-    public function item($offset)
+    public function item(int $offset)
     {
         return $this->wrap($this->nodeList->item($offset));
     }
 
-    /**
-     * @return integer
-     */
-    public function count()
+    public function count(): int
     {
         // PHP bug - cannot count items using $length
         $n = 0;
@@ -62,10 +55,7 @@ class NodeList extends \Dogma\Object implements \Countable, \Iterator
         return $this->wrap($this->nodeList->item($this->offset));
     }
 
-    /**
-     * @return integer
-     */
-    public function key()
+    public function key(): int
     {
         return $this->offset;
     }
@@ -80,10 +70,7 @@ class NodeList extends \Dogma\Object implements \Countable, \Iterator
         $this->offset = 0;
     }
 
-    /**
-     * @return boolean
-     */
-    public function valid()
+    public function valid(): bool
     {
         // PHP bug - cannot iterate through items
         return $this->nodeList->item($this->offset) !== null;
@@ -93,7 +80,7 @@ class NodeList extends \Dogma\Object implements \Countable, \Iterator
      * @param \DOMNode
      * @return \Dogma\Dom\Element|\DOMNode
      */
-    private function wrap($node)
+    private function wrap(\DOMNode $node)
     {
         if ($node instanceof \DOMElement) {
             return new Element($node, $this->engine);

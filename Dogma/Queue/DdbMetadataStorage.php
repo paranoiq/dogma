@@ -2,6 +2,8 @@
 
 namespace Dogma\Queue;
 
+use Dogma\Database\Connection;
+
 
 /**
  * Stores metadata (data -> id) for Beanstalk queue
@@ -23,23 +25,19 @@ class DdbMetadataStorage extends \Dogma\Object implements IMetadataStorage
     /** @var string */
     private $database;
 
-    public function __construct(\Dogma\Database\Connection $connection, $tablePrefix = 'queue_', $database = '')
+    public function __construct(Connection $connection, $tablePrefix = 'queue_', $database = '')
     {
         $this->connection = $connection;
         $this->tablePrefix = $tablePrefix;
         $this->database = $database;
     }
 
-    /**
-     * @param string
-     * @return string
-     */
-    private function getTable($queue)
+    private function getTable(string $queue): string
     {
         return $this->database . '.' . $this->tablePrefix . $queue;
     }
 
-    public function insertJob($queue, $jobId, $data)
+    public function insertJob(string $queue, int $jobId, string $data)
     {
         $this->connection->exec(
             'INSERT INTO ' . $this->getTable($queue) . 'VALUES ',
@@ -51,17 +49,17 @@ class DdbMetadataStorage extends \Dogma\Object implements IMetadataStorage
         );
     }
 
-    public function findJob($queue, $data)
+    public function findJob(string $queue, string $data)
     {
         return $this->connection->fetchColumn('SELECT `job_id` FROM ' . $this->getTable($queue) . 'WHERE `data` = ', $data);
     }
 
-    public function deleteJob($queue, $jobId)
+    public function deleteJob(string $queue, int $jobId)
     {
         $this->connection->exec('DELETE ' . $this->getTable($queue) . 'WHERE `job_id` = ', $jobId);
     }
 
-    public function clear($queue, \DateTime $time = null)
+    public function clear(string $queue, \DateTime $time = null)
     {
         if ($time) {
             $this->connection->exec('DELETE ' . $this->getTable($queue) . 'WHERE `insert_time` <= ', $time);

@@ -28,26 +28,20 @@ class Tuple implements \Countable, \IteratorAggregate, \ArrayAccess
         $this->items = $items;
     }
 
-    /**
-     * @return integer
-     */
-    public function count()
+    public function count(): int
     {
         return count($this->items);
     }
 
-    /**
-     * @return \Dogma\ArrayIterator
-     */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
-        return new \Dogma\ArrayIterator($this->items);
+        return new ArrayIterator($this->items);
     }
 
     /**
      * @return mixed[]
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->items;
     }

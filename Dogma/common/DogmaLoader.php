@@ -26,9 +26,8 @@ final class DogmaLoader
 
     /**
      * Returns singleton instance with lazy instantiation
-     * @return static
      */
-    public static function getInstance()
+    public static function getInstance(): self
     {
         if (self::$instance === null) {
             self::$instance = new static;
@@ -38,19 +37,16 @@ final class DogmaLoader
 
     /**
      * Register autoloader
-     * @param bool
-     * @return void
      */
-    public function register($prepend = false)
+    public function register(bool $prepend = false)
     {
         spl_autoload_register(array($this, 'tryLoad'), true, (bool) $prepend);
     }
 
     /**
-     * Handles autoloading of classes or interfaces.
-     * @param string
+     * Handles autoloading of classes or interfaces
      */
-    public function tryLoad($class)
+    public function tryLoad(string $class)
     {
         $class = ltrim($class, '\\');
         if (isset($this->classMap[$class])) {
@@ -84,15 +80,12 @@ final class DogmaLoader
     /**
      * @return string[]
      */
-    public function getClassMap()
+    public function getClassMap(): array
     {
         return $this->classMap;
     }
 
-    /**
-     * @param string $dir
-     */
-    private function scan($dir)
+    private function scan(string $dir)
     {
         foreach (glob($dir . '\\*') as $path) {
             if (is_dir($path)) {

@@ -30,18 +30,12 @@ class Regexp extends \Dogma\Object
     /** @var string */
     private $pattern;
 
-    /**
-     * @param string
-     */
-    public function __construct($pattern)
+    public function __construct(string $pattern)
     {
         $this->pattern = $pattern;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->pattern;
     }
@@ -49,10 +43,10 @@ class Regexp extends \Dogma\Object
     /**
      * Splits string by a regular expression.
      * @param string
-     * @param integer
+     * @param int
      * @return string[]
      */
-    public function split($subject, $flags = 0)
+    public function split(string $subject, int $flags = 0): array
     {
         return Strings::split($subject, $this->pattern, $flags);
     }
@@ -60,11 +54,11 @@ class Regexp extends \Dogma\Object
     /**
      * Performs a regular expression match.
      * @param string
-     * @param integer
-     * @param integer
+     * @param int
+     * @param int
      * @return string[]
      */
-    public function match($subject, $flags = 0, $offset = 0)
+    public function match(string $subject, int $flags = 0, int $offset = 0): array
     {
         return Strings::match($subject, $this->pattern, $flags, $offset);
     }
@@ -72,11 +66,11 @@ class Regexp extends \Dogma\Object
     /**
      * Performs a global regular expression match.
      * @param string
-     * @param integer (PREG_SET_ORDER is default)
-     * @param integer
+     * @param int (PREG_SET_ORDER is default)
+     * @param int
      * @return string[][]
      */
-    public function matchAll($subject, $flags = 0, $offset = 0)
+    public function matchAll(string $subject, int $flags = 0, int $offset = 0): array
     {
         return Strings::matchAll($subject, $this->pattern, $flags, $offset);
     }
@@ -85,10 +79,10 @@ class Regexp extends \Dogma\Object
      * Perform a regular expression search and replace.
      * @param string
      * @param string|callback
-     * @param integer
+     * @param int
      * @return string
      */
-    public function replace($subject, $replacement = null, $limit = -1)
+    public function replace(string $subject, $replacement = null, int $limit = -1): string
     {
         return Strings::replace($subject, $this->pattern, $replacement, $limit);
     }

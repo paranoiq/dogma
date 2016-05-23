@@ -21,9 +21,9 @@ class FileResponse extends Response
     /**
      * @param string
      * @param mixed[]
-     * @param integer
+     * @param int
      */
-    public function __construct($fileName, array $info, $error)
+    public function __construct(string $fileName, array $info, int $error)
     {
         parent::__construct(null, $info, $error);
 
@@ -31,9 +31,9 @@ class FileResponse extends Response
     }
 
     /**
-     * @return array
+     * @return string[]
      */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         if (!$this->headers) {
             $this->parseFile();
@@ -42,10 +42,7 @@ class FileResponse extends Response
         return $this->headers;
     }
 
-    /**
-     * @return string
-     */
-    public function getBody()
+    public function getBody(): string
     {
         if (!$this->headers) {
             $this->parseFile();
@@ -54,10 +51,7 @@ class FileResponse extends Response
         return file_get_contents($this->fileName);
     }
 
-    /**
-     * @return string
-     */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->fileName;
     }

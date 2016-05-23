@@ -27,25 +27,19 @@ class ArrayIterator implements \Iterator
         next($this->array);
     }
 
-    /**
-     * @return boolean
-     */
-    public function valid()
+    public function valid(): bool
     {
         return key($this->array) !== null;
     }
 
     /**
-     * @return mixed
+     * @return int|string
      */
     public function key()
     {
         return key($this->array);
     }
 
-    /**
-     * @return mixed
-     */
     public function current()
     {
         return current($this->array);

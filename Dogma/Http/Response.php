@@ -35,10 +35,10 @@ class Response extends \Dogma\Object
 
     /**
      * @param string
-     * @param array
-     * @param integer
+     * @param \Dogma\Http\ResponseStatus
+     * @param mixed[]
      */
-    public function __construct($response, ResponseStatus $status, array $info)
+    public function __construct(string $response, ResponseStatus $status, array $info)
     {
         $this->status = $status;
         $this->info = $info;
@@ -64,26 +64,17 @@ class Response extends \Dogma\Object
         return $this->context;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isSuccess()
+    public function isSuccess(): bool
     {
         return $this->status->isOk();
     }
 
-    /**
-     * @return \Dogma\Http\ResponseStatus
-     */
-    public function getStatus()
+    public function getStatus(): ResponseStatus
     {
         return $this->status;
     }
 
-    /**
-     * @return string
-     */
-    public function getBody()
+    public function getBody(): string
     {
         if ($this->response) {
             $this->parseResponse();
@@ -93,9 +84,9 @@ class Response extends \Dogma\Object
     }
 
     /**
-     * @return array
+     * @return string[]
      */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         if ($this->response) {
             $this->parseResponse();
@@ -106,9 +97,9 @@ class Response extends \Dogma\Object
 
     /**
      * Get all cookies received with this response.
-     * @return array
+     * @return string[]
      */
-    public function getCookies()
+    public function getCookies(): array
     {
         if ($this->response) {
             $this->parseResponse();
@@ -126,7 +117,7 @@ class Response extends \Dogma\Object
     }
 
     /**
-     * @param string|integer
+     * @param string|int
      * @return string|array
      */
     public function getInfo($name = null)
@@ -147,10 +138,7 @@ class Response extends \Dogma\Object
         return $this->info[$tname];
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->getBody();
     }
@@ -170,10 +158,10 @@ class Response extends \Dogma\Object
 
     /**
      * Parses headers from given list
-     * @param array
-     * @return array
+     * @param string[]
+     * @return string[]
      */
-    public static function parseHeaders($headers)
+    public static function parseHeaders(array $headers): array
     {
         $found = [];
 

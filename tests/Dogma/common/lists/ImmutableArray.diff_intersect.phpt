@@ -13,7 +13,7 @@ $diff2 = new ImmutableArray([3 => 4, 5]);
 $int1 = new ImmutableArray([1 => 2, 3, 4, 5]);
 $int2 = new ImmutableArray([2 => 3, 4, 5, 6]);
 
-$f = function ($a, $b) {
+$f = function (int $a, int $b): int {
     return $a > $b ? 1 : ($a < $b ? -1 : 0);
 };
 

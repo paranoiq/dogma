@@ -23,37 +23,37 @@ class TestClass2
     protected $b = 2;
     private $c = 3;
 
-    public function test()
+    public function test(): bool
     {
         return true;
     }
 
-    public static function testStatic()
+    public static function testStatic(): bool
     {
         return true;
     }
 }
 
-$stdClassEmpty = function () {
+$stdClassEmpty = function (): stdClass {
     return new stdClass();
 };
-$stdClassInt = function () {
+$stdClassInt = function (): stdClass {
     $obj = new stdClass();
     $obj->a = 1;
     $obj->b = 2;
     $obj->c = 3;
     return $obj;
 };
-$classMapIntPublic = function () {
+$classMapIntPublic = function (): TestClass1 {
     return new TestClass1();
 };
-$classMapIntMixed = function () {
+$classMapIntMixed = function (): TestClass2 {
     return new TestClass2();
 };
 $resource = function () {
     return tmpfile();
 };
-$callable = function () {
+$callable = function (): callable {
     return function () {
         return true;
     };
@@ -144,7 +144,7 @@ foreach ($subjects as $name => $possibleTypes) {
                 $after = trim(Debugger::dump($copy, true));
                 Assert::fail(sprintf('Subject %s `%s` should not be castable to type %s. Instead casted to value `%s`.', $name, $before, $type ?: 'null', $after));
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $class = get_class($e);
             $before = trim(Debugger::dump($subject, true));
             if ($class === \Tester\AssertException::class) {

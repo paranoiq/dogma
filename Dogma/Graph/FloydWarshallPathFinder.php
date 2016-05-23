@@ -23,7 +23,7 @@ class FloydWarshallPathFinder extends \Dogma\Object
     /** @var array */
     private $weights;
 
-    /** @var integer */
+    /** @var int */
     private $nodeCount;
 
     /** @var array */
@@ -36,9 +36,9 @@ class FloydWarshallPathFinder extends \Dogma\Object
     private $predecessors = [[]];
 
     /**
-     * @param integer[][] graph edge weights. may be sparse
+     * @param int[][] graph edge weights. may be sparse
      */
-    public function __construct($weights)
+    public function __construct(array $weights)
     {
         // array: assumption, that all nodes has an outgoing edge
         if (array_keys($weights) === range(0, count($weights))) {
@@ -104,11 +104,11 @@ class FloydWarshallPathFinder extends \Dogma\Object
 
     /**
      * Get total cost (distance) between point a and b
-     * @param integer|string
-     * @param integer|string
-     * @return integer
+     * @param int|string
+     * @param int|string
+     * @return int
      */
-    public function getDistance($i, $j)
+    public function getDistance($i, $j): int
     {
         if (!empty($this->nodeNames)) {
             $i = $this->nodeNames[$i];
@@ -120,11 +120,11 @@ class FloydWarshallPathFinder extends \Dogma\Object
 
     /**
      * Get nodes between a and b
-     * @param integer|string
-     * @param integer|string
-     * @return integer[]|string[]
+     * @param int|string
+     * @param int|string
+     * @return int[]|string[]
      */
-    public function getPath($i, $j)
+    public function getPath($i, $j): array
     {
         if (!empty($this->nodeNames)) {
             $i = $this->nodeNames[$i];
@@ -142,10 +142,9 @@ class FloydWarshallPathFinder extends \Dogma\Object
     }
 
     /**
-     * Print out the original Graph matrice
-     * @return string html table
+     * Print out the original Graph matrice in HTML
      */
-    public function printGraphMatrix()
+    public function printGraphMatrix(): string
     {
         $rt = "<table>\n";
         if (!empty($this->nodeNames)) {
@@ -171,10 +170,9 @@ class FloydWarshallPathFinder extends \Dogma\Object
     }
 
     /**
-     * Print out distances matrice
-     * @return string html table
+     * Print out distances matrice in HTML
      */
-    public function printDistances()
+    public function printDistances(): string
     {
         $rt = "<table>\n";
         if (!empty($this->nodeNames)) {
@@ -200,10 +198,9 @@ class FloydWarshallPathFinder extends \Dogma\Object
     }
 
     /**
-     * Print out predecessors matrice
-     * @return string html table
+     * Print out predecessors matrice in HTML
      */
-    public function printPredecessors()
+    public function printPredecessors(): string
     {
         $rt = "<table>\n";
         if (!empty($this->nodeNames)) {

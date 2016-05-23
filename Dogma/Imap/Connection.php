@@ -18,7 +18,7 @@ use Dogma\Mail\Message;
 class Connection extends \Dogma\Object
 {
 
-    /** @var integer */
+    /** @var int */
     public static $connectionRetries = 1;
 
 
@@ -31,10 +31,10 @@ class Connection extends \Dogma\Object
     /** @var string */
     private $host;
 
-    /** @var integer */
+    /** @var inte */
     private $port;
 
-    /** @var boolean */
+    /** @var bool */
     private $ssl;
 
     /** @var string */
@@ -60,14 +60,7 @@ class Connection extends \Dogma\Object
     /** @var callback(string $data -> \Dogma\Mail\Message) */
     private $messageFactory = 'Dogma\\Imap\\Connection::createMessage';
 
-    /**
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param integer
-     */
-    public function __construct($user, $password, $host = '127.0.0.1', $port = 143, $ssl = false)
+    public function __construct(string $user, string $password, string $host = '127.0.0.1', int $port = 143, bool $ssl = false)
     {
         $this->user = $user;
         $this->password = $password;
@@ -76,15 +69,8 @@ class Connection extends \Dogma\Object
         $this->ssl = $ssl;
     }
 
-    /**
-     * @param callable
-     */
-    public function setMessageFactory($factory)
+    public function setMessageFactory(callable $factory)
     {
-        if (!is_callable($factory)) {
-            throw new \InvalidArgumentException('Message factory must be callable.');
-        }
-
         $this->messageFactory = $factory;
     }
 
@@ -118,9 +104,8 @@ class Connection extends \Dogma\Object
 
     /**
      * Check if still connected
-     * @return boolean
      */
-    public function isConnected()
+    public function isConnected(): bool
     {
         if (!$this->handler) {
             return false;
@@ -161,10 +146,10 @@ class Connection extends \Dogma\Object
     /**
      * Get tree structure of folders in mailbox
      * @param string
-     * @param boolean
+     * @param bool
      * @return array
      */
-    public function getFolderStructure($filter = '*', $all = true)
+    public function getFolderStructure(string $filter = '*', bool $all = true): array
     {
         $folders = $this->listFolders($filter, $all);
         $struct = [];
@@ -187,10 +172,10 @@ class Connection extends \Dogma\Object
     /**
      * Return list of folders in mailbox
      * @param string
-     * @param boolean
+     * @param bool
      * @return array
      */
-    public function listFolders($filter = '*', $all = true)
+    public function listFolders(string $filter = '*', bool $all = true): array
     {
         ///
         if ($all) {
@@ -211,10 +196,10 @@ class Connection extends \Dogma\Object
     /**
      * Get info about folders
      * @param string
-     * @param boolean
+     * @param bool
      * @return \Dogma\Imap\Folder[]
      */
-    public function getFolders($filter = '*', $all = true)
+    public function getFolders(string $filter = '*', bool $all = true): array
     {
         ///
         if ($all) {
@@ -243,7 +228,7 @@ class Connection extends \Dogma\Object
      * @param string
      * @return object
      */
-    public function getFolderStatus($name)
+    public function getFolderStatus(string $name)
     {
         ///
         return imap_status($this->handler, $this->ref . $this->encode($name), SA_ALL);
@@ -255,7 +240,7 @@ class Connection extends \Dogma\Object
      * @param string
      * @return object
      */
-    public function getFolderInfo($name)
+    public function getFolderInfo(string $name)
     {
         if ($name !== $this->selectedFolder) {
             throw new \Nette\InvalidStateException('Folder must be open to read info.');
@@ -273,7 +258,7 @@ class Connection extends \Dogma\Object
      * @param string
      * @return array
      */
-    public function listSubscribedFolders($filter = '*')
+    public function listSubscribedFolders(string $filter = '*'): array
     {
         if ($filter === '*') {
             if (!$this->subscribed) {
@@ -290,7 +275,7 @@ class Connection extends \Dogma\Object
      * @param string
      * @return array
      */
-    public function listUnsubscribedFolders($filter = '*')
+    public function listUnsubscribedFolders(string $filter = '*'): array
     {
         $all = $this->listFolders($filter);
         $sub = $this->listFolders($filter, false);
@@ -300,9 +285,8 @@ class Connection extends \Dogma\Object
 
     /**
      * Mark folder as subscribed (visible)
-     * @param string
      */
-    public function subscribeFolder($path)
+    public function subscribeFolder(string $path)
     {
         ///
         imap_subscribe($this->handler, $this->ref . $this->encode($path));
@@ -311,9 +295,8 @@ class Connection extends \Dogma\Object
 
     /**
      * Mark folder as unsubscribed (invidible)
-     * @param string
      */
-    public function unsubscribeFolder($path)
+    public function unsubscribeFolder(string $path)
     {
         ///
         imap_unsubscribe($this->handler, $this->ref . $this->encode($path));
@@ -322,10 +305,8 @@ class Connection extends \Dogma\Object
 
     /**
      * Tells if given folder is subscribed
-     * @param string
-     * @return boolean
      */
-    public function isFolderSubscribed($name)
+    public function isFolderSubscribed(string $name): bool
     {
         if (!$this->subscribed) {
             $this->subscribed = $this->listFolders('*', false);
@@ -338,10 +319,8 @@ class Connection extends \Dogma\Object
 
     /**
      * Select folder and return a Folder object
-     * @param string
-     * @return \Dogma\Imap\Folder
      */
-    public function selectFolder($name)
+    public function selectFolder(string $name): Folder
     {
         ///
         imap_reopen($this->handler, $this->ref . $this->encode($name), 0, self::$connectionRetries);
@@ -369,9 +348,8 @@ class Connection extends \Dogma\Object
 
     /**
      * Create new folder in mailbox
-     * @param string
      */
-    public function createFolder($path)
+    public function createFolder(string $path)
     {
         ///
         imap_createmailbox($this->handler, $this->ref . $this->encode($path));
@@ -380,9 +358,8 @@ class Connection extends \Dogma\Object
 
     /**
      * Delete folder from mailbox
-     * @param string
      */
-    public function deleteFolder($path)
+    public function deleteFolder(string $path)
     {
         ///
         imap_deletemailbox($this->handler, $this->ref . $this->encode($path));
@@ -391,9 +368,8 @@ class Connection extends \Dogma\Object
 
     /**
      * Rename folder to a new name
-     * @param string
      */
-    public function renameFolder($oldPath, $newPath)
+    public function renameFolder(string $oldPath, string $newPath)
     {
         ///
         imap_renamemailbox($this->handler, $this->ref . $this->encode($oldPath), $this->ref . $this->encode($newPath));
@@ -403,13 +379,13 @@ class Connection extends \Dogma\Object
     // messages --------------------------------------------------------------------------------------------------------
 
     /**
-     * Get list of messages from current folde.
+     * Get list of messages from current folder.
      * @param array
      * @param string (date|arrival|from|subject|to|cc|size)
-     * @param boolean
+     * @param bool
      * @return \Dogma\Mail\Message[]
      */
-    public function getMessages($criteria = [], $orderBy = null, $descending = false)
+    public function getMessages(array $criteria = [], string $orderBy = null, bool $descending = false): array
     {
         static $ob = [
             'date' => SORTDATE,
@@ -454,7 +430,7 @@ class Connection extends \Dogma\Object
      * @param array
      * @return string
      */
-    private function compileCriteria($criteria)
+    private function compileCriteria(array $criteria): string
     {
         static $true = ['OLD', 'NEW', 'RECENT']; // NEW = RECENT & UNSEEN; OLD = NOT RECENT;
         static $bool = ['ANSWERED', 'DELETED', 'FLAGGED', 'SEEN'/*, 'DRAFT'*/];
@@ -513,27 +489,25 @@ class Connection extends \Dogma\Object
 
     /**
      * Get Message object
-     * @param integer
-     * @return \Dogma\Mail\Message
      */
-    public function getMessage($uid)
+    public function getMessage(int $uid): Message
     {
         return call_user_func($this->messageFactory, $this->getRawMessageHeader($uid) . "\r\n\r\n" . $this->getMessageBody($uid));
     }
 
     /**
      * Retrieve message body.
-     * @param integer
+     * @param int
      * @return string
      */
-    public function getMessageBody($uid)
+    public function getMessageBody(int $uid): string
     {
         ///
         return imap_body($this->handler, $uid, FT_UID | FT_PEEK);
         ///
     }
 
-    public function getRawMessageHeader($uid)
+    public function getRawMessageHeader(int $uid): string
     {
         ///
         return imap_fetchheader($this->handler, $uid, FT_UID | FT_PREFETCHTEXT);
@@ -544,29 +518,21 @@ class Connection extends \Dogma\Object
 
     /**
      * Encode from UTF-8 to UTF-7
-     * @param string
-     * @return string
      */
-    private function encode($str)
+    private function encode(string $str): string
     {
         return mb_convert_encoding($str, 'UTF7-IMAP', 'UTF-8');
     }
 
     /**
      * Decode from UTF-7 to UTF-8
-     * @param string
-     * @return string
      */
-    private function decode($str)
+    private function decode(string $str): string
     {
         return mb_convert_encoding($str, 'UTF-8', 'UTF7-IMAP');
     }
 
-    /**
-     * @param string
-     * @return \Dogma\Mail\Message
-     */
-    private function createMessage($data)
+    private function createMessage(string $data): Message
     {
         $message = new Message($data);
         $message->setAddressFactory('Dogma\\Mail\\Message::createAddress');

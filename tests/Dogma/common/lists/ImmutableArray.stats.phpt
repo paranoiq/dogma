@@ -12,7 +12,7 @@ $empty = new ImmutableArray([]);
 
 // count()
 Assert::same($array->count(), 4);
-Assert::same($array->count(function ($v) {
+Assert::same($array->count(function (int $v): bool {
     return $v > 1;
 }), 3);
 Assert::same($empty->count(), 0);
@@ -37,13 +37,11 @@ Assert::null($empty->min());
 Assert::same($array->maxBy(function ($v) {
     return 1 / $v;
 }), 1);
-Assert::null($empty->maxBy('f'));
 
 // minBy()
-Assert::same($array->minBy(function ($v) {
+Assert::same($array->minBy(function (int $v): float {
     return 1 / $v;
 }), 3);
-Assert::null($empty->minBy('x'));
 
 // product()
 Assert::same($array->product(), 12);

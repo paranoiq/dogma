@@ -12,21 +12,15 @@ class BeanstalkClientExtended extends BeanstalkClient
     /** @var \Dogma\Queue\IMetadataStorage */
     private $storage;
 
-    /**
-     * @param string $host server address
-     * @param integer $port server port
-     * @param integer $timeout connection timeout in seconds
-     * @param boolean
-     * @param \Dogma\Queue\IMetadataStorage
-     */
     public function __construct(
         IMetadataStorage $storage,
-        $host = '127.0.0.1',
-        $port = 11300,
-        $timeout = 1,
-        $persistent = true
+        string $host = '127.0.0.1',
+        int $port = 11300,
+        int $timeout = 1,
+        bool $persistent = true
     ) {
         parent::__construct($host, $port, $timeout, $persistent);
+
         $this->storage = $storage;
     }
 
@@ -35,12 +29,12 @@ class BeanstalkClientExtended extends BeanstalkClient
      * All other types except string will be serialized.
      *
      * @param string $data
-     * @param integer $delay seconds of delay or time to start
-     * @param integer $priority [0-2^32]. lower number means higher priority
-     * @param integer $timeToRun worker timeout, before re-assigning job to another worker
-     * @return integer job id
+     * @param int $delay seconds of delay or time to start
+     * @param int $priority [0-2^32]. lower number means higher priority
+     * @param int $timeToRun worker timeout, before re-assigning job to another worker
+     * @return int job id
      */
-    public function queueUnique($data, $delay = null, $priority = null, $timeToRun = null)
+    public function queueUnique(string $data, int $delay = null, int $priority = null, int $timeToRun = null): int
     {
         if (!$this->storage) {
             throw new BeanstalkException('Storage must be set to insert unique tasks!');

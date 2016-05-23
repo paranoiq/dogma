@@ -9,32 +9,21 @@ namespace Dogma\Queue;
 interface IMetadataStorage
 {
 
-    /**
-     * @param string
-     * @param integer
-     * @param string
-     */
-    public function insertJob($queue, $jobId, $data);
+    public function insertJob(string $queue, int $jobId, string $data);
 
     /**
      * Get job id by job data
-     * @param string
-     * @param string
-     * @return integer
      */
-    public function findJob($queue, $data);
+    public function findJob(string $queue, string $data): int;
 
-    /**
-     * @param string
-     * @param integer
-     */
-    public function deleteJob($queue, $jobId);
+    public function deleteJob(string $queue, int $jobId);
 
     /**
      * Clear metadata storage
+     *
      * @param string
      * @param \DateTime|null
      */
-    public function clear($queue, \DateTime $time = null);
+    public function clear(string $queue, \DateTime $time = null);
 
 }

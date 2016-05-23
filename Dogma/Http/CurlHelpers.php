@@ -15,11 +15,7 @@ class CurlHelpers
 
     // Errors ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * @param integer
-     * @return string
-     */
-    public static function getCurlErrorName($error)
+    public static function getCurlErrorName(int $error): string
     {
         $consts = get_defined_constants(true);
         foreach ($consts['curl'] as $name => $value) {
@@ -31,11 +27,7 @@ class CurlHelpers
         return 'UNKNOWN_ERROR';
     }
 
-    /**
-     * @param integer
-     * @return string
-     */
-    public static function getCurlMultiErrorName($error)
+    public static function getCurlMultiErrorName(int $error): string
     {
         $consts = get_defined_constants(true);
         $curl = $consts['curl'];
@@ -50,22 +42,14 @@ class CurlHelpers
 
     // Options ---------------------------------------------------------------------------------------------------------
 
-    /**
-     * @param string
-     * @return integer
-     */
-    public static function getCurlOptionNumber($name)
+    public static function getCurlOptionNumber(string $name): int
     {
         $name = strtoupper($name);
 
         return constant('CURLOPT_' . $name);
     }
 
-    /**
-     * @param string
-     * @return integer
-     */
-    public static function getCurlOptionName($option)
+    public static function getCurlOptionName(int $option): string
     {
         $consts = get_defined_constants(true);
         foreach ($consts['curl'] as $name => $value) {
@@ -80,10 +64,10 @@ class CurlHelpers
     // Info ------------------------------------------------------------------------------------------------------------
 
     /**
-     * @param integer
+     * @param int
      * @return string|null
      */
-    public static function getCurlInfoName($num)
+    public static function getCurlInfoName(int $num)
     {
         static $translate = [
             CURLINFO_EFFECTIVE_URL => 'url',

@@ -151,9 +151,8 @@ class LinuxError extends \Dogma\Enum implements \Dogma\System\Error
 
     /**
      * Get formated error description
-     * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return ucfirst(str_replace(
             ['dot_lib', 'a_out', 'io', 'cross_device', 'readonly', 'non_socket', 'references', 'csi', 'rfs', 'nfs', 'xenix', '_'],

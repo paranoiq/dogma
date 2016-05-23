@@ -117,9 +117,8 @@ class UnixError extends \Dogma\Enum implements \Dogma\System\Error
 
     /**
      * Get formated error description
-     * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return ucfirst(str_replace(
             ['non_socket', 'cant', 'references', 'rpc', 'nfs', 'prog_', '_'],

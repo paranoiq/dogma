@@ -24,32 +24,23 @@ class Address extends \Dogma\Object
     /** @var string */
     private $address;
 
-    //** @var bool */
-    //private $group;
-
-    /**
-     * @param string
-     * @param string
-     */
-    public function __construct($address, $name = null)
+    public function __construct(string $address, string $name = null)
     {
         $this->address = strtolower($address);
         $this->name = $name;
     }
 
-    /** @return string */
-    public function getAddress()
+    public function getAddress(): string
     {
         return $this->address;
     }
 
-    /** @return string */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->name ? sprintf('"%s" <%s>', $this->name, $this->address) : $this->address;
     }

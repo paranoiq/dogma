@@ -27,8 +27,8 @@ final class Check
     /**
      * @param &mixed $value
      * @param string|string[] $type
-     * @param integer|float $min
-     * @param integer|float $max
+     * @param int|float|null $min
+     * @param int|float|null $max
      * @throws \Dogma\InvalidTypeException
      * @throws \Dogma\ValueOutOfRangeException
      */
@@ -100,12 +100,12 @@ final class Check
     /**
      * @param &mixed $value
      * @param string $type
-     * @param integer|float $min
-     * @param integer|float $max
+     * @param int|float|null $min
+     * @param int|float|null $max
      * @throws \Dogma\InvalidTypeException
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function nullableType(&$value, $type, $min = null, $max = null)
+    public static function nullableType(&$value, string $type, $min = null, $max = null)
     {
         if ($value === null) {
             return;
@@ -116,8 +116,8 @@ final class Check
     /**
      * @param &mixed $value
      * @param string[] $types
-     * @param integer|null $min
-     * @param integer|null $max
+     * @param int|float|null $min
+     * @param int|float|null $max
      * @throws \Dogma\InvalidTypeException
      */
     public static function types(&$value, array $types, $min = null, $max = null)
@@ -138,12 +138,12 @@ final class Check
 
     /**
      * @param &array|\Traversable $array
-     * @param string $types
-     * @param integer|null $valueMin
-     * @param integer|null $valueMax
+     * @param string $type
+     * @param int|float|null $valueMin
+     * @param int|float|null $valueMax
      * @throws \Dogma\InvalidTypeException
      */
-    public static function itemsOfType($array, $type, $valueMin = null, $valueMax = null)
+    public static function itemsOfType($array, string $type, $valueMin = null, $valueMax = null)
     {
         foreach ($array as &$value) {
             self::type($value, $type, $valueMin, $valueMax);
@@ -153,8 +153,8 @@ final class Check
     /**
      * @param &array|\Traversable $array
      * @param string[] $types
-     * @param integer|null $valueMin
-     * @param integer|null $valueMax
+     * @param int|float|null $valueMin
+     * @param int|float|null $valueMax
      * @throws \Dogma\InvalidTypeException
      */
     public static function itemsOfTypes($array, array $types, $valueMin = null, $valueMax = null)
@@ -196,12 +196,12 @@ final class Check
 
     /**
      * @param &mixed $value
-     * @param integer $min
-     * @param integer $max
+     * @param int|null $min
+     * @param int|null $max
      * @throws \Dogma\InvalidTypeException
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function integer(&$value, $min = null, $max = null)
+    public static function integer(&$value, int $min = null, int $max = null)
     {
         if (is_integer($value)) {
             if ($min !== null || $max !== null) {
@@ -227,12 +227,12 @@ final class Check
 
     /**
      * @param &mixed $value
-     * @param integer $min
-     * @param integer $max
+     * @param int|null $min
+     * @param int|null $max
      * @throws \Dogma\InvalidTypeException
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function nullableInteger(&$value, $min = null, $max = null)
+    public static function nullableInteger(&$value, int $min = null, int $max = null)
     {
         if ($value === null) {
             return;
@@ -243,11 +243,11 @@ final class Check
     /**
      * Positive integer (higher then 0)
      * @param &mixed $value
-     * @param integer $max
+     * @param int|null $max
      * @throws \Dogma\InvalidTypeException
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function natural(&$value, $max = null)
+    public static function natural(&$value, int $max = null)
     {
         self::integer($value, 1, $max);
     }
@@ -255,24 +255,24 @@ final class Check
     /**
      * Positive integer (higher then 0) or null
      * @param &mixed $value
-     * @param integer $max
+     * @param int|null $max
      * @throws \Dogma\InvalidTypeException
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function nullableNatural(&$value, $max = null)
+    public static function nullableNatural(&$value, int $max = null)
     {
         self::nullableInteger($value, 1, $max);
     }
 
     /**
      * @param &mixed $value
-     * @param integer $min
-     * @param integer $max
+     * @param float|null $min
+     * @param float|null $max
      * @throws \Dogma\InvalidTypeException
      * @throws \Dogma\InvalidValueException
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function float(&$value, $min = null, $max = null)
+    public static function float(&$value, float $min = null, float $max = null)
     {
         if (is_float($value)) {
             if (is_nan($value)) {
@@ -307,13 +307,13 @@ final class Check
 
     /**
      * @param &mixed $value
-     * @param float|integer $min
-     * @param float|integer $max
+     * @param float|null $min
+     * @param float|null $max
      * @throws \Dogma\InvalidTypeException
      * @throws \Dogma\InvalidValueException
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function nullableFloat(&$value, $min = null, $max = null)
+    public static function nullableFloat(&$value, float $min = null, float $max = null)
     {
         if ($value === null) {
             return;
@@ -323,12 +323,12 @@ final class Check
 
     /**
      * @param &mixed $value
-     * @param integer $minLength
-     * @param integer $maxLength
+     * @param int|null $minLength
+     * @param int|null $maxLength
      * @throws \Dogma\InvalidTypeException
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function string(&$value, $minLength = null, $maxLength = null)
+    public static function string(&$value, int $minLength = null, int $maxLength = null)
     {
         if (is_string($value)) {
             if ($minLength !== null || $maxLength !== null) {
@@ -354,12 +354,12 @@ final class Check
 
     /**
      * @param &mixed $value
-     * @param integer $minLength
-     * @param integer $maxLength
+     * @param int|null $minLength
+     * @param int|null $maxLength
      * @throws \Dogma\InvalidTypeException
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function nullableString(&$value, $minLength = null, $maxLength = null)
+    public static function nullableString(&$value, int $minLength = null, int $maxLength = null)
     {
         if ($value === null) {
             return;
@@ -380,11 +380,11 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param integer $minLength
-     * @param integer $maxLength
+     * @param int|null $minLength
+     * @param int|null $maxLength
      * @throws \Dogma\InvalidTypeException
      */
-    public static function phpArray($value, $minLength = null, $maxLength = null)
+    public static function phpArray($value, int $minLength = null, int $maxLength = null)
     {
         if (!is_array($value)) {
             throw new \Dogma\InvalidTypeException(Type::PHP_ARRAY, $value);
@@ -394,11 +394,11 @@ final class Check
 
     /**
      * @param mixed $array
-     * @param integer $minLength
-     * @param integer $maxLength
+     * @param int|null $minLength
+     * @param int|null $maxLength
      * @throws \Dogma\InvalidTypeException
      */
-    public static function plainArray($value, $minLength = null, $maxLength = null)
+    public static function plainArray($value, int $minLength = null, int $maxLength = null)
     {
         self::phpArray($value, $minLength, $maxLength);
         if (!self::isPlainArray($value)) {
@@ -412,7 +412,7 @@ final class Check
      * @throws \Dogma\InvalidTypeException
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function tuple($value, $types)
+    public static function tuple($value, array $types)
     {
         self::object($value, Tuple::class);
         self::range(count($value), $length = count($types), $length);
@@ -427,7 +427,7 @@ final class Check
      * @throws \Dogma\InvalidTypeException
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public function nullableTuple($value, $types)
+    public function nullableTuple($value, array $types)
     {
         if ($value === null) {
             return;
@@ -440,7 +440,7 @@ final class Check
      * @param string|null $className
      * @throws \Dogma\InvalidTypeException
      */
-    public static function object($value, $className = null)
+    public static function object($value, string $className = null)
     {
         if (!is_object($value)) {
             throw new \Dogma\InvalidTypeException(Type::OBJECT, $value);
@@ -455,7 +455,7 @@ final class Check
      * @param string|null $className
      * @throws \Dogma\InvalidTypeException
      */
-    public static function nullableObject($value, $className = null)
+    public static function nullableObject($value, string $className = null)
     {
         if ($value === null) {
             return;
@@ -468,7 +468,7 @@ final class Check
      * @param string $type
      * @throws \Dogma\InvalidTypeException
      */
-    public static function resource($value, $type = null)
+    public static function resource($value, string $type = null)
     {
         if (!is_resource($value)) {
             throw new \Dogma\InvalidTypeException(Type::RESOURCE, $value);
@@ -494,7 +494,7 @@ final class Check
      * @param string $parentClass
      * @throws \Dogma\InvalidValueException
      */
-    public static function className($value, $parentClass = null)
+    public static function className($value, string $parentClass = null)
     {
         self::string($value);
         if (!class_exists($value, true)) {
@@ -519,11 +519,11 @@ final class Check
 
     /**
      * @param $value
-     * @param integer|null $min
-     * @param integer|null $max
+     * @param int|null $min
+     * @param int|null $max
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function length($value, $min = null, $max = null)
+    public static function length($value, int $min = null, int $max = null)
     {
         if (!is_string($value)) {
             throw new \Dogma\InvalidTypeException(Type::STRING, $value);
@@ -534,11 +534,11 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param integer|float $min
-     * @param integer|float $max
+     * @param int|float $min
+     * @param int|float $max
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function range($value, $min = null, $max = null)
+    public static function range($value, int $min = null, int $max = null)
     {
         if ($min !== null && $value < $min) {
             throw new \Dogma\ValueOutOfRangeException($value, $min, $max);
@@ -550,7 +550,7 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param integer|float $min
+     * @param int|float $min
      * @throws \Dogma\ValueOutOfRangeException
      */
     public static function higherEqual($value, $min)
@@ -562,10 +562,10 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param integer|float $max
+     * @param int|float $max
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function lowerEqual($value, $max = null)
+    public static function lowerEqual($value, $max)
     {
         if ($value > $max) {
             throw new \Dogma\ValueOutOfRangeException($value, null, $max);
@@ -591,9 +591,9 @@ final class Check
 
     /**
      * @param mixed $value
-     * @return boolean
+     * @return bool
      */
-    public static function isTraversable($value)
+    public static function isTraversable($value): bool
     {
         return is_array($value) || $value instanceof \StdClass
         || ($value instanceof \Traversable && !$value instanceof NonIterable);
@@ -601,9 +601,9 @@ final class Check
 
     /**
      * @param mixed $value
-     * @return boolean
+     * @return bool
      */
-    public static function isPlainArray($value)
+    public static function isPlainArray($value): bool
     {
         return is_array($value) && (($count = count($value)) === 0 || array_keys($value) === range(0, $count - 1));
     }

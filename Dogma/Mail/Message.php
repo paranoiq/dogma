@@ -97,10 +97,7 @@ class Message extends \Dogma\Object
         mailparse_msg_free($handler);
     }
 
-    /**
-     * @param callable
-     */
-    public function setAddressFactory($factory)
+    public function setAddressFactory(callable $factory)
     {
         if (!is_callable($factory)) {
             throw new \InvalidArgumentException('Message factory must be callable.');
@@ -113,7 +110,7 @@ class Message extends \Dogma\Object
      * Returns all email headers.
      * @return string[]
      */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         if (!$this->headers) {
             $this->headers = $this->parts[1]['headers'];
@@ -128,7 +125,7 @@ class Message extends \Dogma\Object
      * @param string
      * @return string|null
      */
-    public function getHeader($name)
+    public function getHeader(string $name)
     {
         if (!$this->headers) {
             $this->getHeaders();
@@ -145,7 +142,7 @@ class Message extends \Dogma\Object
      * Return content types of body (usualy text/plain and text/html).
      * @return string[]
      */
-    public function getContentTypes()
+    public function getContentTypes(): array
     {
         $ct = [];
         foreach ($this->parts as $part) {
@@ -165,7 +162,7 @@ class Message extends \Dogma\Object
      * @param string
      * @return string|null
      */
-    public function getBody($type = self::TEXT)
+    public function getBody(string $type = self::TEXT)
     {
         if ($type !== 'text/plain' && $type !== 'text/html') {
             throw new ParsingException('Invalid content type specified. Type can either be "text/plain" or "text/html".');
@@ -190,7 +187,7 @@ class Message extends \Dogma\Object
      * @param string
      * @return string[]
      */
-    public function getBodyHeaders($type = self::TEXT)
+    public function getBodyHeaders(string $type = self::TEXT)
     {
         if ($type !== 'text/plain' && $type !== 'text/html') {
             throw new ParsingException('Invalid content type specified. Type can either be "text/plain" or "text/html".');
@@ -210,10 +207,10 @@ class Message extends \Dogma\Object
     /**
      * Returns attachments. May be filtered by mime type.
      * @param string|string[]
-     * @param boolean
+     * @param bool
      * @return \Dogma\Mail\Attachment[]
      */
-    public function getAttachments($contentType = null, $inlines = true)
+    public function getAttachments($contentType = null, bool $inlines = true): array
     {
         $dispositions = $inlines ? ['attachment', 'inline'] : ['attachment'];
         if (isset($contentType) && !is_array($contentType)) {
@@ -242,7 +239,7 @@ class Message extends \Dogma\Object
      * @param string
      * @return string|\DateTime
      */
-    public function &__get($name)
+    public function &__get(string $name)
     {
         if (!$this->headers) {
             $this->getHeaders();
@@ -260,11 +257,8 @@ class Message extends \Dogma\Object
     /**
      * Decode message part from transfer encoding.
      * @internal
-     * @param string
-     * @param string
-     * @return string
      */
-    public function decode($data, $encoding)
+    public function decode(string $data, string $encoding): string
     {
         if (strtolower($encoding) === 'base64') {
             return base64_decode($data);
@@ -284,7 +278,7 @@ class Message extends \Dogma\Object
      * Find and decode encoded headers (format: =?charset?te?header?=)
      * @param string[]
      */
-    private function decodeHeaders(&$headers)
+    private function decodeHeaders(array &$headers)
     {
         foreach ($headers as $name => &$value) {
             if (is_array($value)) {
@@ -312,7 +306,7 @@ class Message extends \Dogma\Object
      * @param string
      * @return \Dogma\Mail\Address[]
      */
-    private function parseAddressHeader($header)
+    private function parseAddressHeader(string $header): array
     {
         $data = mailparse_rfc822_parse_addresses($header);
 
@@ -328,22 +322,15 @@ class Message extends \Dogma\Object
         return $arr;
     }
 
-    /**
-     * @param string
-     * @param string
-     */
-    private static function createAddress($address, $name)
+    private static function createAddress(string $address, string $name): Address
     {
         return new Address($address, $name);
     }
 
     /**
      * Decode email header.
-     * @internal
-     * @param string
-     * @return string
      */
-    private function decodeHeader($header)
+    private function decodeHeader(string $header): string
     {
         // =?utf-8?q?Test=3a=20P=c5=99=c3=...?=
         $that = $this;
@@ -368,10 +355,8 @@ class Message extends \Dogma\Object
 
     /**
      * @internal
-     * @param string
-     * @return string
      */
-    public static function convertCharset($string, $charset)
+    public static function convertCharset(string $string, string $charset): string
     {
         if ($charset === 'utf-8') {
             return $string;
@@ -384,7 +369,7 @@ class Message extends \Dogma\Object
      * @param string[]
      * @return string[]
      */
-    private function getParsedPartHeaders($part)
+    private function getParsedPartHeaders(array $part): array
     {
         $headers = $part;
         unset($headers['headers']);

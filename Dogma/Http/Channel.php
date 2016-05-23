@@ -27,22 +27,22 @@ class Channel extends \Dogma\Object
     /** @var \Dogma\Http\Request */
     private $request;
 
-    /** @var integer */
+    /** @var int */
     private $priority = 1;
 
-    /** @var integer */
+    /** @var int */
     private $threadLimit = 10;
 
-    /** @var integer */
+    /** @var int */
     private $lastIndex = 0;
 
-    /** @var boolean */
+    /** @var bool */
     private $initiated = false;
 
-    /** @var boolean */
+    /** @var bool */
     private $stopped = false;
 
-    /** @var boolean|integer */
+    /** @var bool|int */
     private $paused = false;
 
 
@@ -69,20 +69,13 @@ class Channel extends \Dogma\Object
     /** @var \Nette\Utils\Callback */
     private $errorHandler;
 
-    /**
-     * @param \Dogma\Http\ChannelManager
-     * @param \Dogma\Http\Request
-     */
     public function __construct(ChannelManager $manager, Request $request)
     {
         $this->manager = $manager;
         $this->request = $request;
     }
 
-    /**
-     * @return \Dogma\Http\Request
-     */
-    public function getRequestPrototype()
+    public function getRequestPrototype(): Request
     {
         return $this->request;
     }
@@ -114,34 +107,22 @@ class Channel extends \Dogma\Object
         $this->errorHandler = $errorHandler;
     }
 
-    /**
-     * @param integer
-     */
-    public function setPriority($priority)
+    public function setPriority(int $priority)
     {
         $this->priority = abs((int) $priority);
     }
 
-    /**
-     * @return integer
-     */
-    public function getPriority()
+    public function getPriority(): int
     {
         return $this->priority;
     }
 
-    /**
-     * @param integer
-     */
-    public function setThreadLimit($threads)
+    public function setThreadLimit(int $threads)
     {
         $this->threadLimit = abs((int) $threads);
     }
 
-    /**
-     * @return integer
-     */
-    public function getThreadLimit()
+    public function getThreadLimit(): int
     {
         return $this->threadLimit;
     }
@@ -177,8 +158,8 @@ class Channel extends \Dogma\Object
      * Add new job to channel queue.
      * @param string|string[]
      * @param mixed
-     * @param string|integer
-     * @return string|integer
+     * @param string|int
+     * @return string|int
      */
     public function addJob($data, $context = null, $name = null, $forceStart = false)
     {
@@ -224,20 +205,15 @@ class Channel extends \Dogma\Object
         }
     }
 
-    /**
-     * @return integer
-     */
-    public function getRunningJobCount()
+    public function getRunningJobCount(): int
     {
         return count($this->running);
     }
 
     /**
      * Decide if channel can start a job.
-     * @param string
-     * @return boolean
      */
-    public function canStartJob()
+    public function canStartJob(): bool
     {
         if (empty($this->queue)) {
             return false;
@@ -259,8 +235,7 @@ class Channel extends \Dogma\Object
      * Start a request in CURL. Called by ChannelManager
      * @internal
      *
-     * @param integer
-     * @return array
+     * @param string|int|null
      */
     public function startJob($name = null)
     {
@@ -303,11 +278,11 @@ class Channel extends \Dogma\Object
      * Called by ChannelManager.
      * @internal
      *
-     * @param string|integer
+     * @param string|int
      * @param array
      * @param \Dogma\Http\Request
      */
-    public function jobFinished($name, $minfo, Request $request)
+    public function jobFinished($name, array $minfo, Request $request)
     {
         unset($this->running[$name]);
         $data = curl_multi_getcontent($minfo['handle']);
@@ -330,7 +305,7 @@ class Channel extends \Dogma\Object
     }
 
     /**
-     * @param string
+     * @param string|int
      * @return \Dogma\Http\Response|null
      */
     public function fetch($name = null)
@@ -363,7 +338,7 @@ class Channel extends \Dogma\Object
     }
 
     /**
-     * @param string|integer
+     * @param string|int
      * @return \Dogma\Http\Response|null
      */
     private function fetchByName($name)
@@ -397,11 +372,10 @@ class Channel extends \Dogma\Object
 
     /**
      * Check if all channels or a channel or a job are finished.
-     * @param \Dogma\Http\Channel
-     * @param string
-     * @return boolean
+     * @param string|int
+     * @return bool
      */
-    public function isFinished($name = null)
+    public function isFinished($name = null): bool
     {
         if ($name === null) {
             return empty($this->running) && empty($this->queue);
@@ -425,18 +399,12 @@ class Channel extends \Dogma\Object
         $this->stopped = true;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isStopped()
+    public function isStopped(): bool
     {
         return $this->stopped;
     }
 
-    /**
-     * @param integer
-     */
-    public function pause($seconds = 0)
+    public function pause(int $seconds = 0)
     {
         if ($seconds) {
             $this->paused = time() + $seconds;
@@ -445,10 +413,7 @@ class Channel extends \Dogma\Object
         }
     }
 
-    /**
-     * @return boolean
-     */
-    public function isPaused()
+    public function isPaused(): bool
     {
         if (is_int($this->paused) && $this->paused <= time()) {
             $this->paused = false;
