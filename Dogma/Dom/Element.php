@@ -10,8 +10,9 @@
 namespace Dogma\Dom;
 
 
-class Element extends \Dogma\Object
+class Element
 {
+    use \Dogma\StrictBehaviorMixin;
 
     /** @var \Dogma\Dom\QueryEngine */
     private $engine;

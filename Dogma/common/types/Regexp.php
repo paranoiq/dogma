@@ -15,8 +15,9 @@ use Nette\Utils\Strings;
 /**
  * Regular expression object
  */
-class Regexp extends \Dogma\Object
+class Regexp
 {
+    use StrictBehaviorMixin;
 
     const DOLLAR_MATCH_END_ONLY = 'D';
     const CASE_INSENSITIVE = 'i';

@@ -25,8 +25,9 @@ namespace Dogma\Io;
  * @property-read integer $blockSize
  * @property-read integer $blocks
  */
-class FileStat extends \Dogma\Object
+class FileStat
 {
+    use \Dogma\StrictBehaviorMixin;
 
     /** @var array */
     private $stat;

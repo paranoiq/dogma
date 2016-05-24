@@ -13,9 +13,9 @@ namespace Dogma\Http;
 /**
  * Manages parallel requests over multiple HTTP channels.
  */
-class ChannelManager extends \Dogma\Object
+class ChannelManager
 {
-
+    use \Dogma\StrictBehaviorMixin;
 
     /** @var resource */
     private $handler;

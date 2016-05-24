@@ -15,8 +15,9 @@ namespace Dogma\Mail;
  * @property-read $address
  * @property-read $name
  */
-class Address extends \Dogma\Object
+class Address
 {
+    use \Dogma\StrictBehaviorMixin;
 
     /** @var string */
     private $name;

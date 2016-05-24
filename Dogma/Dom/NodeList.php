@@ -10,8 +10,9 @@
 namespace Dogma\Dom;
 
 
-class NodeList extends \Dogma\Object implements \Countable, \Iterator
+class NodeList implements \Countable, \Iterator
 {
+    use \Dogma\StrictBehaviorMixin;
 
     /** @var \DOMNodeList */
     private $nodeList;

@@ -15,8 +15,9 @@ use Nette\Utils\Strings;
 /**
  * Simple query engine based on XPath 1.0
  */
-class QueryEngine extends \Dogma\Object
+class QueryEngine
 {
+    use \Dogma\StrictBehaviorMixin;
 
     /** @var \DOMXPath */
     private $xpath;

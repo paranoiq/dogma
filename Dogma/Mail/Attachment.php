@@ -21,8 +21,9 @@ use Dogma\Io\File;
  * @property-read $disposition
  * @property-read $length
  */
-class Attachment extends \Dogma\Object
+class Attachment
 {
+    use \Dogma\StrictBehaviorMixin;
 
     /** Content disposition */
     const ATTACHMENT = 'attachment';

@@ -18,8 +18,9 @@ use Nette\Utils\Callback;
  * @todo: vyřešit možná nekonečné smyčky při čekání na odpověď
  * @todo: vyřešit fetch() ze zapausovaného kanálu
  */
-class Channel extends \Dogma\Object
+class Channel
 {
+    use \Dogma\StrictBehaviorMixin;
 
     /** @var \Dogma\Http\ChannelManager */
     protected $manager;

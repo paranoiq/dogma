@@ -15,8 +15,9 @@ use Dogma\Mail\Message;
 /**
  * IMAP connection
  */
-class Connection extends \Dogma\Object
+class Connection
 {
+    use \Dogma\StrictBehaviorMixin;
 
     /** @var int */
     public static $connectionRetries = 1;

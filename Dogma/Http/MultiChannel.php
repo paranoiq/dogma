@@ -12,8 +12,9 @@ namespace Dogma\Http;
 use Nette\Utils\Callback;
 
 
-class MultiChannel extends \Dogma\Object
+class MultiChannel
 {
+    use \Dogma\StrictBehaviorMixin;
 
     /** @var \Dogma\Http\Channel[] */
     private $channels;

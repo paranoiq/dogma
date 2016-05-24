@@ -13,8 +13,9 @@ namespace Dogma\Imap;
 /**
  * IMAP message info.
  */
-class MessageInfo extends \Dogma\Object
+class MessageInfo
 {
+    use \Dogma\StrictBehaviorMixin;
 
     /** @var \Dogma\Imap\Connection */
     private $imap;

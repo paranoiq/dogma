@@ -29,8 +29,9 @@ use Nette\Utils\Strings;
  * @property-read string $messageId
  * @property-read string $inReplyTo
  */
-class Message extends \Dogma\Object
+class Message
 {
+    use \Dogma\StrictBehaviorMixin;
 
     const TEXT = 'text/plain';
     const HTML = 'text/html';

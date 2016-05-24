@@ -10,8 +10,9 @@
 namespace Dogma\Imap;
 
 
-class Folder extends \Dogma\Object
+class Folder
 {
+    use \Dogma\StrictBehaviorMixin;
 
     const NO_SUBFOLDERS = LATT_NOINFERIORS; // 1
     const NOT_SELECTABLE = LATT_NOSELECT; // 2

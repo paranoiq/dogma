@@ -12,8 +12,9 @@ namespace Dogma\Datasheet;
 use Dogma\Dom\Element;
 
 
-class HtmlTableIterator extends \Dogma\Object implements \Iterator
+class HtmlTableIterator implements \Iterator
 {
+    use \Dogma\StrictBehaviorMixin;
 
     /** @var Element */
     private $table;

@@ -12,8 +12,9 @@ namespace Dogma\Http;
 use Nette\Utils\Strings;
 
 
-class Response extends \Dogma\Object
+class Response
 {
+    use \Dogma\StrictBehaviorMixin;
 
     /** @var array */
     protected $info;

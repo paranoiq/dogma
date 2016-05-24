@@ -16,8 +16,9 @@ use Nette\Utils\Strings;
 /**
  * HTTP request. Holds a CURL resource.
  */
-class Request extends \Dogma\Object
+class Request
 {
+    use \Dogma\StrictBehaviorMixin;
 
     const GET = 'get';
     const HEAD = 'head';

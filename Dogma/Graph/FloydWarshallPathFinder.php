@@ -17,8 +17,9 @@ namespace Dogma\Graph;
  * @see http://en.wikipedia.org/wiki/Floyd–Warshall_algorithm
  * @see https://github.com/pierre-fromager/PeopleFloydWarshall/blob/4731f8d1e6dd5e659f5945d03ddf8746a578a665/class/floyd-warshall.class.php
  */
-class FloydWarshallPathFinder extends \Dogma\Object
+class FloydWarshallPathFinder
 {
+    use \Dogma\StrictBehaviorMixin;
 
     /** @var array */
     private $weights;
