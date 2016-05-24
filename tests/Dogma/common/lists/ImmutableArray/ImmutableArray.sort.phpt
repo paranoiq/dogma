@@ -6,7 +6,7 @@ use Dogma\ImmutableArray;
 use Dogma\Order;
 use Dogma\Tester\Assert;
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 $array = new ImmutableArray([1, 2, 3, 4]);
 $empty = new ImmutableArray([]);
@@ -23,7 +23,7 @@ Assert::same($array->reverse()->toArray(), [3 => 4, 2 => 3, 1 => 2, 0 => 1]);
 Assert::same($empty->shuffle()->toArray(), []);
 $sh = $array->shuffle();
 Assert::notSame($sh->toArray(), $array->toArray());
-Assert::same($sh->sort()->getValues()->toArray(), $array->toArray());
+Assert::same($sh->sort()->values()->toArray(), $array->toArray());
 
 // sort()
 Assert::same($empty->sort()->toArray(), []);

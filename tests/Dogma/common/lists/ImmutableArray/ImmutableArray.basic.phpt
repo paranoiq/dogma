@@ -8,7 +8,7 @@ use Dogma\InvalidTypeException;
 use Dogma\ReverseArrayIterator;
 use Dogma\Tester\Assert;
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 $array = new ImmutableArray([1, 2, 3]);
 
@@ -66,19 +66,19 @@ Assert::exception(function () use ($array) {
 Assert::type((new ImmutableArray([]))->getReverseIterator(), ReverseArrayIterator::class);
 
 // getKeys()
-Assert::same($array->getKeys()->toArray(), [0, 1, 2]);
+Assert::same($array->keys()->toArray(), [0, 1, 2]);
 
 // getValues()
-Assert::same($array->getValues()->toArray(), [1, 2, 3]);
+Assert::same($array->values()->toArray(), [1, 2, 3]);
 
 // toArrayRecursive()
 Assert::same((new ImmutableArray([1, 2, new ImmutableArray([3, 4, 5])]))->toArrayRecursive(), [1, 2, [3, 4, 5]]);
 
 // randomKey()
-Assert::contains($array->getKeys()->toArray(), $array->randomKey());
+Assert::contains($array->keys()->toArray(), $array->randomKey());
 
 // randomValue()
-Assert::contains($array->getValues()->toArray(), $array->randomValue());
+Assert::contains($array->values()->toArray(), $array->randomValue());
 
 // doForEach()
 $x = 0;

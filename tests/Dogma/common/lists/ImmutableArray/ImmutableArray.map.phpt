@@ -5,7 +5,7 @@ namespace Dogma\Tests\ImmutableArray;
 use Dogma\ImmutableArray;
 use Dogma\Tester\Assert;
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 $array = new ImmutableArray([1, 2, 3, 4]);
 $arr2 = new ImmutableArray([[1, 2], [3, 4]]);
@@ -52,3 +52,8 @@ Assert::same($empty->flip()->toArray(), []);
 // transpose()
 Assert::same($arr2->transpose()->toArrayRecursive(), [[1, 3], [2, 4]]);
 Assert::same($empty->transpose()->toArrayRecursive(), []);
+
+// column()
+Assert::same($arr2->column(0)->toArray(), [1, 3]);
+Assert::same($arr2->column(0, 1)->toArray(), [2 => 1, 4 => 3]);
+Assert::same($empty->column(0)->toArray(), []);

@@ -61,13 +61,12 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         if (is_array($that)) {
             return $that;
         } elseif ($that instanceof self) {
-            $that = $that->toArray();
+            return $that->toArray();
         } elseif ($that instanceof \Traversable) {
-            $that = iterator_to_array($that);
+            return iterator_to_array($that);
         } else {
             throw new \Dogma\InvalidTypeException(Type::PHP_ARRAY, $that);
         }
-        return $that;
     }
 
     /**
@@ -78,7 +77,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
      */
     public static function range($start, $end, int $step = 1): self
     {
-        Check::natural($step);
+        Check::min($step, 1);
 
         return new static(range($start, $end, $step));
     }
@@ -93,12 +92,12 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return new ReverseArrayIterator($this->items);
     }
 
-    public function getKeys(): self
+    public function keys(): self
     {
         return new static(array_keys($this->toArray()));
     }
 
-    public function getValues(): self
+    public function values(): self
     {
         return new static(array_values($this->toArray()));
     }
@@ -447,16 +446,16 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * @param mixed[]|\Traversable $array
+     * @param mixed[]|\Traversable $slice
      * @param int $from
      * @return bool
      */
-    public function startsWith($array, int $from = 0): bool
+    public function startsWith($slice, int $from = 0): bool
     {
         /** @var \Iterator $iterator */
         $iterator = $this->drop($from)->getIterator();
         $iterator->rewind();
-        foreach ($array as $value) {
+        foreach ($slice as $value) {
             if ($iterator->valid() && $value === $iterator->current()) {
                 $iterator->next();
             } else {
@@ -467,12 +466,12 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * @param mixed[]|\Traversable $array
+     * @param mixed[]|\Traversable $slice
      * @return bool
      */
-    public function endsWith($array): bool
+    public function endsWith($slice): bool
     {
-        return $this->startsWith($array, $this->count() - count($array));
+        return $this->startsWith($slice, $this->count() - count($slice));
     }
 
     // transformating --------------------------------------------------------------------------------------------------
@@ -581,11 +580,10 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
      */
     public function head()
     {
-        $result = reset($this->items);
-        if ($result === false) {
+        if (count($this->items) === 0) {
             return null;
         }
-        return $result;
+        return reset($this->items);
     }
 
     /**
@@ -594,11 +592,10 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
      */
     public function first()
     {
-        $result = reset($this->items);
-        if ($result === false) {
+        if (count($this->items) === 0) {
             return null;
         }
-        return $result;
+        return reset($this->items);
     }
 
     /**
@@ -606,11 +603,10 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
      */
     public function last()
     {
-        $result = end($this->items);
-        if ($result === false) {
+        if (count($this->items) === 0) {
             return null;
         }
-        return $result;
+        return end($this->items);
     }
 
     public function init(): self
@@ -755,7 +751,8 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
                 break;
             }
             $res[$key] = $value;
-        } return new static($res);
+        }
+        return new static($res);
     }
 
     // filtering -------------------------------------------------------------------------------------------------------
@@ -812,11 +809,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
 
     // mapping ---------------------------------------------------------------------------------------------------------
 
-    /**
-     * @param callable $function
-     * @return mixed
-     */
-    public function flatMap(callable $function)
+    public function flatMap(callable $function): self
     {
         return $this->map($function)->flatten();
     }
@@ -886,6 +879,16 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
             $arr[$key] = (array) $value;
         }
         return new static($arr);
+    }
+
+    /**
+     * @param mixed $valueKey
+     * @param mixed|null $indexKey
+     * @return static
+     */
+    public function column($valueKey, $indexKey = null): self
+    {
+        return new static(array_column($this->toArrayRecursive(), $valueKey, $indexKey));
     }
 
     // sorting ---------------------------------------------------------------------------------------------------------

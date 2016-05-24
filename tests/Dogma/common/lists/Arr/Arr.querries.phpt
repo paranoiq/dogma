@@ -1,0 +1,97 @@
+<?php
+
+namespace Dogma\Tests\ImmutableArray;
+
+use Dogma\Arr;
+use Dogma\Tester\Assert;
+
+require_once __DIR__ . '/../../../bootstrap.php';
+
+$array = [1, 2, 3, 2, 4];
+$empty = [];
+
+// isEmpty()
+Assert::true(Arr::isEmpty($empty));
+Assert::false(Arr::isEmpty($array));
+
+// isNotEmpty()
+Assert::true(Arr::isNotEmpty($array));
+Assert::false(Arr::isNotEmpty($empty));
+
+// contains()
+Assert::true(Arr::contains($array, 2));
+Assert::false(Arr::contains($array, 5));
+
+// indexOf()
+Assert::null(Arr::indexOf($array, 5));
+Assert::same(Arr::indexOf($array, 2), 1);
+Assert::same(Arr::indexOf($array, 2, 2), 3);
+
+// indexesOf()
+Assert::same(Arr::indexesOf($array, 5), []);
+Assert::same(Arr::indexesOf($array, 2), [1, 3]);
+
+// lastIndexOf()
+Assert::null(Arr::lastIndexOf($array, 5));
+Assert::same(Arr::lastIndexOf($array, 2), 3);
+Assert::same(Arr::lastIndexOf($array, 2, 2), 1);
+
+// indexWhere()
+Assert::null(Arr::indexWhere($array, function (): bool {
+    return false;
+}));
+Assert::same(Arr::indexWhere($array, function (int $v): bool {
+    return $v === 2;
+}), 1);
+Assert::same(Arr::indexWhere($array, function (int $v): bool {
+    return $v === 2;
+}, 2), 3);
+
+// lastIndexWhere()
+Assert::null(Arr::lastIndexWhere($array, function () {
+    return false;
+}));
+Assert::same(Arr::lastIndexWhere($array, function (int $v): bool {
+    return $v === 2;
+}), 3);
+Assert::same(Arr::lastIndexWhere($array, function (int $v): bool {
+    return $v === 2;
+}, 2), 1);
+
+// containsKey()
+Assert::false(Arr::containsKey($array, 5));
+Assert::true(Arr::containsKey($array, 2));
+
+// exists()
+Assert::false(Arr::exists($array, function (int $v): bool {
+    return $v > 5;
+}));
+Assert::true(Arr::exists($array, function (int $v): bool {
+    return $v > 1;
+}));
+
+// forAll()
+Assert::false(Arr::forAll($array, function (int $v): bool {
+    return $v > 1;
+}));
+Assert::true(Arr::forAll($array, function (int $v): bool {
+    return $v < 5;
+}));
+
+// find()
+Assert::null(Arr::find($array, function (int $v): bool {
+    return $v * $v === 25;
+}));
+Assert::same(Arr::find($array, function (int $v): bool {
+    return $v * $v === 4;
+}), 2);
+
+// prefixLength()
+Assert::same(Arr::prefixLength([2, 2, 2, 1], function (int $v): bool {
+    return $v === 2;
+}), 3);
+
+// segmentLength()
+Assert::same(Arr::segmentLength([2, 2, 2, 1], function (int $v): bool {
+    return $v === 2;
+}, 1), 2);

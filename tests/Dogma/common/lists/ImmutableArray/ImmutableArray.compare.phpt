@@ -5,7 +5,7 @@ namespace Dogma\Tests\ImmutableArray;
 use Dogma\ImmutableArray;
 use Dogma\Tester\Assert;
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 $array = new ImmutableArray([1, 2, 3, 4]);
 
