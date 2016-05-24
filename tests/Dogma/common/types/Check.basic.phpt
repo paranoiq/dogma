@@ -17,7 +17,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 // nullables
 $null = null;
 
-Check::nullableType($null, Type::BOOLEAN);
+Check::nullableType($null, Type::BOOL);
 Check::nullableBoolean($null);
 Check::nullableInteger($null);
 Check::nullableNatural($null);
@@ -44,15 +44,15 @@ $vector = [1, 2, 3];
 $mixed = [1, 2, 'a', 'b'];
 
 // itemsOfType()
-Check::itemsOfType($array, Type::INTEGER);
+Check::itemsOfType($array, Type::INT);
 Assert::exception(function () use ($mixed) {
-    Check::itemsOfType($mixed, Type::INTEGER);
+    Check::itemsOfType($mixed, Type::INT);
 }, InvalidTypeException::class);
 
 // itemsOfTypes()
-Check::itemsOfTypes($mixed, [Type::INTEGER, Type::STRING]);
+Check::itemsOfTypes($mixed, [Type::INT, Type::STRING]);
 Assert::exception(function () use ($mixed) {
-    Check::itemsOfTypes($mixed, [Type::INTEGER, Type::FLOAT]);
+    Check::itemsOfTypes($mixed, [Type::INT, Type::FLOAT]);
 }, InvalidTypeException::class);
 
 // traversable()
@@ -65,9 +65,9 @@ Assert::exception(function () {
 }, InvalidTypeException::class);
 
 // phpArray()
-Check::phpArray($array);
+Check::array($array);
 Assert::exception(function () use ($null) {
-    Check::phpArray($null);
+    Check::array($null);
 }, InvalidTypeException::class);
 
 // plainArray()
@@ -77,18 +77,18 @@ Assert::exception(function () use ($array) {
 }, InvalidTypeException::class);
 
 // tuple()
-Check::tuple(new Tuple(123, 'abc'), [Type::INTEGER, Type::STRING]);
+Check::tuple(new Tuple(123, 'abc'), [Type::INT, Type::STRING]);
 Assert::exception(function () {
-    Check::tuple(new Tuple(123, 'abc', 789), [Type::INTEGER, Type::STRING]);
+    Check::tuple(new Tuple(123, 'abc', 789), [Type::INT, Type::STRING]);
 }, ValueOutOfRangeException::class);
 Assert::exception(function () {
-    Check::tuple(new Tuple(123), [Type::INTEGER, Type::STRING]);
+    Check::tuple(new Tuple(123), [Type::INT, Type::STRING]);
 }, ValueOutOfRangeException::class);
 Assert::exception(function () {
-    Check::tuple(new Tuple('abc', 123), [Type::INTEGER, Type::STRING]);
+    Check::tuple(new Tuple('abc', 123), [Type::INT, Type::STRING]);
 }, InvalidTypeException::class);
 Assert::exception(function () use ($array) {
-    Check::tuple($array, [Type::INTEGER, Type::STRING]);
+    Check::tuple($array, [Type::INT, Type::STRING]);
 }, InvalidTypeException::class);
 
 
@@ -117,11 +117,11 @@ $zero = 0;
 $big = 100;
 
 Assert::exception(function () use ($small) {
-    Check::integer($small, 0);
+    Check::int($small, 0);
 }, ValueOutOfRangeException::class);
 
 Assert::exception(function () use ($big) {
-    Check::integer($big, 0, 10);
+    Check::int($big, 0, 10);
 }, ValueOutOfRangeException::class);
 
 Assert::exception(function () use ($small) {

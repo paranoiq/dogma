@@ -57,7 +57,7 @@ abstract class Enum implements \Dogma\NonIterable
     }
 
     /**
-     * @return mixed
+     * @return int|string
      */
     final public function getValue()
     {
@@ -74,7 +74,7 @@ abstract class Enum implements \Dogma\NonIterable
     }
 
     /**
-     * @param mixed|\Dogma\Enum $value
+     * @param int|string|\Dogma\Enum $value
      */
     final public function equals($value): bool
     {
@@ -87,6 +87,10 @@ abstract class Enum implements \Dogma\NonIterable
         return $this->getValue() === $value->getValue();
     }
 
+    /**
+     * @param int|string $value
+     * @return bool
+     */
     final public static function isValid($value): bool
     {
         if (empty(self::$availableValues[$class = get_called_class()])) {

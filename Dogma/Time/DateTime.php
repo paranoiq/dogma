@@ -46,7 +46,7 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
 
     public static function createFromTimestamp(int $timestamp, DateTimeZone $timeZone = null): self
     {
-        Check::integer($timestamp);
+        Check::int($timestamp);
 
         return static::createFromFormat('U', $timestamp, $timeZone);
     }

@@ -43,16 +43,16 @@ final class Check
                     throw new \Dogma\InvalidTypeException($type, $value);
                 }
                 break;
-            case Type::BOOLEAN:
+            case Type::BOOL:
                 if ($min !== null) {
                     throw new \InvalidArgumentException(sprintf('Parameter $min is not aplicable with type %s.', $type));
                 } elseif ($max !== null) {
                     throw new \InvalidArgumentException(sprintf('Parameter $max is not aplicable with type %s.', $type));
                 }
-                self::boolean($value);
+                self::bool($value);
                 break;
-            case Type::INTEGER:
-                self::integer($value, $min, $max);
+            case Type::INT:
+                self::int($value, $min, $max);
                 break;
             case Type::FLOAT:
                 self::float($value, $min, $max);
@@ -61,7 +61,7 @@ final class Check
                 self::string($value, $min, $max);
                 break;
             case Type::PHP_ARRAY:
-                self::phpArray($value, $min, $max);
+                self::array($value, $min, $max);
                 break;
             case Type::OBJECT:
                 if ($min !== null) {
@@ -81,7 +81,7 @@ final class Check
                 if ($max !== null) {
                     throw new \InvalidArgumentException(sprintf('Parameter $max is not aplicable with type %s.', $type));
                 }
-                self::phpCallable($value);
+                self::callable($value);
                 break;
             default:
                 if ($min !== null) {
@@ -168,7 +168,7 @@ final class Check
      * @param &mixed $value
      * @throws \Dogma\InvalidTypeException
      */
-    public static function boolean(&$value)
+    public static function bool(&$value)
     {
         if ($value === true || $value === false) {
             return;
@@ -179,7 +179,7 @@ final class Check
             $value = (bool) (int) $value;
             return;
         }
-        throw new \Dogma\InvalidTypeException(Type::BOOLEAN, $value);
+        throw new \Dogma\InvalidTypeException(Type::BOOL, $value);
     }
 
     /**
@@ -191,7 +191,7 @@ final class Check
         if ($value === null) {
             return;
         }
-        self::boolean($value);
+        self::bool($value);
     }
 
     /**
@@ -201,7 +201,7 @@ final class Check
      * @throws \Dogma\InvalidTypeException
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function integer(&$value, int $min = null, int $max = null)
+    public static function int(&$value, int $min = null, int $max = null)
     {
         if (is_integer($value)) {
             if ($min !== null || $max !== null) {
@@ -210,14 +210,14 @@ final class Check
             return;
         }
         if (!is_numeric($value)) {
-            throw new \Dogma\InvalidTypeException(Type::INTEGER, $value);
+            throw new \Dogma\InvalidTypeException(Type::INT, $value);
         }
         $actualType = gettype($value);
         $converted = (int) $value;
         $copy = $converted;
         settype($copy, $actualType);
         if ($copy !== $value && (!is_string($value) || rtrim(rtrim($value, '0'), '.') !== $copy)) {
-            throw new \Dogma\InvalidTypeException(Type::INTEGER, $value);
+            throw new \Dogma\InvalidTypeException(Type::INT, $value);
         }
         if ($min !== null || $max !== null) {
             self::range($value, $min, $max);
@@ -237,7 +237,7 @@ final class Check
         if ($value === null) {
             return;
         }
-        self::integer($value, $min, $max);
+        self::int($value, $min, $max);
     }
 
     /**
@@ -249,7 +249,7 @@ final class Check
      */
     public static function natural(&$value, int $max = null)
     {
-        self::integer($value, 1, $max);
+        self::int($value, 1, $max);
     }
 
     /**
@@ -384,7 +384,7 @@ final class Check
      * @param int|null $maxLength
      * @throws \Dogma\InvalidTypeException
      */
-    public static function phpArray($value, int $minLength = null, int $maxLength = null)
+    public static function array($value, int $minLength = null, int $maxLength = null)
     {
         if (!is_array($value)) {
             throw new \Dogma\InvalidTypeException(Type::PHP_ARRAY, $value);
@@ -400,7 +400,7 @@ final class Check
      */
     public static function plainArray($value, int $minLength = null, int $maxLength = null)
     {
-        self::phpArray($value, $minLength, $maxLength);
+        self::array($value, $minLength, $maxLength);
         if (!self::isPlainArray($value)) {
             throw new \Dogma\InvalidTypeException('array with integer keys from 0', $value);
         }
@@ -482,7 +482,7 @@ final class Check
      * @param mixed $value
      * @throws \Dogma\InvalidTypeException
      */
-    public static function phpCallable($value)
+    public static function callable($value)
     {
         if (!is_callable($value)) {
             throw new \Dogma\InvalidTypeException('callable', $value);
@@ -518,7 +518,7 @@ final class Check
     }
 
     /**
-     * @param $value
+     * @param string $value
      * @param int|null $min
      * @param int|null $max
      * @throws \Dogma\ValueOutOfRangeException
@@ -553,7 +553,7 @@ final class Check
      * @param int|float $min
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function higherEqual($value, $min)
+    public static function min($value, $min)
     {
         if ($value < $min) {
             throw new \Dogma\ValueOutOfRangeException($value, $min, null);
@@ -565,7 +565,7 @@ final class Check
      * @param int|float $max
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function lowerEqual($value, $max)
+    public static function max($value, $max)
     {
         if ($value > $max) {
             throw new \Dogma\ValueOutOfRangeException($value, null, $max);
@@ -595,8 +595,8 @@ final class Check
      */
     public static function isTraversable($value): bool
     {
-        return is_array($value) || $value instanceof \StdClass
-        || ($value instanceof \Traversable && !$value instanceof NonIterable);
+        return is_array($value) || $value instanceof \stdClass
+            || ($value instanceof \Traversable && !$value instanceof NonIterable);
     }
 
     /**

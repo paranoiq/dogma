@@ -32,7 +32,7 @@ class Time implements \Dogma\NonIterable
     public function __construct($time)
     {
         if (is_numeric($time)) {
-            Check::integer($time, 0, self::SECONDS_IN_A_DAY);
+            Check::int($time, 0, self::SECONDS_IN_A_DAY);
             $this->secondsSinceMidnight = $time;
         } else {
             try {
@@ -49,9 +49,9 @@ class Time implements \Dogma\NonIterable
 
     public static function createFromParts(int $hours, int $minutes, int $seconds = 0): self
     {
-        Check::integer($hours, 0, 23);
-        Check::integer($minutes, 0, 59);
-        Check::integer($seconds, 0, 59);
+        Check::int($hours, 0, 23);
+        Check::int($minutes, 0, 59);
+        Check::int($seconds, 0, 59);
 
         return new static($hours * 3600 + $minutes * 60 + $seconds);
     }

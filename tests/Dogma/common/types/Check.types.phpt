@@ -67,12 +67,12 @@ $callableStaticMethod = [TestClass2::class, 'testStatic'];
  */
 $subjects = [
     'null' => [null, Type::NULL],
-    'false' => [false, Type::BOOLEAN],
-    'true' => [true, Type::BOOLEAN],
+    'false' => [false, Type::BOOL],
+    'true' => [true, Type::BOOL],
 
-    'int' => [123, Type::INTEGER, Type::FLOAT, Type::STRING],
-    'intZero' => [0, Type::BOOLEAN, Type::INTEGER, Type::FLOAT, Type::STRING],
-    'intOne' => [1, Type::BOOLEAN, Type::INTEGER, Type::FLOAT, Type::STRING],
+    'int' => [123, Type::INT, Type::FLOAT, Type::STRING],
+    'intZero' => [0, Type::BOOL, Type::INT, Type::FLOAT, Type::STRING],
+    'intOne' => [1, Type::BOOL, Type::INT, Type::FLOAT, Type::STRING],
 
     'float' => [123.456, Type::FLOAT, Type::STRING],
     'floatNan' => [NAN],
@@ -80,27 +80,27 @@ $subjects = [
     // @codingStandardsIgnoreStart
     'floatInfNegative' => [-INF],
     // @codingStandardsIgnoreEnd
-    'floatInt' => [123.0, Type::INTEGER, Type::FLOAT, Type::STRING],
-    'floatZero' => [0.0, Type::BOOLEAN, Type::INTEGER, Type::FLOAT, Type::STRING],
+    'floatInt' => [123.0, Type::INT, Type::FLOAT, Type::STRING],
+    'floatZero' => [0.0, Type::BOOL, Type::INT, Type::FLOAT, Type::STRING],
     // @codingStandardsIgnoreStart
-    'floatZeroNegative' => [-0.0, Type::BOOLEAN, Type::INTEGER, Type::FLOAT, Type::STRING],
+    'floatZeroNegative' => [-0.0, Type::BOOL, Type::INT, Type::FLOAT, Type::STRING],
     // @codingStandardsIgnoreEnd
-    'floatOne' => [1.0, Type::BOOLEAN, Type::INTEGER, Type::FLOAT, Type::STRING],
+    'floatOne' => [1.0, Type::BOOL, Type::INT, Type::FLOAT, Type::STRING],
 
-    'stringEmpty' => ['', Type::BOOLEAN, Type::STRING],
+    'stringEmpty' => ['', Type::BOOL, Type::STRING],
     'string' => ['abc', Type::STRING],
-    'stringInt' => ['123', Type::INTEGER, Type::STRING, Type::FLOAT],
+    'stringInt' => ['123', Type::INT, Type::STRING, Type::FLOAT],
     'stringIntish' => ['123abc', Type::STRING],
-    'stringIntZero' => ['0', Type::BOOLEAN, Type::INTEGER, Type::FLOAT, Type::STRING],
-    'stringIntOne' => ['1', Type::BOOLEAN, Type::INTEGER, Type::FLOAT, Type::STRING],
+    'stringIntZero' => ['0', Type::BOOL, Type::INT, Type::FLOAT, Type::STRING],
+    'stringIntOne' => ['1', Type::BOOL, Type::INT, Type::FLOAT, Type::STRING],
     'stringIntZeroish' => ['0abc', Type::STRING],
     'stringFloat' => ['123.456', Type::FLOAT, Type::STRING],
     'stringFloatish' => ['123.456abc', Type::STRING],
-    'stringFloatInt' => ['123.0', Type::INTEGER, Type::FLOAT, Type::STRING],
+    'stringFloatInt' => ['123.0', Type::INT, Type::FLOAT, Type::STRING],
     'stringFloatIntish' => ['123.0abc', Type::STRING],
-    'stringFloatZero' => ['0.0', Type::BOOLEAN, Type::INTEGER, Type::FLOAT, Type::STRING],
+    'stringFloatZero' => ['0.0', Type::BOOL, Type::INT, Type::FLOAT, Type::STRING],
     'stringFloatZeroish' => ['0.0abc', Type::STRING],
-    'stringFloatOne' => ['1.0', Type::BOOLEAN, Type::INTEGER, Type::FLOAT, Type::STRING],
+    'stringFloatOne' => ['1.0', Type::BOOL, Type::INT, Type::FLOAT, Type::STRING],
     'stringFloatOneish' => ['1.0abc', Type::STRING],
 
     'arrayEmpty' => [[], Type::PHP_ARRAY],

@@ -18,14 +18,14 @@ class Type
     use NonSerializableMixin;
 
     // types
-    const BOOLEAN = 'bool';
-    const INTEGER = 'int';
+    const BOOL = 'bool';
+    const INT = 'int';
     const FLOAT = 'float';
     const STRING = 'string';
     const PHP_ARRAY = 'array';
     const OBJECT = 'object';
-    const RESOURCE = 'resource';
     const PHP_CALLABLE = 'callable';
+    const RESOURCE = 'resource';
 
     // pseudotypes
     const NULL = 'null';
@@ -52,16 +52,16 @@ class Type
     /** @var \Dogma\Type|\Dogma\Type[]|null */
     private $itemType;
 
-    /** @var boolean */
+    /** @var bool */
     private $nullable = false;
 
     /**
      * @param string $id
      * @param string $type
      * @param \Dogma\Type|\Dogma\Type[] $itemType
-     * @param boolean $nullable
+     * @param bool $nullable
      */
-    final private function __construct($id, $type, $itemType, $nullable)
+    final private function __construct(string $id, string $type, $itemType, bool $nullable)
     {
         $this->id = $id;
         $this->type = $type;
@@ -69,15 +69,8 @@ class Type
         $this->nullable = $nullable;
     }
 
-    /**
-     * @param string $type
-     * @param boolean $nullable
-     * @return self
-     */
-    public static function get($type, $nullable = false)
+    public static function get(string $type, bool $nullable = false): self
     {
-        Check::string($type);
-
         // normalize "array" to "array<mixed>"
         if ($type === self::PHP_ARRAY) {
             return self::collectionOf(self::PHP_ARRAY, self::MIXED, $nullable);
@@ -92,6 +85,31 @@ class Type
         return self::$instances[$id];
     }
 
+    public static function bool(bool $nullable = false): self
+    {
+        return self::get(self::BOOL, $nullable);
+    }
+
+    public static function int(bool $nullable = false): self
+    {
+        return self::get(self::INT, $nullable);
+    }
+
+    public static function float(bool $nullable = false): self
+    {
+        return self::get(self::FLOAT, $nullable);
+    }
+
+    public static function string(bool $nullable = false): self
+    {
+        return self::get(self::STRING, $nullable);
+    }
+
+    public static function callable(bool $nullable = false): self
+    {
+        return self::get(self::PHP_CALLABLE, $nullable);
+    }
+
     /**
      * @param string|self $itemType
      * @param bool $nullable
@@ -99,6 +117,8 @@ class Type
      */
     public static function arrayOf($itemType, bool $nullable = false): self
     {
+        Check::types($itemType, [Type::STRING, Type::class]);
+
         return self::collectionOf(self::PHP_ARRAY, $itemType, $nullable);
     }
 
@@ -155,16 +175,12 @@ class Type
             $that = new self($id, Tuple::class, $arguments, $nullable);
             self::$instances[$id] = $that;
         }
-
-        return self::$instances[$id];
     }
 
     /**
-     * Converts string in syntax like "Foo<Bar,Baz<integer>>" to a Type instance
-     * @param string $id
-     * @return self
+     * Converts string in syntax like "Foo<Bar,Baz<int>>" to a Type instance
      */
-    public static function fromId($id)
+    public static function fromId(string $id): self
     {
         if (isset(self::$instances[$id])) {
             return self::$instances[$id];
@@ -210,10 +226,7 @@ class Type
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -221,26 +234,21 @@ class Type
     /**
      * Returns new instance of type. Works only on simple class types with public constructor.
      * @param mixed ...$arguments
-     * @return mixed
+     * @return object
      */
     public function getInstance(...$arguments)
     {
         $className = $this->type;
+
         return new $className(...$arguments);
     }
 
-    /**
-     * @return boolean
-     */
-    public function isNullable()
+    public function isNullable(): bool
     {
         return $this->nullable;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isScalar()
+    public function isScalar(): bool
     {
         return in_array($this->type, self::listScalarTypes());
     }
@@ -283,9 +291,6 @@ class Type
         return self::get($this->type);
     }
 
-    /**
-     * @return self
-     */
     public function getNonNullableType(): self
     {
         switch (true) {
@@ -297,6 +302,8 @@ class Type
                 return self::collectionOf($this->type, $this->itemType);
             case $this->isTuple():
                 return self::tupleOf(...$this->itemType);
+            default:
+                return self::get($this->type);
         }
     }
 
@@ -316,8 +323,8 @@ class Type
     public static function listTypes(): array
     {
         static $types = [
-            self::BOOLEAN,
-            self::INTEGER,
+            self::BOOL,
+            self::INT,
             self::FLOAT,
             self::NUMERIC,
             self::STRING,
@@ -325,8 +332,8 @@ class Type
             self::MIXED,
             self::PHP_ARRAY,
             self::OBJECT,
-            self::RESOURCE,
             self::PHP_CALLABLE,
+            self::RESOURCE,
         ];
 
         return $types;
@@ -339,14 +346,14 @@ class Type
     public static function listNativeTypes(): array
     {
         static $types = [
-            self::BOOLEAN,
-            self::INTEGER,
+            self::BOOL,
+            self::INT,
             self::FLOAT,
             self::STRING,
             self::PHP_ARRAY,
             self::OBJECT,
-            self::RESOURCE,
             self::PHP_CALLABLE,
+            self::RESOURCE,
         ];
 
         return $types;
@@ -359,8 +366,8 @@ class Type
     public static function listScalarTypes(): array
     {
         static $types = [
-            self::BOOLEAN,
-            self::INTEGER,
+            self::BOOL,
+            self::INT,
             self::FLOAT,
             self::NUMERIC,
             self::STRING,
