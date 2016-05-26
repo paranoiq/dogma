@@ -323,7 +323,7 @@ class Type
      */
     public static function listTypes(): array
     {
-        static $types = [
+        return [
             self::BOOL,
             self::INT,
             self::FLOAT,
@@ -336,8 +336,6 @@ class Type
             self::PHP_CALLABLE,
             self::RESOURCE,
         ];
-
-        return $types;
     }
 
     /**
@@ -346,7 +344,7 @@ class Type
      */
     public static function listNativeTypes(): array
     {
-        static $types = [
+        return [
             self::BOOL,
             self::INT,
             self::FLOAT,
@@ -356,8 +354,6 @@ class Type
             self::PHP_CALLABLE,
             self::RESOURCE,
         ];
-
-        return $types;
     }
 
     /**
@@ -366,15 +362,13 @@ class Type
      */
     public static function listScalarTypes(): array
     {
-        static $types = [
+        return [
             self::BOOL,
             self::INT,
             self::FLOAT,
             self::NUMERIC,
             self::STRING,
         ];
-
-        return $types;
     }
 
 }

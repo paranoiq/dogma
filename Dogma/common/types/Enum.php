@@ -28,7 +28,6 @@ abstract class Enum implements \Dogma\NonIterable
 
     /**
      * @param int|string
-     * @param mixed
      */
     final private function __construct($value)
     {
@@ -39,21 +38,32 @@ abstract class Enum implements \Dogma\NonIterable
      * @param int|string
      * @return static
      */
-    final public static function get($value)
+    final public static function get($value): self
     {
-        if (empty(self::$availableValues[$class = get_called_class()])) {
+        $class = get_called_class();
+        if (empty(self::$availableValues[$class])) {
             self::init($class);
         }
 
-        $values = self::$availableValues[$class];
-        if (in_array($value, self::$availableValues[$class])) {
-            if (!array_key_exists($value, self::$instances[$class])) {
-                self::$instances[$class][$value] = new static($value);
-            }
-            return self::$instances[$class][$value];
+        if (!static::validateValue($value, $class)) {
+            throw new \Dogma\InvalidValueException($value, $class);
         }
 
-        throw new \Dogma\InvalidValueException($value, $class);
+        if (!Arr::containsKey(self::$instances[$class], $value)) {
+            self::$instances[$class][$value] = new static($value);
+        }
+
+        return self::$instances[$class][$value];
+    }
+
+    /**
+     * @param int|string &$value
+     * @param string $class
+     * @return bool
+     */
+    protected static function validateValue(&$value, string $class): bool
+    {
+        return Arr::contains(self::$availableValues[$class], $value);
     }
 
     /**
@@ -64,13 +74,11 @@ abstract class Enum implements \Dogma\NonIterable
         return $this->value;
     }
 
-    /**
-     * @return string
-     */
-    final public function getConstantName()
+    final public function getConstantName(): string
     {
-        $constants = array_flip(self::$availableValues[get_called_class()]);
-        return $constants[$this->value];
+        $class = get_called_class();
+
+        return Arr::indexOf(self::$availableValues[$class], $this->value);
     }
 
     /**
@@ -93,11 +101,12 @@ abstract class Enum implements \Dogma\NonIterable
      */
     final public static function isValid($value): bool
     {
-        if (empty(self::$availableValues[$class = get_called_class()])) {
+        $class = get_called_class();
+        if (empty(self::$availableValues[$class])) {
             self::init($class);
         }
 
-        return in_array($value, self::$availableValues[$class]);
+        return Arr::contains(self::$availableValues[$class], $value);
     }
 
     /**
@@ -106,7 +115,8 @@ abstract class Enum implements \Dogma\NonIterable
      */
     final public static function getAllowedValues(): array
     {
-        if (empty(self::$availableValues[$class = get_called_class()])) {
+        $class = get_called_class();
+        if (empty(self::$availableValues[$class])) {
             self::init($class);
         }
 
@@ -119,7 +129,8 @@ abstract class Enum implements \Dogma\NonIterable
      */
     final public static function getInstances(): array
     {
-        if (empty(self::$availableValues[$class = get_called_class()])) {
+        $class = get_called_class();
+        if (empty(self::$availableValues[$class])) {
             self::init($class);
         }
 
