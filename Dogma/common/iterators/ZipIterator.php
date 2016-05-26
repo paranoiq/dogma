@@ -7,7 +7,7 @@ use Traversable;
 
 class ZipIterator implements \Iterator
 {
-    use StrictBehaviorMixin;
+    use \Dogma\StrictBehaviorMixin;
 
     /** @var \Iterator */
     private $keys;

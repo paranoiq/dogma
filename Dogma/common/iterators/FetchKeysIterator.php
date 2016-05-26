@@ -4,7 +4,7 @@ namespace Dogma;
 
 class FetchKeysIterator extends \IteratorIterator
 {
-    use StrictBehaviorMixin;
+    use \Dogma\StrictBehaviorMixin;
 
     /** @var int|string */
     private $keysKey;

@@ -9,6 +9,7 @@
 
 define('DOGMA_DIR', __DIR__);
 
+require_once __DIR__ . '/common/mixins/StrictBehaviorMixin.php';
 require_once __DIR__ . '/common/DogmaLoader.php';
 
 Dogma\DogmaLoader::getInstance()->register();

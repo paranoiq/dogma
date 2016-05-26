@@ -14,8 +14,8 @@ namespace Dogma;
  */
 class Tuple implements \Countable, \IteratorAggregate, \ArrayAccess
 {
-    use StrictBehaviorMixin;
-    use ImmutableArrayAccessMixin;
+    use \Dogma\StrictBehaviorMixin;
+    use \Dogma\ImmutableArrayAccessMixin;
 
     /** @var mixed[] */
     private $items;

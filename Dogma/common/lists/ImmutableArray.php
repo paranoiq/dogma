@@ -4,8 +4,8 @@ namespace Dogma;
 
 class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
 {
-    use StrictBehaviorMixin;
-    use ImmutableArrayAccessMixin;
+    use \Dogma\StrictBehaviorMixin;
+    use \Dogma\ImmutableArrayAccessMixin;
 
     /** @internal */
     const PRESERVE_KEYS = true;

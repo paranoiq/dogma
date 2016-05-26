@@ -4,7 +4,7 @@ namespace Dogma;
 
 class ReverseArrayIterator implements \Iterator
 {
-    use StrictBehaviorMixin;
+    use \Dogma\StrictBehaviorMixin;
 
     /** @var mixed[] */
     private $array;

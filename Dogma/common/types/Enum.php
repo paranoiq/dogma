@@ -12,10 +12,10 @@ namespace Dogma;
 
 abstract class Enum implements \Dogma\NonIterable
 {
-    use StrictBehaviorMixin;
-    use NonIterableMixin;
-    use NonCloneableMixin;
-    use NonSerializableMixin;
+    use \Dogma\StrictBehaviorMixin;
+    use \Dogma\NonIterableMixin;
+    use \Dogma\NonCloneableMixin;
+    use \Dogma\NonSerializableMixin;
 
     /** @var \Dogma\Enum[][] ($class => ($value => $enum)) */
     private static $instances = [];

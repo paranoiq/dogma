@@ -4,7 +4,7 @@ namespace Dogma;
 
 class Sorting
 {
-    use StaticClassMixin;
+    use \Dogma\StaticClassMixin;
 
     const REGULAR = SORT_REGULAR;
     const NUMERIC = SORT_NUMERIC;

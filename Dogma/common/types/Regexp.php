@@ -17,7 +17,7 @@ use Nette\Utils\Strings;
  */
 class Regexp
 {
-    use StrictBehaviorMixin;
+    use \Dogma\StrictBehaviorMixin;
 
     const DOLLAR_MATCH_END_ONLY = 'D';
     const CASE_INSENSITIVE = 'i';

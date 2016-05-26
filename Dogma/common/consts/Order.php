@@ -4,7 +4,7 @@ namespace Dogma;
 
 class Order
 {
-    use StaticClassMixin;
+    use \Dogma\StaticClassMixin;
 
     const ASCENDING = 16;
     const DESCENDING = 32;

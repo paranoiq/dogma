@@ -14,8 +14,9 @@ namespace Dogma;
  */
 class Type
 {
-    use StrictBehaviorMixin;
-    use NonSerializableMixin;
+    use \Dogma\StrictBehaviorMixin;
+    use \Dogma\NonCloneableMixin;
+    use \Dogma\NonSerializableMixin;
 
     // types
     const BOOL = 'bool';

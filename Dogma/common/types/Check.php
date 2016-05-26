@@ -16,7 +16,7 @@ use Nette\Utils\Strings;
  */
 final class Check
 {
-    use StaticClassMixin;
+    use \Dogma\StaticClassMixin;
 
     // min length
     const NOT_EMPTY = 1;

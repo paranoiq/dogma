@@ -4,7 +4,7 @@ namespace Dogma;
 
 class ExceptionValueFormater
 {
-    use StaticClassMixin;
+    use \Dogma\StaticClassMixin;
 
     public static function format($value): string
     {

@@ -4,7 +4,7 @@ namespace Dogma;
 
 class Arr
 {
-    use StaticClassMixin;
+    use \Dogma\StaticClassMixin;
 
     /** @internal */
     const PRESERVE_KEYS = true;
