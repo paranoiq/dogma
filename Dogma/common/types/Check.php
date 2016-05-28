@@ -176,7 +176,7 @@ final class Check
         if ($value === 0 || $value === 1 || $value === 0.0 || $value === 1.0 || $value === ''
             || $value === '0' || $value === '1' || $value === '0.0' || $value === '1.0'
         ) {
-            $value = (bool) $value;
+            $value = (bool) (int) $value;
             return;
         }
         throw new \Dogma\InvalidTypeException(Type::BOOLEAN, $value);
@@ -343,7 +343,7 @@ final class Check
         $converted = (string) $value;
         $copy = $converted;
         settype($copy, $actualType);
-        if ($copy !== $value) {
+        if ($copy !== $value && !(is_nan($copy) && $converted === 'NAN')) {
             throw new \Dogma\InvalidTypeException(Type::FLOAT, $value);
         }
         if ($minLength !== null || $maxLength !== null) {
@@ -545,6 +545,30 @@ final class Check
         }
         if ($max !== null && $value > $max) {
             throw new \Dogma\ValueOutOfRangeException($value, $min, $max);
+        }
+    }
+
+    /**
+     * @param mixed $value
+     * @param integer|float $min
+     * @throws \Dogma\ValueOutOfRangeException
+     */
+    public static function higherEqual($value, $min)
+    {
+        if ($value < $min) {
+            throw new \Dogma\ValueOutOfRangeException($value, $min, null);
+        }
+    }
+
+    /**
+     * @param mixed $value
+     * @param integer|float $max
+     * @throws \Dogma\ValueOutOfRangeException
+     */
+    public static function lowerEqual($value, $max = null)
+    {
+        if ($value > $max) {
+            throw new \Dogma\ValueOutOfRangeException($value, null, $max);
         }
     }
 

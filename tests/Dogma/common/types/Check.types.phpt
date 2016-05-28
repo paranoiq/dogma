@@ -5,7 +5,7 @@ namespace Dogma\Tests\Type;
 use Dogma\Check;
 use Dogma\Tester\Assert;
 use Dogma\Type;
-use StdClass;
+use stdClass;
 use Tracy\Debugger;
 
 require_once __DIR__ . '/../../bootstrap.php';
@@ -35,10 +35,10 @@ class TestClass2
 }
 
 $stdClassEmpty = function () {
-    return new StdClass();
+    return new stdClass();
 };
 $stdClassInt = function () {
-    $obj = new StdClass();
+    $obj = new stdClass();
     $obj->a = 1;
     $obj->b = 2;
     $obj->c = 3;
@@ -114,6 +114,11 @@ $subjects = [
     'callableMethod' => [$callableMethod, Type::PHP_CALLABLE, Type::PHP_ARRAY],
     'callableStaticMethod' => [$callableStaticMethod, Type::PHP_CALLABLE, Type::PHP_ARRAY],
 ];
+if (PHP_VERSION_ID >= 70000) {
+    $subjects['floatNan'][] = Type::STRING;
+    $subjects['floatInf'][] = Type::STRING;
+    $subjects['floatInfNegative'][] = Type::STRING;
+}
 
 $types = Type::listNativeTypes();
 foreach ($subjects as $name => $possibleTypes) {
