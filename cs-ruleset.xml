@@ -49,10 +49,14 @@
     <rule ref="PSR2">
         <exclude name="Generic.Files.LineLength"/><!-- warning. can not be suppressed -->
         <exclude name="PSR1.Files.SideEffects.FoundWithSymbols"/><!-- warning. cannot use optional declaration of functions -->
+        <exclude name="PSR1.Classes.ClassDeclaration.MultipleClasses"/><!-- tests -->
         <exclude name="PSR2.Namespaces.UseDeclaration.SpaceAfterLastUse"/><!-- i like it with two spaces -->
         <exclude name="PSR2.ControlStructures.SwitchDeclaration.caseIndent"/><!-- checked by more generic Generic.WhiteSpace.ScopeIndent.Incorrect -->
         <exclude name="PSR2.ControlStructures.SwitchDeclaration.defaultIndent"/><!-- checked by more generic Generic.WhiteSpace.ScopeIndent.Incorrect -->
         <exclude name="PSR2.Classes.ClassDeclaration"/><!-- we want whitespace around class body and rules for extends and implements, using PEAR instead -->
         <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.NewlineBeforeOpenBrace"/><!-- clashes with OpeningFunctionBraceBsdAllman -->
+        <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.NoSpaceBeforeArg"/><!-- ...$arg -->
+        <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.SpaceAfterBracket"/><!-- return type hints -->
+        <exclude name="PEAR.Functions.ValidDefaultValue.NotAtEnd"/><!-- nullable args with type hits -->
     </rule>
 </ruleset>

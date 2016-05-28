@@ -77,9 +77,14 @@ $subjects = [
     'float' => [123.456, Type::FLOAT, Type::STRING],
     'floatNan' => [NAN],
     'floatInf' => [INF],
+    // @codingStandardsIgnoreStart
     'floatInfNegative' => [-INF],
+    // @codingStandardsIgnoreEnd
     'floatInt' => [123.0, Type::INTEGER, Type::FLOAT, Type::STRING],
     'floatZero' => [0.0, Type::BOOLEAN, Type::INTEGER, Type::FLOAT, Type::STRING],
+    // @codingStandardsIgnoreStart
+    'floatZeroNegative' => [-0.0, Type::BOOLEAN, Type::INTEGER, Type::FLOAT, Type::STRING],
+    // @codingStandardsIgnoreEnd
     'floatOne' => [1.0, Type::BOOLEAN, Type::INTEGER, Type::FLOAT, Type::STRING],
 
     'stringEmpty' => ['', Type::BOOLEAN, Type::STRING],
