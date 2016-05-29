@@ -284,6 +284,9 @@ final class Check
             if ($min !== null || $max !== null) {
                 self::range($value, $min, $max);
             }
+            if ($value === -0.0) {
+                $value = 0.0;
+            }
             return;
         }
         if (!is_numeric($value)) {
@@ -301,6 +304,9 @@ final class Check
         }
         if ($min !== null || $max !== null) {
             self::range($value, $min, $max);
+        }
+        if ($converted === -0.0) {
+            $converted = 0.0;
         }
         $value = $converted;
     }
@@ -338,6 +344,9 @@ final class Check
         }
         if (!is_numeric($value)) {
             throw new \Dogma\InvalidTypeException(Type::STRING, $value);
+        }
+        if ($value === -0.0) {
+            $value = 0.0;
         }
         $actualType = gettype($value);
         $converted = (string) $value;

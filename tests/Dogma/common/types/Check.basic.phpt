@@ -9,10 +9,17 @@ use Dogma\Tester\Assert;
 use Dogma\Tuple;
 use Dogma\Type;
 use Dogma\ValueOutOfRangeException;
-use SplFixedArray;
-use StdClass;
 
 require_once __DIR__ . '/../../bootstrap.php';
+
+// negative zero
+$negativeZero = -(0.0);
+Check::float($negativeZero);
+Assert::same((string) $negativeZero, '0');
+
+$negativeZero = -0.0;
+Check::string($negativeZero);
+Assert::same($negativeZero, '0');
 
 // nullables
 $null = null;
