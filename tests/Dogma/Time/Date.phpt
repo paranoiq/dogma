@@ -32,6 +32,10 @@ Assert::type(Date::createFromDateTimeInterface($dateTimeImmutable), Date::class)
 Assert::same(Date::createFromDateTimeInterface($dateTime)->format(), $dateString);
 Assert::same(Date::createFromDateTimeInterface($dateTimeImmutable)->format(), $dateString);
 
+// createFromComponents()
+Assert::type(Date::createFromComponents(2001, 2, 3), Date::class);
+Assert::same(Date::createFromComponents(2001, 2, 3)->format('Y-m-d'), '2001-02-03');
+
 // format()
 Assert::same($date->format('j.n.Y'), date('j.n.Y', $timestamp));
 

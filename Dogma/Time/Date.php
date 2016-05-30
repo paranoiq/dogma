@@ -49,6 +49,15 @@ class Date implements \Dogma\NonIterable
         }
     }
 
+    public static function createFromComponents(int $year, int $month, int $day)
+    {
+        Check::int($year, 1, 9999);
+        Check::int($month, 1, 12);
+        Check::int($day, 1, 31);
+
+        return new static(sprintf('%d-%d-%d 00:00:00', $year, $month, $day));
+    }
+
     public function __clone()
     {
         $this->dateTime = clone($this->dateTime);
