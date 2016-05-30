@@ -9,7 +9,6 @@
 
 namespace Dogma;
 
-
 final class DogmaLoader
 {
     use \Dogma\StrictBehaviorMixin;
@@ -31,7 +30,7 @@ final class DogmaLoader
     public static function getInstance(): self
     {
         if (self::$instance === null) {
-            self::$instance = new static;
+            self::$instance = new self;
         }
         return self::$instance;
     }
@@ -41,7 +40,7 @@ final class DogmaLoader
      */
     public function register(bool $prepend = false)
     {
-        spl_autoload_register(array($this, 'tryLoad'), true, (bool) $prepend);
+        spl_autoload_register([$this, 'tryLoad'], true, (bool) $prepend);
     }
 
     /**
@@ -92,7 +91,7 @@ final class DogmaLoader
             if (is_dir($path)) {
                 $this->scan($path);
             } elseif (is_file($path)) {
-                $parts = explode(DIRECTORY_SEPARATOR, str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path));
+                $parts = explode(DIRECTORY_SEPARATOR, str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path));
                 $file = array_pop($parts);
                 $class = substr($file, 0, -4);
                 $this->classMap[sprintf('Dogma\\%s', $class)] = $path;
