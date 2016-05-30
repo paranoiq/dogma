@@ -176,6 +176,8 @@ class Type
             $that = new self($id, Tuple::class, $arguments, $nullable);
             self::$instances[$id] = $that;
         }
+
+        return self::$instances[$id];
     }
 
     /**
