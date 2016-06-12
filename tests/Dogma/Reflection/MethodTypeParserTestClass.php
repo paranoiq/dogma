@@ -50,10 +50,71 @@ class MethodTypeParserTestClass
         //
     }
 
+    public function testTypehint(int $one)
+    {
+        //
+    }
+
     /**
      * @param int $one
      */
     public function testAnnotation($one)
+    {
+        //
+    }
+
+    /**
+     * @param int $one
+     */
+    public function testTypehintAndAnnotation(int $one)
+    {
+        //
+    }
+
+    /**
+     * @param int(64) $one
+     */
+    public function testAnnotationWithSize($one)
+    {
+        //
+    }
+
+    /**
+     * @param int(64,unsigned) $one
+     */
+    public function testAnnotationWithSizeWithNote($one)
+    {
+        //
+    }
+
+    /**
+     * @param int(64u) $one
+     */
+    public function testAnnotationWithSizeWithNoteShort($one)
+    {
+        //
+    }
+
+    /**
+     * @param int(64) $one
+     */
+    public function testTypehintAndAnnotationWithSize(int $one)
+    {
+        //
+    }
+
+    /**
+     * @param int(64,unsigned) $one
+     */
+    public function testTypehintAndAnnotationWithSizeWithNote($one)
+    {
+        //
+    }
+
+    /**
+     * @param int(64u) $one
+     */
+    public function testTypehintAndAnnotationWithSizeWithNoteShort($one)
     {
         //
     }
@@ -75,9 +136,25 @@ class MethodTypeParserTestClass
     }
 
     /**
+     * @param int(64)|null $one
+     */
+    public function testAnnotationWithSizeWithNull($one)
+    {
+        //
+    }
+
+    /**
      * @param int|null $one
      */
     public function testAnnotationWithNullNullable($one = null)
+    {
+        //
+    }
+
+    /**
+     * @param int(64)|null $one
+     */
+    public function testTypehintAndAnnotationWithSizeWithNullNullable(int $one = null)
     {
         //
     }
@@ -109,7 +186,7 @@ class MethodTypeParserTestClass
     /**
      * @param \Exception $one
      */
-    public function testAnnotationClassClass(\Exception $one)
+    public function testTypehintAndAnnotationClass(\Exception $one)
     {
         //
     }
@@ -133,7 +210,7 @@ class MethodTypeParserTestClass
     /**
      * @param int $one
      */
-    public function testAnnotationNameMissmatch($two)
+    public function testAnnotationNameMismatch($two)
     {
         //
     }
@@ -150,7 +227,7 @@ class MethodTypeParserTestClass
     /**
      * @param int
      */
-    public function testAnnotationCountMissmatch($one, $two)
+    public function testAnnotationCountMismatch($one, $two)
     {
         //
     }
@@ -160,7 +237,7 @@ class MethodTypeParserTestClass
      * @param string
      * @param bool
      */
-    public function testAnnotationCountMissmatch2($one, $two)
+    public function testAnnotationCountMismatch2($one, $two)
     {
         //
     }
@@ -176,7 +253,7 @@ class MethodTypeParserTestClass
     /**
      * @param \Exception|int[] $one
      */
-    public function testAnnotationDimmensionMissmatch($one)
+    public function testAnnotationDimensionMismatch($one)
     {
         //
     }
@@ -185,6 +262,14 @@ class MethodTypeParserTestClass
      * @param int[]
      */
     public function testAnnotationArrayBrackets($one)
+    {
+        //
+    }
+
+    /**
+     * @param int(64)[]
+     */
+    public function testAnnotationWithSizeArrayBrackets($one)
     {
         //
     }
@@ -224,7 +309,31 @@ class MethodTypeParserTestClass
     /**
      * @return int
      */
-    public function testReturn()
+    public function testReturnAnnotation()
+    {
+        //
+    }
+
+    /**
+     * @return int(64)
+     */
+    public function testReturnAnnotationWithSize()
+    {
+        //
+    }
+
+    /**
+     * @return int
+     */
+    public function testReturnTypehintAndAnnotation(): int
+    {
+        //
+    }
+
+    /**
+     * @return int(64)
+     */
+    public function testReturnTypehintAndAnnotationWithSize(): int
     {
         //
     }

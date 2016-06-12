@@ -40,6 +40,7 @@ class Type
 
     // nullable type flag
     const NULLABLE = true;
+    const NOT_NULLABLE = false;
 
     /** @var \Dogma\Type[] (string $id => $type) */
     private static $instances = [];
@@ -56,28 +57,68 @@ class Type
     /** @var bool */
     private $nullable = false;
 
+    /** @var int|null */
+    private $size;
+
+    /**
+     * May be signed/unsigned for int or collation for string
+     * @var string|null
+     */
+    private $special;
+
     /**
      * @param string $id
      * @param string $type
      * @param \Dogma\Type|\Dogma\Type[] $itemType
      * @param bool $nullable
+     * @param int|null $size
+     * @param string|null $special
      */
-    final private function __construct(string $id, string $type, $itemType, bool $nullable)
+    final private function __construct(string $id, string $type, $itemType, bool $nullable, int $size = null, string $special = null)
     {
         $this->id = $id;
         $this->type = $type;
         $this->itemType = $itemType;
         $this->nullable = $nullable;
+        $this->size = $size;
+        $this->special = $special;
     }
 
-    public static function get(string $type, bool $nullable = false): self
+    /**
+     * @param string $type
+     * @param int|null $size
+     * @param string|null $special
+     * @param bool $nullable
+     * @return self
+     */
+    public static function get(string $type, $size = null, $special = null, bool $nullable = false): self
     {
-        // normalize "array" to "array<mixed>"
-        if ($type === self::PHP_ARRAY) {
-            return self::collectionOf(self::PHP_ARRAY, self::MIXED, $nullable);
+        if (is_bool($size)) {
+            $nullable = $size;
+            $size = null;
+        } elseif (is_bool($special)) {
+            $nullable = $special;
+            $special = null;
+        }
+        if ($size !== null) {
+            self::checkSize($type, $size);
+        }
+        if ($special !== null) {
+            self::checkSpecial($type, $special);
         }
 
-        $id = $type . ($nullable ? '?' : '');
+        // normalize "array" to "array<mixed>"
+        if ($type === self::PHP_ARRAY) {
+            return self::collectionOf(self::PHP_ARRAY, self::get(self::MIXED), $nullable);
+        }
+
+        $id = $type;
+        if ($size !== null || $special !== null) {
+            $id .= '(' . implode(',', array_filter([$size, $special])) . ')';
+        }
+        if ($nullable) {
+            $id .= '?';
+        }
         if (empty(self::$instances[$id])) {
             $that = new self($id, $type, null, $nullable);
             self::$instances[$id] = $that;
@@ -86,24 +127,70 @@ class Type
         return self::$instances[$id];
     }
 
+    private static function checkSize(string $type, int $size = null)
+    {
+        if ($type === self::INT) {
+            $sizes = BitSize::getIntSizes();
+            if (!Arr::contains($sizes, $size)) {
+                throw new \Dogma\InvalidSizeException($type, $size, $sizes);
+            }
+        } elseif ($type === self::FLOAT) {
+            $sizes = BitSize::getFloatSizes();
+            if (!Arr::contains($sizes, $size)) {
+                throw new \Dogma\InvalidSizeException($type, $size, $sizes);
+            }
+        } elseif ($type !== self::STRING) {
+            throw new \Dogma\InvalidSizeException($type, $size, []);
+        }
+    }
+
+    private static function checkSpecial(string $type, string $special = null)
+    {
+        if ($type === self::INT || $type === self::FLOAT) {
+            if ($special !== Sign::SIGNED && $special !== Sign::UNSIGNED) {
+                throw new \Dogma\InvalidTypeException($type, sprintf('%s(%s)', $type, $special));
+            }
+        } elseif ($type !== self::STRING) {
+            throw new \Dogma\InvalidTypeException($type, sprintf('%s(%s)', $type, $special));
+        }
+    }
+
     public static function bool(bool $nullable = false): self
     {
         return self::get(self::BOOL, $nullable);
     }
 
-    public static function int(bool $nullable = false): self
+    public static function int($size = null, $sign = null, bool $nullable = false): self
     {
-        return self::get(self::INT, $nullable);
+        if (is_bool($size)) {
+            $nullable = $size;
+            $size = null;
+        } elseif (is_bool($sign)) {
+            $nullable = $sign;
+            $sign = null;
+        }
+        return self::get(self::INT, $size, $sign, $nullable);
     }
 
-    public static function float(bool $nullable = false): self
+    public static function float($size = null, bool $nullable = false): self
     {
-        return self::get(self::FLOAT, $nullable);
+        if (is_bool($size)) {
+            $nullable = $size;
+            $size = null;
+        }
+        return self::get(self::FLOAT, $size, $nullable);
     }
 
-    public static function string(bool $nullable = false): self
+    public static function string($size = null, $collation = null, bool $nullable = false): self
     {
-        return self::get(self::STRING, $nullable);
+        if (is_bool($size)) {
+            $nullable = $size;
+            $size = null;
+        } elseif (is_bool($collation)) {
+            $nullable = $collation;
+            $collation = null;
+        }
+        return self::get(self::STRING, $size, $collation, $nullable);
     }
 
     public static function callable(bool $nullable = false): self
@@ -188,17 +275,42 @@ class Type
         if (isset(self::$instances[$id])) {
             return self::$instances[$id];
         }
-        $nullable = false;
-        if (substr($id, -1) === '?') {
-            $id = substr($id, 0, -1);
-            $nullable = true;
+
+        if (!preg_match('/^([^(<?]+)(?:\\(([^)]+)\\))?(?:<(.*)>)?(\\?)?$/', $id, $match)) {
+            throw new \Dogma\InvalidTypeDefinitionException($id);
         }
-        if (($pos = strpos($id, '<')) === false) {
-            return self::get($id, $nullable);
+        $match = Arr::padTo($match, 5, false);
+        list(, $baseId, $params, $itemIds, $nullable) = $match;
+        $nullable = (bool) $nullable;
+
+        $size = null;
+        $special = null;
+        if ($params) {
+            $params = explode(',', $params);
+            if (is_numeric($params[0])) {
+                $size = (int) $params[0];
+                if (isset($params[1])) {
+                    $special = $params[1];
+                }
+            } else {
+                $special = $params[0];
+                if (isset($params[1])) {
+                    throw new \Dogma\InvalidTypeDefinitionException($id);
+                }
+            }
+            if ($size) {
+                self::checkSize($baseId, $size);
+            }
+            if ($special) {
+                self::checkSpecial($baseId, $special);
+            }
         }
-        $baseId = substr($id, 0, $pos);
-        $itemIds = substr($id, $pos + 1, -1);
-        $itemIds = explode(',', $itemIds);
+
+        if (!$itemIds) {
+            return self::get($baseId, $size, $special, $nullable);
+        }
+
+        $itemIds = preg_split('/(?<![0-9]),/', $itemIds);
         $last = 0;
         $counter = 0;
         foreach ($itemIds as $i => $type) {
@@ -211,21 +323,26 @@ class Type
             }
             $counter += $carry;
         }
+
         $itemTypes = [];
         foreach ($itemIds as $id) {
             $itemTypes[] = self::fromId($id);
         }
-        if ($baseId === Type::PHP_ARRAY) {
-            Check::range(count($itemTypes), 1, 1);
-            return self::arrayOf($itemTypes[0], $nullable);
-        } elseif ($baseId === Tuple::class) {
+
+        if ($baseId === Tuple::class) {
             if ($nullable) {
                 $itemTypes[] = $nullable;
             }
             return self::tupleOf(...$itemTypes);
         } else {
-            Check::range(count($itemTypes), 1, 1);
-            return self::collectionOf($baseId, $itemTypes[0], $nullable);
+            if (count($itemTypes) !== 1) {
+                throw new \Dogma\InvalidTypeDefinitionException($id);
+            }
+            if ($baseId === Type::PHP_ARRAY) {
+                return self::arrayOf($itemTypes[0], $nullable);
+            } else {
+                return self::collectionOf($baseId, $itemTypes[0], $nullable);
+            }
         }
     }
 
@@ -269,6 +386,11 @@ class Type
     public function isTuple(): bool
     {
         return $this->type === Tuple::class;
+    }
+
+    public function isClass(): bool
+    {
+        return !in_array($this->type, self::listTypes());
     }
 
     public function is(string $typeName): bool
@@ -371,6 +493,14 @@ class Type
             self::NUMERIC,
             self::STRING,
         ];
+    }
+
+    /**
+     * @return self[]
+     */
+    public static function getDefinedTypes(): array
+    {
+        return self::$instances;
     }
 
 }

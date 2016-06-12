@@ -2,12 +2,16 @@
 
 namespace Dogma\Tests\Type;
 
+use Dogma\BitSize;
+use Dogma\Sign;
 use Dogma\Tester\Assert;
 use Dogma\Tuple;
 use Dogma\Type;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
+
+Assert::same(Type::fromId(Type::INT)->getId(), Type::INT);
 
 // get()
 $int = Type::get(Type::INT);
@@ -27,6 +31,36 @@ Assert::same($int, $int2);
 Assert::notSame($int, $intNull);
 Assert::same($int, $int2->getBaseType());
 
+
+// bool()
+Assert::same(Type::bool()->getId(), 'bool');
+Assert::same(Type::bool(Type::NULLABLE)->getId(), 'bool?');
+
+// int()
+Assert::same(Type::int()->getId(), 'int');
+Assert::same(Type::int(Type::NULLABLE)->getId(), 'int?');
+Assert::same(Type::int(BitSize::BITS_64)->getId(), 'int(64)');
+Assert::same(Type::int(BitSize::BITS_64, Type::NULLABLE)->getId(), 'int(64)?');
+Assert::same(Type::int(BitSize::BITS_64, Sign::UNSIGNED)->getId(), 'int(64,unsigned)');
+Assert::same(Type::int(BitSize::BITS_64, Sign::UNSIGNED, Type::NULLABLE)->getId(), 'int(64,unsigned)?');
+
+// float()
+Assert::same(Type::float()->getId(), 'float');
+Assert::same(Type::float(Type::NULLABLE)->getId(), 'float?');
+Assert::same(Type::float(BitSize::BITS_64)->getId(), 'float(64)');
+Assert::same(Type::float(BitSize::BITS_64, Type::NULLABLE)->getId(), 'float(64)?');
+
+// string()
+Assert::same(Type::string()->getId(), 'string');
+Assert::same(Type::string(Type::NULLABLE)->getId(), 'string?');
+Assert::same(Type::string(64)->getId(), 'string(64)');
+Assert::same(Type::string(64, Type::NULLABLE)->getId(), 'string(64)?');
+Assert::same(Type::string(64, 'ascii')->getId(), 'string(64,ascii)');
+Assert::same(Type::string(64, 'ascii', Type::NULLABLE)->getId(), 'string(64,ascii)?');
+
+// callable()
+Assert::same(Type::callable()->getId(), 'callable');
+Assert::same(Type::callable(Type::NULLABLE)->getId(), 'callable?');
 
 // arrayOf()
 $arrayInt = Type::arrayOf(Type::INT);
@@ -78,7 +112,7 @@ Assert::same($collection, $collection->getBaseType());
 Assert::same($collection, $collectionIntNull->getBaseType());
 
 
-// tuppleOf
+// tupleOf
 $tupleIntString = Type::tupleOf(Type::INT, Type::STRING);
 Assert::false($tupleIntString->isNullable());
 Assert::false($tupleIntString->isScalar());
@@ -119,6 +153,7 @@ $expected = Type::tupleOf(
 Assert::same($type, $expected);
 Assert::same($expected->getId(), $id);
 
+// with nullable
 $id = 'Dogma\\Tuple<int?,string,Dogma\\Tuple<int,array<int>,int>?,SplFixedArray<int>>?';
 $type = Type::fromId($id);
 $expected = Type::tupleOf(
@@ -136,6 +171,23 @@ $expected = Type::tupleOf(
 Assert::same($type, $expected);
 Assert::same($expected->getId(), $id);
 
+// with nullable and params
+$id = 'Dogma\\Tuple<int?,string(20),Dogma\\Tuple<int(16,unsigned),array<int>,int>?,SplFixedArray<int>>?';
+$type = Type::fromId($id);
+$expected = Type::tupleOf(
+    Type::int(Type::NULLABLE),
+    Type::string(20),
+    Type::tupleOf(
+        Type::int(BitSize::BITS_16, Sign::UNSIGNED),
+        Type::arrayOf(Type::INT),
+        Type::INT,
+        Type::NULLABLE
+    ),
+    Type::collectionOf(\SplFixedArray::class, Type::INT),
+    Type::NULLABLE
+);
+Assert::same($type, $expected);
+Assert::same($expected->getId(), $id);
 
 // getInstance()
 $date = Type::get(\DateTime::class);

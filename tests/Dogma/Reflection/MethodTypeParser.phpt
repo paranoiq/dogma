@@ -5,6 +5,7 @@ namespace Dogma\Tests\Reflection;
 use Dogma\Reflection\InvalidMethodAnnotationException;
 use Dogma\Reflection\MethodTypeParser;
 use Dogma\Reflection\UnprocessableParameterException;
+use Dogma\Sign;
 use Dogma\Tester\Assert;
 use Dogma\Type;
 
@@ -17,8 +18,20 @@ $class = new \ReflectionClass(MethodTypeParserTestClass::class);
 $rawKeys = ['types', 'nullable', 'reference', 'variadic', 'optional'];
 
 Assert::same(
-    $parser->getTypes($class->getMethod('testReturn')),
-    ['@return' => Type::get(Type::INT)]
+    $parser->getTypes($class->getMethod('testReturnAnnotation')),
+    ['@return' => Type::int()]
+);
+Assert::same(
+    $parser->getTypes($class->getMethod('testReturnAnnotationWithSize')),
+    ['@return' => Type::int(64)]
+);
+Assert::same(
+    $parser->getTypes($class->getMethod('testReturnTypehintAndAnnotation')),
+    ['@return' => Type::int()]
+);
+Assert::same(
+    $parser->getTypes($class->getMethod('testReturnTypehintAndAnnotationWithSize')),
+    ['@return' => Type::int(64)]
 );
 
 $test = function ($methodName, $expectedRaw, $expectedType) use ($parser, $class, $rawKeys) {
@@ -89,39 +102,89 @@ $test(
     UnprocessableParameterException::class
 );
 $test(
-    'testAnnotationCountMissmatch',
+    'testAnnotationCountMismatch',
     InvalidMethodAnnotationException::class,
     InvalidMethodAnnotationException::class
 );
 $test(
-    'testAnnotationCountMissmatch2',
+    'testAnnotationCountMismatch2',
     InvalidMethodAnnotationException::class,
     InvalidMethodAnnotationException::class
 );
 $test(
-    'testAnnotationNameMissmatch',
+    'testAnnotationNameMismatch',
     InvalidMethodAnnotationException::class,
     InvalidMethodAnnotationException::class
+);
+$test(
+    'testTypehint',
+    ['one' => [[Type::INT]]],
+    ['one' => Type::int()]
 );
 $test(
     'testAnnotation',
     ['one' => [[Type::INT]]],
-    ['one' => Type::get(Type::INT)]
+    ['one' => Type::int()]
+);
+$test(
+    'testTypehintAndAnnotation',
+    ['one' => [[Type::INT]]],
+    ['one' => Type::int()]
+);
+$test(
+    'testAnnotationWithSize',
+    ['one' => [['int(64)']]],
+    ['one' => Type::int(64)]
+);
+$test(
+    'testAnnotationWithSizeWithNote',
+    ['one' => [['int(64,unsigned)']]],
+    ['one' => Type::int(64, Sign::UNSIGNED)]
+);
+$test(
+    'testAnnotationWithSizeWithNoteShort',
+    ['one' => [['int(64,unsigned)']]],
+    ['one' => Type::int(64, Sign::UNSIGNED)]
+);
+$test(
+    'testTypehintAndAnnotationWithSize',
+    ['one' => [[Type::INT, 'int(64)']]],
+    ['one' => Type::int(64)]
+);
+$test(
+    'testTypehintAndAnnotationWithSizeWithNote',
+    ['one' => [['int(64,unsigned)']]],
+    ['one' => Type::int(64, Sign::UNSIGNED)]
+);
+$test(
+    'testTypehintAndAnnotationWithSizeWithNoteShort',
+    ['one' => [['int(64,unsigned)']]],
+    ['one' => Type::int(64, Sign::UNSIGNED)]
 );
 $test(
     'testAnnotationNullable',
     ['one' => [[Type::INT], true, false, false, true]],
-    ['one' => Type::get(Type::INT, Type::NULLABLE)]
+    ['one' => Type::int(Type::NULLABLE)]
 );
 $test(
     'testAnnotationWithNull',
     ['one' => [[Type::INT], true]],
-    ['one' => Type::get(Type::INT, Type::NULLABLE)]
+    ['one' => Type::int(Type::NULLABLE)]
+);
+$test(
+    'testAnnotationWithSizeWithNull',
+    ['one' => [['int(64)'], true]],
+    ['one' => Type::int(64, Type::NULLABLE)]
 );
 $test(
     'testAnnotationWithNullNullable',
     ['one' => [[Type::INT], true, false, false, true]],
-    ['one' => Type::get(Type::INT, Type::NULLABLE)]
+    ['one' => Type::int(Type::NULLABLE)]
+);
+$test(
+    'testTypehintAndAnnotationWithSizeWithNullNullable',
+    ['one' => [[Type::INT, 'int(64)'], true, false, false, true]],
+    ['one' => Type::int(64, Type::NULLABLE)]
 );
 $test(
     'testAnnotationIncompleteClass',
@@ -149,14 +212,14 @@ $test(
     ['one' => Type::get(MethodTypeParserTestClass::class)]
 );
 $test(
-    'testAnnotationClassClass',
+    'testTypehintAndAnnotationClass',
     ['one' => [[\Exception::class]]],
     ['one' => Type::get(\Exception::class)]
 );
 $test(
     'testAnnotationWithoutName',
     ['one' => [[Type::INT]], 'two' => [[Type::STRING]]],
-    ['one' => Type::get(Type::INT), 'two' => Type::get(Type::STRING)]
+    ['one' => Type::int(), 'two' => Type::string()]
 );
 $test(
     'testAnnotationMoreTypes',
@@ -164,7 +227,7 @@ $test(
     InvalidMethodAnnotationException::class
 );
 $test(
-    'testAnnotationDimmensionMissmatch',
+    'testAnnotationDimensionMismatch',
     ['one' => [[\Exception::class, 'int[]']]],
     InvalidMethodAnnotationException::class
 );

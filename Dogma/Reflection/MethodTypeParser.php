@@ -74,17 +74,34 @@ class MethodTypeParser implements \Dogma\NonIterable
                 $itemTypes[] = $typeParts[0];
             } elseif ($type === Type::PHP_ARRAY || is_subclass_of($type, \Traversable::class)) {
                 $containerTypes[] = $type;
-            } else {
+            } elseif (strstr($type, '(')) {
+                list($typeBase, ) = explode('(', $type);
+                if (in_array($typeBase, $otherTypes)) {
+                    unset($otherTypes[array_search($typeBase, $otherTypes)]);
+                }
                 $otherTypes[] = $type;
+            } else {
+                $add = true;
+                foreach ($otherTypes as $otherType) {
+                    list($otherTypeBase, ) = explode('(', $otherType);
+                    if ($otherTypeBase === $type) {
+                        $add = false;
+                        break;
+                    }
+                }
+                if ($add) {
+                    $otherTypes[] = $type;
+                }
             }
         }
+        $otherTypes = array_values($otherTypes);
         if ($itemTypes && !$containerTypes) {
             $containerTypes[] = Type::PHP_ARRAY;
         } elseif ($containerTypes && !$itemTypes) {
             $itemTypes[] = Type::MIXED;
         }
         if (($containerTypes && $otherTypes) || count($containerTypes) > 1 || count($otherTypes) > 1 || count($itemTypes) > 1) {
-            throw new InvalidMethodAnnotationException($method, 'Invalid combination of types.');
+            throw new \Dogma\Reflection\InvalidMethodAnnotationException($method, 'Invalid combination of types.');
         } elseif ($itemTypes) {
             return Type::collectionOf($containerTypes[0], $itemTypes[0], $options['nullable']);
         } elseif ($otherTypes) {
@@ -109,6 +126,8 @@ class MethodTypeParser implements \Dogma\NonIterable
                 $types = [Type::PHP_CALLABLE];
             } elseif ($paramRef->getClass()) {
                 $types = [$paramRef->getClass()->getName()];
+            } elseif ($paramRef->hasType()) {
+                $types = [(string) $paramRef->getType()];
             } else {
                 $types = [];
             }
@@ -128,7 +147,7 @@ class MethodTypeParser implements \Dogma\NonIterable
         if (!empty($docComment)) {
             $comments = $this->parseDocComment($docComment, $method);
             if (count($items) !== count($comments) - (isset($comments['@return']) ? 1 : 0)) {
-                throw new InvalidMethodAnnotationException($method, '@param annotations count does not match with parameters count');
+                throw new \Dogma\Reflection\InvalidMethodAnnotationException($method, '@param annotations count does not match with parameters count');
             }
 
             $names = array_keys($items);
@@ -139,7 +158,7 @@ class MethodTypeParser implements \Dogma\NonIterable
                 }
                 $item = &$items[$names[$i]];
                 if ($comment['name'] !== null && $comment['name'] !== $names[$i]) {
-                    throw new InvalidMethodAnnotationException($method, 'Parameter names in annotation and in declaration does not match.');
+                    throw new \Dogma\Reflection\InvalidMethodAnnotationException($method, 'Parameter names in annotation and in declaration does not match.');
                 }
                 $item['nullable'] = $item['nullable'] || $comment['nullable'];
                 $item['variadic'] = $item['variadic'] || $comment['variadic'];
@@ -162,7 +181,7 @@ class MethodTypeParser implements \Dogma\NonIterable
         foreach (explode("\n", $docComment) as $row) {
             if (strstr($row, '@param')) {
                 if (!preg_match('/@param\\s+(&|[.]{3})?\\s*((?:\\\\?[^\\s\\[\\]\\|]+(?:\\[\\])*\\|?)+)\s*(&|[.]{3})?(?:\\s*\\$([^\\s]+))?/u', $row, $matches)) {
-                    throw new InvalidMethodAnnotationException($method, 'invalid @param annotation format at: ' . $row);
+                    throw new \Dogma\Reflection\InvalidMethodAnnotationException($method, 'invalid @param annotation format at: ' . $row);
                 }
                 @list(, $mod1, $types, $mod2, $name) = $matches;
                 $variadic = $mod1 === '...' || $mod2 === '...';
@@ -187,7 +206,7 @@ class MethodTypeParser implements \Dogma\NonIterable
 
             } elseif (strstr($row, '@return')) {
                 if (!preg_match('/@return\\s+([^\\s]+)/u', $row, $matches)) {
-                    throw new InvalidMethodAnnotationException($method, 'invalid @param annotation format at: ' . $row);
+                    throw new \Dogma\Reflection\InvalidMethodAnnotationException($method, 'invalid @param annotation format at: ' . $row);
                 }
                 $types = explode('|', $matches[1]);
                 $nullable = false;
@@ -209,19 +228,29 @@ class MethodTypeParser implements \Dogma\NonIterable
         return $items;
     }
 
-    private function checkType(string $type, ReflectionMethod $method): string
+    private function checkType(string $typeString, ReflectionMethod $method): string
     {
-        $lower = strtolower($type);
-        if ($lower === 'self' || $lower === 'static') {
+        if ($typeString === 'self' || $typeString === 'static') {
             return $method->getDeclaringClass()->getName();
-        } elseif (!in_array(rtrim($lower, '[]'), $this->typeList, Type::STRICT)) {
-            if (substr($type, 0, 1) !== '\\' || !class_exists($type = trim($type, '\\'))) {
-                throw new InvalidMethodAnnotationException($method, sprintf('Unknown class %s. Make sure that you use fully qualified class names.', $type));
-            }
-            return ltrim($type, '\\');
-        } else {
-            return $lower;
         }
+
+        $typeString = preg_replace('/\\(([0-9]+)u\\)/', '(\\1,unsigned)', $typeString);
+
+        $trimmed = rtrim(ltrim($typeString, '\\'), '[]');
+
+        $type = Type::fromId($trimmed);
+        if ($type->isClass()) {
+            if ($typeString[0] !== '\\') {
+                throw new \Dogma\Reflection\InvalidMethodAnnotationException($method, 'Always use fully qualified names in type annotations.');
+            } elseif (!class_exists($type->getName())) {
+                throw new \Dogma\Reflection\InvalidMethodAnnotationException($method, sprintf('Unknown class %s. Make sure that you use fully qualified class names.', $typeString));
+            }
+        } else {
+            if ($typeString[0] === '\\') {
+                throw new \Dogma\Reflection\InvalidMethodAnnotationException($method, 'Cannot prefix scalar type with backslash.');
+            }
+        }
+        return ltrim($typeString, '\\');
     }
 
 }
