@@ -152,7 +152,7 @@ class ResponseStatus extends \Dogma\Enum
     const SSL_ISSUER_ERROR      = 83; // Issuer check failed
 
 
-    // following errors should not occure in HTTP transfer
+    // following errors should not occur in HTTP transfer
 
     // FTP
     const FTP_WEIRD_SERVER_REPLY = 8; // After connecting to a FTP server; libcurl expects to get a certain reply back. This error code implies that it got a strange or bad reply. The given remote server is probably not an OK FTP server.

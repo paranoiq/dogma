@@ -53,7 +53,7 @@ class File
 
 
     /**
-     * @var int Set this *same or greater* then the alocation unit of your storage (disk sector, RAID strip etc.)
+     * @var int Set this *same or greater* then the allocation unit of your storage (disk sector, RAID strip etc.)
      */
     public static $defaultChunkSize = 8192;
 
@@ -400,7 +400,7 @@ class File
     {
         $data = stream_get_meta_data($this->file);
 
-        return $data['wraper_data'];
+        return $data['wrapper_data'];
     }
 
     //public function getResponseContext()

@@ -2763,7 +2763,7 @@ class WindowsError extends \Dogma\Enum implements \Dogma\System\Error
     const ERROR_API_UNAVAILABLE = 15841;
 
     /**
-     * Get formated error description
+     * Get formatted error description
      */
     public function getDescription(): string
     {

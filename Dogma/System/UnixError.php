@@ -116,7 +116,7 @@ class UnixError extends \Dogma\Enum implements \Dogma\System\Error
     const MUST_BE_EQUAL_LARGEST_ERRNO = 94;
 
     /**
-     * Get formated error description
+     * Get formatted error description
      */
     public function getDescription(): string
     {

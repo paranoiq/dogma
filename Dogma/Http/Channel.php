@@ -144,7 +144,7 @@ class Channel
     }
 
     /**
-     * Run a new job immediatelly. Don't wait for response.
+     * Run a new job immediately. Don't wait for response.
      * @param string|string[]
      * @param mixed
      * @param string|int

@@ -22,7 +22,7 @@ class ErrorHelper
      * Get error object for given error number.
      * @param int
      * @param int|string
-     * @return \Dogma\System\Error  (false if not found)
+     * @return \Dogma\System\Error|bool  (false if not found)
      */
     public static function getError(int $errno, $system = self::LOCAL)
     {

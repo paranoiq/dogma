@@ -150,7 +150,7 @@ class LinuxError extends \Dogma\Enum implements \Dogma\System\Error
     const STATE_NOT_RECOVERABLE = 131;
 
     /**
-     * Get formated error description
+     * Get formatted error description
      */
     public function getDescription(): string
     {

@@ -32,7 +32,7 @@ class Connection
     /** @var string */
     private $host;
 
-    /** @var inte */
+    /** @var int */
     private $port;
 
     /** @var bool */
@@ -295,7 +295,7 @@ class Connection
     }
 
     /**
-     * Mark folder as unsubscribed (invidible)
+     * Mark folder as unsubscribed (invisible)
      */
     public function unsubscribeFolder(string $path)
     {

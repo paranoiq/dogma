@@ -145,7 +145,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         }
     }
 
-    // querries --------------------------------------------------------------------------------------------------------
+    // queries ---------------------------------------------------------------------------------------------------------
 
     public function isEmpty(): bool
     {
@@ -474,7 +474,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return $this->startsWith($slice, $this->count() - count($slice));
     }
 
-    // transformating --------------------------------------------------------------------------------------------------
+    // transforming ----------------------------------------------------------------------------------------------------
 
     /**
      * @param callable $function

@@ -396,7 +396,7 @@ class Request
         }
 
         if ($status->isFatalError()) {
-            throw new RequestException(sprintf('Fatal error occured during request execution: %s', $status->getConstantName()), $status->getValue());
+            throw new RequestException(sprintf('Fatal error occurred during request execution: %s', $status->getConstantName()), $status->getValue());
         }
 
         $response = new Response($response, $status, $info);

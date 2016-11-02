@@ -12,7 +12,7 @@ use Dogma\Type;
 class EnumHandler implements \Dogma\Mapping\Type\Handler
 {
     use \Dogma\StrictBehaviorMixin;
-    
+
     public function acceptsType(Type $type): bool
     {
         return $type->isImplementing(Enum::class);
