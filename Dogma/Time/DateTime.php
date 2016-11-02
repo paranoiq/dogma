@@ -20,6 +20,7 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
 {
     use \Dogma\StrictBehaviorMixin;
     use \Dogma\NonIterableMixin;
+    use \Dogma\Time\DateDateTimeCommonMixin;
 
     const DEFAULT_FORMAT = 'Y-m-d H:i:s';
 

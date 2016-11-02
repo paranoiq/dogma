@@ -20,6 +20,7 @@ class Date implements \Dogma\NonIterable
 {
     use \Dogma\StrictBehaviorMixin;
     use \Dogma\NonIterableMixin;
+    use \Dogma\Time\DateDateTimeCommonMixin;
 
     const DEFAULT_FORMAT = 'Y-m-d';
 
@@ -51,9 +52,9 @@ class Date implements \Dogma\NonIterable
 
     public static function createFromComponents(int $year, int $month, int $day)
     {
-        Check::int($year, 1, 9999);
-        Check::int($month, 1, 12);
-        Check::int($day, 1, 31);
+        Check::range($year, 1, 9999);
+        Check::range($month, 1, 12);
+        Check::range($day, 1, 31);
 
         return new static(sprintf('%d-%d-%d 00:00:00', $year, $month, $day));
     }
