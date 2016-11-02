@@ -7,6 +7,7 @@ trait NonSerializableMixin
 
     /**
      * To avoid serializing a non serializable object
+     * @deprecated
      * @throws \Dogma\NonSerializableObjectException
      */
     final public function __sleep()
@@ -16,6 +17,7 @@ trait NonSerializableMixin
 
     /**
      * To avoid serializing a non serializable object
+     * @deprecated
      * @throws \Dogma\NonSerializableObjectException
      */
     final public function __wakeup()

@@ -7,6 +7,7 @@ trait NonIterableMixin
 
     /**
      * To avoid iterating through an object by accident
+     * @deprecated
      * @throws \Dogma\NonIterableObjectException
      */
     public function getIterator()

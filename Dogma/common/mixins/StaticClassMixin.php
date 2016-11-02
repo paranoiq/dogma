@@ -15,11 +15,10 @@ trait StaticClassMixin
 
     /**
      * Call to undefined static method
-     * @param string $name method name
-     * @param mixed[] $args method args
+     * @deprecated
      * @throws \Dogma\UndefinedMethodException
      */
-    public static function __callStatic($name, $args)
+    public static function __callStatic(string $name, $args)
     {
         throw new \Dogma\UndefinedMethodException(get_called_class(), $name);
     }

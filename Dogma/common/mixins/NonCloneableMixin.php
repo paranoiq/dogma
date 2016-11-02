@@ -7,6 +7,7 @@ trait NonCloneableMixin
 
     /**
      * To avoid cloning a non cloneable object
+     * @deprecated
      * @throws \Dogma\NonCloneableObjectException
      */
     final public function __clone()
