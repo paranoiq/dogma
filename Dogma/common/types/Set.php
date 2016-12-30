@@ -199,14 +199,6 @@ abstract class Set
     final public function __set(string $name, $value)
     {
         if (self::isValid($name)) {
-            if (is_string($value)) {
-                $norm = new Normalizer;
-                $bool = $norm->detectBool($value);
-                if (isset($bool)) {
-                    $value = $bool;
-                }
-            }
-
             $value ? $this->add($name) : $this->remove($name);
             return;
         }

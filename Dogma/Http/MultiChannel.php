@@ -9,8 +9,6 @@
 
 namespace Dogma\Http;
 
-use Nette\Utils\Callback;
-
 class MultiChannel
 {
     use \Dogma\StrictBehaviorMixin;
@@ -31,16 +29,16 @@ class MultiChannel
     private $finished = [];
 
 
-    /** @var \Nette\Utils\Callback */
+    /** @var callable */
     private $responseHandler;
 
-    /** @var \Nette\Utils\Callback */
+    /** @var callable */
     private $redirectHandler;
 
-    /** @var \Nette\Utils\Callback */
+    /** @var callable */
     private $errorHandler;
 
-    /** @var \Nette\Utils\Callback */
+    /** @var callable */
     private $dispatch;
 
     /**
@@ -53,7 +51,9 @@ class MultiChannel
         /** @var \Dogma\Http\Channel $channel */
         foreach ($channels as $cName => $channel) {
             $this->cids[spl_object_hash($channel)] = $cName;
-            $channel->setResponseHandler(new Callback($this, 'responseHandler'));
+            $channel->setResponseHandler(function (Response $response, Channel $channel, string $sjName) {
+                return $this->responseHandler($response, $channel, $sjName);
+            });
         }
     }
 
@@ -90,15 +90,15 @@ class MultiChannel
         }
 
         if ($this->errorHandler && isset($error)) {
-            $this->errorHandler->invoke($this->finished[$jobName], $this);
+            ($this->errorHandler)($this->finished[$jobName], $this);
             unset($this->finished[$jobName]);
 
         } elseif ($this->redirectHandler && isset($redirect)) {
-            $this->redirectHandler->invoke($this->finished[$jobName], $this);
+            ($this->redirectHandler)($this->finished[$jobName], $this);
             unset($this->finished[$jobName]);
 
         } elseif ($this->responseHandler) {
-            $this->responseHandler->invoke($this->finished[$jobName], $this);
+            ($this->responseHandler)($this->finished[$jobName], $this);
             unset($this->finished[$jobName]);
         }
     }
@@ -113,27 +113,27 @@ class MultiChannel
 
     /**
      * Set callback handler for every response (even an error)
-     * @param \Nette\Utils\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
+     * @param callable(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      */
-    public function setResponseHandler(Callback $responseHandler)
+    public function setResponseHandler(callable $responseHandler)
     {
         $this->responseHandler = $responseHandler;
     }
 
     /**
      * Set separate callback handler for redirects. ResponseHandler will no longer handle these.
-     * @param \Nette\Utils\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
+     * @param callable(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      */
-    public function setRedirectHandler(Callback $redirectHadler)
+    public function setRedirectHandler(callable $redirectHadler)
     {
         $this->redirectHandler = $redirectHadler;
     }
 
     /**
      * Set separate callback handler for errors. ResponseHandler will no longer handle these.
-     * @param \Nette\Utils\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
+     * @param callable(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      */
-    public function setErrorHandler(Callback $errorHandler)
+    public function setErrorHandler(callable $errorHandler)
     {
         $this->errorHandler = $errorHandler;
     }
@@ -143,7 +143,7 @@ class MultiChannel
      */
     public function setDispatchFunction($function)
     {
-        $this->dispatch = new Callback($function);
+        $this->dispatch = $function;
     }
 
     /**
@@ -165,7 +165,7 @@ class MultiChannel
         }
 
         if ($this->dispatch) {
-            $subJobs = $this->dispatch->invoke($data, $this->channels);
+            $subJobs = ($this->dispatch)($data, $this->channels);
         } else {
             $subJobs = $this->dispatch($data);
         }
@@ -195,7 +195,7 @@ class MultiChannel
      * Run a new job and wait for the response.
      * @param string|array
      * @param mixed
-     * @return \Dogma\Http\Response|null
+     * @return \Dogma\Http\Response[]|null
      */
     public function fetchJob($data, $context = null)
     {

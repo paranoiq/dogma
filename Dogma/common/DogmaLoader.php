@@ -40,7 +40,7 @@ final class DogmaLoader
      */
     public function register(bool $prepend = false)
     {
-        spl_autoload_register([$this, 'tryLoad'], true, (bool) $prepend);
+        spl_autoload_register([$this, 'tryLoad'], true, $prepend);
     }
 
     /**

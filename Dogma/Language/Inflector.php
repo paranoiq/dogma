@@ -123,7 +123,7 @@ class Inflector
             }
         }
 
-        return false;
+        return $word;
     }
 
     /**
@@ -151,7 +151,7 @@ class Inflector
             }
         }
 
-        return false;
+        return $word;
     }
 
     /**
@@ -196,7 +196,8 @@ class Inflector
     public static function isCountable(string $word): bool
     {
         $lower = Strings::lower($word);
-        return (bool) !in_array($lower, self::$uncountable);
+
+        return !in_array($lower, self::$uncountable);
     }
 
     /**
@@ -205,7 +206,8 @@ class Inflector
     public static function isIrregular(string $word): bool
     {
         $lower = Strings::lower($word);
-        return (bool) in_array($lower, self::$irregular) || array_key_exists($lower, self::$irregular);
+
+        return in_array($lower, self::$irregular) || array_key_exists($lower, self::$irregular);
     }
 
     /**
@@ -214,8 +216,6 @@ class Inflector
      */
     public static function ordinalize(int $number): string
     {
-        $number = (int) $number;
-
         if ($number % 100 >= 11 && $number % 100 <= 13) {
             return $number . 'th';
         } else {
@@ -240,6 +240,7 @@ class Inflector
     public static function camelize(string $word, bool $firstUpper = true): string
     {
         $word = preg_replace(['/(^|_)(.)/e', '/(\/)(.)/e'], ["strtoupper('\\2')", "strtoupper('\\2')"], strval($word));
+
         return $firstUpper ? ucfirst($word) : lcfirst($word);
     }
 

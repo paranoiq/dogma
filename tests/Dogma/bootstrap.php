@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/../../vendor/nette/tester/Tester/bootstrap.php';
 
 // may be running from command line, but under 'cgi-fcgi' SAPI
-if (!empty($argv)) {
+if (!empty($_SERVER['argv'])) {
     header('Content-Type: text/plain');
 // running from browser
 } elseif (PHP_SAPI !== 'cli') {

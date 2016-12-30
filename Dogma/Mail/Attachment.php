@@ -73,7 +73,10 @@ class Attachment
         return $this->headers['content-disposition'];
     }
 
-    public function getHeaders(): string
+    /**
+     * @return string[]
+     */
+    public function getHeaders(): array
     {
         return $this->headers;
     }
@@ -83,7 +86,7 @@ class Attachment
         if ($this->data) {
             return strlen($this->data);
         } else {
-            return $this->file->getSize();
+            return $this->file->getInfo()->getSize();
         }
     }
 

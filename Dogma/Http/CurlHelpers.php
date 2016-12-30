@@ -48,7 +48,11 @@ class CurlHelpers
         return constant('CURLOPT_' . $name);
     }
 
-    public static function getCurlOptionName(int $option): string
+    /**
+     * @param int $option
+     * @return string|null
+     */
+    public static function getCurlOptionName(int $option)
     {
         $consts = get_defined_constants(true);
         foreach ($consts['curl'] as $name => $value) {

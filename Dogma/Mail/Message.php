@@ -52,7 +52,7 @@ class Message
     private $data;
 
 
-    /** @var callback(string $address, string $name -> \Dogma\Mail\Address) */
+    /** @var callable */
     private $addressFactory;
 
     /**
@@ -290,11 +290,10 @@ class Message
             //
 
             if (in_array($name, array('date', 'resent-date', 'delivery-date', 'expires'), true)) {
-                $value = new \Dogma\DateTime($value);
-                $value->setDefaultTimezone();
+                $value = new \Dogma\Time\DateTime($value);
 
             } elseif (in_array($name, array('from', 'to', 'cc', 'bcc', 'reply-to', 'return-path', 'sender'), true)) {
-                $value = self::parseAddressHeader($value);
+                $value = $this->parseAddressHeader($value);
 
             } elseif (strpos($value, '=?') !== false) {
                 $value = $this->decodeHeader($value);
@@ -323,7 +322,7 @@ class Message
         return $arr;
     }
 
-    private static function createAddress(string $address, string $name): Address
+    private function createAddress(string $address, string $name): Address
     {
         return new Address($address, $name);
     }

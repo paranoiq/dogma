@@ -164,7 +164,7 @@ class QueryEngine
         $this->xpath->registerPhpFunctions($this->userFunctions);
     }
 
-    public function registerFuction(string $name, string $alias = '', bool $expectNode = false)
+    public function registerFunction(string $name, string $alias = '', bool $expectNode = false)
     {
         if (!$alias) {
             $alias = $name;
@@ -469,10 +469,10 @@ class QueryEngine
     {
         $string = strtoupper($string);
         if ($string === $false) {
-            return 0;
+            return false;
         }
         if ($string === $true) {
-            return 1;
+            return true;
         }
 
         return null;

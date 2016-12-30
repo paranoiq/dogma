@@ -9,6 +9,9 @@
 
 namespace Dogma\Dom;
 
+/**
+ * @property-read string $nodeName
+ */
 class Element
 {
     use \Dogma\StrictBehaviorMixin;
@@ -25,7 +28,7 @@ class Element
         $this->engine = $engine;
     }
 
-    public function find(string $xpath): \DOMNode
+    public function find(string $xpath): NodeList
     {
         return $this->engine->find($xpath, $this->element);
     }

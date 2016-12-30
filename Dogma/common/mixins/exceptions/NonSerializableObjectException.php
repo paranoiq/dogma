@@ -2,12 +2,12 @@
 
 namespace Dogma;
 
-final class NonSerializableObjectException extends \Dogma\InvalidTypeException
+final class NonSerializableObjectException extends \Dogma\Exception
 {
 
     public function __construct(string $class, \Throwable $previous = null)
     {
-        \Dogma\Exception::__construct(sprintf('Serializing a non-serializable object of class %s.', $class), $previous);
+        parent::__construct(sprintf('Serializing a non-serializable object of class %s.', $class), $previous);
     }
 
 }

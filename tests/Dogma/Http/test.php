@@ -35,11 +35,13 @@ $manager->addChannel($channelH = new Http\Channel($manager, $requestB));
 $channelG->setPriority(6.0);
 $channelH->setPriority(12.0);
 
-while (@$m++ < 20) {
+$m = 0;
+while ($m++ < 20) {
     $channelA->addJob('?size=100&redir=3', 'A' . $m);
 }
 
-while (@$n++ < 100) {
+$n = 0;
+while ($n++ < 100) {
     $channelB->addJob('?size=10000', 'B' . $n);
     $channelC->addJob('?size=10000', 'C' . $n);
     $channelD->addJob('?size=10000', 'D' . $n);
@@ -49,6 +51,7 @@ while (@$n++ < 100) {
     $channelH->addJob('?size=10000', 'H' . $n);
 }
 
+$response = null;
 while ($response = $channelA->fetch()) {
     echo $response->getBody();
 }

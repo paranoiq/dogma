@@ -9,8 +9,6 @@
 
 namespace Dogma\Http;
 
-use Nette\Utils\Callback;
-
 /**
  * HTTP channel for multiple similar requests.
  *
@@ -60,13 +58,13 @@ class Channel
 
 
 
-    /** @var \Nette\Utils\Callback */
+    /** @var callable */
     private $responseHandler;
 
-    /** @var \Nette\Utils\Callback */
+    /** @var callable */
     private $redirectHandler;
 
-    /** @var \Nette\Utils\Callback */
+    /** @var callable */
     private $errorHandler;
 
     public function __construct(ChannelManager $manager, Request $request)
@@ -82,34 +80,34 @@ class Channel
 
     /**
      * Set callback handler for every response (even an error)
-     * @param \Nette\Utils\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
+     * @param callable(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      */
-    public function setResponseHandler(Callback $responseHandler)
+    public function setResponseHandler(callable $responseHandler)
     {
         $this->responseHandler = $responseHandler;
     }
 
     /**
      * Set separate callback handler for redirects. ResponseHandler will no longer handle these.
-     * @param \Nette\Utils\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
+     * @param callable(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      */
-    public function setRedirectHandler(Callback $redirectHadler)
+    public function setRedirectHandler(callable $redirectHadler)
     {
         $this->redirectHandler = $redirectHadler;
     }
 
     /**
      * Set separate callback handler for errors. ResponseHandler will no longer handle these.
-     * @param \Nette\Utils\Callback(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
+     * @param callable(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      */
-    public function setErrorHandler(Callback $errorHandler)
+    public function setErrorHandler(callable $errorHandler)
     {
         $this->errorHandler = $errorHandler;
     }
 
     public function setPriority(int $priority)
     {
-        $this->priority = abs((int) $priority);
+        $this->priority = abs($priority);
     }
 
     public function getPriority(): int
@@ -119,7 +117,7 @@ class Channel
 
     public function setThreadLimit(int $threads)
     {
-        $this->threadLimit = abs((int) $threads);
+        $this->threadLimit = abs($threads);
     }
 
     public function getThreadLimit(): int

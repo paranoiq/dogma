@@ -9,7 +9,6 @@
 
 namespace Dogma\Http;
 
-use Nette\Utils\Callback;
 use Nette\Utils\Strings;
 
 /**
@@ -53,7 +52,7 @@ class Request
     /** @var mixed Request context */
     private $context;
 
-    /** @var \Nette\Utils\Callback */
+    /** @var callable|null */
     private $init;
 
     public function __construct(string $url = null)
@@ -82,9 +81,9 @@ class Request
     }
 
     /**
-     * @param \Nette\Utils\Callback(\Dogma\Http\Request $request -> boolean)
+     * @param callable
      */
-    public function setInit(Callback $init)
+    public function setInit(callable $init)
     {
         $this->init = $init;
     }
@@ -96,7 +95,7 @@ class Request
     public function init()
     {
         if ($this->init) {
-            if (!$this->init->invoke($this)) {
+            if (!($this->init)($this)) {
                 throw new RequestException('Request initialisation failed!');
             }
 

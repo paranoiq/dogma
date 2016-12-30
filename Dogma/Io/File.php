@@ -61,10 +61,10 @@ class File
     /** @var resource */
     protected $streamContext;
 
-    /** @var resource file descriptor */
+    /** @var resource|bool file descriptor */
     protected $file;
 
-    /** @var \Dogma\Io\FileStat */
+    /** @var \Dogma\Io\FileStat|null */
     private $stat;
 
     /**

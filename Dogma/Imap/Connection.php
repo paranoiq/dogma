@@ -50,15 +50,15 @@ class Connection
     /** @var \Dogma\Imap\Folder[] */
     private $folders = [];
 
-    /** @var \Dogma\Mail\Message[] */
+    /** @var \Dogma\Imap\MessageInfo[] */
     private $messages = [];
 
     /** @var string[] cache of subscribed folders */
     private $subscribed;
 
 
-    /** @var callback(string $data -> \Dogma\Mail\Message) */
-    private $messageFactory = 'Dogma\\Imap\\Connection::createMessage';
+    /** @var callable */
+    private $messageFactory;
 
     public function __construct(string $user, string $password, string $host = '127.0.0.1', int $port = 143, bool $ssl = false)
     {
@@ -67,6 +67,10 @@ class Connection
         $this->host = $host;
         $this->port = $port;
         $this->ssl = $ssl;
+
+        $this->messageFactory = function ($data) {
+            return $this->createMessage($data);
+        };
     }
 
     public function setMessageFactory(callable $factory)

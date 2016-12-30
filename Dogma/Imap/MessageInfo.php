@@ -9,6 +9,8 @@
 
 namespace Dogma\Imap;
 
+use Dogma\Mail\Message;
+
 /**
  * IMAP message info.
  */
@@ -31,10 +33,7 @@ class MessageInfo
         $this->uid = $uid;
     }
 
-    /**
-     * Get the Message
-     */
-    public function getMessage(): MessageInfo
+    public function getMessage(): Message
     {
         if (!$this->message) {
             $this->message = $this->imap->getMessage($this->uid);

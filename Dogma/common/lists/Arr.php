@@ -1285,7 +1285,8 @@ class Arr
      */
     public static function diffWith(array $array, callable $function, array ...$args): array
     {
-        $args[] = $function;
+        array_push($args, $function);
+
         return array_udiff($array, ...$args);
     }
 

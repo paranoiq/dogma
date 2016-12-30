@@ -140,7 +140,7 @@ class Response
 
     public function __toString(): string
     {
-        return (string) $this->getBody();
+        return $this->getBody();
     }
 
     // internals -------------------------------------------------------------------------------------------------------
@@ -153,7 +153,7 @@ class Response
         $headers = Strings::split(substr($this->response, 0, $this->info['header_size']), "~[\n\r]+~", PREG_SPLIT_NO_EMPTY);
         $this->headers = static::parseHeaders($headers);
         $this->body = substr($this->response, $this->info['header_size']);
-        $this->response = null;
+        $this->response = '';
     }
 
     /**

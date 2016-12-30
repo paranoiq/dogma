@@ -24,7 +24,7 @@ class DownloadRequest extends Request
     /** @var string */
     private $fileSuffix;
 
-    /** @var resource */
+    /** @var resource|bool */
     private $file;
 
     /**

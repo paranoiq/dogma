@@ -34,7 +34,7 @@ class DirectoryIterator extends FilesystemIterator
                 parent::__construct($path, $flags);
             }
         } catch (\UnexpectedValueException $e) {
-            throw new DirectoryException($e->getMessage(), $e->getCode(), $e);
+            throw new DirectoryException($e->getMessage(), $e);
         }
     }
 

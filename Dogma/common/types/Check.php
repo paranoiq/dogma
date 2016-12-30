@@ -604,7 +604,8 @@ final class Check
      */
     public static function isTraversable($value): bool
     {
-        return is_array($value) || $value instanceof \stdClass
+        return is_array($value)
+            || $value instanceof \stdClass
             || ($value instanceof \Traversable && !$value instanceof NonIterable);
     }
 
@@ -614,7 +615,12 @@ final class Check
      */
     public static function isPlainArray($value): bool
     {
-        return is_array($value) && (($count = count($value)) === 0 || array_keys($value) === range(0, $count - 1));
+        if (!is_array($value)) {
+            return false;
+        }
+        $count = count($value);
+
+        return $count === 0 || array_keys($value) === range(0, $count - 1);
     }
 
 }

@@ -1,3 +1,14 @@
 
 parameters:
-
+    ignoreErrors:
+        - '~^Call to an undefined method Dogma\\ImmutableArrayAccessMixin::toArray\(\)~' # trait
+        - '~^Access to an undefined property Dogma\\ImmutableArrayAccessMixin::\$items~' # trait
+        - '~^Call to an undefined method Dogma\\Time\\DateDateTimeCommonMixin::format\(\)~' # trait
+        - '~^Static call to instance method Dogma\\Exception::__construct~' # skipping one ancestor. dumb error message
+        - '~^Dogma\\(Invalid(Argument|Interface|RegularExpression)|ValueOutOf(Bounds|Range))Exception::__construct\(\) does not call parent constructor~' # skipping one ancestor
+        - '~^Access to an undefined property Dogma\\Dom\\Element::\$nodeName~' # magic
+        - '~^Access to an undefined property (DOMElement|DOMNode|DOMDocument|DOMCdataSection|DOMComment|DOMText|DOMAttr)::~' # wrong reflection
+        - '~^Method DOMXPath::registerPhpFunctions\(\) invoked with 1 parameter, 0 required~' # wrong reflection
+        - '~^Access to an undefined property Dogma\\Mail\\Message::\$date~' # magic
+        - '~^Class Dogma\\Tests\\.*TestClass was not found while trying to analyse it~' # test internals
+        - '~^Function mailparse_.* not found~'

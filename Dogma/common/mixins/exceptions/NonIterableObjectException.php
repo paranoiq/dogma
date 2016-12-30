@@ -2,12 +2,12 @@
 
 namespace Dogma;
 
-final class NonIterableObjectException extends \Dogma\InvalidTypeException
+final class NonIterableObjectException extends \Dogma\Exception
 {
 
     public function __construct(string $class, \Throwable $previous = null)
     {
-        \Dogma\Exception::__construct(sprintf('Iterating a non-iterable object of class %s.', $class), $previous);
+        parent::__construct(sprintf('Iterating a non-iterable object of class %s.', $class), $previous);
     }
 
 }
