@@ -13,16 +13,17 @@
     ],
     "require": {
         "php": ">=5.6.0",
-        "nette/utils": "~2.3",
-        "nette/reflection": "~2.3",
-        "tracy/tracy": "~2.3"
+        "nette/utils": "~2.4",
+        "nette/reflection": "~2.4",
+        "tracy/tracy": "~2.4"
     },
     "require-dev": {
-        "nette/tester": "~1.4",
-        "phing/phing": "2.8.2",
-        "squizlabs/php_codesniffer": "1.5.3",
+        "nette/tester": "~1.7",
+        "phing/phing": "~2.16",
+        "squizlabs/php_codesniffer": "~2.7",
         "jakub-onderka/php-console-highlighter": "0.3.1",
-        "jakub-onderka/php-parallel-lint": "0.8.0"
+        "jakub-onderka/php-parallel-lint": "0.8.0",
+        "phpstan/phpstan": "0.4.2"
     },
     "autoload": {
         "files": ["Dogma/loader.php"]

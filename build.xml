@@ -3,15 +3,18 @@
 
     <property name="file.mode.writable" value="0775"/>
     <property name="path.bin" value="${path.root}/bin"/>
+    <property name="path.build" value="${path.root}/build"/>
     <property name="path.php.executable" value="php"/>
     <property name="path.phpcs.executable" value="${path.bin}/phpcs"/>
     <property name="path.phpcs.ruleset" value="${path.root}/cs-ruleset.xml"/>
     <property name="path.phplint.executable" value="${path.bin}/parallel-lint"/>
+    <property name="path.phpstan.executable" value="${path.bin}/phpstan"/>
+    <property name="path.phpstan.config" value="${path.build}/phpstan/phpstan.neon"/>
     <property name="path.root" value="${project.basedir}"/>
     <property name="path.src" value="${path.root}/Dogma"/>
     <property name="path.tests" value="${path.root}/tests/Dogma"/>
 
-    <target name="check-php" depends="phplint,phpcs"/>
+    <target name="check-php" depends="phplint,phpcs,phpstan"/>
 
     <target name="composer">
         <exec executable="${path.composer.executable}" logoutput="true" passthru="true" checkreturn="true">
@@ -33,6 +36,18 @@
 
     <target name="phplint">
         <exec executable="${path.phplint.executable}" logoutput="true" passthru="true" checkreturn="true">
+            <arg path="${path.src}"/>
+            <arg path="${path.tests}"/>
+        </exec>
+    </target>
+
+    <target name="phpstan">
+        <exec executable="${path.phpstan.executable}" logoutput="true" passthru="true" checkreturn="true">
+            <arg value="analyse"/>
+            <arg value="-c"/>
+            <arg path="${path.phpstan.config}"/>
+            <arg value="-l"/>
+            <arg value="4"/>
             <arg path="${path.src}"/>
             <arg path="${path.tests}"/>
         </exec>
