@@ -11,7 +11,6 @@ namespace Dogma\Http;
 
 use Nette\Utils\Callback;
 
-
 /**
  * HTTP channel for multiple similar requests.
  *

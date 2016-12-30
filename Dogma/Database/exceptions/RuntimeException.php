@@ -9,8 +9,7 @@
 
 namespace Dogma\Database;
 
-
-/** Miscelanous runtime exceptions (probably not caused by user). */
+/** Miscellaneous runtime exceptions (probably not caused by user). */
 class RuntimeException extends FailureException
 {
 

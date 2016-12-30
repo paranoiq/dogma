@@ -9,7 +9,6 @@
 
 namespace Dogma\Io;
 
-
 /**
  * @property-read integer $deviceId
  * @property-read integer $inode

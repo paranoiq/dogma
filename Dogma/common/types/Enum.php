@@ -9,7 +9,6 @@
 
 namespace Dogma;
 
-
 abstract class Enum implements \Dogma\NonIterable
 {
     use \Dogma\StrictBehaviorMixin;

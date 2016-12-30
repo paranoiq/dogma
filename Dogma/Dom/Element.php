@@ -9,7 +9,6 @@
 
 namespace Dogma\Dom;
 
-
 class Element
 {
     use \Dogma\StrictBehaviorMixin;

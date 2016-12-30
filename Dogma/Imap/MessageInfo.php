@@ -9,7 +9,6 @@
 
 namespace Dogma\Imap;
 
-
 /**
  * IMAP message info.
  */

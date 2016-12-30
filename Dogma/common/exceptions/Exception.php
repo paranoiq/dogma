@@ -2,7 +2,6 @@
 
 namespace Dogma;
 
-
 class Exception extends \Exception
 {
 

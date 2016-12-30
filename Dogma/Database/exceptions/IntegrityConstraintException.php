@@ -9,7 +9,6 @@
 
 namespace Dogma\Database;
 
-
 /** Integrity constraint error. */
 class IntegrityConstraintException extends QueryException
 {

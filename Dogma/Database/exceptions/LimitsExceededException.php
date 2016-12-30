@@ -9,7 +9,6 @@
 
 namespace Dogma\Database;
 
-
 /** Configured or native database limits exceeded. */
 class LimitsExceededException extends ResourcesException
 {

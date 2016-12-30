@@ -9,7 +9,6 @@
 
 namespace Dogma\Database;
 
-
 /** Exception caused by admin, configuration, runtime or system failure. */
 class FailureException extends DatabaseException
 {

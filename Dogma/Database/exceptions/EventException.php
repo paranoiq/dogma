@@ -9,7 +9,6 @@
 
 namespace Dogma\Database;
 
-
 /** Events or event scheduler error. */
 class EventException extends DatabaseException
 {

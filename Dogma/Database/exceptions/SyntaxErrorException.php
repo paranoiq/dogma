@@ -9,7 +9,6 @@
 
 namespace Dogma\Database;
 
-
 /** Statement syntax error caused by user. */
 class SyntaxErrorException extends QueryException
 {

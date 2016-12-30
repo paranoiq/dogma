@@ -9,7 +9,6 @@
 
 namespace Dogma\Io;
 
-
 class StreamException extends IoException
 {
     ///

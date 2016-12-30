@@ -9,9 +9,6 @@
 
 namespace Dogma\Io;
 
-use Tracy\Debugger;
-
-
 /**
  * Binary file reader/writer
  *

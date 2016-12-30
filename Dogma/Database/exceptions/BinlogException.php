@@ -9,7 +9,6 @@
 
 namespace Dogma\Database;
 
-
 /** Binary logging error. */
 class BinlogException extends DatabaseException
 {

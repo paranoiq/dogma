@@ -9,7 +9,6 @@
 
 namespace Dogma\Io;
 
-
 /**
  * Text file reader/writer
  */

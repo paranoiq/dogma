@@ -9,7 +9,6 @@
 
 namespace Dogma\Io;
 
-
 /**
  * Filesystem or stream exception
  */

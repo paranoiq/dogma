@@ -9,7 +9,6 @@
 
 namespace Dogma\Http;
 
-
 /**
  * Manages parallel requests over multiple HTTP channels.
  */

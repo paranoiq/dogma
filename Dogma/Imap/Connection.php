@@ -11,7 +11,6 @@ namespace Dogma\Imap;
 
 use Dogma\Mail\Message;
 
-
 /**
  * IMAP connection
  */

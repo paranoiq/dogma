@@ -9,8 +9,7 @@
 
 namespace Dogma\Dom;
 
-
-class DomException extends \DOMException
+class DomException // extends \DOMException
 {
 
     //

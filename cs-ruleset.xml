@@ -57,6 +57,8 @@
         <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.NewlineBeforeOpenBrace"/><!-- clashes with OpeningFunctionBraceBsdAllman -->
         <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.NoSpaceBeforeArg"/><!-- ...$arg -->
         <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.SpaceAfterBracket"/><!-- return type hints -->
+        <exclude name="Squiz.Strings.DoubleQuoteUsage.ContainsVar"/><!-- meh -->
+        <exclude name="Squiz.WhiteSpace.ControlStructureSpacing.SpacingBeforeClose"/><!-- formatted ifs  -->
         <exclude name="PEAR.Functions.ValidDefaultValue.NotAtEnd"/><!-- nullable args with type hits -->
     </rule>
 </ruleset>

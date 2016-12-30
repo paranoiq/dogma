@@ -9,7 +9,6 @@
 
 namespace Dogma\Imap;
 
-
 class Folder
 {
     use \Dogma\StrictBehaviorMixin;

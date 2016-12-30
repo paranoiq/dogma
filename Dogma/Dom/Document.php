@@ -9,7 +9,6 @@
 
 namespace Dogma\Dom;
 
-
 class Document extends \DOMDocument
 {
 
@@ -28,7 +27,6 @@ class Document extends \DOMDocument
         }
 
         if (substr($document, 0, 1) === '@') {
-
             ///
 
         } else {

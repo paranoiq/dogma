@@ -9,7 +9,6 @@
 
 namespace Dogma\Http;
 
-
 /**
  * File download request.
  */
@@ -75,7 +74,7 @@ class DownloadRequest extends Request
      * @param string
      * @return \Dogma\Http\FileResponse
      */
-    public function execute($urlSuffix = null, $fileName = null)
+    public function execute($urlSuffix = null, $fileName = null): Response
     {
         $fileName = $this->prepare($urlSuffix, $fileName);
         $response = curl_exec($this->curl);

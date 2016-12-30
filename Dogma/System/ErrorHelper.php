@@ -9,7 +9,6 @@
 
 namespace Dogma\System;
 
-
 class ErrorHelper
 {
 

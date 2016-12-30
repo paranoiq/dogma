@@ -9,7 +9,6 @@
 
 namespace Dogma\Database;
 
-
 /** Deadlock. Cannot be prevented. Run transaction again. */
 class DeadlockException extends LockException
 {

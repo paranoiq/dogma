@@ -9,7 +9,6 @@
 
 namespace Dogma\Database;
 
-
 /** Invalid value given by user or returned by query. */
 class InvalidValueException extends SyntaxErrorException
 {

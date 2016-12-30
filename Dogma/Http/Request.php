@@ -12,7 +12,6 @@ namespace Dogma\Http;
 use Nette\Utils\Callback;
 use Nette\Utils\Strings;
 
-
 /**
  * HTTP request. Holds a CURL resource.
  */
@@ -125,7 +124,6 @@ class Request
 
     /**
      * @param mixed
-     * @return mixed
      */
     public function setData($data)
     {

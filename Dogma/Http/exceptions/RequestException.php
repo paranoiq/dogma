@@ -9,7 +9,6 @@
 
 namespace Dogma\Http;
 
-
 class RequestException extends HttpException
 {
 

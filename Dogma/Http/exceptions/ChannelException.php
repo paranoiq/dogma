@@ -9,7 +9,6 @@
 
 namespace Dogma\Http;
 
-
 class ChannelException extends HttpException
 {
 

@@ -9,7 +9,6 @@
 
 namespace Dogma\Mail;
 
-
 /**
  * Mail address.
  * @property-read $address

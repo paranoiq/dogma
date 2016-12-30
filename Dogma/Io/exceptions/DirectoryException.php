@@ -9,8 +9,6 @@
 
 namespace Dogma\Io;
 
-
-
 class DirectoryException extends IoException
 {
     ///

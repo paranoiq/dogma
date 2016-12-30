@@ -11,7 +11,6 @@ namespace Dogma\Io;
 
 use Nette\Utils\ObjectMixin;
 
-
 /**
  * File Info
  */

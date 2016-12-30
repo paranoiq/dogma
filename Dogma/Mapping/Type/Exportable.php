@@ -9,7 +9,6 @@
 
 namespace Dogma\Mapping\Type;
 
-
 /**
  * Interface converting value objects to scalars.
  */

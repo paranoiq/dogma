@@ -9,7 +9,6 @@
 
 namespace Dogma\Database;
 
-
 /** Entity (table, column, index...) was not found. */
 class NotFoundException extends QueryException
 {

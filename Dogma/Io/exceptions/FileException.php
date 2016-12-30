@@ -9,7 +9,6 @@
 
 namespace Dogma\Io;
 
-
 class FileException extends IoException
 {
     ///

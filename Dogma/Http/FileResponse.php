@@ -11,7 +11,6 @@ namespace Dogma\Http;
 
 use Nette\Utils\Strings;
 
-
 class FileResponse extends Response
 {
 

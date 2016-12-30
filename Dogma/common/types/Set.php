@@ -11,7 +11,6 @@ namespace Dogma;
 
 use Nette\Utils\ObjectMixin;
 
-
 /**
  * Set type. Similar to 'set' from MySql. Allowed values are defined as class constants.
  */

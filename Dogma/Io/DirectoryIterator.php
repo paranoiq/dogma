@@ -12,7 +12,6 @@ namespace Dogma\Io;
 use FilesystemIterator;
 use Dogma;
 
-
 /**
  * Directory iterator
  */

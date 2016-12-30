@@ -9,7 +9,6 @@
 
 namespace Dogma\Database;
 
-
 /** Tablespace and file groups error. */
 class FilesException extends DatabaseException
 {

@@ -9,7 +9,6 @@
 
 namespace Dogma\Database;
 
-
 /** Exception caused by user mistake. */
 class QueryException extends DatabaseException
 {

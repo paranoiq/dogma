@@ -9,7 +9,6 @@
 
 namespace Dogma\Database;
 
-
 /** Connection failure. */
 class ConnectionErrorException extends DatabaseException
 {

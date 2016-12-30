@@ -9,7 +9,6 @@
 
 namespace Dogma\Database;
 
-
 /** Distributed 'XA' transaction error. */
 class XaException extends DatabaseException
 {

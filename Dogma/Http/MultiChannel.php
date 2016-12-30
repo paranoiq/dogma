@@ -11,7 +11,6 @@ namespace Dogma\Http;
 
 use Nette\Utils\Callback;
 
-
 class MultiChannel
 {
     use \Dogma\StrictBehaviorMixin;

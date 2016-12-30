@@ -9,7 +9,6 @@
 
 namespace Dogma\Database;
 
-
 /** Concurrency issues. */
 class ConcurrencyException extends DatabaseException
 {

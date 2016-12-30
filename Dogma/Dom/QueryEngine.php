@@ -11,7 +11,6 @@ namespace Dogma\Dom;
 
 use Nette\Utils\Strings;
 
-
 /**
  * Simple query engine based on XPath 1.0
  */

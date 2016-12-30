@@ -9,7 +9,6 @@
 
 namespace Dogma\Database;
 
-
 /** Corrupted or obsolete database structures. */
 class CorruptedException extends FailureException
 {

@@ -9,9 +9,8 @@
 
 namespace Dogma\Database;
 
-
 /** Cannot perform operation due to locks. */
-class LockException extends ConcurencyException
+class LockException extends ConcurrencyException
 {
 
 }
