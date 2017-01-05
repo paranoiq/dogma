@@ -33,6 +33,11 @@ abstract class Enum implements \Dogma\NonIterable
         $this->value = $value;
     }
 
+    public function __toString(): string
+    {
+        return sprintf('%s: %s', end(explode('\\', get_called_class())), $this->value);
+    }
+
     /**
      * @param int|string
      * @return static
@@ -44,7 +49,7 @@ abstract class Enum implements \Dogma\NonIterable
             self::init($class);
         }
 
-        if (!static::validateValue($value, $class)) {
+        if (!static::validateValue($value)) {
             throw new \Dogma\InvalidValueException($value, $class);
         }
 
@@ -56,13 +61,28 @@ abstract class Enum implements \Dogma\NonIterable
     }
 
     /**
+     * Validates given value. Can also normalise the value, if needed.
+     *
      * @param int|string &$value
-     * @param string $class
      * @return bool
      */
-    protected static function validateValue(&$value, string $class): bool
+    public static function validateValue(&$value): bool
     {
+        $class = get_called_class();
+        if (empty(self::$availableValues[$class])) {
+            self::init($class);
+        }
+
         return Arr::contains(self::$availableValues[$class], $value);
+    }
+
+    /**
+     * Returns case sensitive regular expression for value validation.
+     * Only the body or expression without modifiers, delimiters and start/end assertions ('^' and '$').
+     */
+    public static function getValueRegexp(): string
+    {
+        return implode('|', self::getAllowedValues());
     }
 
     /**
@@ -100,12 +120,7 @@ abstract class Enum implements \Dogma\NonIterable
      */
     final public static function isValid($value): bool
     {
-        $class = get_called_class();
-        if (empty(self::$availableValues[$class])) {
-            self::init($class);
-        }
-
-        return Arr::contains(self::$availableValues[$class], $value);
+        return self::validateValue($value);
     }
 
     /**
