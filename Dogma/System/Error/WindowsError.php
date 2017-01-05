@@ -7,12 +7,12 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\System;
+namespace Dogma\System\Error;
 
 /**
  * Windows system errors (@see http://msdn.microsoft.com/en-us/library/windows/desktop/ms681382(v=vs.85).aspx)
  */
-class WindowsError extends \Dogma\Enum implements \Dogma\System\Error
+class WindowsError extends \Dogma\Enum implements \Dogma\System\Error\Error
 {
 
     const ERROR_SUCCESS = 0;
@@ -29,7 +29,7 @@ class WindowsError extends \Dogma\Enum implements \Dogma\System\Error
     const ERROR_BAD_FORMAT = 11;
     const ERROR_INVALID_ACCESS = 12;
     const ERROR_INVALID_DATA = 13;
-    const ERROR_OUTOFMEMORY = 14;
+    const ERROR_OUT_OF_MEMORY = 14;
     const ERROR_INVALID_DRIVE = 15;
     const ERROR_CURRENT_DIRECTORY = 16;
     const ERROR_NOT_SAME_DEVICE = 17;

@@ -7,7 +7,7 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\System;
+namespace Dogma\System\Error;
 
 class ErrorHelper
 {
@@ -21,7 +21,7 @@ class ErrorHelper
      * Get error object for given error number.
      * @param int
      * @param int|string
-     * @return \Dogma\System\Error|null
+     * @return \Dogma\System\Error\Error|null
      */
     public static function getError(int $errno, $system = self::LOCAL)
     {

@@ -7,12 +7,12 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\System;
+namespace Dogma\System\Error;
 
 /**
  * Linux system errors
  */
-class LinuxError extends \Dogma\Enum implements \Dogma\System\Error
+class LinuxError extends \Dogma\Enum implements \Dogma\System\Error\Error
 {
 
     // common with Unix:
