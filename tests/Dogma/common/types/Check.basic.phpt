@@ -25,26 +25,11 @@ Assert::same($negativeZero, '0');
 $null = null;
 
 Check::nullableType($null, Type::BOOL);
-Check::nullableBoolean($null);
-Check::nullableInteger($null);
-Check::nullableNatural($null);
+Check::nullableBool($null);
+Check::nullableInt($null);
 Check::nullableFloat($null);
 Check::nullableString($null);
 Check::nullableObject($null);
-
-// natural
-$positive = 1;
-Check::natural($positive);
-
-$negative = -1;
-Assert::exception(function () use ($negative) {
-    Check::natural($negative);
-}, InvalidValueException::class);
-
-$zero = 0;
-Assert::exception(function () use ($zero) {
-    Check::natural($zero);
-}, InvalidValueException::class);
 
 $array = ['a' => 1, 'b' => 2, 'c' => 3];
 $vector = [1, 2, 3];
@@ -120,7 +105,6 @@ Assert::exception(function () {
 
 // ranges
 $small = -100;
-$zero = 0;
 $big = 100;
 
 Assert::exception(function () use ($small) {
@@ -129,14 +113,6 @@ Assert::exception(function () use ($small) {
 
 Assert::exception(function () use ($big) {
     Check::int($big, 0, 10);
-}, ValueOutOfRangeException::class);
-
-Assert::exception(function () use ($small) {
-    Check::natural($small);
-}, ValueOutOfRangeException::class);
-
-Assert::exception(function () use ($zero) {
-    Check::natural($zero);
 }, ValueOutOfRangeException::class);
 
 Assert::exception(function () use ($small) {
@@ -182,10 +158,10 @@ class TestNonTraversable
 }
 
 // isTraversable()
-Assert::true(Check::isTraversable(array()));
-Assert::true(Check::isTraversable(new \stdClass()));
-Assert::true(Check::isTraversable(new TestTraversable()));
-Assert::false(Check::isTraversable(new TestNonTraversable()));
+Assert::true(Check::isIterable(array()));
+Assert::true(Check::isIterable(new \stdClass()));
+Assert::true(Check::isIterable(new TestTraversable()));
+Assert::false(Check::isIterable(new TestNonTraversable()));
 
 // isPlainArray()
 Assert::true(Check::isPlainArray([]));

@@ -15,7 +15,7 @@ class ExceptionValueFormater
         } elseif (is_array($value)) {
             return sprintf('array (%d) #%s', count($value), substr(md5(serialize($value)), 0, 8));
         } elseif (is_string($value)) {
-            return sprintf('%s (%d)', $value, strlen($value));
+            return sprintf('"%s" (%d)', $value, strlen($value));
         } elseif (is_bool($value)) {
             return $value ? 'TRUE' : 'FALSE';
         } elseif (is_null($value)) {

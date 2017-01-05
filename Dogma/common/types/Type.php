@@ -9,8 +9,11 @@
 
 namespace Dogma;
 
+use Dogma\Language\Encoding;
+use Dogma\Language\Locale\Locale;
+
 /**
- * Complex type representation
+ * Type metadata
  */
 class Type
 {
@@ -30,7 +33,7 @@ class Type
 
     // pseudotypes
     const NULL = 'null';
-    const NUMERIC = 'numeric';
+    const NUMBER = 'number';
     const SCALAR = 'scalar';
     const MIXED = 'mixed';
     const VOID = 'void';
@@ -57,54 +60,98 @@ class Type
     /** @var bool */
     private $nullable = false;
 
-    /** @var int|null */
+    /** @var int|int[]|null */
     private $size;
 
-    /**
-     * May be signed/unsigned for int or collation for string
-     * @var string|null
-     */
-    private $special;
+    /** @var string|null */
+    private $specific;
+
+    /** @var \Dogma\Language\Encoding|null */
+    private $encoding;
+
+    /** @var \Dogma\Language\Locale\Locale|null */
+    private $locale;
 
     /**
      * @param string $id
      * @param string $type
-     * @param \Dogma\Type|\Dogma\Type[] $itemType
      * @param bool $nullable
-     * @param int|null $size
-     * @param string|null $special
+     * @param \Dogma\Type|\Dogma\Type[]|null $itemType
+     * @param int|int[]|null $size
+     * @param string|null $specific
+     * @param \Dogma\Language\Encoding $encoding
+     * @param \Dogma\Language\Locale\Locale $locale
      */
-    final private function __construct(string $id, string $type, $itemType, bool $nullable, int $size = null, string $special = null)
-    {
+    final private function __construct(
+        string $id,
+        string $type,
+        bool $nullable = null,
+        $itemType = null,
+        $size = null,
+        string $specific = null,
+        Encoding $encoding = null,
+        Locale $locale = null
+    ) {
         $this->id = $id;
         $this->type = $type;
-        $this->itemType = $itemType;
         $this->nullable = $nullable;
+        $this->itemType = $itemType;
         $this->size = $size;
-        $this->special = $special;
+        $this->specific = $specific;
+        $this->encoding = $encoding;
+        $this->locale = $locale;
     }
 
     /**
      * @param string $type
-     * @param int|null $size
-     * @param string|null $special
-     * @param bool $nullable
+     * @param int|int[]|null $size [optional]
+     * @param string|null $specific [optional]
+     * @param \Dogma\Language\Encoding|null $encoding [optional]
+     * @param \Dogma\Language\Locale\Locale|null $locale [optional]
+     * @param bool $nullable [optional]
      * @return self
      */
-    public static function get(string $type, $size = null, $special = null, bool $nullable = false): self
+    public static function get(string $type, $size = null, $specific = null, $encoding = null, $locale = null, bool $nullable = null): self
     {
-        if (is_bool($size)) {
-            $nullable = $size;
-            $size = null;
-        } elseif (is_bool($special)) {
-            $nullable = $special;
-            $special = null;
+        $args = func_get_args();
+        $size = $specific = $encoding = $locale = $nullable = null;
+        foreach ($args as $i => $arg) {
+            switch (true) {
+                case $i < 1:
+                    break;
+                case $nullable === null && is_bool($arg):
+                    $nullable = $arg;
+                    break;
+                case $size === null && (is_int($arg) || is_array($arg)):
+                    $size = $arg;
+                    self::checkSize($type, $size);
+                    break;
+                case $specific === null && (is_string($arg) || $arg instanceof ResourceType):
+                    $specific = $arg instanceof ResourceType ? $arg->getValue() : $arg;
+                    self::checkSpecific($type, $specific);
+                    if ($specific === Sign::SIGNED) {
+                        $specific = null;
+                    }
+                    break;
+                case $encoding === null && $arg instanceof Encoding:
+                    $encoding = $arg;
+                    break;
+                case $locale === null && $arg instanceof Locale:
+                    $locale = $arg;
+                    break;
+                case $arg === null:
+                    continue;
+                default:
+                    throw new \Dogma\InvalidArgumentException(sprintf(
+                        'Unexpected or duplicate argument %s at position %d.',
+                        ExceptionValueFormater::format($arg),
+                        $i
+                    ));
+            }
         }
-        if ($size !== null) {
-            self::checkSize($type, $size);
-        }
-        if ($special !== null) {
-            self::checkSpecial($type, $special);
+
+        if ($nullable === null) {
+            $nullable = false;
         }
 
         // normalize "array" to "array<mixed>"
@@ -113,14 +160,16 @@ class Type
         }
 
         $id = $type;
-        if ($size !== null || $special !== null) {
-            $id .= '(' . implode(',', array_filter([$size, $special])) . ')';
+        if ($size !== null || $specific !== null || $encoding !== null || $locale !== null) {
+            $id .= '(' . implode(',', Arr::flatten(Arr::filter(
+                [$size, $specific, $encoding ? $encoding->getValue() : null, $locale ? $locale->getValue() : null]
+            ))) . ')';
         }
         if ($nullable) {
             $id .= '?';
         }
         if (empty(self::$instances[$id])) {
-            $that = new self($id, $type, null, $nullable);
+            $that = new self($id, $type, $nullable, null, $size, $specific, $encoding, $locale);
             self::$instances[$id] = $that;
         }
 
@@ -130,29 +179,29 @@ class Type
     private static function checkSize(string $type, int $size = null)
     {
         if ($type === self::INT) {
-            $sizes = BitSize::getIntSizes();
-            if (!Arr::contains($sizes, $size)) {
-                throw new \Dogma\InvalidSizeException($type, $size, $sizes);
-            }
+            BitSize::checkIntSize($size);
+            return;
         } elseif ($type === self::FLOAT) {
-            $sizes = BitSize::getFloatSizes();
-            if (!Arr::contains($sizes, $size)) {
-                throw new \Dogma\InvalidSizeException($type, $size, $sizes);
-            }
-        } elseif ($type !== self::STRING) {
-            throw new \Dogma\InvalidSizeException($type, $size, []);
+            BitSize::checkFloatSize($size);
+            return;
+        } elseif ($type === self::STRING && $size > 0) {
+            return;
         }
+        throw new \Dogma\InvalidSizeException($type, $size, []);
     }
 
-    private static function checkSpecial(string $type, string $special = null)
+    private static function checkSpecific(string $type, $specific = null)
     {
-        if ($type === self::INT || $type === self::FLOAT) {
-            if ($special !== Sign::SIGNED && $special !== Sign::UNSIGNED) {
-                throw new \Dogma\InvalidTypeException($type, sprintf('%s(%s)', $type, $special));
-            }
-        } elseif ($type !== self::STRING) {
-            throw new \Dogma\InvalidTypeException($type, sprintf('%s(%s)', $type, $special));
+        if ($type === self::INT && ($specific === Sign::SIGNED || $specific === Sign::UNSIGNED)) {
+            return;
         }
+        if ($type === self::STRING && $specific === Length::FIXED) {
+            return;
+        }
+        if ($type === self::RESOURCE && ResourceType::isValid($specific)) {
+            return;
+        }
+        throw new \Dogma\InvalidTypeException($type, sprintf('%s(%s)', $type, $specific));
     }
 
     public static function bool(bool $nullable = false): self
@@ -160,42 +209,53 @@ class Type
         return self::get(self::BOOL, $nullable);
     }
 
-    public static function int($size = null, $sign = null, bool $nullable = false): self
+    /**
+     * @param int|null $size
+     * @param string|null $sign
+     * @param bool|null $nullable
+     * @return self
+     */
+    public static function int($size = null, $sign = null, bool $nullable = null): self
     {
-        if (is_bool($size)) {
-            $nullable = $size;
-            $size = null;
-        } elseif (is_bool($sign)) {
-            $nullable = $sign;
-            $sign = null;
-        }
         return self::get(self::INT, $size, $sign, $nullable);
     }
 
-    public static function float($size = null, bool $nullable = false): self
+    /**
+     * @param int|null $size
+     * @param bool|null $nullable
+     * @return self
+     */
+    public static function float($size = null, bool $nullable = null): self
     {
-        if (is_bool($size)) {
-            $nullable = $size;
-            $size = null;
-        }
         return self::get(self::FLOAT, $size, $nullable);
     }
 
-    public static function string($size = null, $collation = null, bool $nullable = false): self
+    /**
+     * @param int|null $size
+     * @param string|null $fixed
+     * @param \Dogma\Language\Encoding|null $encoding
+     * @param \Dogma\Language\Locale\Locale|null $locale
+     * @param bool|null $nullable
+     * @return self
+     */
+    public static function string($size = null, $fixed = null, $encoding = null, $locale = null, bool $nullable = null): self
     {
-        if (is_bool($size)) {
-            $nullable = $size;
-            $size = null;
-        } elseif (is_bool($collation)) {
-            $nullable = $collation;
-            $collation = null;
-        }
-        return self::get(self::STRING, $size, $collation, $nullable);
+        return self::get(self::STRING, $size, $fixed, $encoding, $locale, $nullable);
     }
 
-    public static function callable(bool $nullable = false): self
+    public static function callable(bool $nullable = null): self
     {
         return self::get(self::PHP_CALLABLE, $nullable);
+    }
+
+    /**
+     * @param \Dogma\ResourceType|string|null $resourceType
+     * @param bool $nullable
+     * @return self
+     */
+    public static function resource($resourceType = null, bool $nullable = null): self
+    {
+        return self::get(self::RESOURCE, $resourceType, $nullable);
     }
 
     /**
@@ -205,8 +265,6 @@ class Type
      */
     public static function arrayOf($itemType, bool $nullable = false): self
     {
-        Check::types($itemType, [Type::STRING, Type::class]);
-
         return self::collectionOf(self::PHP_ARRAY, $itemType, $nullable);
     }
 
@@ -226,7 +284,7 @@ class Type
 
         $id = $type . '<' . $itemType->getId() . '>' . ($nullable ? '?' : '');
         if (empty(self::$instances[$id])) {
-            $that = new self($id, $type, $itemType, $nullable);
+            $that = new self($id, $type, $nullable, $itemType);
             self::$instances[$id] = $that;
         }
 
@@ -241,9 +299,8 @@ class Type
     public static function tupleOf(...$arguments): self
     {
         $nullable = false;
-        if (end($arguments) === true) {
-            $nullable = true;
-            array_pop($arguments);
+        if (is_bool(end($arguments))) {
+            $nullable = array_pop($arguments);
         }
 
         Check::itemsOfTypes($arguments, [Type::STRING, Type::class]);
@@ -260,7 +317,7 @@ class Type
 
         $id = Tuple::class . '<' . implode(',', $itemIds) . '>' . ($nullable ? '?' : '');
         if (empty(self::$instances[$id])) {
-            $that = new self($id, Tuple::class, $arguments, $nullable);
+            $that = new self($id, Tuple::class, $nullable, $arguments);
             self::$instances[$id] = $that;
         }
 
@@ -283,31 +340,41 @@ class Type
         list(, $baseId, $params, $itemIds, $nullable) = $match;
         $nullable = (bool) $nullable;
 
-        $size = null;
-        $special = null;
+        $size = $specific = $encoding = $locale = null;
         if ($params) {
-            $params = explode(',', $params);
-            if (is_numeric($params[0])) {
-                $size = (int) $params[0];
-                if (isset($params[1])) {
-                    $special = $params[1];
-                }
-            } else {
-                $special = $params[0];
-                if (isset($params[1])) {
-                    throw new \Dogma\InvalidTypeDefinitionException($id);
+            foreach (explode(',', $params) as $param) {
+                switch (true) {
+                    case $size === null && preg_match('/([0-9]+)?([suf])?/', $param, $match):
+                        $size = (int) $match[1];
+                        if ($size) {
+                            self::checkSize($baseId, $size);
+                        } else {
+                            $size = null;
+                        }
+                        if (isset($match[2])) {
+                            $specific = ['s' => Sign::SIGNED, 'u' => Sign::UNSIGNED, 'f' => Length::FIXED][$match[2]];
+                        }
+                        break;
+                    case $specific === null && ($param === Sign::SIGNED || $param === Sign::UNSIGNED || $param === Length::FIXED || ResourceType::isValid($param)):
+                        $specific = $param;
+                        break;
+                    case $encoding === null && preg_match('/^' . Encoding::getValueRegexp() . '$/', $param):
+                        $encoding = Encoding::get($param);
+                        break;
+                    case $locale === null && preg_match('/^' . Locale::getValueRegexp() . '$/', $param):
+                        $locale = Locale::get($param);
+                        break;
+                    default:
+                        throw new \Dogma\InvalidTypeDefinitionException($id);
                 }
             }
-            if ($size) {
-                self::checkSize($baseId, $size);
-            }
-            if ($special) {
-                self::checkSpecial($baseId, $special);
+            if ($specific) {
+                self::checkSpecific($baseId, $specific);
             }
         }
 
         if (!$itemIds) {
-            return self::get($baseId, $size, $special, $nullable);
+            return self::get($baseId, $size, $specific, $encoding, $locale, $nullable);
         }
 
         $itemIds = preg_split('/(?<![0-9]),/', $itemIds);
@@ -351,21 +418,96 @@ class Type
         return $this->id;
     }
 
-    /**
-     * Returns new instance of type. Works only on simple class types with public constructor.
-     * @param mixed ...$arguments
-     * @return object
-     */
-    public function getInstance(...$arguments)
+    public function getName(): string
     {
-        $className = $this->type;
-
-        return new $className(...$arguments);
+        return $this->type;
     }
 
     public function isNullable(): bool
     {
         return $this->nullable;
+    }
+
+    public function isSigned(): bool
+    {
+        return $this->type === self::INT && $this->specific === null;
+    }
+
+    public function isUnsigned(): bool
+    {
+        return $this->specific === Sign::UNSIGNED;
+    }
+
+    public function isFixed(): bool
+    {
+        return $this->specific === Length::FIXED;
+    }
+
+    /**
+     * @return \Dogma\ResourceType|null
+     */
+    public function getResourceType()
+    {
+        return $this->type === self::RESOURCE && $this->specific ? ResourceType::get($this->specific) : null;
+    }
+
+    /**
+     * Returns type of items or array of types for Tuple
+     * @return self|self[]|null
+     */
+    public function getItemType()
+    {
+        return $this->itemType;
+    }
+
+    /**
+     * Returns bit-size for numeric types and length for string
+     * @return int|null
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    /**
+     * @return \Dogma\Language\Encoding|null
+     */
+    public function getEncoding()
+    {
+        return $this->encoding;
+    }
+
+    /**
+     * @return \Dogma\Language\Locale\Locale|null
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    public function isBool(): bool
+    {
+        return $this->type === self::BOOL;
+    }
+
+    public function isInt(): bool
+    {
+        return $this->type === self::INT;
+    }
+
+    public function isFloat(): bool
+    {
+        return $this->type === self::FLOAT;
+    }
+
+    public function isNumeric(): bool
+    {
+        return $this->type === self::INT || $this->type === self::FLOAT || $this->type === self::NUMBER;
+    }
+
+    public function isString(): bool
+    {
+        return $this->type === self::STRING;
     }
 
     public function isScalar(): bool
@@ -393,6 +535,16 @@ class Type
         return !in_array($this->type, self::listTypes());
     }
 
+    public function isCallable(): bool
+    {
+        return $this->type === self::PHP_CALLABLE;
+    }
+
+    public function isResource(): bool
+    {
+        return $this->type === self::RESOURCE;
+    }
+
     public function is(string $typeName): bool
     {
         return $this->type === $typeName;
@@ -403,42 +555,65 @@ class Type
         return $this->type === $interfaceName || is_subclass_of($this->type, $interfaceName);
     }
 
-    public function getName(): string
-    {
-        return $this->type;
-    }
-
     /**
-     * Returns base of the type (without nullable and items)
+     * Returns base of the type (without nullable, items and parameters)
      */
     public function getBaseType(): self
     {
         return self::get($this->type);
     }
 
+    /**
+     * Returns non-nullable version of self
+     */
     public function getNonNullableType(): self
     {
         switch (true) {
             case !$this->nullable:
                 return $this;
             case $this->isArray():
-                return self::collectionOf(self::PHP_ARRAY, $this->itemType);
             case $this->isCollection():
                 return self::collectionOf($this->type, $this->itemType);
             case $this->isTuple():
                 return self::tupleOf(...$this->itemType);
             default:
-                return self::get($this->type);
+                return self::get($this->type, $this->size, $this->specific, $this->encoding, $this->locale);
         }
     }
 
     /**
-     * Returns type of items or array of types for Tuple
-     * @return self|self[]|null
+     * Returns type without size, sign, encoding etc.
      */
-    public function getItemType()
+    public function getTypeWithoutParams(): self
     {
-        return $this->itemType;
+        switch (true) {
+            case $this->isArray():
+            case $this->isCollection():
+                return self::collectionOf($this->type, $this->itemType->getTypeWithoutParams(), $this->nullable);
+            case $this->isTuple():
+                $itemTypes = [];
+                foreach ($this->itemType as $itemType) {
+                    $itemTypes[] = $itemType->getTypeWithoutParams();
+                }
+                if ($this->nullable) {
+                    $itemTypes[] = $this->nullable;
+                }
+                return self::tupleOf(...$itemTypes);
+            default:
+                return self::get($this->type, $this->nullable);
+        }
+    }
+
+    /**
+     * Returns new instance of type. Works only on simple class types with public constructor.
+     * @param mixed ...$arguments
+     * @return object
+     */
+    public function getInstance(...$arguments)
+    {
+        $className = $this->type;
+
+        return new $className(...$arguments);
     }
 
     /**
@@ -451,7 +626,7 @@ class Type
             self::BOOL,
             self::INT,
             self::FLOAT,
-            self::NUMERIC,
+            self::NUMBER,
             self::STRING,
             self::SCALAR,
             self::MIXED,
@@ -490,9 +665,19 @@ class Type
             self::BOOL,
             self::INT,
             self::FLOAT,
-            self::NUMERIC,
+            self::NUMBER,
             self::STRING,
         ];
+    }
+
+    public static function isType(string $type): bool
+    {
+        try {
+            self::fromId($type);
+            return true;
+        } catch (\Throwable $t) {
+            return false;
+        }
     }
 
     /**

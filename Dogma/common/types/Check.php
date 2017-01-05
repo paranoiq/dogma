@@ -45,9 +45,9 @@ final class Check
                 break;
             case Type::BOOL:
                 if ($min !== null) {
-                    throw new \InvalidArgumentException(sprintf('Parameter $min is not aplicable with type %s.', $type));
+                    throw new \InvalidArgumentException(sprintf('Parameter $min is not applicable with type %s.', $type));
                 } elseif ($max !== null) {
-                    throw new \InvalidArgumentException(sprintf('Parameter $max is not aplicable with type %s.', $type));
+                    throw new \InvalidArgumentException(sprintf('Parameter $max is not applicable with type %s.', $type));
                 }
                 self::bool($value);
                 break;
@@ -65,29 +65,29 @@ final class Check
                 break;
             case Type::OBJECT:
                 if ($min !== null) {
-                    throw new \InvalidArgumentException(sprintf('Parameter $min is not aplicable with type %s.', $type));
+                    throw new \InvalidArgumentException(sprintf('Parameter $min is not applicable with type %s.', $type));
                 } elseif ($max !== null) {
-                    throw new \InvalidArgumentException(sprintf('Parameter $max is not aplicable with type %s.', $type));
+                    throw new \InvalidArgumentException(sprintf('Parameter $max is not applicable with type %s.', $type));
                 }
                 self::object($value);
                 break;
             case Type::RESOURCE:
                 if ($max !== null) {
-                    throw new \InvalidArgumentException(sprintf('Parameter $max is not aplicable with type %s.', $type));
+                    throw new \InvalidArgumentException(sprintf('Parameter $max is not applicable with type %s.', $type));
                 }
                 self::resource($value, $min);
                 break;
             case Type::PHP_CALLABLE:
                 if ($max !== null) {
-                    throw new \InvalidArgumentException(sprintf('Parameter $max is not aplicable with type %s.', $type));
+                    throw new \InvalidArgumentException(sprintf('Parameter $max is not applicable with type %s.', $type));
                 }
                 self::callable($value);
                 break;
             default:
                 if ($min !== null) {
-                    throw new \InvalidArgumentException(sprintf('Parameter $min is not aplicable with type %s.', $type));
+                    throw new \InvalidArgumentException(sprintf('Parameter $min is not applicable with type %s.', $type));
                 } elseif ($max !== null) {
-                    throw new \InvalidArgumentException(sprintf('Parameter $max is not aplicable with type %s.', $type));
+                    throw new \InvalidArgumentException(sprintf('Parameter $max is not applicable with type %s.', $type));
                 }
                 self::object($value, $type);
                 break;
@@ -143,9 +143,9 @@ final class Check
      * @param int|float|null $valueMax
      * @throws \Dogma\InvalidTypeException
      */
-    public static function itemsOfType($array, string $type, $valueMin = null, $valueMax = null)
+    public static function itemsOfType($items, string $type, $valueMin = null, $valueMax = null)
     {
-        foreach ($array as &$value) {
+        foreach ($items as &$value) {
             self::type($value, $type, $valueMin, $valueMax);
         }
     }
@@ -157,9 +157,9 @@ final class Check
      * @param int|float|null $valueMax
      * @throws \Dogma\InvalidTypeException
      */
-    public static function itemsOfTypes($array, array $types, $valueMin = null, $valueMax = null)
+    public static function itemsOfTypes($items, array $types, $valueMin = null, $valueMax = null)
     {
-        foreach ($array as &$value) {
+        foreach ($items as &$value) {
             self::types($value, $types, $valueMin, $valueMax);
         }
     }
@@ -186,7 +186,7 @@ final class Check
      * @param &mixed $value
      * @throws \Dogma\InvalidTypeException
      */
-    public static function nullableBoolean(&$value)
+    public static function nullableBool(&$value)
     {
         if ($value === null) {
             return;
@@ -232,36 +232,12 @@ final class Check
      * @throws \Dogma\InvalidTypeException
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function nullableInteger(&$value, int $min = null, int $max = null)
+    public static function nullableInt(&$value, int $min = null, int $max = null)
     {
         if ($value === null) {
             return;
         }
         self::int($value, $min, $max);
-    }
-
-    /**
-     * Positive integer (higher then 0)
-     * @param &mixed $value
-     * @param int|null $max
-     * @throws \Dogma\InvalidTypeException
-     * @throws \Dogma\ValueOutOfRangeException
-     */
-    public static function natural(&$value, int $max = null)
-    {
-        self::int($value, 1, $max);
-    }
-
-    /**
-     * Positive integer (higher then 0) or null
-     * @param &mixed $value
-     * @param int|null $max
-     * @throws \Dogma\InvalidTypeException
-     * @throws \Dogma\ValueOutOfRangeException
-     */
-    public static function nullableNatural(&$value, int $max = null)
-    {
-        self::nullableInteger($value, 1, $max);
     }
 
     /**
@@ -382,7 +358,7 @@ final class Check
      */
     public static function traversable($value)
     {
-        if (!self::isTraversable($value)) {
+        if (!self::isIterable($value)) {
             throw new \Dogma\InvalidTypeException('array|Traversable', $value);
         }
     }
@@ -542,6 +518,39 @@ final class Check
     }
 
     /**
+     * Checks type specific bounds
+     * @param mixed $value
+     * @param \Dogma\Type $type
+     * @throws \Dogma\ValueOutOfRangeException
+     */
+    public static function bounds($value, Type $type)
+    {
+        if ($type->isInt()) {
+            try {
+                self::range($value, ...BitSize::getIntRange($type->getSize(), $type->isSigned()));
+            } catch (\Dogma\ValueOutOfRangeException $e) {
+                throw new \Dogma\ValueOutOfBoundsException($value, $type, $e);
+            }
+        } elseif ($type->isFloat() && $type->getSize() === BitSize::BITS_32) {
+            $len = strlen(rtrim(str_replace('.', '', $value), '0'));
+            // single precision float can handle up to 9 digits of precision
+            if ($len > 9) {
+                throw new \Dogma\ValueOutOfBoundsException($value, $type);
+            }
+        } elseif ($type->isString()) {
+            try {
+                /// todo: take into account string encoding?
+                self::range(Str::length($value), 0, $type->getSize());
+            } catch (\Dogma\ValueOutOfRangeException $e) {
+                throw new \Dogma\ValueOutOfBoundsException($value, $type, $e);
+            }
+        } else {
+            throw new \Dogma\InvalidArgumentException(sprintf('Cannot check bounds of type %s.', $type->getId()));
+        }
+    }
+
+    /**
+     * Checks user defined range
      * @param mixed $value
      * @param int|float $min
      * @param int|float $max
@@ -581,6 +590,34 @@ final class Check
         }
     }
 
+    public static function positive($value)
+    {
+        if ($value <= 0) {
+            throw new \Dogma\ValueOutOfRangeException($value, 0, null);
+        }
+    }
+
+    public static function nonNegative($value)
+    {
+        if ($value < 0) {
+            throw new \Dogma\ValueOutOfRangeException($value, 0, null);
+        }
+    }
+
+    public static function nonPositive($value)
+    {
+        if ($value > 0) {
+            throw new \Dogma\ValueOutOfRangeException($value, null, 0);
+        }
+    }
+
+    public static function negative($value)
+    {
+        if ($value >= 0) {
+            throw new \Dogma\ValueOutOfRangeException($value, null, 0);
+        }
+    }
+
     /**
      * @param mixed ...$values
      * @throws \Dogma\ValueOutOfRangeException
@@ -602,7 +639,7 @@ final class Check
      * @param mixed $value
      * @return bool
      */
-    public static function isTraversable($value): bool
+    public static function isIterable($value): bool
     {
         return is_array($value)
             || $value instanceof \stdClass

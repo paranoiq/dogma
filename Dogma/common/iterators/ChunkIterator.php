@@ -21,7 +21,7 @@ class ChunkIterator extends \IteratorIterator
      */
     public function __construct($traversable, int $chunkSize)
     {
-        Check::natural($chunkSize);
+        Check::positive($chunkSize);
         Check::traversable($traversable);
 
         $this->chunkSize = $chunkSize;

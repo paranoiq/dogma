@@ -3,7 +3,6 @@
 namespace Dogma;
 
 use IteratorAggregate;
-use Traversable;
 
 class ZipIterator implements \Iterator
 {
