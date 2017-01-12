@@ -7,7 +7,7 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Graph;
+namespace Dogma\Math\Graph;
 
 /**
  * Floyd-Warshall algorithm for finding all shortest paths in oriented weighted graph.
