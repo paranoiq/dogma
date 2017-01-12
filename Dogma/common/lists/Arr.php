@@ -952,8 +952,12 @@ class Arr
     {
         $res = [];
         foreach ($array as $values) {
-            foreach ($values as $value) {
-                $res[] = $value;
+            if (is_array($values)) {
+                foreach (self::flatten($values) as $value) {
+                    $res[] = $value;
+                }
+            } else {
+                $res[] = $values;
             }
         }
         return $res;

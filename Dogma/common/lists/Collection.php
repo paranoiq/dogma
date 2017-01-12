@@ -10,18 +10,18 @@ class Collection extends \Dogma\ImmutableArray
 
     /**
      * @param string $accepted
-     * @param object[] $array
+     * @param object[] $items
      */
-    public function __construct($accepted, $array = [])
+    public function __construct(string $accepted, $items = [])
     {
         Check::className($accepted);
 
-        parent::__construct($array);
+        parent::__construct($items);
 
-        $this->accepted = $accepted;
         foreach ($this as $object) {
             $this->checkAccepted($object);
         }
+        $this->accepted = $accepted;
     }
 
     /**

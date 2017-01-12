@@ -818,8 +818,16 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
     {
         $res = [];
         foreach ($this as $values) {
-            foreach ($values as $value) {
-                $res[] = $value;
+            if (is_array($values)) {
+                foreach (Arr::flatten($values) as $value) {
+                    $res[] = $value;
+                }
+            } elseif ($values instanceof self) {
+                foreach ($values->flatten() as $value) {
+                    $res[] = $value;
+                }
+            } else {
+                $res[] = $values;
             }
         }
         return new static($res);
