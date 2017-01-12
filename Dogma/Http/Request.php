@@ -18,15 +18,6 @@ class Request
 {
     use \Dogma\StrictBehaviorMixin;
 
-    const GET = 'get';
-    const HEAD = 'head';
-    const POST = 'post';
-    const PUT = 'put';
-    const DELETE = 'delete';
-    const TRACE = 'trace';
-    const OPTIONS = 'options';
-    const CONNECT = 'connect';
-
 
     /** @var resource */
     protected $curl;
@@ -35,7 +26,7 @@ class Request
     protected $url;
 
     /** @var string */
-    protected $method = self::GET;
+    protected $method = HttpMethod::GET;
 
     /** @var array */
     private $headers = [];
@@ -149,7 +140,7 @@ class Request
 
     public function setContent(string $data)
     {
-        if ($this->method === self::POST || $this->method === self::PUT) {
+        if ($this->method === HttpMethod::POST || $this->method === HttpMethod::PUT) {
             $this->content = $data;
         } else {
             //$this->appendUrl($data); // ?
@@ -171,22 +162,23 @@ class Request
         $this->method = strtolower($method);
 
         switch ($this->method) {
-            case self::GET:
+            case HttpMethod::GET:
                 $this->setOption(CURLOPT_HTTPGET, true);
                 break;
-            case self::HEAD:
+            case HttpMethod::HEAD:
                 $this->setOption(CURLOPT_NOBODY, true);
                 break;
-            case self::POST:
+            case HttpMethod::POST:
                 $this->setOption(CURLOPT_POST, true);
                 break;
-            case self::PUT:
+            case HttpMethod::PUT:
                 $this->setOption(CURLOPT_PUT, true);
                 break;
-            case self::DELETE:
-            case self::TRACE:
-            case self::OPTIONS:
-            case self::CONNECT:
+            case HttpMethod::PATCH:
+            case HttpMethod::DELETE:
+            case HttpMethod::TRACE:
+            case HttpMethod::OPTIONS:
+            case HttpMethod::CONNECT:
                 $this->setOption(CURLOPT_CUSTOMREQUEST, $this->method);
                 break;
             default:
@@ -447,7 +439,7 @@ class Request
     private function prepareData(array $vars)
     {
         if ($vars) {
-            $this->fillUrlVariables($vars, $this->variables);
+            $this->fillUrlVariables($vars);
         }
 
         if ($this->content && $this->variables) {
@@ -462,7 +454,7 @@ class Request
             return;
         }
 
-        if ($this->method === self::POST) {
+        if ($this->method === HttpMethod::POST) {
             $this->preparePost();
 
         } else {

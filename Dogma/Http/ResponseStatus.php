@@ -9,14 +9,15 @@
 
 namespace Dogma\Http;
 
+use Dogma\Arr;
+use Dogma\Check;
 
 /**
  * HTTP 1.1 response status codes and CURL error codes
  * @property-read $description
  */
-class ResponseStatus extends \Dogma\Enum
+class ResponseStatus extends \Dogma\PartialEnum
 {
-
 
     const S100_CONTINUE = 100;
     const S101_SWITCHING_PROTOCOLS = 101;
@@ -62,8 +63,10 @@ class ResponseStatus extends \Dogma\Enum
     const S415_UNSUPPORTED_MEDIA_TYPE = 415;
     const S416_REQUESTED_RANGE_NOT_SATISFIABLE = 416;
     const S417_EXPECTATION_FAILED = 417;
-    const S418_IM_A_TEAPOT = 418; // joke
+    const S418_IM_A_TEAPOT = 418;
+    const S419_AUTHENTICATION_TIMEOUT = 419;
     const S420_ENHANCE_YOUR_CALM = 420; // (Twitter) should be handled as 429
+    const S421_MISDIRECTED_REQUEST = 421; // (RFC 7540)
     const S422_UNPROCESSABLE_ENTITY = 422; // (WEBDAV) (RFC 4918)
     const S423_LOCKED = 423; // (WEBDAV) (RFC 4918)
     const S424_FAILED_DEPENDENCY = 424; // (WEBDAV) (RFC 4918)
@@ -74,7 +77,7 @@ class ResponseStatus extends \Dogma\Enum
     const S431_REQUEST_HEADER_FIELDS_TOO_LARGE = 431;
     const S449_RETRY_WITH = 449;
     const S450_BLOCKED_BY_WINDOWS_PARENTAL_CONTROLS = 450;
-    const S451_UNAVAILABLE_FOR_LEGAL_RESONS = 451; // draft
+    const S451_UNAVAILABLE_FOR_LEGAL_REASONS = 451;
 
     const S500_INTERNAL_SERVER_ERROR = 500;
     const S501_NOT_IMPLEMENTED = 501;
@@ -104,8 +107,8 @@ class ResponseStatus extends \Dogma\Enum
     // file system
     const READ_ERROR            = 26; // There was a problem reading a local file or an error returned by the read callback.
     const WRITE_ERROR           = 23; // An error occurred when writing received data to a local file; or an error was returned to libcurl from a write callback.
-    const FILE_COULDNT_READ_FILE = 37; // A file given with FILE:// couldn't be opened. Most likely because the file path doesn't identify an existing file. Did you check file permissions?
-    const FILESIZE_EXCEEDED     = 63; // Maximum file size exceeded.
+    const COULD_NOT_READ_FILE   = 37; // A file given with FILE:// couldn't be opened. Most likely because the file path doesn't identify an existing file. Did you check file permissions?
+    const FILE_SIZE_EXCEEDED    = 63; // Maximum file size exceeded.
 
     // user error
     const UNSUPPORTED_PROTOCOL  = 1;  // The URL you passed to libcurl used a protocol that this libcurl does not support. The support might be a compile-time option that you didn't use; it can be a misspelled protocol string or just a protocol libcurl has no code for.
@@ -118,9 +121,9 @@ class ResponseStatus extends \Dogma\Enum
     const REMOTE_FILE_NOT_FOUND = 78; // The resource referenced in the URL does not exist.
 
     // network/socket
-    const COULDNT_RESOLVE_PROXY = 5;  // Couldn't resolve proxy. The given proxy host could not be resolved.
-    const COULDNT_RESOLVE_HOST  = 6;  // Couldn't resolve host. The given remote host was not resolved.
-    const COULDNT_CONNECT       = 7;  // Failed to connect() to host or proxy.
+    const COULD_NOT_RESOLVE_PROXY = 5; // Couldn't resolve proxy. The given proxy host could not be resolved.
+    const COULD_NOT_RESOLVE_HOST = 6; // Couldn't resolve host. The given remote host was not resolved.
+    const COULD_NOT_CONNECT     = 7;  // Failed to connect() to host or proxy.
     const INTERFACE_FAILED      = 45; // (CURLE_HTTP_PORT_FAILED) Interface error. A specified outgoing interface could not be used. Set which interface to use for outgoing connections' source IP address with CURLOPT_INTERFACE.
     const SEND_ERROR            = 55; // Failed sending network data.
     const RECV_ERROR            = 56; // Failure with receiving network data.
@@ -133,22 +136,22 @@ class ResponseStatus extends \Dogma\Enum
 
     // other
     const PARTIAL_FILE          = 18; // A file transfer was shorter or larger than expected. This happens when the server first reports an expected transfer size; and then delivers data that doesn't match the previously given size.
-    const OPERATION_TIMEDOUT    = 28; // (CURLE_OPERATION_TIMEOUTED) Operation timeout. The specified time-out period was reached according to the conditions.
+    const OPERATION_TIMED_OUT   = 28; // (CURLE_OPERATION_TIMEOUTED) Operation timeout. The specified time-out period was reached according to the conditions.
     const ABORTED_BY_CALLBACK   = 42; // Aborted by callback. A callback returned "abort" to libcurl.
     const TOO_MANY_REDIRECTS    = 47; // Too many redirects. When following redirects; libcurl hit the maximum amount. Set your limit with CURLOPT_MAXREDIRS.
 
     // SSL
     const SSL_CONNECT_ERROR     = 35; // A problem occurred somewhere in the SSL/TLS handshake. You really want the error buffer and read the message there as it pinpoints the problem slightly more. Could be certificates (file formats; paths; permissions); passwords; and others.
-    const PEER_FAILED_VERIFICATION = 51; // (CURLE_SSL_PEER_CERTIFICATE) The remote server's SSL certificate or SSH md5 fingerprint was deemed not OK.
-    const SSL_ENGINE_NOTFOUND   = 53; // The specified crypto engine wasn't found.
-    const SSL_ENGINE_SETFAILED  = 54; // Failed setting the selected SSL crypto engine as default!
-    const SSL_CERTPROBLEM       = 58; // problem with the local client certificate.
+    const SSL_PEER_FAILED_VERIFICATION = 51; // (CURLE_SSL_PEER_CERTIFICATE) The remote server's SSL certificate or SSH md5 fingerprint was deemed not OK.
+    const SSL_ENGINE_NOT_FOUND  = 53; // The specified crypto engine wasn't found.
+    const SSL_ENGINE_SET_FAILED = 54; // Failed setting the selected SSL crypto engine as default!
+    const SSL_CERT_PROBLEM      = 58; // problem with the local client certificate.
     const SSL_CIPHER            = 59; // Couldn't use specified cipher.
-    const SSL_CACERT            = 60; // Peer certificate cannot be authenticated with known CA certificates.
-    const SSL_ENGINE_INITFAILED = 66; // Initiating the SSL Engine failed.
-    const SSL_CACERT_BADFILE    = 77; // Problem with reading the SSL CA cert (path? access rights?)
+    const SSL_CA_CERT           = 60; // Peer certificate cannot be authenticated with known CA certificates.
+    const SSL_ENGINE_INIT_FAILED = 66; // Initiating the SSL Engine failed.
+    const SSL_CA_CERT_BAD_FILE  = 77; // Problem with reading the SSL CA cert (path? access rights?)
     const SSL_SHUTDOWN_FAILED   = 80; // Failed to shut down the SSL connection.
-    const SSL_CRL_BADFILE       = 82; // Failed to load CRL file
+    const SSL_CRL_BAD_FILE      = 82; // Failed to load CRL file
     const SSL_ISSUER_ERROR      = 83; // Issuer check failed
 
 
@@ -163,25 +166,25 @@ class ResponseStatus extends \Dogma\Enum
     const FTP_WEIRD_PASV_REPLY  = 13; // libcurl failed to get a sensible result back from the server as a response to either a PASV or a EPSV command. The server is flawed.
     const FTP_WEIRD_227_FORMAT  = 14; // FTP servers return a 227-line as a response to a PASV command. If libcurl fails to parse that line; this return code is passed back.
     const FTP_CANT_GET_HOST     = 15; // An internal failure to lookup the host used for the new connection.
-    const FTP_COULDNT_SET_TYPE  = 17; // (CURLE_FTP_COULDNT_SET_BINARY) Received an error when trying to set the transfer mode to binary or ASCII.
-    const FTP_COULDNT_RETR_FILE = 19; // This was either a weird reply to a 'RETR' command or a zero byte transfer complete.
+    const FTP_COULD_NOT_SET_TYPE = 17; // (CURLE_FTP_COULDNT_SET_BINARY) Received an error when trying to set the transfer mode to binary or ASCII.
+    const FTP_COULD_NOT_RETR_FILE = 19; // This was either a weird reply to a 'RETR' command or a zero byte transfer complete.
     const FTP_QUOTE_ERROR       = 21; // When sending custom "QUOTE" commands to the remote server; one of the commands returned an error code that was 400 or higher (for FTP) or otherwise indicated unsuccessful completion of the command.
-    const UPLOAD_FAILED         = 25; // (CURLE_FTP_COULDNT_STOR_FILE) Failed starting the upload. For FTP; the server typically denied the STOR command. The error buffer usually contains the server's explanation for this.
+    const FTP_UPLOAD_FAILED     = 25; // (CURLE_FTP_COULDNT_STOR_FILE) Failed starting the upload. For FTP; the server typically denied the STOR command. The error buffer usually contains the server's explanation for this.
     const FTP_PORT_FAILED       = 30; // The FTP PORT command returned error. This mostly happens when you haven't specified a good enough address for libcurl to use. See CURLOPT_FTPPORT.
-    const FTP_COULDNT_USE_REST  = 31; // The FTP REST command returned error. This should never happen if the server is sane.
-    const USE_SSL_FAILED        = 64; // (CURLE_FTP_SSL_FAILED) Requested FTP SSL level failed.
+    const FTP_COULD_NOT_USE_REST = 31; // The FTP REST command returned error. This should never happen if the server is sane.
+    const FTP_SSL_FAILED        = 64; // (CURLE_FTP_SSL_FAILED) Requested FTP SSL level failed.
     const FTP_PRET_FAILED       = 84; // The FTP server does not understand the PRET command at all or does not support the given argument. Be careful when using CURLOPT_CUSTOMREQUEST; a custom LIST command will be sent with PRET CMD before PASV as well.
     const FTP_BAD_FILE_LIST     = 87; // Unable to parse FTP file list (during FTP wildcard downloading).
-    const CHUNK_FAILED          = 88; // Chunk callback reported error.
+    const FTP_CHUNK_FAILED      = 88; // Chunk callback reported error.
 
     // TFTP
-    const TFTP_NOTFOUND         = 68; // File not found on TFTP server.
+    const TFTP_NOT_FOUND        = 68; // File not found on TFTP server.
     const TFTP_PERM             = 69; // Permission problem on TFTP server.
-    const REMOTE_DISK_FULL      = 70; // Out of disk space on the server.
+    const TFTP_REMOTE_DISK_FULL = 70; // Out of disk space on the server.
     const TFTP_ILLEGAL          = 71; // Illegal TFTP operation.
-    const TFTP_UNKNOWNID        = 72; // Unknown TFTP transfer ID.
-    const REMOTE_FILE_EXISTS    = 73; // File already exists and will not be overwritten.
-    const TFTP_NOSUCHUSER       = 74; // This error should never be returned by a properly functioning TFTP server.
+    const TFTP_UNKNOWN_ID       = 72; // Unknown TFTP transfer ID.
+    const TFTP_REMOTE_FILE_EXISTS = 73; // File already exists and will not be overwritten.
+    const TFTP_NO_SUCH_USER     = 74; // This error should never be returned by a properly functioning TFTP server.
 
     // SSH
     const SSH_ERROR             = 79; // [CURL_SSH] An unspecified error occurred during the SSH session.
@@ -194,16 +197,16 @@ class ResponseStatus extends \Dogma\Enum
     // Telnet
     const TELNET_OPTION_SYNTAX  = 49; // A telnet option string was Illegally formatted.
 
-    // RTPS
+    // RTSP
     const RTSP_CSEQ_ERROR       = 85; // Mismatch of RTSP CSeq numbers.
     const RTSP_SESSION_ERROR    = 86; // Mismatch of RTSP Session Identifiers.
 
     /**
-     * Get formated status name
+     * Get formatted status name
      */
     public function getDescription(): string
     {
-        $id = $this->getIdentifier();
+        $id = $this->getConstantName();
         if ($id[0] === 'S' && $id[4] === '_') {
             $id = substr($id, 5);
         }
@@ -220,7 +223,7 @@ class ResponseStatus extends \Dogma\Enum
      */
     public function isInfo(): bool
     {
-        return $this->value >= 100 && $this->value < 200;
+        return $this->getValue() >= 100 && $this->getValue() < 200;
     }
 
     /**
@@ -228,7 +231,7 @@ class ResponseStatus extends \Dogma\Enum
      */
     public function isOk(): bool
     {
-        return $this->value >= 200 && $this->value < 300;
+        return $this->getValue() >= 200 && $this->getValue() < 300;
     }
 
     /**
@@ -236,7 +239,7 @@ class ResponseStatus extends \Dogma\Enum
      */
     public function isRedirect(): bool
     {
-        return ($this->value >= 300 && $this->value < 400) || $this->value == self::TOO_MANY_REDIRECTS;
+        return ($this->getValue() >= 300 && $this->getValue() < 400) || $this->getValue() == self::TOO_MANY_REDIRECTS;
     }
 
     /**
@@ -244,7 +247,7 @@ class ResponseStatus extends \Dogma\Enum
      */
     public function isHttpError(): bool
     {
-        return $this->value >= 400 && $this->value < 600;
+        return $this->getValue() >= 400 && $this->getValue() < 600;
     }
 
     /**
@@ -252,7 +255,7 @@ class ResponseStatus extends \Dogma\Enum
      */
     public function isCurlError(): bool
     {
-        return $this->value < 100;
+        return $this->getValue() < 100;
     }
 
     /**
@@ -264,18 +267,18 @@ class ResponseStatus extends \Dogma\Enum
     }
 
     /**
-     * Is a network connection error. Possibility of succesful retry
+     * Is a network connection error. Possibility of successful retry
      */
     public function isNetworkError(): bool
     {
-        return in_array($this->value, [
-            self::COULDNT_RESOLVE_PROXY,
-            self::COULDNT_RESOLVE_HOST,
-            self::COULDNT_CONNECT,
+        return Arr::contains([
+            self::COULD_NOT_RESOLVE_PROXY,
+            self::COULD_NOT_RESOLVE_HOST,
+            self::COULD_NOT_CONNECT,
             self::SEND_ERROR, // is this network or system?
             self::RECV_ERROR, // is this network or system?
             self::TRY_AGAIN,
-        ]);
+        ], $this->getValue());
     }
 
     /**
@@ -283,19 +286,35 @@ class ResponseStatus extends \Dogma\Enum
      */
     public function isFatalError(): bool
     {
-        return in_array($this->value, [
+        return Arr::contains([
             self::FAILED_INIT,
             self::OUT_OF_MEMORY,
             self::UNKNOWN_OPTION,
-            self::SSL_ENGINE_NOTFOUND,
-            self::SSL_ENGINE_SETFAILED,
-            self::SSL_CERTPROBLEM,
-            self::SSL_ENGINE_INITFAILED,
+            self::SSL_ENGINE_NOT_FOUND,
+            self::SSL_ENGINE_SET_FAILED,
+            self::SSL_CERT_PROBLEM,
+            self::SSL_ENGINE_INIT_FAILED,
             self::INTERFACE_FAILED,
             //self::SEND_ERROR,
             //self::RECV_ERROR,
             self::CONV_REQD,
-        ]);
+        ], $this->getValue());
+    }
+
+    /**
+     * @param int $value
+     * @return bool
+     */
+    public static function validateValue(&$value): bool
+    {
+        Check::range($value, 1, 999);
+
+        return true;
+    }
+
+    public static function getValueRegexp(): string
+    {
+        return '[0-9]{1,3}';
     }
 
 }
