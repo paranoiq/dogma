@@ -1,4 +1,11 @@
 <?php
+/**
+ * This file is part of the Dogma library (https://github.com/paranoiq/dogma)
+ *
+ * Copyright (c) 2012 Vlasta Neubauer (@paranoiq)
+ *
+ * For the full copyright and license information read the file 'license.md', distributed with this source code
+ */
 
 namespace Dogma\Mapping;
 
@@ -17,7 +24,7 @@ class MappingIterator implements \Iterator
 
     /** @var \Dogma\Mapping\Mapper */
     private $mapper;
-    
+
     /** @var bool */
     private $reverse;
 
@@ -58,7 +65,7 @@ class MappingIterator implements \Iterator
         $this->key++;
         $this->source->next();
     }
-    
+
     public function valid(): bool
     {
         return $this->source->valid();
@@ -75,7 +82,7 @@ class MappingIterator implements \Iterator
             return $this->mapper->map($this->type, $this->source->current());
         }
     }
-    
+
     public function key(): int
     {
         return $this->key;
