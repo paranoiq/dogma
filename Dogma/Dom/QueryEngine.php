@@ -170,7 +170,7 @@ class QueryEngine
             $alias = $name;
         }
         if (in_array($alias, $this->nativeFunctions)) {
-            throw new QueryEngineException(sprintf('Function \'%s\' is already registered.', $alias));
+            throw new \Dogma\Dom\QueryEngineException(sprintf('Function \'%s\' is already registered.', $alias));
         }
 
         if ($expectNode) {
@@ -204,7 +204,7 @@ class QueryEngine
             $list = $this->xpath->query($path);
         }
         if ($list === false) {
-            throw new QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
+            throw new \Dogma\Dom\QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
         }
 
         return new NodeList($list, $this);
@@ -225,7 +225,7 @@ class QueryEngine
             $list = $this->xpath->query($path);
         }
         if ($list === false) {
-            throw new QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
+            throw new \Dogma\Dom\QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
         }
 
         if (!count($list)) {
@@ -251,7 +251,7 @@ class QueryEngine
             $value = $this->xpath->evaluate($path);
         }
         if ($value === false) {
-            throw new QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
+            throw new \Dogma\Dom\QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
         }
 
         if (substr($query, 0, 5) === 'date(') {
@@ -431,7 +431,7 @@ class QueryEngine
 
         $date = \DateTime::createFromFormat($format, $string);
         if (!$date) {
-            throw new QueryEngineException(
+            throw new \Dogma\Dom\QueryEngineException(
                 sprintf('Cannot create DateTime object from \'%s\' using format \'%s\'.', $string, $format)
             );
         }
@@ -450,7 +450,7 @@ class QueryEngine
 
         $date = \DateTime::createFromFormat($format, $string);
         if (!$date) {
-            throw new QueryEngineException(
+            throw new \Dogma\Dom\QueryEngineException(
                 sprintf('Cannot create DateTime object from \'%s\' using format \'%s\'.', $string, $format)
             );
         }

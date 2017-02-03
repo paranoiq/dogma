@@ -33,7 +33,11 @@ class Element
         return $this->engine->find($xpath, $this->element);
     }
 
-    public function findOne(string $xpath): \DOMNode
+    /**
+     * @param string $xpath
+     * @return \Dogma\Dom\Element|\DOMNode|null
+     */
+    public function findOne(string $xpath)
     {
         return $this->engine->findOne($xpath, $this->element);
     }

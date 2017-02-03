@@ -134,7 +134,7 @@ class Request
             $this->setVariables($data);
 
         } else {
-            throw new RequestException('Job data may be only a string or array!');
+            throw new \Dogma\Http\RequestException('Job data may be only a string or array!');
         }
     }
 
@@ -182,7 +182,7 @@ class Request
                 $this->setOption(CURLOPT_CUSTOMREQUEST, $this->method);
                 break;
             default:
-                throw new RequestException(sprintf('Unknown method \'%s\'!', $this->method));
+                throw new \Dogma\Http\RequestException(sprintf('Unknown method \'%s\'!', $this->method));
         }
     }
 
@@ -193,20 +193,20 @@ class Request
     public function setOption($name, $value)
     {
         if (is_string($name)) {
-            $num = CurlHelpers::getCurlOptionNumber($name);
+            $num = CurlHelper::getCurlOptionNumber($name);
             if (is_null($num)) {
-                throw new RequestException(sprintf('Unknown CURL option \'%s\'!', $name));
+                throw new \Dogma\Http\RequestException(sprintf('Unknown CURL option \'%s\'!', $name));
             }
 
         } elseif (!is_int($name)) {
-            throw new RequestException('Option name must be a string or a CURLOPT_* constant!');
+            throw new \Dogma\Http\RequestException('Option name must be a string or a CURLOPT_* constant!');
 
         } else {
             $num = $name;
         }
 
         if (!curl_setopt($this->curl, $num, $value)) {
-            throw new RequestException('Invalid CURL option.'); ///
+            throw new \Dogma\Http\RequestException('Invalid CURL option.');
         }
     }
 
@@ -310,17 +310,28 @@ class Request
         $this->setOption(CURLOPT_SSL_VERIFYHOST, $verifyHost);
     }
 
+    public function setProxy(string $proxy = null, $port = 3128, $userName = null, $password = null)
+    {
+        if ($proxy === null) {
+            $this->setOption(CURLOPT_PROXY, null);
+            $this->setOption(CURLOPT_PROXYPORT, null);
+            $this->setOption(CURLOPT_PROXYUSERPWD, null);
+        } else {
+            $this->setOption(CURLOPT_PROXY, $proxy);
+            $this->setOption(CURLOPT_PROXYPORT, $port);
+            $this->setOption(CURLOPT_PROXYUSERPWD, ($userName && $password) ? $userName . ':' . $password : null);
+        }
+    }
+
     // output handling -------------------------------------------------------------------------------------------------
 
-    /**
-     * Execute request.
-     */
     public function execute(): Response
     {
         $this->init();
         $this->prepare();
         $response = curl_exec($this->curl);
         $error = curl_errno($this->curl);
+
         return $this->createResponse($response, $error);
     }
 
@@ -370,7 +381,7 @@ class Request
     {
         $info = curl_getinfo($this->curl);
         if ($info === false) {
-            throw new RequestException('Info cannot be obtained from CURL.');
+            throw new \Dogma\Http\RequestException('Info cannot be obtained from CURL.');
         }
 
         if ($error) {
@@ -383,9 +394,8 @@ class Request
                 $status = ResponseStatus::get(ResponseStatus::UNKNOWN_RESPONSE_CODE);
             }
         }
-
         if ($status->isFatalError()) {
-            throw new RequestException(sprintf('Fatal error occurred during request execution: %s', $status->getConstantName()), $status->getValue());
+            throw new \Dogma\Http\RequestException(sprintf('Fatal error occurred during request execution: %s', $status->getConstantName()), $status->getValue());
         }
 
         $response = new Response($response, $status, $info);
@@ -395,8 +405,6 @@ class Request
 
         return $response;
     }
-
-    // internals -------------------------------------------------------------------------------------------------------
 
     private function prepareHeaders()
     {
@@ -434,32 +442,31 @@ class Request
     }
 
     /**
-     * @param mixed[]
+     * @param mixed[] $variables
      */
-    private function prepareData(array $vars)
+    private function prepareData(array $variables)
     {
-        if ($vars) {
-            $this->fillUrlVariables($vars);
+        if ($variables) {
+            $this->fillUrlVariables($variables);
         }
 
-        if ($this->content && $this->variables) {
-            throw new RequestException('Both data content and variables are set. Only one at a time can be sent!');
+        if ($this->content !== null && $this->variables !== []) {
+            throw new \Dogma\Http\RequestException('Both data content and variables are set. Only one at a time can be sent!');
         }
 
         if ($this->content) {
             $this->prepareUpload();
         }
 
-        if (!$this->variables) {
+        if ($this->variables === []) {
             return;
         }
 
         if ($this->method === HttpMethod::POST) {
             $this->preparePost();
-
         } else {
             $names = array_keys($this->variables);
-            throw new RequestException(
+            throw new \Dogma\Http\RequestException(
                 'Redundant request variable' . (count($names) > 1 ? 's' : '') . ' \'' . implode("', '", $names) . '\' in request data.'
             );
         }
@@ -473,7 +480,7 @@ class Request
             $fileName = substr($this->content, 1);
             $file = fopen($fileName, 'r');
             if (!$file) {
-                throw new RequestException(sprintf('Could not open file %s.', $fileName));
+                throw new \Dogma\Http\RequestException(sprintf('Could not open file %s.', $fileName));
             }
 
             $this->setOption(CURLOPT_INFILE, $file);
@@ -488,7 +495,7 @@ class Request
     {
         foreach ($this->variables as $name => $value) {
             if ($value === null) {
-                throw new RequestException(sprintf('POST parameter \'%s\' must be filled.', $name));
+                throw new \Dogma\Http\RequestException(sprintf('POST parameter \'%s\' must be filled.', $name));
             }
         }
         $this->setOption(CURLOPT_POSTFIELDS, $this->variables);
@@ -523,7 +530,7 @@ class Request
     {
         foreach ($vars as $name => $short) {
             if (!isset($this->variables[$name])) {
-                throw new RequestException(sprintf('URL variable \'%s\' is missing in request data.', $name));
+                throw new \Dogma\Http\RequestException(sprintf('URL variable \'%s\' is missing in request data.', $name));
             }
 
             if ($short) {
@@ -536,9 +543,6 @@ class Request
         }
     }
 
-    /**
-     * Copy resource.
-     */
     final public function __clone()
     {
         if ($this->curl) {

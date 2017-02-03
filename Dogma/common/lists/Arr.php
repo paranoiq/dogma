@@ -1193,7 +1193,7 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed[]|\Traversable $values
+     * @param mixed[] $values
      * @return mixed[]
      */
     public static function prependAll(array $array, array $values): array

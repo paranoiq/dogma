@@ -17,7 +17,6 @@ class Dumper
      * @param int
      * @param int
      * @param bool $only is the only child?
-     * @throws \Nette\NotImplementedException
      */
     public static function dump($node, int $maxDepth = 15, int $depth = 0, bool $only = false)
     {
@@ -66,7 +65,7 @@ class Dumper
 
         } else {
             echo '[something]';
-            throw new \Nette\NotImplementedException('Dom dumper find some strange thing.');
+            throw new \Dogma\NotImplementedException('Dom dumper found some strange thing.');
         }
 
         if ($depth === 0) {

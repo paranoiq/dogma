@@ -202,13 +202,10 @@ class File
         return $done;
     }
 
-    /**
-     * Get entire content of file. Beware of BIG files!
-     */
     public function getContent(): string
     {
         if ($this->getPosition()) {
-            $this->setPosition(0); // ?
+            $this->setPosition(0);
         }
 
         $str = '';
@@ -219,9 +216,6 @@ class File
         return $str;
     }
 
-    /**
-     * Write binary data to file
-     */
     public function write(string $data)
     {
         $this->testOpen();
