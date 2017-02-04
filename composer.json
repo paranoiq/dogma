@@ -1,20 +1,21 @@
 {
     "name": "dogma/dogma",
     "type": "library",
-    "description": "Collection of OO libraries sharing the same base and the same ideology - simplicity, self-explaining API, good design. Includes Database, Datasheet, XML/HTML DOM, HTTP, Filesystem and Email tools.",
-    "keywords": ["datasheet","database","xml","html","dom","http","filesystem","mail","imap"],
+    "description": "Collection of libraries sharing the same base and the same ideology - simplicity, self-explaining API, good design. Includes Database, Data sheet, XML/HTML DOM, HTTP, Filesystem and Email tools.",
     "homepage": "http://github.com/paranoiq/dogma",
     "license": ["BSD-3"],
     "authors": [
         {
             "name": "Vlasta Neubauer",
-            "homepage": "https://twitter.com/paranoiq"
+            "homepage": "http://www.paranoiq.cz"
         }
     ],
     "require": {
-        "php": ">=5.6.0",
-        "nette/utils": "~2.4",
+        "php": ">=7.0",
+        "nette/http": "~2.4",
         "nette/reflection": "~2.4",
+        "nette/php-generator": "~2.4",
+        "nette/utils": "~2.4",
         "tracy/tracy": "~2.4"
     },
     "require-dev": {
@@ -23,7 +24,7 @@
         "squizlabs/php_codesniffer": "~2.7",
         "jakub-onderka/php-console-highlighter": "0.3.1",
         "jakub-onderka/php-parallel-lint": "0.8.0",
-        "phpstan/phpstan": "0.4.2"
+        "phpstan/phpstan": "~0.6"
     },
     "autoload": {
         "files": ["Dogma/loader.php"]
