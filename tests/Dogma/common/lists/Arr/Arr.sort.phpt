@@ -22,7 +22,6 @@ Assert::same(Arr::reverse($array), [3 => 4, 2 => 3, 1 => 2, 0 => 1]);
 // shuffle()
 Assert::same(Arr::shuffle($empty), []);
 $sh = Arr::shuffle($array);
-Assert::notSame($sh, $array);
 Assert::same(Arr::values(Arr::sort($sh)), $array);
 
 // sort()

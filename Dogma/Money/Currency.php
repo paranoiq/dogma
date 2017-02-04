@@ -516,7 +516,7 @@ class Currency extends \Dogma\Enum
 
     public function getByIdent(string $ident): self
     {
-        self::get(array_search($ident, self::$idents));
+        return self::get(array_search($ident, self::$idents));
     }
 
     public static function validateValue(&$value): bool

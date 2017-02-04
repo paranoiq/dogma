@@ -48,6 +48,7 @@
     <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
     <rule ref="PSR2">
         <exclude name="Generic.Files.LineLength"/><!-- warning. can not be suppressed -->
+        <exclude name="Generic.NamingConventions.ConstructorName.OldStyle"/><!-- bullshit. Filter::filter() is now a regular method -->
         <exclude name="PSR1.Files.SideEffects.FoundWithSymbols"/><!-- warning. cannot use optional declaration of functions -->
         <exclude name="PSR1.Classes.ClassDeclaration.MultipleClasses"/><!-- tests -->
         <exclude name="PSR2.Namespaces.UseDeclaration.SpaceAfterLastUse"/><!-- i like it with two spaces -->

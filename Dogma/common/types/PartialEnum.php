@@ -18,7 +18,7 @@ abstract class PartialEnum extends \Dogma\Enum
      */
     public static function isKnownValue($value): bool
     {
-        return Arr::contains(self::getAllowedValues(), $value);
+        return Arr::contains(static::getAllowedValues(), $value);
     }
 
     /**
@@ -27,7 +27,7 @@ abstract class PartialEnum extends \Dogma\Enum
      */
     public static function validateValue(&$value): bool
     {
-        $regexp = '/^' . self::getValueRegexp() . '?$/';
+        $regexp = '/^' . static::getValueRegexp() . '?$/';
         $result = preg_match($regexp, $value);
         if ($result === false) {
             throw new \Dogma\InvalidRegularExpressionException($regexp);

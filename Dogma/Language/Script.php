@@ -571,7 +571,7 @@ class Script extends \Dogma\Enum
         return self::$idents[$this->getValue()];
     }
 
-    public function getByIdent(string $ident): self
+    public static function getByIdent(string $ident): self
     {
         return self::get(array_search($ident, self::$idents));
     }

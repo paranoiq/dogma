@@ -1,14 +1,23 @@
 
 parameters:
     ignoreErrors:
-        - '~^Call to an undefined method Dogma\\ImmutableArrayAccessMixin::toArray\(\)~' # trait
-        - '~^Access to an undefined property Dogma\\ImmutableArrayAccessMixin::\$items~' # trait
-        - '~^Call to an undefined method Dogma\\Time\\DateDateTimeCommonMixin::format\(\)~' # trait
-        - '~^Static call to instance method Dogma\\Exception::__construct~' # skipping one ancestor. dumb error message
-        - '~^Dogma\\(Invalid(Argument|Interface|RegularExpression)|ValueOutOf(Bounds|Range))Exception::__construct\(\) does not call parent constructor~' # skipping one ancestor
-        - '~^Access to an undefined property Dogma\\Dom\\Element::\$nodeName~' # magic
-        - '~^Access to an undefined property (DOMElement|DOMNode|DOMDocument|DOMCdataSection|DOMComment|DOMText|DOMAttr)::~' # wrong reflection
-        - '~^Method DOMXPath::registerPhpFunctions\(\) invoked with 1 parameter, 0 required~' # wrong reflection
-        - '~^Access to an undefined property Dogma\\Mail\\Message::\$date~' # magic
-        - '~^Class Dogma\\Tests\\.*TestClass was not found while trying to analyse it~' # test internals
+        # strange
+        - '~^Parameter #1 $value of static method Dogma\Math\Decimal\Decimal::parse() expects string, string|int|null given.~'
+        - '~^Dogma\\.*Exception::__construct\(\) does not call parent constructor~' # skipping one ancestor
+
+        # misleading
+        - '~^Parameter #1 $value of class Dogma\Math\Decimal\Decimal constructor expects string|int, int|string|Dogma\Math\Decimal\Decimal given.~' # if (!$x instanceof C)
+        - '~^Method Dogma\Mapping\Type\TupleHandler::getParameters() should return Dogma\Type[] but returns Dogma\Type[]|Dogma\Type|null.~' # guaranteed
+        - '~^Method Dogma\\Http\\DownloadRequest::execute\(\) should return Dogma\\Http\\FileResponse but returns Dogma\\Http\\Response.~' # guaranteed
+        - '~^Parameter #1 $row of method Dogma\Datasheet\HtmlTableIterator::formatRow() expects Dogma\Dom\Element, Dogma\Dom\Element|DOMNode given.~' # guaranteed
+
+        # intentionally
+        - '~^Class Dogma\\Tests\\.*TestClass was not found while trying to analyse it~' # test internals - not autoloaded
+
+        # missing dependencies
         - '~^Function mailparse_.* not found~'
+        - '~class RarArchive~'
+
+        # wrong reflection. todo: send PR to phpstan
+        - '~^Access to an undefined property (DOMElement|DOMNode|DOMDocument|DOMCdataSection|DOMComment|DOMText|DOMAttr)::~'
+        - '~^Method DOMXPath::registerPhpFunctions\(\) invoked with 1 parameter, 0 required~'

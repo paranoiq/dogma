@@ -793,9 +793,9 @@ class Language extends \Dogma\Enum
         return self::$idents[$this->getValue()];
     }
 
-    public function getByIdent(string $ident): self
+    public static function getByIdent(string $ident): self
     {
-        self::get(array_search($ident, self::$idents));
+        return self::get(array_search($ident, self::$idents));
     }
 
     public static function validateValue(&$value): bool

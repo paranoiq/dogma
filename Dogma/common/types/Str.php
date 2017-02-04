@@ -9,13 +9,19 @@
 
 namespace Dogma;
 
+use Dogma\Language\Locale\Locale;
+
+/**
+ * UTF-8 strings manipulation
+ */
 class Str extends \Nette\Utils\Strings
 {
 
     /**
      * Test equality with another string
      * @param string $first
-     * @param string|\Collator|null
+     * @param string $second
+     * @param string|\Collator|\Dogma\Language\Locale\Locale $collation
      * @return bool
      */
     public function equals(string $first, string $second, $collation = CaseComparison::CASE_SENSITIVE): bool
