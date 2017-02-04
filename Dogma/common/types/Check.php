@@ -9,8 +9,6 @@
 
 namespace Dogma;
 
-use Nette\Utils\Strings;
-
 /**
  * Type and range validations
  */
@@ -513,7 +511,7 @@ final class Check
         if (!is_string($value)) {
             throw new \Dogma\InvalidTypeException(Type::STRING, $value);
         }
-        $length = Strings::length($value);
+        $length = Str::length($value);
         self::range($length, $min, $max);
     }
 

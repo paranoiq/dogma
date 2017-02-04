@@ -26,19 +26,57 @@ class Str extends \Nette\Utils\Strings
     /**
      * Compare to another string
      * @param string $first
-     * @param string|\Collator
-     * @return bool
+     * @param string $second
+     * @param string|\Collator|\Dogma\Language\Locale\Locale $collation
+     * @return int
      */
-    public static function compare($first, $second, $collation = CaseComparison::CASE_SENSITIVE): bool
+    public static function compare($first, $second, $collation = CaseComparison::CASE_SENSITIVE): int
     {
         if ($collation === CaseComparison::CASE_SENSITIVE) {
             return strcmp($first, $second);
         } elseif ($collation === CaseComparison::CASE_INSENSITIVE) {
             return strcasecmp($first, $second);
-        } elseif (is_string($collation)) {
+        } elseif (is_string($collation) || $collation instanceof Locale) {
             $collation = new Language\Collator($collation);
+        } elseif (!$collation instanceof \Collator) {
+            throw new \Dogma\InvalidValueException($collation, [Type::STRING, \Collator::class, Locale::class]);
         }
         return $collation->compare($first, $second);
     }
-    
+
+    public static function toFirst(string $string, string $search): string
+    {
+        $pos = strpos($string, $search);
+        if ($pos === false) {
+            return $string;
+        }
+
+        return substr($string, 0, $pos);
+    }
+
+    public static function fromFirst(string $string, string $search): string
+    {
+        $pos = strpos($string, $search);
+        if ($pos === false) {
+            return '';
+        }
+
+        return substr($string, $pos + 1);
+    }
+
+    /**
+     * @param string $string
+     * @param string $search
+     * @return string[]
+     */
+    public static function splitByFirst(string $string, string $search): array
+    {
+        $pos = strpos($string, $search);
+        if ($pos === false) {
+            return [$string, ''];
+        }
+
+        return [substr($string, 0, $pos), substr($string, $pos + 1)];
+    }
+
 }

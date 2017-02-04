@@ -9,8 +9,7 @@
 
 namespace Dogma\Language;
 
-use Nette\Utils\Strings;
-
+use Dogma\Str;
 
 /**
  * The Inflector transforms words from singular to plural, class names to table names, modularized class names to ones without, and class names to foreign keys.
@@ -99,7 +98,7 @@ class Inflector
      */
     public static function singularize(string $word): string
     {
-        $lower = Strings::lower($word);
+        $lower = Str::lower($word);
 
         if (self::isSingular($word)) {
             return $word;
@@ -131,7 +130,7 @@ class Inflector
      */
     public static function pluralize(string $word): string
     {
-        $lower = Strings::lower($word);
+        $lower = Str::lower($word);
 
         if (self::isPlural($word)) {
             return $word;
@@ -171,7 +170,7 @@ class Inflector
      */
     public static function isPlural(string $word): bool
     {
-        $lower = Strings::lower($word);
+        $lower = Str::lower($word);
 
         if (!self::isCountable($word)) {
             return true;
@@ -195,7 +194,7 @@ class Inflector
      */
     public static function isCountable(string $word): bool
     {
-        $lower = Strings::lower($word);
+        $lower = Str::lower($word);
 
         return !in_array($lower, self::$uncountable);
     }
@@ -205,7 +204,7 @@ class Inflector
      */
     public static function isIrregular(string $word): bool
     {
-        $lower = Strings::lower($word);
+        $lower = Str::lower($word);
 
         return in_array($lower, self::$irregular) || array_key_exists($lower, self::$irregular);
     }

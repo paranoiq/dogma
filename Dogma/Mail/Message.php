@@ -11,8 +11,7 @@ namespace Dogma\Mail;
 
 use Dogma\Io\File;
 use Dogma\Language\Inflector;
-use Nette\Utils\Strings;
-
+use Dogma\Str;
 
 /**
  * Mime mail parser. Parses mail message from a File or string.
@@ -334,7 +333,7 @@ class Message
     {
         // =?utf-8?q?Test=3a=20P=c5=99=c3=...?=
         $that = $this;
-        $header = Strings::replace($header, '/(=\\?[^?]+\\?[^?]\\?[^?]+\\?=)/', function ($match) use ($that) {
+        $header = Str::replace($header, '/(=\\?[^?]+\\?[^?]\\?[^?]+\\?=)/', function ($match) use ($that) {
             list($x, $charset, $encoding, $message, $y) = explode('?', $match[0]);
 
             if (strtolower($encoding) === 'b') {

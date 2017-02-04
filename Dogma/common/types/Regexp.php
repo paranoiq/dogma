@@ -9,9 +9,6 @@
 
 namespace Dogma;
 
-use Nette\Utils\Strings;
-
-
 /**
  * Regular expression object
  */
@@ -49,7 +46,7 @@ class Regexp
      */
     public function split(string $subject, int $flags = 0): array
     {
-        return Strings::split($subject, $this->pattern, $flags);
+        return Str::split($subject, $this->pattern, $flags);
     }
 
     /**
@@ -61,7 +58,7 @@ class Regexp
      */
     public function match(string $subject, int $flags = 0, int $offset = 0): array
     {
-        return Strings::match($subject, $this->pattern, $flags, $offset);
+        return Str::match($subject, $this->pattern, $flags, $offset);
     }
 
     /**
@@ -73,7 +70,7 @@ class Regexp
      */
     public function matchAll(string $subject, int $flags = 0, int $offset = 0): array
     {
-        return Strings::matchAll($subject, $this->pattern, $flags, $offset);
+        return Str::matchAll($subject, $this->pattern, $flags, $offset);
     }
 
     /**
@@ -85,7 +82,7 @@ class Regexp
      */
     public function replace(string $subject, $replacement = null, int $limit = -1): string
     {
-        return Strings::replace($subject, $this->pattern, $replacement, $limit);
+        return Str::replace($subject, $this->pattern, $replacement, $limit);
     }
 
 }

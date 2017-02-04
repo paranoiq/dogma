@@ -9,7 +9,7 @@
 
 namespace Dogma\Dom;
 
-use Nette\Utils\Strings;
+use Dogma\Str;
 
 /**
  * Simple query engine based on XPath 1.0
@@ -309,7 +309,7 @@ class QueryEngine
      */
     private function extractPath(string $query, $context)
     {
-        if (Strings::match($query, '/^[a-zA-Z0-9_-]+\\(/')) {
+        if (Str::match($query, '/^[a-zA-Z0-9_-]+\\(/')) {
             $node = $this->evaluate($query, $context);
         } else {
             $node = $this->findOne($query, $context);
@@ -352,17 +352,17 @@ class QueryEngine
             }
         }
 
-        $query = Strings::replace($query, $this->translations);
+        $query = Str::replace($query, $this->translations);
 
         // adding ".//" before element names
-        $query = Strings::replace($query, '@(?<=\\()([0-9A-Za-z_:]+)(?!\\()@', './/$1');
+        $query = Str::replace($query, '@(?<=\\()([0-9A-Za-z_:]+)(?!\\()@', './/$1');
 
         // fixing ".//" before function names
-        $query = Strings::replace($query, '@\\.//([0-9A-Za-z_:-]+)\\(@', '$1(');
+        $query = Str::replace($query, '@\\.//([0-9A-Za-z_:-]+)\\(@', '$1(');
 
         $nativeFunctions = $this->nativeFunctions;
         $userFunctions = $this->userFunctions;
-        $query = Strings::replace(
+        $query = Str::replace(
             $query,
             '/(?<![A-Za-z0-9_-])([A-Za-z0-9_-]+)\\(/',
             function ($match) use ($nativeFunctions, $userFunctions) {
@@ -405,7 +405,7 @@ class QueryEngine
      */
     public static function match(string $string, string $pattern)
     {
-        if ($m = Strings::match($string, $pattern)) {
+        if ($m = Str::match($string, $pattern)) {
             return $m[0];
         }
 
@@ -417,7 +417,7 @@ class QueryEngine
      */
     public static function replace(string $string, string $pattern, string $replacement): string
     {
-        return Strings::replace($string, $pattern, $replacement);
+        return Str::replace($string, $pattern, $replacement);
     }
 
     /**

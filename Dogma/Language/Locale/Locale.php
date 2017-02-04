@@ -230,7 +230,7 @@ class Locale
         foreach ($this->components as $key => $component) {
             if (preg_match('/^private\\d+$/', $key)) {
                 // work around bug, when last private variant is returned with keywords
-                $privates[] = Str::substrTo($component, '@');
+                $privates[] = Str::toFirst($component, '@');
             }
         }
         return $privates;
@@ -247,7 +247,7 @@ class Locale
             return null;
         }
         // work around bug, when last private variant is returned with keywords
-        return Str::substrTo($this->components[$key], '@');
+        return Str::toFirst($this->components[$key], '@');
     }
 
     /**
