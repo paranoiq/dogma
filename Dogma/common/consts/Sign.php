@@ -16,7 +16,8 @@ class Sign
     const SIGNED = 'signed';
     const UNSIGNED = 'unsigned';
 
-    const POSITIVE = 'positive';
-    const NEGATIVE = 'negative';
+    const POSITIVE = 1;
+    const NEUTRAL = 0;
+    const NEGATIVE = -1;
 
 }

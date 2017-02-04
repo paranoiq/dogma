@@ -225,6 +225,16 @@ class Type
      * @param bool|null $nullable
      * @return self
      */
+    public static function uint($size = null, bool $nullable = null): self
+    {
+        return self::get(self::INT, $size, Sign::UNSIGNED, $nullable);
+    }
+
+    /**
+     * @param int|null $size
+     * @param bool|null $nullable
+     * @return self
+     */
     public static function float($size = null, bool $nullable = null): self
     {
         return self::get(self::FLOAT, $size, $nullable);
