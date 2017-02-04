@@ -7,17 +7,18 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Http;
+namespace Dogma\Http\Curl;
 
-class CurlHelpers
+class CurlHelper
 {
+    use \Dogma\StaticClassMixin;
 
     // Errors ----------------------------------------------------------------------------------------------------------
 
     public static function getCurlErrorName(int $error): string
     {
-        $consts = get_defined_constants(true);
-        foreach ($consts['curl'] as $name => $value) {
+        $constants = get_defined_constants(true);
+        foreach ($constants['curl'] as $name => $value) {
             if ($value === $error && substr($name, 0, 6) === 'CURLE_') {
                 return $name;
             }
@@ -28,8 +29,8 @@ class CurlHelpers
 
     public static function getCurlMultiErrorName(int $error): string
     {
-        $consts = get_defined_constants(true);
-        $curl = $consts['curl'];
+        $constants = get_defined_constants(true);
+        $curl = $constants['curl'];
         foreach ($curl as $name => $value) {
             if ($value === $error && substr($name, 0, 6) === 'CURLM_') {
                 return $name;
@@ -54,8 +55,8 @@ class CurlHelpers
      */
     public static function getCurlOptionName(int $option)
     {
-        $consts = get_defined_constants(true);
-        foreach ($consts['curl'] as $name => $value) {
+        $constants = get_defined_constants(true);
+        foreach ($constants['curl'] as $name => $value) {
             if ($value === $option && substr($name, 0, 8) === 'CURLOPT_') {
                 return $name;
             }
@@ -98,8 +99,8 @@ class CurlHelpers
         // CURLINFO_PRIVATE
         // certinfo
 
-        $consts = get_defined_constants(true);
-        foreach ($consts['curl'] as $name => $value) {
+        $constants = get_defined_constants(true);
+        foreach ($constants['curl'] as $name => $value) {
             if ($value === $num && substr($name, 0, 9) === 'CURLINFO_') {
                 return $translate[$name];
             }

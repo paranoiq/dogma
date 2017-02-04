@@ -7,18 +7,17 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Io;
+namespace Dogma\Io\Filesystem;
 
 use FilesystemIterator;
 use Dogma;
 
 /**
- * Recursive directory iterator
+ * Directory iterator
  */
-class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
+class DirectoryIterator extends FilesystemIterator
 {
 
-    /** @var int */
     private $flags;
 
     public function __construct(string $path, int $flags = null)
@@ -35,7 +34,7 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
                 parent::__construct($path, $flags);
             }
         } catch (\UnexpectedValueException $e) {
-            throw new DirectoryException($e->getMessage(), $e);
+            throw new \Dogma\Io\Filesystem\DirectoryException($e->getMessage(), $e);
         }
     }
 
@@ -53,7 +52,7 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
     }
 
     /**
-     * @return \Dogma\Io\FileInfo|mixed
+     * @return \Dogma\Io\Filesystem\FileInfo|mixed
      */
     public function current()
     {

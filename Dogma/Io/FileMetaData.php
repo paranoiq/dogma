@@ -9,34 +9,31 @@
 
 namespace Dogma\Io;
 
-/**
- * @property-read integer $deviceId
- * @property-read integer $inode
- * @property-read integer $perms
- * @property-read integer $linksCount
- * @property-read integer $owner
- * @property-read integer $group
- * @property-read string $deviceType
- * @property-read integer $size
- * @property-read integer $aTime
- * @property-read integer $mTime
- * @property-read integer $cTime
- * @property-read integer $blockSize
- * @property-read integer $blocks
- */
-class FileStat
+class FileMetaData
 {
     use \Dogma\StrictBehaviorMixin;
 
-    /** @var array */
+    /** @var int[]|string[] */
     private $stat;
 
     /**
-     * @param mixed[]
+     * @param int[]|string[]
      */
     public function __construct(array $stat)
     {
         $this->stat = $stat;
+    }
+
+    public static function get(string $path): self
+    {
+        error_clear_last();
+        $stat = stat($path);
+
+        if ($stat === false) {
+            throw new \Dogma\Io\FileException('Cannot acquire file metadata.', error_get_last());
+        }
+
+        return new self($stat);
     }
 
     public function getDeviceId(): int
@@ -49,7 +46,7 @@ class FileStat
         return $this->stat['ino'];
     }
 
-    public function getPerms(): int
+    public function getPermissions(): int
     {
         return $this->stat['mode'];
     }
@@ -79,17 +76,17 @@ class FileStat
         return $this->stat['size'];
     }
 
-    public function getATime(): int
+    public function getAccessTime(): int
     {
         return $this->stat['atime'];
     }
 
-    public function getMTime(): int
+    public function getModifyTime(): int
     {
         return $this->stat['mtime'];
     }
 
-    public function getCTime(): int
+    public function getInodeChangeTime(): int
     {
         return $this->stat['ctime'];
     }

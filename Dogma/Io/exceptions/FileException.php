@@ -11,5 +11,23 @@ namespace Dogma\Io;
 
 class FileException extends IoException
 {
-    ///
+
+    /** @var mixed[]|null */
+    private $error;
+
+    public function __construct($message, array $error = null, \Throwable $previous = null)
+    {
+        parent::__construct($message, $previous);
+
+        $this->error = $error;
+    }
+
+    /**
+     * @return mixed[]|null
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
+
 }

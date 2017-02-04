@@ -7,7 +7,10 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Http;
+namespace Dogma\Http\Channel;
+
+use Dogma\Http\Curl\CurlHelper;
+use Dogma\Http\Request;
 
 /**
  * HTTP channel for multiple similar requests.
@@ -19,11 +22,11 @@ class Channel
 {
     use \Dogma\StrictBehaviorMixin;
 
-    /** @var \Dogma\Http\ChannelManager */
-    protected $manager;
+    /** @var \Dogma\Http\Channel\ChannelManager */
+    private $manager;
 
     /** @var \Dogma\Http\Request */
-    private $request;
+    private $requestPrototype;
 
     /** @var int */
     private $priority = 1;
@@ -40,22 +43,21 @@ class Channel
     /** @var bool */
     private $stopped = false;
 
-    /** @var bool|int */
+    /** @var int|bool */
     private $paused = false;
 
 
-    /** @var array */
+    /** @var string[]|string[][] (int|string $name => $data) */
     private $queue = [];
 
-    /** @var array */
+    /** @var string[]|string[][] (int|string $name => $data) */
     private $running = [];
 
     /** @var \Dogma\Http\Response[] */
     private $finished = [];
 
-    /** @var array */
+    /** @var mixed[] (int|string $name => $context) */
     private $contexts = [];
-
 
 
     /** @var callable */
@@ -67,15 +69,24 @@ class Channel
     /** @var callable */
     private $errorHandler;
 
-    public function __construct(ChannelManager $manager, Request $request)
+    public function __construct(Request $requestPrototype, ChannelManager $manager = null)
     {
+        $this->requestPrototype = $requestPrototype;
+
+        if ($manager === null) {
+            $manager = new ChannelManager();
+            $manager->addChannel($this);
+        }
         $this->manager = $manager;
-        $this->request = $request;
+
+        if ($requestPrototype->getHeaderParser() === null) {
+            $requestPrototype->setHeaderParser($manager->getHeaderParser());
+        }
     }
 
     public function getRequestPrototype(): Request
     {
-        return $this->request;
+        return $this->requestPrototype;
     }
 
     /**
@@ -91,9 +102,9 @@ class Channel
      * Set separate callback handler for redirects. ResponseHandler will no longer handle these.
      * @param callable(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      */
-    public function setRedirectHandler(callable $redirectHadler)
+    public function setRedirectHandler(callable $redirectHandler)
     {
-        $this->redirectHandler = $redirectHadler;
+        $this->redirectHandler = $redirectHandler;
     }
 
     /**
@@ -142,9 +153,9 @@ class Channel
 
     /**
      * Run a new job immediately. Don't wait for response.
-     * @param string|string[]
-     * @param mixed
-     * @param string|int
+     * @param string|string[] $data
+     * @param mixed $context
+     * @param string|int $name
      * @return string|int
      */
     public function runJob($data, $context = null, $name = null)
@@ -154,15 +165,16 @@ class Channel
 
     /**
      * Add new job to channel queue.
-     * @param string|string[]
-     * @param mixed
-     * @param string|int
+     * @param string|string[] $data
+     * @param mixed $context
+     * @param string|int $name
+     * @param bool $forceStart
      * @return string|int
      */
-    public function addJob($data, $context = null, $name = null, $forceStart = false)
+    public function addJob($data, $context = null, $name = null, bool $forceStart = false)
     {
         if (!is_string($data) && !is_array($data)) {
-            throw new ChannelException('Illegal job data. Job data can be either string or array.');
+            throw new \Dogma\Http\Channel\ChannelException('Illegal job data. Job data can be either string or array.');
         }
 
         if (is_string($name) || is_int($name)) {
@@ -173,7 +185,7 @@ class Channel
             $this->queue[$name] = $data;
 
         } else {
-            throw new ChannelException('Illegal job name. Job name can be only a string or an integer.');
+            throw new \Dogma\Http\Channel\ChannelException('Illegal job name. Job name can be only a string or an integer.');
         }
 
         if (isset($context)) {
@@ -247,11 +259,11 @@ class Channel
         }
 
         if (!$this->initiated) {
-            $this->request->init();
+            $this->requestPrototype->init();
             $this->initiated = true;
         }
 
-        $request = clone $this->request;
+        $request = clone $this->requestPrototype;
         $request->setData($this->queue[$name]);
 
         if (!empty($this->contexts[$name])) {
@@ -259,10 +271,10 @@ class Channel
             unset($this->contexts[$name]);
         }
 
-        $request->prepare('', $name);
+        $request->prepare();
         $handler = $request->getHandler();
-        if ($err = curl_multi_add_handle($this->manager->getHandler(), $handler)) {
-            throw new ChannelException('CURL error when adding a job: ' . CurlHelpers::getCurlMultiErrorName($err), $err);
+        if ($error = curl_multi_add_handle($this->manager->getHandler(), $handler)) {
+            throw new \Dogma\Http\Channel\ChannelException(sprintf('CURL error when adding a job: %s', CurlHelper::getCurlMultiErrorName($error)), $error);
         }
 
         $this->running[$name] = $this->queue[$name];
@@ -285,7 +297,7 @@ class Channel
         unset($this->running[$name]);
         $data = curl_multi_getcontent($minfo['handle']);
 
-        $response = $request->createResponse($data, $minfo['result'], $name);
+        $response = $request->createResponse($data, $minfo['result']);
         $this->finished[$name] = $response;
 
         if ($this->errorHandler && $response->getStatus()->isError()) {
@@ -342,7 +354,7 @@ class Channel
     private function fetchByName($name)
     {
         if (!isset($this->queue[$name]) && !isset($this->running[$name]) && !isset($this->finished[$name])) {
-            throw new ChannelException(sprintf('Job named \'%s\' was not found.', $name));
+            throw new \Dogma\Http\Channel\ChannelException(sprintf('Job named \'%s\' was not found.', $name));
         }
 
         if (isset($this->finished[$name])) {
@@ -369,7 +381,7 @@ class Channel
     }
 
     /**
-     * Check if all channels or a channel or a job are finished.
+     * Check if channel or a job is finished.
      * @param string|int
      * @return bool
      */
@@ -416,7 +428,7 @@ class Channel
         if (is_int($this->paused) && $this->paused <= time()) {
             $this->paused = false;
         }
-        return (bool) $this->paused;
+        return $this->paused;
     }
 
     public function resume()

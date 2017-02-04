@@ -9,87 +9,32 @@
 
 namespace Dogma\Http;
 
-use Nette\Utils\Strings;
+use Dogma\Io\File;
 
 class FileResponse extends Response
 {
 
-    /** @var string */
-    private $fileName;
+    /** @var \Dogma\Io\File */
+    private $file;
 
     /**
-     * @param string
-     * @param mixed[]
-     * @param int
+     * @param \Dogma\Http\ResponseStatus $status
+     * @param string[] $rawHeaders
+     * @param string $fileName
+     * @param string[] $info
+     * @param mixed $context
+     * @param \Dogma\Http\HeaderParser $headerParser
      */
-    public function __construct(string $fileName, array $info, int $error)
+    public function __construct(ResponseStatus $status, File $file, array $rawHeaders, array $info, $context, HeaderParser $headerParser = null)
     {
-        parent::__construct(null, $info, $error);
+        parent::__construct($status, null, $rawHeaders, $info, $context, $headerParser);
 
-        $this->fileName = $fileName;
+        $this->file = $file;
     }
 
-    /**
-     * @return string[]
-     */
-    public function getHeaders(): array
+    public function getFile(): File
     {
-        if (!$this->headers) {
-            $this->parseFile();
-        }
-
-        return $this->headers;
-    }
-
-    public function getBody(): string
-    {
-        if (!$this->headers) {
-            $this->parseFile();
-        }
-
-        return file_get_contents($this->fileName);
-    }
-
-    public function getFileName(): string
-    {
-        return $this->fileName;
-    }
-
-    /**
-     * Remove headers from downloaded file
-     */
-    private function parseFile()
-    {
-        if (($fp = @fopen($this->fileName . '.tmp', 'rb')) === false) {
-            throw new ResponseException(sprintf('Fopen error for file \'%s.tmp\'.', $this->fileName));
-        }
-
-        $headers = Strings::split(@fread($fp, $this->info['header_size']), "~[\n\r]+~", PREG_SPLIT_NO_EMPTY);
-        $this->headers = static::parseHeaders($headers);
-
-        @fseek($fp, $this->info['header_size']);
-
-        if (($ft = @fopen($this->fileName, 'wb')) === false) {
-            throw new ResponseException(sprintf('Write error for file \'%s\'.', $this->fileName));
-        }
-
-        while (!feof($fp)) {
-            $row = fgets($fp, 4096);
-            fwrite($ft, $row);
-        }
-
-        @fclose($fp);
-        @fclose($ft);
-
-        if (!@unlink($this->fileName . '.tmp')) {
-            throw new ResponseException(sprintf('Error while deleting file \'%s\'.', $this->fileName));
-        }
-
-        chmod($this->fileName, 0755);
-
-        if (!$this->headers) {
-            throw new RequestException('Headers parsing failed');
-        }
+        return $this->file;
     }
 
 }

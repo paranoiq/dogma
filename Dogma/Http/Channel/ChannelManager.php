@@ -7,7 +7,12 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Http;
+namespace Dogma\Http\Channel;
+
+use Dogma\Http\Curl\CurlHelper;
+use Dogma\Http\HeaderParser;
+use Dogma\Http\Request;
+use Dogma\Time\CurrentTimeProvider;
 
 /**
  * Manages parallel requests over multiple HTTP channels.
@@ -15,26 +20,32 @@ namespace Dogma\Http;
 class ChannelManager
 {
     use \Dogma\StrictBehaviorMixin;
+    use \Dogma\NonSerializableMixin;
+    use \Dogma\NonCloneableMixin;
 
-    /** @var resource */
+    /** @var resource(curl) */
     private $handler;
 
-    /** @var int maximum threads for all channles */
+    /** @var int maximum threads for all channels */
     private $threadLimit = 20;
 
     /** @var float sum of priorities of all channels */
     private $sumPriorities = 0.0;
 
-    /** @var \Dogma\Http\Channel[] */
+    /** @var \Dogma\Http\Channel\Channel[] */
     private $channels = [];
 
     /** @var array ($resourceId => array($channelId, $jobName, $request)) */
     private $resources = [];
 
-    public function __construct()
+    /** @var \Dogma\Http\HeaderParser */
+    private $headerParser;
+
+    public function __construct(HeaderParser $headerParser = null)
     {
+        $this->headerParser = $headerParser;
         if (!$this->handler = curl_multi_init()) {
-            throw new ChannelException('Cannot initialize CURL multi-request.');
+            throw new \Dogma\Http\Channel\ChannelException('Cannot initialize CURL multi-request.');
         }
     }
 
@@ -54,7 +65,7 @@ class ChannelManager
     }
 
     /**
-     * Set maximum of request to run paralelly.
+     * Set maximum of request to run in parallel.
      */
     public function setThreadLimit(int $threads)
     {
@@ -68,7 +79,7 @@ class ChannelManager
         $this->startJobs();
     }
 
-    public function updatePriorities()
+    private function updatePriorities()
     {
         $sum = 0;
         foreach ($this->channels as $channel) {
@@ -84,7 +95,7 @@ class ChannelManager
     }
 
     /**
-     * Wait for any request to finish. Blocking.
+     * Wait for any request to finish. Blocking. Returns count of available results.
      */
     private function waitForResult(): int
     {
@@ -114,11 +125,11 @@ class ChannelManager
     public function exec(): int
     {
         do {
-            $err = curl_multi_exec($this->handler, $active);
-            if ($err > 0) {
-                throw new ChannelException('CURL error when starting jobs: ' . CurlHelpers::getCurlMultiErrorName($err), $err);
+            $error = curl_multi_exec($this->handler, $active);
+            if ($error > 0) {
+                throw new ChannelException('CURL error when starting jobs: ' . CurlHelper::getCurlMultiErrorName($error), $error);
             }
-        } while ($err === CURLM_CALL_MULTI_PERFORM);
+        } while ($error === CURLM_CALL_MULTI_PERFORM);
 
         return $active;
     }
@@ -128,16 +139,17 @@ class ChannelManager
      */
     private function readResults()
     {
-        while ($minfo = curl_multi_info_read($this->handler)) {
-            $resourceId = (string) $minfo['handle'];
+        while ($info = curl_multi_info_read($this->handler)) {
+            $resourceId = (string) $info['handle'];
             list($cid, $name, $request) = $this->resources[$resourceId];
             $channel = & $this->channels[$cid];
 
-            if ($err = curl_multi_remove_handle($this->handler, $minfo['handle'])) {
-                throw new ChannelException('CURL error when reading results: ' . CurlHelpers::getCurlMultiErrorName($err), $err);
+            $error = curl_multi_remove_handle($this->handler, $info['handle']);
+            if ($error) {
+                throw new ChannelException('CURL error when reading results: ' . CurlHelper::getCurlMultiErrorName($error), $error);
             }
 
-            $channel->jobFinished($name, $minfo, $request);
+            $channel->jobFinished($name, $info, $request);
             unset($this->resources[$resourceId]);
         }
         $this->startJobs();
@@ -165,8 +177,8 @@ class ChannelManager
         }
 
         $selected = null;
-        $ratio = -1000000;
-        foreach ($this->channels as $cid => & $channel) {
+        $ratio = PHP_INT_MIN;
+        foreach ($this->channels as $cid => &$channel) {
             if ($selected === $cid) {
                 continue;
             }
@@ -176,6 +188,7 @@ class ChannelManager
 
             $channelRatio = ($channel->getPriority() / $this->sumPriorities)
                 - ($channel->getRunningJobCount() / $this->threadLimit);
+
             if ($channelRatio > $ratio) {
                 $selected = $cid;
                 $ratio = $channelRatio;
@@ -195,6 +208,14 @@ class ChannelManager
     public function jobStarted($resource, Channel $channel, $name, Request $request)
     {
         $this->resources[(string) $resource] = [spl_object_hash($channel), $name, $request];
+    }
+
+    public function getHeaderParser(): HeaderParser
+    {
+        if ($this->headerParser === null) {
+            $this->headerParser = new HeaderParser(new CurrentTimeProvider());
+        }
+        return $this->headerParser;
     }
 
 }

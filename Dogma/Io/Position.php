@@ -9,7 +9,11 @@
 
 namespace Dogma\Io;
 
-class DirectoryException extends IoException
+class Position extends \Dogma\Enum
 {
-    ///
+
+    const BEGINNING = SEEK_SET;
+    const CURRENT = SEEK_CUR;
+    const END = SEEK_END;
+
 }

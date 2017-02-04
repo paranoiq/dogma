@@ -7,13 +7,15 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Http;
+namespace Dogma\Http\Channel;
+
+use Dogma\Http\Response;
 
 class MultiChannel
 {
     use \Dogma\StrictBehaviorMixin;
 
-    /** @var \Dogma\Http\Channel[] */
+    /** @var \Dogma\Http\Channel\Channel[] */
     private $channels;
 
     /** @var string[] */
@@ -48,7 +50,7 @@ class MultiChannel
     {
         $this->channels = $channels;
 
-        /** @var \Dogma\Http\Channel $channel */
+        /** @var \Dogma\Http\Channel\Channel $channel */
         foreach ($channels as $cName => $channel) {
             $this->cids[spl_object_hash($channel)] = $cName;
             $channel->setResponseHandler(function (Response $response, Channel $channel, string $sjName) {
@@ -104,7 +106,7 @@ class MultiChannel
     }
 
     /**
-     * @return \Dogma\Http\Channel[]
+     * @return \Dogma\Http\Channel\Channel[]
      */
     public function getChannels(): array
     {

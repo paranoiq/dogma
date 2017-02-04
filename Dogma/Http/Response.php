@@ -9,7 +9,8 @@
 
 namespace Dogma\Http;
 
-use Nette\Utils\Strings;
+use Dogma\Http\Curl\CurlHelper;
+use Dogma\Time\CurrentTimeProvider;
 
 class Response
 {
@@ -21,39 +22,45 @@ class Response
     /** @var \Dogma\Http\ResponseStatus */
     private $status;
 
+    /** @var string[] */
+    private $rawHeaders;
+
+    /** @var mixed[] */
+    private $headers;
+
     /** @var string */
-    private $response;
-
-    /** @var array */
-    protected $headers = [];
+    private $cookies;
 
     /** @var string */
-    protected $body;
+    private $body;
 
-    /** @var mixed Request context */
-    protected $context;
+    /** @var mixed */
+    private $context;
+
+    /** @var \Dogma\Http\HeaderParser */
+    private $headerParser;
 
     /**
-     * @param string
-     * @param \Dogma\Http\ResponseStatus
-     * @param mixed[]
+     * @param \Dogma\Http\ResponseStatus $status
+     * @param string[] $rawHeaders
+     * @param string|null $body
+     * @param string[] $info
+     * @param mixed $context
      */
-    public function __construct(string $response, ResponseStatus $status, array $info)
-    {
+    public function __construct(
+        ResponseStatus $status,
+        string $body = null,
+        array $rawHeaders,
+        array $info,
+        $context,
+        HeaderParser $headerParser = null
+    ) {
         $this->status = $status;
+        $this->body = $body;
+        $this->rawHeaders = $rawHeaders;
         $this->info = $info;
-
-        if ($response) {
-            $this->response = $response;
-        }
-    }
-
-    /**
-     * @param mixed Request context
-     */
-    public function setContext($data)
-    {
-        $this->context = $data;
+        $this->context = $context;
+        $this->headerParser = $headerParser;
     }
 
     /**
@@ -76,10 +83,6 @@ class Response
 
     public function getBody(): string
     {
-        if ($this->response) {
-            $this->parseResponse();
-        }
-
         return $this->body;
     }
 
@@ -88,108 +91,75 @@ class Response
      */
     public function getHeaders(): array
     {
-        if ($this->response) {
-            $this->parseResponse();
+        if ($this->headers === null) {
+            $this->headers = $this->getHeaderParser()->parseHeaders($this->rawHeaders);
         }
-
         return $this->headers;
     }
 
     /**
-     * Get all cookies received with this response.
+     * @param string $name
+     * @return string|string[]|int|\Dogma\Time\DateTime|\Dogma\Web\Host|\Dogma\Web\Url|\Dogma\Io\ContentType\ContentType|\Dogma\Language\Encoding|\Dogma\Language\Locale\Locale
+     */
+    public function getHeader(string $name)
+    {
+        if ($this->headers === null) {
+            $this->getHeaders();
+        }
+        return $this->headers[$name] ?? null;
+    }
+
+    private function getHeaderParser(): HeaderParser
+    {
+        if ($this->headerParser === null) {
+            $this->headerParser = new HeaderParser(new CurrentTimeProvider());
+        }
+        return $this->headerParser;
+    }
+
+    /**
      * @return string[]
      */
     public function getCookies(): array
     {
-        if ($this->response) {
-            $this->parseResponse();
+        if ($this->cookies === null) {
+            $cookies = $this->getHeader(HttpHeader::COOKIE);
+            if ($cookies === null) {
+                return [];
+            }
+            $this->cookies = $this->getHeaderParser()->parseCookies($cookies);
         }
 
-        $cookies = [];
+        return $this->cookies;
+    }
 
-        foreach ((array) @$this->headers['Set-Cookie'] as $cookie) {
-            $s = explode(';', $cookie);
-            list($name, $value) = explode('=', $s[0]);
-            $cookies[$name] = $value;
-        }
-
-        return $cookies;
+    /**
+     * @return \Dogma\Io\ContentType\ContentType|null
+     */
+    public function getContentType()
+    {
+        ///
     }
 
     /**
      * @param string|int
-     * @return string|array
+     * @return string|string[]
      */
     public function getInfo($name = null)
     {
-        if (is_null($name)) {
+        if ($name === null) {
             return $this->info;
         }
 
         if (is_int($name)) {
-            $tname = CurlHelpers::getCurlInfoName($name);
-        } else {
-            $tname = $name;
-        }
-        if (is_null($tname)) {
-            throw new ResponseException(sprintf('Unknown CURL info \'%s\'!', $name));
-        }
-
-        return $this->info[$tname];
-    }
-
-    public function __toString(): string
-    {
-        return $this->getBody();
-    }
-
-    // internals -------------------------------------------------------------------------------------------------------
-
-    /**
-     * Remove headers from response.
-     */
-    private function parseResponse()
-    {
-        $headers = Strings::split(substr($this->response, 0, $this->info['header_size']), "~[\n\r]+~", PREG_SPLIT_NO_EMPTY);
-        $this->headers = static::parseHeaders($headers);
-        $this->body = substr($this->response, $this->info['header_size']);
-        $this->response = '';
-    }
-
-    /**
-     * Parses headers from given list
-     * @param string[]
-     * @return string[]
-     */
-    public static function parseHeaders(array $headers): array
-    {
-        $found = [];
-
-        // extract version and status
-        $versionAndStatus = array_shift($headers);
-        $m = Strings::match($versionAndStatus, '~HTTP/(?P<version>\d\.\d)\s(?P<code>\d\d\d)\s(?P<status>.*)~');
-        if (count($m) > 0) {
-            $found['Http-Version'] = $m['version'];
-            $found['Status-Code'] = $m['code'];
-            $found['Status'] = $m['code'] . ' ' . $m['status'];
-        }
-
-        // convert headers to associative array
-        foreach ($headers as $header) {
-            $m = Strings::match($header, '~(?P<header>.*?)\:\s(?P<value>.*)~');
-            if (isset($found[$m['header']])) {
-                if (is_array($found[$m['header']])) {
-                    $found[$m['header']][] = $m['value'];
-                } else {
-                    $found[$m['header']] = [$found[$m['header']]];
-                    $found[$m['header']][] = $m['value'];
-                }
-            } else {
-                $found[$m['header']] = $m['value'];
+            $id = $name;
+            $name = CurlHelper::getCurlInfoName($id);
+            if ($name === null) {
+                throw new \Dogma\Http\ResponseException(sprintf('Unknown CURL info \'%s\'!', $id));
             }
         }
 
-        return $found;
+        return $this->info[$name];
     }
 
 }

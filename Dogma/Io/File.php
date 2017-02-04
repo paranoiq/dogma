@@ -9,157 +9,206 @@
 
 namespace Dogma\Io;
 
+use Dogma\Io\Filesystem\FileInfo;
+use Dogma\ResourceType;
+
 /**
  * Binary file reader/writer
- *
- * @property FileStat $info
  */
-class File
+class File implements Path
 {
     use \Dogma\StrictBehaviorMixin;
+    use \Dogma\NonCloneableMixin;
+    use \Dogma\NonSerializableMixin;
 
-    // File opening mode:
-    // if not found: ERROR; keep content
-    const READ = 'rb';
-    const READ_WRITE = 'r+b';
-    // if not found: create; truncate content
-    const TRUNCATE_WRITE = 'wb';
-    const TRUNCATE_READ_WRITE = 'w+b';
-    // if not found: create; keep content, point to end of file, don't accept new position
-    const APPEND_WRITE = 'ab';
-    const APPEND_READ_WRITE = 'a+b';
-    // if found: ERROR; no content
-    const CREATE_WRITE = 'xb';
-    const CREATE_READ_WRITE = 'x+b';
-    // if not found: create; keep content
-    const OPEN_CREATE_WRITE = 'cb';
-    const OPEN_CREATE_READ_WRITE = 'c+b';
-
-
-    // Position from:
-    const BEGINNING = 0;
-    const CURRENT = 1;
-    const END = 2;
-
-
-    // Lock type:
-    const SHARED = 1;
-    const EXCLUSIVE = 2;
-    const UNLOCK = 3;
-    const NON_BLOCKING = 4;
-
-
-    /**
-     * @var int Set this *same or greater* then the allocation unit of your storage (disk sector, RAID strip etc.)
-     */
+    /** @var int */
     public static $defaultChunkSize = 8192;
 
+    /** @var string */
+    protected $path;
 
-    /** @var string file name */
-    protected $name;
+    /** @var string */
+    protected $mode;
 
-    /** @var resource */
+    /** @var resource|null */
     protected $streamContext;
 
-    /** @var resource|bool file descriptor */
-    protected $file;
+    /** @var resource|null */
+    protected $handle;
 
-    /** @var \Dogma\Io\FileStat|null */
-    private $stat;
+    /** @var \Dogma\Io\FileMetaData|null */
+    private $metaData;
 
     /**
-     * Open file
-     * @param string|resource
-     * @param string
-     * @param resource
+     * @param string|resource|\Dogma\Io\FilePath|\Dogma\Io\Filesystem\FileInfo $file
+     * @param string $mode
+     * @param resource|null $streamContext
      */
-    public function __construct($file, string $mode = self::READ_WRITE, $streamContext = null)
+    public function __construct($file, string $mode = FileMode::OPEN_READ, $streamContext = null)
     {
-        if ($file === null) {
+        if (is_resource($file) && get_resource_type($file) === ResourceType::STREAM) {
+            $this->handle = $file;
+            $this->mode = $mode;
             return;
-        }
-
-        if (is_resource($file) && get_resource_type($file) === 'stream') {
-            $this->file = $file;
-            return;
-        }
-
-        $this->name = (string) $file;
-
-        ///
-        if ($streamContext) {
-            $this->streamContext = $streamContext;
-            $this->file = fopen($this->name, $mode, false, $streamContext);
+        } elseif (is_string($file)) {
+            $this->path = $file;
+        } elseif ($file instanceof FilePath || $file instanceof FileInfo) {
+            $this->path = $file->getPath();
         } else {
-            $this->file = fopen($this->name, $mode, false);
+            throw new \Dogma\InvalidArgumentException('Argument $file must be a file path or a stream resource.');
         }
 
-        if ($this->file === false) {
-            throw new FileException(sprintf('Cannot open file in mode \'%s\'.', $mode), 0);
+        $this->mode = $mode;
+        $this->streamContext = $streamContext;
+
+        if ($this->handle === null) {
+            $this->open();
         }
     }
 
     public function __destruct()
     {
-        if ($this->file) {
-            fclose($this->file);
+        if ($this->handle !== null) {
+            $this->close();
         }
+    }
+
+    public static function createTemporaryFile(): self
+    {
+        error_clear_last();
+        $handle = tmpfile();
+
+        if ($handle === false) {
+            throw new \Dogma\Io\FileException('Cannot create a temporary file.', error_get_last());
+        }
+
+        return new static($handle, FileMode::CREATE_OR_TRUNCATE_READ_WRITE);
+    }
+
+    public static function createMemoryFile(int $maxSize = null): self
+    {
+        if ($maxSize === null) {
+            return new static('php://memory', FileMode::CREATE_OR_TRUNCATE_READ_WRITE);
+        } else {
+            return new static(sprintf('php://temp/maxmemory:%d', $maxSize), FileMode::CREATE_OR_TRUNCATE_READ_WRITE);
+        }
+    }
+
+    public function toTextFile(): TextFile
+    {
+        return new TextFile($this->handle, $this->mode, $this->streamContext);
+    }
+
+    /**
+     * @return resource|null
+     */
+    public function getHandle()
+    {
+        return $this->handle;
+    }
+
+    public function getMode(): string
+    {
+        return $this->mode;
+    }
+
+    public function getPath(): string
+    {
+        if (empty($this->path)) {
+            $meta = $this->getStreamMetaData();
+            $this->path = str_replace('\\', '/', $meta['uri']);
+        }
+
+        return $this->path;
+    }
+
+    public function getName(): string
+    {
+        return basename($this->getPath());
+    }
+
+    public function move(string $path)
+    {
+        $destination = dirname($path);
+        if (!is_dir($destination)) {
+            throw new \Dogma\Io\FileException(sprintf('Directory %s is not writable.', $destination));
+        }
+        if (!rename($this->getPath(), $destination)) {
+            throw new \Dogma\Io\FileException(sprintf('Cannot move file \'%s\' to \'%s\'.', $this->getPath(), $path));
+        }
+        chmod($destination, 0666);
+
+        $this->path = $destination;
+
+        return $this;
     }
 
     public function isOpen(): bool
     {
-        return (bool) $this->file;
+        return (bool) $this->handle;
     }
 
-    /**
-     * Close file
-     */
+    public function open()
+    {
+        error_clear_last();
+        if ($this->streamContext !== null) {
+            $handle = fopen($this->path, $this->mode, false, $this->streamContext);
+        } else {
+            $handle = fopen($this->path, $this->mode, false);
+        }
+        if ($handle === false) {
+            throw new \Dogma\Io\FileException(sprintf('Cannot open file in mode \'%s\'.', $this->mode), error_get_last());
+        }
+        $this->handle = $handle;
+    }
+
     public function close()
     {
-        $this->testOpen();
+        $this->checkOpened();
 
-        ///
-        $result = fclose($this->file);
+        error_clear_last();
+        $result = fclose($this->handle);
 
         if ($result === false) {
-            throw new FileException('Cannot close file.');
+            throw new \Dogma\Io\FileException('Cannot close file.', error_get_last());
         }
-        $this->stat = null;
-        $this->file = null;
+        $this->metaData = null;
+        $this->handle = null;
     }
 
-    /**
-     * End of file reached?
-     */
-    public function eof(): bool
+    public function endOfFileReached(): bool
     {
-        $this->testOpen();
+        $this->checkOpened();
 
-        ///
-        $feof = feof($this->file);
-        ///
+        error_clear_last();
+        $feof = feof($this->handle);
+
+        if ($feof === true) {
+            $error = error_get_last();
+            if ($error !== null) {
+                throw new \Dogma\Io\FileException('File interrupted.', $error);
+            }
+        }
 
         return $feof;
     }
 
-    /**
-     * Read binary data from file
-     */
     public function read(int $length = null): string
     {
+        $this->checkOpened();
+
         if (empty($length)) {
             $length = self::$defaultChunkSize;
         }
-        $this->testOpen();
 
-        ///
-        $data = fread($this->file, $length);
+        error_clear_last();
+        $data = fread($this->handle, $length);
 
         if ($data === false) {
-            if ($this->eof()) {
-                throw new FileException('Cannot read data from file. End of file was reached.');
+            if ($this->endOfFileReached()) {
+                throw new \Dogma\Io\FileException('Cannot read data from file. End of file was reached.', error_get_last());
             } else {
-                throw new FileException('Cannot read data from file.');
+                throw new \Dogma\Io\FileException('Cannot read data from file.', error_get_last());
             }
         }
 
@@ -184,7 +233,7 @@ class File
 
         $done = 0;
         $chunk = $length ? min($length - $done, $chunkSize) : $chunkSize;
-        while (!$this->eof() && (!$length || $done < $length)) {
+        while (!$this->endOfFileReached() && (!$length || $done < $length)) {
             $buff = $this->read($chunk);
             $done += strlen($buff);
 
@@ -195,7 +244,7 @@ class File
                 call_user_func($destination, $buff);
 
             } else {
-                throw new \InvalidArgumentException('Destination must be File or callable!');
+                throw new \Dogma\InvalidArgumentException('Destination must be File or callable!');
             }
         }
 
@@ -209,7 +258,7 @@ class File
         }
 
         $str = '';
-        while (!$this->eof()) {
+        while (!$this->endOfFileReached()) {
             $str .= $this->read();
         }
 
@@ -218,13 +267,13 @@ class File
 
     public function write(string $data)
     {
-        $this->testOpen();
+        $this->checkOpened();
 
-        ///
-        $result = fwrite($this->file, $data);
+        error_clear_last();
+        $result = fwrite($this->handle, $data);
 
         if ($result === false) {
-            throw new FileException('Cannot write data to file.');
+            throw new \Dogma\Io\FileException('Cannot write data to file.', error_get_last());
         }
     }
 
@@ -233,13 +282,13 @@ class File
      */
     public function truncate(int $size = 0)
     {
-        $this->testOpen();
+        $this->checkOpened();
 
-        ///
-        $result = ftruncate($this->file, $size);
+        error_clear_last();
+        $result = ftruncate($this->handle, $size);
 
         if ($result === false) {
-            throw new FileException('Cannot truncate file.');
+            throw new \Dogma\Io\FileException('Cannot truncate file.', error_get_last());
         }
 
         $this->setPosition($size);
@@ -250,155 +299,128 @@ class File
      */
     public function flush()
     {
-        $this->testOpen();
+        $this->checkOpened();
 
-        ///
-        $result = fflush($this->file);
+        error_clear_last();
+        $result = fflush($this->handle);
 
         if ($result === false) {
-            throw new FileException('Cannot flush file cache.');
+            throw new \Dogma\Io\FileException('Cannot flush file cache.', error_get_last());
         }
-        $this->stat = null;
+        $this->metaData = null;
     }
 
-    /**
-     * Lock file. see PHP flock() documentation
-     */
-    public function lock(int $mode = self::SHARED, int &$wouldBlock = null)
+    public function lock(LockType $mode = null)
     {
-        $this->testOpen();
+        $this->checkOpened();
 
-        $wb = null;
-        ///
-        $result = flock($this->file, $mode, $wb);
+        if ($mode === null) {
+            $mode = LockType::get(LockType::SHARED);
+        }
+
+        error_clear_last();
+        $wouldBlock = null;
+        $result = flock($this->handle, $mode->getValue(), $wouldBlock);
 
         if ($result === false) {
-            if ($wb) {
-                $wouldBlock = $wb;
-                throw new FileException('Non-blocking lock cannot be acquired.');
+            if ($wouldBlock) {
+                throw new \Dogma\Io\FileException('Non-blocking lock cannot be acquired.', error_get_last());
             } else {
-                throw new FileException('Cannot lock file.');
+                throw new \Dogma\Io\FileException('Cannot lock file.', error_get_last());
             }
         }
     }
 
-    /**
-     * Release file lock
-     */
     public function unlock()
     {
-        $this->testOpen();
+        $this->checkOpened();
 
-        ///
-        $result = flock($this->file, LOCK_UN);
+        error_clear_last();
+        $result = flock($this->handle, LOCK_UN);
 
         if ($result === false) {
-            throw new FileException('Cannot unlock file.');
+            throw new \Dogma\Io\FileException('Cannot unlock file.', error_get_last());
         }
     }
 
     /**
-     * Set the file pointer position
-     * @param int|bool position in bytes or true for end of file
-     * @param int $from
+     * @param int $position
+     * @param \Dogma\Io\Position|null $from
      */
-    public function setPosition($position, $from = self::BEGINNING)
+    public function setPosition(int $position, Position $from = null)
     {
-        $this->testOpen();
+        $this->checkOpened();
 
-        if ($position === true) {
-            $position = 0;
-            $from = SEEK_END;
+        if ($position < 0) {
+            $position *= -1;
+            $from = Position::get(Position::END);
+        }
+        if ($from === null) {
+            $from = Position::get(Position::BEGINNING);
         }
 
-        ///
-        $result = fseek($this->file, $position, $from);
+        error_clear_last();
+        $result = fseek($this->handle, $position, $from);
 
         if ($result !== 0) {
-            throw new FileException('Cannot set file pointer position.');
+            throw new \Dogma\Io\FileException('Cannot set file pointer position.', error_get_last());
         }
     }
 
-    /**
-     * Get file pointer position
-     */
     public function getPosition(): int
     {
-        $this->testOpen();
+        $this->checkOpened();
 
-        ///
-        $position = ftell($this->file);
+        error_clear_last();
+        $position = ftell($this->handle);
 
         if ($position === false) {
-            throw new FileException('Cannot get file pointer position.');
+            throw new \Dogma\Io\FileException('Cannot get file pointer position.', error_get_last());
         }
 
         return $position;
     }
 
-    /**
-     * Get file name
-     */
-    public function getName(): string
+    public function getMetaData(): FileMetaData
     {
-        if (empty($this->name)) {
-            $meta = $this->getMetaData();
-            $this->name = $meta['uri'];
-        }
-
-        return $this->name;
-    }
-
-    /**
-     * Get file info
-     */
-    public function getInfo(): FileStat
-    {
-        if (!$this->stat) {
-            if ($this->file) {
-                if (!$stat = @fstat($this->file)) {
-                    throw new FileException('Cannot acquire file metadata.');
+        if (!$this->metaData) {
+            if ($this->handle) {
+                error_clear_last();
+                $stat = fstat($this->handle);
+                if (!$stat) {
+                    throw new \Dogma\Io\FileException('Cannot acquire file metadata.', error_get_last());
                 }
+                $this->metaData = new FileMetaData($stat);
             } else {
-                if (empty($this->name)) {
-                    $this->getName();
+                if (empty($this->path)) {
+                    $this->getPath();
                 }
-
-                if (!$stat = @stat($this->name)) {
-                    throw new FileException('Cannot acquire file metadata.');
-                }
+                $this->metaData = FileMetaData::get($this->path);
             }
-            $this->stat = new FileStat($stat);
         }
 
-        return $this->stat;
+        return $this->metaData;
     }
 
     /**
      * Get stream meta data for files opened via HTTP, FTP…
      * @return mixed[]
      */
-    public function getMetaData(): array
+    public function getStreamMetaData(): array
     {
-        return stream_get_meta_data($this->file);
+        return stream_get_meta_data($this->handle);
     }
 
     /**
      * Get stream wrapper headers (HTTP)
      * @return mixed[]
      */
-    public function getWrapperData(): array
+    public function getHeaders(): array
     {
-        $data = stream_get_meta_data($this->file);
+        $data = stream_get_meta_data($this->handle);
 
         return $data['wrapper_data'];
     }
-
-    //public function getResponseContext()
-    //{
-        ///
-    //}
-
 
     /*
     [
@@ -427,28 +449,10 @@ class File
     ]
     */
 
-    // factories -------------------------------------------------------------------------------------------------------
-
-    public static function createTemporaryFile(): self
+    private function checkOpened()
     {
-        ///
-        $fd = tmpfile();
-
-        if (!$fd) {
-            throw new FileException('Cannot create a temporary file.');
-        }
-        $file = new static(null, 'w+');
-        $file->file = $fd;
-
-        return $file;
-    }
-
-    // internals -------------------------------------------------------------------------------------------------------
-
-    private function testOpen()
-    {
-        if (!$this->file) {
-            throw new FileException('File is already closed.');
+        if ($this->handle === null) {
+            throw new \Dogma\Io\FileException('File is already closed.');
         }
     }
 

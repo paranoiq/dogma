@@ -1,5 +1,11 @@
 <?php
 
+namespace Dogma\Test\Http;
+
+use Dogma\Http\Channel\Channel;
+use Dogma\Http\Channel\ChannelManager;
+use Dogma\Http\DownloadRequest;
+use Dogma\Http\Request;
 use Tracy\Debugger;
 
 require_once __DIR__ . '/../bootstrap.php';
@@ -12,28 +18,25 @@ header('Content-Type: text/html; charset=utf-8');
 echo '<!DOCTYPE HTML><html><head><title>Dogma\\Http</title></head><body>';
 
 
-use Dogma\Http;
+$manager = new ChannelManager();
 
-
-$manager = new Http\ChannelManager;
-
-$requestA = new Http\DownloadRequest('http://lh/vsp/dogma/tests/Dogma/Http/responder.php', __DIR__);
+$requestA = new DownloadRequest('http://lh/vsp/dogma/tests/Dogma/Http/responder.php');
 $requestA->setFollowRedirects(true);
 
-$requestB = new Http\Request('http://lh/vsp/dogma/tests/Dogma/Http/responder.php');
+$requestB = new Request('http://lh/vsp/dogma/tests/Dogma/Http/responder.php');
 $requestB->setFollowRedirects(true);
 
-$manager->addChannel($channelA = new Http\Channel($manager, $requestA));
-$manager->addChannel($channelB = new Http\Channel($manager, $requestB));
-$manager->addChannel($channelC = new Http\Channel($manager, $requestB));
-$manager->addChannel($channelD = new Http\Channel($manager, $requestB));
-$manager->addChannel($channelE = new Http\Channel($manager, $requestB));
-$manager->addChannel($channelF = new Http\Channel($manager, $requestB));
-$manager->addChannel($channelG = new Http\Channel($manager, $requestB));
-$manager->addChannel($channelH = new Http\Channel($manager, $requestB));
+$manager->addChannel($channelA = new Channel($requestA, $manager));
+$manager->addChannel($channelB = new Channel($requestB, $manager));
+$manager->addChannel($channelC = new Channel($requestB, $manager));
+$manager->addChannel($channelD = new Channel($requestB, $manager));
+$manager->addChannel($channelE = new Channel($requestB, $manager));
+$manager->addChannel($channelF = new Channel($requestB, $manager));
+$manager->addChannel($channelG = new Channel($requestB, $manager));
+$manager->addChannel($channelH = new Channel($requestB, $manager));
 
-$channelG->setPriority(6.0);
-$channelH->setPriority(12.0);
+$channelG->setPriority(6);
+$channelH->setPriority(12);
 
 $m = 0;
 while ($m++ < 20) {
@@ -55,8 +58,6 @@ $response = null;
 while ($response = $channelA->fetch()) {
     echo $response->getBody();
 }
-
-echo $response;
 
 dump($response);
 dump($manager);

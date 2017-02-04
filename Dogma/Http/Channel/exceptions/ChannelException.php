@@ -7,11 +7,9 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Http;
+namespace Dogma\Http\Channel;
 
-class ChannelException extends HttpException
+class ChannelException extends \Dogma\Http\HttpException
 {
-
-    //
 
 }

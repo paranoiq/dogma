@@ -9,127 +9,53 @@
 
 namespace Dogma\Http;
 
+use Dogma\Io\File;
+
 /**
  * File download request.
  */
 class DownloadRequest extends Request
 {
 
-    /** @var string */
-    private $downloadDir;
-
-    /** @var string */
-    private $fileName;
-
-    /** @var string */
-    private $fileSuffix;
-
-    /** @var resource|bool */
+    /** @var \Dogma\Io\File */
     private $file;
 
     /**
-     * @param string $url
-     * @param string $downloadDir
-     */
-    public function __construct($url, $downloadDir)
-    {
-        parent::__construct($url);
-
-        $this->setDownloadDir($downloadDir);
-    }
-
-    /**
-     * @param string
-     */
-    public function setDownloadDir($dir)
-    {
-        if (!is_dir($dir)) {
-            throw new RequestException(sprintf('Download directory %s does not exist.', $dir));
-        }
-
-        $this->downloadDir = rtrim($dir, '/');
-    }
-
-    /**
-     * @param string
-     */
-    public function setFileName($name)
-    {
-        $this->fileName = $name;
-    }
-
-    /**
-     * @param string
-     */
-    public function setFileSuffix($suffix)
-    {
-        $this->fileSuffix = $suffix;
-    }
-
-    // output handling -------------------------------------------------------------------------------------------------
-
-    /**
-     * Execute request.
-     * @param string
-     * @param string
      * @return \Dogma\Http\FileResponse
      */
-    public function execute($urlSuffix = null, $fileName = null): Response
+    public function execute(): Response
     {
-        $fileName = $this->prepare($urlSuffix, $fileName);
-        $response = curl_exec($this->curl);
-        $error = curl_errno($this->curl);
-        return $this->createResponse($response, $error, $fileName);
+        return parent::execute();
     }
 
     /**
-     * Called by RequestManager. Returns downloaded file name.
+     * Called by Channel.
      * @internal
      */
-    public function prepare(string $urlSuffix = null, string $fileName = null): string
+    public function prepare()
     {
-        parent::prepare($urlSuffix);
+        parent::prepare();
 
-        if (is_null($fileName)) {
-            $fileName = $this->fileName;
-        }
-        if (is_null($fileName)) {
-            $b = explode('?', $urlSuffix);
-            $b = explode('#', $b[0]);
-            $fileName = basename($b[0]);
-        }
+        $this->file = File::createTemporaryFile();
 
-        $this->file = fopen($this->downloadDir . '/' . $fileName . $this->fileSuffix . '.tmp', 'wb');
-        if ($this->file === false) {
-            throw new RequestException(sprintf('File %s cannot be open!', $fileName));
-        }
-
-
-        $this->setOption(CURLOPT_FILE, $this->file);
+        $this->setOption(CURLOPT_FILE, $this->file->getHandle());
         $this->setOption(CURLOPT_BINARYTRANSFER, true);
-
-        return $fileName;
     }
 
     /**
-     * Called by RequestManager.
+     * Called by Channel.
      * @internal
      *
-     * @param string|bool
-     * @param int
-     * @param string
+     * @param string|bool $response
+     * @param int $error
      * @return \Dogma\Http\FileResponse
      */
-    public function createResponse($response, int $error, string $fileName = null): FileResponse
+    public function createResponse($response, int $error): FileResponse
     {
-        $info = curl_getinfo($this->curl);
-        if ($info === false) {
-            throw new RequestException('Info cannot be obtained from CURL.');
-        }
+        $info = $this->getInfo();
+        $status = $this->getResponseStatus($error, $info);
 
-        fclose($this->file);
-        unset($this->file);
-        return new FileResponse($fileName . $this->fileSuffix, $info, $error);
+        return new FileResponse($status, $this->file, $this->responseHeaders, $info, $this->context, $this->headerParser);
     }
 
 }

@@ -83,10 +83,12 @@ class HttpHeader extends \Dogma\PartialEnum
     const X_FRAME_OPTIONS = 'X-Frame-Options';
 
     // non-standard
+    const CONTENT_CHARSET = 'Content-Charset';
     const FRONT_END_HTTPS = 'Front-End-Https';
+    const HTTP_VERSION = 'Http-Version';
     const PROXY_CONNECTION = 'Proxy-Connection';
     const UPGRADE_INSECURE_REQUESTS = 'Upgrade-Insecure-Requests';
-    const X_ATT_DEVICEID = 'X-ATT-DeviceId';
+    const X_ATT_DEVICE_ID = 'X-ATT-DeviceId';
     const X_CONTENT_DURATION = 'X-Content-Duration';
     const X_CONTENT_SECURITY_POLICY = 'X-Content-Security-Policy';
     const X_CONTENT_TYPE_OPTIONS = 'X-Content-Type-Options';

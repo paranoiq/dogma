@@ -9,7 +9,7 @@
 
 namespace Dogma\Http;
 
-use Nette\Utils\Strings;
+use Dogma\Http\Curl\CurlHelper;
 
 /**
  * HTTP request. Holds a CURL resource.
@@ -17,42 +17,93 @@ use Nette\Utils\Strings;
 class Request
 {
     use \Dogma\StrictBehaviorMixin;
+    use \Dogma\NonSerializableMixin;
 
-
-    /** @var resource */
-    protected $curl;
-
-    /** @var string */
-    protected $url;
-
-    /** @var string */
-    protected $method = HttpMethod::GET;
-
-    /** @var array */
-    private $headers = [];
-
-    /** @var array */
-    private $cookies = [];
-
-    /** @var array */
-    private $variables = [];
-
-    /** @var string POST|PUT content */
-    private $content;
-
-    /** @var mixed Request context */
-    private $context;
+    /** @var resource(curl) */
+    private $curl;
 
     /** @var callable|null */
     private $init;
 
-    public function __construct(string $url = null)
+    /** @var string */
+    private $url;
+
+    /** @var string */
+    private $method = HttpMethod::GET;
+
+    /** @var string[] */
+    private $headers = [];
+
+    /** @var string[] */
+    private $cookies = [];
+
+    /** @var mixed[] */
+    private $variables = [];
+
+    /** @var string */
+    private $content;
+
+    /** @var \Dogma\Http\HeaderParser|null */
+    protected $headerParser;
+
+    /** @var mixed */
+    protected $context;
+
+    /** @var string[] */
+    protected $responseHeaders = [];
+
+    public function __construct(string $url = null, string $method = null)
     {
-        $this->curl = curl_init();
-        $this->setOption(CURLOPT_HEADER, true);
-        if ($url) {
+        error_clear_last();
+        $curl = curl_init();
+        if ($curl === false) {
+            throw new \Dogma\Http\RequestException(sprintf('Cannot initialize curl. Error: %s', error_get_last()['message']));
+        }
+        $this->curl = $curl;
+
+        if ($url !== null) {
             $this->setUrl($url);
         }
+        if ($method !== null) {
+            $this->setMethod($method);
+        }
+
+        $this->setHeaderFunction();
+    }
+
+    /**
+     * Called by Channel.
+     * @internal
+     */
+    public function init()
+    {
+        if ($this->init !== null) {
+            if (!($this->init)($this)) {
+                throw new \Dogma\Http\RequestException('Request initialisation failed!');
+            }
+            $this->init = null;
+        }
+    }
+
+    /**
+     * @param callable
+     */
+    public function setInit(callable $init)
+    {
+        $this->init = $init;
+    }
+
+    public function setHeaderParser(HeaderParser $headerParser)
+    {
+        $this->headerParser = $headerParser;
+    }
+
+    /**
+     * @return \Dogma\Http\HeaderParser|null
+     */
+    public function getHeaderParser()
+    {
+        return $this->headerParser;
     }
 
     /**
@@ -69,29 +120,6 @@ class Request
     public function getContext()
     {
         return $this->context;
-    }
-
-    /**
-     * @param callable
-     */
-    public function setInit(callable $init)
-    {
-        $this->init = $init;
-    }
-
-    /**
-     * Called by RequestManager
-     * @internal
-     */
-    public function init()
-    {
-        if ($this->init) {
-            if (!($this->init)($this)) {
-                throw new RequestException('Request initialisation failed!');
-            }
-
-            $this->init = null;
-        }
     }
 
     // basic operations ------------------------------------------------------------------------------------------------
@@ -143,8 +171,7 @@ class Request
         if ($this->method === HttpMethod::POST || $this->method === HttpMethod::PUT) {
             $this->content = $data;
         } else {
-            //$this->appendUrl($data); // ?
-            throw new \Nette\InvalidStateException(sprintf('Cannot set content of a \'%s\' request.', $this->method));
+            $this->appendUrl($data);
         }
     }
 
@@ -372,25 +399,38 @@ class Request
      * Called by RequestManager.
      * @internal
      *
-     * @param string|bool
-     * @param int
-     * @param string
+     * @param string|bool $response
+     * @param int $error
      * @return \Dogma\Http\Response
      */
-    public function createResponse($response, int $error, string $name = null)
+    public function createResponse($response, int $error)
+    {
+        $info = $this->getInfo();
+        $status = $this->getResponseStatus($error, $info);
+
+        return new Response($status, $response, $this->responseHeaders, $info, $this->context, $this->headerParser);
+    }
+
+    // internals -------------------------------------------------------------------------------------------------------
+
+    protected function getInfo(): array
     {
         $info = curl_getinfo($this->curl);
         if ($info === false) {
             throw new \Dogma\Http\RequestException('Info cannot be obtained from CURL.');
         }
 
-        if ($error) {
-            $status = ResponseStatus::get($error);
+        return $info;
+    }
 
+    protected function getResponseStatus(int $error, array $info): ResponseStatus
+    {
+        if ($error !== 0) {
+            $status = ResponseStatus::get($error);
         } else {
             try {
                 $status = ResponseStatus::get($info['http_code']);
-            } catch (\Throwable $e) {
+            } catch (\Dogma\InvalidValueException $e) {
                 $status = ResponseStatus::get(ResponseStatus::UNKNOWN_RESPONSE_CODE);
             }
         }
@@ -398,12 +438,7 @@ class Request
             throw new \Dogma\Http\RequestException(sprintf('Fatal error occurred during request execution: %s', $status->getConstantName()), $status->getValue());
         }
 
-        $response = new Response($response, $status, $info);
-        if ($this->context) {
-            $response->setContext($this->context);
-        }
-
-        return $response;
+        return $status;
     }
 
     private function prepareHeaders()
@@ -412,20 +447,9 @@ class Request
         foreach ($this->headers as $key => $value) {
             if (is_int($key)) {
                 $headers[] = $value;
-                continue;
+            } else {
+                $headers[] = $key . ': ' . $value;
             }
-
-            // fix HTTP_ACCEPT_CHARSET to Accept-Charset
-            $key = Strings::replace($key, ['/^HTTP_/i' => '', '/_/' => '-']);
-            $key = Strings::replace($key, '/(?P<word>[a-z]+)/i', function ($match) {
-                return ucfirst(strtolower(current($match)));
-            });
-
-            if ($key == 'Et') {
-                $key = 'ET';
-            }
-
-            $headers[] = $key . ': ' . $value;
         }
 
         $this->setOption(CURLOPT_HTTPHEADER, $headers);
@@ -548,6 +572,21 @@ class Request
         if ($this->curl) {
             $this->curl = curl_copy_handle($this->curl);
         }
+        // need to set the closure to $this again
+        $this->setHeaderFunction();
+    }
+
+    private function setHeaderFunction()
+    {
+        $this->setOption(CURLOPT_HEADERFUNCTION, function ($curl, string $header) {
+            $length = strlen($header);
+            $header = trim($header);
+            if ($header !== '') {
+                $this->responseHeaders[] = $header;
+            }
+
+            return $length;
+        });
     }
 
 }
