@@ -39,19 +39,25 @@ class ScalarsHandler implements \Dogma\Mapping\Type\Handler
     public function createInstance(Type $type, $value, Mapper $mapper)
     {
         switch (true) {
-            case $type->is(Type::BOOL):
+            case $type->isBool():
                 Check::bool($value);
                 return $value;
-            case $type->is(Type::INT):
+            case $type->isInt():
                 Check::int($value);
+                if ($type->getSize() !== null) {
+                    Check::bounds($value, $type);
+                }
                 return $value;
-            case $type->is(Type::FLOAT):
+            case $type->isFloat():
                 Check::float($value);
+                if ($type->getSize() !== null) {
+                    Check::bounds($value, $type);
+                }
                 return $value;
-            case $type->is(Type::STRING):
+            case $type->isString():
                 Check::string($value);
                 return $value;
-            case $type->is(Type::NUMERIC):
+            case $type->isNumeric():
                 Check::float($value);
                 if ((float) ($int = (int) $value) === $value) {
                     return $int;
@@ -70,6 +76,9 @@ class ScalarsHandler implements \Dogma\Mapping\Type\Handler
      */
     public function exportInstance(Type $type, $instance, Mapper $mapper)
     {
+        if ($type->getSize() !== null) {
+            Check::bounds($instance, $type);
+        }
         return $instance;
     }
 

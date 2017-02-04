@@ -16,16 +16,16 @@ class NoHandlerForTypeException extends \Dogma\Exception implements \Dogma\Mappi
 
     /** @var \Dogma\Type */
     private $type;
-    
-    public function __construct(Type $type, \Throwable $previous = null)
+
+    public function __construct(Type $size, \Throwable $previous = null)
     {
         parent::__construct(
-            sprintf('No type handler for type %s is registered.', $type->getId()),
+            sprintf('No type handler for type %s is registered.', $size->getId()),
             $previous
         );
-        $this->type = $type;
+        $this->type = $size;
     }
-    
+
     public function getType(): Type
     {
         return $this->type;

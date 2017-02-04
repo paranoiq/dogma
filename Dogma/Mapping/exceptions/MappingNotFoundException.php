@@ -16,11 +16,11 @@ class MappingNotFoundException extends \Dogma\Exception implements \Dogma\Mappin
 
     /** @var \Dogma\Type */
     private $type;
-    
-    public function __construct(Type $type, \Throwable $previous = null)
+
+    public function __construct(Type $size, \Throwable $previous = null)
     {
-        parent::__construct(sprintf('Mapping for type %s was not found.', $type->getId()), $previous);
-        $this->type = $type;
+        parent::__construct(sprintf('Mapping for type %s was not found.', $size->getId()), $previous);
+        $this->type = $size;
     }
 
     /**

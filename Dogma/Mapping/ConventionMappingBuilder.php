@@ -31,18 +31,14 @@ class ConventionMappingBuilder implements \Dogma\Mapping\MappingBuilder
     public function __construct(
         TypeMetaDataContainer $typeMetaDataContainer,
         NamingStrategy $fieldNamingStrategy = null,
-        $fieldSeparator = '.'
+        string $fieldSeparator = '.'
     )
     {
         $this->typeMetaData = $typeMetaDataContainer;
-        if ($fieldNamingStrategy === null) {
-            $this->fieldNamingStrategy = new ShortFieldNamingStrategy();
-        } else {
-            $this->fieldNamingStrategy = $fieldNamingStrategy;
-        }
+        $this->fieldNamingStrategy = $fieldNamingStrategy ?: new ShortFieldNamingStrategy();
         $this->fieldSeparator = $fieldSeparator;
     }
-    
+
     public function buildMapping(Type $type): Mapping
     {
         $steps = [];
@@ -50,7 +46,7 @@ class ConventionMappingBuilder implements \Dogma\Mapping\MappingBuilder
 
         return new Mapping($type, $steps);
     }
-    
+
     private function buildStep(Type $type, string $path, string $destinationKey, array &$steps)
     {
         $typeMetaData = $this->typeMetaData->getType($type);
