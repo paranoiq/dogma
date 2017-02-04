@@ -2,7 +2,7 @@
 
 namespace Dogma\Tests\Type;
 
-use Dogma\Address\Country;
+use Dogma\Country\Country;
 use Dogma\Language\Encoding;
 use Dogma\Language\Language;
 use Dogma\Language\Locale\Locale;

@@ -1,6 +1,13 @@
 <?php
+/**
+ * This file is part of the Dogma library (https://github.com/paranoiq/dogma)
+ *
+ * Copyright (c) 2012 Vlasta Neubauer (@paranoiq)
+ *
+ * For the full copyright and license information read the file 'license.md', distributed with this source code
+ */
 
-namespace Dogma\Address;
+namespace Dogma\Country;
 
 /**
  * 2-letter country code by ISO-3166-1
@@ -778,16 +785,16 @@ class Country extends \Dogma\Enum
         return self::$idents[$this->getValue()];
     }
 
-    public function getByIdent(string $ident): self
-    {
-        return self::get(array_search($ident, self::$idents));
-    }
-
     public function getSymbol(): string
     {
         $code = $this->getValue();
 
         return "\xF0\x9F\x87" . chr(ord($code[0]) + 0x65) . "\xF0\x9F\x87" . chr(ord($code[1]) + 0x65);
+    }
+
+    public static function getByIdent(string $ident): self
+    {
+        return self::get(array_search($ident, self::$idents));
     }
 
     public static function validateValue(&$value): bool

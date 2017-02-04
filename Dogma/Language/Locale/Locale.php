@@ -9,9 +9,9 @@
 
 namespace Dogma\Language\Locale;
 
-use Dogma\Address\Country;
 use Dogma\Arr;
 use Dogma\Check;
+use Dogma\Country\Country;
 use Dogma\Language\Collator;
 use Dogma\Language\Language;
 use Dogma\Language\Script;
@@ -63,7 +63,7 @@ class Locale
 
     /**
      * @param \Dogma\Language\Language $language
-     * @param \Dogma\Address\Country|null $country
+     * @param \Dogma\Country\Country|null $country
      * @param \Dogma\Language\Script|null $script
      * @param string[] $variants
      * @param string[] $private
@@ -188,7 +188,7 @@ class Locale
     }
 
     /**
-     * @return \Dogma\Address\Country|null
+     * @return \Dogma\Country\Country|null
      */
     public function getCountry()
     {

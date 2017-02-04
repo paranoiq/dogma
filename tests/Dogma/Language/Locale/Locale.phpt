@@ -2,7 +2,7 @@
 
 namespace Dogma\Tests\Language\Locale;
 
-use Dogma\Address\Country;
+use Dogma\Country\Country;
 use Dogma\Language\Collator;
 use Dogma\Language\Language;
 use Dogma\Language\Locale\Locale;
