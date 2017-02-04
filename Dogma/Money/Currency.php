@@ -27,6 +27,7 @@ class Currency extends \Dogma\Enum
     const BELARUSIAN_RUBLE = 'BYR';
     const BELIZE_DOLLAR = 'BZD';
     const BERMUDIAN_DOLLAR = 'BMD';
+    const BITCOIN = 'XBT';
     const BOLIVAR = 'VEF';
     const BOLIVIANO = 'BOB';
     const BRAZILIAN_REAL = 'BRL';
@@ -191,6 +192,7 @@ class Currency extends \Dogma\Enum
         self::BELARUSIAN_RUBLE => 'Belarusian Ruble',
         self::BELIZE_DOLLAR => 'Belize Dollar',
         self::BERMUDIAN_DOLLAR => 'Bermudian Dollar',
+        self::BITCOIN => 'Bitcoin',
         self::BOLIVAR => 'Bolívar',
         self::BOLIVIANO => 'Boliviano',
         self::BRAZILIAN_REAL => 'Brazilian Real',
@@ -356,6 +358,7 @@ class Currency extends \Dogma\Enum
         self::BELARUSIAN_RUBLE => 'belarusian-ruble',
         self::BELIZE_DOLLAR => 'belize-dollar',
         self::BERMUDIAN_DOLLAR => 'bermudian-dollar',
+        self::BITCOIN => 'bitcoin',
         self::BOLIVAR => 'bolivar',
         self::BOLIVIANO => 'boliviano',
         self::BRAZILIAN_REAL => 'brazilian-real',
