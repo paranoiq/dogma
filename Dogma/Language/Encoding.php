@@ -56,15 +56,15 @@ class Encoding extends \Dogma\Enum
     const ISO_8859_15 = 'ISO-8859-15'; // Latin-9
     const ISO_8859_16 = 'ISO-8859-16'; // Latin-10 South-Eastern European
 
-    const WINDOWS_1250 = 'Windows-1250'; // Latin 2 / Central European
-    const WINDOWS_1251 = 'Windows-1251'; // Cyrillic
-    const WINDOWS_1252 = 'Windows-1252'; // Latin 1 / Western European
-    const WINDOWS_1253 = 'Windows-1253'; // Greek
-    const WINDOWS_1254 = 'Windows-1254'; // Turkish
-    const WINDOWS_1255 = 'Windows-1255'; // Hebrew
-    const WINDOWS_1256 = 'Windows-1256'; // Arabic
-    const WINDOWS_1257 = 'Windows-1257'; // Baltic
-    const WINDOWS_1258 = 'Windows-1258'; // Vietnamese
+    const WINDOWS_1250 = 'WINDOWS-1250'; // Latin 2 / Central European
+    const WINDOWS_1251 = 'WINDOWS-1251'; // Cyrillic
+    const WINDOWS_1252 = 'WINDOWS-1252'; // Latin 1 / Western European
+    const WINDOWS_1253 = 'WINDOWS-1253'; // Greek
+    const WINDOWS_1254 = 'WINDOWS-1254'; // Turkish
+    const WINDOWS_1255 = 'WINDOWS-1255'; // Hebrew
+    const WINDOWS_1256 = 'WINDOWS-1256'; // Arabic
+    const WINDOWS_1257 = 'WINDOWS-1257'; // Baltic
+    const WINDOWS_1258 = 'WINDOWS-1258'; // Vietnamese
 
     const CP850 = 'CP850'; // DOS Latin 1 Western European
     const CP852 = 'CP852'; // DOS Latin 2 Central European
@@ -80,18 +80,18 @@ class Encoding extends \Dogma\Enum
     const CP51932 = 'CP51932';
 
     const EUC_JP = 'EUC-JP';
-    const EUC_JP_WIN = 'eucJP-win';
+    const EUC_JP_WIN = 'EUC-JP-WIN';
     const EUC_JP_2004 = 'EUC-JP-2004';
     const EUC_CN = 'EUC-CN';
     const EUC_TW = 'EUC-TW';
     const EUC_KR = 'EUC-KR';
 
     const JIS = 'JIS';
-    const JIS_MS = 'JIS-ms';
+    const JIS_MS = 'JIS-MS';
 
     const SJIS = 'SJIS';
-    const SJIS_WIN = 'SJIS-win';
-    const SJIS_MAC = 'SJIS-mac';
+    const SJIS_WIN = 'SJIS-WIN';
+    const SJIS_MAC = 'SJIS-MAC';
     const SJIS_2004 = 'SJIS-2004';
 
     const ISO_2022_JP = 'ISO-2022-JP';
@@ -111,14 +111,21 @@ class Encoding extends \Dogma\Enum
 
     const HZ = 'HZ';
 
-    const ARMSCII_8 = 'ArmSCII-8';
+    const ARMSCII_8 = 'ARMSCII-8';
+
+    public static function validateValue(&$value): bool
+    {
+        $value = strtoupper($value);
+
+        return parent::validateValue($value);
+    }
 
     public static function getValueRegexp(): string
     {
         return 'BINARY|ASCII|UTF-(?:8|7(?:-IMAP)?|(?:(?:16|32)(?:BE|LE)?))|UCS-[24](?:BE|LE)'
-            . '|ISO-8859-(?:1(0-6)?|[2-9])|Windows-125[0-8]|CP[89]\\d\\d|CP5022[012]|CP51932'
-            . '|EUC-(?:JP(?:-2004)?|CN|TW|KR)|eucJP-win|JIS(?:-ms)?|SJIS(?:-win|-mac|2004)?'
-            . '|ISO-2022-(?:JP(?:-MS|-2004)?|KR)|KOI8-[RUT]|GB18030|BIG-5|UHC|HZ|ArmSCII-8';
+            . '|ISO-8859-(?:1(0-6)?|[2-9])|WINDOWS-125[0-8]|CP[89]\\d\\d|CP5022[012]|CP51932'
+            . '|EUC-(?:JP(?:-2004)?|CN|TW|KR)|EUC-JP-WIN|JIS(?:-MS)?|SJIS(?:-WIN|-MAC|2004)?'
+            . '|ISO-2022-(?:JP(?:-MS|-2004)?|KR)|KOI8-[RUT]|GB18030|BIG-5|UHC|HZ|ARMSCII-8';
     }
 
 }
