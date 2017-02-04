@@ -39,8 +39,17 @@ Assert::same(Date::createFromComponents(2001, 2, 3)->format('Y-m-d'), '2001-02-0
 // format()
 Assert::same($date->format('j.n.Y'), date('j.n.Y', $timestamp));
 
-// getMidnightTimestamp()
-Assert::same($date->getMidnightTimestamp($utcTimeZone), 946771200);
+// getStart()
+Assert::same($date->getStart($utcTimeZone)->format(), '2000-01-02 00:00:00');
+
+// getEnd()
+Assert::same($date->getEnd($utcTimeZone)->format(), '2000-01-02 23:59:59');
+
+// getStartFormatted()
+Assert::same($date->getStartFormatted(null, $utcTimeZone), '2000-01-02 00:00:00');
+
+// getEndFormatted()
+Assert::same($date->getEndFormatted(null, $utcTimeZone), '2000-01-02 23:59:59');
 
 $today = new Date('today 12:00');
 $today2 = new Date('today 13:00');

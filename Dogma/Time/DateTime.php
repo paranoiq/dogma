@@ -42,14 +42,12 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
             $dateTime = parent::createFromFormat($format, $timeString, $timeZone);
         }
 
-        return new static($dateTime->format(self::DEFAULT_FORMAT), $timeZone);
+        return new static($dateTime->format(self::DEFAULT_FORMAT), $timeZone ?? $dateTime->getTimezone());
     }
 
     public static function createFromTimestamp(int $timestamp, DateTimeZone $timeZone = null): self
     {
-        Check::int($timestamp);
-
-        return static::createFromFormat('U', $timestamp, $timeZone);
+        return static::createFromFormat('U', (string) $timestamp, $timeZone);
     }
 
     public static function createFromDateTimeInterface(DateTimeInterface $dateTime, DateTimeZone $timeZone = null): self
@@ -63,6 +61,15 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
     public static function createFromDateAndTime(Date $date, Time $time, DateTimeZone $timeZone = null): self
     {
         return new static($date->format(Date::DEFAULT_FORMAT) . ' ' . $time->format(Time::DEFAULT_FORMAT), $timeZone);
+    }
+
+    /**
+     * @param string $modify
+     * @return static
+     */
+    public function modify($modify): self
+    {
+        return new static(parent::modify($modify));
     }
 
     /**
@@ -88,15 +95,18 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
      * @param \Dogma\Time\Time|int $time|$hours
      * @param int|null $minutes
      * @param int|null $seconds
-     * @return bool|\DateTimeImmutable
+     * @return self
      */
     public function setTime($time, $minutes = null, $seconds = null)
     {
         if ($time instanceof Time) {
-            return parent::setTime($time->getHours(), $time->getMinutes(), $time->getSeconds());
-        } else {
-            return parent::setTime($time, $minutes, $seconds);
+            return self::createFromDateTimeInterface(parent::setTime($time->getHours(), $time->getMinutes(), $time->getSeconds()));
         }
+        if (is_string($time) && $minutes === null && $seconds === null) {
+            list($time, $minutes, $seconds) = explode(':', $time);
+        }
+
+        return self::createFromDateTimeInterface(parent::setTime($time, $minutes, $seconds));
     }
 
     public function compare(DateTimeInterface $dateTime): int
@@ -124,14 +134,14 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
         return $this >= $sinceTime && $this <= $untilTime;
     }
 
-    public function isFuture(): bool
+    public function isFuture(TimeProvider $timeProvider = null): bool
     {
-        return $this > new self;
+        return $this > ($timeProvider !== null ? $timeProvider->getDateTime() : new self());
     }
 
-    public function isPast(): bool
+    public function isPast(TimeProvider $timeProvider = null): bool
     {
-        return $this < new self;
+        return $this < ($timeProvider !== null ? $timeProvider->getDateTime() : new self());
     }
 
     /**
@@ -183,19 +193,25 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
             && $thisDate <= $untilDate->format(Date::DEFAULT_FORMAT);
     }
 
-    public function isToday(): bool
+    public function isToday(TimeProvider $timeProvider = null): bool
     {
-        return $this->isBetween(new static('today'), new static('tomorrow -1 second'));
+        $today = $timeProvider !== null ? $timeProvider->getDate() : new Date('today');
+
+        return $this->isBetween($today->getStart(), $today->getEnd());
     }
 
-    public function isYesterday(): bool
+    public function isYesterday(TimeProvider $timeProvider = null): bool
     {
-        return $this->isBetween(new static('yesterday'), new static('today -1 second'));
+        $yesterday = $timeProvider !== null ? $timeProvider->getDateTime()->modify('-1 day')->getDate() : new Date('yesterday');
+
+        return $this->isBetween($yesterday->getStart(), $yesterday->getEnd());
     }
 
-    public function isTomorrow(): bool
+    public function isTomorrow(TimeProvider $timeProvider = null): bool
     {
-        return $this->isBetween(new static('tomorrow'), new static('tomorrow +1 day -1 second'));
+        $tomorrow = $timeProvider !== null ? $timeProvider->getDateTime()->modify('+1 day')->getDate() : new Date('tomorrow');
+
+        return $this->isBetween($tomorrow->getStart(), $tomorrow->getEnd());
     }
 
 }

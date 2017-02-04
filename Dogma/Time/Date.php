@@ -80,9 +80,24 @@ class Date implements \Dogma\NonIterable
         return (new \DateTime($this->format()))->diff(new \DateTime($date->format(self::DEFAULT_FORMAT)), $absolute);
     }
 
-    public function getMidnightTimestamp(DateTimeZone $timeZone = null): int
+    public function getStart(DateTimeZone $timeZone = null): DateTime
     {
-        return (new \DateTime($this->format(), $timeZone))->setTime(0, 0, 0)->getTimestamp();
+        return (new DateTime($this->format(), $timeZone))->setTime(0, 0, 0);
+    }
+
+    public function getStartFormatted(string $format = null, DateTimeZone $timeZone = null): string
+    {
+        return $this->getStart($timeZone)->format($format ?? DateTime::DEFAULT_FORMAT);
+    }
+
+    public function getEnd(DateTimeZone $timeZone = null): DateTime
+    {
+        return (new DateTime($this->format(), $timeZone))->setTime(23, 59, 59);
+    }
+
+    public function getEndFormatted(string $format = null, DateTimeZone $timeZone = null): string
+    {
+        return $this->getStart($timeZone)->setTime(23, 59, 59)->format($format ?? DateTime::DEFAULT_FORMAT);
     }
 
     public function compare(Date $date): int
@@ -112,14 +127,14 @@ class Date implements \Dogma\NonIterable
         return $thisDate >= $sinceDate->format() && $thisDate <= $untilDate->format();
     }
 
-    public function isFuture(): bool
+    public function isFuture(TimeProvider $timeProvider = null): bool
     {
-        return $this->format() > (new static('today'))->format();
+        return $this->format() > ($timeProvider !== null ? $timeProvider->getDate() : new Date('today'))->format();
     }
 
-    public function isPast(): bool
+    public function isPast(TimeProvider $timeProvider = null): bool
     {
-        return $this->format() < (new static('today'))->format();
+        return $this->format() < ($timeProvider !== null ? $timeProvider->getDate() : new Date('today'))->format();
     }
 
 }

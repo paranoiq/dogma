@@ -13,9 +13,33 @@ class CurrentTimeProvider implements TimeProvider
 {
     use \Dogma\StrictBehaviorMixin;
 
+    /** @var \DateTimeZone|null */
+    private $timeZone;
+
+    public function __construct(\DateTimeZone $timeZone = null)
+    {
+        $this->timeZone = $timeZone;
+    }
+
+    public function getDate(): Date
+    {
+        return $this->getDateTime()->getDate();
+    }
+
     public function getDateTime(): DateTime
     {
-        return new DateTime();
+        $currentTime = new DateTime();
+
+        if ($this->timeZone !== null) {
+            return $currentTime->setTimezone($this->timeZone);
+        }
+
+        return $currentTime;
+    }
+
+    public function getTimeZone(): \DateTimeZone
+    {
+        return $this->timeZone ?? $this->getDateTime()->getTimezone();
     }
 
 }

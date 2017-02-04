@@ -16,17 +16,35 @@ class ConstantTimeProvider implements TimeProvider
     /** @var \Dogma\Time\DateTime */
     private $dateTime;
 
-    public function __construct(DateTime $dateTime = null)
+    /** @var \DateTimeZone */
+    private $timeZone;
+
+    public function __construct(DateTime $dateTime = null, \DateTimeZone $timeZone = null)
     {
-        if (!$dateTime) {
+        if ($dateTime === null) {
             $dateTime = new DateTime();
         }
+        if ($timeZone === null) {
+            $timeZone = $dateTime->getTimezone();
+        }
+
         $this->dateTime = $dateTime;
+        $this->timeZone = $timeZone;
+    }
+
+    public function getDate(): Date
+    {
+        return $this->dateTime->getDate();
     }
 
     public function getDateTime(): DateTime
     {
         return $this->dateTime;
+    }
+
+    public function getTimeZone(): \DateTimeZone
+    {
+        return $this->timeZone;
     }
 
 }

@@ -20,6 +20,7 @@ $utcTimeZone = new \DateTimeZone('UTC');
 // createFromFormat()
 Assert::type(DateTime::createFromFormat(DateTime::DEFAULT_FORMAT, $dateTimeString), DateTime::class);
 Assert::same(DateTime::createFromFormat(DateTime::DEFAULT_FORMAT, $dateTimeString)->format(), $dateTimeString);
+Assert::equal(DateTime::createFromFormat(DateTime::DEFAULT_FORMAT, $dateTimeString, $utcTimeZone)->getTimezone(), $utcTimeZone);
 
 // createFromTimestamp()
 Assert::type(DateTime::createFromTimestamp($timestamp), DateTime::class);
@@ -58,6 +59,7 @@ Assert::same($today->getTime()->format(), '12:00:00');
 
 // setTime()
 Assert::same($today->setTime(3, 4, 5)->format(Time::DEFAULT_FORMAT), '03:04:05');
+Assert::same($today->setTime('03:04:05')->format(Time::DEFAULT_FORMAT), '03:04:05');
 Assert::same($today->setTime(new Time('03:04:05'))->format(Time::DEFAULT_FORMAT), '03:04:05');
 
 // compare()

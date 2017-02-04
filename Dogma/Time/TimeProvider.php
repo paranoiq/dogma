@@ -12,9 +12,10 @@ namespace Dogma\Time;
 interface TimeProvider
 {
 
-    /**
-     * @return \Dogma\Time\DateTime
-     */
-    public function getDateTime();
+    public function getDate(): Date;
+
+    public function getDateTime(): DateTime;
+
+    public function getTimeZone(): \DateTimeZone;
 
 }
