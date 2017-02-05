@@ -96,9 +96,10 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
      * @param \Dogma\Time\Time|int $time|$hours
      * @param int|null $minutes
      * @param int|null $seconds
+     * @param int|null $microseconds
      * @return self
      */
-    public function setTime($time, $minutes = null, $seconds = null)
+    public function setTime($time, $minutes = null, $seconds = null, $microseconds = null)
     {
         if ($time instanceof Time) {
             return self::createFromDateTimeInterface(parent::setTime($time->getHours(), $time->getMinutes(), $time->getSeconds()));
@@ -107,7 +108,7 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
             list($time, $minutes, $seconds) = explode(':', $time);
         }
 
-        return self::createFromDateTimeInterface(parent::setTime($time, $minutes, $seconds));
+        return self::createFromDateTimeInterface(parent::setTime($time, $minutes, $seconds, $microseconds));
     }
 
     public function compare(DateTimeInterface $dateTime): int

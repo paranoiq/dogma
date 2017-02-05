@@ -15,7 +15,7 @@ use Dogma;
 /**
  * Directory iterator
  */
-class DirectoryIterator extends FilesystemIterator
+class DirectoryIterator extends \FilesystemIterator
 {
 
     private $flags;

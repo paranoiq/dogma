@@ -16,6 +16,9 @@ use Nette\Utils\ObjectMixin;
  */
 abstract class Set
 {
+    use \Dogma\StrictBehaviorMixin;
+    use \Dogma\NonCloneableMixin;
+    use \Dogma\NonSerializableMixin;
 
     /** @var mixed[] */
     private static $values = [];
@@ -34,7 +37,7 @@ abstract class Set
     /**
      * @param self|string|string[]
      */
-    public function add($set)
+    public function add($set): void
     {
         $this->checkSet($set);
 
@@ -56,7 +59,7 @@ abstract class Set
     /**
      * @param self|string|string[]
      */
-    public function remove($set)
+    public function remove($set): void
     {
         $this->checkSet($set);
 
@@ -88,7 +91,7 @@ abstract class Set
     /**
      * @param self|string|string[]
      */
-    private function checkSet(&$set)
+    private function checkSet(&$set): void
     {
         if (is_string($set)) {
             $set = explode(',', $set);
@@ -118,7 +121,7 @@ abstract class Set
      * Set more values at once
      * @param bool[] (string $name => bool $value)
      */
-    public function setValues(array $values)
+    public function setValues(array $values): void
     {
         foreach ($values as $name => $value) {
             $this->__set($name, $value);
@@ -158,7 +161,7 @@ abstract class Set
         return self::$values[$class];
     }
 
-    final private static function init(string $class)
+    final private static function init(string $class): void
     {
         $ref = new \ReflectionClass($class);
         self::$values[$class] = $ref->getConstants();
@@ -218,16 +221,6 @@ abstract class Set
         }
 
         ObjectMixin::remove($this, $name);
-    }
-
-    final public function __sleep()
-    {
-        throw new \Exception('Set type cannot be serialized. Use its values instead.');
-    }
-
-    final public function __wakeup()
-    {
-        throw new \Exception('Set type cannot be serialized. Use its values instead.');
     }
 
 }

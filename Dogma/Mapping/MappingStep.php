@@ -52,7 +52,7 @@ class MappingStep
      * @param mixed[] &$data
      * @param \Dogma\Mapping\Mapper $mapper
      */
-    public function stepForward(array &$data, Mapper $mapper)
+    public function stepForward(array &$data, Mapper $mapper): void
     {
         $sourceData = [];
         $onlyNull = true;
@@ -79,7 +79,7 @@ class MappingStep
      * @param mixed[] &$data
      * @param \Dogma\Mapping\Mapper
      */
-    public function stepBack(array &$data, Mapper $mapper)
+    public function stepBack(array &$data, Mapper $mapper): void
     {
         $instance = $data[$this->destinationKey];
         unset($data[$this->destinationKey]);

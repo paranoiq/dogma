@@ -133,7 +133,7 @@ class Locale
      * @param \Dogma\Language\Locale\Locale|string $default
      * @return self|null
      */
-    public function findBestMatch(array $locales, $default = null)
+    public function findBestMatch(array $locales, $default = null): ?self
     {
         Check::types($default, [Type::STRING, Locale::class, Type::NULL]);
 
@@ -165,10 +165,7 @@ class Locale
         return $this->value;
     }
 
-    /**
-     * @return \Dogma\Language\Language|null
-     */
-    public function getLanguage()
+    public function getLanguage(): ?Language
     {
         if (empty($this->components['language'])) {
             return null;
@@ -176,10 +173,7 @@ class Locale
         return Language::get($this->components['language']);
     }
 
-    /**
-     * @return \Dogma\Language\Script|null
-     */
-    public function getScript()
+    public function getScript(): ?Script
     {
         if (empty($this->components['script'])) {
             return null;
@@ -187,10 +181,7 @@ class Locale
         return Script::get($this->components['script']);
     }
 
-    /**
-     * @return \Dogma\Country\Country|null
-     */
-    public function getCountry()
+    public function getCountry(): ?Country
     {
         if (empty($this->components['region'])) {
             return null;
@@ -206,11 +197,7 @@ class Locale
         return \Locale::getAllVariants($this->value);
     }
 
-    /**
-     * @param int $n
-     * @return string|null
-     */
-    public function getVariant(int $n)
+    public function getVariant(int $n): ?string
     {
         $key = 'variant' . $n;
         if (empty($this->components[$key])) {
@@ -236,11 +223,7 @@ class Locale
         return $privates;
     }
 
-    /**
-     * @param int $n
-     * @return string|null
-     */
-    public function getPrivate(int $n)
+    public function getPrivate(int $n): ?string
     {
         $key = 'private' . $n;
         if (empty($this->components[$key])) {
@@ -258,49 +241,33 @@ class Locale
         return isset($this->components['keywords']) ? $this->components['keywords'] : [];
     }
 
-    /**
-     * @param string $keyword
-     * @return string|null
-     */
-    public function getKeyword(string $keyword)
+    public function getKeyword(string $keyword): ?string
     {
         return isset($this->components['keywords'][$keyword]) ? $this->components['keywords'][$keyword] : null;
     }
 
-    /**
-     * @return \Dogma\Money\Currency|null
-     */
-    public function getCurrency()
+    public function getCurrency(): ?Currency
     {
         $value = $this->getKeyword(LocaleKeyword::CURRENCY);
 
         return $value ? Currency::get($value) : null;
     }
 
-    /**
-     * @return \Dogma\Language\Locale\LocaleNumbers|null
-     */
-    public function getNumbers()
+    public function getNumbers(): ?LocaleNumbers
     {
         $value = $this->getKeyword(LocaleKeyword::NUMBERS);
 
         return $value ? LocaleNumbers::get($value) : null;
     }
 
-    /**
-     * @return \Dogma\Language\Locale\LocaleCalendar|null
-     */
-    public function getCalendar()
+    public function getCalendar(): ?LocaleCalendar
     {
         $value = $this->getKeyword(LocaleKeyword::CALENDAR);
 
         return $value ? LocaleCalendar::get($value) : null;
     }
 
-    /**
-     * @return \Dogma\Language\Locale\LocaleCollation|null
-     */
-    public function getCollation()
+    public function getCollation(): ?LocaleCollation
     {
         $value = $this->getKeyword(LocaleKeyword::COLLATION);
 

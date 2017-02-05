@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.1",
         "nette/http": "~2.4",
         "nette/reflection": "~2.4",
         "nette/php-generator": "~2.4",

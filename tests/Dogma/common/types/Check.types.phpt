@@ -119,11 +119,6 @@ $subjects = [
     'callableMethod' => [$callableMethod, Type::PHP_CALLABLE, Type::PHP_ARRAY],
     'callableStaticMethod' => [$callableStaticMethod, Type::PHP_CALLABLE, Type::PHP_ARRAY],
 ];
-if (PHP_VERSION_ID >= 70000) {
-    $subjects['floatNan'][] = Type::STRING;
-    $subjects['floatInf'][] = Type::STRING;
-    $subjects['floatInfNegative'][] = Type::STRING;
-}
 
 $types = Type::listNativeTypes();
 foreach ($subjects as $name => $possibleTypes) {
@@ -155,10 +150,10 @@ foreach ($subjects as $name => $possibleTypes) {
                 && !($type === Type::FLOAT && is_float($subject) && (is_nan($subject) || $subject === INF || $subject === -INF))) {
                 // pass
             } elseif ($class === \Dogma\InvalidValueException::class
-                && $type === Type::FLOAT && is_float($subject) && (is_nan($subject))) {
+                && is_float($subject) && is_nan($subject)) {
                 // pass
             } elseif ($class === \Dogma\ValueOutOfRangeException::class
-                && $type === Type::FLOAT && is_float($subject) && ($subject === INF || $subject === -INF)) {
+                && is_float($subject) && ($subject === INF || $subject === -INF)) {
                 // pass
             } elseif ($type === Type::FLOAT && is_float($subject) && (is_nan($subject) || $subject === INF || $subject === -INF)) {
                 Assert::fail(sprintf('Subject %s `%s` casted to %s should throw an InvalidValueException. %s thrown instead.', $name, $before, $type, $class));

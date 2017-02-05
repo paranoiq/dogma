@@ -148,7 +148,7 @@ class File implements Path
         return (bool) $this->handle;
     }
 
-    public function open()
+    public function open(): void
     {
         error_clear_last();
         if ($this->streamContext !== null) {
@@ -162,7 +162,7 @@ class File implements Path
         $this->handle = $handle;
     }
 
-    public function close()
+    public function close(): void
     {
         $this->checkOpened();
 
@@ -265,7 +265,7 @@ class File implements Path
         return $str;
     }
 
-    public function write(string $data)
+    public function write(string $data): void
     {
         $this->checkOpened();
 
@@ -280,7 +280,7 @@ class File implements Path
     /**
      * Truncate file and move pointer at the end
      */
-    public function truncate(int $size = 0)
+    public function truncate(int $size = 0): void
     {
         $this->checkOpened();
 
@@ -297,7 +297,7 @@ class File implements Path
     /**
      * Flush the file output buffer (fsync)
      */
-    public function flush()
+    public function flush(): void
     {
         $this->checkOpened();
 
@@ -310,7 +310,7 @@ class File implements Path
         $this->metaData = null;
     }
 
-    public function lock(LockType $mode = null)
+    public function lock(LockType $mode = null): void
     {
         $this->checkOpened();
 
@@ -331,7 +331,7 @@ class File implements Path
         }
     }
 
-    public function unlock()
+    public function unlock(): void
     {
         $this->checkOpened();
 
@@ -347,7 +347,7 @@ class File implements Path
      * @param int $position
      * @param \Dogma\Io\Position|null $from
      */
-    public function setPosition(int $position, Position $from = null)
+    public function setPosition(int $position, Position $from = null): void
     {
         $this->checkOpened();
 
@@ -449,7 +449,7 @@ class File implements Path
     ]
     */
 
-    private function checkOpened()
+    private function checkOpened(): void
     {
         if ($this->handle === null) {
             throw new \Dogma\Io\FileException('File is already closed.');

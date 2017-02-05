@@ -24,12 +24,12 @@ class ReverseArrayIterator implements \Iterator
         $this->array = $array;
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         end($this->array);
     }
 
-    public function next()
+    public function next(): void
     {
         prev($this->array);
     }

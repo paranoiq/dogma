@@ -546,10 +546,7 @@ final class Tld extends PartialEnum
         return strlen($this->getValue()) === 2 || $this->equals(self::BZH);
     }
 
-    /**
-     * @return \Dogma\Country\Country|null
-     */
-    public function getCountry()
+    public function getCountry(): ?Country
     {
         $value = $this->getValue();
         if (isset(self::$countryMap[$value])) {

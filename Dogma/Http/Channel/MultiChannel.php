@@ -54,12 +54,12 @@ class MultiChannel
         foreach ($channels as $cName => $channel) {
             $this->cids[spl_object_hash($channel)] = $cName;
             $channel->setResponseHandler(function (Response $response, Channel $channel, string $sjName) {
-                return $this->responseHandler($response, $channel, $sjName);
+                $this->responseHandler($response, $channel, $sjName);
             });
         }
     }
 
-    public function responseHandler(Response $response, Channel $channel, string $sjName)
+    public function responseHandler(Response $response, Channel $channel, string $sjName): void
     {
         $cid = spl_object_hash($channel);
         $cName = $this->cids[$cid];
@@ -117,7 +117,7 @@ class MultiChannel
      * Set callback handler for every response (even an error)
      * @param callable(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      */
-    public function setResponseHandler(callable $responseHandler)
+    public function setResponseHandler(callable $responseHandler): void
     {
         $this->responseHandler = $responseHandler;
     }
@@ -126,16 +126,16 @@ class MultiChannel
      * Set separate callback handler for redirects. ResponseHandler will no longer handle these.
      * @param callable(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      */
-    public function setRedirectHandler(callable $redirectHadler)
+    public function setRedirectHandler(callable $redirectHandler): void
     {
-        $this->redirectHandler = $redirectHadler;
+        $this->redirectHandler = $redirectHandler;
     }
 
     /**
      * Set separate callback handler for errors. ResponseHandler will no longer handle these.
      * @param callable(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      */
-    public function setErrorHandler(callable $errorHandler)
+    public function setErrorHandler(callable $errorHandler): void
     {
         $this->errorHandler = $errorHandler;
     }
@@ -143,7 +143,7 @@ class MultiChannel
     /**
      * @param callable(mixed $data, \Dogma\Http\Channel[] $channels)
      */
-    public function setDispatchFunction($function)
+    public function setDispatchFunction($function): void
     {
         $this->dispatch = $function;
     }
@@ -216,7 +216,7 @@ class MultiChannel
      * @param string|int
      * @return \Dogma\Http\Response[]|null
      */
-    public function fetch($name = null)
+    public function fetch($name = null): ?array
     {
         if ($name !== null) {
             return $this->fetchNamedJob($name);
@@ -244,7 +244,7 @@ class MultiChannel
      * @param string|int
      * @return \Dogma\Http\Response[]|null
      */
-    private function fetchNamedJob($name)
+    private function fetchNamedJob($name): ?array
     {
         if (!isset($this->queue[$name]) && !isset($this->finished[$name])) {
             throw new ChannelException(sprintf('Job named \'%s\' was not found.', $name));
@@ -256,7 +256,7 @@ class MultiChannel
             return $responses;
         }
 
-        // seek subjobs
+        // seek sub-jobs
         foreach ($this->queue as $sjName => $a) {
             foreach ($a as $cName => $jobName) {
                 if ($jobName === $name) {
@@ -273,7 +273,7 @@ class MultiChannel
     /**
      * Wait till all jobs are finished.
      */
-    public function finish()
+    public function finish(): void
     {
         foreach ($this->channels as $channel) {
             $channel->finish();
@@ -293,7 +293,7 @@ class MultiChannel
         return true;
     }
 
-    public function read()
+    public function read(): void
     {
         foreach ($this->channels as $channel) {
             $channel->read();

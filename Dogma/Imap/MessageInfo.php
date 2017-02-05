@@ -42,18 +42,12 @@ class MessageInfo
         return $this->message;
     }
 
-    /**
-     * @return string
-     */
-    /*public function getBody()
+    /*public function getBody(): string
     {
         return $this->imap->getMessageBody($this->uid);
     }*/
 
-    /**
-     * @return string
-     */
-    /*public function getRawHeader()
+    /*public function getRawHeader(): string
     {
         return $this->imap->getRawMessageHeader($this->uid);
     }*/

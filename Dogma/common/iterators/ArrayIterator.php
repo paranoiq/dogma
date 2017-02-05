@@ -24,12 +24,12 @@ class ArrayIterator implements \Iterator
         $this->array = $array;
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         reset($this->array);
     }
 
-    public function next()
+    public function next(): void
     {
         next($this->array);
     }

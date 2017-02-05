@@ -18,6 +18,11 @@ use Dogma\Tester\Assert;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
+if (PHP_VERSION_ID > 70011) {
+    // broken Locale::canonicalize and Locale::parseLocale
+    \Tester\Environment::skip();
+    exit;
+}
 
 $localeString = 'cs_Latn_CZ_VAR1_VAR2_X_PRI1_PRI2@currency=CZK;numbers=arab;calendar=iso8601;collation=phonebook;colbackwards=yes;colcasefirst=lower';
 $localeStringCanonicalized = 'cs_Latn_CZ_VAR1_VAR2_X_PRI1_PRI2@calendar=iso8601;colbackwards=yes;colcasefirst=lower;collation=phonebook;currency=CZK;numbers=arab';

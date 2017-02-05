@@ -38,7 +38,7 @@ final class DogmaLoader
     /**
      * Register autoloader
      */
-    public function register(bool $prepend = false)
+    public function register(bool $prepend = false): void
     {
         spl_autoload_register([$this, 'tryLoad'], true, $prepend);
     }
@@ -46,7 +46,7 @@ final class DogmaLoader
     /**
      * Handles autoloading of classes or interfaces
      */
-    public function tryLoad(string $class)
+    public function tryLoad(string $class): void
     {
         $class = ltrim($class, '\\');
         if (isset($this->classMap[$class])) {
@@ -85,7 +85,7 @@ final class DogmaLoader
         return $this->classMap;
     }
 
-    private function scan(string $dir)
+    private function scan(string $dir): void
     {
         foreach (glob($dir . '\\*') as $path) {
             if (is_dir($path)) {

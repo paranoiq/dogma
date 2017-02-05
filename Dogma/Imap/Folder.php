@@ -152,7 +152,7 @@ class Folder
 
     // internals -------------------------------------------------------------------------------------------------------
 
-    private function loadStatus()
+    private function loadStatus(): void
     {
         $status = $this->imap->getFolderStatus($this->name);
 
@@ -163,7 +163,7 @@ class Folder
         // uidvalidity
     }
 
-    private function loadInfo()
+    private function loadInfo(): void
     {
         $info = $this->imap->getFolderInfo($this->name);
 

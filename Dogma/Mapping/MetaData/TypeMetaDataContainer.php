@@ -32,7 +32,7 @@ class TypeMetaDataContainer
 
         $this->handlers = $handlers;
     }
-    
+
     public function getType(Type $type): TypeMetaData
     {
         $typeId = $type->getId();
@@ -42,8 +42,8 @@ class TypeMetaDataContainer
 
         return $this->types[$typeId];
     }
-    
-    private function addType(Type $type)
+
+    private function addType(Type $type): void
     {
         $added = false;
         foreach ($this->handlers as $handler) {

@@ -39,13 +39,13 @@ class ZipIterator implements \Iterator
             : ($values instanceof IteratorAggregate ? $values->getIterator() : $values);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->keys->rewind();
         $this->values->rewind();
     }
 
-    public function next()
+    public function next(): void
     {
         $this->keys->next();
         $this->values->next();

@@ -159,7 +159,7 @@ abstract class Enum implements \Dogma\NonIterable
         return self::$instances[$class];
     }
 
-    final private static function init(string $class)
+    final private static function init(string $class): void
     {
         $ref = new \ReflectionClass($class);
         self::$availableValues[$class] = $ref->getConstants();

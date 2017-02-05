@@ -45,25 +45,22 @@ class TextFile extends File
         }
     }
 
-    public function setEncoding(Encoding $encoding)
+    public function setEncoding(Encoding $encoding): void
     {
         $this->encoding = $encoding->getValue();
     }
 
-    public function setInternalEncoding(Encoding $internalEncoding)
+    public function setInternalEncoding(Encoding $internalEncoding): void
     {
         $this->internalEncoding = $internalEncoding->getValue();
     }
 
-    public function setLineEndings(LineEndings $nl)
+    public function setLineEndings(LineEndings $nl): void
     {
         $this->nl = $nl->getValue();
     }
 
-    /**
-     * @return string|null
-     */
-    public function readLine()
+    public function readLine(): ?string
     {
         error_clear_last();
         $line = fgets($this->handle);
@@ -81,7 +78,7 @@ class TextFile extends File
         return $line;
     }
 
-    public function writeLine(string $line)
+    public function writeLine(string $line): void
     {
         if ($this->encoding !== $this->internalEncoding) {
             $line = $this->encode($line);
@@ -93,16 +90,16 @@ class TextFile extends File
      * @param string $delimiter
      * @param string $quoteChar
      * @param string $escapeChar
-     * @return string[]|null[]
+     * @return string[]
      */
-    public function readCsvRow(string $delimiter, string $quoteChar, string $escapeChar)
+    public function readCsvRow(string $delimiter, string $quoteChar, string $escapeChar): array
     {
         error_clear_last();
         $row = fgetcsv($this->handle, 0, $delimiter, $quoteChar, $escapeChar);
 
         if ($row === false) {
             if ($this->endOfFileReached()) {
-                return null;
+                return [];
             } else {
                 throw new \Dogma\Io\FileException('Cannot read data from file.', error_get_last());
             }

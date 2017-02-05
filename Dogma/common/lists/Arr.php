@@ -114,7 +114,7 @@ class Arr
      * @param mixed[] $array
      * @param callable $function
      */
-    public static function doForEach(array $array, callable $function)
+    public static function doForEach(array $array, callable $function): void
     {
         foreach ($array as $value) {
             $function($value);
@@ -433,7 +433,7 @@ class Arr
      * @param int $from
      * @return int|null
      */
-    public static function indexOfSlice(array $array, array $slice, int $from = 0)
+    public static function indexOfSlice(array $array, array $slice, int $from = 0): ?int
     {
         $that = self::drop($array, $from);
         while (!empty($that)) {

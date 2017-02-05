@@ -86,7 +86,7 @@ class Attachment
         if ($this->data) {
             return strlen($this->data);
         } else {
-            return $this->file->getInfo()->getSize();
+            return $this->file->getMetaData()->getSize();
         }
     }
 

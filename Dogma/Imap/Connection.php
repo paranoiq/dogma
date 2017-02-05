@@ -73,7 +73,7 @@ class Connection
         };
     }
 
-    public function setMessageFactory(callable $factory)
+    public function setMessageFactory(callable $factory): void
     {
         $this->messageFactory = $factory;
     }
@@ -81,7 +81,7 @@ class Connection
     /**
      * Connect to server
      */
-    public function connect()
+    public function connect(): void
     {
         $params = $this->ssl ? '/ssl/novalidate-cert' : ''; // /ssl/secure
 
@@ -123,7 +123,7 @@ class Connection
     /**
      * Disconnect from server
      */
-    public function disconnect()
+    public function disconnect(): void
     {
         ///
         $res = imap_close($this->handler, CL_EXPUNGE);
@@ -290,7 +290,7 @@ class Connection
     /**
      * Mark folder as subscribed (visible)
      */
-    public function subscribeFolder(string $path)
+    public function subscribeFolder(string $path): void
     {
         ///
         imap_subscribe($this->handler, $this->ref . $this->encode($path));
@@ -300,7 +300,7 @@ class Connection
     /**
      * Mark folder as unsubscribed (invisible)
      */
-    public function unsubscribeFolder(string $path)
+    public function unsubscribeFolder(string $path): void
     {
         ///
         imap_unsubscribe($this->handler, $this->ref . $this->encode($path));
@@ -341,11 +341,7 @@ class Connection
         return $this->folders[$name] = new Folder($this, $name, $f[0]->attributes);
     }
 
-    /**
-     * Returns name of selected folder
-     * @return string|null
-     */
-    public function getSelectedFolder()
+    public function getSelectedFolder(): ?string
     {
         return $this->selectedFolder;
     }
@@ -353,7 +349,7 @@ class Connection
     /**
      * Create new folder in mailbox
      */
-    public function createFolder(string $path)
+    public function createFolder(string $path): void
     {
         ///
         imap_createmailbox($this->handler, $this->ref . $this->encode($path));
@@ -363,7 +359,7 @@ class Connection
     /**
      * Delete folder from mailbox
      */
-    public function deleteFolder(string $path)
+    public function deleteFolder(string $path): void
     {
         ///
         imap_deletemailbox($this->handler, $this->ref . $this->encode($path));
@@ -373,7 +369,7 @@ class Connection
     /**
      * Rename folder to a new name
      */
-    public function renameFolder(string $oldPath, string $newPath)
+    public function renameFolder(string $oldPath, string $newPath): void
     {
         ///
         imap_renamemailbox($this->handler, $this->ref . $this->encode($oldPath), $this->ref . $this->encode($newPath));

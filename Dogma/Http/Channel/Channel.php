@@ -11,6 +11,7 @@ namespace Dogma\Http\Channel;
 
 use Dogma\Http\Curl\CurlHelper;
 use Dogma\Http\Request;
+use Dogma\Http\Response;
 
 /**
  * HTTP channel for multiple similar requests.
@@ -93,7 +94,7 @@ class Channel
      * Set callback handler for every response (even an error)
      * @param callable(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      */
-    public function setResponseHandler(callable $responseHandler)
+    public function setResponseHandler(callable $responseHandler): void
     {
         $this->responseHandler = $responseHandler;
     }
@@ -102,7 +103,7 @@ class Channel
      * Set separate callback handler for redirects. ResponseHandler will no longer handle these.
      * @param callable(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      */
-    public function setRedirectHandler(callable $redirectHandler)
+    public function setRedirectHandler(callable $redirectHandler): void
     {
         $this->redirectHandler = $redirectHandler;
     }
@@ -111,12 +112,12 @@ class Channel
      * Set separate callback handler for errors. ResponseHandler will no longer handle these.
      * @param callable(\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
      */
-    public function setErrorHandler(callable $errorHandler)
+    public function setErrorHandler(callable $errorHandler): void
     {
         $this->errorHandler = $errorHandler;
     }
 
-    public function setPriority(int $priority)
+    public function setPriority(int $priority): void
     {
         $this->priority = abs($priority);
     }
@@ -144,7 +145,7 @@ class Channel
      * @param mixed
      * @return \Dogma\Http\Response|null
      */
-    public function fetchJob($data, $context = null)
+    public function fetchJob($data, $context = null): ?Response
     {
         $name = $this->addJob($data, $context, null, true);
 
@@ -247,10 +248,10 @@ class Channel
      *
      * @param string|int|null
      */
-    public function startJob($name = null)
+    public function startJob($name = null): void
     {
         if (!$this->canStartJob()) {
-            return null;
+            return;
         }
 
         if ($name === null) {
@@ -292,7 +293,7 @@ class Channel
      * @param array
      * @param \Dogma\Http\Request
      */
-    public function jobFinished($name, array $minfo, Request $request)
+    public function jobFinished($name, array $minfo, Request $request): void
     {
         unset($this->running[$name]);
         $data = curl_multi_getcontent($minfo['handle']);
@@ -318,7 +319,7 @@ class Channel
      * @param string|int
      * @return \Dogma\Http\Response|null
      */
-    public function fetch($name = null)
+    public function fetch($name = null): ?Response
     {
         if ($name !== null) {
             return $this->fetchByName($name);
@@ -351,7 +352,7 @@ class Channel
      * @param string|int
      * @return \Dogma\Http\Response|null
      */
-    private function fetchByName($name)
+    private function fetchByName($name): ?Response
     {
         if (!isset($this->queue[$name]) && !isset($this->running[$name]) && !isset($this->finished[$name])) {
             throw new \Dogma\Http\Channel\ChannelException(sprintf('Job named \'%s\' was not found.', $name));
@@ -397,14 +398,14 @@ class Channel
     /**
      * Wait till all jobs are finished.
      */
-    public function finish()
+    public function finish(): void
     {
         while (!$this->isFinished()) {
             $this->manager->read();
         }
     }
 
-    public function stop()
+    public function stop(): void
     {
         $this->stopped = true;
     }
@@ -414,7 +415,7 @@ class Channel
         return $this->stopped;
     }
 
-    public function pause(int $seconds = 0)
+    public function pause(int $seconds = 0): void
     {
         if ($seconds) {
             $this->paused = time() + $seconds;
@@ -431,13 +432,13 @@ class Channel
         return $this->paused;
     }
 
-    public function resume()
+    public function resume(): void
     {
         $this->stopped = false;
         $this->paused = false;
     }
 
-    public function read()
+    public function read(): void
     {
         $this->manager->read();
     }

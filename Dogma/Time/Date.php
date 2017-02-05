@@ -50,7 +50,7 @@ class Date implements \Dogma\NonIterable
         }
     }
 
-    public static function createFromComponents(int $year, int $month, int $day)
+    public static function createFromComponents(int $year, int $month, int $day): self
     {
         Check::range($year, 1, 9999);
         Check::range($month, 1, 12);
@@ -72,6 +72,7 @@ class Date implements \Dogma\NonIterable
     /**
      * @param \DateTimeInterface|\Dogma\Time\Date $date
      * @param bool $absolute
+     * @return \DateInterval|bool
      */
     public function diff($date, bool $absolute = false)
     {

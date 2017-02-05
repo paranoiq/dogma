@@ -110,7 +110,7 @@ class HeaderParser
         return $cookies;
     }
 
-    private function insertHeader(array &$headers, $name, $value)
+    private function insertHeader(array &$headers, $name, $value): void
     {
         if (isset($headers[$name])) {
             if (is_array($headers[$name])) {

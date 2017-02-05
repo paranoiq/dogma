@@ -51,7 +51,7 @@ class BitSize
      * @param int $size
      * @throws \Dogma\InvalidSizeException
      */
-    public static function checkIntSize(int $size)
+    public static function checkIntSize(int $size): void
     {
         $sizes = BitSize::getIntSizes();
         if (!Arr::contains($sizes, $size)) {
@@ -63,7 +63,7 @@ class BitSize
      * @param int $size
      * @throws \Dogma\InvalidSizeException
      */
-    public static function checkFloatSize(int $size)
+    public static function checkFloatSize(int $size): void
     {
         $sizes = BitSize::getFloatSizes();
         if (!Arr::contains($sizes, $size)) {

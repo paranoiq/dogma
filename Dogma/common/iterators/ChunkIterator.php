@@ -40,14 +40,15 @@ class ChunkIterator extends \IteratorIterator
         parent::__construct($traversable);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         parent::rewind();
+
         $this->next();
         $this->key = 0;
     }
 
-    public function next()
+    public function next(): void
     {
         $this->chunk = array();
         for ($i = 0; $i < $this->chunkSize && parent::valid(); $i++) {

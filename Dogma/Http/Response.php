@@ -10,6 +10,7 @@
 namespace Dogma\Http;
 
 use Dogma\Http\Curl\CurlHelper;
+use Dogma\Io\ContentType\ContentType;
 use Dogma\Time\CurrentTimeProvider;
 
 class Response
@@ -136,7 +137,7 @@ class Response
     /**
      * @return \Dogma\Io\ContentType\ContentType|null
      */
-    public function getContentType()
+    public function getContentType(): ?ContentType
     {
         ///
     }

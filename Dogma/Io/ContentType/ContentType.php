@@ -2589,10 +2589,7 @@ class ContentType extends \Dogma\PartialEnum
         return BaseContentType::get(Str::toFirst($this->getValue(), '/'));
     }
 
-    /**
-     * @return string|null
-     */
-    public function getExtension()
+    public function getExtension(): ?string
     {
         return array_search($this->getValue(), self::$extensions) ?: null;
     }

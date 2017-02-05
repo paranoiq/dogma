@@ -16,7 +16,7 @@ $mapper = new Mapper(new StaticMappingContainer([]));
 $boolType = Type::get(Type::BOOL);
 $intType = Type::get(Type::INT);
 $floatType = Type::get(Type::FLOAT);
-$numericType = Type::get(Type::NUMERIC);
+$numericType = Type::get(Type::NUMBER);
 $stringType = Type::get(Type::STRING);
 
 // acceptType()

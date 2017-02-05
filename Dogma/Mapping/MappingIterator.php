@@ -54,13 +54,13 @@ class MappingIterator implements \Iterator
     /**
      * @throws \Exception
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->source->rewind();
         $this->key = 0;
     }
 
-    public function next()
+    public function next(): void
     {
         $this->key++;
         $this->source->next();

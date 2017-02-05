@@ -29,7 +29,7 @@ class ContentTypeDetector
         $this->magicFile = $magicFile;
     }
 
-    private function initTypeHandler()
+    private function initTypeHandler(): void
     {
         error_clear_last();
         $typeHandler = finfo_open(FILEINFO_MIME_TYPE, $this->magicFile);
@@ -39,7 +39,7 @@ class ContentTypeDetector
         $this->typeHandler = $typeHandler;
     }
 
-    private function initEncodingHandler()
+    private function initEncodingHandler(): void
     {
         error_clear_last();
         $encodingHandler = finfo_open(FILEINFO_MIME_ENCODING, $this->magicFile);
@@ -53,7 +53,7 @@ class ContentTypeDetector
      * @param string|\Dogma\Io\Path
      * @return \Dogma\Io\ContentType\ContentType|null
      */
-    public function detectFileContentType($file)
+    public function detectFileContentType($file): ?ContentType
     {
         if ($this->typeHandler === null) {
             $this->initTypeHandler();
@@ -69,7 +69,7 @@ class ContentTypeDetector
      * @param string|\Dogma\Io\Path
      * @return \Dogma\Io\ContentType\ContentType|null
      */
-    public function detectStringContentType(string $string)
+    public function detectStringContentType(string $string): ?ContentType
     {
         if ($this->typeHandler === null) {
             $this->initTypeHandler();
@@ -84,7 +84,7 @@ class ContentTypeDetector
      * @param string|\Dogma\Io\Path
      * @return \Dogma\Language\Encoding|null
      */
-    public function detectFileEncoding($file)
+    public function detectFileEncoding($file): ?Encoding
     {
         if ($this->encodingHandler === null) {
             $this->initEncodingHandler();
@@ -100,7 +100,7 @@ class ContentTypeDetector
      * @param string|\Dogma\Io\Path
      * @return \Dogma\Language\Encoding|null
      */
-    public function detectStringEncoding(string $string)
+    public function detectStringEncoding(string $string): ?Encoding
     {
         if ($this->encodingHandler === null) {
             $this->initEncodingHandler();

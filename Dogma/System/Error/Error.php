@@ -15,7 +15,7 @@ interface Error
     /**
      * @return int
      */
-    public function getValue();
+    public function getValue(); // compat with Enum
 
     public function getDescription(): string;
 

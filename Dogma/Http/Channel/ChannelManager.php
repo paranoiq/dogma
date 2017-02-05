@@ -67,7 +67,7 @@ class ChannelManager
     /**
      * Set maximum of request to run in parallel.
      */
-    public function setThreadLimit(int $threads)
+    public function setThreadLimit(int $threads): void
     {
         $this->threadLimit = abs($threads);
     }
@@ -79,7 +79,7 @@ class ChannelManager
         $this->startJobs();
     }
 
-    private function updatePriorities()
+    private function updatePriorities(): void
     {
         $sum = 0;
         foreach ($this->channels as $channel) {
@@ -88,7 +88,7 @@ class ChannelManager
         $this->sumPriorities = $sum;
     }
 
-    public function read()
+    public function read(): void
     {
         $this->waitForResult();
         $this->readResults();
@@ -137,7 +137,7 @@ class ChannelManager
     /**
      * Read finished results from CURL.
      */
-    private function readResults()
+    private function readResults(): void
     {
         while ($info = curl_multi_info_read($this->handler)) {
             $resourceId = (string) $info['handle'];
@@ -158,7 +158,7 @@ class ChannelManager
     /**
      * Start requests according to their priorities.
      */
-    public function startJobs()
+    public function startJobs(): void
     {
         while ($cid = $this->selectChannel()) {
             $this->channels[$cid]->startJob();
@@ -166,11 +166,7 @@ class ChannelManager
         $this->exec();
     }
 
-    /**
-     * Select channel to spawn new connection, taking in account channel priorities.
-     * @return int|null
-     */
-    private function selectChannel()
+    private function selectChannel(): ?int
     {
         if (count($this->resources) >= $this->threadLimit) {
             return null;
@@ -205,7 +201,7 @@ class ChannelManager
      * @param string|int
      * @param \Dogma\Http\Request
      */
-    public function jobStarted($resource, Channel $channel, $name, Request $request)
+    public function jobStarted($resource, Channel $channel, $name, Request $request): void
     {
         $this->resources[(string) $resource] = [spl_object_hash($channel), $name, $request];
     }

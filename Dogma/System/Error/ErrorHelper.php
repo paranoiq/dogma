@@ -23,7 +23,7 @@ class ErrorHelper
      * @param int|string
      * @return \Dogma\System\Error\Error|null
      */
-    public static function getError(int $errno, $system = self::LOCAL)
+    public static function getError(int $errno, $system = self::LOCAL): ?Error
     {
         if (!$system || !is_int($system)) {
             $system = self::detectSystem($system);
@@ -51,10 +51,10 @@ class ErrorHelper
     /**
      * Get error message for given error number.
      * @param int
-     * @param string
+     * @param int|string
      * @return string|null
      */
-    public static function getErrorDescription(int $errno, $system = self::LOCAL)
+    public static function getErrorDescription(int $errno, $system = self::LOCAL): ?string
     {
         if ($error = self::getError($errno, $system)) {
             return $error->getDescription();
@@ -63,12 +63,7 @@ class ErrorHelper
         return null;
     }
 
-    /**
-     * Detect underlying operation system family.
-     * @param string $string
-     * @return int|null
-     */
-    public static function detectSystem(string $string = null)
+    public static function detectSystem(string $string = null): ?int
     {
         if (!$string) {
             $string = PHP_OS;

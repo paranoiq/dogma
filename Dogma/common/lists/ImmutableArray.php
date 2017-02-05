@@ -145,7 +145,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return $this[$this->randomKey()];
     }
 
-    public function doForEach(callable $function)
+    public function doForEach(callable $function): void
     {
         foreach ($this as $value) {
             $function($value);
@@ -408,7 +408,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
      * @param int $from
      * @return int|null
      */
-    public function indexOfSlice($array, int $from = 0)
+    public function indexOfSlice($array, int $from = 0): ?int
     {
         /** @var self $that */
         $that = $this->drop($from);

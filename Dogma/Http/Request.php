@@ -75,7 +75,7 @@ class Request
      * Called by Channel.
      * @internal
      */
-    public function init()
+    public function init(): void
     {
         if ($this->init !== null) {
             if (!($this->init)($this)) {
@@ -88,28 +88,25 @@ class Request
     /**
      * @param callable
      */
-    public function setInit(callable $init)
+    public function setInit(callable $init): void
     {
         $this->init = $init;
     }
 
-    public function setHeaderParser(HeaderParser $headerParser)
+    public function setHeaderParser(HeaderParser $headerParser): void
     {
         $this->headerParser = $headerParser;
     }
 
-    /**
-     * @return \Dogma\Http\HeaderParser|null
-     */
-    public function getHeaderParser()
+    public function getHeaderParser(): ?HeaderParser
     {
         return $this->headerParser;
     }
 
     /**
-     * @param mixed Request context
+     * @param mixed
      */
-    public function setContext($data)
+    public function setContext($data): void
     {
         $this->context = $data;
     }
@@ -127,7 +124,7 @@ class Request
     /**
      * @param string
      */
-    public function setUrl(string $url)
+    public function setUrl(string $url): void
     {
         $this->url = $url;
     }
@@ -135,7 +132,7 @@ class Request
     /**
      * @param string
      */
-    public function appendUrl(string $url)
+    public function appendUrl(string $url): void
     {
         $this->setUrl($this->url . $url);
     }
@@ -143,7 +140,7 @@ class Request
     /**
      * @param mixed
      */
-    public function setData($data)
+    public function setData($data): void
     {
         if ($data !== null) {
             $this->dispatch($data);
@@ -151,9 +148,9 @@ class Request
     }
 
     /**
-     * @param string|array
+     * @param string|mixed[]
      */
-    protected function dispatch($data)
+    protected function dispatch($data): void
     {
         if (is_string($data)) {
             $this->setContent($data);
@@ -166,7 +163,7 @@ class Request
         }
     }
 
-    public function setContent(string $data)
+    public function setContent(string $data): void
     {
         if ($this->method === HttpMethod::POST || $this->method === HttpMethod::PUT) {
             $this->content = $data;
@@ -179,12 +176,12 @@ class Request
      * Set URL or POST variables. Can be called repeatedly.
      * @param mixed[]
      */
-    public function setVariables(array $variables)
+    public function setVariables(array $variables): void
     {
         $this->variables = array_merge($this->variables, $variables);
     }
 
-    public function setMethod(string $method)
+    public function setMethod(string $method): void
     {
         $this->method = strtolower($method);
 
@@ -217,7 +214,7 @@ class Request
      * @param string|int option name or CURLOPT_ constant
      * @param mixed
      */
-    public function setOption($name, $value)
+    public function setOption($name, $value): void
     {
         if (is_string($name)) {
             $num = CurlHelper::getCurlOptionNumber($name);
@@ -243,7 +240,7 @@ class Request
      * @param float|int
      * @param float|int
      */
-    public function setTimeout($timeout, $connectTimeout = null)
+    public function setTimeout($timeout, $connectTimeout = null): void
     {
         if ($timeout < 1) {
             $this->setOption(CURLOPT_TIMEOUT_MS, (int) ($timeout / 1000));
@@ -262,7 +259,7 @@ class Request
         }
     }
 
-    public function setFollowRedirects(bool $follow = true, int $max = null)
+    public function setFollowRedirects(bool $follow = true, int $max = null): void
     {
         $this->setOption(CURLOPT_FOLLOWLOCATION, $follow);
         if (!is_null($max)) {
@@ -270,7 +267,7 @@ class Request
         }
     }
 
-    public function addHeader(string $name, string $value)
+    public function addHeader(string $name, string $value): void
     {
         $this->headers[$name] = $value;
     }
@@ -278,24 +275,24 @@ class Request
     /**
      * @param string[]
      */
-    public function setHeaders(array $headers)
+    public function setHeaders(array $headers): void
     {
         $this->headers = $headers;
     }
 
-    public function setReferrer(string $url)
+    public function setReferrer(string $url): void
     {
         $this->setOption(CURLOPT_REFERER, $url);
     }
 
-    public function setUserAgent(string $string)
+    public function setUserAgent(string $string): void
     {
         $this->setOption(CURLOPT_USERAGENT, $string);
     }
 
     // cookies, authentication & secure connection ---------------------------------------------------------------------
 
-    public function setCookieFile(string $inputFile, string $outputFile = null)
+    public function setCookieFile(string $inputFile, string $outputFile = null): void
     {
         if ($inputFile) {
             $this->setOption(CURLOPT_COOKIEFILE, $inputFile);
@@ -308,36 +305,36 @@ class Request
     /**
      * @param string[]
      */
-    public function setCookies(array $cookies)
+    public function setCookies(array $cookies): void
     {
         $this->cookies = $cookies;
     }
 
-    public function addCookie(string $name, string $value)
+    public function addCookie(string $name, string $value): void
     {
         $this->cookies[$name] = $value;
     }
 
-    public function setCredentials(string $userName, string $password, int $method = CURLAUTH_ANYSAFE)
+    public function setCredentials(string $userName, string $password, int $method = CURLAUTH_ANYSAFE): void
     {
         $this->setOption(CURLOPT_USERPWD, $userName . ':' . $password);
         $this->setOption(CURLOPT_HTTPAUTH, $method);
     }
 
-    public function setSslKey(string $keyFile, string $password, string $keyType = 'PEM')
+    public function setSslKey(string $keyFile, string $password, string $keyType = 'PEM'): void
     {
         $this->setOption(CURLOPT_SSLKEY, $keyFile);
         $this->setOption(CURLOPT_SSLKEYPASSWD, $password);
         $this->setOption(CURLOPT_SSLKEYTYPE, $keyType);
     }
 
-    public function setVerifySslCertificates(bool $verifyPeer = true, bool $verifyHost = true)
+    public function setVerifySslCertificates(bool $verifyPeer = true, bool $verifyHost = true): void
     {
         $this->setOption(CURLOPT_SSL_VERIFYPEER, $verifyPeer);
         $this->setOption(CURLOPT_SSL_VERIFYHOST, $verifyHost);
     }
 
-    public function setProxy(string $proxy = null, $port = 3128, $userName = null, $password = null)
+    public function setProxy(string $proxy = null, $port = 3128, $userName = null, $password = null): void
     {
         if ($proxy === null) {
             $this->setOption(CURLOPT_PROXY, null);
@@ -366,7 +363,7 @@ class Request
      * Called by RequestManager.
      * @internal
      */
-    public function prepare()
+    public function prepare(): void
     {
         $params = $this->analyzeUrl();
         if ($params || $this->variables || $this->content) {
@@ -403,7 +400,7 @@ class Request
      * @param int $error
      * @return \Dogma\Http\Response
      */
-    public function createResponse($response, int $error)
+    public function createResponse($response, int $error): Response
     {
         $info = $this->getInfo();
         $status = $this->getResponseStatus($error, $info);
@@ -441,7 +438,7 @@ class Request
         return $status;
     }
 
-    private function prepareHeaders()
+    private function prepareHeaders(): void
     {
         $headers = [];
         foreach ($this->headers as $key => $value) {
@@ -455,7 +452,7 @@ class Request
         $this->setOption(CURLOPT_HTTPHEADER, $headers);
     }
 
-    private function prepareCookies()
+    private function prepareCookies(): void
     {
         $cookie = '';
         foreach ($this->cookies as $name => $value) {
@@ -468,7 +465,7 @@ class Request
     /**
      * @param mixed[] $variables
      */
-    private function prepareData(array $variables)
+    private function prepareData(array $variables): void
     {
         if ($variables) {
             $this->fillUrlVariables($variables);
@@ -496,7 +493,7 @@ class Request
         }
     }
 
-    private function prepareUpload()
+    private function prepareUpload(): void
     {
         $this->setOption(CURLOPT_BINARYTRANSFER, true);
 
@@ -515,7 +512,7 @@ class Request
         }
     }
 
-    private function preparePost()
+    private function preparePost(): void
     {
         foreach ($this->variables as $name => $value) {
             if ($value === null) {
@@ -550,7 +547,7 @@ class Request
     /**
      * @param mixed[]
      */
-    private function fillUrlVariables(array $vars)
+    private function fillUrlVariables(array $vars): void
     {
         foreach ($vars as $name => $short) {
             if (!isset($this->variables[$name])) {
@@ -576,7 +573,7 @@ class Request
         $this->setHeaderFunction();
     }
 
-    private function setHeaderFunction()
+    private function setHeaderFunction(): void
     {
         $this->setOption(CURLOPT_HEADERFUNCTION, function ($curl, string $header) {
             $length = strlen($header);

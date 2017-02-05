@@ -32,7 +32,7 @@ class DownloadRequest extends Request
      * Called by Channel.
      * @internal
      */
-    public function prepare()
+    public function prepare(): void
     {
         parent::prepare();
 
@@ -50,7 +50,7 @@ class DownloadRequest extends Request
      * @param int $error
      * @return \Dogma\Http\FileResponse
      */
-    public function createResponse($response, int $error): FileResponse
+    public function createResponse($response, int $error): Response
     {
         $info = $this->getInfo();
         $status = $this->getResponseStatus($error, $info);

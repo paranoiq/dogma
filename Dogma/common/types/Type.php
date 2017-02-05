@@ -176,7 +176,7 @@ class Type
         return self::$instances[$id];
     }
 
-    private static function checkSize(string $type, int $size = null)
+    private static function checkSize(string $type, int $size = null): void
     {
         if ($type === self::INT) {
             BitSize::checkIntSize($size);
@@ -190,7 +190,7 @@ class Type
         throw new \Dogma\InvalidSizeException($type, $size, []);
     }
 
-    private static function checkSpecific(string $type, $specific = null)
+    private static function checkSpecific(string $type, $specific = null): void
     {
         if ($type === self::INT && ($specific === Sign::SIGNED || $specific === Sign::UNSIGNED)) {
             return;
@@ -453,10 +453,7 @@ class Type
         return $this->specific === Length::FIXED;
     }
 
-    /**
-     * @return \Dogma\ResourceType|null
-     */
-    public function getResourceType()
+    public function getResourceType(): ?ResourceType
     {
         return $this->type === self::RESOURCE && $this->specific ? ResourceType::get($this->specific) : null;
     }
@@ -472,25 +469,18 @@ class Type
 
     /**
      * Returns bit-size for numeric types and length for string
-     * @return int|null
      */
-    public function getSize()
+    public function getSize(): ?int
     {
         return $this->size;
     }
 
-    /**
-     * @return \Dogma\Language\Encoding|null
-     */
-    public function getEncoding()
+    public function getEncoding(): ?Encoding
     {
         return $this->encoding;
     }
 
-    /**
-     * @return \Dogma\Language\Locale\Locale|null
-     */
-    public function getLocale()
+    public function getLocale(): ?Locale
     {
         return $this->locale;
     }

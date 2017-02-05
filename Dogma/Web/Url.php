@@ -61,10 +61,7 @@ class Url
         return $this->getDomain()->getTld();
     }
 
-    /**
-     * @return int|null
-     */
-    public function getPort()
+    public function getPort(): ?int
     {
         return $this->url->getPort();
     }

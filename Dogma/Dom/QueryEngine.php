@@ -10,6 +10,7 @@
 namespace Dogma\Dom;
 
 use Dogma\Str;
+use Dogma\Time\DateTime;
 
 /**
  * Simple query engine based on XPath 1.0
@@ -429,7 +430,7 @@ class QueryEngine
             return '';
         }
 
-        $date = \DateTime::createFromFormat($format, $string);
+        $date = DateTime::createFromFormat($format, $string);
         if (!$date) {
             throw new \Dogma\Dom\QueryEngineException(
                 sprintf('Cannot create DateTime object from \'%s\' using format \'%s\'.', $string, $format)
@@ -448,7 +449,7 @@ class QueryEngine
             return '';
         }
 
-        $date = \DateTime::createFromFormat($format, $string);
+        $date = DateTime::createFromFormat($format, $string);
         if (!$date) {
             throw new \Dogma\Dom\QueryEngineException(
                 sprintf('Cannot create DateTime object from \'%s\' using format \'%s\'.', $string, $format)

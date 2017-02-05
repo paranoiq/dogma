@@ -73,7 +73,7 @@ class FloydWarshallPathFinder
     /**
      * Implementation of Floyd-Warshall algorithm
      */
-    private function calculatePaths()
+    private function calculatePaths(): void
     {
         // init
         for ($i = 0; $i < $this->nodeCount; $i++) {
@@ -142,7 +142,7 @@ class FloydWarshallPathFinder
     }
 
     /**
-     * Print out the original Graph matrice in HTML
+     * Print out the original Graph matrix in HTML
      */
     public function printGraphMatrix(): string
     {
@@ -170,7 +170,7 @@ class FloydWarshallPathFinder
     }
 
     /**
-     * Print out distances matrice in HTML
+     * Print out distances matrix in HTML
      */
     public function printDistances(): string
     {
@@ -198,7 +198,7 @@ class FloydWarshallPathFinder
     }
 
     /**
-     * Print out predecessors matrice in HTML
+     * Print out predecessors matrix in HTML
      */
     public function printPredecessors(): string
     {

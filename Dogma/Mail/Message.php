@@ -11,6 +11,7 @@ namespace Dogma\Mail;
 
 use Dogma\Io\File;
 use Dogma\Language\Inflector;
+use Dogma\PowersOfTwo;
 use Dogma\Str;
 
 /**
@@ -35,8 +36,8 @@ class Message
     const TEXT = 'text/plain';
     const HTML = 'text/html';
 
-    /** @var int bigger attachements will be treated using temporary files */
-    public static $bigFileTreshold = 0x100000; // 1MB
+    /** @var int bigger attachments will be treated using temporary files */
+    public static $bigFileThreshold = PowersOfTwo::_1M;
 
     /** @var string[] */
     private $parts = [];
@@ -62,7 +63,7 @@ class Message
         if ($message instanceof File) {
             $this->file = $message;
             ///
-            $handler = mailparse_msg_parse_file($this->file->getName());
+            $handler = mailparse_msg_parse_file($this->file->getPath());
             if (!$handler) {
                 throw new ParsingException('Cannot parse email file.');
             }
@@ -120,12 +121,7 @@ class Message
         return $this->headers;
     }
 
-    /**
-     * Returns an email header.
-     * @param string
-     * @return string|null
-     */
-    public function getHeader(string $name)
+    public function getHeader(string $name): ?string
     {
         if (!$this->headers) {
             $this->getHeaders();
@@ -139,7 +135,7 @@ class Message
     }
 
     /**
-     * Return content types of body (usualy text/plain and text/html).
+     * Return content types of body (usually text/plain and text/html).
      * @return string[]
      */
     public function getContentTypes(): array
@@ -157,12 +153,7 @@ class Message
         return $ct;
     }
 
-    /**
-     * Returns message body of given type.
-     * @param string
-     * @return string|null
-     */
-    public function getBody(string $type = self::TEXT)
+    public function getBody(string $type = self::TEXT): ?string
     {
         if ($type !== 'text/plain' && $type !== 'text/html') {
             throw new ParsingException('Invalid content type specified. Type can either be "text/plain" or "text/html".');
@@ -187,7 +178,7 @@ class Message
      * @param string
      * @return string[]
      */
-    public function getBodyHeaders(string $type = self::TEXT)
+    public function getBodyHeaders(string $type = self::TEXT): array
     {
         if ($type !== 'text/plain' && $type !== 'text/html') {
             throw new ParsingException('Invalid content type specified. Type can either be "text/plain" or "text/html".');
@@ -210,9 +201,9 @@ class Message
      * @param bool
      * @return \Dogma\Mail\Attachment[]
      */
-    public function getAttachments($contentType = null, bool $inlines = true): array
+    public function getAttachments($contentType = null, bool $inlined = true): array
     {
-        $dispositions = $inlines ? ['attachment', 'inline'] : ['attachment'];
+        $dispositions = $inlined ? ['attachment', 'inline'] : ['attachment'];
         if (isset($contentType) && !is_array($contentType)) {
             $contentType = [$contentType];
         }
@@ -278,7 +269,7 @@ class Message
      * Find and decode encoded headers (format: =?charset?te?header?=)
      * @param string[]
      */
-    private function decodeHeaders(array &$headers)
+    private function decodeHeaders(array &$headers): void
     {
         foreach ($headers as $name => &$value) {
             if (is_array($value)) {
@@ -388,14 +379,13 @@ class Message
      * @param string[]
      * @return string|null
      */
-    private function getPartBody($part)
+    private function getPartBody(array$part): ?string
     {
         $start = $part['starting-pos-body'];
         $length = $part['ending-pos-body'] - $start;
 
         if ($this->data) {
             return substr($this->data, $start, $length);
-
         } else {
             $this->file->setPosition($start);
             return $this->file->read($length);
@@ -407,7 +397,7 @@ class Message
      * @param string[]
      * @return string|\Dogma\Io\File
      */
-    private function getAttachmentData($part)
+    private function getAttachmentData(array $part)
     {
         $encoding = array_key_exists('content-transfer-encoding', $part['headers']) ? $part['headers']['content-transfer-encoding'] : '';
 
@@ -419,7 +409,7 @@ class Message
             $length = $part['ending-pos-body'] - $start;
             $this->file->setPosition($start);
 
-            if ($length < self::$bigFileTreshold) {
+            if ($length < self::$bigFileThreshold) {
                 return $this->decode($this->file->read($length), $encoding);
 
             } else {

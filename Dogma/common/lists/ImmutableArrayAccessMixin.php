@@ -16,7 +16,7 @@ trait ImmutableArrayAccessMixin
      * @param mixed $key
      * @return bool
      */
-    public function offsetExists($key)
+    public function offsetExists($key): bool
     {
         return array_key_exists($key, $this->toArray());
     }
@@ -35,7 +35,7 @@ trait ImmutableArrayAccessMixin
      * @param mixed $value
      * @throws \BadMethodCallException
      */
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         throw new \BadMethodCallException('Cannot modify an item of immutable list.');
     }
@@ -44,7 +44,7 @@ trait ImmutableArrayAccessMixin
      * @param mixed $key
      * @throws \BadMethodCallException
      */
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         throw new \BadMethodCallException('Cannot unset an item of immutable list.');
     }
