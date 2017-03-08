@@ -19,12 +19,14 @@
         "tracy/tracy": "~2.4"
     },
     "require-dev": {
+        "consistence/coding-standard": "0.13.0",
+        "jakub-onderka/php-console-highlighter": "~0.3",
+        "jakub-onderka/php-parallel-lint": "~0.8",
         "nette/tester": "~1.7",
         "phing/phing": "~2.16",
-        "squizlabs/php_codesniffer": "~2.7",
-        "jakub-onderka/php-console-highlighter": "0.3.1",
-        "jakub-onderka/php-parallel-lint": "0.8.0",
-        "phpstan/phpstan": "~0.6"
+        "phpstan/phpstan": "~0.6",
+        "slevomat/coding-standard": "dev-2.0-dev#06c9cbb",
+        "squizlabs/php_codesniffer": "~2.7"
     },
     "autoload": {
         "files": ["Dogma/loader.php"]
