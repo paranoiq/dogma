@@ -22,28 +22,28 @@ class Type
     use \Dogma\NonSerializableMixin;
 
     // types
-    const BOOL = 'bool';
-    const INT = 'int';
-    const FLOAT = 'float';
-    const STRING = 'string';
-    const PHP_ARRAY = 'array';
-    const OBJECT = 'object';
-    const PHP_CALLABLE = 'callable';
-    const RESOURCE = 'resource';
+    public const BOOL = 'bool';
+    public const INT = 'int';
+    public const FLOAT = 'float';
+    public const STRING = 'string';
+    public const PHP_ARRAY = 'array';
+    public const OBJECT = 'object';
+    public const PHP_CALLABLE = 'callable';
+    public const RESOURCE = 'resource';
 
     // pseudotypes
-    const NULL = 'null';
-    const NUMBER = 'number';
-    const SCALAR = 'scalar';
-    const MIXED = 'mixed';
-    const VOID = 'void';
+    public const NULL = 'null';
+    public const NUMBER = 'number';
+    public const SCALAR = 'scalar';
+    public const MIXED = 'mixed';
+    public const VOID = 'void';
 
     // strict type checks flag
-    const STRICT = true;
+    public const STRICT = true;
 
     // nullable type flag
-    const NULLABLE = true;
-    const NOT_NULLABLE = false;
+    public const NULLABLE = true;
+    public const NOT_NULLABLE = false;
 
     /** @var \Dogma\Type[] (string $id => $type) */
     private static $instances = [];

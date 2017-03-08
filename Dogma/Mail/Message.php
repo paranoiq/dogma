@@ -33,8 +33,8 @@ class Message
 {
     use \Dogma\StrictBehaviorMixin;
 
-    const TEXT = 'text/plain';
-    const HTML = 'text/html';
+    public const TEXT = 'text/plain';
+    public const HTML = 'text/html';
 
     /** @var int bigger attachments will be treated using temporary files */
     public static $bigFileThreshold = PowersOfTwo::_1M;

@@ -12,10 +12,10 @@ namespace Dogma\System\Error;
 class ErrorHelper
 {
 
-    const LOCAL = 0;
-    const LINUX = 1;
-    const UNIX = 2;
-    const WINDOWS = 3;
+    public const LOCAL = 0;
+    public const LINUX = 1;
+    public const UNIX = 2;
+    public const WINDOWS = 3;
 
     /**
      * Get error object for given error number.

@@ -14,11 +14,11 @@ use Collator;
 class LocaleColStrength extends \Dogma\Enum implements \Dogma\Language\Locale\LocaleCollationOption
 {
 
-    const PRIMARY = 'primary';
-    const SECONDARY = 'secondary';
-    const TERTIARY = 'tertiary';
-    const QUATERNARY = 'quaternary';
-    const IDENTICAL = 'identical';
+    public const PRIMARY = 'primary';
+    public const SECONDARY = 'secondary';
+    public const TERTIARY = 'tertiary';
+    public const QUATERNARY = 'quaternary';
+    public const IDENTICAL = 'identical';
 
     public static function validateValue(&$value): bool
     {

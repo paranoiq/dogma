@@ -10,9 +10,9 @@ require_once __DIR__ . '/../../bootstrap.php';
 class TestEnum extends \Dogma\Enum
 {
 
-    const ONE = 1;
-    const TWO = 2;
-    const THREE = 3;
+    public const ONE = 1;
+    public const TWO = 2;
+    public const THREE = 3;
 
 }
 

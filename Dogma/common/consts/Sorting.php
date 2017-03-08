@@ -13,9 +13,9 @@ class Sorting
 {
     use \Dogma\StaticClassMixin;
 
-    const REGULAR = SORT_REGULAR;
-    const NUMERIC = SORT_NUMERIC;
-    const STRING = SORT_STRING;
-    const NATURAL = SORT_NATURAL;
+    public const REGULAR = SORT_REGULAR;
+    public const NUMERIC = SORT_NUMERIC;
+    public const STRING = SORT_STRING;
+    public const NATURAL = SORT_NATURAL;
 
 }

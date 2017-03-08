@@ -17,10 +17,10 @@ final class Check
     use \Dogma\StaticClassMixin;
 
     // min length
-    const NOT_EMPTY = 1;
+    public const NOT_EMPTY = 1;
 
     // strict type checks
-    const STRICT = true;
+    public const STRICT = true;
 
     /**
      * @param &mixed $value

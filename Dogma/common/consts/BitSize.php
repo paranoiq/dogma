@@ -13,14 +13,14 @@ class BitSize
 {
     use \Dogma\StaticClassMixin;
 
-    const BITS_8 = 8;
-    const BITS_16 = 16;
-    const BITS_24 = 24;
-    const BITS_32 = 32;
-    const BITS_64 = 64;
+    public const BITS_8 = 8;
+    public const BITS_16 = 16;
+    public const BITS_24 = 24;
+    public const BITS_32 = 32;
+    public const BITS_64 = 64;
 
-    const DEFAULT_INT_SIZE = PHP_INT_SIZE * 8;
-    const DEFAULT_FLOAT_SIZE = self::BITS_64;
+    public const DEFAULT_INT_SIZE = PHP_INT_SIZE * 8;
+    public const DEFAULT_FLOAT_SIZE = self::BITS_64;
 
     /**
      * @return int[]

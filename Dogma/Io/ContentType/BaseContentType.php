@@ -12,16 +12,16 @@ namespace Dogma\Io\ContentType;
 class BaseContentType extends \Dogma\PartialEnum
 {
 
-    const APPLICATION = 'application';
-    const AUDIO = 'audio';
-    const FONT = 'font';
-    const CHEMICAL = 'chemical';
-    const IMAGE = 'image';
-    const MESSAGE = 'message';
-    const MODEL = 'model';
-    const MULTIPART = 'multipart';
-    const TEXT = 'text';
-    const VIDEO = 'video';
+    public const APPLICATION = 'application';
+    public const AUDIO = 'audio';
+    public const FONT = 'font';
+    public const CHEMICAL = 'chemical';
+    public const IMAGE = 'image';
+    public const MESSAGE = 'message';
+    public const MODEL = 'model';
+    public const MULTIPART = 'multipart';
+    public const TEXT = 'text';
+    public const VIDEO = 'video';
 
     public static function getValueRegexp(): string
     {

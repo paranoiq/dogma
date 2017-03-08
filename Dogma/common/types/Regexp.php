@@ -16,13 +16,13 @@ class Regexp
 {
     use \Dogma\StrictBehaviorMixin;
 
-    const DOLLAR_MATCH_END_ONLY = 'D';
-    const CASE_INSENSITIVE = 'i';
-    const MULTILINE = 'm';
-    const DOT_MATCH_EOL = 's';
-    const UNICODE = 'u';
-    const UNGREEDY = 'U';
-    const IGNORE_WHITE_SPACE = 'x';
+    public const DOLLAR_MATCH_END_ONLY = 'D';
+    public const CASE_INSENSITIVE = 'i';
+    public const MULTILINE = 'm';
+    public const DOT_MATCH_EOL = 's';
+    public const UNICODE = 'u';
+    public const UNGREEDY = 'U';
+    public const IGNORE_WHITE_SPACE = 'x';
 
 
     /** @var string */

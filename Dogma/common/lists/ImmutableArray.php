@@ -15,7 +15,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
     use \Dogma\ImmutableArrayAccessMixin;
 
     /** @internal */
-    const PRESERVE_KEYS = true;
+    private const PRESERVE_KEYS = true;
 
     /** @var mixed[] */
     private $items;

@@ -22,8 +22,8 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
     use \Dogma\NonIterableMixin;
     use \Dogma\Time\DateDateTimeCommonMixin;
 
-    const DEFAULT_FORMAT = 'Y-m-d H:i:s';
-    const FORMAT_EMAIL_HTTP = DATE_RFC2822;
+    public const DEFAULT_FORMAT = 'Y-m-d H:i:s';
+    public const FORMAT_EMAIL_HTTP = DATE_RFC2822;
 
     /**
      * @param string $format

@@ -22,7 +22,7 @@ interface Handler
      * Used as a key in array returned by getParameters().
      * Indicates only one parameter is expected instead of array.
      */
-    const SINGLE_PARAMETER = '';
+    public const SINGLE_PARAMETER = '';
 
     /**
      * Returns true if handler accepts the type represented by $type parameter.

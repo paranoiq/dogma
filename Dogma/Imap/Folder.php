@@ -13,13 +13,13 @@ class Folder
 {
     use \Dogma\StrictBehaviorMixin;
 
-    const NO_SUBFOLDERS = LATT_NOINFERIORS; // 1
-    const NOT_SELECTABLE = LATT_NOSELECT; // 2
-    const IS_MARKED = LATT_MARKED; // 4
-    const IS_UNMARKED = LATT_UNMARKED; // 8
-    const IS_REFERENCE = LATT_REFERRAL; // 16
-    const HAS_CHILDREN = LATT_HASCHILDREN; // 32
-    const HAS_NO_CHILDREN = LATT_HASNOCHILDREN; // 64
+    public const NO_SUBFOLDERS = LATT_NOINFERIORS; // 1
+    public const NOT_SELECTABLE = LATT_NOSELECT; // 2
+    public const IS_MARKED = LATT_MARKED; // 4
+    public const IS_UNMARKED = LATT_UNMARKED; // 8
+    public const IS_REFERENCE = LATT_REFERRAL; // 16
+    public const HAS_CHILDREN = LATT_HASCHILDREN; // 32
+    public const HAS_NO_CHILDREN = LATT_HASNOCHILDREN; // 64
 
 
     /** @var \Dogma\Imap\Connection */

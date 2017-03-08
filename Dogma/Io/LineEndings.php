@@ -12,8 +12,8 @@ namespace Dogma\Io;
 class LineEndings extends \Dogma\Enum
 {
 
-    const UNIX = "\n";
-    const WINDOWS = "\r\n";
-    const MAC = "\r";
+    public const UNIX = "\n";
+    public const WINDOWS = "\r\n";
+    public const MAC = "\r";
 
 }

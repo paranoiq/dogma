@@ -14,28 +14,28 @@ use Dogma\Arr;
 class Sapi extends \Dogma\Enum
 {
 
-    const AOL_SERVER = 'aolserver';
-    const APACHE = 'apache';
-    const APACHE_2_FILTER = 'apache2filter';
-    const APACHE_2_HANDLER = 'apache2handler';
-    const CAUDIUM = 'caudium';
-    const CGI = 'cgi'; // (until PHP 5.3)
-    const CGI_FCGI = 'cgi-fcgi';
-    const CLI = 'cli';
-    const CLI_SERVER = 'cli-server';
-    const CONTINUITY = 'continuity';
-    const EMBED = 'embed';
-    const FPM_FCGI = 'fpm-fcgi';
-    const ISAPI = 'isapi';
-    const LITESPEED = 'litespeed';
-    const MILTER = 'milter';
-    const NSAPI = 'nsapi';
-    const PHTTPD = 'phttpd';
-    const PI3WEB = 'pi3web';
-    const ROXEN = 'roxen';
-    const THTTPD = 'thttpd';
-    const TUX = 'tux';
-    const WEBJAMES = 'webjames';
+    public const AOL_SERVER = 'aolserver';
+    public const APACHE = 'apache';
+    public const APACHE_2_FILTER = 'apache2filter';
+    public const APACHE_2_HANDLER = 'apache2handler';
+    public const CAUDIUM = 'caudium';
+    public const CGI = 'cgi'; // (until PHP 5.3)
+    public const CGI_FCGI = 'cgi-fcgi';
+    public const CLI = 'cli';
+    public const CLI_SERVER = 'cli-server';
+    public const CONTINUITY = 'continuity';
+    public const EMBED = 'embed';
+    public const FPM_FCGI = 'fpm-fcgi';
+    public const ISAPI = 'isapi';
+    public const LITESPEED = 'litespeed';
+    public const MILTER = 'milter';
+    public const NSAPI = 'nsapi';
+    public const PHTTPD = 'phttpd';
+    public const PI3WEB = 'pi3web';
+    public const ROXEN = 'roxen';
+    public const THTTPD = 'thttpd';
+    public const TUX = 'tux';
+    public const WEBJAMES = 'webjames';
 
     private static $multithreaded = [
         self::AOL_SERVER,

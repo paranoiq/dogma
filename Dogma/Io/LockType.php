@@ -12,8 +12,8 @@ namespace Dogma\Io;
 class LockType extends \Dogma\Enum
 {
 
-    const SHARED = LOCK_SH;
-    const EXCLUSIVE = LOCK_EX;
-    const NON_BLOCKING = LOCK_NB;
+    public const SHARED = LOCK_SH;
+    public const EXCLUSIVE = LOCK_EX;
+    public const NON_BLOCKING = LOCK_NB;
 
 }

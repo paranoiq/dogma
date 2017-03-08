@@ -12,14 +12,14 @@ namespace Dogma\Http;
 class HttpMethod extends \Dogma\Enum
 {
 
-    const GET = 'get';
-    const HEAD = 'head';
-    const POST = 'post';
-    const PUT = 'put';
-    const PATCH = 'patch';
-    const DELETE = 'delete';
-    const TRACE = 'trace';
-    const OPTIONS = 'options';
-    const CONNECT = 'connect';
+    public const GET = 'get';
+    public const HEAD = 'head';
+    public const POST = 'post';
+    public const PUT = 'put';
+    public const PATCH = 'patch';
+    public const DELETE = 'delete';
+    public const TRACE = 'trace';
+    public const OPTIONS = 'options';
+    public const CONNECT = 'connect';
 
 }

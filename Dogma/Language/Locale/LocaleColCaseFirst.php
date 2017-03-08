@@ -14,9 +14,9 @@ use Dogma\Language\Collator;
 class LocaleColCaseFirst extends \Dogma\Enum implements \Dogma\Language\Locale\LocaleCollationOption
 {
 
-    const UPPER = 'upper';
-    const LOWER = 'lower';
-    const NO = 'no';
+    public const UPPER = 'upper';
+    public const LOWER = 'lower';
+    public const NO = 'no';
 
     public static function validateValue(&$value): bool
     {

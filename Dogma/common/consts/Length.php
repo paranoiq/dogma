@@ -13,6 +13,6 @@ class Length
 {
     use \Dogma\StaticClassMixin;
 
-    const FIXED = 'fixed';
+    public const FIXED = 'fixed';
 
 }

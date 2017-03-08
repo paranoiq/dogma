@@ -12,18 +12,18 @@ namespace Dogma\Language\Locale;
 class LocaleKeyword extends \Dogma\PartialEnum
 {
 
-    const CALENDAR = 'calendar';
-    const COLLATION = 'collation';
-    const CURRENCY = 'currency';
-    const NUMBERS = 'numbers';
+    public const CALENDAR = 'calendar';
+    public const COLLATION = 'collation';
+    public const CURRENCY = 'currency';
+    public const NUMBERS = 'numbers';
 
-    const COL_ALTERNATE = 'colalternate';
-    const COL_BACKWARDS = 'colbackwards';
-    const COL_CASE_FIRST = 'colcasefirst';
-    const COL_HIRAGANA_QUATERNARY = 'colhiraganaquaternary';
-    const COL_NORMALIZATION = 'colnormalization';
-    const COL_NUMERIC = 'colnumeric';
-    const COL_STRENGTH = 'colstrength';
+    public const COL_ALTERNATE = 'colalternate';
+    public const COL_BACKWARDS = 'colbackwards';
+    public const COL_CASE_FIRST = 'colcasefirst';
+    public const COL_HIRAGANA_QUATERNARY = 'colhiraganaquaternary';
+    public const COL_NORMALIZATION = 'colnormalization';
+    public const COL_NUMERIC = 'colnumeric';
+    public const COL_STRENGTH = 'colstrength';
 
     /**
      * @return string[]

@@ -12,22 +12,22 @@ namespace Dogma\Language\Locale;
 class LocaleCollation extends \Dogma\Enum
 {
 
-    const BIG5 = 'big5han';
-    const DICTIONARY = 'dictionary';
-    const DUCET = 'ducet';
-    const EOR = 'eor';
-    const GB2312 = 'gb2312han';
-    const PHONEBOOK = 'phonebook';
-    const PHONETIC = 'phonetic';
-    const PINYIN = 'pinyin';
-    const REFORMED = 'reformed';
-    const SEARCH = 'search';
-    const SEARCHJL = 'searchjl';
-    const STANDARD = 'standard';
-    const STOKE = 'stroke';
-    const TRADITIONAL = 'traditional';
-    const UNIHAN = 'unihan';
-    const ZHUYIN = 'zhuyin';
+    public const BIG5 = 'big5han';
+    public const DICTIONARY = 'dictionary';
+    public const DUCET = 'ducet';
+    public const EOR = 'eor';
+    public const GB2312 = 'gb2312han';
+    public const PHONEBOOK = 'phonebook';
+    public const PHONETIC = 'phonetic';
+    public const PINYIN = 'pinyin';
+    public const REFORMED = 'reformed';
+    public const SEARCH = 'search';
+    public const SEARCHJL = 'searchjl';
+    public const STANDARD = 'standard';
+    public const STOKE = 'stroke';
+    public const TRADITIONAL = 'traditional';
+    public const UNIHAN = 'unihan';
+    public const ZHUYIN = 'zhuyin';
 
     public static function validateValue(&$value): bool
     {

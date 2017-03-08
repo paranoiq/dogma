@@ -12,8 +12,8 @@ namespace Dogma\Io;
 class Position extends \Dogma\Enum
 {
 
-    const BEGINNING = SEEK_SET;
-    const CURRENT = SEEK_CUR;
-    const END = SEEK_END;
+    public const BEGINNING = SEEK_SET;
+    public const CURRENT = SEEK_CUR;
+    public const END = SEEK_END;
 
 }

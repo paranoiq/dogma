@@ -13,11 +13,11 @@ class Sign
 {
     use \Dogma\StaticClassMixin;
 
-    const SIGNED = 'signed';
-    const UNSIGNED = 'unsigned';
+    public const SIGNED = 'signed';
+    public const UNSIGNED = 'unsigned';
 
-    const POSITIVE = 1;
-    const NEUTRAL = 0;
-    const NEGATIVE = -1;
+    public const POSITIVE = 1;
+    public const NEUTRAL = 0;
+    public const NEGATIVE = -1;
 
 }

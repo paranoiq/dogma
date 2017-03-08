@@ -14,7 +14,7 @@ class Arr
     use \Dogma\StaticClassMixin;
 
     /** @internal */
-    const PRESERVE_KEYS = true;
+    private const PRESERVE_KEYS = true;
 
     /**
      * @param mixed[] $keys

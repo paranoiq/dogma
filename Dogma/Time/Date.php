@@ -22,7 +22,7 @@ class Date implements \Dogma\NonIterable
     use \Dogma\NonIterableMixin;
     use \Dogma\Time\DateDateTimeCommonMixin;
 
-    const DEFAULT_FORMAT = 'Y-m-d';
+    public const DEFAULT_FORMAT = 'Y-m-d';
 
     /** @var \DateTime */
     private $dateTime;

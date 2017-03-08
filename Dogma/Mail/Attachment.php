@@ -26,8 +26,8 @@ class Attachment
     use \Dogma\StrictBehaviorMixin;
 
     /** Content disposition */
-    const ATTACHMENT = 'attachment';
-    const INLINE = 'inline';
+    public const ATTACHMENT = 'attachment';
+    public const INLINE = 'inline';
 
 
     /** @var string */

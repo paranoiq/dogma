@@ -14,23 +14,23 @@ class FileMode
     use \Dogma\StaticClassMixin;
 
     // if not found: ERROR; keep content
-    const OPEN_READ = 'rb';
-    const OPEN_READ_WRITE = 'r+b';
+    public const OPEN_READ = 'rb';
+    public const OPEN_READ_WRITE = 'r+b';
 
     // if found: ERROR; no content
-    const CREATE_WRITE = 'xb';
-    const CREATE_READ_WRITE = 'x+b';
+    public const CREATE_WRITE = 'xb';
+    public const CREATE_READ_WRITE = 'x+b';
 
     // if not found: create; keep content
-    const CREATE_OR_OPEN_WRITE = 'cb';
-    const CREATE_OR_OPEN_READ_WRITE = 'c+b';
+    public const CREATE_OR_OPEN_WRITE = 'cb';
+    public const CREATE_OR_OPEN_READ_WRITE = 'c+b';
 
     // if not found: create; truncate content
-    const CREATE_OR_TRUNCATE_WRITE = 'wb';
-    const CREATE_OR_TRUNCATE_READ_WRITE = 'w+b';
+    public const CREATE_OR_TRUNCATE_WRITE = 'wb';
+    public const CREATE_OR_TRUNCATE_READ_WRITE = 'w+b';
 
     // if not found: create; keep content, point to end of file, don't accept new position
-    const CREATE_OR_APPEND_WRITE = 'ab';
-    const CREATE_OR_APPEND_READ_WRITE = 'a+b';
+    public const CREATE_OR_APPEND_WRITE = 'ab';
+    public const CREATE_OR_APPEND_READ_WRITE = 'a+b';
 
 }

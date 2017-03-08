@@ -13,7 +13,7 @@ class Order
 {
     use \Dogma\StaticClassMixin;
 
-    const ASCENDING = SORT_ASC; // 4
-    const DESCENDING = SORT_DESC; // 3
+    public const ASCENDING = SORT_ASC; // 4
+    public const DESCENDING = SORT_DESC; // 3
 
 }

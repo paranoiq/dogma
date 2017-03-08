@@ -19,9 +19,9 @@ class Time implements \Dogma\NonIterable
     use \Dogma\StrictBehaviorMixin;
     use \Dogma\NonIterableMixin;
 
-    const DEFAULT_FORMAT = 'H:i:s';
+    public const DEFAULT_FORMAT = 'H:i:s';
 
-    const SECONDS_IN_A_DAY = 86400;
+    public const SECONDS_IN_A_DAY = 86400;
 
     /** @var int */
     private $secondsSinceMidnight;

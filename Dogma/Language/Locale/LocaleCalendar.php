@@ -12,21 +12,21 @@ namespace Dogma\Language\Locale;
 class LocaleCalendar extends \Dogma\Enum
 {
 
-    const BUDDHIST = 'buddhist';
-    const CHINESE = 'chinese';
-    const COPTIC = 'coptic';
-    const DANGI = 'dangi';
-    const ETHIOPIC = 'ethiopic';
-    const ETHIOPIC_AMETE_ALEM = 'ethiopic-amete-alem';
-    const GREGORIAN = 'gregorian';
-    const HEBREW = 'hebrew';
-    const INDIAN = 'indian';
-    const ISLAMIC = 'islamic';
-    const ISLAMIC_CIVIL = 'islamic-civil';
-    const ISO8601 = 'iso8601';
-    const JAPANESE = 'japanese';
-    const PERSIAN = 'persian';
-    const ROC = 'roc';
+    public const BUDDHIST = 'buddhist';
+    public const CHINESE = 'chinese';
+    public const COPTIC = 'coptic';
+    public const DANGI = 'dangi';
+    public const ETHIOPIC = 'ethiopic';
+    public const ETHIOPIC_AMETE_ALEM = 'ethiopic-amete-alem';
+    public const GREGORIAN = 'gregorian';
+    public const HEBREW = 'hebrew';
+    public const INDIAN = 'indian';
+    public const ISLAMIC = 'islamic';
+    public const ISLAMIC_CIVIL = 'islamic-civil';
+    public const ISO8601 = 'iso8601';
+    public const JAPANESE = 'japanese';
+    public const PERSIAN = 'persian';
+    public const ROC = 'roc';
 
     public static function validateValue(&$value): bool
     {

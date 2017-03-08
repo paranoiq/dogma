@@ -14,8 +14,8 @@ use Dogma\Language\Collator;
 class LocaleColAlternate extends \Dogma\Enum implements \Dogma\Language\Locale\LocaleCollationOption
 {
 
-    const NON_IGNORABLE = 'non-ignorable';
-    const SHIFTED = 'shifted';
+    public const NON_IGNORABLE = 'non-ignorable';
+    public const SHIFTED = 'shifted';
 
     public static function validateValue(&$value): bool
     {

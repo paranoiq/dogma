@@ -12,7 +12,7 @@ namespace Dogma\Language\Locale;
 class LocaleVariant extends \Dogma\PartialEnum
 {
 
-    const TRADITIONAL = 'TRADITIONAL';
+    public const TRADITIONAL = 'TRADITIONAL';
 
     public static function getValueRegexp(): string
     {
