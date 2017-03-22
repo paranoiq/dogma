@@ -13,7 +13,8 @@ use Dogma\Time\Mapping\DateTimeHandler;
 use Dogma\Type;
 
 require_once __DIR__ . '/../bootstrap.php';
-require_once __DIR__ . '/testClasses.php';
+require_once __DIR__ . '/ExportableTestClass.php';
+require_once __DIR__ . '/OuterTestClass.php';
 
 $mapper = new Mapper(new StaticMappingContainer([]));
 
@@ -51,7 +52,7 @@ Assert::same($data['dateString'], '2001-02-03');
 $data = [
     'other' => 0,
     'exp.one' => 1,
-    'exp.two' => 2,
+    'exp.two' => 2.0,
 ];
 
 $trans2 = new MappingStep(
@@ -70,7 +71,7 @@ Assert::true(array_key_exists('other', $data));
 /** @var \Dogma\Mapping\Type\Exportable $exp */
 $exp = $data['exp'];
 Assert::type($exp, ExportableTestClass::class);
-Assert::same($exp->export(), ['one' => 1, 'two' => 2]);
+Assert::same($exp->export(), ['one' => 1, 'two' => 2.0]);
 
 $trans2->stepBack($data, $mapper);
 Assert::count($data, 3);
@@ -79,7 +80,7 @@ Assert::true(array_key_exists('exp.two', $data));
 Assert::false(array_key_exists('exp', $data));
 Assert::true(array_key_exists('other', $data));
 Assert::same($data['exp.one'], 1);
-Assert::same($data['exp.two'], 2);
+Assert::same($data['exp.two'], 2.0);
 
 // null mapping
 $data = [

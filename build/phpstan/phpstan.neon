@@ -13,10 +13,10 @@ parameters:
 
         # intentionally
         - '~^Class Dogma\\Tests\\.*TestClass was not found while trying to analyse it~' # test internals - not autoloaded
+        - '~Array \(mixed\[\]\[\]\) does not accept callable.~'
 
         # missing dependencies
         - '~^Function mailparse_.* not found~'
-        - '~class RarArchive~'
 
         # wrong reflection. todo: send PR to phpstan
         - '~^Access to an undefined property (DOMElement|DOMNode|DOMDocument|DOMCdataSection|DOMComment|DOMText|DOMAttr)::~'

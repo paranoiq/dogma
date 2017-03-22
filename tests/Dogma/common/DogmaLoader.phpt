@@ -14,7 +14,7 @@ $classMap = $loader->getClassMap();
 Assert::same(
     $classMap[DogmaLoader::class],
     sprintf(
-        '%s%sDogma%scommon%sDogmaLoader.php',
+        '%s%ssrc%scommon%sDogmaLoader.php',
         dirname(dirname(dirname(__DIR__))),
         DIRECTORY_SEPARATOR,
         DIRECTORY_SEPARATOR,
@@ -25,7 +25,7 @@ Assert::same(
 Assert::same(
     $classMap[Type::class],
     sprintf(
-        '%s%sDogma%scommon%stypes%sType.php',
+        '%s%ssrc%scommon%stypes%sType.php',
         dirname(dirname(dirname(__DIR__))),
         DIRECTORY_SEPARATOR,
         DIRECTORY_SEPARATOR,

@@ -12,7 +12,7 @@
     <property name="path.phpstan.executable" value="${path.bin}/phpstan"/>
     <property name="path.phpstan.config" value="${path.build}/phpstan/phpstan.neon"/>
     <property name="path.root" value="${project.basedir}"/>
-    <property name="path.src" value="${path.root}/Dogma"/>
+    <property name="path.src" value="${path.root}/src"/>
     <property name="path.tester.executable" value="${path.bin}/tester"/>
     <property name="path.tests" value="${path.root}/tests"/>
 

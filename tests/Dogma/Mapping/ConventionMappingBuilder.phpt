@@ -14,7 +14,8 @@ use Dogma\Tester\Assert;
 use Dogma\Type;
 
 require_once __DIR__ . '/../bootstrap.php';
-require_once __DIR__ . '/testClasses.php';
+require_once __DIR__ . '/ExportableTestClass.php';
+require_once __DIR__ . '/OuterTestClass.php';
 
 $scalarsHandler = new ScalarsHandler();
 $exportableHandler = new ExportableHandler(new MethodTypeParser());

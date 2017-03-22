@@ -29,7 +29,7 @@
         "squizlabs/php_codesniffer": "~2.7"
     },
     "autoload": {
-        "files": ["Dogma/loader.php"]
+        "files": ["src/loader.php"]
     },
     "config": {
         "bin-dir": "bin"

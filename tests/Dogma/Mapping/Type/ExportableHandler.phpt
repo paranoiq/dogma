@@ -12,7 +12,8 @@ use Dogma\Time\Date;
 use Dogma\Type;
 
 require_once __DIR__ . '/../../bootstrap.php';
-require_once dirname(__DIR__) . '/testClasses.php';
+require_once __DIR__ . '/../ExportableTestClass.php';
+require_once __DIR__ . '/../OuterTestClass.php';
 
 $paramsParser = new MethodTypeParser();
 $handler = new ExportableHandler($paramsParser);

@@ -1,65 +1,83 @@
 <?xml version="1.0"?>
 <ruleset name="Dogma">
-    <rule ref="Generic.Classes.DuplicateClassName"/>
-    <rule ref="Generic.CodeAnalysis.ForLoopShouldBeWhileLoop"/>
-    <rule ref="Generic.CodeAnalysis.UnconditionalIfStatement"/>
-    <rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier"/>
-    <rule ref="Generic.Formatting.SpaceAfterCast"/>
-    <rule ref="Generic.Functions.CallTimePassByReference"/>
-    <!--<rule ref="Generic.Functions.OpeningFunctionBraceBsdAllman"/>--><!-- want to use ") {" -->
-    <rule ref="Generic.NamingConventions.ConstructorName"/>
-    <rule ref="Generic.PHP.DeprecatedFunctions"/>
-    <rule ref="Generic.PHP.ForbiddenFunctions"/>
-    <rule ref="Generic.WhiteSpace.ScopeIndent"/>
-    <rule ref="PEAR.Classes.ClassDeclaration"/>
-    <rule ref="PEAR.Commenting.InlineComment"/>
-    <rule ref="PEAR.Formatting.MultiLineAssignment"/>
-    <rule ref="PEAR.WhiteSpace.ObjectOperatorIndent"/>
-    <rule ref="Squiz.Commenting.DocCommentAlignment"/>
-    <!--<rule ref="Squiz.Functions.GlobalFunction"/>--><!-- fuck off; i like global functions -->
-    <rule ref="Squiz.PHP.GlobalKeyword"/>
-    <rule ref="Squiz.PHP.Heredoc"/>
-    <rule ref="Squiz.PHP.InnerFunctions"/>
-    <rule ref="Squiz.PHP.LowercasePHPFunctions"/>
-    <!--<rule ref="Squiz.PHP.NonExecutableCode"/>-->
-    <rule ref="Squiz.Scope.StaticThisUsage"/>
-    <rule ref="Squiz.Strings.DoubleQuoteUsage"/>
-    <!--<rule ref="Squiz.Strings.DoubleQuoteUsage.ContainsVar">
-        <message>Variable "%s" not allowed in double quoted string; use sprintf() instead</message>
-    </rule>-->
-    <rule ref="Squiz.WhiteSpace.CastSpacing"/>
-    <rule ref="Squiz.WhiteSpace.FunctionOpeningBraceSpace"/>
-    <rule ref="Squiz.WhiteSpace.FunctionSpacing">
+    <rule ref="../../vendor/consistence/coding-standard/Consistence/ruleset.xml">
+        <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedIF"/><!-- allow empty if statements - usually with a comment -->
+        <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedELSE"/><!-- allow empty else statements - usually with a comment -->
+        <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedELSEIF"/><!-- allow empty elseif statements - usually with a comment -->
+        <exclude name="PEAR.WhiteSpace.ObjectOperatorIndent.Incorrect"/><!-- je potřeba odsazení u formů a dibi fluent -->
+        <exclude name="PSR2.Methods.FunctionCallSignature.CloseBracketLine"/><!-- string rozdělený na více řádků, typicky SQL -->
+        <exclude name="PSR2.Methods.FunctionCallSignature.MultipleArguments"/><!-- dibi syntaxe využívá argumentů "v textu" -->
+        <exclude name="PSR2.Methods.FunctionCallSignature.SpaceBeforeCloseBracket"/><!-- conflicts with our way of writing multiline SQL queries -->
+        <exclude name="Squiz.Commenting.FunctionComment.IncorrectParamVarName"/><!-- throws error with short type hint for integer and boolean -->
+        <exclude name="Squiz.PHP.InnerFunctions.NotAllowed"/><!-- prevents implementing anonymous classes -->
+        <exclude name="SlevomatCodingStandard.Namespaces.UseOnlyWhitelistedNamespaces.NonFullyQualified"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessDocComment"/><!-- not taking @throws into account -->
+        <exclude name="SlevomatCodingStandard.Classes.UnusedPrivateElements.WriteOnlyProperty"/><!-- not taking traits into account -->
+    </rule>
+    <rule ref="../../vendor/slevomat/coding-standard/SlevomatCodingStandard/ruleset.xml">
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableParameterTypeHintSpecification"/><!-- false positive on array by reference -->
+        <exclude name="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException"/><!-- conflicts with PhpStan and PhpException -->
+        <exclude name="SlevomatCodingStandard.Classes.UnusedPrivateElements.UnusedMethod"/><!-- false positive on private method used by static constructor -->
+
+        <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing"/><!-- strict_type=1 less safe than implicit cast -->
+        <exclude name="SlevomatCodingStandard.Types.EmptyLinesAroundTypeBraces.NoEmptyLineAfterOpeningBrace"/>
+        <exclude name="SlevomatCodingStandard.Files.TypeNameMatchesFileName.NoMatchBetweenTypeNameAndFileName"/>
+        <exclude name="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly.ReferenceViaFullyQualifiedName"/>
+
+        <exclude-pattern>testClass</exclude-pattern>
+    </rule>
+    <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
         <properties>
-            <property name="spacing" value="1"/>
+            <property name="rootNamespaces" type="array" value="app/src=>AlterExecutor"/>
+            <property name="skipDirs" type="array" value="tests"/>
         </properties>
-        <exclude name="Squiz.WhiteSpace.FunctionSpacing.After"/><!-- does not allow PHPUnit ignore comments -->
     </rule>
-    <rule ref="Squiz.WhiteSpace.LanguageConstructSpacing"/>
-    <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>
-    <!--<rule ref="Squiz.WhiteSpace.MemberVarSpacing"/>--><!-- meh -->
-    <rule ref="Squiz.WhiteSpace.ObjectOperatorSpacing">
-        <exclude name="Squiz.WhiteSpace.ObjectOperatorSpacing.Before"/><!-- clashes in multiline calls -->
+    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
+        <properties>
+            <property name="searchAnnotations" value="true" />
+        </properties>
     </rule>
-    <rule ref="Squiz.WhiteSpace.OperatorSpacing">
-        <exclude name="Squiz.WhiteSpace.OperatorSpacing.SpacingBefore"/><!-- does not work for operators on beginning of the line -->
+    <rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameAfterKeyword">
+        <properties>
+            <property name="keywordsToCheck" type="array" value="T_EXTENDS,T_IMPLEMENTS"/>
+        </properties>
     </rule>
-    <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
-    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
-    <rule ref="PSR2">
-        <exclude name="Generic.Files.LineLength"/><!-- warning. can not be suppressed -->
-        <exclude name="Generic.NamingConventions.ConstructorName.OldStyle"/><!-- bullshit. Filter::filter() is now a regular method -->
-        <exclude name="PSR1.Files.SideEffects.FoundWithSymbols"/><!-- warning. cannot use optional declaration of functions -->
-        <exclude name="PSR1.Classes.ClassDeclaration.MultipleClasses"/><!-- tests -->
-        <exclude name="PSR2.Namespaces.UseDeclaration.SpaceAfterLastUse"/><!-- i like it with two spaces -->
-        <exclude name="PSR2.ControlStructures.SwitchDeclaration.caseIndent"/><!-- checked by more generic Generic.WhiteSpace.ScopeIndent.Incorrect -->
-        <exclude name="PSR2.ControlStructures.SwitchDeclaration.defaultIndent"/><!-- checked by more generic Generic.WhiteSpace.ScopeIndent.Incorrect -->
-        <exclude name="PSR2.Classes.ClassDeclaration"/><!-- we want whitespace around class body and rules for extends and implements, using PEAR instead -->
-        <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.NewlineBeforeOpenBrace"/><!-- clashes with OpeningFunctionBraceBsdAllman -->
-        <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.NoSpaceBeforeArg"/><!-- ...$arg -->
-        <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.SpaceAfterBracket"/><!-- return type hints -->
-        <exclude name="Squiz.Strings.DoubleQuoteUsage.ContainsVar"/><!-- meh -->
-        <exclude name="Squiz.WhiteSpace.ControlStructureSpacing.SpacingBeforeClose"/><!-- formatted ifs  -->
-        <exclude name="PEAR.Functions.ValidDefaultValue.NotAtEnd"/><!-- nullable args with type hits -->
+    <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
+        <properties>
+            <property name="namespacesRequiredToUse" type="array" value="Dogma"/>
+            <property name="fullyQualifiedKeywords" type="array" value="T_EXTENDS,T_IMPLEMENTS"/>
+            <property name="allowFullyQualifiedExceptions" value="true"/>
+            <property name="allowPartialUses" value="false"/>
+        </properties>
+    </rule>
+    <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements">
+        <properties>
+            <property name="alwaysUsedPropertiesAnnotations" type="array" value="@get,@set"/>
+            <property name="alwaysUsedPropertiesSuffixes" type="array" value="Value,Timestamp"/>
+        </properties>
+    </rule>
+    <rule ref="SlevomatCodingStandard.Typehints.TypeHintDeclaration">
+        <properties>
+            <property name="traversableTypeHints" type="array" value="Traversable"/>
+            <property name="usefulAnnotations" type="array" value="@dataProvider,@deprecated,@internal,@label,@see"/>
+        </properties>
+    </rule>
+    <rule ref="Squiz.WhiteSpace.FunctionSpacing.After"/>
+    <rule ref="Squiz.Commenting.FunctionComment">
+        <exclude-pattern>tests/</exclude-pattern><!-- @dataProvider etc. annotations trigger comments check -->
+        <exclude name="Squiz.Commenting.FunctionComment.WrongStyle"/><!-- bullshit -->
+    </rule>
+    <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
+        <exclude-pattern>/exceptions/</exclude-pattern>
+        <exclude-pattern>/tests/</exclude-pattern>
+    </rule>
+    <rule ref="Generic.Whitespace">
+        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed"/><!-- i like spaces -->
+    </rule>
+    <rule ref="Generic.Functions.OpeningFunctionBraceBsdAllman">
+        <exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman.BraceOnSameLine"/><!-- ) { on separate line -->
+    </rule>
+    <rule ref="Generic.Commenting.Todo.TaskFound">
+        <exclude name="Generic.Commenting.Todo.TaskFound"/>
     </rule>
 </ruleset>

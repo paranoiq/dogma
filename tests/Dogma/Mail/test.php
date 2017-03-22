@@ -1,12 +1,13 @@
 <?php
 
+use Dogma\Io\File;
+use Dogma\Mail\Address;
+use Dogma\Mail\Message;
 use Tracy\Debugger;
-use Dogma\Mail;
-use Dogma\Io;
 
 ob_start();
 require_once __DIR__ . '/../bootstrap.php';
-require_once __DIR__ . '/../../../Dogma/loader.php';
+require_once __DIR__ . '/../../../src/loader.php';
 
 Debugger::enable(Debugger::DEVELOPMENT, __DIR__);
 Debugger::$maxDepth = 5;
@@ -14,7 +15,7 @@ Debugger::$maxDepth = 5;
 header('Content-Type: text/html; charset=utf-8');
 
 
-$mail = new Mail\Message(new Io\File(__DIR__ . '/test.eml'));
+$mail = new Message(new File(__DIR__ . '/test.eml'));
 
 dump($mail);
 
@@ -29,7 +30,7 @@ echo '<hr>';
 
 dump($mail->getHeaders());
 
-$addr = Mail\Address::parseHeader($mail->getHeader('cc'));
+$addr = Address::parseHeader($mail->getHeader('cc'));
 
 /*
 ob_end_clean();

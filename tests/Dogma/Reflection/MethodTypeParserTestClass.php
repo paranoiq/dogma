@@ -5,60 +5,54 @@ namespace Dogma\Tests\Reflection;
 class MethodTypeParserTestClass
 {
 
-    public function testNoType($one)
+    // @codingStandardsIgnoreStart
+
+    public function testNoType($one): void
     {
         //
     }
 
-    public function testNullable($one = null)
+    public function testNullable($one = null): void
     {
         //
     }
 
-    public function testTwoParams($one, $two)
+    public function testTwoParams($one, $two): void
     {
         //
     }
 
-    public function testArray(array $one)
+    public function testArray(array $one): void
     {
         //
     }
 
-    public function testCallable(callable $one)
+    public function testCallable(callable $one): void
     {
         //
     }
 
-    public function testClass(\Exception $one)
+    public function testClass(\Exception $one): void
     {
         //
     }
 
-    public function testSelf(self $one)
+    public function testSelf(self $one): void
     {
         //
     }
 
-    public function testReference(&$one)
+    public function testReference(&$one): void
     {
         //
     }
 
-    public function testVariadic(...$one)
+    public function testVariadic(...$one): void
     {
         //
     }
 
-    public function testTypehint(int $one)
-    {
-        //
-    }
-
-    /**
-     * @param int $one
-     */
-    public function testAnnotation($one)
+    public function testTypehint(int $one): void
     {
         //
     }
@@ -66,7 +60,15 @@ class MethodTypeParserTestClass
     /**
      * @param int $one
      */
-    public function testTypehintAndAnnotation(int $one)
+    public function testAnnotation($one): void
+    {
+        //
+    }
+
+    /**
+     * @param int $one
+     */
+    public function testTypehintAndAnnotation(int $one): void
     {
         //
     }
@@ -74,7 +76,7 @@ class MethodTypeParserTestClass
     /**
      * @param int(64) $one
      */
-    public function testAnnotationWithSize($one)
+    public function testAnnotationWithSize($one): void
     {
         //
     }
@@ -82,7 +84,7 @@ class MethodTypeParserTestClass
     /**
      * @param int(64,unsigned) $one
      */
-    public function testAnnotationWithSizeWithNote($one)
+    public function testAnnotationWithSizeWithNote($one): void
     {
         //
     }
@@ -90,7 +92,7 @@ class MethodTypeParserTestClass
     /**
      * @param int(64u) $one
      */
-    public function testAnnotationWithSizeWithNoteShort($one)
+    public function testAnnotationWithSizeWithNoteShort($one): void
     {
         //
     }
@@ -98,7 +100,7 @@ class MethodTypeParserTestClass
     /**
      * @param int(64) $one
      */
-    public function testTypehintAndAnnotationWithSize(int $one)
+    public function testTypehintAndAnnotationWithSize(int $one): void
     {
         //
     }
@@ -106,7 +108,7 @@ class MethodTypeParserTestClass
     /**
      * @param int(64,unsigned) $one
      */
-    public function testTypehintAndAnnotationWithSizeWithNote($one)
+    public function testTypehintAndAnnotationWithSizeWithNote($one): void
     {
         //
     }
@@ -114,7 +116,7 @@ class MethodTypeParserTestClass
     /**
      * @param int(64u) $one
      */
-    public function testTypehintAndAnnotationWithSizeWithNoteShort($one)
+    public function testTypehintAndAnnotationWithSizeWithNoteShort($one): void
     {
         //
     }
@@ -122,7 +124,7 @@ class MethodTypeParserTestClass
     /**
      * @param int $one
      */
-    public function testAnnotationNullable($one = null)
+    public function testAnnotationNullable($one = null): void
     {
         //
     }
@@ -130,7 +132,7 @@ class MethodTypeParserTestClass
     /**
      * @param int|null $one
      */
-    public function testAnnotationWithNull($one)
+    public function testAnnotationWithNull($one): void
     {
         //
     }
@@ -138,7 +140,7 @@ class MethodTypeParserTestClass
     /**
      * @param int(64)|null $one
      */
-    public function testAnnotationWithSizeWithNull($one)
+    public function testAnnotationWithSizeWithNull($one): void
     {
         //
     }
@@ -146,7 +148,7 @@ class MethodTypeParserTestClass
     /**
      * @param int|null $one
      */
-    public function testAnnotationWithNullNullable($one = null)
+    public function testAnnotationWithNullNullable($one = null): void
     {
         //
     }
@@ -154,7 +156,7 @@ class MethodTypeParserTestClass
     /**
      * @param int(64)|null $one
      */
-    public function testTypehintAndAnnotationWithSizeWithNullNullable(int $one = null)
+    public function testTypehintAndAnnotationWithSizeWithNullNullable(int $one = null): void
     {
         //
     }
@@ -162,7 +164,7 @@ class MethodTypeParserTestClass
     /**
      * @param \Exception $one
      */
-    public function testAnnotationClass($one)
+    public function testAnnotationClass($one): void
     {
         //
     }
@@ -170,7 +172,7 @@ class MethodTypeParserTestClass
     /**
      * @param self $one
      */
-    public function testAnnotationSelf($one)
+    public function testAnnotationSelf($one): void
     {
         //
     }
@@ -178,7 +180,7 @@ class MethodTypeParserTestClass
     /**
      * @param static $one
      */
-    public function testAnnotationStatic($one)
+    public function testAnnotationStatic($one): void
     {
         //
     }
@@ -186,7 +188,7 @@ class MethodTypeParserTestClass
     /**
      * @param \Exception $one
      */
-    public function testTypehintAndAnnotationClass(\Exception $one)
+    public function testTypehintAndAnnotationClass(\Exception $one): void
     {
         //
     }
@@ -194,7 +196,7 @@ class MethodTypeParserTestClass
     /**
      * @param Exception $one
      */
-    public function testAnnotationIncompleteClass($one)
+    public function testAnnotationIncompleteClass($one): void
     {
         //
     }
@@ -202,7 +204,7 @@ class MethodTypeParserTestClass
     /**
      * @param \NonExistingClass $one
      */
-    public function testAnnotationNonExistingClass($one)
+    public function testAnnotationNonExistingClass($one): void
     {
         //
     }
@@ -210,7 +212,7 @@ class MethodTypeParserTestClass
     /**
      * @param int $one
      */
-    public function testAnnotationNameMismatch($two)
+    public function testAnnotationNameMismatch($two): void
     {
         //
     }
@@ -219,7 +221,7 @@ class MethodTypeParserTestClass
      * @param int
      * @param string
      */
-    public function testAnnotationWithoutName($one, $two)
+    public function testAnnotationWithoutName($one, $two): void
     {
         //
     }
@@ -227,7 +229,7 @@ class MethodTypeParserTestClass
     /**
      * @param int
      */
-    public function testAnnotationCountMismatch($one, $two)
+    public function testAnnotationCountMismatch($one, $two): void
     {
         //
     }
@@ -237,7 +239,7 @@ class MethodTypeParserTestClass
      * @param string
      * @param bool
      */
-    public function testAnnotationCountMismatch2($one, $two)
+    public function testAnnotationCountMismatch2($one, $two): void
     {
         //
     }
@@ -245,7 +247,7 @@ class MethodTypeParserTestClass
     /**
      * @param int|string $one
      */
-    public function testAnnotationMoreTypes($one)
+    public function testAnnotationMoreTypes($one): void
     {
         //
     }
@@ -253,7 +255,7 @@ class MethodTypeParserTestClass
     /**
      * @param \Exception|int[] $one
      */
-    public function testAnnotationDimensionMismatch($one)
+    public function testAnnotationDimensionMismatch($one): void
     {
         //
     }
@@ -261,7 +263,7 @@ class MethodTypeParserTestClass
     /**
      * @param int[]
      */
-    public function testAnnotationArrayBrackets($one)
+    public function testAnnotationArrayBrackets($one): void
     {
         //
     }
@@ -269,7 +271,7 @@ class MethodTypeParserTestClass
     /**
      * @param int(64)[]
      */
-    public function testAnnotationWithSizeArrayBrackets($one)
+    public function testAnnotationWithSizeArrayBrackets($one): void
     {
         //
     }
@@ -277,7 +279,7 @@ class MethodTypeParserTestClass
     /**
      * @param int[] $one
      */
-    public function testAnnotationArrayOfType(array $one)
+    public function testAnnotationArrayOfType(array $one): void
     {
         //
     }
@@ -285,7 +287,7 @@ class MethodTypeParserTestClass
     /**
      * @param int[]|string[] $one
      */
-    public function testAnnotationArrayOfTypes(array $one)
+    public function testAnnotationArrayOfTypes(array $one): void
     {
         //
     }
@@ -293,7 +295,7 @@ class MethodTypeParserTestClass
     /**
      * @param \SplFixedArray|int[] $one
      */
-    public function testAnnotationCollectionOfType($one)
+    public function testAnnotationCollectionOfType($one): void
     {
         //
     }
@@ -301,7 +303,7 @@ class MethodTypeParserTestClass
     /**
      * @param \SplFixedArray|int[]|string[] $one
      */
-    public function testAnnotationCollectionOfTypes($one)
+    public function testAnnotationCollectionOfTypes($one): void
     {
         //
     }
@@ -309,7 +311,7 @@ class MethodTypeParserTestClass
     /**
      * @return int
      */
-    public function testReturnAnnotation()
+    public function testReturnAnnotation(): void
     {
         //
     }
@@ -317,7 +319,7 @@ class MethodTypeParserTestClass
     /**
      * @return int(64)
      */
-    public function testReturnAnnotationWithSize()
+    public function testReturnAnnotationWithSize(): void
     {
         //
     }
@@ -337,5 +339,7 @@ class MethodTypeParserTestClass
     {
         //
     }
+
+    // @codingStandardsIgnoreEnd
 
 }

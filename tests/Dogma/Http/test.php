@@ -9,7 +9,7 @@ use Dogma\Http\Request;
 use Tracy\Debugger;
 
 require_once __DIR__ . '/../bootstrap.php';
-require_once __DIR__ . '/../../../Dogma/loader.php';
+require_once __DIR__ . '/../../../src/loader.php';
 
 Debugger::enable(Debugger::DEVELOPMENT, __DIR__);
 
