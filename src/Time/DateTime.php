@@ -107,7 +107,7 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
             return self::createFromDateTimeInterface(parent::setTime($time->getHours(), $time->getMinutes(), $time->getSeconds()));
         }
         if (is_string($time) && $minutes === null && $seconds === null) {
-            list($time, $minutes, $seconds) = explode(':', $time);
+            [$time, $minutes, $seconds] = explode(':', $time);
         }
 
         return self::createFromDateTimeInterface(parent::setTime($time, $minutes, $seconds, $microseconds));

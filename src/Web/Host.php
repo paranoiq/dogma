@@ -25,7 +25,7 @@ class Host
     public function __construct(string $host, ?int $port = null)
     {
         if ($port === null && Str::contains($host, ':')) {
-            list($host, $port) = Str::splitByFirst($host, ':');
+            [$host, $port] = Str::splitByFirst($host, ':');
         }
         Check::nullableInt($port, 0, 65536);
 

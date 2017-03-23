@@ -38,7 +38,7 @@ foreach ($options as $option => $type) {
             }
 
             if ($min > $max) {
-                list($min, $max) = [$max, $min];
+                [$min, $max] = [$max, $min];
             }
 
             $request[$option] = rand($min, $max);

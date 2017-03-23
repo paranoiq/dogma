@@ -33,9 +33,9 @@ Assert::same($empty->filterNot($f)->toArray(), []);
 // partition()
 /** @var \Dogma\ImmutableArray $a */
 /** @var \Dogma\ImmutableArray $b */
-list($a, $b) = $array->partition($f);
+[$a, $b] = $array->partition($f);
 Assert::same($a->toArray(), [1, 2 => 3]);
 Assert::same($b->toArray(), [1 => 2, 3 => 4]);
-list($a, $b) = $empty->partition($f);
+[$a, $b] = $empty->partition($f);
 Assert::same($a->toArray(), []);
 Assert::same($b->toArray(), []);

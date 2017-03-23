@@ -33,7 +33,7 @@ final class Check
     public static function type(&$value, $type, $min = null, $max = null): void
     {
         if (is_array($type)) {
-            list($type, $itemTypes) = $type;
+            [$type, $itemTypes] = $type;
         }
         switch ($type) {
             case Type::NULL:

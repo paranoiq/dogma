@@ -33,9 +33,9 @@ Assert::same(Arr::filterNot($empty, $f), []);
 // partition()
 /** @var \Dogma\ImmutableArray $a */
 /** @var \Dogma\ImmutableArray $b */
-list($a, $b) = Arr::partition($array, $f);
+[$a, $b] = Arr::partition($array, $f);
 Assert::same($a, [1, 2 => 3]);
 Assert::same($b, [1 => 2, 3 => 4]);
-list($a, $b) = Arr::partition($empty, $f);
+[$a, $b] = Arr::partition($empty, $f);
 Assert::same($a, []);
 Assert::same($b, []);

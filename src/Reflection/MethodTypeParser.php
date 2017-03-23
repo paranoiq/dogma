@@ -83,7 +83,7 @@ class MethodTypeParser implements \Dogma\NonIterable
             } elseif ($type === Type::PHP_ARRAY || is_subclass_of($type, \Traversable::class)) {
                 $containerTypes[] = $type;
             } elseif (strstr($type, '(')) {
-                list($typeBase, ) = explode('(', $type);
+                $typeBase = explode('(', $type)[0];
                 if (in_array($typeBase, $otherTypes)) {
                     unset($otherTypes[array_search($typeBase, $otherTypes)]);
                 }
@@ -91,7 +91,7 @@ class MethodTypeParser implements \Dogma\NonIterable
             } else {
                 $add = true;
                 foreach ($otherTypes as $otherType) {
-                    list($otherTypeBase, ) = explode('(', $otherType);
+                    $otherTypeBase = explode('(', $otherType)[0];
                     if ($otherTypeBase === $type) {
                         $add = false;
                         break;

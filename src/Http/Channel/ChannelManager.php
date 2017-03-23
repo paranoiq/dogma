@@ -143,7 +143,7 @@ class ChannelManager
     {
         while ($info = curl_multi_info_read($this->handler)) {
             $resourceId = (string) $info['handle'];
-            list($cid, $name, $request) = $this->resources[$resourceId];
+            [$cid, $name, $request] = $this->resources[$resourceId];
             $channel = & $this->channels[$cid];
 
             $error = curl_multi_remove_handle($this->handler, $info['handle']);

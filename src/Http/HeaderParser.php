@@ -70,11 +70,11 @@ class HeaderParser
         }
 
         foreach ($rawHeaders as $header) {
-            list($name, $value) = Str::splitByFirst($header, ':');
+            [$name, $value] = Str::splitByFirst($header, ':');
             $name = HttpHeader::normalizeName(trim($name));
 
             if ($name === HttpHeader::CONTENT_TYPE && Str::contains($value, ';')) {
-                list($value, $charset) = Str::splitByFirst($value, ';');
+                [$value, $charset] = Str::splitByFirst($value, ';');
                 $charset = Str::fromFirst($charset, '=');
                 $this->insertHeader($headers, HttpHeader::CONTENT_CHARSET, $this->formatValue(trim($charset), Encoding::class));
             }
@@ -103,7 +103,7 @@ class HeaderParser
         $cookies = [];
         foreach ($rawCookies as $cookie) {
             $parts = explode(';', $cookie);
-            list($name, $value) = explode('=', trim($parts[0]));
+            [$name, $value] = explode('=', trim($parts[0]));
             $cookies[$name] = $value;
         }
 
@@ -143,7 +143,7 @@ class HeaderParser
                 return DateTime::createFromFormat(DateTime::FORMAT_EMAIL_HTTP, $value)
                     ->setTimezone($this->timeProvider->getTimeZone());
             case Host::class:
-                list($host, $port) = Str::splitByFirst($value, ':');
+                [$host, $port] = Str::splitByFirst($value, ':');
                 return new Host($host, $port);
             case Url::class:
                 return new Url($value);

@@ -44,19 +44,19 @@ Assert::same(Arr::tails($empty), [[]]);
 
 // headTail()
 /** @var \Dogma\ImmutableArray $tail */
-list($head, $tail) = Arr::headTail($array);
+[$head, $tail] = Arr::headTail($array);
 Assert::same($head, 1);
 Assert::same($tail, [1 => 2, 3, 4]);
-list($head, $tail) = Arr::headTail($empty);
+[$head, $tail] = Arr::headTail($empty);
 Assert::null($head);
 Assert::same($tail, []);
 
 // initLast()
 /** @var \Dogma\ImmutableArray $init */
-list($init, $last) = Arr::initLast($array);
+[$init, $last] = Arr::initLast($array);
 Assert::same($init, [1, 2, 3]);
 Assert::same($last, 4);
-list($init, $last) = Arr::initLast($empty);
+[$init, $last] = Arr::initLast($empty);
 Assert::same($init, []);
 Assert::null($last);
 
@@ -93,10 +93,10 @@ Assert::same(Arr::padTo($array, 7, 6), [1, 2, 3, 4, 6, 6, 6]);
 Assert::same(Arr::padTo($empty, 3, 6), [6, 6, 6]);
 
 // span()
-list($l, $r) = Arr::span($array, $f);
+[$l, $r] = Arr::span($array, $f);
 Assert::same($l, [1, 2]);
 Assert::same($r, [2 => 3, 4]);
-list($l, $r) = Arr::span($empty, $f);
+[$l, $r] = Arr::span($empty, $f);
 Assert::same($l, []);
 Assert::same($r, []);
 
