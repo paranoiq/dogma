@@ -9,7 +9,7 @@
 
 namespace Dogma\Language\Locale;
 
-class LocaleKeyword extends \Dogma\PartialEnum
+class LocaleKeyword extends \Dogma\PartialEnumString
 {
 
     public const CALENDAR = 'calendar';
@@ -41,11 +41,7 @@ class LocaleKeyword extends \Dogma\PartialEnum
         ];
     }
 
-    /**
-     * @param int|string $value
-     * @return bool
-     */
-    public static function validateValue(&$value): bool
+    public static function validateValue(string &$value): bool
     {
         $value = strtolower($value);
 

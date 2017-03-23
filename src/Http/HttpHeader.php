@@ -9,7 +9,7 @@
 
 namespace Dogma\Http;
 
-class HttpHeader extends \Dogma\PartialEnum
+class HttpHeader extends \Dogma\PartialEnumString
 {
 
     // IETF
@@ -136,11 +136,7 @@ class HttpHeader extends \Dogma\PartialEnum
         return implode('-', array_map('ucfirst', explode('-', $name)));
     }
 
-    /**
-     * @param int|string $value
-     * @return bool
-     */
-    public static function validateValue(&$value): bool
+    public static function validateValue(string &$value): bool
     {
         $value = self::normalizeName($value);
 

@@ -9,15 +9,16 @@
 
 namespace Dogma\Language\Locale;
 
+use Dogma\EnumString;
+
 interface LocaleCollationOption
 {
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
-     * @param string|int $value
+     * @param string $value
      * @return \Dogma\Language\Locale\LocaleCollationOption
      */
-    public static function get($value); // compat with Enum
+    public static function get(string $value): EnumString;
 
     public function getCollatorValue(): int;
 

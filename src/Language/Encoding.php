@@ -12,7 +12,7 @@ namespace Dogma\Language;
 /**
  * Encoding codes accepted by mbstring and iconv (except BINARY; not all of them)
  */
-class Encoding extends \Dogma\Enum
+class Encoding extends \Dogma\EnumString
 {
 
     public const BINARY = 'BINARY';
@@ -113,11 +113,7 @@ class Encoding extends \Dogma\Enum
 
     public const ARMSCII_8 = 'ARMSCII-8';
 
-    /**
-     * @param int|string $value
-     * @return bool
-     */
-    public static function validateValue(&$value): bool
+    public static function validateValue(string &$value): bool
     {
         $value = strtoupper($value);
 

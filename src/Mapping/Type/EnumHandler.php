@@ -10,6 +10,8 @@
 namespace Dogma\Mapping\Type;
 
 use Dogma\Enum;
+use Dogma\EnumInt;
+use Dogma\EnumString;
 use Dogma\Mapping\Mapper;
 use Dogma\Type;
 
@@ -22,7 +24,7 @@ class EnumHandler implements \Dogma\Mapping\Type\Handler
 
     public function acceptsType(Type $type): bool
     {
-        return $type->isImplementing(Enum::class);
+        return $type->isImplementing(EnumInt::class) || $type->isImplementing(EnumString::class);
     }
 
     /**
@@ -38,9 +40,9 @@ class EnumHandler implements \Dogma\Mapping\Type\Handler
      * @param \Dogma\Type $type
      * @param int|string $value
      * @param \Dogma\Mapping\Mapper $mapper
-     * @return \Dogma\Enum
+     * @return \Dogma\EnumInt|\Dogma\EnumString
      */
-    public function createInstance(Type $type, $value, Mapper $mapper): Enum
+    public function createInstance(Type $type, $value, Mapper $mapper)
     {
         return call_user_func([$type->getName(), 'get'], $value);
     }
@@ -48,7 +50,7 @@ class EnumHandler implements \Dogma\Mapping\Type\Handler
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      * @param \Dogma\Type $type
-     * @param \Dogma\Enum $enum
+     * @param \Dogma\EnumInt|\Dogma\EnumString $enum
      * @param \Dogma\Mapping\Mapper $mapper
      * @return int|string
      */

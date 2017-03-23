@@ -11,7 +11,7 @@ namespace Dogma\Io\ContentType;
 
 use Dogma\Str;
 
-class ContentType extends \Dogma\PartialEnum
+class ContentType extends \Dogma\PartialEnumString
 {
 
     public const APPLICATION_1D_INTERLEAVED_PARITYFEC = 'application/1d-interleaved-parityfec';

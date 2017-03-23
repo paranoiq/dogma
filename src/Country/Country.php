@@ -12,7 +12,7 @@ namespace Dogma\Country;
 /**
  * 2-letter country code by ISO-3166-1
  */
-class Country extends \Dogma\Enum
+class Country extends \Dogma\EnumString
 {
 
     public const AFGHANISTAN = 'AF';
@@ -797,11 +797,7 @@ class Country extends \Dogma\Enum
         return self::get(array_search($ident, self::$idents));
     }
 
-    /**
-     * @param int|string $value
-     * @return bool
-     */
-    public static function validateValue(&$value): bool
+    public static function validateValue(string &$value): bool
     {
         $value = strtoupper($value);
 

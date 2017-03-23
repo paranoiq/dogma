@@ -9,7 +9,7 @@
 
 namespace Dogma\Io;
 
-class LockType extends \Dogma\Enum
+class LockType extends \Dogma\EnumInt
 {
 
     public const SHARED = LOCK_SH;

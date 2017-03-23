@@ -9,7 +9,7 @@
 
 namespace Dogma\Web;
 
-class UriScheme extends \Dogma\PartialEnum
+class UriScheme extends \Dogma\PartialEnumString
 {
 
     // IETF

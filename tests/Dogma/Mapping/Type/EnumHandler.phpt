@@ -11,7 +11,7 @@ use Dogma\Type;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-class TestEnum extends \Dogma\Enum
+class TestEnum extends \Dogma\EnumInt
 {
     public const ONE = 1;
     public const TWO = 2;

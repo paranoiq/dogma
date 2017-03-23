@@ -11,7 +11,7 @@ namespace Dogma\Web;
 
 use Dogma\Country\Country;
 
-final class Tld extends \Dogma\PartialEnum
+final class Tld extends \Dogma\PartialEnumString
 {
 
     // common TLD

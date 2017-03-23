@@ -12,7 +12,7 @@ namespace Dogma\System\Error;
 /**
  * UNIX system errors (from FreeBSD)
  */
-class UnixError extends \Dogma\Enum implements \Dogma\System\Error\Error
+class UnixError extends \Dogma\EnumInt implements \Dogma\System\Error\Error
 {
 
     // common with Linux:
@@ -115,9 +115,6 @@ class UnixError extends \Dogma\Enum implements \Dogma\System\Error\Error
     public const NOT_PERMITTED_IN_CAPABILITY_MODE = 94;
     public const MUST_BE_EQUAL_LARGEST_ERRNO = 94;
 
-    /**
-     * Get formatted error description
-     */
     public function getDescription(): string
     {
         return ucfirst(str_replace(

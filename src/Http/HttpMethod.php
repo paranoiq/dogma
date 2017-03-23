@@ -9,7 +9,7 @@
 
 namespace Dogma\Http;
 
-class HttpMethod extends \Dogma\Enum
+class HttpMethod extends \Dogma\EnumString
 {
 
     public const GET = 'get';

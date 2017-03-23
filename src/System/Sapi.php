@@ -11,7 +11,7 @@ namespace Dogma\System;
 
 use Dogma\Arr;
 
-class Sapi extends \Dogma\Enum
+class Sapi extends \Dogma\EnumString
 {
 
     public const AOL_SERVER = 'aolserver';

@@ -12,7 +12,7 @@ namespace Dogma\System\Error;
 /**
  * Windows system errors (@see http://msdn.microsoft.com/en-us/library/windows/desktop/ms681382(v=vs.85).aspx)
  */
-class WindowsError extends \Dogma\Enum implements \Dogma\System\Error\Error
+class WindowsError extends \Dogma\EnumInt implements \Dogma\System\Error\Error
 {
 
     public const ERROR_SUCCESS = 0;
@@ -2762,9 +2762,6 @@ class WindowsError extends \Dogma\Enum implements \Dogma\System\Error\Error
     public const ERROR_STATE_CONTAINER_NAME_SIZE_LIMIT_EXCEEDED = 15818;
     public const ERROR_API_UNAVAILABLE = 15841;
 
-    /**
-     * Get formatted error description
-     */
     public function getDescription(): string
     {
         return ucfirst(preg_replace('/^error /', '', str_replace(

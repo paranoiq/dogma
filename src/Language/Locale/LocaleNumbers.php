@@ -9,7 +9,7 @@
 
 namespace Dogma\Language\Locale;
 
-class LocaleNumbers extends \Dogma\Enum
+class LocaleNumbers extends \Dogma\EnumString
 {
 
     public const ARABIC_INDIC = 'arab';
@@ -58,11 +58,7 @@ class LocaleNumbers extends \Dogma\Enum
     public const TRADITIONAL = 'traditional';
     public const VAI = 'vaii';
 
-    /**
-     * @param int|string $value
-     * @return bool
-     */
-    public static function validateValue(&$value): bool
+    public static function validateValue(string &$value): bool
     {
         $value = strtolower($value);
 

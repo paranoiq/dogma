@@ -9,7 +9,7 @@
 
 namespace Dogma\Language;
 
-class Script extends \Dogma\Enum
+class Script extends \Dogma\EnumString
 {
 
     public const ADLAM = 'Adlm';
@@ -576,11 +576,7 @@ class Script extends \Dogma\Enum
         return self::get(array_search($ident, self::$idents));
     }
 
-    /**
-     * @param int|string $value
-     * @return bool
-     */
-    public static function validateValue(&$value): bool
+    public static function validateValue(string &$value): bool
     {
         $value = ucfirst(strtolower($value));
 

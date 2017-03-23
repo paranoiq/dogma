@@ -9,7 +9,7 @@
 
 namespace Dogma\Money;
 
-class Currency extends \Dogma\Enum
+class Currency extends \Dogma\EnumString
 {
 
     public const AFGHANI = 'AFN';
@@ -522,11 +522,7 @@ class Currency extends \Dogma\Enum
         return self::get(array_search($ident, self::$idents));
     }
 
-    /**
-     * @param int|string $value
-     * @return bool
-     */
-    public static function validateValue(&$value): bool
+    public static function validateValue(string &$value): bool
     {
         $value = strtoupper($value);
 

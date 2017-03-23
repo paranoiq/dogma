@@ -9,7 +9,7 @@
 
 namespace Dogma\Language\Locale;
 
-class LocaleCalendar extends \Dogma\Enum
+class LocaleCalendar extends \Dogma\EnumString
 {
 
     public const BUDDHIST = 'buddhist';
@@ -28,11 +28,7 @@ class LocaleCalendar extends \Dogma\Enum
     public const PERSIAN = 'persian';
     public const ROC = 'roc';
 
-    /**
-     * @param int|string $value
-     * @return bool
-     */
-    public static function validateValue(&$value): bool
+    public static function validateValue(string &$value): bool
     {
         $value = strtolower($value);
 

@@ -12,7 +12,7 @@ namespace Dogma\Language;
 /**
  * 2-letter language codes by ISO-639
  */
-class Language extends \Dogma\Enum
+class Language extends \Dogma\EnumString
 {
 
     public const ABKHAZ = 'ab';
@@ -798,11 +798,7 @@ class Language extends \Dogma\Enum
         return self::get(array_search($ident, self::$idents));
     }
 
-    /**
-     * @param int|string $value
-     * @return bool
-     */
-    public static function validateValue(&$value): bool
+    public static function validateValue(string &$value): bool
     {
         $value = strtolower($value);
 

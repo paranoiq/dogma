@@ -11,17 +11,13 @@ namespace Dogma\Language\Locale;
 
 use Dogma\Language\Collator;
 
-class LocaleColNormalization extends \Dogma\Enum implements \Dogma\Language\Locale\LocaleCollationOption
+class LocaleColNormalization extends \Dogma\EnumString implements \Dogma\Language\Locale\LocaleCollationOption
 {
 
     public const YES = 'yes';
     public const NO = 'no';
 
-    /**
-     * @param int|string $value
-     * @return bool
-     */
-    public static function validateValue(&$value): bool
+    public static function validateValue(string &$value): bool
     {
         $value = strtolower($value);
 

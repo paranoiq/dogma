@@ -9,7 +9,7 @@
 
 namespace Dogma\Time;
 
-class Month extends \Dogma\Enum
+class Month extends \Dogma\EnumInt
 {
 
     public const JANUARY = 1;

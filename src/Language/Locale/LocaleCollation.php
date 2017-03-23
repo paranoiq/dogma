@@ -9,7 +9,7 @@
 
 namespace Dogma\Language\Locale;
 
-class LocaleCollation extends \Dogma\Enum
+class LocaleCollation extends \Dogma\EnumString
 {
 
     public const BIG5 = 'big5han';
@@ -29,11 +29,7 @@ class LocaleCollation extends \Dogma\Enum
     public const UNIHAN = 'unihan';
     public const ZHUYIN = 'zhuyin';
 
-    /**
-     * @param int|string $value
-     * @return bool
-     */
-    public static function validateValue(&$value): bool
+    public static function validateValue(string &$value): bool
     {
         $value = strtolower($value);
 

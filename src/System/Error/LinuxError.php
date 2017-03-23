@@ -12,7 +12,7 @@ namespace Dogma\System\Error;
 /**
  * Linux system errors
  */
-class LinuxError extends \Dogma\Enum implements \Dogma\System\Error\Error
+class LinuxError extends \Dogma\EnumInt implements \Dogma\System\Error\Error
 {
 
     // common with Unix:
@@ -149,9 +149,6 @@ class LinuxError extends \Dogma\Enum implements \Dogma\System\Error\Error
     public const OWNER_DIED = 130;
     public const STATE_NOT_RECOVERABLE = 131;
 
-    /**
-     * Get formatted error description
-     */
     public function getDescription(): string
     {
         return ucfirst(str_replace(

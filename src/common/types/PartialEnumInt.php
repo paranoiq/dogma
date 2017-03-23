@@ -9,23 +9,15 @@
 
 namespace Dogma;
 
-abstract class PartialEnum extends \Dogma\Enum
+abstract class PartialEnumInt extends \Dogma\EnumInt
 {
 
-    /**
-     * @param int|string $value
-     * @return bool
-     */
-    public static function isKnownValue($value): bool
+    public static function isKnownValue(int $value): bool
     {
         return Arr::contains(static::getAllowedValues(), $value);
     }
 
-    /**
-     * @param int|string $value
-     * @return bool
-     */
-    public static function validateValue(&$value): bool
+    public static function validateValue(int &$value): bool
     {
         $regexp = '/^' . static::getValueRegexp() . '?$/';
         $result = preg_match($regexp, $value);

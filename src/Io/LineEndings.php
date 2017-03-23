@@ -9,7 +9,7 @@
 
 namespace Dogma\Io;
 
-class LineEndings extends \Dogma\Enum
+class LineEndings extends \Dogma\EnumString
 {
 
     public const UNIX = "\n";

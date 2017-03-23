@@ -7,7 +7,7 @@ use Dogma\Tester\Assert;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-class TestEnum extends \Dogma\Enum
+class TestEnum extends \Dogma\EnumInt
 {
 
     public const ONE = 1;
@@ -17,13 +17,13 @@ class TestEnum extends \Dogma\Enum
 }
 
 $one = TestEnum::get(TestEnum::ONE);
-$oneAgaing = TestEnum::get(TestEnum::ONE);
+$oneAgain = TestEnum::get(TestEnum::ONE);
 $two = TestEnum::get(TestEnum::TWO);
 $three = TestEnum::get(TestEnum::THREE);
 
 // get()
 Assert::type($one, TestEnum::class);
-Assert::same($one, $oneAgaing);
+Assert::same($one, $oneAgain);
 
 // getValue()
 Assert::same($one->getValue(), 1);
@@ -36,7 +36,7 @@ Assert::exception(function () use ($one) {
     $one->equals(new \stdClass);
 }, InvalidTypeException::class);
 Assert::false($one->equals($two));
-Assert::true($one->equals($oneAgaing));
+Assert::true($one->equals($oneAgain));
 
 // isValid()
 Assert::false(TestEnum::isValid(4));

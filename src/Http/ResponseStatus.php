@@ -16,7 +16,7 @@ use Dogma\Check;
  * HTTP 1.1 response status codes and CURL error codes
  * @property-read $description
  */
-class ResponseStatus extends \Dogma\PartialEnum
+class ResponseStatus extends \Dogma\PartialEnumInt
 {
 
     public const S100_CONTINUE = 100;
@@ -301,11 +301,7 @@ class ResponseStatus extends \Dogma\PartialEnum
         ], $this->getValue());
     }
 
-    /**
-     * @param int|string $value
-     * @return bool
-     */
-    public static function validateValue(&$value): bool
+    public static function validateValue(int &$value): bool
     {
         Check::range($value, 1, 999);
 
