@@ -512,6 +512,18 @@ final class Check
     }
 
     /**
+     * @param mixed[] $value
+     * @param int|null $min
+     * @param int|null $max
+     * @throws \Dogma\ValueOutOfRangeException
+     */
+    public static function count(array $value, ?int $min = null, ?int $max = null): void
+    {
+        $count = count($value);
+        self::range($count, $min, $max);
+    }
+
+    /**
      * @param string $value
      * @param string $regexp
      * @throws \Dogma\InvalidValueException
