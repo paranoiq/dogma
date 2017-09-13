@@ -17,8 +17,18 @@ use Dogma\Io\File;
 class DownloadRequest extends \Dogma\Http\Request
 {
 
+    /** @var string */
+    private $downloadDir;
+
     /** @var \Dogma\Io\File */
     private $file;
+
+    public function __construct(string $downloadDir, ?string $url = null, ?string $method = null)
+    {
+        parent::__construct($url, $method);
+
+        $this->downloadDir = $downloadDir;
+    }
 
     /**
      * @return \Dogma\Http\FileResponse
@@ -36,7 +46,7 @@ class DownloadRequest extends \Dogma\Http\Request
     {
         parent::prepare();
 
-        $this->file = File::createTemporaryFile();
+        $this->file = File::createTemporaryFile($this->downloadDir);
 
         $this->setOption(CURLOPT_FILE, $this->file->getHandle());
         $this->setOption(CURLOPT_BINARYTRANSFER, true);

@@ -20,7 +20,7 @@ echo '<!DOCTYPE HTML><html><head><title>Dogma\\Http</title></head><body>';
 
 $manager = new ChannelManager();
 
-$requestA = new DownloadRequest('http://lh/vsp/dogma/tests/Dogma/Http/responder.php');
+$requestA = new DownloadRequest(__DIR__, 'http://lh/vsp/dogma/tests/Dogma/Http/responder.php');
 $requestA->setFollowRedirects(true);
 
 $requestB = new Request('http://lh/vsp/dogma/tests/Dogma/Http/responder.php');

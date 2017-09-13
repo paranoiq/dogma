@@ -29,7 +29,7 @@ class Response
     /** @var mixed[] */
     private $headers;
 
-    /** @var string */
+    /** @var string[] */
     private $cookies;
 
     /** @var string */
