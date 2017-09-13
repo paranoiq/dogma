@@ -11,7 +11,7 @@ namespace Dogma\Language\Locale;
 
 use Dogma\Language\Collator;
 
-class LocaleColBackwards extends \Dogma\EnumString implements \Dogma\Language\Locale\LocaleCollationOption
+class LocaleColBackwards extends \Dogma\Enum\StringEnum implements \Dogma\Language\Locale\LocaleCollationOption
 {
 
     public const YES = 'yes';

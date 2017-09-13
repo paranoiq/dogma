@@ -9,7 +9,7 @@
 
 namespace Dogma\Language\Locale;
 
-class LocaleCollation extends \Dogma\EnumString
+class LocaleCollation extends \Dogma\Enum\StringEnum
 {
 
     public const BIG5 = 'big5han';

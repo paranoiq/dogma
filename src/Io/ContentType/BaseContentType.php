@@ -9,7 +9,7 @@
 
 namespace Dogma\Io\ContentType;
 
-class BaseContentType extends \Dogma\PartialEnumString
+class BaseContentType extends \Dogma\Enum\PartialStringEnum
 {
 
     public const APPLICATION = 'application';

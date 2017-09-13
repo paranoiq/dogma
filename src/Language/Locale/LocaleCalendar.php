@@ -9,7 +9,7 @@
 
 namespace Dogma\Language\Locale;
 
-class LocaleCalendar extends \Dogma\EnumString
+class LocaleCalendar extends \Dogma\Enum\StringEnum
 {
 
     public const BUDDHIST = 'buddhist';

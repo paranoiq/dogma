@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-class ResourceType extends \Dogma\EnumString
+class ResourceType extends \Dogma\Enum\StringEnum
 {
 
     public const ASPELL = 'aspell';

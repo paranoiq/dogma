@@ -16,7 +16,7 @@ use Dogma\Check;
  * HTTP 1.1 response status codes and CURL error codes
  * @property-read $description
  */
-class ResponseStatus extends \Dogma\PartialEnumInt
+class ResponseStatus extends \Dogma\Enum\PartialIntEnum
 {
 
     public const S100_CONTINUE = 100;

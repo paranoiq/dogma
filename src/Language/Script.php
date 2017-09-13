@@ -9,7 +9,7 @@
 
 namespace Dogma\Language;
 
-class Script extends \Dogma\EnumString
+class Script extends \Dogma\Enum\StringEnum
 {
 
     public const ADLAM = 'Adlm';

@@ -11,7 +11,7 @@ namespace Dogma\Language\Locale;
 
 use Dogma\Language\Collator;
 
-class LocaleColAlternate extends \Dogma\EnumString implements \Dogma\Language\Locale\LocaleCollationOption
+class LocaleColAlternate extends \Dogma\Enum\StringEnum implements \Dogma\Language\Locale\LocaleCollationOption
 {
 
     public const NON_IGNORABLE = 'non-ignorable';

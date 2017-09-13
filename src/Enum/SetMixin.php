@@ -7,9 +7,11 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma;
+namespace Dogma\Enum;
 
-trait EnumMixin
+use Dogma\Arr;
+
+trait SetMixin
 {
     use \Dogma\StrictBehaviorMixin;
     use \Dogma\NonIterableMixin;
@@ -18,7 +20,7 @@ trait EnumMixin
 
     public function __toString(): string
     {
-        return sprintf('%s: %s', end(explode('\\', get_called_class())), $this->value);
+        return sprintf('%s: %s', end(explode('\\', get_called_class())), implode(',', $this->values));
     }
 
     /**
@@ -30,15 +32,33 @@ trait EnumMixin
         return implode('|', self::getAllowedValues());
     }
 
-    final public function getConstantName(): string
+    /**
+     * @return string[]|int[]
+     */
+    final public function getConstantNames(): array
     {
         $class = get_called_class();
+        $names = [];
+        foreach ($this->getValues() as $value) {
+            $names[] = Arr::indexOf(self::$availableValues[$class], $value);
+        }
 
-        return Arr::indexOf(self::$availableValues[$class], $this->value);
+        return $names;
     }
 
     /**
-     * @param int|string|\Dogma\Enum $value
+     * @param string|int $value
+     */
+    final public function check($value): void
+    {
+        if (!self::isValid($value)) {
+            $class = get_called_class();
+            throw new \Dogma\InvalidValueException($value, $class);
+        }
+    }
+
+    /**
+     * @param int|string|\Dogma\Enum\Enum $value
      */
     final public function equals($value): bool
     {
@@ -48,7 +68,7 @@ trait EnumMixin
             throw new \Dogma\InvalidTypeException(static::class, $value);
         }
 
-        return $this->getValue() === $value->getValue();
+        return $this->value === $value->value;
     }
 
     /**

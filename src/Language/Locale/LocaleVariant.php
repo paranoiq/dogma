@@ -9,7 +9,7 @@
 
 namespace Dogma\Language\Locale;
 
-class LocaleVariant extends \Dogma\PartialEnumString
+class LocaleVariant extends \Dogma\Enum\PartialStringEnum
 {
 
     public const TRADITIONAL = 'TRADITIONAL';

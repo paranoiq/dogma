@@ -12,7 +12,7 @@ namespace Dogma\Language;
 /**
  * 2-letter language codes by ISO-639
  */
-class Language extends \Dogma\EnumString
+class Language extends \Dogma\Enum\StringEnum
 {
 
     public const ABKHAZ = 'ab';

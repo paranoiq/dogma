@@ -9,7 +9,7 @@
 
 namespace Dogma\Http;
 
-class HttpHeader extends \Dogma\PartialEnumString
+class HttpHeader extends \Dogma\Enum\PartialStringEnum
 {
 
     // IETF

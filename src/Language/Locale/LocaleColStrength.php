@@ -11,7 +11,7 @@ namespace Dogma\Language\Locale;
 
 use Collator;
 
-class LocaleColStrength extends \Dogma\EnumString implements \Dogma\Language\Locale\LocaleCollationOption
+class LocaleColStrength extends \Dogma\Enum\StringEnum implements \Dogma\Language\Locale\LocaleCollationOption
 {
 
     public const PRIMARY = 'primary';

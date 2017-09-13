@@ -1,20 +1,21 @@
 <?php
 
-namespace Dogma\Tests\Mapping\Type;
+namespace Dogma\Mapping\Type;
 
 use Dogma\Mapping\Mapper;
 use Dogma\Mapping\StaticMappingContainer;
-use Dogma\Mapping\Type\EnumHandler;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
 use Dogma\Type;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-class TestEnum extends \Dogma\EnumInt
+class TestEnum extends \Dogma\Enum\IntEnum
 {
+
     public const ONE = 1;
     public const TWO = 2;
+
 }
 
 $handler = new EnumHandler();

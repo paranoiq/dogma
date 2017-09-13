@@ -7,31 +7,33 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma;
+namespace Dogma\Enum;
 
-abstract class EnumString implements \Dogma\NonIterable
+use Dogma\Arr;
+
+abstract class IntEnum implements \Dogma\NonIterable
 {
-    use \Dogma\EnumMixin;
+    use \Dogma\Enum\EnumMixin;
 
-    /** @var \Dogma\EnumString[][] ($class => ($value => $enum)) */
+    /** @var \Dogma\Enum\IntEnum[][] ($class => ($value => $enum)) */
     private static $instances = [];
 
     /** @var mixed[][] ($class => ($constName => $value)) */
     private static $availableValues = [];
 
-    /** @var string */
+    /** @var int */
     private $value;
 
-    final private function __construct(string $value)
+    final private function __construct(int $value)
     {
         $this->value = $value;
     }
 
     /**
-     * @param string $value
+     * @param int $value
      * @return static
      */
-    final public static function get(string $value): self
+    final public static function get(int $value): self
     {
         $class = get_called_class();
         if (empty(self::$availableValues[$class])) {
@@ -52,10 +54,10 @@ abstract class EnumString implements \Dogma\NonIterable
     /**
      * Validates given value. Can also normalise the value, if needed.
      *
-     * @param string $value
+     * @param int $value
      * @return bool
      */
-    public static function validateValue(string &$value): bool
+    public static function validateValue(int &$value): bool
     {
         $class = get_called_class();
         if (empty(self::$availableValues[$class])) {
@@ -65,18 +67,18 @@ abstract class EnumString implements \Dogma\NonIterable
         return Arr::contains(self::$availableValues[$class], $value);
     }
 
-    final public function getValue(): string
+    final public function getValue(): int
     {
         return $this->value;
     }
 
-    final public static function isValid(string $value): bool
+    final public static function isValid(int $value): bool
     {
         return self::validateValue($value);
     }
 
     /**
-     * @return string[]
+     * @return int[]
      */
     final public static function getAllowedValues(): array
     {

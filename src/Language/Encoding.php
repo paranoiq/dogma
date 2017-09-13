@@ -12,7 +12,7 @@ namespace Dogma\Language;
 /**
  * Encoding codes accepted by mbstring and iconv (except BINARY; not all of them)
  */
-class Encoding extends \Dogma\EnumString
+class Encoding extends \Dogma\Enum\StringEnum
 {
 
     public const BINARY = 'BINARY';

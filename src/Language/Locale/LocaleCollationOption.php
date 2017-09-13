@@ -9,7 +9,7 @@
 
 namespace Dogma\Language\Locale;
 
-use Dogma\EnumString;
+use Dogma\Enum\StringEnum;
 
 interface LocaleCollationOption
 {
@@ -18,7 +18,7 @@ interface LocaleCollationOption
      * @param string $value
      * @return \Dogma\Language\Locale\LocaleCollationOption
      */
-    public static function get(string $value): EnumString;
+    public static function get(string $value): StringEnum;
 
     public function getCollatorValue(): int;
 

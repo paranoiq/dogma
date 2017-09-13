@@ -9,7 +9,7 @@
 
 namespace Dogma\Language\Locale;
 
-class LocaleNumbers extends \Dogma\EnumString
+class LocaleNumbers extends \Dogma\Enum\StringEnum
 {
 
     public const ARABIC_INDIC = 'arab';

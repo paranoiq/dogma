@@ -9,7 +9,7 @@
 
 namespace Dogma\Language\Locale;
 
-class LocaleKeyword extends \Dogma\PartialEnumString
+class LocaleKeyword extends \Dogma\Enum\PartialStringEnum
 {
 
     public const CALENDAR = 'calendar';

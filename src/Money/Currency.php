@@ -9,7 +9,7 @@
 
 namespace Dogma\Money;
 
-class Currency extends \Dogma\EnumString
+class Currency extends \Dogma\Enum\StringEnum
 {
 
     public const AFGHANI = 'AFN';

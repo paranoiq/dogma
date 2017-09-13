@@ -12,7 +12,7 @@ namespace Dogma\Country;
 /**
  * 2-letter country code by ISO-3166-1
  */
-class Country extends \Dogma\EnumString
+class Country extends \Dogma\Enum\StringEnum
 {
 
     public const AFGHANISTAN = 'AF';

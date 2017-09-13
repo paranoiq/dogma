@@ -7,17 +7,19 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma;
+namespace Dogma\Enum;
 
-abstract class PartialEnumString extends \Dogma\EnumString
+use Dogma\Arr;
+
+abstract class PartialIntEnum extends \Dogma\Enum\IntEnum
 {
 
-    public static function isKnownValue(string $value): bool
+    public static function isKnownValue(int $value): bool
     {
         return Arr::contains(static::getAllowedValues(), $value);
     }
 
-    public static function validateValue(string &$value): bool
+    public static function validateValue(int &$value): bool
     {
         $regexp = '/^' . static::getValueRegexp() . '?$/';
         $result = preg_match($regexp, $value);
