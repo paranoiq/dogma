@@ -168,7 +168,10 @@ class ChannelManager
         $this->exec();
     }
 
-    private function selectChannel(): ?int
+    /**
+     * @return int|string|null
+     */
+    private function selectChannel()
     {
         if (count($this->resources) >= $this->threadLimit) {
             return null;
