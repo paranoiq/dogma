@@ -774,7 +774,9 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         if ($function) {
             return new static(array_filter($this->toArray(), $function));
         } else {
-            return new static(array_filter($this->toArray()));
+            return new static(array_filter($this->toArray(), function ($item) {
+                return $item !== null;
+            }));
         }
     }
 

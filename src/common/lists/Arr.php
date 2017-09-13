@@ -888,7 +888,9 @@ class Arr
         if ($function) {
             return array_filter($array, $function);
         } else {
-            return array_filter($array);
+            return array_filter($array, function ($item) {
+                return $item !== null;
+            });
         }
     }
 
