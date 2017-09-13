@@ -10,6 +10,8 @@
 namespace Dogma\Time;
 
 use Dogma\Check;
+use Dogma\Str;
+use Dogma\Type;
 
 /**
  * Immutable date and time class
@@ -18,7 +20,6 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
 {
     use \Dogma\StrictBehaviorMixin;
     use \Dogma\NonIterableMixin;
-    use \Dogma\Time\DateDateTimeCommonMixin;
 
     public const DEFAULT_FORMAT = 'Y-m-d H:i:s';
     public const FORMAT_EMAIL_HTTP = DATE_RFC2822;
@@ -95,7 +96,7 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param \Dogma\Time\Time|int $time
+     * @param \Dogma\Time\Time|int|string $time
      * @param int|null $minutes
      * @param int|null $seconds
      * @param int|null $microseconds
@@ -106,8 +107,12 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
         if ($time instanceof Time) {
             return self::createFromDateTimeInterface(parent::setTime($time->getHours(), $time->getMinutes(), $time->getSeconds()));
         }
-        if (is_string($time) && $minutes === null && $seconds === null) {
-            [$time, $minutes, $seconds] = explode(':', $time);
+        if ($minutes === null && $seconds === null && is_string($time) && Str::contains($time, ':')) {
+            @list($time, $minutes, $seconds) = explode(':', $time);
+            if (Str::contains($seconds, '.')) {
+                @list($seconds, $microseconds) = explode('.', $seconds);
+                $microseconds = (int) (('0.' . $microseconds) * 1000000);
+            }
         }
 
         return self::createFromDateTimeInterface(parent::setTime($time, $minutes, $seconds, $microseconds));
@@ -216,6 +221,51 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
         $tomorrow = $timeProvider !== null ? $timeProvider->getDateTime()->modify('+1 day')->getDate() : new Date('tomorrow');
 
         return $this->isBetween($tomorrow->getStart(), $tomorrow->getEnd());
+    }
+
+    public function getDayOfWeekEnum(): DayOfWeek
+    {
+        return DayOfWeek::get((int) $this->format('N'));
+    }
+
+    /**
+     * @param int|\Dogma\Time\DayOfWeek $day
+     * @return bool
+     */
+    public function isDayOfWeek($day): bool
+    {
+        Check::types($day, [Type::INT, DayOfWeek::class]);
+
+        if (is_int($day)) {
+            $day = DayOfWeek::get($day);
+        }
+
+        return (int) $this->format('N') === $day->getValue();
+    }
+
+    public function isWeekend(): bool
+    {
+        return $this->format('N') > 5;
+    }
+
+    public function getMonthEnum(): Month
+    {
+        return Month::get((int) $this->format('n'));
+    }
+
+    /**
+     * @param int|\Dogma\Time\Month $month
+     * @return bool
+     */
+    public function isMonth($month): bool
+    {
+        Check::types($month, [Type::INT, Month::class]);
+
+        if (is_int($month)) {
+            $month = Month::get($month);
+        }
+
+        return (int) $this->format('n') === $month->getValue();
     }
 
 }

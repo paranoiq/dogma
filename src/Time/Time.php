@@ -49,9 +49,9 @@ class Time implements \Dogma\NonIterable
 
     public static function createFromParts(int $hours, int $minutes, int $seconds = 0): self
     {
-        Check::int($hours, 0, 23);
-        Check::int($minutes, 0, 59);
-        Check::int($seconds, 0, 59);
+        Check::range($hours, 0, 23);
+        Check::range($minutes, 0, 59);
+        Check::range($seconds, 0, 59);
 
         return new static($hours * 3600 + $minutes * 60 + $seconds);
     }
@@ -63,9 +63,6 @@ class Time implements \Dogma\NonIterable
 
     public static function createFromFormat(string $format, string $timeString): self
     {
-        Check::string($format);
-        Check::string($timeString);
-
         $dateTime = \DateTime::createFromFormat($format, $timeString);
         if ($dateTime === false) {
             throw new \Dogma\Time\InvalidDateTimeException('xxx');
@@ -77,6 +74,7 @@ class Time implements \Dogma\NonIterable
     public function format(string $format = self::DEFAULT_FORMAT): string
     {
         $midnightTimestamp = mktime(0, 0, 0);
+
         return date($format, $midnightTimestamp + $this->secondsSinceMidnight);
     }
 
@@ -109,7 +107,7 @@ class Time implements \Dogma\NonIterable
         if (!$time instanceof Time) {
             $time = new static($time);
         }
-        return $this->getSecondsSinceMidnight() === $time->getSecondsSinceMidnight();
+        return $this->secondsSinceMidnight === $time->secondsSinceMidnight;
     }
 
     /**
@@ -125,9 +123,9 @@ class Time implements \Dogma\NonIterable
         if (!$until instanceof Time) {
             $until = new static($until);
         }
-        $sinceSeconds = $since->getSecondsSinceMidnight();
-        $untilSeconds = $until->getSecondsSinceMidnight();
-        $thisSeconds = $this->getSecondsSinceMidnight();
+        $sinceSeconds = $since->secondsSinceMidnight;
+        $untilSeconds = $until->secondsSinceMidnight;
+        $thisSeconds = $this->secondsSinceMidnight;
 
         if ($sinceSeconds < $untilSeconds) {
             return $thisSeconds >= $sinceSeconds && $thisSeconds <= $untilSeconds;
