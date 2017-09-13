@@ -166,6 +166,17 @@ final class Check
      * @param mixed $value
      * @throws \Dogma\InvalidTypeException
      */
+    public static function null($value): void
+    {
+        if ($value !== null) {
+            throw new \Dogma\InvalidTypeException(Type::NULL, $value);
+        }
+    }
+
+    /**
+     * @param mixed $value
+     * @throws \Dogma\InvalidTypeException
+     */
     public static function bool(&$value): void
     {
         if ($value === true || $value === false) {
@@ -498,6 +509,18 @@ final class Check
     {
         $length = Str::length($value);
         self::range($length, $min, $max);
+    }
+
+    /**
+     * @param string $value
+     * @param string $regexp
+     * @throws \Dogma\InvalidValueException
+     */
+    public static function match(string $value, string $regexp): void
+    {
+        if (!preg_match($regexp, $value)) {
+            throw new \Dogma\InvalidValueException($value, $regexp);
+        }
     }
 
     /**
