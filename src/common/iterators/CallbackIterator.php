@@ -17,14 +17,16 @@ class CallbackIterator extends \IteratorIterator
     private $callback;
 
     /**
-     * @param mixed[]|\Traversable $traversable
+     * @param mixed[]|\Traversable $iterable
      * @param callable $callback
      */
-    public function __construct($traversable, callable $callback)
+    public function __construct(iterable $iterable, callable $callback)
     {
         $this->callback = $callback;
 
-        parent::__construct($traversable);
+        $iterable = IteratorHelper::iterableToIterator($iterable);
+
+        parent::__construct($iterable);
     }
 
     /**
