@@ -9,9 +9,7 @@
 
 namespace Dogma;
 
-use IteratorAggregate;
-
-class ZipIterator implements \Iterator
+class CombineIterator implements \Iterator
 {
     use \Dogma\StrictBehaviorMixin;
 
@@ -25,18 +23,10 @@ class ZipIterator implements \Iterator
      * @param mixed[]|\Traversable $keys
      * @param mixed[]|\Traversable $values
      */
-    public function __construct($keys, $values)
+    public function __construct(iterable $keys, iterable $values)
     {
-        Check::traversable($keys);
-        Check::traversable($values);
-
-        $this->keys = is_array($keys)
-            ? new ArrayIterator($keys)
-            : ($keys instanceof IteratorAggregate ? $keys->getIterator() : $keys);
-
-        $this->values = is_array($values)
-            ? new ArrayIterator($values)
-            : ($values instanceof IteratorAggregate ? $values->getIterator() : $values);
+        $this->keys = IteratorHelper::iterableToIterator($keys);
+        $this->values = IteratorHelper::iterableToIterator($values);
     }
 
     public function rewind(): void

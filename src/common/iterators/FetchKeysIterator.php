@@ -20,19 +20,15 @@ class FetchKeysIterator extends \IteratorIterator
     private $valuesKey;
 
     /**
-     * @param mixed[]|\Traversable $traversable
+     * @param iterable $iterable
      * @param string|null $keysKey
      * @param string|null $valuesKey
      */
-    public function __construct($traversable, ?string $keysKey = null, ?string $valuesKey = null)
+    public function __construct(iterable $iterable, ?string $keysKey = null, ?string $valuesKey = null)
     {
-        Check::traversable($traversable);
+        $iterable = IteratorHelper::iterableToIterator($iterable);
 
-        if (is_array($traversable)) {
-            $traversable = new ArrayIterator($traversable);
-        }
-
-        parent::__construct($traversable);
+        parent::__construct($iterable);
 
         $this->keysKey = $keysKey;
         $this->valuesKey = $valuesKey;

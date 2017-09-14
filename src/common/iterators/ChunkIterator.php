@@ -23,21 +23,17 @@ class ChunkIterator extends \IteratorIterator
     private $chunk;
 
     /**
-     * @param mixed[]|\Traversable $traversable
+     * @param iterable $iterable
      * @param int $chunkSize
      */
-    public function __construct($traversable, int $chunkSize)
+    public function __construct(iterable $iterable, int $chunkSize)
     {
         Check::positive($chunkSize);
-        Check::traversable($traversable);
+        $iterable = IteratorHelper::iterableToIterator($iterable);
 
         $this->chunkSize = $chunkSize;
 
-        if (is_array($traversable)) {
-            $traversable = new ArrayIterator($traversable);
-        }
-
-        parent::__construct($traversable);
+        parent::__construct($iterable);
     }
 
     public function rewind(): void
