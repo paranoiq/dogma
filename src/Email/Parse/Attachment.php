@@ -7,13 +7,11 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Mail;
+namespace Dogma\Email\Parse;
 
 use Dogma\Io\File;
 
 /**
- * Email Attachment
- *
  * @property-read $fileName
  * @property-read $contentType
  * @property-read $charset
@@ -37,11 +35,15 @@ class Attachment
     /** @var string[] */
     private $headers;
 
+    /** @var string */
+    private $tempDir;
+
     /**
      * @param \Dogma\Io\File|string $data
      * @param string[] $headers
+     * @param string $tempDir
      */
-    public function __construct($data, array $headers = [])
+    public function __construct($data, array $headers = [], string $tempDir)
     {
         if ($data instanceof File) {
             $this->file = $data;
@@ -49,6 +51,7 @@ class Attachment
             $this->data = $data;
         }
         $this->headers = $headers;
+        $this->tempDir = $tempDir;
     }
 
     public function getFileName(): string
@@ -88,9 +91,6 @@ class Attachment
         }
     }
 
-    /**
-     * Get file content.
-     */
     public function getContent(): string
     {
         if ($this->data) {
@@ -100,18 +100,13 @@ class Attachment
         }
     }
 
-    /**
-     * Get File object.
-     */
     public function getFile(): File
     {
-        if ($this->file) {
-            return $this->file;
-        } else {
-            $this->file = File::createTemporaryFile();
+        if (!$this->file) {
+            $this->file = File::createTemporaryFile($this->tempDir);
             $this->file->write($this->data);
-            return $this->file;
         }
+        return $this->file;
     }
 
 }

@@ -1,8 +1,8 @@
 <?php
 
+use Dogma\Email\EmailAddressAndName;
+use Dogma\Email\Parse\Message;
 use Dogma\Io\File;
-use Dogma\Mail\Address;
-use Dogma\Mail\Message;
 use Tracy\Debugger;
 
 ob_start();
@@ -15,7 +15,7 @@ Debugger::$maxDepth = 5;
 header('Content-Type: text/html; charset=utf-8');
 
 
-$mail = new Message(new File(__DIR__ . '/test.eml'));
+$mail = new Message(__DIR__, new File(__DIR__ . '/test.eml'));
 
 dump($mail);
 
@@ -30,7 +30,7 @@ echo '<hr>';
 
 dump($mail->getHeaders());
 
-$addr = Address::parseHeader($mail->getHeader('cc'));
+$addr = EmailAddressAndName::parseHeader($mail->getHeader('cc'));
 
 /*
 ob_end_clean();

@@ -7,19 +7,21 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Imap;
+namespace Dogma\Email\Imap;
 
-use Dogma\Mail\Message;
+use Dogma\Email\Parse\Message;
 
-/**
- * IMAP connection
- */
 class Connection
 {
     use \Dogma\StrictBehaviorMixin;
 
+    public const DEFAULT_PORT = 143;
+
     /** @var int */
     public static $connectionRetries = 1;
+
+    /** @var string */
+    private $tempDir;
 
     /** @var resource */
     private $handler;
@@ -45,34 +47,29 @@ class Connection
     /** @var string */
     private $selectedFolder;
 
-    /** @var \Dogma\Imap\Folder[] */
+    /** @var \Dogma\Email\Imap\Folder[] */
     private $folders = [];
 
-    /** @var \Dogma\Imap\MessageInfo[] */
+    /** @var \Dogma\Email\Imap\MessageInfo[] */
     private $messages = [];
 
     /** @var string[] cache of subscribed folders */
     private $subscribed;
 
-    /** @var callable */
-    private $messageFactory;
-
-    public function __construct(string $user, string $password, string $host = '127.0.0.1', int $port = 143, bool $ssl = false)
-    {
+    public function __construct(
+        string $tempDir,
+        string $user,
+        string $password,
+        string $host,
+        int $port = self::DEFAULT_PORT,
+        bool $ssl = false
+    ) {
+        $this->tempDir = $tempDir;
         $this->user = $user;
         $this->password = $password;
         $this->host = $host;
         $this->port = $port;
         $this->ssl = $ssl;
-
-        $this->messageFactory = function ($data) {
-            return $this->createMessage($data);
-        };
-    }
-
-    public function setMessageFactory(callable $factory): void
-    {
-        $this->messageFactory = $factory;
     }
 
     public function connect(): void
@@ -94,7 +91,7 @@ class Connection
         );
         ///
         if (!$this->handler) {
-            throw new \Dogma\Imap\ImapException(sprintf('Cannot connect to server: %s', imap_last_error()));
+            throw new \Dogma\Email\Imap\ImapException(sprintf('Cannot connect to server: %s', imap_last_error()));
         }
 
         $this->ref = sprintf('{%s:%s}', $this->host, $this->port);
@@ -117,7 +114,7 @@ class Connection
         $res = imap_close($this->handler, CL_EXPUNGE);
         ///
         if (!$res) {
-            throw new \Dogma\Imap\ImapException('Error when disconnecting from server: ' . imap_last_error());
+            throw new \Dogma\Email\Imap\ImapException('Error when disconnecting from server: ' . imap_last_error());
         }
     }
 
@@ -189,7 +186,7 @@ class Connection
      * Get info about folders
      * @param string $filter
      * @param bool $all
-     * @return \Dogma\Imap\Folder[]
+     * @return \Dogma\Email\Imap\Folder[]
      */
     public function getFolders(string $filter = '*', bool $all = true): array
     {
@@ -303,7 +300,7 @@ class Connection
     /**
      * Select folder and return a Folder object
      * @param string $name
-     * @return \Dogma\Imap\Folder
+     * @return \Dogma\Email\Imap\Folder
      */
     public function selectFolder(string $name): Folder
     {
@@ -355,7 +352,7 @@ class Connection
      * @param mixed[] $criteria
      * @param string $orderBy (date|arrival|from|subject|to|cc|size)
      * @param bool $descending
-     * @return \Dogma\Mail\Message[]
+     * @return \Dogma\Email\Parse\Message[]
      */
     public function getMessages(array $criteria = [], ?string $orderBy = null, bool $descending = false): array
     {
@@ -382,7 +379,7 @@ class Connection
         }
         $errors = imap_errors();
         if (!$uids && $errors) {
-            throw new \Dogma\Imap\ImapException('IMAP search failed: ' . implode('; ', $errors));
+            throw new \Dogma\Email\Imap\ImapException('IMAP search failed: ' . implode('; ', $errors));
         }
 
         $messages = [];
@@ -462,7 +459,7 @@ class Connection
 
     public function getMessage(int $uid): Message
     {
-        return call_user_func($this->messageFactory, $this->getRawMessageHeader($uid) . "\r\n\r\n" . $this->getMessageBody($uid));
+        return new Message($this->getRawMessageHeader($uid) . "\r\n\r\n" . $this->getMessageBody($uid), $this->tempDir);
     }
 
     public function getMessageBody(int $uid): string
@@ -487,14 +484,6 @@ class Connection
     private function decode(string $str): string
     {
         return mb_convert_encoding($str, 'UTF-8', 'UTF7-IMAP');
-    }
-
-    private function createMessage(string $data): Message
-    {
-        $message = new Message($data);
-        $message->setAddressFactory('Dogma\\Mail\\Message::createAddress');
-
-        return $message;
     }
 
 }

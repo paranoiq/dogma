@@ -7,24 +7,21 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Imap;
+namespace Dogma\Email\Imap;
 
-use Dogma\Mail\Message;
+use Dogma\Email\Parse\Message;
 
-/**
- * IMAP message info.
- */
 class MessageInfo
 {
     use \Dogma\StrictBehaviorMixin;
 
-    /** @var \Dogma\Imap\Connection */
+    /** @var \Dogma\Email\Imap\Connection */
     private $imap;
 
     /** @var int */
     private $uid;
 
-    /** @var \Dogma\Mail\Message */
+    /** @var \Dogma\Email\Parse\Message */
     private $message;
 
     public function __construct(Connection $imap, int $uid)

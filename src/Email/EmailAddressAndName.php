@@ -7,30 +7,25 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Mail;
+namespace Dogma\Email;
 
-/**
- * Mail address.
- * @property-read $address
- * @property-read $name
- */
-class Address
+class EmailAddressAndName
 {
     use \Dogma\StrictBehaviorMixin;
+
+    /** @var \Dogma\Email\EmailAddress */
+    private $address;
 
     /** @var string */
     private $name;
 
-    /** @var string */
-    private $address;
-
-    public function __construct(string $address, ?string $name = null)
+    public function __construct(EmailAddress $address, ?string $name = null)
     {
-        $this->address = strtolower($address);
+        $this->address = $address;
         $this->name = $name;
     }
 
-    public function getAddress(): string
+    public function getAddress(): EmailAddress
     {
         return $this->address;
     }
@@ -40,7 +35,7 @@ class Address
         return $this->name;
     }
 
-    public function __toString(): string
+    public function serialize(): string
     {
         return $this->name ? sprintf('"%s" <%s>', $this->name, $this->address) : $this->address;
     }

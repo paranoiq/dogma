@@ -7,7 +7,7 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Imap;
+namespace Dogma\Email\Imap;
 
 class Folder
 {
@@ -21,7 +21,7 @@ class Folder
     public const HAS_CHILDREN = LATT_HASCHILDREN; // 32
     public const HAS_NO_CHILDREN = LATT_HASNOCHILDREN; // 64
 
-    /** @var \Dogma\Imap\Connection */
+    /** @var \Dogma\Email\Imap\Connection */
     private $imap;
 
     /** @var string */
@@ -139,7 +139,7 @@ class Folder
     /**
      * @param string $filter
      * @param bool $all
-     * @return \Dogma\Imap\Folder[]
+     * @return \Dogma\Email\Imap\Folder[]
      */
     public function getSubfolders(string $filter = '*', bool $all = true): array
     {
