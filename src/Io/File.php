@@ -73,16 +73,19 @@ class File implements \Dogma\Io\Path
         }
     }
 
-    public static function createTemporaryFile(): self
+    public static function createTemporaryFile(string $dir, string $prefix = ''): self
     {
+        if (!is_dir($dir)) {
+            throw new \Dogma\Io\FileException(sprintf('Invalid directory path: "%s".', $dir));
+        }
         error_clear_last();
-        $handle = tmpfile();
+        $name = tempnam($dir, $prefix);
 
-        if ($handle === false) {
+        if ($name === false) {
             throw new \Dogma\Io\FileException('Cannot create a temporary file.', error_get_last());
         }
 
-        return new static($handle, FileMode::CREATE_OR_TRUNCATE_READ_WRITE);
+        return new static($name, FileMode::OPEN_READ_WRITE);
     }
 
     public static function createMemoryFile(?int $maxSize = null): self
@@ -127,20 +130,33 @@ class File implements \Dogma\Io\Path
         return basename($this->getPath());
     }
 
-    public function move(string $path): self
+    public function move(string $path): void
     {
+        $path = str_replace('\\', '/', $path);
         $destination = dirname($path);
         if (!is_dir($destination)) {
             throw new \Dogma\Io\FileException(sprintf('Directory %s is not writable.', $destination));
         }
-        if (!rename($this->getPath(), $destination)) {
+        $currentPath = $this->getPath();
+
+        $this->close();
+        $result = rename($currentPath, $path);
+        if ($result === false) {
             throw new \Dogma\Io\FileException(sprintf('Cannot move file \'%s\' to \'%s\'.', $this->getPath(), $path));
         }
         chmod($destination, 0666);
 
-        $this->path = $destination;
+        $this->path = $path;
+        $this->open();
+    }
 
-        return $this;
+    public function remove(): void
+    {
+        $this->close();
+        $result = unlink($this->path);
+        if ($result === false) {
+            throw new \Dogma\Io\FileException(sprintf('Cannot remove file \'%s\'.', $this->getPath()));
+        }
     }
 
     public function isOpen(): bool
