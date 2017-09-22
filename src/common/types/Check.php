@@ -574,7 +574,7 @@ final class Check
      * @param int|float $max
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function range($value, ?int $min = null, ?int $max = null): void
+    public static function range($value, $min = null, $max = null): void
     {
         if ($min !== null && $value < $min) {
             throw new \Dogma\ValueOutOfRangeException($value, $min, $max);
