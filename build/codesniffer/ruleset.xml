@@ -62,10 +62,12 @@
             <property name="usefulAnnotations" type="array" value="@dataProvider,@deprecated,@internal,@label,@see"/>
         </properties>
     </rule>
-    <rule ref="Squiz.WhiteSpace.FunctionSpacing.After"/>
     <rule ref="Squiz.Commenting.FunctionComment">
         <exclude-pattern>tests/</exclude-pattern><!-- @dataProvider etc. annotations trigger comments check -->
         <exclude name="Squiz.Commenting.FunctionComment.WrongStyle"/><!-- bullshit -->
+    </rule>
+    <rule ref="Squiz.Arrays.ArrayDeclaration.ValueNoNewline">
+        <exclude name="Squiz.Arrays.ArrayDeclaration.ValueNoNewline"/>
     </rule>
     <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
         <exclude-pattern>/exceptions/</exclude-pattern>
@@ -77,7 +79,10 @@
     <rule ref="Generic.Functions.OpeningFunctionBraceBsdAllman">
         <exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman.BraceOnSameLine"/><!-- ) { on separate line -->
     </rule>
-    <rule ref="Generic.Commenting.Todo.TaskFound">
+    <rule ref="Generic.Commenting.Todo">
         <exclude name="Generic.Commenting.Todo.TaskFound"/>
+    </rule>
+    <rule ref="Generic.NamingConventions.ConstructorName.OldStyle">
+        <exclude name="Generic.NamingConventions.ConstructorName.OldStyle"/>
     </rule>
 </ruleset>
