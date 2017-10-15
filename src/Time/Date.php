@@ -62,9 +62,13 @@ class Date implements \Dogma\NonIterable
         $this->dateTime = clone($this->dateTime);
     }
 
-    public function format(string $format = self::DEFAULT_FORMAT): string
+    public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeFormatter $formatter = null): string
     {
-        return $this->dateTime->format($format);
+        if ($formatter === null) {
+            return $this->dateTime->format($format);
+        } else {
+            return $formatter->format($this, $format);
+        }
     }
 
     /**

@@ -71,11 +71,15 @@ class Time implements \Dogma\NonIterable
         return new static($dateTime->format(self::DEFAULT_FORMAT));
     }
 
-    public function format(string $format = self::DEFAULT_FORMAT): string
+    public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeFormatter $formatter = null): string
     {
-        $midnightTimestamp = mktime(0, 0, 0);
+        if ($formatter === null) {
+            $midnightTimestamp = mktime(0, 0, 0);
 
-        return date($format, $midnightTimestamp + $this->secondsSinceMidnight);
+            return date($format, $midnightTimestamp + $this->secondsSinceMidnight);
+        } else {
+            return $formatter->format($this, $format);
+        }
     }
 
     public function getSecondsSinceMidnight(): int

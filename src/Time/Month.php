@@ -25,4 +25,47 @@ class Month extends \Dogma\Enum\IntEnum
     public const NOVEMBER = 11;
     public const DECEMBER = 12;
 
+    /**
+     * @return string[]
+     */
+    public static function getEnglishNames(): array
+    {
+        return [
+            self::JANUARY => 'january',
+            self::FEBRUARY => 'february',
+            self::MARCH => 'march',
+            self::APRIL => 'april',
+            self::MAY => 'may',
+            self::JUNE => 'june',
+            self::JULY => 'july',
+            self::AUGUST => 'august',
+            self::SEPTEMBER => 'september',
+            self::OCTOBER => 'october',
+            self::NOVEMBER => 'november',
+            self::DECEMBER => 'december',
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getEnglishShortcuts(): array
+    {
+        return [
+            self::JANUARY => 'jan',
+            self::FEBRUARY => 'feb',
+            self::MARCH => 'mar',
+            self::APRIL => 'apr',
+            self::MAY => 'may',
+            self::JUNE => 'jun',
+            self::JULY => 'jul',
+            self::AUGUST => 'aug',
+            self::SEPTEMBER => 'sep',
+            self::OCTOBER => 'oct',
+            self::NOVEMBER => 'nov',
+            self::DECEMBER => 'dec',
+        ];
+    }
+
+
 }

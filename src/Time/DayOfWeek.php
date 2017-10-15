@@ -23,4 +23,36 @@ class DayOfWeek extends \Dogma\Enum\IntEnum
     public const SATURDAY = 6;
     public const SUNDAY = 7;
 
+    /**
+     * @return string[]
+     */
+    public static function getEnglishNames(): array
+    {
+        return [
+            'monday',
+            'tuesday',
+            'wednesday',
+            'thursday',
+            'friday',
+            'saturday',
+            'sunday',
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getShortcuts(): array
+    {
+        return [
+            'mon',
+            'tue',
+            'wed',
+            'thu',
+            'fri',
+            'sat',
+            'sun',
+        ];
+    }
+
 }

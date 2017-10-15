@@ -19,6 +19,7 @@ class PositionFormatter
     public const LATITUDE_SIGNED = 'L';
     public const LATITUDE_NORTH_SOUTH = 'N';
     public const LATITUDE_NS = 'n';
+
     public const LONGITUDE = 'o';
     public const LONGITUDE_SIGNED = 'O';
     public const LONGITUDE_EAST_WEST = 'E';
@@ -27,6 +28,8 @@ class PositionFormatter
     // reserved
     private const ALTITUDE = 'a';
     private const ALTITUDE_SIGNED = 'A';
+    private const ALTITUDE_ABOVE_BELOW = 'B';
+    private const ALTITUDE_AB = 'b';
 
     public const FORMAT_PRETTY = 'nl,eo';
     public const FORMAT_DEFAULT = 'L,O';
@@ -43,6 +46,8 @@ class PositionFormatter
         self::LONGITUDE_EW,
         self::ALTITUDE,
         self::ALTITUDE_SIGNED,
+        self::ALTITUDE_ABOVE_BELOW,
+        self::ALTITUDE_AB,
     ];
 
     /** @var \Dogma\Math\Angle\AngleFormatter */
@@ -101,6 +106,12 @@ class PositionFormatter
                         break;
                     case self::ALTITUDE_SIGNED:
                         $result .= '0';
+                        break;
+                    case self::ALTITUDE_ABOVE_BELOW:
+                        $result .= 'above';
+                        break;
+                    case self::ALTITUDE_AB:
+                        $result .= 'A';
                         break;
                 }
                 $escaped = false;

@@ -50,27 +50,55 @@ class AngleFormatter
         $this->decimalPoint = $decimalPoint;
     }
 
+    /**
+     * Ch.  Description
+     * ---- -------------------------
+     * Escaping:
+     * %	Escape character. Use %% for printing "%"
+     *
+     * Skip groups:
+     * [    Group start, skip if zero
+     * ]    Group end, skip if zero
+     *
+     * Objects:
+     * D    Degrees with fraction
+     * d    Degrees floored
+     * M    Minutes with fraction
+     * m    Minutes floored
+     * S    Seconds with fraction
+     * s    Seconds floored
+     *
+     * @param float $degrees
+     * @param string|null $format
+     * @param int|null $maxDecimals
+     * @param string|null $decimalPoint
+     * @return string
+     */
     public function format(float $degrees, ?string $format = null, ?int $maxDecimals = null, ?string $decimalPoint = null): string
     {
+        $format = $format ?? $this->format;
+        $maxDecimals = $maxDecimals ?? $this->maxDecimals;
+        $decimalPoint = $decimalPoint ?? $this->decimalPoint;
+
         $sign = $degrees < 0;
         $degrees = abs($degrees);
 
         $result = '';
         $escaped = false;
-        foreach (str_split($format ?? $this->format) as $character) {
+        foreach (str_split($format) as $character) {
             if ($character === '%' && !$escaped) {
                 $escaped = true;
             } elseif ($escaped === false && in_array($character, self::$specialCharacters)) {
                 switch ($character) {
                     case self::DEGREES:
-                        $result .= $this->formatNumber($degrees, $maxDecimals ?? $this->maxDecimals, $decimalPoint ?? $this->decimalPoint);
+                        $result .= $this->formatNumber($degrees, $maxDecimals, $decimalPoint);
                         break;
                     case self::DEGREES_FLOORED:
                         $result .= floor($degrees);
                         break;
                     case self::MINUTES:
                         $minutes = ($degrees - floor($degrees)) * 60;
-                        $result .= $this->formatNumber($minutes, $maxDecimals ?? $this->maxDecimals, $decimalPoint ?? $this->decimalPoint);
+                        $result .= $this->formatNumber($minutes, $maxDecimals, $decimalPoint);
                         break;
                     case self::MINUTES_FLOORED:
                         $minutes = ($degrees - floor($degrees)) * 60;
@@ -79,7 +107,7 @@ class AngleFormatter
                     case self::SECONDS:
                         $minutes = ($degrees - floor($degrees)) * 60;
                         $seconds = ($minutes - floor($minutes)) * 60;
-                        $result .= $this->formatNumber($seconds, $maxDecimals ?? $this->maxDecimals, $decimalPoint ?? $this->decimalPoint);
+                        $result .= $this->formatNumber($seconds, $maxDecimals, $decimalPoint);
                         break;
                     case self::SECONDS_FLOORED:
                         $minutes = ($degrees - floor($degrees)) * 60;

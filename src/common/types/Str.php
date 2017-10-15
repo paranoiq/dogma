@@ -52,6 +52,11 @@ class Str extends \Nette\Utils\Strings
         return $collation->compare($first, $second);
     }
 
+    public function substringCount(string $string, string $substring): int
+    {
+        return (strlen($string) - strlen(str_replace($substring, '', $string))) / strlen($substring);
+    }
+
     public static function toFirst(string $string, string $search): string
     {
         $pos = strpos($string, $search);

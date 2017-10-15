@@ -7,15 +7,11 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma;
+namespace Dogma\Localisation;
 
-class Exception extends \Exception
+interface Translator
 {
-    use \Dogma\StrictBehaviorMixin;
 
-    public function __construct(string $message, ?\Throwable $previous = null)
-    {
-        parent::__construct($message, 0, $previous);
-    }
+    public function translate(string $string, ?int $number = null): string;
 
 }
