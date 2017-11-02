@@ -11,7 +11,10 @@
         }
     ],
     "require": {
-        "php": ">=7.1",
+        "php-64bit": "^7.1.0",
+        "ext-bcmath": "*",
+        "ext-dom": "*",
+        "ext-intl": "*",
         "nette/http": "~2.4",
         "nette/reflection": "~2.4",
         "nette/php-generator": "~2.4",
