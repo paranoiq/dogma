@@ -9,7 +9,7 @@
 
 namespace Dogma\Language;
 
-class CollatorException extends LanguageException
+class TransliteratorException extends LanguageException
 {
 
 }

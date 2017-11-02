@@ -9,7 +9,9 @@
 
 namespace Dogma\Language;
 
-class CollatorException extends LanguageException
+use Dogma\Exception;
+
+class LanguageException extends Exception
 {
 
 }

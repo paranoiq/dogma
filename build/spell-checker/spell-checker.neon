@@ -16,6 +16,7 @@ dictionariesByFileName:
     *Script.php: skip
     *Sapi.php: skip
     *Tld.php: skip
+    *Transliterator.php: skip
     *UriScheme.php: skip
     *WindowsError.php: skip
 

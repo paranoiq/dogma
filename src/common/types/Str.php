@@ -11,6 +11,8 @@ namespace Dogma;
 
 use Dogma\Language\Collator;
 use Dogma\Language\Locale\Locale;
+use Dogma\Language\Transliterator;
+use Dogma\Language\UnicodeCharacterCategory;
 
 /**
  * UTF-8 strings manipulation
@@ -85,6 +87,110 @@ class Str extends \Nette\Utils\Strings
         }
 
         return [substr($string, 0, $pos), substr($string, $pos + 1)];
+    }
+
+    /**
+     * Levenshtein distance for UTF-8 with additional weights for accent and case differences.
+     * Expects input strings to be normalized UTF-8.
+     *
+     * @param string $string1
+     * @param string $string2
+     * @param float $insertionCost
+     * @param float $deletionCost
+     * @param float $replacementCost
+     * @param float|null $replacementAccentCost
+     * @param float|null $replacementCaseCost
+     * @return float
+     */
+    public static function levenshteinUnicode(
+        string $string1,
+        string $string2,
+        float $insertionCost = 1.0,
+        float $deletionCost = 1.0,
+        float $replacementCost = 1.0,
+        ?float $replacementAccentCost = 0.5,
+        ?float $replacementCaseCost = 0.25
+    ): float
+    {
+        if ($string1 === $string2) {
+            return 0;
+        }
+
+        $length1 = mb_strlen($string1, 'UTF-8');
+        $length2 = mb_strlen($string2, 'UTF-8');
+        if ($length1 < $length2) {
+            return self::levenshteinUnicode(
+                $string2,
+                $string1,
+                $insertionCost,
+                $deletionCost,
+                $replacementCost,
+                $replacementAccentCost,
+                $replacementCaseCost
+            );
+        }
+        if ($length1 === 0) {
+            return (float) $length2;
+        }
+
+        $previousRow = range(0.0, $length2);
+        for ($i = 0; $i < $length1; $i++) {
+            $currentRow = [];
+            $currentRow[0] = $i + 1.0;
+            $char1 = mb_substr($string1, $i, 1, 'UTF-8');
+            for ($j = 0; $j < $length2; $j++) {
+                $char2 = mb_substr($string2, $j, 1, 'UTF-8');
+
+                if ($char1 === $char2) {
+                    $cost = 0;
+                } elseif ($replacementCaseCost !== null && self::lower($char1) === self::lower($char2)) {
+                    $cost = $replacementCaseCost;
+                } elseif ($replacementAccentCost !== null && self::removeDiacritics($char1) === self::removeDiacritics($char2)) {
+                    $cost = $replacementAccentCost;
+                } elseif ($replacementCaseCost !== null && $replacementAccentCost !== null && self::removeDiacriticsAndLower($char1) === self::removeDiacriticsAndLower($char2)) {
+                    $cost = $replacementCaseCost + $replacementAccentCost;
+                } else {
+                    $cost = $replacementCost;
+                }
+                $replacement = $previousRow[$j] + $cost;
+                $insertions = $previousRow[$j + 1] + $insertionCost;
+                $deletions = $currentRow[$j] + $deletionCost;
+
+                $currentRow[] = min($replacement, $insertions, $deletions);
+            }
+            $previousRow = $currentRow;
+        }
+
+        return $previousRow[$length2];
+    }
+
+    public static function removeDiacritics(string $string): string
+    {
+        static $transliterator;
+        if ($transliterator === null) {
+            $transliterator = Transliterator::createFromIds([
+                Transliterator::DECOMPOSE,
+                [Transliterator::REMOVE, UnicodeCharacterCategory::NONSPACING_MARK],
+                Transliterator::COMPOSE,
+            ]);
+        }
+
+        return $transliterator->transliterate($string);
+    }
+
+    private static function removeDiacriticsAndLower(string $string): string
+    {
+        static $transliterator;
+        if ($transliterator === null) {
+            $transliterator = Transliterator::createFromIds([
+                Transliterator::DECOMPOSE,
+                [Transliterator::REMOVE, UnicodeCharacterCategory::NONSPACING_MARK],
+                Transliterator::COMPOSE,
+                Transliterator::LOWER_CASE,
+            ]);
+        }
+
+        return $transliterator->transliterate($string);
     }
 
 }
