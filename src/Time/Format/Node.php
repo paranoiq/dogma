@@ -9,8 +9,7 @@
 
 namespace Dogma\Time\Format;
 
-class Node
+interface Node
 {
-    use \Dogma\StrictBehaviorMixin;
 
 }

@@ -26,7 +26,6 @@ class DateTimeFormatter
     public const MONTH = 'm';
     public const MONTH_NAME = 'N';
     public const MONTH_NAME_SHORT = 'n';
-    public const MONTH_NAME_LOKATIV = 'L';
     public const DAYS_IN_MONTH = 'k';
 
     public const WEEK_OF_YEAR = 'W';
@@ -35,7 +34,6 @@ class DateTimeFormatter
     public const DAY_OF_WEEK_INDEX = 'b';
     public const DAY_OF_WEEK_NAME = 'C';
     public const DAY_OF_WEEK_NAME_SHORT = 'c';
-    public const DAY_OF_WEEK_LOKATIV = 'F';
 
     public const DAY_LZ = 'D';
     public const DAY = 'd';
@@ -67,98 +65,6 @@ class DateTimeFormatter
     public const FORMAT_DEFAULT = 'Y-M-D H:I:S';
     public const FORMAT_ISO_TZ = 'Y-M-D%TH:I:SO';
     public const FORMAT_ISO_MICRO_TZ = 'Y-M-D%TH:I:S.UO';
-
-    private static $specialCharacters = [
-        self::YEAR,
-        self::YEAR_SHORT,
-        self::DAY_OF_YEAR,
-        self::DAY_OF_YEAR_INDEX,
-        self::LEAP_YEAR,
-        self::QUARTER,
-        self::MONTH_LZ,
-        self::MONTH,
-        self::MONTH_NAME,
-        self::MONTH_NAME_SHORT,
-        self::DAYS_IN_MONTH,
-        self::WEEK_OF_YEAR,
-        self::ISO_WEEK_YEAR,
-        self::DAY_OF_WEEK,
-        self::DAY_OF_WEEK_INDEX,
-        self::DAY_OF_WEEK_NAME,
-        self::DAY_OF_WEEK_NAME_SHORT,
-        self::DAY_LZ,
-        self::DAY,
-        self::DAY_SUFFIX,
-        self::HOURS_LZ,
-        self::HOURS,
-        self::HOURS_12_LZ,
-        self::HOURS_12,
-        self::AM_PM_UPPER,
-        self::AM_PM_LOWER,
-        self::MINUTES_LZ,
-        self::MINUTES,
-        self::SECONDS_LZ,
-        self::SECONDS,
-        self::MILISECONDS_LZ,
-        self::MILISECONDS,
-        self::MICROSECONDS_LZ,
-        self::MICROSECONDS,
-        self::TIMEZONE_NAME,
-        self::TIMEZONE_NAME_SHORT,
-        self::TIMEZONE_OFFSET_COLON,
-        self::TIMEZONE_OFFSET,
-        self::TIMEZONE_OFFSET_SECONDS,
-        self::DAYLIGHT_SAVING_TIME,
-    ];
-
-    private static $dateCharacters = [
-        self::YEAR,
-        self::YEAR_SHORT,
-        self::DAY_OF_YEAR,
-        self::DAY_OF_YEAR_INDEX,
-        self::LEAP_YEAR,
-        self::QUARTER,
-        self::MONTH_LZ,
-        self::MONTH,
-        self::MONTH_NAME,
-        self::MONTH_NAME_SHORT,
-        self::DAYS_IN_MONTH,
-        self::WEEK_OF_YEAR,
-        self::ISO_WEEK_YEAR,
-        self::DAY_OF_WEEK,
-        self::DAY_OF_WEEK_INDEX,
-        self::DAY_OF_WEEK_NAME,
-        self::DAY_OF_WEEK_NAME_SHORT,
-        self::DAY_LZ,
-        self::DAY,
-        self::DAY_SUFFIX,
-    ];
-
-    private static $timeCharacters = [
-        self::HOURS_LZ,
-        self::HOURS,
-        self::HOURS_12_LZ,
-        self::HOURS_12,
-        self::AM_PM_UPPER,
-        self::AM_PM_LOWER,
-        self::MINUTES_LZ,
-        self::MINUTES,
-        self::SECONDS_LZ,
-        self::SECONDS,
-        self::MILISECONDS_LZ,
-        self::MILISECONDS,
-        self::MICROSECONDS_LZ,
-        self::MICROSECONDS,
-    ];
-
-    private static $timezoneCharacters = [
-        self::TIMEZONE_NAME,
-        self::TIMEZONE_NAME_SHORT,
-        self::TIMEZONE_OFFSET_COLON,
-        self::TIMEZONE_OFFSET,
-        self::TIMEZONE_OFFSET_SECONDS,
-        self::DAYLIGHT_SAVING_TIME,
-    ];
 
     private const MONTH_LENGTHS = [
         1 => 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31

@@ -13,6 +13,8 @@ class Formatting
 {
     use \Dogma\StrictBehaviorMixin;
 
+    public const ESCAPE_CHARACTER = '\\';
+
     // variables inside block [] must not contain only zeros. otherwise is block removed
     // eg. "1.12.2017[ 00:00]" is converted to "1.12.2017"
     public const NO_ZEROS_GROUP_START = '[';
