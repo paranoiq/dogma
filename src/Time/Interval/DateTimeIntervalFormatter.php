@@ -175,7 +175,7 @@ class DateTimeIntervalFormatter
      * Ch.  Description                                 Example values
      * ---- ------------------------------------------- --------------
      * Escaping:
-     * %	Escape character. Use %% for printing "%"
+     * %    Escape character. Use %% for printing "%"
      *
      * Skip groups:
      * [    Group start, skip if zero
@@ -186,13 +186,13 @@ class DateTimeIntervalFormatter
      * !    -   Starts with upper case letter
      *
      * Objects:
-     * Y	Years fraction                              1.5, 3.2, -3.2
-     * y	Years                                       1, 3, -3
+     * Y    Years fraction                              1.5, 3.2, -3.2
+     * y    Years                                       1, 3, -3
      * Z    'years' word                                year, years, years
      * z    'y' for years                               y, y, y
      *
-     * M	Months fraction (based on 30 days month)    1.5, 3.2, -3.2
-     * m	Months                                      1, 3, -3
+     * M    Months fraction (based on 30 days month)    1.5, 3.2, -3.2
+     * m    Months                                      1, 3, -3
      * N    Months total fraction                       1.5, 27.2, -3.2
      * n    Months total                                1, 27, -3
      * O    'months' word                               month, months, months
@@ -205,29 +205,29 @@ class DateTimeIntervalFormatter
      * A    'weeks' word                                week, weeks, weeks
      * a    'w' for weeks                               w, w, w
      *
-     * D	Days fraction                               1.5, 3.2, -3.2
-     * d	Days                                        1, 3, -3
+     * D    Days fraction                               1.5, 3.2, -3.2
+     * d    Days                                        1, 3, -3
      * E    Days total fraction                         1.5, 33.2, -3.2
      * e    Days total                                  1, 33, -3
      * F    'days' word                                 day, days, days
      * f    'd' for days                                d, d, d
      *
-     * H	Hours fraction                              1.5, 3.2, -3.2
-     * h	Hours                                       1, 3, -3
+     * H    Hours fraction                              1.5, 3.2, -3.2
+     * h    Hours                                       1, 3, -3
      * G    Hours total fraction                        1.5, 27.3, -3.2
      * g    Hours total                                 1, 27, -3
      * L    'hours' word                                hour, hours, hours
      * l    'h' for hours                               h, h, h
      *
-     * I	Minutes fraction                            1.5, 3.2, -3.2
-     * i	Minutes                                     1, 3, -2
+     * I    Minutes fraction                            1.5, 3.2, -3.2
+     * i    Minutes                                     1, 3, -2
      * J    Minutes total fraction                      1.5, 63.2, -3.2
      * j    Minutes total                               1.5, 63, -3
      * K    'minutes' word                              minute, minutes, minutes
      * k    'm' for minutes                             m, m, m
      *
-     * S	Seconds fraction                            1.5, 3.2, -3.2
-     * s	Seconds                                     1, 3, -3
+     * S    Seconds fraction                            1.5, 3.2, -3.2
+     * s    Seconds                                     1, 3, -3
      * T    Seconds total fraction                      1.5, 63.2, -3.2
      * t    Seconds total                               1, 63, -3
      * R    'seconds' word                              second, seconds, seconds
@@ -238,8 +238,8 @@ class DateTimeIntervalFormatter
      * B    'miliseconds' word                          miliseconds
      * b    'ms' for miliseconds                        ms
      *
-     * U	Microseconds total                          7701, 108952738
-     * u	Microseconds                                7701, 52738
+     * U    Microseconds total                          7701, 108952738
+     * u    Microseconds                                7701, 52738
      * C    'microseconds' word                         microseconds
      * c    'µs' for microseconds                       µs
      *

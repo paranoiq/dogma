@@ -67,5 +67,4 @@ class Month extends \Dogma\Enum\IntEnum
         ];
     }
 
-
 }

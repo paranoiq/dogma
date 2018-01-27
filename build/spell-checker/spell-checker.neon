@@ -1,0 +1,21 @@
+
+directories:
+	- build
+	- src
+	- tests
+
+dictionariesByFileName: []
+
+dictionariesByFileExtension:
+    php: en php custom
+    phpt: en php custom
+    neon: en custom
+    xml: en custom
+    properties: en
+    json: en
+    md: en
+
+dictionaryDirectories:
+	- build/spell-checker/dictionaries
+	- vendor/spell-checker/spell-checker/dictionaries
+	- vendor/spell-checker/dictionary-en

@@ -7,6 +7,8 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
+namespace Dogma\Time\Range;
+
 class DateTimeRangeFormatter
 {
     use \Dogma\StrictBehaviorMixin;
@@ -38,7 +40,7 @@ class DateTimeRangeFormatter
      * @param \Dogma\Time\Range\DateTimeRange|\Dogma\Time\Range\DateRange|\Dogma\Time\Range\TimeRange
      * @return string
      */
-    public function format($since, $until, ?string $format = null): string
+    public function format($range, ?string $format = null): string
     {
         $parts = explode(self::SINCE_UNTIL_SEPARATOR, $format);
         if (count($parts) !== 2) {
@@ -48,7 +50,8 @@ class DateTimeRangeFormatter
         }
         [$sinceFormat, $untilFormat] = $parts;
 
-
+        ///
+        return '';
     }
 
     /**
@@ -57,7 +60,8 @@ class DateTimeRangeFormatter
      */
     public function formatRange($range): string
     {
-
+        ///
+        return '';
     }
 
 }

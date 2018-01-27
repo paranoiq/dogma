@@ -292,7 +292,7 @@ class DateTimeInterval
             $this->hours,
             $this->minutes,
             $this->seconds,
-            $this->microseconds
+            $this->microseconds,
         ];
     }
 

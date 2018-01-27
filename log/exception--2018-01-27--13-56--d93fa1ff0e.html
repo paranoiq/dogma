@@ -1,0 +1,1947 @@
+<!DOCTYPE html><!-- "' --></textarea></script></style></pre></xmp></a></iframe></noembed></noframes></noscript></option></select></template></title></table>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="robots" content="noindex">
+	<meta name="generator" content="Tracy by Nette Framework">
+
+	<title>SpellChecker\NoDictionaryFileFoundException: No dictionary files found for dictionary name &quot;php&quot;.</title>
+	
+	<style type="text/css" class="tracy-debug">
+	/** * This file is part of the Tracy (https://tracy.nette.org) */ #tracy-bs { font: 9pt/1.5 Verdana, sans-serif; background: white; color: #333; position: absolute; z-index: 20000; left: 0; top: 0; width: 100%; text-align: left; } #tracy-bs * { font: inherit; color: inherit; background: transparent; border: none; margin: 0; padding: 0; text-align: inherit; text-indent: 0; } #tracy-bs *:before, #tracy-bs *:after { all: unset; } #tracy-bs b { font-weight: bold; } #tracy-bs i { font-style: italic; } #tracy-bs a { text-decoration: none; color: #328ADC; padding: 2px 4px; margin: -2px -4px; } #tracy-bs a:hover, #tracy-bs a:focus { color: #085AA3; } #tracy-bs-toggle { position: absolute; right: .5em; top: .5em; text-decoration: none; background: #CD1818; color: white !important; padding: 3px; } #tracy-bs-error { background: #CD1818; color: white; font: 13pt/1.5 Verdana, sans-serif !important; } #tracy-bs-error a { color: white !important; opacity: 0; font-size: .7em; } #tracy-bs-error:hover a { opacity: .6; } #tracy-bs-error a:hover { opacity: 1; } #tracy-bs-ie-warning { background: black; margin: 1em; padding: .5em; text-align: center; } #tracy-bs h1 { font-size: 15pt; font-weight: normal; text-shadow: 1px 1px 2px rgba(0, 0, 0, .3); margin: .7em 0; } #tracy-bs h1 span { white-space: pre-wrap; } #tracy-bs h2 { font: 14pt/1.5 sans-serif !important; margin: .6em 0; } #tracy-bs h3 { font: bold 10pt/1.5 Verdana, sans-serif !important; margin: 1em 0; padding: 0; } #tracy-bs p, #tracy-bs pre { margin: .8em 0 } #tracy-bs pre, #tracy-bs code, #tracy-bs table { font: 9pt/1.5 Consolas, monospace !important; } #tracy-bs pre, #tracy-bs table { background: #FDF5CE; padding: .4em .7em; border: 1px dotted silver; overflow: auto; } #tracy-bs table pre { padding: 0; margin: 0; border: none; } #tracy-bs table { border-collapse: collapse; width: 100%; } #tracy-bs td, #tracy-bs th { vertical-align: top; text-align: left; padding: 2px 6px; border: 1px solid #e6dfbf; } #tracy-bs th { font-weight: bold; } #tracy-bs tr > :first-child { width: 20%; } #tracy-bs tr:nth-child(2n), #tracy-bs tr:nth-child(2n) pre { background-color: #F7F0CB; } #tracy-bs ol { margin: 1em 0; padding-left: 2.5em; } #tracy-bs ul { font: 7pt/1.5 Verdana, sans-serif !important; padding: 2em 4em; margin: 1em 0 0; color: #777; background: #F6F5F3; border-top: 1px solid #DDD; } #tracy-bs-logo a { position: absolute; bottom: 0; right: 0; width: 100px; height: 50px; background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAAAUBAMAAAD/1DctAAAAMFBMVEWupZzj39rEvbTy8O3X0sz9/PvGwLu8tavQysHq6OS0rKP5+Pbd2dT29fPMxbzPx8DKErMJAAAACXBIWXMAAAsTAAALEwEAmpwYAAACGUlEQVQoFX3TQWgTQRQA0MWLIJJDYehBTykhG5ERTx56K1u8eEhCYtomE7x5L4iLh0ViF7egewuFFqSIYE6hIHsIYQ6CQSg9CDKn4QsNCRlB59C74J/ZNHW1+An5+bOPyf6/s46oz2P+A0yIeZZ2ieEHi6TOnLKTxvWq+b52mxlVO3xnM1s7xLX1504XQH65OnW2dBqn7cCkYsFsfYsWpyY/2salmFTpEyzeR8zosYqMdiPDXdyU52K1wgEa/SjGpdEwUAxqvRfckQCDOyFearsEHe2grvkh/cFAHKvdtI3lcVceKQIOFpv+FOZaNPQBwJZLPp+hfrvT5JZXaUFsR8zqQc9qSgAharkfS5M/5F6nGJJAtXq/eLr3ucZpHccSxOOIPaQhtHohpCH2Xu6rLmQ0djnr4/+J3C6v+AW8/XWYxwYNdlhWj/P5fPSTQwVr0T9lGxdaBCqErNZaqYnEwbkjEB3NasGF3lPdrHa1nnxNOMgj0+neePUPjd2v/qVvUv29ifvc19huQ48qwXShy/9o8o3OSk0cs37mOFd0Ydgvsf/oZEnPVtggfd66lORn9mDyyzXU13SRtH2L6aR5T/snGAcZPfAXz5J1YlJWBEuxdMYqQecpBrlM49xAbmqyHA+xlA1FxBtqT2xmJoNXZlIt74ZBLeJ9ZGDqByNI7p543idzJ23vXEv7IgnsxiS+eNtwNbFdLq7+Bi4wQ0I4SVb9AAAAAElFTkSuQmCC') no-repeat; opacity: .6; padding: 0; margin: 0; } #tracy-bs-logo a:hover, #tracy-bs-logo a:focus { opacity: 1; transition: opacity 0.1s; } #tracy-bs div.panel { padding: 1px 25px; } #tracy-bs div.inner { background: #F4F3F1; padding: .1em 1em 1em; border-radius: 8px; } #tracy-bs .outer { overflow: auto; } /* source code */ #tracy-bs pre.code > div { min-width: 100%; float: left; white-space: pre; } #tracy-bs .highlight { background: #CD1818; color: white; font-weight: bold; font-style: normal; display: block; padding: 0 .4em; margin: 0 -.4em; } #tracy-bs .line { color: #9F9C7F; font-weight: normal; font-style: normal; } #tracy-bs pre:hover span[title] { border-bottom: 1px solid rgba(0, 0, 0, 0.2); } #tracy-bs a[href^=editor\:] { color: inherit; border-bottom: 1px dotted rgba(0, 0, 0, .3); } #tracy-bs span[data-tracy-href] { border-bottom: 1px dotted rgba(0, 0, 0, .3); } /* toggle */ html.tracy-js #tracy-bs .tracy-collapsed { display: none; } html.tracy-js #tracy-bs .tracy-toggle.tracy-collapsed { display: inline; } #tracy-bs .tracy-toggle { cursor: pointer; } #tracy-bs .tracy-toggle:after { content: "\A0\25BC"; opacity: .4; } #tracy-bs .tracy-toggle.tracy-collapsed:after { content: "\A0\25BA"; opacity: .4; } /* dump */ #tracy-bs .tracy-dump-array, #tracy-bs .tracy-dump-object { color: #C22; } #tracy-bs .tracy-dump-string { color: #35D; } #tracy-bs .tracy-dump-number { color: #090; } #tracy-bs .tracy-dump-null, #tracy-bs .tracy-dump-bool { color: #850; } #tracy-bs .tracy-dump-visibility, #tracy-bs .tracy-dump-hash { font-size: 85%; color: #998; } #tracy-bs .tracy-dump-indent { display: none; } #tracy-bs pre.tracy-dump div { padding-left: 3ex; } #tracy-bs pre.tracy-dump div div { border-left: 1px solid rgba(0, 0, 0, .1); margin-left: .5ex; } #tracy-bs .caused { float: right; padding: .3em .6em; background: #df8075; border-radius: 0 0 0 8px; white-space: nowrap; } #tracy-bs .caused a { color: white; } 	</style>
+	<script>document.documentElement.className+=' tracy-js'</script>
+</head>
+
+
+<body>
+<div id="tracy-bs">
+	<a id="tracy-bs-toggle" href="#" class="tracy-toggle"></a>
+	<div>
+		<div id="tracy-bs-error" class="panel">
+			<p>SpellChecker\NoDictionaryFileFoundException</p>
+
+			<h1><span>No dictionary files found for dictionary name &quot;php&quot;.</span>
+			<a href="https://www.google.com/search?sourceid=tracy&amp;q=SpellChecker%5CNoDictionaryFileFoundException+No+dictionary+files+found+for+dictionary+name+." target="_blank" rel="noreferrer noopener">search&#x25ba;</a>
+			</h1>
+		</div>
+
+		
+
+				
+			
+
+			
+
+						
+			<div class="panel">
+			<h2><a data-tracy-ref="^+" class="tracy-toggle">Source file</a></h2>
+
+			<div class="inner">
+				<p><b>File:</b> <a href="editor://open/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CDictionary%5CDictionaryCollection.php&amp;line=176" title="...\SpellChecker\Dictionary\DictionaryCollection.php:176">...\SpellChecker\Dictionary\<b>DictionaryCollection.php</b>:176</a></p>
+				<pre data-tracy-href="editor://open/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CDictionary%5CDictionaryCollection.php&amp;line=176" class='code'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>166:</span>            </span><span style="color: #000">$files </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">array_filter</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$this</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">files</span><span style="color: #D24; font-weight: bold">, function (</span><span style="color: #000">string $filePath</span><span style="color: #D24; font-weight: bold">) use (</span><span style="color: #000">$dictionary</span><span style="color: #D24; font-weight: bold">): </span><span style="color: #000">bool </span><span style="color: #D24; font-weight: bold">{
+<span class='line'>167:</span>                </span><span style="color: #000">$fileName </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">basename</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$filePath</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>168:</span>                </span><span style="color: #000">$next </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">substr</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$fileName</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">strlen</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$dictionary</span><span style="color: #D24; font-weight: bold">), </span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>169:</span>                return </span><span style="color: #000">strpos</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$fileName</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$dictionary</span><span style="color: #D24; font-weight: bold">) === </span><span style="color: #000">0 </span><span style="color: #D24; font-weight: bold">&amp;&amp; (</span><span style="color: #000">$next </span><span style="color: #D24; font-weight: bold">=== </span><span style="color: #080">'-' </span><span style="color: #D24; font-weight: bold">|| </span><span style="color: #000">$next </span><span style="color: #D24; font-weight: bold">=== </span><span style="color: #080">'.'</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>170:</span>            });
+<span class='line'>171:</span>            </span><span style="color: #000">$checkedFiles </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">array_filter</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$this</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">files</span><span style="color: #D24; font-weight: bold">, function (</span><span style="color: #000">string $filePath</span><span style="color: #D24; font-weight: bold">): </span><span style="color: #000">bool </span><span style="color: #D24; font-weight: bold">{
+<span class='line'>172:</span>                </span><span style="color: #000">$fileName </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">basename</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$filePath</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>173:</span>                return </span><span style="color: #000">in_array</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$fileName</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$this</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">checkedFiles</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>174:</span>            });
+<span class='line'>175:</span>            if (</span><span style="color: #000">$files </span><span style="color: #D24; font-weight: bold">=== []) {
+<span class='highlight'>176:                throw new \SpellChecker\NoDictionaryFileFoundException($dictionary);
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>177:</span>            }
+<span class='line'>178:</span>    
+<span class='line'>179:</span>            </span><span style="color: #000">$this</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">console</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">debugWrite</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">C</span><span style="color: #D24; font-weight: bold">::</span><span style="color: #000">gray</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">': ' </span><span style="color: #D24; font-weight: bold">. </span><span style="color: #000">implode</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">' '</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">array_map</span><span style="color: #D24; font-weight: bold">(function (</span><span style="color: #000">string $filePath</span><span style="color: #D24; font-weight: bold">): </span><span style="color: #000">string </span><span style="color: #D24; font-weight: bold">{
+<span class='line'>180:</span>                return </span><span style="color: #000">basename</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$filePath</span><span style="color: #D24; font-weight: bold">);
+</span></span></code></div></pre>			</div></div>
+
+
+									<div class="panel">
+				<h2><a data-tracy-ref="^+" class="tracy-toggle">Call stack</a></h2>
+
+				<div class="inner">
+				<ol>
+										<li><p>
+
+											<a href="editor://open/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CDictionary%5CDictionaryCollection.php&amp;line=81" title="...\SpellChecker\Dictionary\DictionaryCollection.php:81">...\SpellChecker\Dictionary\<b>DictionaryCollection.php</b>:81</a>					
+					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp; 
+					SpellChecker\Dictionary\DictionaryCollection-&gt;createDictionary(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+					</p>
+
+											<div class="tracy-collapsed file"><pre data-tracy-href="editor://open/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CDictionary%5CDictionaryCollection.php&amp;line=81" class='code'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>71:</span>                </span><span style="color: #000">$stripped </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">DiacriticsHelper</span><span style="color: #D24; font-weight: bold">::</span><span style="color: #000">removeDiacritics</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$word</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>72:</span>            }
+<span class='line'>73:</span>            foreach (</span><span style="color: #000">$dictionaries </span><span style="color: #D24; font-weight: bold">as </span><span style="color: #000">$dictionary</span><span style="color: #D24; font-weight: bold">) {
+<span class='line'>74:</span>                </span><span style="color: #000">$forceWithoutDiacritics </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">false</span><span style="color: #D24; font-weight: bold">;
+<span class='line'>75:</span>                if (</span><span style="color: #000">$dictionary</span><span style="color: #D24; font-weight: bold">[</span><span style="color: #000">0</span><span style="color: #D24; font-weight: bold">] === </span><span style="color: #080">'*'</span><span style="color: #D24; font-weight: bold">) {
+<span class='line'>76:</span>                    </span><span style="color: #000">$forceWithoutDiacritics </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">true</span><span style="color: #D24; font-weight: bold">;
+<span class='line'>77:</span>                    </span><span style="color: #000">$dictionary </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">substr</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$dictionary</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>78:</span>                }
+<span class='line'>79:</span>    
+<span class='line'>80:</span>                if (!isset(</span><span style="color: #000">$this</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">dictionaries</span><span style="color: #D24; font-weight: bold">[</span><span style="color: #000">$dictionary</span><span style="color: #D24; font-weight: bold">])) {
+<span class='highlight'>81:                    $this-&gt;createDictionary($dictionary);
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>82:</span>                }
+<span class='line'>83:</span>    
+<span class='line'>84:</span>                if (</span><span style="color: #000">$forceWithoutDiacritics</span><span style="color: #D24; font-weight: bold">) {
+<span class='line'>85:</span>                    if (</span><span style="color: #000">$this</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">dictionaries</span><span style="color: #D24; font-weight: bold">[</span><span style="color: #000">$dictionary</span><span style="color: #D24; font-weight: bold">]-&gt;</span><span style="color: #000">containsWithoutDiacritics</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$word</span><span style="color: #D24; font-weight: bold">)) {
+</span></span></code></div></pre></div>
+					
+					
+											<div class="tracy-collapsed outer args">
+						<table>
+						<tr><th>$dictionary</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"php"</span> (3)
+</pre>
+</td></tr>
+						</table>
+						</div>
+										</li>
+										<li><p>
+
+											<a href="editor://open/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CHeuristic%5CDictionarySearch.php&amp;line=25" title="...\src\SpellChecker\Heuristic\DictionarySearch.php:25">...\src\SpellChecker\Heuristic\<b>DictionarySearch.php</b>:25</a>					
+					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp; 
+					SpellChecker\Dictionary\DictionaryCollection-&gt;contains(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+					</p>
+
+											<div class="tracy-collapsed file"><pre data-tracy-href="editor://open/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CHeuristic%5CDictionarySearch.php&amp;line=25" class='code'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>15:</span>        </span><span style="color: #998; font-style: italic">/** @var \SpellChecker\Dictionary\DictionaryCollection */
+<span class='line'>16:</span>        </span><span style="color: #D24; font-weight: bold">private </span><span style="color: #000">$dictionaries</span><span style="color: #D24; font-weight: bold">;
+<span class='line'>17:</span>    
+<span class='line'>18:</span>        public function </span><span style="color: #000">__construct</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">DictionaryCollection $dictionaries</span><span style="color: #D24; font-weight: bold">)
+<span class='line'>19:</span>        {
+<span class='line'>20:</span>            </span><span style="color: #000">$this</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">dictionaries </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">$dictionaries</span><span style="color: #D24; font-weight: bold">;
+<span class='line'>21:</span>        }
+<span class='line'>22:</span>    
+<span class='line'>23:</span>        public function </span><span style="color: #000">check</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">Word $word</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">string </span><span style="color: #D24; font-weight: bold">&amp;</span><span style="color: #000">$string</span><span style="color: #D24; font-weight: bold">, array </span><span style="color: #000">$dictionaries</span><span style="color: #D24; font-weight: bold">): </span><span style="color: #000">bool
+<span class='line'>24:</span>        </span><span style="color: #D24; font-weight: bold">{
+<span class='highlight'>25:            if ($this-&gt;dictionaries-&gt;contains($dictionaries, $word-&gt;word, $word-&gt;context, self::TRY_LOWERCASE)) {
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>26:</span>                return </span><span style="color: #000">true</span><span style="color: #D24; font-weight: bold">;
+<span class='line'>27:</span>            }
+<span class='line'>28:</span>            if (</span><span style="color: #000">$word</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">block </span><span style="color: #D24; font-weight: bold">!== </span><span style="color: #000">null </span><span style="color: #D24; font-weight: bold">&amp;&amp; </span><span style="color: #000">$this</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">dictionaries</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">contains</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$dictionaries</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$word</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">block</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$word</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">context</span><span style="color: #D24; font-weight: bold">)) {
+<span class='line'>29:</span>                return </span><span style="color: #000">true</span><span style="color: #D24; font-weight: bold">;
+</span></span></code></div></pre></div>
+					
+					
+											<div class="tracy-collapsed outer args">
+						<table>
+						<tr><th>$dictionaries</th><td><pre class="tracy-dump" data-tracy-dump='[[0,"en"],[1,"php"],[2,"custom"]]'></pre>
+</td></tr>
+<tr><th>$word</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"https"</span> (5)
+</pre>
+</td></tr>
+<tr><th>$context</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"doc"</span> (3)
+</pre>
+</td></tr>
+<tr><th>$flags</th><td><pre class="tracy-dump"><span class="tracy-dump-number">1</span>
+</pre>
+</td></tr>
+						</table>
+						</div>
+										</li>
+										<li><p>
+
+											<a href="editor://open/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CSpellChecker.php&amp;line=218" title="...\spell-checker\src\SpellChecker\SpellChecker.php:218">...\spell-checker\src\SpellChecker\<b>SpellChecker.php</b>:218</a>					
+					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp; 
+					SpellChecker\Heuristic\DictionarySearch-&gt;check(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+					</p>
+
+											<div class="tracy-collapsed file"><pre data-tracy-href="editor://open/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CSpellChecker.php&amp;line=218" class='code'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>208:</span>                                </span><span style="color: #000">$word</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">row </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #080">'configuration'</span><span style="color: #D24; font-weight: bold">;
+<span class='line'>209:</span>                                </span><span style="color: #000">$errors</span><span style="color: #D24; font-weight: bold">[] = </span><span style="color: #000">$word</span><span style="color: #D24; font-weight: bold">;
+<span class='line'>210:</span>                            }
+<span class='line'>211:</span>                        }
+<span class='line'>212:</span>                    }
+<span class='line'>213:</span>                }
+<span class='line'>214:</span>            } else {
+<span class='line'>215:</span>                </span><span style="color: #998; font-style: italic">// the same as previous, only without checking ignores
+<span class='line'>216:</span>                </span><span style="color: #D24; font-weight: bold">foreach (</span><span style="color: #000">$parser</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">parse</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$string</span><span style="color: #D24; font-weight: bold">) as </span><span style="color: #000">$n </span><span style="color: #D24; font-weight: bold">=&gt; </span><span style="color: #000">$word</span><span style="color: #D24; font-weight: bold">) {
+<span class='line'>217:</span>                    foreach (</span><span style="color: #000">$this</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">heuristics </span><span style="color: #D24; font-weight: bold">as </span><span style="color: #000">$heuristic</span><span style="color: #D24; font-weight: bold">) {
+<span class='highlight'>218:                        if ($heuristic-&gt;check($word, $string, $dictionaries)) {
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>219:</span>                            continue </span><span style="color: #000">2</span><span style="color: #D24; font-weight: bold">;
+<span class='line'>220:</span>                        }
+<span class='line'>221:</span>                    }
+<span class='line'>222:</span>    
+</span></span></code></div></pre></div>
+					
+					
+											<div class="tracy-collapsed outer args">
+						<table>
+						<tr><th>$word</th><td><pre class="tracy-dump" data-tracy-dump='{"object":"01"}'></pre>
+</td></tr>
+<tr><th>$string</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"&lt;?php
+/**
+ * This file is part of the Dogma library (https://github.com/paranoiq/dogma)
+ *
+ * Copyright (c) 2012 Vlasta Neubauer (@paranoiq)
+ *
+ * For ... "</span> (2601)
+</pre>
+</td></tr>
+<tr><th>$dictionaries</th><td><pre class="tracy-dump" data-tracy-dump='[[0,"en"],[1,"php"],[2,"custom"]]'></pre>
+</td></tr>
+						</table>
+						</div>
+										</li>
+										<li><p>
+
+											<a href="editor://open/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CSpellChecker.php&amp;line=147" title="...\spell-checker\src\SpellChecker\SpellChecker.php:147">...\spell-checker\src\SpellChecker\<b>SpellChecker.php</b>:147</a>					
+					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp; 
+					SpellChecker\SpellChecker-&gt;checkString(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+					</p>
+
+											<div class="tracy-collapsed file"><pre data-tracy-href="editor://open/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CSpellChecker.php&amp;line=147" class='code'><div><code><span style="color: #06B"><span style="color: #998; font-style: italic"><span class='line'>137:</span>                </span><span style="color: #D24; font-weight: bold">if (!</span><span style="color: #000">preg_match</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">'/\\pL/u'</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">end</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$commentIgnores</span><span style="color: #D24; font-weight: bold">))) {
+<span class='line'>138:</span>                    </span><span style="color: #000">array_pop</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$commentIgnores</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>139:</span>                }
+<span class='line'>140:</span>                </span><span style="color: #000">$ignores </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">array_merge</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$ignores</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$commentIgnores</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>141:</span>            }
+<span class='line'>142:</span>    
+<span class='line'>143:</span>            </span><span style="color: #000">$fileNameParts </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">explode</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">'.'</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">basename</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$fileName</span><span style="color: #D24; font-weight: bold">));
+<span class='line'>144:</span>            </span><span style="color: #000">$extension </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">end</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$fileNameParts</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>145:</span>            </span><span style="color: #000">$parser </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">$this</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">wordsParsers</span><span style="color: #D24; font-weight: bold">[</span><span style="color: #000">$extension</span><span style="color: #D24; font-weight: bold">] ?? </span><span style="color: #000">$this</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">wordsParsers</span><span style="color: #D24; font-weight: bold">[</span><span style="color: #000">self</span><span style="color: #D24; font-weight: bold">::</span><span style="color: #000">DEFAULT_PARSER</span><span style="color: #D24; font-weight: bold">];
+<span class='line'>146:</span>    
+<span class='highlight'>147:            return $this-&gt;checkString($string, $dictionaries, $ignores, $parser);
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>148:</span>        }
+<span class='line'>149:</span>    
+<span class='line'>150:</span>        </span><span style="color: #998; font-style: italic">/**
+<span class='line'>151:</span>         * @param string $string
+</span></span></code></div></pre></div>
+					
+					
+											<div class="tracy-collapsed outer args">
+						<table>
+						<tr><th>$string</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"&lt;?php
+/**
+ * This file is part of the Dogma library (https://github.com/paranoiq/dogma)
+ *
+ * Copyright (c) 2012 Vlasta Neubauer (@paranoiq)
+ *
+ * For ... "</span> (2601)
+</pre>
+</td></tr>
+<tr><th>$dictionaries</th><td><pre class="tracy-dump" data-tracy-dump='[[0,"en"],[1,"php"],[2,"custom"]]'></pre>
+</td></tr>
+<tr><th>$ignores</th><td><pre class="tracy-dump"><span class="tracy-dump-array">array</span> ()
+</pre>
+</td></tr>
+<tr><th>$parser</th><td><pre class="tracy-dump" data-tracy-dump='{"object":"02"}'></pre>
+</td></tr>
+						</table>
+						</div>
+										</li>
+										<li><p>
+
+											<a href="editor://open/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CSpellChecker.php&amp;line=93" title="...\spell-checker\src\SpellChecker\SpellChecker.php:93">...\spell-checker\src\SpellChecker\<b>SpellChecker.php</b>:93</a>					
+					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp; 
+					SpellChecker\SpellChecker-&gt;checkFile(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+					</p>
+
+											<div class="tracy-collapsed file"><pre data-tracy-href="editor://open/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CSpellChecker.php&amp;line=93" class='code'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>83:</span>            </span><span style="color: #000">$errors </span><span style="color: #D24; font-weight: bold">= [];
+<span class='line'>84:</span>            </span><span style="color: #000">$count </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">$prevCount </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">0</span><span style="color: #D24; font-weight: bold">;
+<span class='line'>85:</span>            foreach (</span><span style="color: #000">$files </span><span style="color: #D24; font-weight: bold">as </span><span style="color: #000">$path</span><span style="color: #D24; font-weight: bold">) {
+<span class='line'>86:</span>                if (!</span><span style="color: #000">is_readable</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$path</span><span style="color: #D24; font-weight: bold">)) {
+<span class='line'>87:</span>                    continue;
+<span class='line'>88:</span>                }
+<span class='line'>89:</span>                </span><span style="color: #000">$dictionaries </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">$this</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">resolver</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">getDictionariesForFileName</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$path</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>90:</span>                if (</span><span style="color: #000">$dictionaries </span><span style="color: #D24; font-weight: bold">=== []) {
+<span class='line'>91:</span>                    continue;
+<span class='line'>92:</span>                }
+<span class='highlight'>93:                $fileErrors = $this-&gt;checkFile($path, $dictionaries, $fileCallback);
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>94:</span>                if (</span><span style="color: #000">$fileErrors </span><span style="color: #D24; font-weight: bold">!== []) {
+<span class='line'>95:</span>                    </span><span style="color: #000">$errors</span><span style="color: #D24; font-weight: bold">[</span><span style="color: #000">$path</span><span style="color: #D24; font-weight: bold">] = </span><span style="color: #000">$fileErrors</span><span style="color: #D24; font-weight: bold">;
+<span class='line'>96:</span>                    </span><span style="color: #000">$count </span><span style="color: #D24; font-weight: bold">+= </span><span style="color: #000">count</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$fileErrors</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>97:</span>                }
+</span></span></code></div></pre></div>
+					
+					
+											<div class="tracy-collapsed outer args">
+						<table>
+						<tr><th>$fileName</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:/http/paranoiq/dogma/src/common/consts/BitSize.php"</span> (52)
+</pre>
+</td></tr>
+<tr><th>$dictionaries</th><td><pre class="tracy-dump" data-tracy-dump='[[0,"en"],[1,"php"],[2,"custom"]]'></pre>
+</td></tr>
+<tr><th>$fileCallback</th><td><pre class="tracy-dump" data-tracy-dump='{"object":"05"}'></pre>
+</td></tr>
+						</table>
+						</div>
+										</li>
+										<li><p>
+
+											<a href="editor://open/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CSpellCheckerApplication.php&amp;line=99" title="...\src\SpellChecker\SpellCheckerApplication.php:99">...\src\SpellChecker\<b>SpellCheckerApplication.php</b>:99</a>					
+					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp; 
+					SpellChecker\SpellChecker-&gt;checkFiles(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+					</p>
+
+											<div class="tracy-collapsed file"><pre data-tracy-href="editor://open/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CSpellCheckerApplication.php&amp;line=99" class='code'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'> 89:</span>                    </span><span style="color: #000">$dictionaries</span><span style="color: #D24; font-weight: bold">,
+<span class='line'> 90:</span>                    (int) </span><span style="color: #000">$config</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">maxErrors</span><span style="color: #D24; font-weight: bold">,
+<span class='line'> 91:</span>                    </span><span style="color: #000">$config</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">localIgnores </span><span style="color: #D24; font-weight: bold">?: [],
+<span class='line'> 92:</span>                    (bool) </span><span style="color: #000">$config</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">checkLocalIgnores
+<span class='line'> 93:</span>                </span><span style="color: #D24; font-weight: bold">);
+<span class='line'> 94:</span>    
+<span class='line'> 95:</span>                </span><span style="color: #000">$startTime </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">microtime</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">true</span><span style="color: #D24; font-weight: bold">);
+<span class='line'> 96:</span>                </span><span style="color: #000">$result </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">$spellChecker</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">checkFiles</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$files</span><span style="color: #D24; font-weight: bold">, function (</span><span style="color: #000">string $fileName</span><span style="color: #D24; font-weight: bold">) {
+<span class='line'> 97:</span>                    </span><span style="color: #000">$this</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">console</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">write</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">'.'</span><span style="color: #D24; font-weight: bold">);
+<span class='line'> 98:</span>                    return </span><span style="color: #000">true</span><span style="color: #D24; font-weight: bold">;
+<span class='highlight'> 99:                });
+</span><span class='line'>100:</span>                </span><span style="color: #000">$totalTime </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">microtime</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">true</span><span style="color: #D24; font-weight: bold">) - </span><span style="color: #000">$startTime</span><span style="color: #D24; font-weight: bold">;
+<span class='line'>101:</span>                </span><span style="color: #000">$peakMemoryUsage </span><span style="color: #D24; font-weight: bold">= </span><span style="color: #000">memory_get_peak_usage</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">true</span><span style="color: #D24; font-weight: bold">) / (</span><span style="color: #000">1024 </span><span style="color: #D24; font-weight: bold">* </span><span style="color: #000">1024</span><span style="color: #D24; font-weight: bold">);
+<span class='line'>102:</span>                </span><span style="color: #000">$this</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">console</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">ln</span><span style="color: #D24; font-weight: bold">()-&gt;</span><span style="color: #000">writeLn</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">sprintf</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">' (%s s, %s MB)'</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">number_format</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$totalTime</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">3</span><span style="color: #D24; font-weight: bold">), </span><span style="color: #000">$peakMemoryUsage</span><span style="color: #D24; font-weight: bold">));
+<span class='line'>103:</span>    
+</span></span></code></div></pre></div>
+					
+					
+											<div class="tracy-collapsed outer args">
+						<table>
+						<tr><th>$files</th><td><pre class="tracy-dump" data-tracy-dump='[[0,"C:\/http\/paranoiq\/dogma\/build\/codesniffer\/ruleset.xml"],[1,"C:\/http\/paranoiq\/dogma\/build\/phpstan\/phpstan.neon"],[2,"C:\/http\/paranoiq\/dogma\/build\/spell-checker\/dictionaries\/custom.dic"],[3,"C:\/http\/paranoiq\/dogma\/build\/spell-checker\/spell-checker.neon"],[4,"C:\/http\/paranoiq\/dogma\/src\/common\/consts\/BitSize.php"],[5,"C:\/http\/paranoiq\/dogma\/src\/common\/consts\/CaseComparison.php"],[6,"C:\/http\/paranoiq\/dogma\/src\/common\/consts\/ComparisonResult.php"],[7,"C:\/http\/paranoiq\/dogma\/src\/common\/consts\/Length.php"],[8,"C:\/http\/paranoiq\/dogma\/src\/common\/consts\/Order.php"],[9,"C:\/http\/paranoiq\/dogma\/src\/common\/consts\/PowersOfTwo.php"],[10,"C:\/http\/paranoiq\/dogma\/src\/common\/consts\/Round.php"],[11,"C:\/http\/paranoiq\/dogma\/src\/common\/consts\/Sign.php"],[12,"C:\/http\/paranoiq\/dogma\/src\/common\/consts\/Sorting.php"],[13,"C:\/http\/paranoiq\/dogma\/src\/common\/DogmaLoader.php"],[14,"C:\/http\/paranoiq\/dogma\/src\/common\/exceptions\/Exception.php"],[15,"C:\/http\/paranoiq\/dogma\/src\/common\/exceptions\/ExceptionTypeFormater.php"],[16,"C:\/http\/paranoiq\/dogma\/src\/common\/exceptions\/ExceptionValueFormater.php"],[17,"C:\/http\/paranoiq\/dogma\/src\/common\/exceptions\/LogicException.php"],[18,"C:\/http\/paranoiq\/dogma\/src\/common\/exceptions\/NotImplementedException.php"],[19,"C:\/http\/paranoiq\/dogma\/src\/common\/exceptions\/ShouldNotHappenException.php"],[20,"C:\/http\/paranoiq\/dogma\/src\/common\/iterators\/ArrayIterator.php"],[21,"C:\/http\/paranoiq\/dogma\/src\/common\/iterators\/CallbackIterator.php"],[22,"C:\/http\/paranoiq\/dogma\/src\/common\/iterators\/ChunkIterator.php"],[23,"C:\/http\/paranoiq\/dogma\/src\/common\/iterators\/CombineIterator.php"],[24,"C:\/http\/paranoiq\/dogma\/src\/common\/iterators\/FetchKeysIterator.php"],[25,"C:\/http\/paranoiq\/dogma\/src\/common\/iterators\/IteratorHelper.php"],[26,"C:\/http\/paranoiq\/dogma\/src\/common\/iterators\/ReverseArrayIterator.php"],[27,"C:\/http\/paranoiq\/dogma\/src\/common\/lists\/Arr.php"],[28,"C:\/http\/paranoiq\/dogma\/src\/common\/lists\/Collection.php"],[29,"C:\/http\/paranoiq\/dogma\/src\/common\/lists\/ImmutableArray.php"],[30,"C:\/http\/paranoiq\/dogma\/src\/common\/lists\/ImmutableArrayAccessMixin.php"],[31,"C:\/http\/paranoiq\/dogma\/src\/common\/lists\/Tuple.php"],[32,"C:\/http\/paranoiq\/dogma\/src\/common\/mixins\/exceptions\/NonCloneableObjectException.php"],[33,"C:\/http\/paranoiq\/dogma\/src\/common\/mixins\/exceptions\/NonIterableObjectException.php"],[34,"C:\/http\/paranoiq\/dogma\/src\/common\/mixins\/exceptions\/NonSerializableObjectException.php"],[35,"C:\/http\/paranoiq\/dogma\/src\/common\/mixins\/exceptions\/StaticClassException.php"],[36,"C:\/http\/paranoiq\/dogma\/src\/common\/mixins\/exceptions\/UndefinedMethodException.php"],[37,"C:\/http\/paranoiq\/dogma\/src\/common\/mixins\/exceptions\/UndefinedPropertyException.php"],[38,"C:\/http\/paranoiq\/dogma\/src\/common\/mixins\/NonCloneableMixin.php"],[39,"C:\/http\/paranoiq\/dogma\/src\/common\/mixins\/NonIterable.php"],[40,"C:\/http\/paranoiq\/dogma\/src\/common\/mixins\/NonIterableMixin.php"],[41,"C:\/http\/paranoiq\/dogma\/src\/common\/mixins\/NonSerializableMixin.php"],[42,"C:\/http\/paranoiq\/dogma\/src\/common\/mixins\/StaticClassMixin.php"],[43,"C:\/http\/paranoiq\/dogma\/src\/common\/mixins\/StrictBehaviorMixin.php"],[44,"C:\/http\/paranoiq\/dogma\/src\/common\/types\/Check.php"],[45,"C:\/http\/paranoiq\/dogma\/src\/common\/types\/exceptions\/InvalidArgumentException.php"],[46,"C:\/http\/paranoiq\/dogma\/src\/common\/types\/exceptions\/InvalidInterfaceException.php"],[47,"C:\/http\/paranoiq\/dogma\/src\/common\/types\/exceptions\/InvalidRegularExpressionException.php"],[48,"C:\/http\/paranoiq\/dogma\/src\/common\/types\/exceptions\/InvalidSizeException.php"],[49,"C:\/http\/paranoiq\/dogma\/src\/common\/types\/exceptions\/InvalidTypeDefinitionException.php"],[50,"C:\/http\/paranoiq\/dogma\/src\/common\/types\/exceptions\/InvalidTypeException.php"],[51,"C:\/http\/paranoiq\/dogma\/src\/common\/types\/exceptions\/InvalidValueException.php"],[52,"C:\/http\/paranoiq\/dogma\/src\/common\/types\/exceptions\/ValueOutOfBoundsException.php"],[53,"C:\/http\/paranoiq\/dogma\/src\/common\/types\/exceptions\/ValueOutOfRangeException.php"],[54,"C:\/http\/paranoiq\/dogma\/src\/common\/types\/Regexp.php"],[55,"C:\/http\/paranoiq\/dogma\/src\/common\/types\/ResourceType.php"],[56,"C:\/http\/paranoiq\/dogma\/src\/common\/types\/Str.php"],[57,"C:\/http\/paranoiq\/dogma\/src\/common\/types\/Type.php"],[58,"C:\/http\/paranoiq\/dogma\/src\/Country\/Country.php"],[59,"C:\/http\/paranoiq\/dogma\/src\/Database\/Charset\/MysqlCharset.php"],[60,"C:\/http\/paranoiq\/dogma\/src\/Database\/Charset\/MysqlCollation.php"],[61,"C:\/http\/paranoiq\/dogma\/src\/Database\/Charset\/MysqlCollationType.php"],[62,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/AbortedException.php"],[63,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/AccessDeniedException.php"],[64,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/BinlogException.php"],[65,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/CollationException.php"],[66,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/ConcurrencyException.php"],[67,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/ConfigException.php"],[68,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/ConnectionErrorException.php"],[69,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/CorruptedException.php"],[70,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/DatabaseException.php"],[71,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/DeadlockException.php"],[72,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/DebugException.php"],[73,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/DuplicateEntryException.php"],[74,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/EventException.php"],[75,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/ExtensionException.php"],[76,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/FailureException.php"],[77,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/FilesException.php"],[78,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/InsufficientResourcesException.php"],[79,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/IntegrityConstraintException.php"],[80,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/InvalidValueException.php"],[81,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/LimitsExceededException.php"],[82,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/LockException.php"],[83,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/LogicErrorException.php"],[84,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/NameConflictException.php"],[85,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/NotFoundException.php"],[86,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/NotSupportedException.php"],[87,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/PartitioningException.php"],[88,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/QueryException.php"],[89,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/RemoteStorageException.php"],[90,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/ReplicationException.php"],[91,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/ResourcesException.php"],[92,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/RuntimeException.php"],[93,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/ServiceUnavailableException.php"],[94,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/StorageException.php"],[95,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/SyntaxErrorException.php"],[96,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/XaException.php"],[97,"C:\/http\/paranoiq\/dogma\/src\/Database\/exceptions\/_exceptions_hierarchy.md"],[98,"C:\/http\/paranoiq\/dogma\/src\/Database\/SqlGenerator\/CreateTableGenerator.php"],[99,"C:\/http\/paranoiq\/dogma\/src\/Dom\/Document.php"],[100,"C:\/http\/paranoiq\/dogma\/src\/Dom\/Dumper.php"],[101,"C:\/http\/paranoiq\/dogma\/src\/Dom\/Element.php"],[102,"C:\/http\/paranoiq\/dogma\/src\/Dom\/exceptions\/DomException.php"],[103,"C:\/http\/paranoiq\/dogma\/src\/Dom\/exceptions\/QueryEngineException.php"],[104,"C:\/http\/paranoiq\/dogma\/src\/Dom\/Html\/HtmlTableIterator.php"],[105,"C:\/http\/paranoiq\/dogma\/src\/Dom\/NodeList.php"],[106,"C:\/http\/paranoiq\/dogma\/src\/Dom\/QueryEngine.php"],[107,"C:\/http\/paranoiq\/dogma\/src\/Email\/EmailAddress.php"],[108,"C:\/http\/paranoiq\/dogma\/src\/Email\/EmailAddressAndName.php"],[109,"C:\/http\/paranoiq\/dogma\/src\/Email\/EmailHeader.php"],[110,"C:\/http\/paranoiq\/dogma\/src\/Email\/Imap\/Connection.php"],[111,"C:\/http\/paranoiq\/dogma\/src\/Email\/Imap\/exceptions\/ImapException.php"],[112,"C:\/http\/paranoiq\/dogma\/src\/Email\/Imap\/Folder.php"],[113,"C:\/http\/paranoiq\/dogma\/src\/Email\/Imap\/MessageInfo.php"],[114,"C:\/http\/paranoiq\/dogma\/src\/Email\/Parse\/Attachment.php"],[115,"C:\/http\/paranoiq\/dogma\/src\/Email\/Parse\/exceptions\/ParsingException.php"],[116,"C:\/http\/paranoiq\/dogma\/src\/Email\/Parse\/Message.php"],[117,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Entity.php"],[118,"C:\/http\/paranoiq\/dogma\/src\/Entity\/exceptions\/EntityNotFoundException.php"],[119,"C:\/http\/paranoiq\/dogma\/src\/Entity\/exceptions\/Exception.php"],[120,"C:\/http\/paranoiq\/dogma\/src\/Entity\/exceptions\/IdentityNotFoundInIdentityMapException.php"],[121,"C:\/http\/paranoiq\/dogma\/src\/Entity\/exceptions\/RepositoryNotFoundException.php"],[122,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Identity.php"],[123,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Map\/CollectionMap.php"],[124,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Map\/EntityMap.php"],[125,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Map\/IdentityMap.php"],[126,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Map\/Versioned\/VersionedCollectionMap.php"],[127,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Map\/Versioned\/VersionedEntityMap.php"],[128,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Map\/Versioned\/VersionedIdentityMap.php"],[129,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Mapping\/CollectionHandler.php"],[130,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Mapping\/EntityHandler.php"],[131,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Mapping\/IdentityHandler.php"],[132,"C:\/http\/paranoiq\/dogma\/src\/Entity\/PartialCollection.php"],[133,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Proxy\/EntityProxy.php"],[134,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Proxy\/EntityProxyBuilder.php"],[135,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Proxy\/EntityProxyFactory.php"],[136,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Proxy\/EntityProxyMixin.php"],[137,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Proxy\/exceptions\/Exception.php"],[138,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Proxy\/exceptions\/UnsupportedClassTypeException.php"],[139,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Proxy\/exceptions\/UnsupportedMethodTypeException.php"],[140,"C:\/http\/paranoiq\/dogma\/src\/Entity\/Repository.php"],[141,"C:\/http\/paranoiq\/dogma\/src\/Entity\/RepositoryContainer.php"],[142,"C:\/http\/paranoiq\/dogma\/src\/Enum\/Enum.php"],[143,"C:\/http\/paranoiq\/dogma\/src\/Enum\/EnumMixin.php"],[144,"C:\/http\/paranoiq\/dogma\/src\/Enum\/IntEnum.php"],[145,"C:\/http\/paranoiq\/dogma\/src\/Enum\/IntSet.php"],[146,"C:\/http\/paranoiq\/dogma\/src\/Enum\/PartialIntEnum.php"],[147,"C:\/http\/paranoiq\/dogma\/src\/Enum\/PartialStringEnum.php"],[148,"C:\/http\/paranoiq\/dogma\/src\/Enum\/SetMixin.php"],[149,"C:\/http\/paranoiq\/dogma\/src\/Enum\/StringEnum.php"],[150,"C:\/http\/paranoiq\/dogma\/src\/Enum\/StringSet.php"],[151,"C:\/http\/paranoiq\/dogma\/src\/Geolocation\/Position.php"],[152,"C:\/http\/paranoiq\/dogma\/src\/Geolocation\/PositionFormatter.php"],[153,"C:\/http\/paranoiq\/dogma\/src\/Http\/Channel\/Channel.php"],[154,"C:\/http\/paranoiq\/dogma\/src\/Http\/Channel\/ChannelManager.php"],[155,"C:\/http\/paranoiq\/dogma\/src\/Http\/Channel\/exceptions\/ChannelException.php"],[156,"C:\/http\/paranoiq\/dogma\/src\/Http\/Channel\/MultiChannel.php"],[157,"C:\/http\/paranoiq\/dogma\/src\/Http\/Curl\/CurlHelper.php"],[158,"C:\/http\/paranoiq\/dogma\/src\/Http\/DownloadRequest.php"],[159,"C:\/http\/paranoiq\/dogma\/src\/Http\/exceptions\/HttpException.php"],[160,"C:\/http\/paranoiq\/dogma\/src\/Http\/exceptions\/RequestException.php"],[161,"C:\/http\/paranoiq\/dogma\/src\/Http\/exceptions\/ResponseException.php"],[162,"C:\/http\/paranoiq\/dogma\/src\/Http\/FileResponse.php"],[163,"C:\/http\/paranoiq\/dogma\/src\/Http\/HeaderParser.php"],[164,"C:\/http\/paranoiq\/dogma\/src\/Http\/HttpHeader.php"],[165,"C:\/http\/paranoiq\/dogma\/src\/Http\/HttpMethod.php"],[166,"C:\/http\/paranoiq\/dogma\/src\/Http\/Request.php"],[167,"C:\/http\/paranoiq\/dogma\/src\/Http\/Response.php"],[168,"C:\/http\/paranoiq\/dogma\/src\/Http\/ResponseStatus.php"],[169,"C:\/http\/paranoiq\/dogma\/src\/Identity\/exceptions\/IdGeneratorException.php"],[170,"C:\/http\/paranoiq\/dogma\/src\/Identity\/SingleServerNonThreadSafeUniqueIdGenerator.php"],[171,"C:\/http\/paranoiq\/dogma\/src\/Identity\/UidGenerator.php"],[172,"C:\/http\/paranoiq\/dogma\/src\/Identity\/Uuid.php"],[173,"C:\/http\/paranoiq\/dogma\/src\/Identity\/UuidGenerator.php"],[174,"C:\/http\/paranoiq\/dogma\/src\/Io\/ContentType\/BaseContentType.php"],[175,"C:\/http\/paranoiq\/dogma\/src\/Io\/ContentType\/ContentType.php"],[176,"C:\/http\/paranoiq\/dogma\/src\/Io\/ContentType\/ContentTypeDetector.php"],[177,"C:\/http\/paranoiq\/dogma\/src\/Io\/ContentType\/exceptions\/ContentTypeDetectionException.php"],[178,"C:\/http\/paranoiq\/dogma\/src\/Io\/exceptions\/FileException.php"],[179,"C:\/http\/paranoiq\/dogma\/src\/Io\/exceptions\/IoException.php"],[180,"C:\/http\/paranoiq\/dogma\/src\/Io\/exceptions\/StreamException.php"],[181,"C:\/http\/paranoiq\/dogma\/src\/Io\/File.php"],[182,"C:\/http\/paranoiq\/dogma\/src\/Io\/FileMetaData.php"],[183,"C:\/http\/paranoiq\/dogma\/src\/Io\/FileMode.php"],[184,"C:\/http\/paranoiq\/dogma\/src\/Io\/FilePath.php"],[185,"C:\/http\/paranoiq\/dogma\/src\/Io\/Filesystem\/DirectoryIterator.php"],[186,"C:\/http\/paranoiq\/dogma\/src\/Io\/Filesystem\/exceptions\/DirectoryException.php"],[187,"C:\/http\/paranoiq\/dogma\/src\/Io\/Filesystem\/FileInfo.php"],[188,"C:\/http\/paranoiq\/dogma\/src\/Io\/Filesystem\/RecursiveDirectoryIterator.php"],[189,"C:\/http\/paranoiq\/dogma\/src\/Io\/LineEndings.php"],[190,"C:\/http\/paranoiq\/dogma\/src\/Io\/LockType.php"],[191,"C:\/http\/paranoiq\/dogma\/src\/Io\/Path.php"],[192,"C:\/http\/paranoiq\/dogma\/src\/Io\/Position.php"],[193,"C:\/http\/paranoiq\/dogma\/src\/Io\/TextFile.php"],[194,"C:\/http\/paranoiq\/dogma\/src\/Language\/Bumblefuck.php"],[195,"C:\/http\/paranoiq\/dogma\/src\/Language\/Collator.php"],[196,"C:\/http\/paranoiq\/dogma\/src\/Language\/Encoding.php"],[197,"C:\/http\/paranoiq\/dogma\/src\/Language\/exceptions\/CollatorException.php"],[198,"C:\/http\/paranoiq\/dogma\/src\/Language\/exceptions\/Exception.php"],[199,"C:\/http\/paranoiq\/dogma\/src\/Language\/exceptions\/TransliteratorException.php"],[200,"C:\/http\/paranoiq\/dogma\/src\/Language\/Inflector.php"],[201,"C:\/http\/paranoiq\/dogma\/src\/Language\/Language.php"],[202,"C:\/http\/paranoiq\/dogma\/src\/Language\/Locale\/Locale.php"],[203,"C:\/http\/paranoiq\/dogma\/src\/Language\/Locale\/LocaleCalendar.php"],[204,"C:\/http\/paranoiq\/dogma\/src\/Language\/Locale\/LocaleColAlternate.php"],[205,"C:\/http\/paranoiq\/dogma\/src\/Language\/Locale\/LocaleColBackwards.php"],[206,"C:\/http\/paranoiq\/dogma\/src\/Language\/Locale\/LocaleColCaseFirst.php"],[207,"C:\/http\/paranoiq\/dogma\/src\/Language\/Locale\/LocaleColCaseLevel.php"],[208,"C:\/http\/paranoiq\/dogma\/src\/Language\/Locale\/LocaleColHiraganaQuaternary.php"],[209,"C:\/http\/paranoiq\/dogma\/src\/Language\/Locale\/LocaleCollation.php"],[210,"C:\/http\/paranoiq\/dogma\/src\/Language\/Locale\/LocaleCollationOption.php"],[211,"C:\/http\/paranoiq\/dogma\/src\/Language\/Locale\/LocaleColNormalization.php"],[212,"C:\/http\/paranoiq\/dogma\/src\/Language\/Locale\/LocaleColNumeric.php"],[213,"C:\/http\/paranoiq\/dogma\/src\/Language\/Locale\/LocaleColStrength.php"],[214,"C:\/http\/paranoiq\/dogma\/src\/Language\/Locale\/LocaleKeyword.php"],[215,"C:\/http\/paranoiq\/dogma\/src\/Language\/Locale\/LocaleNumbers.php"],[216,"C:\/http\/paranoiq\/dogma\/src\/Language\/Locale\/LocaleVariant.php"],[217,"C:\/http\/paranoiq\/dogma\/src\/Language\/Script.php"],[218,"C:\/http\/paranoiq\/dogma\/src\/Language\/Transliterator.php"],[219,"C:\/http\/paranoiq\/dogma\/src\/Language\/UnicodeCharacterCategory.php"],[220,"C:\/http\/paranoiq\/dogma\/src\/loader.php"],[221,"C:\/http\/paranoiq\/dogma\/src\/Localisation\/Translator.php"],[222,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/ConfigurationMappingBuilder.php"],[223,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/ConventionMappingBuilder.php"],[224,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/DynamicMappingContainer.php"],[225,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/exceptions\/Exception.php"],[226,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/exceptions\/MappingNotFoundException.php"],[227,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Mapper.php"],[228,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Mapping.php"],[229,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/MappingBuilder.php"],[230,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/MappingContainer.php"],[231,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/MappingIterator.php"],[232,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/MappingStep.php"],[233,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/MetaData\/TypeMetaData.php"],[234,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/MetaData\/TypeMetaDataContainer.php"],[235,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Naming\/ConfigShortUnderscoreFieldNamingStrategy.php"],[236,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Naming\/NamingStrategy.php"],[237,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Naming\/ShortFieldNamingStrategy.php"],[238,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Naming\/ShortUnderscoreFieldNamingStrategy.php"],[239,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/StaticMappingContainer.php"],[240,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Type\/ArrayHandler.php"],[241,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Type\/ConstructorHandler.php"],[242,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Type\/DefaultOneWayHandler.php"],[243,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Type\/EnumHandler.php"],[244,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Type\/exceptions\/Exception.php"],[245,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Type\/exceptions\/NoHandlerForTypeException.php"],[246,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Type\/exceptions\/OneWayHandlerException.php"],[247,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Type\/Exportable.php"],[248,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Type\/ExportableHandler.php"],[249,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Type\/ExportableHandlerMixin.php"],[250,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Type\/Handler.php"],[251,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Type\/ScalarsHandler.php"],[252,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Type\/TupleHandler.php"],[253,"C:\/http\/paranoiq\/dogma\/src\/Mapping\/Type\/TypeHandler.php"],[254,"C:\/http\/paranoiq\/dogma\/src\/Math\/Angle\/AngleFormatter.php"],[255,"C:\/http\/paranoiq\/dogma\/src\/Math\/Calc.php"],[256,"C:\/http\/paranoiq\/dogma\/src\/Math\/Combinatorics.php"],[257,"C:\/http\/paranoiq\/dogma\/src\/Math\/Decimal\/Decimal.php"],[258,"C:\/http\/paranoiq\/dogma\/src\/Math\/Decimal\/exceptions\/DecimalArithmeticException.php"],[259,"C:\/http\/paranoiq\/dogma\/src\/Math\/Decimal\/Fraction.php"],[260,"C:\/http\/paranoiq\/dogma\/src\/Math\/exceptions\/MathException.php"],[261,"C:\/http\/paranoiq\/dogma\/src\/Math\/FloatCalc.php"],[262,"C:\/http\/paranoiq\/dogma\/src\/Math\/Fraction.php"],[263,"C:\/http\/paranoiq\/dogma\/src\/Math\/Graph\/FloydWarshallPathFinder.php"],[264,"C:\/http\/paranoiq\/dogma\/src\/Math\/Vector\/Vector3.php"],[265,"C:\/http\/paranoiq\/dogma\/src\/Money\/BankAccount\/Iban.php"],[266,"C:\/http\/paranoiq\/dogma\/src\/Money\/CreditCard\/CreditCardIssuer.php"],[267,"C:\/http\/paranoiq\/dogma\/src\/Money\/CreditCard\/CreditCardNumber.php"],[268,"C:\/http\/paranoiq\/dogma\/src\/Money\/CreditCard\/exceptions\/InvalidCreditCardNumberException.php"],[269,"C:\/http\/paranoiq\/dogma\/src\/Money\/Currency.php"],[270,"C:\/http\/paranoiq\/dogma\/src\/Money\/Money.php"],[271,"C:\/http\/paranoiq\/dogma\/src\/People\/Address\/GeocodedAddress.php"],[272,"C:\/http\/paranoiq\/dogma\/src\/People\/Address\/Region\/Region.php"],[273,"C:\/http\/paranoiq\/dogma\/src\/People\/Address\/Region\/RegionCz.php"],[274,"C:\/http\/paranoiq\/dogma\/src\/People\/Address\/State\/State.php"],[275,"C:\/http\/paranoiq\/dogma\/src\/People\/Address\/State\/StateCa.php"],[276,"C:\/http\/paranoiq\/dogma\/src\/People\/Address\/State\/StateUs.php"],[277,"C:\/http\/paranoiq\/dogma\/src\/People\/Address\/StreetAddress.php"],[278,"C:\/http\/paranoiq\/dogma\/src\/People\/Im\/ImAccount.php"],[279,"C:\/http\/paranoiq\/dogma\/src\/People\/Im\/ImAccountType.php"],[280,"C:\/http\/paranoiq\/dogma\/src\/People\/Person\/Gender.php"],[281,"C:\/http\/paranoiq\/dogma\/src\/People\/Person\/Generation.php"],[282,"C:\/http\/paranoiq\/dogma\/src\/People\/Person\/Person.php"],[283,"C:\/http\/paranoiq\/dogma\/src\/People\/Phone\/PhoneNumber.php"],[284,"C:\/http\/paranoiq\/dogma\/src\/People\/Phone\/PhonePrefix.php"],[285,"C:\/http\/paranoiq\/dogma\/src\/Reflection\/exceptions\/Exception.php"],[286,"C:\/http\/paranoiq\/dogma\/src\/Reflection\/exceptions\/InvalidMethodAnnotationException.php"],[287,"C:\/http\/paranoiq\/dogma\/src\/Reflection\/exceptions\/UnprocessableParameterException.php"],[288,"C:\/http\/paranoiq\/dogma\/src\/Reflection\/MethodTypeParser.php"],[289,"C:\/http\/paranoiq\/dogma\/src\/System\/Environment.php"],[290,"C:\/http\/paranoiq\/dogma\/src\/System\/Error\/Error.php"],[291,"C:\/http\/paranoiq\/dogma\/src\/System\/Error\/ErrorHelper.php"],[292,"C:\/http\/paranoiq\/dogma\/src\/System\/Error\/LinuxError.php"],[293,"C:\/http\/paranoiq\/dogma\/src\/System\/Error\/UnixError.php"],[294,"C:\/http\/paranoiq\/dogma\/src\/System\/Error\/WindowsError.php"],[295,"C:\/http\/paranoiq\/dogma\/src\/System\/Php.php"],[296,"C:\/http\/paranoiq\/dogma\/src\/System\/Sapi.php"],[297,"C:\/http\/paranoiq\/dogma\/src\/Tester\/Assert.php"],[298,"C:\/http\/paranoiq\/dogma\/src\/Time\/ConstantTimeProvider.php"],[299,"C:\/http\/paranoiq\/dogma\/src\/Time\/CurrentTimeProvider.php"],[300,"C:\/http\/paranoiq\/dogma\/src\/Time\/Date.php"],[301,"C:\/http\/paranoiq\/dogma\/src\/Time\/DateTime.php"],[302,"C:\/http\/paranoiq\/dogma\/src\/Time\/DateTimeFormatter.php"],[303,"C:\/http\/paranoiq\/dogma\/src\/Time\/DayOfWeek.php"],[304,"C:\/http\/paranoiq\/dogma\/src\/Time\/exceptions\/InvalidDateTimeException.php"],[305,"C:\/http\/paranoiq\/dogma\/src\/Time\/exceptions\/InvalidFormattingStringException.php"],[306,"C:\/http\/paranoiq\/dogma\/src\/Time\/Format\/BranchNode.php"],[307,"C:\/http\/paranoiq\/dogma\/src\/Time\/Format\/DateTimeValues.php"],[308,"C:\/http\/paranoiq\/dogma\/src\/Time\/Format\/FormatParser.php"],[309,"C:\/http\/paranoiq\/dogma\/src\/Time\/Format\/Formatting.php"],[310,"C:\/http\/paranoiq\/dogma\/src\/Time\/Format\/Node.php"],[311,"C:\/http\/paranoiq\/dogma\/src\/Time\/Format\/VariableNode.php"],[312,"C:\/http\/paranoiq\/dogma\/src\/Time\/Interval\/DateTimeInterval.php"],[313,"C:\/http\/paranoiq\/dogma\/src\/Time\/Interval\/DateTimeIntervalFormatter.php"],[314,"C:\/http\/paranoiq\/dogma\/src\/Time\/Mapping\/DateTimeHandler.php"],[315,"C:\/http\/paranoiq\/dogma\/src\/Time\/Month.php"],[316,"C:\/http\/paranoiq\/dogma\/src\/Time\/Range\/DateRange.php"],[317,"C:\/http\/paranoiq\/dogma\/src\/Time\/Range\/DateTimeRange.php"],[318,"C:\/http\/paranoiq\/dogma\/src\/Time\/Range\/DateTimeRangeFormatter.php"],[319,"C:\/http\/paranoiq\/dogma\/src\/Time\/Range\/TimeRange.php"],[320,"C:\/http\/paranoiq\/dogma\/src\/Time\/Time.php"],[321,"C:\/http\/paranoiq\/dogma\/src\/Time\/TimeProvider.php"],[322,"C:\/http\/paranoiq\/dogma\/src\/Transaction\/exceptions\/Exception.php"],[323,"C:\/http\/paranoiq\/dogma\/src\/Transaction\/exceptions\/FailedToCommitTransactionException.php"],[324,"C:\/http\/paranoiq\/dogma\/src\/Transaction\/exceptions\/FailedToRollbackTransactionException.php"],[325,"C:\/http\/paranoiq\/dogma\/src\/Transaction\/exceptions\/FailedToStartTransactionException.php"],[326,"C:\/http\/paranoiq\/dogma\/src\/Transaction\/exceptions\/TransactionDeadlockException.php"],[327,"C:\/http\/paranoiq\/dogma\/src\/Transaction\/exceptions\/TransactionRollbackException.php"],[328,"C:\/http\/paranoiq\/dogma\/src\/Transaction\/exceptions\/TransactionTimeoutException.php"],[329,"C:\/http\/paranoiq\/dogma\/src\/Transaction\/exceptions\/VersioningNotInitializedException.php"],[330,"C:\/http\/paranoiq\/dogma\/src\/Transaction\/IsolationLevel.php"],[331,"C:\/http\/paranoiq\/dogma\/src\/Transaction\/Transaction.php"],[332,"C:\/http\/paranoiq\/dogma\/src\/Transaction\/TransactionAware.php"],[333,"C:\/http\/paranoiq\/dogma\/src\/Transaction\/TransactionManager.php"],[334,"C:\/http\/paranoiq\/dogma\/src\/Transaction\/VersionAware.php"],[335,"C:\/http\/paranoiq\/dogma\/src\/Web\/Domain.php"],[336,"C:\/http\/paranoiq\/dogma\/src\/Web\/exceptions\/InvalidUrlException.php"],[337,"C:\/http\/paranoiq\/dogma\/src\/Web\/Host.php"],[338,"C:\/http\/paranoiq\/dogma\/src\/Web\/Tld.php"],[339,"C:\/http\/paranoiq\/dogma\/src\/Web\/UriScheme.php"],[340,"C:\/http\/paranoiq\/dogma\/src\/Web\/Url.php"],[341,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/bootstrap.php"],[342,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/DogmaLoader.phpt"],[343,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/iterators\/ArrayIterator.phpt"],[344,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/iterators\/CallbackIterator.phpt"],[345,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/iterators\/ChunkIterator.phpt"],[346,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/iterators\/CombineIterator.phpt"],[347,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/iterators\/FetchKeysIterator.phpt"],[348,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/iterators\/output\/CallbackIterator.actual"],[349,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/iterators\/output\/CallbackIterator.expected"],[350,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/iterators\/ReverseArrayIterator.phpt"],[351,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/Arr\/Arr.basic.phpt"],[352,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/Arr\/Arr.compare.phpt"],[353,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/Arr\/Arr.diff_intersect.phpt"],[354,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/Arr\/Arr.filter.phpt"],[355,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/Arr\/Arr.map.phpt"],[356,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/Arr\/Arr.merge_replace.phpt"],[357,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/Arr\/Arr.querries.phpt"],[358,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/Arr\/Arr.slice.phpt"],[359,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/Arr\/Arr.sort.phpt"],[360,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/Arr\/Arr.stats.phpt"],[361,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/Arr\/Arr.transform.phpt"],[362,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/Arr\/output\/Arr.filter.actual"],[363,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/Arr\/output\/Arr.filter.expected"],[364,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/Arr\/output\/Arr.sort.actual"],[365,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/Arr\/output\/Arr.sort.expected"],[366,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/ImmutableArray\/ImmutableArray.basic.phpt"],[367,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/ImmutableArray\/ImmutableArray.compare.phpt"],[368,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/ImmutableArray\/ImmutableArray.diff_intersect.phpt"],[369,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/ImmutableArray\/ImmutableArray.filter.phpt"],[370,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/ImmutableArray\/ImmutableArray.map.phpt"],[371,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/ImmutableArray\/ImmutableArray.merge_replace.phpt"],[372,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/ImmutableArray\/ImmutableArray.querries.phpt"],[373,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/ImmutableArray\/ImmutableArray.slice.phpt"],[374,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/ImmutableArray\/ImmutableArray.sort.phpt"],[375,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/ImmutableArray\/ImmutableArray.stats.phpt"],[376,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/ImmutableArray\/ImmutableArray.transform.phpt"],[377,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/ImmutableArray\/output\/ImmutableArray.filter.actual"],[378,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/ImmutableArray\/output\/ImmutableArray.filter.expected"],[379,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/ImmutableArray\/output\/ImmutableArray.sort.actual"],[380,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/ImmutableArray\/output\/ImmutableArray.sort.expected"],[381,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/output\/ImmutableArray.sort.actual"],[382,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/lists\/output\/ImmutableArray.sort.expected"],[383,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/mixins\/NonCloneableMixin.phpt"],[384,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/mixins\/NonIterableMixin.phpt"],[385,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/mixins\/NonSerializableMixin.phpt"],[386,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/mixins\/StaticClassMixin.phpt"],[387,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/mixins\/StrictBehaviorMixin.phpt"],[388,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/types\/Check.basic.phpt"],[389,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/types\/Check.types.phpt"],[390,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/types\/Str.phpt"],[391,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/types\/Tuple.phpt"],[392,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/types\/Type.bool.phpt"],[393,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/types\/Type.callable.phpt"],[394,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/types\/Type.float.phpt"],[395,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/types\/Type.int.phpt"],[396,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/types\/Type.lists.phpt"],[397,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/types\/Type.object.phpt"],[398,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/types\/Type.phpt"],[399,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/types\/Type.resource.phpt"],[400,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/types\/Type.string.phpt"],[401,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/common\/types\/Type.tupple.phpt"],[402,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Database\/SqlGenerator\/CreateTableGenerator.phpt"],[403,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Database\/SqlGenerator\/TestingType.php"],[404,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Entity\/Mapping\/IdentityHandler.phpt"],[405,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Entity\/Proxy\/EntityProxyBuilderTest.phpt"],[406,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Entity\/Proxy\/TestEntity.php"],[407,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Entity\/TestIdentity.php"],[408,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Entity\/VersionedIdentity.phpt"],[409,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Enum\/Enum.phpt"],[410,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Geolocation\/PositionFormatter.phpt"],[411,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Http\/responder.php"],[412,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Http\/test.php"],[413,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Language\/Locale\/Locale.phpt"],[414,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Language\/Locale\/output\/Locale.actual"],[415,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Language\/Locale\/output\/Locale.expected"],[416,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mail\/test.eml"],[417,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mail\/test.php"],[418,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mail\/test2.eml"],[419,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mapping\/ConventionMappingBuilder.phpt"],[420,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mapping\/ExportableTestClass.php"],[421,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mapping\/Mapping.phpt"],[422,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mapping\/MappingStep.phpt"],[423,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mapping\/Naming\/ShortFieldNamingStrategy.phpt"],[424,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mapping\/Naming\/ShortUnderscoreFieldNamingStrategy.phpt"],[425,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mapping\/OuterTestClass.php"],[426,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mapping\/output\/MappingStep.actual"],[427,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mapping\/output\/MappingStep.expected"],[428,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mapping\/Type\/ArrayHandler.phpt"],[429,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mapping\/Type\/DefaultOneWayHandler.phpt"],[430,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mapping\/Type\/EnumHandler.phpt"],[431,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mapping\/Type\/ExportableHandler.phpt"],[432,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mapping\/Type\/ScalarsHandler.phpt"],[433,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mapping\/Type\/TupleHandler.phpt"],[434,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Mapping\/Type\/TypeHandler.phpt"],[435,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Math\/Angle\/AngleFormatter.phpt"],[436,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Math\/Combinatorics.phpt"],[437,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Math\/Decimal\/Decimal.phpt"],[438,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Reflection\/MethodTypeParser.phpt"],[439,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Reflection\/MethodTypeParserTestClass.php"],[440,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Reflection\/output\/MethodTypeParser.actual"],[441,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Reflection\/output\/MethodTypeParser.expected"],[442,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Time\/Date.phpt"],[443,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Time\/DateDateTimeCommonMixin.phpt"],[444,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Time\/DateTime.phpt"],[445,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Time\/Mapping\/DateTimeHandler.phpt"],[446,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Time\/output\/DateTime.actual"],[447,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Time\/output\/DateTime.expected"],[448,"C:\/http\/paranoiq\/dogma\/tests\/Dogma\/Time\/Time.phpt"],[449,"C:\/http\/paranoiq\/dogma\/tests\/php.ini"]]'></pre>
+</td></tr>
+<tr><th>$fileCallback</th><td><pre class="tracy-dump" data-tracy-dump='{"object":"05"}'></pre>
+</td></tr>
+						</table>
+						</div>
+										</li>
+										<li><p>
+
+											<a href="editor://open/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Cspell-checker.php&amp;line=123" title="...\spell-checker\spell-checker\spell-checker.php:123">...\spell-checker\spell-checker\<b>spell-checker.php</b>:123</a>					
+					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp; 
+					SpellChecker\SpellCheckerApplication-&gt;run(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+					</p>
+
+											<div class="tracy-collapsed file"><pre data-tracy-href="editor://open/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Cspell-checker.php&amp;line=123" class='code'><div><code><span style="color: #06B"><span style="color: #D24; font-weight: bold"><span class='line'>113:</span>            </span><span style="color: #000">$console</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">writeLn</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">C</span><span style="color: #D24; font-weight: bold">::</span><span style="color: #000">white</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">sprintf</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">'Invalid memory limit format "%s".'</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$config</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">memoryLimit</span><span style="color: #D24; font-weight: bold">), </span><span style="color: #000">C</span><span style="color: #D24; font-weight: bold">::</span><span style="color: #000">RED</span><span style="color: #D24; font-weight: bold">));
+<span class='line'>114:</span>            return </span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">;
+<span class='line'>115:</span>        }
+<span class='line'>116:</span>        if (</span><span style="color: #000">ini_set</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">'memory_limit'</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$config</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">memoryLimit</span><span style="color: #D24; font-weight: bold">) === </span><span style="color: #000">false</span><span style="color: #D24; font-weight: bold">) {
+<span class='line'>117:</span>            </span><span style="color: #000">$console</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">writeLn</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">C</span><span style="color: #D24; font-weight: bold">::</span><span style="color: #000">white</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">sprintf</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #080">'Memory limit "%s" cannot be set.'</span><span style="color: #D24; font-weight: bold">, </span><span style="color: #000">$config</span><span style="color: #D24; font-weight: bold">-&gt;</span><span style="color: #000">memoryLimit</span><span style="color: #D24; font-weight: bold">), </span><span style="color: #000">C</span><span style="color: #D24; font-weight: bold">::</span><span style="color: #000">RED</span><span style="color: #D24; font-weight: bold">));
+<span class='line'>118:</span>            return </span><span style="color: #000">1</span><span style="color: #D24; font-weight: bold">;
+<span class='line'>119:</span>        }
+<span class='line'>120:</span>    }
+<span class='line'>121:</span>    
+<span class='line'>122:</span>    </span><span style="color: #000">$application </span><span style="color: #D24; font-weight: bold">= new </span><span style="color: #000">SpellCheckerApplication</span><span style="color: #D24; font-weight: bold">(</span><span style="color: #000">$console</span><span style="color: #D24; font-weight: bold">);
+<span class='highlight'>123:    $application-&gt;run($config);
+</span></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"><span class='line'>124:</span>    
+<span class='line'>125:</span>    </span>
+</span></code></div></pre></div>
+					
+					
+											<div class="tracy-collapsed outer args">
+						<table>
+						<tr><th>$config</th><td><pre class="tracy-dump" data-tracy-dump='{"object":"06"}'></pre>
+</td></tr>
+						</table>
+						</div>
+										</li>
+										<li><p>
+
+											<a href="editor://open/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Cspell-checker&amp;line=3" title="...\vendor\spell-checker\spell-checker\spell-checker:3">...\vendor\spell-checker\spell-checker\<b>spell-checker</b>:3</a>					
+					<a data-tracy-ref="^p + .file" class="tracy-toggle tracy-collapsed">source</a>&nbsp; 
+					require(<a data-tracy-ref="^p + .args" class="tracy-toggle tracy-collapsed">arguments</a>)
+					</p>
+
+											<div class="tracy-collapsed file"><pre data-tracy-href="editor://open/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Cspell-checker&amp;line=3" class='code'><div><code><span style="color: #06B"><span class='line'>1:</span>    #!/usr/bin/env php
+<span class='line'>2:</span>    <span style="color: #000">&lt;?php
+<span class='highlight'>3:    require __DIR__ . '/spell-checker.php';
+</span></span><span style="color: #D24; font-weight: bold"></span><span style="color: #000"></span><span style="color: #D24; font-weight: bold"></span><span style="color: #080"></span><span style="color: #D24; font-weight: bold"><span class='line'>4:</span>    </span>
+</span></code></div></pre></div>
+					
+					
+											<div class="tracy-collapsed outer args">
+						<table>
+						<tr><th>#0</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\http\paranoiq\dogma\vendor\spell-checker\spell-checker\spell-checker.php"</span> (75)
+</pre>
+</td></tr>
+						</table>
+						</div>
+										</li>
+									</ol>
+			</div></div>
+			
+
+			
+				
+
+				<div class="panel">
+		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Exception</a></h2>
+		<div class="tracy-collapsed inner">
+		<pre class="tracy-dump" data-tracy-dump='{"object":"07"}'></pre>
+		</div></div>
+		
+
+		
+
+				
+
+		<div class="panel">
+		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Environment</a></h2>
+
+		<div class="tracy-collapsed inner">
+			<h3><a data-tracy-ref="^+" class="tracy-toggle">$_SERVER</a></h3>
+			<div class="outer">
+			<table>
+			<tr><th>ACLOCAL_PATH</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files\Git\mingw64\share\aclocal;C:\Program Files\Git\usr\share\aclocal"</span> (81)
+</pre>
+</td></tr>
+<tr><th>ALLUSERSPROFILE</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\ProgramData"</span> (14)
+</pre>
+</td></tr>
+<tr><th>APPDATA</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Users\paranoiq\AppData\Roaming"</span> (33)
+</pre>
+</td></tr>
+<tr><th>BIN_TARGET</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\http\paranoiq\dogma\bin\/../vendor/spell-checker/spell-checker/spell-checker"</span> (79)
+</pre>
+</td></tr>
+<tr><th>BREAKPAD_DUMP_LOCATION</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Users\Public\Documents\Google\Chrome"</span> (39)
+</pre>
+</td></tr>
+<tr><th>CHARSET</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"cp1250"</span> (6)
+</pre>
+</td></tr>
+<tr><th>CHROME_CRASHPAD_SERVER_URL</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"https://client2.google.com/cr/reports"</span> (37)
+</pre>
+</td></tr>
+<tr><th>COMMONPROGRAMFILES</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files\Common Files"</span> (29)
+</pre>
+</td></tr>
+<tr><th>COMPUTERNAME</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"MORGOTH"</span> (7)
+</pre>
+</td></tr>
+<tr><th>COMSPEC</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\WINDOWS\system32\cmd.exe"</span> (27)
+</pre>
+</td></tr>
+<tr><th>CONFIG_SITE</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:/Program Files/Git/mingw64/etc/config.site"</span> (44)
+</pre>
+</td></tr>
+<tr><th>ChocolateyInstall</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\ProgramData\chocolatey"</span> (25)
+</pre>
+</td></tr>
+<tr><th>ChocolateyLastPathUpdate</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"Fri Feb  3 10:33:53 2017"</span> (24)
+</pre>
+</td></tr>
+<tr><th>CommonProgramFiles(x86)</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files (x86)\Common Files"</span> (35)
+</pre>
+</td></tr>
+<tr><th>CommonProgramW6432</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files\Common Files"</span> (29)
+</pre>
+</td></tr>
+<tr><th>DISPLAY</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"needs-to-be-defined"</span> (19)
+</pre>
+</td></tr>
+<tr><th>DNX_HOME</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"%USERPROFILE%\.dnx"</span> (18)
+</pre>
+</td></tr>
+<tr><th>ESET_OPTIONS</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"                                                                                                                                                       ... "</span> (511)
+</pre>
+</td></tr>
+<tr><th>EXEPATH</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files\Git"</span> (20)
+</pre>
+</td></tr>
+<tr><th>FP_NO_HOST_CHECK</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"NO"</span> (2)
+</pre>
+</td></tr>
+<tr><th>HOME</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Users\paranoiq"</span> (17)
+</pre>
+</td></tr>
+<tr><th>HOMEDRIVE</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:"</span> (2)
+</pre>
+</td></tr>
+<tr><th>HOMEPATH</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"\Users\paranoiq"</span> (15)
+</pre>
+</td></tr>
+<tr><th>HOSTNAME</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"Morgoth"</span> (7)
+</pre>
+</td></tr>
+<tr><th>INFOPATH</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files\Git\usr\local\info;C:\Program Files\Git\usr\share\info;C:\Program Files\Git\usr\info;C:\Program Files\Git\share\info"</span> (133)
+</pre>
+</td></tr>
+<tr><th>JAVA_HOME</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files\Java\jre1.8.0_111"</span> (34)
+</pre>
+</td></tr>
+<tr><th>LC_CTYPE</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C"</span>
+</pre>
+</td></tr>
+<tr><th>LOCALAPPDATA</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Users\paranoiq\AppData\Local"</span> (31)
+</pre>
+</td></tr>
+<tr><th>LOGONSERVER</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"\\MORGOTH"</span> (9)
+</pre>
+</td></tr>
+<tr><th>LUA_DEV</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files (x86)\Lua\5.1"</span> (30)
+</pre>
+</td></tr>
+<tr><th>LUA_PATH</th><td><pre class="tracy-dump"><span class="tracy-dump-string">";;C:\Program Files (x86)\Lua\5.1\lua\?.luac"</span> (43)
+</pre>
+</td></tr>
+<tr><th>MANPATH</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files\Git\mingw64\share\man;C:\Program Files\Git\usr\local\man;C:\Program Files\Git\usr\share\man;C:\Program Files\Git\usr\man;C:\Program F ... "</span> (168)
+</pre>
+</td></tr>
+<tr><th>MINGW_CHOST</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"x86_64-w64-mingw32"</span> (18)
+</pre>
+</td></tr>
+<tr><th>MINGW_PACKAGE_PREFIX</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"mingw-w64-x86_64"</span> (16)
+</pre>
+</td></tr>
+<tr><th>MINGW_PREFIX</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:/Program Files/Git/mingw64"</span> (28)
+</pre>
+</td></tr>
+<tr><th>MOZ_PLUGIN_PATH</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\PROGRAM FILES (X86)\FOXIT SOFTWARE\FOXIT READER\plugins\"</span> (59)
+</pre>
+</td></tr>
+<tr><th>MSYSTEM</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"MINGW64"</span> (7)
+</pre>
+</td></tr>
+<tr><th>MSYSTEM_CARCH</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"x86_64"</span> (6)
+</pre>
+</td></tr>
+<tr><th>MSYSTEM_CHOST</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"x86_64-w64-mingw32"</span> (18)
+</pre>
+</td></tr>
+<tr><th>MSYSTEM_PREFIX</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:/Program Files/Git/mingw64"</span> (28)
+</pre>
+</td></tr>
+<tr><th>NUMBER_OF_PROCESSORS</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"8"</span>
+</pre>
+</td></tr>
+<tr><th>OLDPWD</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:/http/paranoiq"</span> (16)
+</pre>
+</td></tr>
+<tr><th>ORIGINAL_PATH</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\paranoiq\bin;C:\Program Files\Git\mingw64\libexec\git-core;C:\Program Files\Git ... "</span> (2009)
+</pre>
+</td></tr>
+<tr><th>ORIGINAL_TEMP</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:/Users/paranoiq/AppData/Local/Temp"</span> (36)
+</pre>
+</td></tr>
+<tr><th>ORIGINAL_TMP</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:/Users/paranoiq/AppData/Local/Temp"</span> (36)
+</pre>
+</td></tr>
+<tr><th>OS</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"Windows_NT"</span> (10)
+</pre>
+</td></tr>
+<tr><th>OneDrive</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Users\paranoiq\OneDrive"</span> (26)
+</pre>
+</td></tr>
+<tr><th>PATH</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Users\paranoiq\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C: ... "</span> (2237)
+</pre>
+</td></tr>
+<tr><th>PATHEXT</th><td><pre class="tracy-dump"><span class="tracy-dump-string">".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.wlua;.lexe"</span> (65)
+</pre>
+</td></tr>
+<tr><th>PHING_HOME</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\http\paranoiq\dogma\vendor\phing\phing"</span> (41)
+</pre>
+</td></tr>
+<tr><th>PKG_CONFIG_PATH</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files\Git\mingw64\lib\pkgconfig;C:\Program Files\Git\mingw64\share\pkgconfig"</span> (87)
+</pre>
+</td></tr>
+<tr><th>PLINK_PROTOCOL</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"ssh"</span> (3)
+</pre>
+</td></tr>
+<tr><th>PROCESSOR_ARCHITECTURE</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"AMD64"</span> (5)
+</pre>
+</td></tr>
+<tr><th>PROCESSOR_IDENTIFIER</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"Intel64 Family 6 Model 60 Stepping 3, GenuineIntel"</span> (50)
+</pre>
+</td></tr>
+<tr><th>PROCESSOR_LEVEL</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"6"</span>
+</pre>
+</td></tr>
+<tr><th>PROCESSOR_REVISION</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"3c03"</span> (4)
+</pre>
+</td></tr>
+<tr><th>PROGRAMFILES</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files"</span> (16)
+</pre>
+</td></tr>
+<tr><th>PROMPT</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"$P$G"</span> (4)
+</pre>
+</td></tr>
+<tr><th>PSModulePath</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules\"</span> (51)
+</pre>
+</td></tr>
+<tr><th>PUBLIC</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Users\Public"</span> (15)
+</pre>
+</td></tr>
+<tr><th>PWD</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:/http/paranoiq/dogma"</span> (22)
+</pre>
+</td></tr>
+<tr><th>ProgramData</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\ProgramData"</span> (14)
+</pre>
+</td></tr>
+<tr><th>ProgramFiles(x86)</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files (x86)"</span> (22)
+</pre>
+</td></tr>
+<tr><th>ProgramW6432</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files"</span> (16)
+</pre>
+</td></tr>
+<tr><th>SHELL</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files\Git\usr\bin\bash.exe"</span> (37)
+</pre>
+</td></tr>
+<tr><th>SHLVL</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"4"</span>
+</pre>
+</td></tr>
+<tr><th>SSH_AGENT_PID</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"10872"</span> (5)
+</pre>
+</td></tr>
+<tr><th>SSH_ASKPASS</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:/Program Files/Git/mingw64/libexec/git-core/git-gui--askpass"</span> (62)
+</pre>
+</td></tr>
+<tr><th>SSH_AUTH_SOCK</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:/Users/paranoiq/AppData/Local/Temp/ssh-lkYlCmpqRVxk/agent.8716"</span> (64)
+</pre>
+</td></tr>
+<tr><th>SYSTEMDRIVE</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:"</span> (2)
+</pre>
+</td></tr>
+<tr><th>SYSTEMROOT</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\WINDOWS"</span> (10)
+</pre>
+</td></tr>
+<tr><th>TEMP</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Users\paranoiq\AppData\Local\Temp"</span> (36)
+</pre>
+</td></tr>
+<tr><th>TERM</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"xterm"</span> (5)
+</pre>
+</td></tr>
+<tr><th>TMP</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Users\paranoiq\AppData\Local\Temp"</span> (36)
+</pre>
+</td></tr>
+<tr><th>TMPDIR</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Users\paranoiq\AppData\Local\Temp"</span> (36)
+</pre>
+</td></tr>
+<tr><th>USERDOMAIN</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"MORGOTH"</span> (7)
+</pre>
+</td></tr>
+<tr><th>USERDOMAIN_ROAMINGPROFILE</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"MORGOTH"</span> (7)
+</pre>
+</td></tr>
+<tr><th>USERNAME</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"paranoiq"</span> (8)
+</pre>
+</td></tr>
+<tr><th>USERPROFILE</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Users\paranoiq"</span> (17)
+</pre>
+</td></tr>
+<tr><th>VS110COMNTOOLS</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\Tools\"</span> (66)
+</pre>
+</td></tr>
+<tr><th>VS120COMNTOOLS</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\"</span> (66)
+</pre>
+</td></tr>
+<tr><th>VS140COMNTOOLS</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\"</span> (66)
+</pre>
+</td></tr>
+<tr><th>VSSDK140Install</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VSSDK\"</span> (58)
+</pre>
+</td></tr>
+<tr><th>WINDIR</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\WINDOWS"</span> (10)
+</pre>
+</td></tr>
+<tr><th>XNAGSShared</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files (x86)\Common Files\Microsoft Shared\XNA\"</span> (57)
+</pre>
+</td></tr>
+<tr><th>XNAGSv4</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\"</span> (58)
+</pre>
+</td></tr>
+<tr><th>_</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:/http/paranoiq/dogma/vendor/phing/phing/bin/phing"</span> (51)
+</pre>
+</td></tr>
+<tr><th>configsetroot</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\WINDOWS\ConfigSetRoot"</span> (24)
+</pre>
+</td></tr>
+<tr><th>PHP_SELF</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\http\paranoiq\dogma\bin\/../vendor/spell-checker/spell-checker/spell-checker"</span> (79)
+</pre>
+</td></tr>
+<tr><th>SCRIPT_NAME</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\http\paranoiq\dogma\bin\/../vendor/spell-checker/spell-checker/spell-checker"</span> (79)
+</pre>
+</td></tr>
+<tr><th>SCRIPT_FILENAME</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\http\paranoiq\dogma\bin\/../vendor/spell-checker/spell-checker/spell-checker"</span> (79)
+</pre>
+</td></tr>
+<tr><th>PATH_TRANSLATED</th><td><pre class="tracy-dump"><span class="tracy-dump-string">"C:\http\paranoiq\dogma\bin\/../vendor/spell-checker/spell-checker/spell-checker"</span> (79)
+</pre>
+</td></tr>
+<tr><th>DOCUMENT_ROOT</th><td><pre class="tracy-dump"><span class="tracy-dump-string">""</span>
+</pre>
+</td></tr>
+<tr><th>REQUEST_TIME_FLOAT</th><td><pre class="tracy-dump"><span class="tracy-dump-number">1517057810.6258581</span>
+</pre>
+</td></tr>
+<tr><th>REQUEST_TIME</th><td><pre class="tracy-dump"><span class="tracy-dump-number">1517057810</span>
+</pre>
+</td></tr>
+<tr><th>argv</th><td><pre class="tracy-dump" data-tracy-dump='[[0,"C:\\http\\paranoiq\\dogma\\bin\\\/..\/vendor\/spell-checker\/spell-checker\/spell-checker"],[1,"--config"],[2,"C:\\http\\paranoiq\\dogma\/build\/spell-checker\/spell-checker.neon"],[3,"--maxErrors"],[4,"100"]]'></pre>
+</td></tr>
+<tr><th>argc</th><td><pre class="tracy-dump"><span class="tracy-dump-number">5</span>
+</pre>
+</td></tr>
+			</table>
+			</div>
+
+
+			<h3><a data-tracy-ref="^+" class="tracy-toggle">$_SESSION</a></h3>
+			<div class="outer">
+						<p><i>empty</i></p>
+						</div>
+
+
+			
+
+			
+
+			<h3><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">Configuration options</a></h3>
+			<div class="outer tracy-collapsed">
+			phpinfo()
+
+
+ _______________________________________________________________________
+
+
+Configuration
+
+bcmath
+
+BCMath support => enabled
+
+Directive => Local Value => Master Value
+bcmath.scale => 0 => 0
+
+bz2
+
+BZip2 Support => Enabled
+Stream Wrapper support => compress.bzip2://
+Stream Filter support => bzip2.decompress, bzip2.compress
+BZip2 Version => 1.0.6, 6-Sept-2010
+
+calendar
+
+Calendar support => enabled
+
+Core
+
+PHP Version => 7.1.4
+
+Directive => Local Value => Master Value
+allow_url_fopen => On => On
+allow_url_include => Off => Off
+arg_separator.input => & => &
+arg_separator.output => & => &
+auto_append_file => no value => no value
+auto_globals_jit => On => On
+auto_prepend_file => c:/http/debug.php => c:/http/debug.php
+browscap => no value => no value
+default_charset => UTF-8 => UTF-8
+default_mimetype => text/html => text/html
+disable_classes => no value => no value
+disable_functions => no value => no value
+display_errors => STDOUT => STDOUT
+display_startup_errors => On => On
+doc_root => no value => no value
+docref_ext => no value => no value
+docref_root => no value => no value
+enable_dl => Off => Off
+enable_post_data_reading => On => On
+error_append_string => no value => no value
+error_log => no value => no value
+error_prepend_string => no value => no value
+error_reporting => 22527 => 22527
+expose_php => On => On
+extension_dir => ext => ext
+file_uploads => On => On
+hard_timeout => 2 => 2
+highlight.comment => <font style="color: #998; font-style: italic">#998; font-style: italic</font> => <font style="color: #FF8000">#FF8000</font>
+highlight.default => <font style="color: #000">#000</font> => <font style="color: #0000BB">#0000BB</font>
+highlight.html => <font style="color: #06B">#06B</font> => <font style="color: #000000">#000000</font>
+highlight.keyword => <font style="color: #D24; font-weight: bold">#D24; font-weight: bold</font> => <font style="color: #007700">#007700</font>
+highlight.string => <font style="color: #080">#080</font> => <font style="color: #DD0000">#DD0000</font>
+html_errors => Off => Off
+ignore_repeated_errors => Off => Off
+ignore_repeated_source => Off => Off
+ignore_user_abort => Off => Off
+implicit_flush => On => On
+include_path => C:\http\paranoiq\dogma\vendor/phing/phing/classes;.;C:\php\pear => .;C:\php\pear
+input_encoding => no value => no value
+internal_encoding => no value => no value
+log_errors => On => On
+log_errors_max_len => 1024 => 1024
+mail.add_x_header => On => On
+mail.force_extra_parameters => no value => no value
+mail.log => no value => no value
+max_execution_time => 0 => 0
+max_file_uploads => 20 => 20
+max_input_nesting_level => 64 => 64
+max_input_time => -1 => -1
+max_input_vars => 6144 => 6144
+memory_limit => 4096M => 4096M
+open_basedir => no value => no value
+output_buffering => 0 => 0
+output_encoding => no value => no value
+output_handler => no value => no value
+post_max_size => 64M => 64M
+precision => 14 => 14
+realpath_cache_size => 4096K => 4096K
+realpath_cache_ttl => 120 => 120
+register_argc_argv => On => On
+report_memleaks => On => On
+report_zend_debug => Off => Off
+request_order => GP => GP
+sendmail_from => no value => no value
+sendmail_path => no value => no value
+serialize_precision => 17 => 17
+short_open_tag => Off => Off
+SMTP => localhost => localhost
+smtp_port => 25 => 25
+sql.safe_mode => Off => Off
+sys_temp_dir => no value => no value
+track_errors => On => On
+unserialize_callback_func => no value => no value
+upload_max_filesize => 64M => 64M
+upload_tmp_dir => no value => no value
+user_dir => no value => no value
+user_ini.cache_ttl => 300 => 300
+user_ini.filename => .user.ini => .user.ini
+variables_order => GPCS => GPCS
+windows.show_crt_warning => Off => Off
+xmlrpc_error_number => 0 => 0
+xmlrpc_errors => Off => Off
+zend.assertions => 1 => 1
+zend.detect_unicode => On => On
+zend.enable_gc => On => On
+zend.multibyte => Off => Off
+zend.script_encoding => no value => no value
+
+ctype
+
+ctype functions => enabled
+
+curl
+
+cURL support => enabled
+cURL Information => 7.53.1
+Age => 3
+Features
+AsynchDNS => Yes
+CharConv => No
+Debug => No
+GSS-Negotiate => No
+IDN => Yes
+IPv6 => Yes
+krb4 => No
+Largefile => Yes
+libz => Yes
+NTLM => Yes
+NTLMWB => No
+SPNEGO => Yes
+SSL => Yes
+SSPI => Yes
+TLS-SRP => No
+HTTP2 => Yes
+GSSAPI => No
+KERBEROS5 => Yes
+UNIX_SOCKETS => No
+PSL => No
+Protocols => dict, file, ftp, ftps, gopher, http, https, imap, imaps, ldap, pop3, pop3s, rtsp, scp, sftp, smtp, smtps, telnet, tftp
+Host => x86_64-pc-win32
+SSL Version => OpenSSL/1.0.2k
+ZLib Version => 1.2.8
+libSSH Version => libssh2/1.8.0
+
+date
+
+date/time support => enabled
+"Olson" Timezone Database Version => 2017.2
+Timezone Database => internal
+Default timezone => Europe/Prague
+
+Directive => Local Value => Master Value
+date.default_latitude => 31.7667 => 31.7667
+date.default_longitude => 35.2333 => 35.2333
+date.sunrise_zenith => 90.583333 => 90.583333
+date.sunset_zenith => 90.583333 => 90.583333
+date.timezone => Europe/Prague => Europe/Prague
+
+dom
+
+DOM/XML => enabled
+DOM/XML API Version => 20031129
+libxml Version => 2.9.4
+HTML Support => enabled
+XPath Support => enabled
+XPointer Support => enabled
+Schema Support => enabled
+RelaxNG Support => enabled
+
+exif
+
+EXIF Support => enabled
+EXIF Version => 1.4 $Id: 8bdc0c8f27c2c9dd1f7551f1f9fe3ab57a06a4b1 $
+Supported EXIF Version => 0220
+Supported filetypes => JPEG,TIFF
+
+Directive => Local Value => Master Value
+exif.decode_jis_intel => JIS => JIS
+exif.decode_jis_motorola => JIS => JIS
+exif.decode_unicode_intel => UCS-2LE => UCS-2LE
+exif.decode_unicode_motorola => UCS-2BE => UCS-2BE
+exif.encode_jis => no value => no value
+exif.encode_unicode => ISO-8859-15 => ISO-8859-15
+
+fileinfo
+
+fileinfo support => enabled
+version => 1.0.5
+libmagic => 522
+
+filter
+
+Input Validation and Filtering => enabled
+Revision => $Id: cdc5e15bb616f10210b94ecd8789e66c927a375f $
+
+Directive => Local Value => Master Value
+filter.default => unsafe_raw => unsafe_raw
+filter.default_flags => no value => no value
+
+ftp
+
+FTP support => enabled
+FTPS support => enabled
+
+gd
+
+GD Support => enabled
+GD Version => bundled (2.1.0 compatible)
+FreeType Support => enabled
+FreeType Linkage => with freetype
+FreeType Version => 2.7.0
+GIF Read Support => enabled
+GIF Create Support => enabled
+JPEG Support => enabled
+libJPEG Version => 9 compatible
+PNG Support => enabled
+libPNG Version => 1.6.21
+WBMP Support => enabled
+XPM Support => enabled
+libXpm Version => 30512
+XBM Support => enabled
+WebP Support => enabled
+
+Directive => Local Value => Master Value
+gd.jpeg_ignore_warning => 1 => 1
+
+gettext
+
+GetText Support => enabled
+
+gmp
+
+gmp support => enabled
+MPIR version => 2.7.2
+
+hash
+
+hash support => enabled
+Hashing Engines => md2 md4 md5 sha1 sha224 sha256 sha384 sha512/224 sha512/256 sha512 sha3-224 sha3-256 sha3-384 sha3-512 ripemd128 ripemd160 ripemd256 ripemd320 whirlpool tiger128,3 tiger160,3 tiger192,3 tiger128,4 tiger160,4 tiger192,4 snefru snefru256 gost gost-crypto adler32 crc32 crc32b fnv132 fnv1a32 fnv164 fnv1a64 joaat haval128,3 haval160,3 haval192,3 haval224,3 haval256,3 haval128,4 haval160,4 haval192,4 haval224,4 haval256,4 haval128,5 haval160,5 haval192,5 haval224,5 haval256,5 
+
+MHASH support => Enabled
+MHASH API Version => Emulated Support
+
+iconv
+
+iconv support => enabled
+iconv implementation => "libiconv"
+iconv library version => 1.15
+
+Directive => Local Value => Master Value
+iconv.input_encoding => no value => no value
+iconv.internal_encoding => no value => no value
+iconv.output_encoding => no value => no value
+
+imap
+
+IMAP c-Client Version => 2007f
+SSL Support => enabled
+
+interbase
+
+Firebird/InterBase Support => dynamic
+Compile-time Client Library Version => Firebird API version 25
+Run-time Client Library Version => WI-V6.3.2.32703 Firebird 3.0
+
+Directive => Local Value => Master Value
+ibase.allow_persistent => On => On
+ibase.dateformat => %Y-%m-%d => %Y-%m-%d
+ibase.default_charset => no value => no value
+ibase.default_db => no value => no value
+ibase.default_password => no value => no value
+ibase.default_user => no value => no value
+ibase.max_links => Unlimited => Unlimited
+ibase.max_persistent => Unlimited => Unlimited
+ibase.timeformat => %H:%M:%S => %H:%M:%S
+ibase.timestampformat => %Y-%m-%d %H:%M:%S => %Y-%m-%d %H:%M:%S
+
+intl
+
+Internationalization support => enabled
+version => 1.1.0
+ICU version => 57.1
+ICU Data version => 57.1
+
+Directive => Local Value => Master Value
+intl.default_locale => no value => no value
+intl.error_level => 0 => 0
+intl.use_exceptions => 0 => 0
+
+json
+
+json support => enabled
+json version => 1.5.0
+
+ldap
+
+LDAP Support => enabled
+RCS Version => $Id: 1a2168f979730c42ec291285f5183076688f4509 $
+Total Links => 0/unlimited
+API Version => 3001
+Vendor Name => OpenLDAP
+Vendor Version => 20444
+SASL Support => Enabled
+
+Directive => Local Value => Master Value
+ldap.max_links => Unlimited => Unlimited
+
+libxml
+
+libXML support => active
+libXML Compiled Version => 2.9.4
+libXML Loaded Version => 20904
+libXML streams => enabled
+
+mbstring
+
+Multibyte Support => enabled
+Multibyte string engine => libmbfl
+HTTP input encoding translation => disabled
+libmbfl version => 1.3.2
+oniguruma version => 5.9.6
+
+mbstring extension makes use of "streamable kanji code filter and converter", which is distributed under the GNU Lesser General Public License version 2.1.
+
+Multibyte (japanese) regex support => enabled
+Multibyte regex (oniguruma) version => 5.9.6
+
+Directive => Local Value => Master Value
+mbstring.detect_order => no value => no value
+mbstring.encoding_translation => Off => Off
+mbstring.func_overload => 0 => 0
+mbstring.http_input => no value => no value
+mbstring.http_output => no value => no value
+mbstring.http_output_conv_mimetypes => ^(text/|application/xhtml\+xml) => ^(text/|application/xhtml\+xml)
+mbstring.internal_encoding => no value => no value
+mbstring.language => neutral => neutral
+mbstring.strict_detection => Off => Off
+mbstring.substitute_character => no value => no value
+
+mcrypt
+
+mcrypt support => enabled
+mcrypt_filter support => enabled
+Version => 2.5.8
+Api No => 20021217
+Supported ciphers => cast-128 gost rijndael-128 twofish cast-256 loki97 rijndael-192 saferplus wake blowfish-compat des rijndael-256 serpent xtea blowfish enigma rc2 tripledes arcfour 
+Supported modes => cbc cfb ctr ecb ncfb nofb ofb stream 
+
+Directive => Local Value => Master Value
+mcrypt.algorithms_dir => no value => no value
+mcrypt.modes_dir => no value => no value
+
+mysqli
+
+MysqlI Support => enabled
+Client API library version => mysqlnd 5.0.12-dev - 20150407 - $Id: b396954eeb2d1d9ed7902b8bae237b287f21ad9e $
+Active Persistent Links => 0
+Inactive Persistent Links => 0
+Active Links => 0
+
+Directive => Local Value => Master Value
+mysqli.allow_local_infile => On => On
+mysqli.allow_persistent => On => On
+mysqli.default_host => no value => no value
+mysqli.default_port => 3306 => 3306
+mysqli.default_pw => no value => no value
+mysqli.default_socket => no value => no value
+mysqli.default_user => no value => no value
+mysqli.max_links => Unlimited => Unlimited
+mysqli.max_persistent => Unlimited => Unlimited
+mysqli.reconnect => Off => Off
+mysqli.rollback_on_cached_plink => Off => Off
+
+mysqlnd
+
+mysqlnd => enabled
+Version => mysqlnd 5.0.12-dev - 20150407 - $Id: b396954eeb2d1d9ed7902b8bae237b287f21ad9e $
+Compression => supported
+core SSL => supported
+extended SSL => not supported
+Command buffer size => 4096
+Read buffer size => 32768
+Read timeout => 31536000
+Collecting statistics => Yes
+Collecting memory statistics => Yes
+Tracing => n/a
+Loaded plugins => mysqlnd,debug_trace,auth_plugin_mysql_native_password,auth_plugin_mysql_clear_password
+API Extensions => mysqli,pdo_mysql
+
+mysqlnd statistics =>  
+bytes_sent => 0
+bytes_received => 0
+packets_sent => 0
+packets_received => 0
+protocol_overhead_in => 0
+protocol_overhead_out => 0
+bytes_received_ok_packet => 0
+bytes_received_eof_packet => 0
+bytes_received_rset_header_packet => 0
+bytes_received_rset_field_meta_packet => 0
+bytes_received_rset_row_packet => 0
+bytes_received_prepare_response_packet => 0
+bytes_received_change_user_packet => 0
+packets_sent_command => 0
+packets_received_ok => 0
+packets_received_eof => 0
+packets_received_rset_header => 0
+packets_received_rset_field_meta => 0
+packets_received_rset_row => 0
+packets_received_prepare_response => 0
+packets_received_change_user => 0
+result_set_queries => 0
+non_result_set_queries => 0
+no_index_used => 0
+bad_index_used => 0
+slow_queries => 0
+buffered_sets => 0
+unbuffered_sets => 0
+ps_buffered_sets => 0
+ps_unbuffered_sets => 0
+flushed_normal_sets => 0
+flushed_ps_sets => 0
+ps_prepared_never_executed => 0
+ps_prepared_once_executed => 0
+rows_fetched_from_server_normal => 0
+rows_fetched_from_server_ps => 0
+rows_buffered_from_client_normal => 0
+rows_buffered_from_client_ps => 0
+rows_fetched_from_client_normal_buffered => 0
+rows_fetched_from_client_normal_unbuffered => 0
+rows_fetched_from_client_ps_buffered => 0
+rows_fetched_from_client_ps_unbuffered => 0
+rows_fetched_from_client_ps_cursor => 0
+rows_affected_normal => 0
+rows_affected_ps => 0
+rows_skipped_normal => 0
+rows_skipped_ps => 0
+copy_on_write_saved => 0
+copy_on_write_performed => 0
+command_buffer_too_small => 0
+connect_success => 0
+connect_failure => 0
+connection_reused => 0
+reconnect => 0
+pconnect_success => 0
+active_connections => 0
+active_persistent_connections => 0
+explicit_close => 0
+implicit_close => 0
+disconnect_close => 0
+in_middle_of_command_close => 0
+explicit_free_result => 0
+implicit_free_result => 0
+explicit_stmt_close => 0
+implicit_stmt_close => 0
+mem_emalloc_count => 0
+mem_emalloc_amount => 0
+mem_ecalloc_count => 0
+mem_ecalloc_amount => 0
+mem_erealloc_count => 0
+mem_erealloc_amount => 0
+mem_efree_count => 0
+mem_efree_amount => 0
+mem_malloc_count => 0
+mem_malloc_amount => 0
+mem_calloc_count => 0
+mem_calloc_amount => 0
+mem_realloc_count => 0
+mem_realloc_amount => 0
+mem_free_count => 0
+mem_free_amount => 0
+mem_estrndup_count => 0
+mem_strndup_count => 0
+mem_estrdup_count => 0
+mem_strdup_count => 0
+mem_edupl_count => 0
+mem_dupl_count => 0
+proto_text_fetched_null => 0
+proto_text_fetched_bit => 0
+proto_text_fetched_tinyint => 0
+proto_text_fetched_short => 0
+proto_text_fetched_int24 => 0
+proto_text_fetched_int => 0
+proto_text_fetched_bigint => 0
+proto_text_fetched_decimal => 0
+proto_text_fetched_float => 0
+proto_text_fetched_double => 0
+proto_text_fetched_date => 0
+proto_text_fetched_year => 0
+proto_text_fetched_time => 0
+proto_text_fetched_datetime => 0
+proto_text_fetched_timestamp => 0
+proto_text_fetched_string => 0
+proto_text_fetched_blob => 0
+proto_text_fetched_enum => 0
+proto_text_fetched_set => 0
+proto_text_fetched_geometry => 0
+proto_text_fetched_other => 0
+proto_binary_fetched_null => 0
+proto_binary_fetched_bit => 0
+proto_binary_fetched_tinyint => 0
+proto_binary_fetched_short => 0
+proto_binary_fetched_int24 => 0
+proto_binary_fetched_int => 0
+proto_binary_fetched_bigint => 0
+proto_binary_fetched_decimal => 0
+proto_binary_fetched_float => 0
+proto_binary_fetched_double => 0
+proto_binary_fetched_date => 0
+proto_binary_fetched_year => 0
+proto_binary_fetched_time => 0
+proto_binary_fetched_datetime => 0
+proto_binary_fetched_timestamp => 0
+proto_binary_fetched_string => 0
+proto_binary_fetched_json => 0
+proto_binary_fetched_blob => 0
+proto_binary_fetched_enum => 0
+proto_binary_fetched_set => 0
+proto_binary_fetched_geometry => 0
+proto_binary_fetched_other => 0
+init_command_executed_count => 0
+init_command_failed_count => 0
+com_quit => 0
+com_init_db => 0
+com_query => 0
+com_field_list => 0
+com_create_db => 0
+com_drop_db => 0
+com_refresh => 0
+com_shutdown => 0
+com_statistics => 0
+com_process_info => 0
+com_connect => 0
+com_process_kill => 0
+com_debug => 0
+com_ping => 0
+com_time => 0
+com_delayed_insert => 0
+com_change_user => 0
+com_binlog_dump => 0
+com_table_dump => 0
+com_connect_out => 0
+com_register_slave => 0
+com_stmt_prepare => 0
+com_stmt_execute => 0
+com_stmt_send_long_data => 0
+com_stmt_close => 0
+com_stmt_reset => 0
+com_stmt_set_option => 0
+com_stmt_fetch => 0
+com_deamon => 0
+bytes_received_real_data_normal => 0
+bytes_received_real_data_ps => 0
+
+oci8
+
+OCI8 Support => enabled
+OCI8 DTrace Support => disabled
+OCI8 Version => 2.1.3
+Revision => $Id: 03698b2e9b50593039b7ca292b2e3cf9eaf064b9 $
+Oracle Run-time Client Library Version => 0.0.0.0.0
+Oracle Compile-time Instant Client Version => 12.1
+
+Directive => Local Value => Master Value
+oci8.connection_class => no value => no value
+oci8.default_prefetch => 100 => 100
+oci8.events => Off => Off
+oci8.max_persistent => -1 => -1
+oci8.old_oci_close_semantics => Off => Off
+oci8.persistent_timeout => -1 => -1
+oci8.ping_interval => 60 => 60
+oci8.privileged_connect => Off => Off
+oci8.statement_cache_size => 20 => 20
+
+Statistics =>  
+Active Persistent Connections => 0
+Active Connections => 0
+
+openssl
+
+OpenSSL support => enabled
+OpenSSL Library Version => OpenSSL 1.0.2k  26 Jan 2017
+OpenSSL Header Version => OpenSSL 1.0.2k  26 Jan 2017
+Openssl default config => c:/usr/local/ssl/openssl.cnf
+
+Directive => Local Value => Master Value
+openssl.cafile => no value => no value
+openssl.capath => no value => no value
+
+pcre
+
+PCRE (Perl Compatible Regular Expressions) Support => enabled
+PCRE Library Version => 8.38 2015-11-23
+PCRE JIT Support => enabled
+
+Directive => Local Value => Master Value
+pcre.backtrack_limit => 1000000 => 1000000
+pcre.jit => 1 => 1
+pcre.recursion_limit => 100000 => 100000
+
+PDO
+
+PDO support => enabled
+PDO drivers => firebird, mysql, oci, odbc, pgsql, sqlite
+
+PDO_Firebird
+
+PDO Driver for Firebird => enabled
+
+pdo_mysql
+
+PDO Driver for MySQL => enabled
+Client API version => mysqlnd 5.0.12-dev - 20150407 - $Id: b396954eeb2d1d9ed7902b8bae237b287f21ad9e $
+
+PDO_OCI
+
+PDO Driver for OCI 8 and later => enabled
+
+PDO_ODBC
+
+PDO Driver for ODBC (Win32) => enabled
+ODBC Connection Pooling => Enabled, strict matching
+
+pdo_pgsql
+
+PDO Driver for PostgreSQL => enabled
+PostgreSQL(libpq) Version => 9.6.2
+Module version => 7.1.4
+Revision =>  $Id: 93712a6af603ebb2ee5792c5be271d4d03edfbde $ 
+
+pdo_sqlite
+
+PDO Driver for SQLite 3.x => enabled
+SQLite Library => 3.15.1
+
+pgsql
+
+PostgreSQL Support => enabled
+PostgreSQL(libpq) Version => 9.6.2
+PostgreSQL(libpq)  => PostgreSQL 9.6.2 (win32)
+Multibyte character support => enabled
+SSL support => enabled
+Active Persistent Links => 0
+Active Links => 0
+
+Directive => Local Value => Master Value
+pgsql.allow_persistent => On => On
+pgsql.auto_reset_persistent => Off => Off
+pgsql.ignore_notice => Off => Off
+pgsql.log_notice => Off => Off
+pgsql.max_links => Unlimited => Unlimited
+pgsql.max_persistent => Unlimited => Unlimited
+
+Phar
+
+Phar: PHP Archive support => enabled
+Phar EXT version => 2.0.2
+Phar API version => 1.1.1
+SVN revision => $Id: 59c11f4e29768bfbbf6f41cb469abd81d8655850 $
+Phar-based phar archives => enabled
+Tar-based phar archives => enabled
+ZIP-based phar archives => enabled
+gzip compression => enabled
+bzip2 compression => enabled
+OpenSSL support => enabled
+
+
+Phar based on pear/PHP_Archive, original concept by Davey Shafik.
+Phar fully realized by Gregory Beaver and Marcus Boerger.
+Portions of tar implementation Copyright (c) 2003-2009 Tim Kientzle.
+Directive => Local Value => Master Value
+phar.cache_list => no value => no value
+phar.readonly => On => On
+phar.require_hash => On => On
+
+readline
+
+Readline Support => enabled
+Readline library => WinEditLine
+
+Directive => Local Value => Master Value
+cli.pager => no value => no value
+cli.prompt => \b \>  => \b \> 
+
+Reflection
+
+Reflection => enabled
+Version => $Id: a06522d025b0af3e6ba10a0f6964086b7e6f5458 $
+
+session
+
+Session Support => enabled
+Registered save handlers => files user 
+Registered serializer handlers => php_serialize php php_binary wddx 
+
+Directive => Local Value => Master Value
+session.auto_start => Off => Off
+session.cache_expire => 180 => 180
+session.cache_limiter => nocache => nocache
+session.cookie_domain => no value => no value
+session.cookie_httponly => Off => Off
+session.cookie_lifetime => 0 => 0
+session.cookie_path => / => /
+session.cookie_secure => Off => Off
+session.gc_divisor => 1000 => 1000
+session.gc_maxlifetime => 1440 => 1440
+session.gc_probability => 1 => 1
+session.lazy_write => On => On
+session.name => PHPSESSID => PHPSESSID
+session.referer_check => no value => no value
+session.save_handler => files => files
+session.save_path => no value => no value
+session.serialize_handler => php => php
+session.sid_bits_per_character => 4 => 4
+session.sid_length => 32 => 32
+session.upload_progress.cleanup => On => On
+session.upload_progress.enabled => On => On
+session.upload_progress.freq => 1% => 1%
+session.upload_progress.min_freq => 1 => 1
+session.upload_progress.name => PHP_SESSION_UPLOAD_PROGRESS => PHP_SESSION_UPLOAD_PROGRESS
+session.upload_progress.prefix => upload_progress_ => upload_progress_
+session.use_cookies => On => On
+session.use_only_cookies => On => On
+session.use_strict_mode => Off => Off
+session.use_trans_sid => 0 => 0
+
+shmop
+
+shmop support => enabled
+
+SimpleXML
+
+Simplexml support => enabled
+Revision => $Id: 7e5516dcdf2fe6ded7970eaeb6abd8d07df39a2a $
+Schema support => enabled
+
+soap
+
+Soap Client => enabled
+Soap Server => enabled
+
+Directive => Local Value => Master Value
+soap.wsdl_cache => 1 => 1
+soap.wsdl_cache_dir => /tmp => /tmp
+soap.wsdl_cache_enabled => 1 => 1
+soap.wsdl_cache_limit => 5 => 5
+soap.wsdl_cache_ttl => 86400 => 86400
+
+sockets
+
+Sockets Support => enabled
+
+SPL
+
+SPL support => enabled
+Interfaces => Countable, OuterIterator, RecursiveIterator, SeekableIterator, SplObserver, SplSubject
+Classes => AppendIterator, ArrayIterator, ArrayObject, BadFunctionCallException, BadMethodCallException, CachingIterator, CallbackFilterIterator, DirectoryIterator, DomainException, EmptyIterator, FilesystemIterator, FilterIterator, GlobIterator, InfiniteIterator, InvalidArgumentException, IteratorIterator, LengthException, LimitIterator, LogicException, MultipleIterator, NoRewindIterator, OutOfBoundsException, OutOfRangeException, OverflowException, ParentIterator, RangeException, RecursiveArrayIterator, RecursiveCachingIterator, RecursiveCallbackFilterIterator, RecursiveDirectoryIterator, RecursiveFilterIterator, RecursiveIteratorIterator, RecursiveRegexIterator, RecursiveTreeIterator, RegexIterator, RuntimeException, SplDoublyLinkedList, SplFileInfo, SplFileObject, SplFixedArray, SplHeap, SplMinHeap, SplMaxHeap, SplObjectStorage, SplPriorityQueue, SplQueue, SplStack, SplTempFileObject, UnderflowException, UnexpectedValueException
+
+sqlite3
+
+SQLite3 support => enabled
+SQLite3 module version => 0.7-dev
+SQLite Library => 3.15.1
+
+Directive => Local Value => Master Value
+sqlite3.extension_dir => no value => no value
+
+standard
+
+Dynamic Library Support => enabled
+Internal Sendmail Support for Windows => enabled
+
+Directive => Local Value => Master Value
+assert.active => 1 => 1
+assert.bail => 0 => 0
+assert.callback => no value => no value
+assert.exception => 0 => 0
+assert.quiet_eval => 0 => 0
+assert.warning => 1 => 1
+auto_detect_line_endings => 0 => 0
+default_socket_timeout => 60 => 60
+from => no value => no value
+session.trans_sid_hosts => no value => no value
+session.trans_sid_tags => a=href,area=href,frame=src,form= => a=href,area=href,frame=src,form=
+url_rewriter.hosts => no value => no value
+url_rewriter.tags => a=href,area=href,frame=src,input=src,form=fakeentry => a=href,area=href,frame=src,input=src,form=fakeentry
+user_agent => no value => no value
+
+tidy
+
+Tidy support => enabled
+libTidy Version => 5.2.0
+libTidy Release => 2016/04/07
+Extension Version => 7.1.4 ($Id: f764b98c87afe8ab43162db66290eced256fb9f1 $)
+
+Directive => Local Value => Master Value
+tidy.clean_output => no value => no value
+tidy.default_config => no value => no value
+
+tokenizer
+
+Tokenizer Support => enabled
+
+wddx
+
+WDDX Support => enabled
+WDDX Session Serializer => enabled
+
+xml
+
+XML Support => active
+XML Namespace Support => active
+libxml2 Version => 2.9.4
+
+xmlreader
+
+XMLReader => enabled
+
+xmlrpc
+
+core library version => xmlrpc-epi v. 0.51
+php extension version => 7.1.4
+author => Dan Libby
+homepage => http://xmlrpc-epi.sourceforge.net
+open sourced by => Epinions.com
+
+xmlwriter
+
+XMLWriter => enabled
+
+xsl
+
+XSL => enabled
+libxslt Version => 1.1.29
+libxslt compiled against libxml Version => 2.9.4
+EXSLT => enabled
+libexslt Version => 0.8.17
+
+zip
+
+Zip => enabled
+Zip version => 1.13.5
+Libzip version => 1.1.2
+
+zlib
+
+ZLib Support => enabled
+Stream Wrapper => compress.zlib://
+Stream Filter => zlib.inflate, zlib.deflate
+Compiled Version => 1.2.8
+Linked Version => 1.2.8
+
+Directive => Local Value => Master Value
+zlib.output_compression => Off => Off
+zlib.output_compression_level => -1 => -1
+zlib.output_handler => no value => no value
+
+Additional Modules
+
+Module Name
+			</div>
+		</div></div>
+
+
+		<div class="panel">
+		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP request</a></h2>
+
+		<div class="tracy-collapsed inner">
+			
+
+						<h3>$_GET</h3>
+						<p><i>empty</i></p>
+									<h3>$_POST</h3>
+						<p><i>empty</i></p>
+									<h3>$_COOKIE</h3>
+						<p><i>empty</i></p>
+								</div></div>
+
+
+		<div class="panel">
+		<h2><a data-tracy-ref="^+" class="tracy-toggle tracy-collapsed">HTTP response</a></h2>
+
+		<div class="tracy-collapsed inner">
+			<h3>Headers</h3>
+						<p><i>no headers</i></p>
+					</div></div>
+
+
+		
+
+		<ul>
+			<li>Report generated at 2018/01/27 13:56:51</li>
+			<li>CLI (PID: 14452): C:\http\paranoiq\dogma\bin\/../vendor/spell-checker/spell-checker/spell-checker --config C:\http\paranoiq\dogma/build/spell-checker/spell-checker.neon --maxErrors 100</li>
+			<li>PHP 7.1.4</li><li>Tracy 2.4.10</li>		</ul>
+
+		<div id="tracy-bs-logo"><a href="https://tracy.nette.org" rel="noreferrer"></a></div>
+	</div>
+</div>
+
+<script>
+(function() {
+	if (!document.documentElement.dataset) {
+		document.getElementById('tracy-bs-error').innerHTML += '<div id=tracy-bs-ie-warning>Warning: Tracy requires IE 11+<\/div>';
+		return;
+	}
+	/**
+ * This file is part of the Tracy (https://tracy.nette.org)
+ */
+
+(function() {
+	Tracy = window.Tracy || {};
+
+	Tracy.Toggle = Tracy.Toggle || {};
+
+	// enables <a class="tracy-toggle" href="#"> or <span data-tracy-ref="#"> toggling
+	Tracy.Toggle.init = function() {
+		document.documentElement.addEventListener('click', function(e) {
+			var el = Tracy.closest(e.target, '.tracy-toggle');
+			if (el && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
+				Tracy.Toggle.toggle(el);
+			}
+		});
+		this.init = function() {};
+	};
+
+
+	// changes element visibility
+	Tracy.Toggle.toggle = function(el, show) {
+		var collapsed = el.classList.contains('tracy-collapsed'),
+			ref = el.getAttribute('data-tracy-ref') || el.getAttribute('href', 2),
+			dest = el;
+
+		if (typeof show === 'undefined') {
+			show = collapsed;
+		} else if (!show === collapsed) {
+			return;
+		}
+
+		if (!ref || ref === '#') {
+			ref = '+';
+		} else if (ref.substr(0, 1) === '#') {
+			dest = document;
+		}
+		ref = ref.match(/(\^\s*([^+\s]*)\s*)?(\+\s*(\S*)\s*)?(.*)/);
+		dest = ref[1] ? Tracy.closest(dest.parentNode, ref[2]) : dest;
+		dest = ref[3] ? Tracy.closest(dest.nextElementSibling, ref[4], 'nextElementSibling') : dest;
+		dest = ref[5] ? dest.querySelector(ref[5]) : dest;
+
+		el.classList.toggle('tracy-collapsed', !show);
+		dest.classList.toggle('tracy-collapsed', !show);
+
+		if (typeof window.Event === 'function') {
+			var toggleEvent = new Event('tracy-toggle', {bubbles: true});
+		} else {
+			toggleEvent = document.createEvent('Event');
+			toggleEvent.initEvent('tracy-toggle', true, false);
+		}
+		el.dispatchEvent(toggleEvent);
+	};
+
+
+	// save & restore toggles
+	Tracy.Toggle.persist = function(baseEl, restore) {
+		var saved = [];
+		baseEl.addEventListener('tracy-toggle', function(e) {
+			if (saved.indexOf(e.target) < 0) {
+				saved.push(e.target);
+			}
+		});
+
+		var toggles = JSON.parse(sessionStorage.getItem('tracy-toggles-' + baseEl.id));
+		if (toggles && restore !== false) {
+			toggles.forEach(function(item) {
+				var el = baseEl;
+				for (var i in item.path) {
+					if (!(el = el.children[item.path[i]])) {
+						return;
+					}
+				}
+				if (el.textContent === item.text) {
+					Tracy.Toggle.toggle(el, item.show);
+				}
+			});
+		}
+
+		window.addEventListener('unload', function() {
+			toggles = [].map.call(saved, function(el) {
+				var item = {path: [], text: el.textContent, show: !el.classList.contains('tracy-collapsed')};
+				do {
+					item.path.unshift([].indexOf.call(el.parentNode.children, el));
+					el = el.parentNode;
+				} while (el && el !== baseEl);
+				return item;
+			});
+			sessionStorage.setItem('tracy-toggles-' + baseEl.id, JSON.stringify(toggles));
+		});
+	};
+
+
+	// finds closing maching element
+	Tracy.closest = function(el, selector, func) {
+		var matches = el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector;
+		while (el && selector && !(el.nodeType === 1 && matches.call(el, selector))) {
+			el = el[func || 'parentNode'];
+		}
+		return el;
+	};
+
+})();
+	/**
+ * This file is part of the Tracy (https://tracy.nette.org)
+ */
+
+(function() {
+	var COLLAPSE_COUNT = 7,
+		COLLAPSE_COUNT_TOP = 14;
+
+	Tracy = window.Tracy || {};
+
+	Tracy.Dumper = Tracy.Dumper || {};
+
+	Tracy.Dumper.init = function(repository, context) {
+		if (repository) {
+			[].forEach.call((context || document).querySelectorAll('.tracy-dump[data-tracy-dump]'), function(el) {
+				try {
+					el.appendChild(build(JSON.parse(el.getAttribute('data-tracy-dump')), repository, el.classList.contains('tracy-collapsed')));
+					el.classList.remove('tracy-collapsed');
+					el.removeAttribute('data-tracy-dump');
+				} catch (e) {
+					if (!(e instanceof UnknownEntityException)) {
+						throw e;
+					}
+				}
+			});
+		}
+
+		if (this.inited) {
+			return;
+		}
+		this.inited = true;
+
+		// enables <span data-tracy-href=""> & ctrl key
+		document.documentElement.addEventListener('click', function(e) {
+			var el;
+			if (e.ctrlKey && (el = Tracy.closest(e.target, '[data-tracy-href]'))) {
+				location.href = el.getAttribute('data-tracy-href');
+				return false;
+			}
+		});
+
+		Tracy.Toggle.init();
+	};
+
+
+	var build = function(data, repository, collapsed, parentIds) {
+		var type = data === null ? 'null' : typeof data,
+			collapseCount = typeof collapsed === 'undefined' ? COLLAPSE_COUNT_TOP : COLLAPSE_COUNT;
+
+		if (type === 'null' || type === 'string' || type === 'number' || type === 'boolean') {
+			data = type === 'string' ? '"' + data + '"' : (data + '');
+			return createEl(null, null, [
+				createEl(
+					'span',
+					{'class': 'tracy-dump-' + type.replace('ean', '')},
+					[data + '\n']
+				)
+			]);
+
+		} else if (Array.isArray(data)) {
+			return buildStruct(
+				[
+					createEl('span', {'class': 'tracy-dump-array'}, ['array']),
+					' (' + (data[0] && data.length || '') + ')'
+				],
+				' [ ... ]',
+				data[0] === null ? null : data,
+				collapsed === true || data.length >= collapseCount,
+				repository,
+				parentIds
+			);
+
+		} else if (type === 'object' && data.number) {
+			return createEl(null, null, [
+				createEl('span', {'class': 'tracy-dump-number'}, [data.number + '\n'])
+			]);
+
+		} else if (type === 'object' && data.type) {
+			return createEl(null, null, [
+				createEl('span', null, [data.type + '\n'])
+			]);
+
+		} else if (type === 'object') {
+			var id = data.object || data.resource,
+				object = repository[id];
+
+			if (!object) {
+				throw new UnknownEntityException;
+			}
+			parentIds = parentIds || [];
+			var recursive = parentIds.indexOf(id) > -1;
+			parentIds.push(id);
+
+			return buildStruct(
+				[
+					createEl('span', {
+						'class': data.object ? 'tracy-dump-object' : 'tracy-dump-resource',
+						title: object.editor ? 'Declared in file ' + object.editor.file + ' on line ' + object.editor.line : null,
+						'data-tracy-href': object.editor ? object.editor.url : null
+					}, [object.name]),
+					' ',
+					createEl('span', {'class': 'tracy-dump-hash'}, ['#' + id])
+				],
+				' { ... }',
+				object.items,
+				collapsed === true || recursive || (object.items && object.items.length >= collapseCount),
+				repository,
+				parentIds
+			);
+		}
+	};
+
+
+	var buildStruct = function(span, ellipsis, items, collapsed, repository, parentIds) {
+		var res, toggle, div, handler;
+
+		if (!items || !items.length) {
+			span.push(!items || items.length ? ellipsis + '\n' : '\n');
+			return createEl(null, null, span);
+		}
+
+		res = createEl(null, null, [
+			toggle = createEl('span', {'class': collapsed ? 'tracy-toggle tracy-collapsed' : 'tracy-toggle'}, span),
+			'\n',
+			div = createEl('div', {'class': collapsed ? 'tracy-collapsed' : ''})
+		]);
+
+		if (collapsed) {
+			toggle.addEventListener('tracy-toggle', handler = function() {
+				toggle.removeEventListener('tracy-toggle', handler);
+				createItems(div, items, repository, parentIds);
+			});
+		} else {
+			createItems(div, items, repository, parentIds);
+		}
+		return res;
+	};
+
+
+	var createEl = function(el, attrs, content) {
+		if (!(el instanceof Node)) {
+			el = el ? document.createElement(el) : document.createDocumentFragment();
+		}
+		for (var id in attrs || {}) {
+			if (attrs[id] !== null) {
+				el.setAttribute(id, attrs[id]);
+			}
+		}
+		content = content || [];
+		for (id = 0; id < content.length; id++) {
+			var child = content[id];
+			if (child !== null) {
+				el.appendChild(child instanceof Node ? child : document.createTextNode(child));
+			}
+		}
+		return el;
+	};
+
+
+	var createItems = function(el, items, repository, parentIds) {
+		for (var i = 0; i < items.length; i++) {
+			var vis = items[i][2];
+			createEl(el, null, [
+				createEl('span', {'class': 'tracy-dump-key'}, [items[i][0]]),
+				vis ? ' ' : null,
+				vis ? createEl('span', {'class': 'tracy-dump-visibility'}, [vis === 1 ? 'protected' : 'private']) : null,
+				' => ',
+				build(items[i][1], repository, null, parentIds)
+			]);
+		}
+	};
+
+	var UnknownEntityException = function() {};
+
+})();
+	/**
+ * This file is part of the Tracy (https://tracy.nette.org)
+ */
+
+(function(){
+	Tracy = window.Tracy || {};
+
+	var BlueScreen = Tracy.BlueScreen = {},
+		inited;
+
+	BlueScreen.init = function(ajax) {
+		var blueScreen = document.getElementById('tracy-bs');
+
+		for (var i = 0, styles = []; i < document.styleSheets.length; i++) {
+			var style = document.styleSheets[i];
+			if (!style.ownerNode.classList.contains('tracy-debug')) {
+				style.oldDisabled = style.disabled;
+				style.disabled = true;
+				styles.push(style);
+			}
+		}
+
+		document.getElementById('tracy-bs-toggle').addEventListener('tracy-toggle', function() {
+			var collapsed = this.classList.contains('tracy-collapsed');
+			for (i = 0; i < styles.length; i++) {
+				styles[i].disabled = collapsed ? styles[i].oldDisabled : true;
+			}
+		});
+
+		if (!ajax) {
+			document.body.appendChild(blueScreen);
+			var id = location.href + document.getElementById('tracy-bs-error').textContent;
+			Tracy.Toggle.persist(blueScreen, sessionStorage.getItem('tracy-toggles-bskey') === id);
+			sessionStorage.setItem('tracy-toggles-bskey', id);
+		}
+
+		if (inited) {
+			return;
+		}
+		inited = true;
+
+		// enables toggling via ESC
+		document.addEventListener('keyup', function(e) {
+			if (e.keyCode === 27 && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) { // ESC
+				Tracy.Toggle.toggle(document.getElementById('tracy-bs-toggle'));
+			}
+		});
+	};
+
+	BlueScreen.loadAjax = function(content, dumps) {
+		var ajaxBs = document.getElementById('tracy-bs');
+		if (ajaxBs) {
+			ajaxBs.parentNode.removeChild(ajaxBs);
+		}
+		document.body.insertAdjacentHTML('beforeend', content);
+		ajaxBs = document.getElementById('tracy-bs');
+		Tracy.Dumper.init(dumps, ajaxBs);
+		BlueScreen.init(true);
+		window.scrollTo(0, 0);
+	};
+
+})();
+})();
+</script>
+<script>
+Tracy && Tracy.Dumper.init({"01":{"name":"SpellChecker\\Word","editor":{"file":"C:\\http\\paranoiq\\dogma\\vendor\\spell-checker\\spell-checker\\src\\SpellChecker\\Word.php","line":5,"url":"editor:\/\/open\/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CWord.php&line=5"},"items":[["word","https",0],["block",null,0],["position",53,0],["rowNumber",3,0],["context","doc",0],["row",null,0]]},"02":{"name":"SpellChecker\\Parser\\PhpParser","editor":{"file":"C:\\http\\paranoiq\\dogma\\vendor\\spell-checker\\spell-checker\\src\\SpellChecker\\Parser\\PhpParser.php","line":7,"url":"editor:\/\/open\/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CParser%5CPhpParser.php&line=7"},"items":[["phpLexer",{"object":"03"},2],["defaultParser",{"object":"04"},2]]},"03":{"name":"SpellChecker\\Parser\\PhpLexer","editor":{"file":"C:\\http\\paranoiq\\dogma\\vendor\\spell-checker\\spell-checker\\src\\SpellChecker\\Parser\\PhpLexer.php","line":5,"url":"editor:\/\/open\/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CParser%5CPhpLexer.php&line=5"},"items":[["code","<?php\n\/**\n * This file is part of the Dogma library (https:\/\/github.com\/paranoiq\/dogma)\n *\n * Copyright (c) 2012 Vlasta Neubauer (@paranoiq)\n *\n * For ... ",1],["tokens",[[0,[null]],[1,[null]],[2,[null]],[3,[null]],[4,[null]],[5,[null]],[6,";"],[7,[null]],[8,[null]],[9,[null]],[10,[null]],[11,[null]],[12,"{"],[13,[null]],[14,[null]],[15,[null]],[16,[null]],[17,[null]],[18,[null]],[19,[null]],[20,";"],[21,[null]],[22,[null]],[23,[null]],[24,[null]],[25,[null]],[26,[null]],[27,[null]],[28,"="],[29,[null]],[30,[null]],[31,";"],[32,[null]],[33,[null]],[34,[null]],[35,[null]],[36,[null]],[37,[null]],[38,[null]],[39,"="],[40,[null]],[41,[null]],[42,";"],[43,[null]],[44,[null]],[45,[null]],[46,[null]],[47,[null]],[48,[null]],[49,[null]],[50,"="],[51,[null]],[52,[null]],[53,";"],[54,[null]],[55,[null]],[56,[null]],[57,[null]],[58,[null]],[59,[null]],[60,[null]],[61,"="],[62,[null]],[63,[null]],[64,";"],[65,[null]],[66,[null]],[67,[null]],[68,[null]],[69,[null]],[70,[null]],[71,[null]],[72,"="],[73,[null]],[74,[null]],[75,";"],[76,[null]],[77,[null]],[78,[null]],[79,[null]],[80,[null]],[81,[null]],[82,[null]],[83,"="],[84,[null]],[85,[null]],[86,[null]],[87,"*"],[88,[null]],[89,[null]],[90,";"],[91,[null]],[92,[null]],[93,[null]],[94,[null]],[95,[null]],[96,[null]],[97,[null]],[98,"="],[99,[null]],[100,[null]],[101,[null]],[102,[null]],[103,";"],[104,[null]],[105,[null]],[106,[null]],[107,[null]],[108,[null]],[109,[null]],[110,[null]],[111,[null]],[112,[null]],[113,[null]],[114,"("],[115,")"],[116,":"],[117,[null]],[118,[null]],[119,[null]],[120,"{"],[121,[null]],[122,[null]],[123,[null]],[124,"["],[125,[null]],[126,[null]],[127,[null]],[128,[null]],[129,","],[130,[null]],[131,[null]],[132,[null]],[133,[null]],[134,","],[135,[null]],[136,[null]],[137,[null]],[138,[null]],[139,","],[140,[null]],[141,[null]],[142,[null]],[143,[null]],[144,","],[145,[null]],[146,[null]],[147,[null]],[148,[null]],[149,","],[150,[null]],[151,"]"],[152,";"],[153,[null]],[154,"}"],[155,[null]],[156,[null]],[157,[null]],[158,[null]],[159,[null]],[160,[null]],[161,[null]],[162,[null]],[163,[null]],[164,[null]],[165,"("],[166,")"],[167,":"],[168,[null]],[169,[null]],[170,[null]],[171,"{"],[172,[null]],[173,[null]],[174,[null]],[175,"["],[176,[null]],[177,[null]],[178,[null]],[179,[null]],[180,","],[181,[null]],[182,[null]],[183,[null]],[184,[null]],[185,","],[186,[null]],[187,"]"],[188,";"],[189,[null]],[190,"}"],[191,[null]],[192,[null]],[193,[null]],[194,[null]],[195,[null]],[196,[null]],[197,[null]],[198,[null]],[199,[null]],[200,[null]],[201,"("],[202,[null]],[203,[null]],[204,[null]],[205,")"],[206,":"],[207,[null]],[208,[null]],[209,[null]],[210,"{"],[211,[null]],[212,[null]],[213,[null]],[214,"="],[215,[null]],[216,[null]],[217,[null]],[218,[null]],[219,"("],[220,")"],[221,";"],[222,[null]],[223,[null]],[224,[null]],[225,"("],[226,"!"],[227,[null]],[228,[null]],[229,[null]],[230,"("],[231,[null]],[232,","],[233,[null]],[234,[null]],[235,")"],[236,")"],[237,[null]],[238,"{"],[239,[null]],[240,[null]],[241,[null]],[242,[null]],[243,[null]],[244,[null]],[245,[null]],[246,[null]],[247,[null]],[248,"("],[249,[null]],[250,[null]],[251,[null]],[252,","],[253,[null]],[254,[null]],[255,","],[256,[null]],[257,[null]],[258,")"],[259,";"],[260,[null]],[261,"}"],[262,[null]],[263,"}"],[264,[null]],[265,[null]],[266,[null]],[267,[null]],[268,[null]],[269,[null]],[270,[null]],[271,[null]],[272,[null]],[273,[null]],[274,"("],[275,[null]],[276,[null]],[277,[null]],[278,")"],[279,":"],[280,[null]],[281,[null]],[282,[null]],[283,"{"],[284,[null]],[285,[null]],[286,[null]],[287,"="],[288,[null]],[289,[null]],[290,[null]],[291,[null]],[292,"("],[293,")"],[294,";"],[295,[null]],[296,[null]],[297,[null]],[298,"("],[299,"!"],[300,[null]],[301,[null]],[302,[null]],[303,"("],[304,[null]],[305,","],[306,[null]],[307,[null]],[308,")"],[309,")"],[310,[null]],[311,"{"],[312,[null]],[313,[null]],[314,[null]],[315,[null]],[316,[null]],[317,[null]],[318,[null]],[319,[null]],[320,[null]],[321,"("],[322,[null]],[323,[null]],[324,[null]],[325,","],[326,[null]],[327,[null]],[328,","],[329,[null]],[330,[null]],[331,")"],[332,";"],[333,[null]],[334,"}"],[335,[null]],[336,"}"],[337,[null]],[338,[null]],[339,[null]],[340,[null]],[341,[null]],[342,[null]],[343,[null]],[344,[null]],[345,[null]],[346,[null]],[347,"("],[348,[null]],[349,[null]],[350,[null]],[351,","],[352,[null]],[353,[null]],[354,[null]],[355,[null]],[356,[null]],[357,"="],[358,[null]],[359,[null]],[360,[null]],[361,[null]],[362,")"],[363,":"],[364,[null]],[365,[null]],[366,[null]],[367,"{"],[368,[null]],[369,[null]],[370,[null]],[371,"="],[372,[null]],[373,"["],[374,[null]],[375,[null]],[376,[null]],[377,[null]],[378,[null]],[379,[null]],[380,[null]],[381,"["],[382,[null]],[383,[null]],[384,[null]],[385,[null]],[386,[null]],[387,[null]],[388,[null]],[389,"["],[390,[null]],[391,","],[392,[null]],[393,[null]],[394,"]"],[395,","],[396,[null]],[397,[null]],[398,[null]],[399,[null]],[400,[null]],[401,[null]],[402,[null]],[403,"["],[404,[null]],[405,","],[406,[null]],[407,[null]],[408,"]"],[409,","],[410,[null]],[411,[null]],[412,[null]],[413,[null]],[414,[null]],[415,[null]],[416,[null]],[417,"["],[418,[null]],[419,","],[420,[null]],[421,[null]],[422,"]"],[423,","],[424,[null]],[425,[null]],[426,[null]],[427,[null]],[428,[null]],[429,[null]],[430,[null]],[431,"["],[432,[null]],[433,","],[434,[null]],[435,[null]],[436,"]"],[437,","],[438,[null]],[439,[null]],[440,[null]],[441,[null]],[442,[null]],[443,[null]],[444,[null]],[445,"["],[446,[null]],[447,","],[448,[null]],[449,[null]],[450,"]"],[451,","],[452,[null]],[453,[null]],[454,[null]],[455,"]"],[456,","],[457,[null]],[458,[null]],[459,[null]],[460,[null]],[461,[null]],[462,[null]],[463,[null]],[464,"["],[465,[null]],[466,[null]],[467,[null]],[468,[null]],[469,[null]],[470,[null]],[471,[null]],[472,"["],[473,"-"],[474,[null]],[475,","],[476,[null]],[477,[null]],[478,"]"],[479,","],[480,[null]],[481,[null]],[482,[null]],[483,[null]],[484,[null]],[485,[null]],[486,[null]],[487,"["],[488,"-"],[489,[null]],[490,","],[491,[null]],[492,[null]],[493,"]"],[494,","],[495,[null]],[496,[null]],[497,[null]],[498,[null]],[499,[null]],[500,[null]],[501,[null]],[502,"["],[503,"-"],[504,[null]],[505,","],[506,[null]],[507,[null]],[508,"]"],[509,","],[510,[null]],[511,[null]],[512,[null]],[513,[null]],[514,[null]],[515,[null]],[516,[null]],[517,"["],[518,"-"],[519,[null]],[520,","],[521,[null]],[522,[null]],[523,"]"],[524,","],[525,[null]],[526,[null]],[527,[null]],[528,[null]],[529,[null]],[530,[null]],[531,[null]],[532,"["],[533,[null]],[534,","],[535,[null]],[536,[null]],[537,"]"],[538,","],[539,[null]],[540,"]"],[541,","],[542,[null]],[543,"]"],[544,";"],[545,[null]],[546,[null]],[547,[null]],[548,[null]],[549,"["],[550,[null]],[551,"]"],[552,"["],[553,[null]],[554,"]"],[555,";"],[556,[null]],[557,"}"],[558,[null]],[559,"}"]],1],["pos",560,1],["line",101,1],["filePos",2602,1],["prevCloseTagHasNewline",true,1],["tokenMap",[[258,261],[259,260],[260,259],[261,258],[262,257],[263,262],[264,263],[265,264],[266,265],[267,266],[268,267],[269,268],[270,280],[271,279],[272,278],[273,277],[274,276],[275,275],[276,274],[277,273],[278,272],[279,271],[280,270],[281,269],[282,281],[283,282],[284,283],[285,288],[286,287],[287,286],[288,285],[289,284],[290,290],[291,289],[292,292],[293,291],[294,293],[295,302],[296,301],[297,300],[298,299],[299,298],[300,297],[301,296],[302,295],[303,294],[304,303],[305,305],[306,304],[308,308],[309,309],[310,310],[311,355],[312,354],[313,353],[314,352],[315,351],[316,350],[317,311],[318,312],[319,313],[320,315],[321,317],[322,320],[323,321],[324,314],[325,316],[326,306],[327,307],[328,322],[329,323],[330,324],[331,325],[332,326],[333,327],[334,328],[335,329],[336,330],[337,331],[338,332],[339,333],[340,334],[341,335],[342,336],[343,337],[344,338],[345,339],[346,340],[347,341],[348,342],[349,343],[350,344],[351,345],[352,346],[353,347],[354,348],[355,349],[356,356],[357,357],[358,358],[359,359],[360,360],[361,361],[362,362],[363,363],[364,364],[365,365],[366,366],[367,367],[368,368],[369,369],[370,374],[371,375],[372,389],[373,370],[374,371],[375,372],[376,373],[377,376],[378,377],[379,378],[380,322],[381,59],[382,381],[383,382],[384,383],[385,384],[386,385],[387,386],[388,387],[389,388],[390,390],[391,391]],1],["dropTokens",[[315,1],[275,1],[368,1],[298,1],[338,1],[284,1],[283,1],[296,1],[343,1],[369,1],[341,1],[350,1],[361,1],[373,1],[305,1],[381,1],[277,1],[347,1],[344,1],[386,1],[302,1],[336,1],[342,1],[372,1],[278,1],[318,1],[329,1],[385,1],[268,1],[300,1],[387,1],[328,1],[391,1],[309,1],[308,1],[359,1],[337,1],[333,1],[335,1],[310,1],[340,1],[331,1],[384,1],[260,1],[326,1],[364,1],[371,1],[314,1],[351,1],[332,1],[334,1],[346,1],[376,1],[355,1],[345,1],[327,1],[365,1],[303,1],[262,1],[261,1],[294,1],[354,1],[301,1],[363,1],[358,1],[289,1],[290,1],[287,1],[288,1],[286,1],[291,1],[285,1],[370,1],[367,1],[317,1],[265,1],[263,1],[264,1],[375,1],[280,1],[276,1],[279,1],[388,1],[389,1],[390,1],[306,1],[325,1],[297,1],[366,1],[379,1],[380,1],[274,1],[281,1],[304,1],[270,1],[266,1],[313,1],[311,1],[312,1],[259,1],[258,1],[348,1],[293,1],[272,1],[292,1],[271,1],[316,1],[299,1],[339,1],[352,1],[362,1],[374,1],[349,1],[357,1],[295,1],[353,1],[356,1],[330,1],[382,1],[273,1],[267,1],[269,1]],1],["usedAttributes",[["startLine",true],["startFilePos",true]],1]]},"04":{"name":"SpellChecker\\Parser\\DefaultParser","editor":{"file":"C:\\http\\paranoiq\\dogma\\vendor\\spell-checker\\spell-checker\\src\\SpellChecker\\Parser\\DefaultParser.php","line":7,"url":"editor:\/\/open\/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CParser%5CDefaultParser.php&line=7"},"items":[["exceptions",[[0,"PHPUnit"]],2]]},"05":{"name":"Closure","editor":{"file":"C:\\http\\paranoiq\\dogma\\vendor\\spell-checker\\spell-checker\\src\\SpellChecker\\SpellCheckerApplication.php","line":96,"url":"editor:\/\/open\/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CSpellCheckerApplication.php&line=96"},"items":[["file","C:\\http\\paranoiq\\dogma\\vendor\\spell-checker\\spell-checker\\src\\SpellChecker\\SpellCheckerApplication.php",0],["line",96,0],["variables",[],0],["parameters","$fileName",0]]},"06":{"name":"Dogma\\Tools\\Configurator","editor":{"file":"C:\\http\\paranoiq\\dogma\\vendor\\spell-checker\\spell-checker\\src\\Configurator.php","line":15,"url":"editor:\/\/open\/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CConfigurator.php&line=15"},"items":[["arguments",[[0,"Configuration:"],["config",[[0,"c"],[1,"values"],[2,"configuration files"],[3,"paths"]]],["memoryLimit",[[0,"m"],[1,"value"],[2,"memory limit"]]],["use",[[0,""],[1,"values"],[2,"configuration profiles to use"],[3,"profiles"]]],["debug",[[0,""],[1,"flag"],[2,"show debug info"]]],[1,"File selection:"],["baseDir",[[0,"b"],[1,"value"],[2,"base directory for relative paths"],[3,"path"]]],["files",[[0,"f"],[1,"values"],[2,"files to check"],[3,"paths"]]],["directories",[[0,"d"],[1,"values"],[2,"directories to check"],[3,"paths"]]],["extensions",[[0,"e"],[1,"values"],[2,"file extensions to check"],[3,"extensions"]]],[2,"Dictionaries:"],["dictionaries",[[0,"D"],[1,"values"],[2,"dictionaries to use on all files"],[3,"list"]]],["dictionariesByFileName",[[0,"n"],[1,"values"],[2,"file name pattern -> list of dictionaries"],[3,"map"]]],["dictionariesByFileExtension",[[0,"x"],[1,"values"],[2,"file extension -> list of dictionaries"],[3,"map"]]],["dictionariesWithDiacritics",[[0,""],[1,"values"],[2,"dictionaries containing words with diacritics"],[3,"list"]]],["dictionaryDirectories",[[0,""],[1,"values"],[2,"paths to directories containing dictionaries"],[3,"paths"]]],[3,"Other:"],["localIgnores",[[0,""],[1,"values"],[2,"file name pattern -> list of locally ignored words"],[3,"map"]]],["checkLocalIgnores",[[0,""],[1,"flag"],[2,"check if all local exceptions are used"]]],["checkDictionaryFiles",[[0,""],[1,"flag"],[2,"check configured dictionary file for unused word"]]],["dictionaryFilesToCheck",[[0,""],[1,"values"],[2,"list of user dictionaries to check for unused words"],[3,"names"]]],["short",[[0,"s"],[1,"flag"],[2,"shorter output with only file and list of words"]]],["topWords",[[0,"t"],[1,"flag"],[2,"output list of top misspelled words"]]],["maxErrors",[[0,""],[1,"value"],[2,"maximum number of error before check stops"],[3,"number"]]],["wordsParserExceptions",[[0,""],[1,"values"],[2,"irregular words"],[3,"words"]]],[4,"Help:"],["help",[[0,"h"],[1,"flag-value"],[2,"show help"],[3,"command"]]],["license",[[0,""],[1,"flag"],[2,"show license"]]],[5,"CLI output:"],["noColors",[[0,"C"],[1,"flag"],[2,"without colors"]]],["noLogo",[[0,"L"],[1,"flag"],[2,"without logo"]]]],2],["defaults",[["config",[[0,"C:\/http\/paranoiq\/dogma\/vendor\/spell-checker\/spell-checker\/build\/spell-checker.neon"]]],["maxErrors",1000],["wordsParserExceptions",[[0,"PHPUnit"]]]],2],["values",[["config",[[0,"C:\\http\\paranoiq\\dogma\/build\/spell-checker\/spell-checker.neon"]]],["maxErrors",100],["memoryLimit",null],["use",null],["debug",null],["baseDir",null],["files",null],["directories",[[0,"build"],[1,"src"],[2,"tests"]]],["extensions",null],["dictionaries",null],["dictionariesByFileName",null],["dictionariesByFileExtension",[["php","en php custom"],["phpt","en php custom"],["neon","en custom"],["xml","en custom"],["properties","en"],["json","en"],["md","en"]]],["dictionariesWithDiacritics",null],["dictionaryDirectories",[[0,"build\/spell-checker\/dictionaries"],[1,"vendor\/spell-checker\/dictionary-en"]]],["localIgnores",null],["checkLocalIgnores",null],["checkDictionaryFiles",null],["dictionaryFilesToCheck",null],["short",null],["topWords",null],["wordsParserExceptions",null],["help",null],["license",null],["noColors",null],["noLogo",null]],2],["profiles",[],2]]},"07":{"name":"SpellChecker\\NoDictionaryFileFoundException","editor":{"file":"C:\\http\\paranoiq\\dogma\\vendor\\spell-checker\\spell-checker\\src\\SpellChecker\\Dictionary\\exceptions\\NoDictionaryFileFoundException.php","line":5,"url":"editor:\/\/open\/?file=C%3A%5Chttp%5Cparanoiq%5Cdogma%5Cvendor%5Cspell-checker%5Cspell-checker%5Csrc%5CSpellChecker%5CDictionary%5Cexceptions%5CNoDictionaryFileFoundException.php&line=5"},"items":[["dictionary","php",2],["message","No dictionary files found for dictionary name \"php\".",1],["string","",2],["code",0,1],["file","C:\\http\\paranoiq\\dogma\\vendor\\spell-checker\\spell-checker\\src\\SpellChecker\\Dictionary\\DictionaryCollection.php",1],["line",176,1],["trace",[[0,[["file","C:\\http\\paranoiq\\dogma\\vendor\\spell-checker\\spell-checker\\src\\SpellChecker\\Dictionary\\DictionaryCollection.php"],["line",81],["function","createDictionary"],["class","SpellChecker\\Dictionary\\DictionaryCollection"],["type","->"],["args",[null]]]],[1,[["file","C:\\http\\paranoiq\\dogma\\vendor\\spell-checker\\spell-checker\\src\\SpellChecker\\Heuristic\\DictionarySearch.php"],["line",25],["function","contains"],["class","SpellChecker\\Dictionary\\DictionaryCollection"],["type","->"],["args",[null]]]],[2,[["file","C:\\http\\paranoiq\\dogma\\vendor\\spell-checker\\spell-checker\\src\\SpellChecker\\SpellChecker.php"],["line",218],["function","check"],["class","SpellChecker\\Heuristic\\DictionarySearch"],["type","->"],["args",[null]]]],[3,[["file","C:\\http\\paranoiq\\dogma\\vendor\\spell-checker\\spell-checker\\src\\SpellChecker\\SpellChecker.php"],["line",147],["function","checkString"],["class","SpellChecker\\SpellChecker"],["type","->"],["args",[null]]]],[4,[["file","C:\\http\\paranoiq\\dogma\\vendor\\spell-checker\\spell-checker\\src\\SpellChecker\\SpellChecker.php"],["line",93],["function","checkFile"],["class","SpellChecker\\SpellChecker"],["type","->"],["args",[null]]]],[5,[["file","C:\\http\\paranoiq\\dogma\\vendor\\spell-checker\\spell-checker\\src\\SpellChecker\\SpellCheckerApplication.php"],["line",99],["function","checkFiles"],["class","SpellChecker\\SpellChecker"],["type","->"],["args",[null]]]],[6,[["file","C:\\http\\paranoiq\\dogma\\vendor\\spell-checker\\spell-checker\\spell-checker.php"],["line",123],["function","run"],["class","SpellChecker\\SpellCheckerApplication"],["type","->"],["args",[null]]]],[7,[["file","C:\\http\\paranoiq\\dogma\\vendor\\spell-checker\\spell-checker\\spell-checker"],["line",3],["args",[null]],["function","require"]]]],2],["previous",null,2]]}});
+</script>
+<script>
+Tracy && Tracy.BlueScreen.init();
+</script>
+</body>
+</html>

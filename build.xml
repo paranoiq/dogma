@@ -15,6 +15,8 @@
     <property name="path.src" value="${path.root}/src"/>
     <property name="path.tester.executable" value="${path.bin}/tester"/>
     <property name="path.tests" value="${path.root}/tests"/>
+    <property name="path.spell-checker.config" value="${path.build}/spell-checker/spell-checker.neon"/>
+    <property name="path.spell-checker.executable" value="${path.bin}/spell-checker"/>
 
     <target name="check" depends="check-php"/>
 
@@ -62,6 +64,12 @@
             <arg value="5"/>
             <arg path="${path.src}"/>
             <arg path="${path.tests}"/>
+        </exec>
+    </target>
+
+    <target name="spell-check">
+        <exec executable="${path.spell-checker.executable}" logoutput="true" passthru="true" checkreturn="true">
+            <arg line="--config ${path.spell-checker.config} --maxErrors 100"/>
         </exec>
     </target>
 
