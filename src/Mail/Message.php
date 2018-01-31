@@ -7,6 +7,8 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
+// spell-check-ignore: te
+
 namespace Dogma\Mail;
 
 use Dogma\Io\File;
@@ -262,7 +264,7 @@ class Message
 
     /**
      * Find and decode encoded headers (format: =?charset?te?header?=)
-     * @param string[] $headers
+     * @param string[]|string[][] $headers
      */
     private function decodeHeaders(array &$headers): void
     {
@@ -382,7 +384,7 @@ class Message
     }
 
     /**
-     * Get attachment data as string or temporary File object (see File::$bigFileTreshold).
+     * Get attachment data as string or temporary File object.
      * @param string[] $part
      * @return string|\Dogma\Io\File
      */
@@ -402,16 +404,16 @@ class Message
                 return $this->decode($this->file->read($length), $encoding);
 
             } else {
-                $tmpFile = File::createTemporaryFile();
+                $temporaryFile = File::createTemporaryFile();
                 $that = $this;
 
-                $this->file->copyData(function ($chunk) use ($that, $tmpFile, $encoding) {
-                    $tmpFile->write($that->decode($chunk, $encoding));
+                $this->file->copyData(function ($chunk) use ($that, $temporaryFile, $encoding): void {
+                    $temporaryFile->write($that->decode($chunk, $encoding));
                 }, $start, $length);
 
-                $tmpFile->setPosition(0);
+                $temporaryFile->setPosition(0);
 
-                return $tmpFile;
+                return $temporaryFile;
             }
         }
     }

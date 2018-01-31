@@ -7,6 +7,8 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
+// spell-check-ignore: suf
+
 namespace Dogma;
 
 use Dogma\Language\Encoding;
@@ -144,7 +146,7 @@ class Type
                 default:
                     throw new \Dogma\InvalidArgumentException(sprintf(
                         'Unexpected or duplicate argument %s at position %d.',
-                        ExceptionValueFormater::format($arg),
+                        ExceptionValueFormatter::format($arg),
                         $i
                     ));
             }

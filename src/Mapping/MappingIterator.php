@@ -31,13 +31,7 @@ class MappingIterator implements \Iterator
     /** @var int */
     private $key = 0;
 
-    /**
-     * @param mixed[]|\Traversable $source
-     * @param \Dogma\Type $type
-     * @param \Dogma\Mapping\Mapper $mapper
-     * @param bool $reverse
-     */
-    public function __construct($source, Type $type, Mapper $mapper, bool $reverse = false)
+    public function __construct(iterable $source, Type $type, Mapper $mapper, bool $reverse = false)
     {
         if (is_array($source)) {
             $source = new ArrayIterator($source);

@@ -1,4 +1,5 @@
 <?php
+// spell-check-ignore: vsp lh
 
 namespace Dogma\Test\Http;
 

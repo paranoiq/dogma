@@ -9,7 +9,7 @@
 
 namespace Dogma\Database;
 
-/** System resources (RAM, disk, threads...) temporarily depleeted. */
+/** System resources (RAM, disk, threads...) temporarily depleted. */
 class InsufficientResourcesException extends \Dogma\Database\ResourcesException
 {
 

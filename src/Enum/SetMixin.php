@@ -20,7 +20,9 @@ trait SetMixin
 
     public function __toString(): string
     {
-        return sprintf('%s: %s', end(explode('\\', get_called_class())), implode(',', $this->values));
+        $classNameParts = explode('\\', get_called_class());
+
+        return sprintf('%s: %s', end($classNameParts), implode(',', $this->values));
     }
 
     /**

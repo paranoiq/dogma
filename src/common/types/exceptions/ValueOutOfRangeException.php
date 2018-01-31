@@ -22,17 +22,17 @@ class ValueOutOfRangeException extends \Dogma\InvalidValueException
     {
         if ($min === null) {
             \Dogma\Exception::__construct(
-                sprintf('Expected a value lower than %s. Value %s given.', $max, ExceptionValueFormater::format($value)),
+                sprintf('Expected a value lower than %s. Value %s given.', $max, ExceptionValueFormatter::format($value)),
                 $previous
             );
         } elseif ($max === null) {
             \Dogma\Exception::__construct(
-                sprintf('Expected a value higher than %s. Value %s given.', $min, ExceptionValueFormater::format($value)),
+                sprintf('Expected a value higher than %s. Value %s given.', $min, ExceptionValueFormatter::format($value)),
                 $previous
             );
         } else {
             \Dogma\Exception::__construct(
-                sprintf('Expected a value within the range of %s and %s. Value %s given.', $min, $max, ExceptionValueFormater::format($value)),
+                sprintf('Expected a value within the range of %s and %s. Value %s given.', $min, $max, ExceptionValueFormatter::format($value)),
                 $previous
             );
         }

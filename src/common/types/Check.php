@@ -135,13 +135,13 @@ final class Check
     }
 
     /**
-     * @param mixed[]|\Traversable $items
+     * @param iterable $items
      * @param string $type
      * @param int|float|null $valueMin
      * @param int|float|null $valueMax
      * @throws \Dogma\InvalidTypeException
      */
-    public static function itemsOfType($items, string $type, $valueMin = null, $valueMax = null): void
+    public static function itemsOfType(iterable $items, string $type, $valueMin = null, $valueMax = null): void
     {
         foreach ($items as &$value) {
             self::type($value, $type, $valueMin, $valueMax);
@@ -149,13 +149,13 @@ final class Check
     }
 
     /**
-     * @param mixed[]|\Traversable $items
+     * @param iterable $items
      * @param string[] $types
      * @param int|float|null $valueMin
      * @param int|float|null $valueMax
      * @throws \Dogma\InvalidTypeException
      */
-    public static function itemsOfTypes($items, array $types, $valueMin = null, $valueMax = null): void
+    public static function itemsOfTypes(iterable $items, array $types, $valueMin = null, $valueMax = null): void
     {
         foreach ($items as &$value) {
             self::types($value, $types, $valueMin, $valueMax);
@@ -550,9 +550,9 @@ final class Check
                 throw new \Dogma\ValueOutOfBoundsException($value, $type, $e);
             }
         } elseif ($type->isFloat() && $type->getSize() === BitSize::BITS_32) {
-            $len = strlen(rtrim(str_replace('.', '', $value), '0'));
+            $length = strlen(rtrim(str_replace('.', '', $value), '0'));
             // single precision float can handle up to 9 digits of precision
-            if ($len > 9) {
+            if ($length > 9) {
                 throw new \Dogma\ValueOutOfBoundsException($value, $type);
             }
         } elseif ($type->isString()) {

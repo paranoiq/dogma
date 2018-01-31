@@ -13,8 +13,8 @@ use Dogma\Time\Mapping\DateTimeHandler;
 use Dogma\Type;
 
 require_once __DIR__ . '/../bootstrap.php';
-require_once __DIR__ . '/ExportableTestClass.php';
-require_once __DIR__ . '/OuterTestClass.php';
+require_once __DIR__ . '/data/ExportableTestClass.php';
+require_once __DIR__ . '/data/OuterTestClass.php';
 
 $mapper = new Mapper(new StaticMappingContainer([]));
 

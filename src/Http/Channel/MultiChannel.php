@@ -19,15 +19,15 @@ class MultiChannel
     private $channels;
 
     /** @var string[] */
-    private $cids;
+    private $channelIds;
 
     /** @var int */
     private $lastIndex = -1;
 
-    /** @var string[][] (string $sjName => (string $cName => string $jobName)) */
+    /** @var string[][] (string $subJobName => (string $channelName => string $jobName)) */
     private $queue = [];
 
-    /** @var \Dogma\Http\Response[][] (string $jobName => (string $cName => \Dogma\Http\Response $response)) */
+    /** @var \Dogma\Http\Response[][] (string $jobName => (string $channelName => \Dogma\Http\Response $response)) */
     private $finished = [];
 
     /** @var callable */
@@ -50,24 +50,24 @@ class MultiChannel
         $this->channels = $channels;
 
         /** @var \Dogma\Http\Channel\Channel $channel */
-        foreach ($channels as $cName => $channel) {
-            $this->cids[spl_object_hash($channel)] = $cName;
-            $channel->setResponseHandler(function (Response $response, Channel $channel, string $sjName) {
-                $this->responseHandler($response, $channel, $sjName);
+        foreach ($channels as $channelName => $channel) {
+            $this->channelIds[spl_object_hash($channel)] = $channelName;
+            $channel->setResponseHandler(function (Response $response, Channel $channel, string $subJobName): void {
+                $this->responseHandler($response, $channel, $subJobName);
             });
         }
     }
 
-    public function responseHandler(Response $response, Channel $channel, string $sjName): void
+    public function responseHandler(Response $response, Channel $channel, string $subJobName): void
     {
-        $cid = spl_object_hash($channel);
-        $cName = $this->cids[$cid];
-        $jobName = $this->queue[$sjName][$cName];
-        $this->finished[$jobName][$cName] = $response;
+        $channelId = spl_object_hash($channel);
+        $channelName = $this->channelIds[$channelId];
+        $jobName = $this->queue[$subJobName][$channelName];
+        $this->finished[$jobName][$channelName] = $response;
 
-        unset($this->queue[$sjName][$cName]);
-        if (empty($this->queue[$sjName])) {
-            unset($this->queue[$sjName]);
+        unset($this->queue[$subJobName][$channelName]);
+        if (empty($this->queue[$subJobName])) {
+            unset($this->queue[$subJobName]);
         }
 
         if (count($this->finished[$jobName]) === count($this->channels)) {
@@ -171,8 +171,8 @@ class MultiChannel
             $subJobs = $this->dispatch($data);
         }
         foreach ($subJobs as $channel => $job) {
-            $sjName = $this->channels[$channel]->addJob($job, $context);
-            $this->queue[$sjName][$channel] = $name;
+            $subJobName = $this->channels[$channel]->addJob($job, $context);
+            $this->queue[$subJobName][$channel] = $name;
         }
 
         return $name;
@@ -205,8 +205,8 @@ class MultiChannel
             $jobs[$channel] = $this->channels[$channel]->runJob($job, $context, null);
         }
         $responses = [];
-        foreach ($jobs as $channel => $sjName) {
-            $responses[$channel] = $this->channels[$channel]->fetch($sjName);
+        foreach ($jobs as $channel => $subJobName) {
+            $responses[$channel] = $this->channels[$channel]->fetch($subJobName);
         }
         return $responses;
     }
@@ -256,10 +256,10 @@ class MultiChannel
         }
 
         // seek sub-jobs
-        foreach ($this->queue as $sjName => $a) {
-            foreach ($a as $cName => $jobName) {
+        foreach ($this->queue as $subJobName => $channel) {
+            foreach ($channel as $channelName => $jobName) {
                 if ($jobName === $name) {
-                    $this->responseHandler($this->channels[$cName]->fetch($sjName), $this->channels[$cName], $sjName);
+                    $this->responseHandler($this->channels[$channelName]->fetch($subJobName), $this->channels[$channelName], $subJobName);
                 }
             }
         }
@@ -318,7 +318,7 @@ class MultiChannel
             return $data;
 
         } else {
-            throw new \DOgma\Http\Channel\ChannelException('Illegal job data. Job data can be either string or array.');
+            throw new \Dogma\Http\Channel\ChannelException('Illegal job data. Job data can be either string or array.');
         }
 
         return $jobs;

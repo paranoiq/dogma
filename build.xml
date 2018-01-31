@@ -12,13 +12,15 @@
     <property name="path.phpstan.executable" value="${path.bin}/phpstan"/>
     <property name="path.phpstan.config" value="${path.build}/phpstan/phpstan.neon"/>
     <property name="path.root" value="${project.basedir}"/>
+    <property name="path.spell-checker.executable" value="${path.bin}/spell-checker"/>
+    <property name="path.spell-checker.config" value="${path.build}/spell-checker/spell-checker.neon"/>
     <property name="path.src" value="${path.root}/src"/>
     <property name="path.tester.executable" value="${path.bin}/tester"/>
     <property name="path.tests" value="${path.root}/tests"/>
 
     <target name="check" depends="check-php"/>
 
-    <target name="check-php" depends="phplint,phpcs,tests,phpstan"/>
+    <target name="check-php" depends="phplint,phpcs,tests,phpstan,spell-check"/>
 
     <target name="composer">
         <exec executable="${path.composer.executable}" logoutput="true" passthru="true" checkreturn="true">
@@ -72,6 +74,14 @@
             <arg path="${path.tests}"/>
             <arg path="--colors"/>
             <arg path="1"/>
+        </exec>
+    </target>
+
+    <target name="spell-check">
+        <exec executable="${path.spell-checker.executable}" logoutput="true" passthru="true" checkreturn="true">
+            <arg line="-L --config ${path.spell-checker.config}"/>
+            <arg line="--checkDictionaryFiles"/>
+            <arg line="--memoryLimit 1024M"/>
         </exec>
     </target>
 

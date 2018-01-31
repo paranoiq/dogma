@@ -42,6 +42,7 @@ class ArrayHandler implements \Dogma\Mapping\Type\Handler
      */
     public function createInstance(Type $type, $items, Mapper $mapper): array
     {
+        /** @var \Dogma\Type $itemType */
         $itemType = $type->getItemType();
         if ($itemType !== null && $itemType->getName() !== Type::MIXED) {
             $array = [];

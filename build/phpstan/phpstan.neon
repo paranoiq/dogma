@@ -4,6 +4,7 @@ parameters:
         # strange
         - '~^Parameter #1 $value of static method Dogma\Math\Decimal\Decimal::parse() expects string, string|int|null given.~'
         - '~^Dogma\\.*Exception::__construct\(\) does not call parent constructor~' # skipping one ancestor
+        - '~^Call to function is_array\(\) will always evaluate to false~' # bullshit
 
         # misleading
         - '~^Parameter #1 $value of class Dogma\Math\Decimal\Decimal constructor expects string|int, int|string|Dogma\Math\Decimal\Decimal given.~' # if (!$x instanceof C)
@@ -11,13 +12,15 @@ parameters:
         - '~^Method Dogma\\Http\\DownloadRequest::execute\(\) should return Dogma\\Http\\FileResponse but returns Dogma\\Http\\Response.~' # guaranteed
         - '~^Parameter #1 $row of method Dogma\Datasheet\HtmlTableIterator::formatRow() expects Dogma\Dom\Element, Dogma\Dom\Element|DOMNode given.~' # guaranteed
 
-        # intentionally
-        - '~^Class Dogma\\Tests\\.*TestClass was not found while trying to analyse it~' # test internals - not autoloaded
-        - '~Array \(mixed\[\]\[\]\) does not accept callable.~'
-
         # missing dependencies
         - '~^Function mailparse_.* not found~'
 
         # wrong reflection. todo: send PR to phpstan
-        - '~^Access to an undefined property (DOMElement|DOMNode|DOMDocument|DOMCdataSection|DOMComment|DOMText|DOMAttr)::~'
         - '~^Method DOMXPath::registerPhpFunctions\(\) invoked with 1 parameter, 0 required~'
+
+        # interface
+        - '~^PHPDoc tag @return with type Dogma\\Language\\Locale\\LocaleCollationOption is not subtype of native type Dogma\\Enum\\StringEnum~'
+        - '~^Method Dogma\\IteratorHelper::iterableToIterator\(\) should return Iterator but returns iterable~'
+
+    excludes_analyse:
+        - */tests/*/data/*

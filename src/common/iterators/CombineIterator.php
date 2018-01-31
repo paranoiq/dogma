@@ -19,10 +19,6 @@ class CombineIterator implements \Iterator
     /** @var \Iterator */
     private $values;
 
-    /**
-     * @param mixed[]|\Traversable $keys
-     * @param mixed[]|\Traversable $values
-     */
     public function __construct(iterable $keys, iterable $values)
     {
         $this->keys = IteratorHelper::iterableToIterator($keys);

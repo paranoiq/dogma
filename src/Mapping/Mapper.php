@@ -43,24 +43,17 @@ class Mapper
         return $this->mappings->getMapping($type)->mapBack($data, $this);
     }
 
-    /**
-     * @param \Dogma\Type $type
-     * @param mixed[]|\Traversable $data
-     * @return \Traversable
-     */
-    public function mapMany(Type $type, $data): \Traversable
+    public function mapMany(Type $type, iterable $data): \Traversable
     {
         $iterator = new MappingIterator($data, $type->getItemType(), $this);
 
-        return $type->getInstance($iterator);
+        /** @var \Traversable $result */
+        $result = $type->getInstance($iterator);
+
+        return $result;
     }
 
-    /**
-     * @param \Dogma\Type $type
-     * @param mixed[]|\Traversable $data
-     * @return \Dogma\Mapping\MappingIterator
-     */
-    public function reverseMapMany(Type $type, $data): MappingIterator
+    public function reverseMapMany(Type $type, iterable $data): MappingIterator
     {
         return new MappingIterator($data, $type->getItemType(), $this, true);
     }

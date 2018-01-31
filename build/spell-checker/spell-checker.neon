@@ -1,0 +1,34 @@
+
+directories:
+	- build
+	- src
+	- tests
+	- //
+
+dictionariesByFileName:
+    *Country.php: skip
+    *ContentType.php: skip
+    *Currency.php: skip
+    *Language.php: skip
+    *LocaleNumbers.php: skip
+    *Inflector.php: skip
+    *ResourceType.php: skip
+    *Script.php: skip
+    *Sapi.php: skip
+    *Tld.php: skip
+    *UriScheme.php: skip
+    *WindowsError.php: skip
+
+dictionariesByFileExtension:
+    neon: en custom
+    php: en php html iso custom
+
+dictionaryDirectories:
+    - build/spell-checker
+    - vendor/spell-checker/spell-checker
+    - vendor/spell-checker/dictionary-en
+
+checkLocalIgnores: true
+
+dictionaryFilesToCheck:
+    - custom.dic

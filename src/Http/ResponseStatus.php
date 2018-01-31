@@ -7,6 +7,8 @@
  * For the full copyright and license information read the file 'license.md'; distributed with this source code
  */
 
+// spell-check-ignore: CONV REQD MALFORMAT RECV CRL PASV RETR PRET CSEQ STOR ACCEPTTIMOUT EPSV recv
+
 namespace Dogma\Http;
 
 use Dogma\Arr;
@@ -14,7 +16,6 @@ use Dogma\Check;
 
 /**
  * HTTP 1.1 response status codes and CURL error codes
- * @property-read $description
  */
 class ResponseStatus extends \Dogma\Enum\PartialIntEnum
 {
@@ -94,7 +95,7 @@ class ResponseStatus extends \Dogma\Enum\PartialIntEnum
 
 
     // system & CURL internals
-    public const FAILED_INIT           = 2;  // Very early initialization code failed. This is likely to be an internal error or problem; or a resource problem where something fundamental couldn't get done at init time.
+    public const FAILED_INIT           = 2;  // Very early initialization code failed. This is likely to be an internal error or problem; or a resource problem where something fundamental could not get done at init time.
     public const NOT_BUILT_IN          = 4;  // (CURLE_URL_MALFORMAT_USER) A requested feature; protocol or option was not found built-in in this libcurl due to a build-time decision. This means that a feature or option was not enabled or explicitly disabled when libcurl was built and in order to get it to function you have to get a rebuilt libcurl.
     public const OUT_OF_MEMORY         = 27; // A memory allocation request failed. This is serious badness and things are severely screwed up if this ever occurs.
     public const HTTP_POST_ERROR       = 34; // This is an odd error that mainly occurs due to internal confusion.
@@ -107,11 +108,11 @@ class ResponseStatus extends \Dogma\Enum\PartialIntEnum
     // file system
     public const READ_ERROR            = 26; // There was a problem reading a local file or an error returned by the read callback.
     public const WRITE_ERROR           = 23; // An error occurred when writing received data to a local file; or an error was returned to libcurl from a write callback.
-    public const COULD_NOT_READ_FILE   = 37; // A file given with FILE:// couldn't be opened. Most likely because the file path doesn't identify an existing file. Did you check file permissions?
+    public const COULD_NOT_READ_FILE   = 37; // A file given with FILE:// could not be opened. Most likely because the file path does not identify an existing file. Did you check file permissions?
     public const FILE_SIZE_EXCEEDED    = 63; // Maximum file size exceeded.
 
     // user error
-    public const UNSUPPORTED_PROTOCOL  = 1;  // The URL you passed to libcurl used a protocol that this libcurl does not support. The support might be a compile-time option that you didn't use; it can be a misspelled protocol string or just a protocol libcurl has no code for.
+    public const UNSUPPORTED_PROTOCOL  = 1;  // The URL you passed to libcurl used a protocol that this libcurl does not support. The support might be a compile-time option that you did not use; it can be a misspelled protocol string or just a protocol libcurl has no code for.
     public const URL_MALFORMAT         = 3;  // The URL was not properly formatted.
     public const HTTP_RETURNED_ERROR   = 22; // (CURLE_HTTP_NOT_FOUND) This is returned if CURLOPT_FAILONERROR is set TRUE and the HTTP server returns an error code that is >= 400.
     public const BAD_DOWNLOAD_RESUME   = 36; // (CURLE_FTP_BAD_DOWNLOAD_RESUME) The download could not be resumed because the specified offset was out of the file boundary.
@@ -121,8 +122,8 @@ class ResponseStatus extends \Dogma\Enum\PartialIntEnum
     public const REMOTE_FILE_NOT_FOUND = 78; // The resource referenced in the URL does not exist.
 
     // network/socket
-    public const COULD_NOT_RESOLVE_PROXY = 5; // Couldn't resolve proxy. The given proxy host could not be resolved.
-    public const COULD_NOT_RESOLVE_HOST = 6; // Couldn't resolve host. The given remote host was not resolved.
+    public const COULD_NOT_RESOLVE_PROXY = 5; // Could not resolve proxy. The given proxy host could not be resolved.
+    public const COULD_NOT_RESOLVE_HOST = 6; // Could not resolve host. The given remote host was not resolved.
     public const COULD_NOT_CONNECT     = 7;  // Failed to connect() to host or proxy.
     public const INTERFACE_FAILED      = 45; // (CURLE_HTTP_PORT_FAILED) Interface error. A specified outgoing interface could not be used. Set which interface to use for outgoing connections' source IP address with CURLOPT_INTERFACE.
     public const SEND_ERROR            = 55; // Failed sending network data.
@@ -135,7 +136,7 @@ class ResponseStatus extends \Dogma\Enum\PartialIntEnum
     public const GOT_NOTHING           = 52; // Nothing was returned from the server; and under the circumstances; getting nothing is considered an error.
 
     // other
-    public const PARTIAL_FILE          = 18; // A file transfer was shorter or larger than expected. This happens when the server first reports an expected transfer size; and then delivers data that doesn't match the previously given size.
+    public const PARTIAL_FILE          = 18; // A file transfer was shorter or larger than expected. This happens when the server first reports an expected transfer size; and then delivers data that does not match the previously given size.
     public const OPERATION_TIMED_OUT   = 28; // (CURLE_OPERATION_TIMEOUTED) Operation timeout. The specified time-out period was reached according to the conditions.
     public const ABORTED_BY_CALLBACK   = 42; // Aborted by callback. A callback returned "abort" to libcurl.
     public const TOO_MANY_REDIRECTS    = 47; // Too many redirects. When following redirects; libcurl hit the maximum amount. Set your limit with CURLOPT_MAXREDIRS.
@@ -143,10 +144,10 @@ class ResponseStatus extends \Dogma\Enum\PartialIntEnum
     // SSL
     public const SSL_CONNECT_ERROR     = 35; // A problem occurred somewhere in the SSL/TLS handshake. You really want the error buffer and read the message there as it pinpoints the problem slightly more. Could be certificates (file formats; paths; permissions); passwords; and others.
     public const SSL_PEER_FAILED_VERIFICATION = 51; // (CURLE_SSL_PEER_CERTIFICATE) The remote server's SSL certificate or SSH md5 fingerprint was deemed not OK.
-    public const SSL_ENGINE_NOT_FOUND  = 53; // The specified crypto engine wasn't found.
+    public const SSL_ENGINE_NOT_FOUND  = 53; // The specified crypto engine was not found.
     public const SSL_ENGINE_SET_FAILED = 54; // Failed setting the selected SSL crypto engine as default!
     public const SSL_CERT_PROBLEM      = 58; // problem with the local client certificate.
-    public const SSL_CIPHER            = 59; // Couldn't use specified cipher.
+    public const SSL_CIPHER            = 59; // Could not use specified cipher.
     public const SSL_CA_CERT           = 60; // Peer certificate cannot be authenticated with known CA certificates.
     public const SSL_ENGINE_INIT_FAILED = 66; // Initiating the SSL Engine failed.
     public const SSL_CA_CERT_BAD_FILE  = 77; // Problem with reading the SSL CA cert (path? access rights?)

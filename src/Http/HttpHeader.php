@@ -7,6 +7,8 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
+// spell-check-ignore: SVC DNT TE TSV ATT PROTO Proto UIDH et te deviceid uidh ua att tsv dnt
+
 namespace Dogma\Http;
 
 class HttpHeader extends \Dogma\Enum\PartialStringEnum

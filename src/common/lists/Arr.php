@@ -27,10 +27,10 @@ class Arr
     }
 
     /**
-     * @param mixed[]|\Traversable $that
+     * @param iterable $that
      * @return mixed[]
      */
-    public static function toArray($that): array
+    public static function toArray(iterable $that): array
     {
         if (is_array($that)) {
             return $that;
@@ -1170,7 +1170,7 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed[]|\Traversable $values
+     * @param mixed[] $values
      * @return mixed[]
      */
     public static function appendAll(array $array, array $values): array

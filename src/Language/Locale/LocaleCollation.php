@@ -7,6 +7,8 @@
  * For the full copyright and license information read the file 'license.md'; distributed with this source code
  */
 
+// spell-check-ignore: big5han ducet DUCET eor EOR phonebook PHONEBOOK searchjl SEARCHJL UNIHAN unihan ZHUYIN zhuyin
+
 namespace Dogma\Language\Locale;
 
 class LocaleCollation extends \Dogma\Enum\StringEnum

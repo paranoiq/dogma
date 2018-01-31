@@ -143,12 +143,12 @@ class ChannelManager
     {
         while ($info = curl_multi_info_read($this->handler)) {
             $resourceId = (string) $info['handle'];
-            [$cid, $name, $request] = $this->resources[$resourceId];
-            $channel = & $this->channels[$cid];
+            [$channelId, $name, $request] = $this->resources[$resourceId];
+            $channel = & $this->channels[$channelId];
 
             $error = curl_multi_remove_handle($this->handler, $info['handle']);
             if ($error) {
-                throw new \DOgma\Http\Channel\ChannelException('CURL error when reading results: ' . CurlHelper::getCurlMultiErrorName($error), $error);
+                throw new \Dogma\Http\Channel\ChannelException('CURL error when reading results: ' . CurlHelper::getCurlMultiErrorName($error), $error);
             }
 
             $channel->jobFinished($name, $info, $request);
@@ -162,8 +162,8 @@ class ChannelManager
      */
     public function startJobs(): void
     {
-        while ($cid = $this->selectChannel()) {
-            $this->channels[$cid]->startJob();
+        while ($channelId = $this->selectChannel()) {
+            $this->channels[$channelId]->startJob();
         }
         $this->exec();
     }
@@ -179,8 +179,8 @@ class ChannelManager
 
         $selected = null;
         $ratio = PHP_INT_MIN;
-        foreach ($this->channels as $cid => &$channel) {
-            if ($selected === $cid) {
+        foreach ($this->channels as $channelId => &$channel) {
+            if ($selected === $channelId) {
                 continue;
             }
             if (!$channel->canStartJob()) {
@@ -191,7 +191,7 @@ class ChannelManager
                 - ($channel->getRunningJobCount() / $this->threadLimit);
 
             if ($channelRatio > $ratio) {
-                $selected = $cid;
+                $selected = $channelId;
                 $ratio = $channelRatio;
             }
         }
@@ -202,7 +202,7 @@ class ChannelManager
     /**
      * Save data for later use.
      * @param resource $resource
-     * @param \Dogma\Http\Channel $channel
+     * @param \Dogma\Http\Channel\Channel $channel
      * @param string|int $name
      * @param \Dogma\Http\Request $request
      */

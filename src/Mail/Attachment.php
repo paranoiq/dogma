@@ -11,15 +11,6 @@ namespace Dogma\Mail;
 
 use Dogma\Io\File;
 
-/**
- * Email Attachment
- *
- * @property-read $fileName
- * @property-read $contentType
- * @property-read $charset
- * @property-read $disposition
- * @property-read $length
- */
 class Attachment
 {
     use \Dogma\StrictBehaviorMixin;

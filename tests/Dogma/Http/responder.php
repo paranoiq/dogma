@@ -100,8 +100,8 @@ if (!empty($request['redir'])) {
         unset($request['redir']);
     }
 
-    $urlx = explode('?', $_SERVER['REQUEST_URI']);
-    $url = $urlx[0] . '?' . http_build_query($request);
+    $urlParts = explode('?', $_SERVER['REQUEST_URI']);
+    $url = $urlParts[0] . '?' . http_build_query($request);
     header($protocol . ' ' . 301, true, 301);
     header('Location: ' . $url);
     exit;

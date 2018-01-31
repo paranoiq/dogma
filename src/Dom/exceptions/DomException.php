@@ -12,9 +12,9 @@ namespace Dogma\Dom;
 class DomException extends \Dogma\Exception
 {
 
-    public function __construct(string $message, int $code = 0)
+    public function __construct(string $message, int $code = 0, ?\Throwable $previous = null)
     {
-        parent::__construct($message);
+        parent::__construct($message, $previous);
 
         $this->code = $code;
     }

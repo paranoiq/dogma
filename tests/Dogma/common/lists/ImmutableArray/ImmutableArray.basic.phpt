@@ -4,7 +4,6 @@ namespace Dogma\Tests\ImmutableArray;
 
 use Dogma\ArrayIterator;
 use Dogma\ImmutableArray;
-use Dogma\InvalidTypeException;
 use Dogma\ReverseArrayIterator;
 use Dogma\Tester\Assert;
 
@@ -22,9 +21,6 @@ Assert::same(ImmutableArray::create(1, 2, 3)->toArray(), [1, 2, 3]);
 Assert::same(ImmutableArray::from([1, 2, 3])->toArray(), [1, 2, 3]);
 Assert::same(ImmutableArray::from(new ImmutableArray([1, 2, 3]))->toArray(), [1, 2, 3]);
 Assert::same(ImmutableArray::from(new ArrayIterator([1, 2, 3]))->toArray(), [1, 2, 3]);
-Assert::throws(function () {
-    ImmutableArray::from('bullshit');
-}, InvalidTypeException::class);
 
 // combine()
 Assert::same(ImmutableArray::combine([1, 2, 3], [4, 5, 6])->toArray(), [1 => 4, 2 => 5, 3 => 6]);

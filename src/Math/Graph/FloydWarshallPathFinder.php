@@ -11,7 +11,7 @@ namespace Dogma\Math\Graph;
 
 /**
  * Floyd-Warshall algorithm for finding all shortest paths in oriented weighted graph.
- * All the hard work is done in constructor to enable serialisation and caching.
+ * All the hard work is done in constructor to enable serialization and caching.
  *
  * @see http://en.wikipedia.org/wiki/Floyd–Warshall_algorithm
  * @see https://github.com/pierre-fromager/PeopleFloydWarshall/blob/4731f8d1e6dd5e659f5945d03ddf8746a578a665/class/floyd-warshall.class.php

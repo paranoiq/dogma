@@ -7,6 +7,8 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
+// spell-check-ignore: maxmemory
+
 namespace Dogma\Io;
 
 use Dogma\Io\Filesystem\FileInfo;
@@ -258,12 +260,12 @@ class File implements \Dogma\Io\Path
             $this->setPosition(0);
         }
 
-        $str = '';
+        $result = '';
         while (!$this->endOfFileReached()) {
-            $str .= $this->read();
+            $result .= $this->read();
         }
 
-        return $str;
+        return $result;
     }
 
     public function write(string $data): void

@@ -15,9 +15,6 @@ use Dogma\Http\Response;
 
 /**
  * HTTP channel for multiple similar requests.
- *
- * todo: vyřešit možná nekonečné smyčky při čekání na odpověď
- * todo: vyřešit fetch() ze zapausovaného kanálu
  */
 class Channel
 {
@@ -301,15 +298,15 @@ class Channel
         $this->finished[$name] = $response;
 
         if ($this->errorHandler && $response->getStatus()->isError()) {
-            $this->errorHandler->invoke($response, $this, $name);
+            ($this->errorHandler)($response, $this, $name);
             unset($this->finished[$name]);
 
         } elseif ($this->redirectHandler && $response->getStatus()->isRedirect()) {
-            $this->redirectHandler->invoke($response, $this, $name);
+            ($this->redirectHandler)($response, $this, $name);
             unset($this->finished[$name]);
 
         } elseif ($this->responseHandler) {
-            $this->responseHandler->invoke($response, $this, $name);
+            ($this->responseHandler)($response, $this, $name);
             unset($this->finished[$name]);
         }
     }
@@ -338,7 +335,7 @@ class Channel
             $this->manager->read();
         }
 
-        // potentially endless loop, if something goes wrong (allways set request timeouts!)
+        // potentially endless loop, if something goes wrong (always set request timeouts!)
         /// add timeout or retries
         while (empty($this->finished)) {
             $this->manager->read();
@@ -369,7 +366,7 @@ class Channel
             $this->manager->read();
         }
 
-        // potentially endless loop, if something goes wrong (allways set request timeouts!)
+        // potentially endless loop, if something goes wrong (always set request timeouts!)
         /// add timeout or retries
         while (!isset($this->finished[$name])) {
             $this->manager->read();

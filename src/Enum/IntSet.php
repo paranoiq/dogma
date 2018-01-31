@@ -73,7 +73,7 @@ abstract class IntSet
     }
 
     /**
-     * Validates given value. Can also normalise the value, if needed.
+     * Validates given value. Can also normalize the value, if needed.
      *
      * @param int $value
      * @return bool

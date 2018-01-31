@@ -11,6 +11,7 @@ namespace Dogma\Dom;
 
 class Dumper
 {
+    use \Dogma\StaticClassMixin;
 
     /**
      * @param \Dogma\Dom\Element|\Dogma\Dom\NodeList|\DOMNode $node
@@ -52,8 +53,8 @@ class Dumper
             if ($depth === 0) {
                 echo "<b>Text:</b>\n";
             }
-            $str = preg_replace('/[ \\t]+/', ' ', trim($node->wholeText));
-            echo '<i>', $str, '</i>';
+            $string = preg_replace('/[ \\t]+/', ' ', trim($node->wholeText));
+            echo '<i>', $string, '</i>';
 
         } elseif ($node instanceof NodeList) {
             echo '<b>NodeList (', count($node), ")</b>\n";
@@ -73,7 +74,13 @@ class Dumper
         }
     }
 
-    private static function dumpElement(\DOMNode $node, int $maxDepth = 15, int $depth = 0, bool $onlyChild = false): void
+    /**
+     * @param \Dogma\Dom\Element|\DOMNode $node
+     * @param int $maxDepth
+     * @param int $depth
+     * @param bool $onlyChild
+     */
+    private static function dumpElement($node, int $maxDepth = 15, int $depth = 0, bool $onlyChild = false): void
     {
         if ($depth === 0) {
             echo "<b>Element:</b>\n";

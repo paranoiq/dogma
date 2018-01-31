@@ -16,7 +16,7 @@ interface Error
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
      * @return int
      */
-    public function getValue(); // compat with Enum
+    public function getValue(); // compatible with Enum
 
     public function getDescription(): string;
 

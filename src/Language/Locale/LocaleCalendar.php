@@ -7,6 +7,8 @@
  * For the full copyright and license information read the file 'license.md'; distributed with this source code
  */
 
+// spell-check-ignore: roc ROC
+
 namespace Dogma\Language\Locale;
 
 class LocaleCalendar extends \Dogma\Enum\StringEnum

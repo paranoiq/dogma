@@ -9,11 +9,6 @@
 
 namespace Dogma\Mail;
 
-/**
- * Mail address.
- * @property-read $address
- * @property-read $name
- */
 class Address
 {
     use \Dogma\StrictBehaviorMixin;

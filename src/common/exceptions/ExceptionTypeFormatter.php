@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-class ExceptionTypeFormater
+class ExceptionTypeFormatter
 {
     use \Dogma\StaticClassMixin;
 

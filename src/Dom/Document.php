@@ -109,9 +109,9 @@ class Document extends \DOMDocument
      */
     public function getElementById($id)
     {
-        $el = parent::getElementById($id);
+        $element = parent::getElementById($id);
 
-        return $el ? $this->wrap($el) : null;
+        return $element ? $this->wrap($element) : null;
     }
 
     /**

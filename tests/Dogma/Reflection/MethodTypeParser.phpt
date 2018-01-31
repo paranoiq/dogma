@@ -10,7 +10,7 @@ use Dogma\Tester\Assert;
 use Dogma\Type;
 
 require_once __DIR__ . '/../bootstrap.php';
-require_once __DIR__ . '/MethodTypeParserTestClass.php';
+require_once __DIR__ . '/data/MethodTypeParserTestClass.php';
 
 
 $parser = new MethodTypeParser();

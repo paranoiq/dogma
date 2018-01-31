@@ -79,7 +79,7 @@ class Request
     {
         if ($this->init !== null) {
             if (!($this->init)($this)) {
-                throw new \Dogma\Http\RequestException('Request initialisation failed!');
+                throw new \Dogma\Http\RequestException('Request initialization failed!');
             }
             $this->init = null;
         }
@@ -217,8 +217,8 @@ class Request
     public function setOption($name, $value): void
     {
         if (is_string($name)) {
-            $num = CurlHelper::getCurlOptionNumber($name);
-            if (is_null($num)) {
+            $number = CurlHelper::getCurlOptionNumber($name);
+            if (is_null($number)) {
                 throw new \Dogma\Http\RequestException(sprintf('Unknown CURL option \'%s\'!', $name));
             }
 
@@ -226,10 +226,10 @@ class Request
             throw new \Dogma\Http\RequestException('Option name must be a string or a CURLOPT_* constant!');
 
         } else {
-            $num = $name;
+            $number = $name;
         }
 
-        if (!curl_setopt($this->curl, $num, $value)) {
+        if (!curl_setopt($this->curl, $number, $value)) {
             throw new \Dogma\Http\RequestException('Invalid CURL option.');
         }
     }

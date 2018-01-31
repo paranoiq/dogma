@@ -1,7 +1,6 @@
 <?php
 
 use Dogma\Io\File;
-use Dogma\Mail\Address;
 use Dogma\Mail\Message;
 use Tracy\Debugger;
 
@@ -23,17 +22,17 @@ dump($mail->date);
 
 echo '<hr>';
 
-$att = $mail->getAttachments('text/plain');
-dump($att);
+$attributes = $mail->getAttachments('text/plain');
+dump($attributes);
 
 echo '<hr>';
 
 dump($mail->getHeaders());
 
-$addr = Address::parseHeader($mail->getHeader('cc'));
+//$address = Address::parseHeader($mail->getHeader('cc'));
 
 /*
 ob_end_clean();
 header("Content-Type: image/jpeg");
-echo $att[0]->getContent();
+echo $attributes[0]->getContent();
 */
