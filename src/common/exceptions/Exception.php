@@ -11,6 +11,7 @@ namespace Dogma;
 
 class Exception extends \Exception
 {
+    use StrictBehaviorMixin;
 
     public function __construct(string $message, ?\Throwable $previous = null)
     {

@@ -75,6 +75,6 @@ final class PowersOfTwo
     public const _512P = 576460752303423488;
     public const _1E = 1152921504606846976;
     public const _2E = 2305843009213693952;
-    public const _4E = 4611686018427387904; // 63
+    public const _4E = 4611686018427387904; // 62
 
 }
