@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * This file is part of the Dogma library (https://github.com/paranoiq/dogma)
  *
@@ -15,7 +15,7 @@ class Environment
 
     public static function isWindows(): bool
     {
-        return strstr(strtolower(PHP_OS), 'win');
+        return strstr(strtolower(PHP_OS), 'win') !== false;
     }
 
 }

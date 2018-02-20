@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 // spell-check-ignore: vsp lh
 
 namespace Dogma\Test\Http;

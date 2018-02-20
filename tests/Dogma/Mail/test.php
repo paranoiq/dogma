@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 use Dogma\Io\File;
 use Dogma\Mail\Message;
