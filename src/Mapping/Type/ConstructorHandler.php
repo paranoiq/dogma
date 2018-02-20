@@ -47,7 +47,7 @@ abstract class ConstructorHandler implements \Dogma\Mapping\Type\Handler
      * @param \Dogma\Mapping\Mapper $mapper
      * @return object
      */
-    public function createInstance(Type $type, $parameters, Mapper $mapper)
+    public function createInstance(Type $type, $parameters, Mapper $mapper): object
     {
         $orderedParams = [];
         foreach ($this->getParameters($type) as $name => $paramType) {

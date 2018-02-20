@@ -19,13 +19,14 @@
         <exclude name="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException"/><!-- conflicts with PhpStan and PhpException -->
         <exclude name="SlevomatCodingStandard.Classes.UnusedPrivateElements.UnusedMethod"/><!-- false positive on private method used by static constructor -->
 
-        <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing"/><!-- strict_type=1 less safe than implicit cast -->
         <exclude name="SlevomatCodingStandard.Types.EmptyLinesAroundTypeBraces.NoEmptyLineAfterOpeningBrace"/>
         <exclude name="SlevomatCodingStandard.Files.TypeNameMatchesFileName.NoMatchBetweenTypeNameAndFileName"/>
         <exclude name="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly.ReferenceViaFullyQualifiedName"/>
         <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions.NonFullyQualified"/>
         <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalConstants.NonFullyQualified"/>
         <exclude name="SlevomatCodingStandard.ControlStructures.RequireYodaComparison.RequiredYodaComparison"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.IncorrectWhitespaceBetweenOpenTagAndDeclare"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.IncorrectWhitespaceAfterDeclare"/>
 
         <exclude-pattern>testClass</exclude-pattern>
     </rule>

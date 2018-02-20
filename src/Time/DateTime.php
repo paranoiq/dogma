@@ -115,7 +115,7 @@ class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTi
             }
         }
 
-        return self::createFromDateTimeInterface(parent::setTime($time, $minutes, $seconds, $microseconds));
+        return self::createFromDateTimeInterface(parent::setTime((int) $time, (int) $minutes, (int) $seconds, (int) $microseconds));
     }
 
     public function compare(\DateTimeInterface $dateTime): int

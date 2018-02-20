@@ -36,7 +36,7 @@ class Collection extends \Dogma\ImmutableArray
      * @param object $object
      * @throws \Dogma\InvalidTypeException
      */
-    private function checkAccepted($object): void
+    private function checkAccepted(object $object): void
     {
         if (!$object instanceof $this->accepted) {
             throw new \Dogma\InvalidTypeException($this->accepted, get_class($object));

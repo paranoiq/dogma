@@ -32,7 +32,7 @@ class ExceptionValueFormatter
         } elseif (is_null($value)) {
             return 'NULL';
         } else { // integer, float
-            return $value;
+            return (string) $value;
         }
     }
 

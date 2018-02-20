@@ -358,7 +358,7 @@ class Type
             throw new \Dogma\InvalidTypeDefinitionException($id);
         }
         $match = Arr::padTo($match, 5, false);
-        [, $baseId, $params, $itemIds, $nullable] = $match;
+        list(, $baseId, $params, $itemIds, $nullable) = $match;
         $nullable = (bool) $nullable;
 
         $size = $specific = $encoding = $locale = null;
@@ -620,7 +620,7 @@ class Type
      * @param mixed ...$arguments
      * @return object
      */
-    public function getInstance(...$arguments)
+    public function getInstance(...$arguments): object
     {
         $className = $this->type;
 

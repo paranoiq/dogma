@@ -570,11 +570,11 @@ final class Check
     /**
      * Checks user defined range
      * @param mixed $value
-     * @param int|float $min
-     * @param int|float $max
+     * @param int|float|null $min
+     * @param int|float|null $max
      * @throws \Dogma\ValueOutOfRangeException
      */
-    public static function range($value, ?int $min = null, ?int $max = null): void
+    public static function range($value, $min = null, $max = null): void
     {
         if ($min !== null && $value < $min) {
             throw new \Dogma\ValueOutOfRangeException($value, $min, $max);

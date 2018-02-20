@@ -116,11 +116,11 @@ Assert::exception(function () use ($big) {
 }, ValueOutOfRangeException::class);
 
 Assert::exception(function () use ($small) {
-    Check::float($small, 0);
+    Check::float($small, 0.0);
 }, ValueOutOfRangeException::class);
 
 Assert::exception(function () use ($big) {
-    Check::float($big, 0, 10);
+    Check::float($big, 0.0, 10.0);
 }, ValueOutOfRangeException::class);
 
 $short = 'abc';

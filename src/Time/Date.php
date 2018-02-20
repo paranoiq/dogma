@@ -30,7 +30,7 @@ class Date implements \Dogma\NonIterable
         try {
             $this->dateTime = new \DateTime($dateString);
         } catch (\Throwable $e) {
-            throw new \Dogma\Time\InvalidDateTimeException($e);
+            throw new \Dogma\Time\InvalidDateTimeException($dateString, $e);
         }
     }
 

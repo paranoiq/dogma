@@ -38,7 +38,7 @@ class Time implements \Dogma\NonIterable
             try {
                 $dateTime = new \DateTime($time);
             } catch (\Throwable $e) {
-                throw new \Dogma\Time\InvalidDateTimeException($e);
+                throw new \Dogma\Time\InvalidDateTimeException($time, $e);
             }
             $hours = (int) $dateTime->format('h');
             $minutes = (int) $dateTime->format('i');

@@ -146,11 +146,10 @@ class Collator extends \Collator
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      * @param mixed[] $arr
-     * @param int|null $flags
      */
-    public function sortWithSortKeys(array &$arr, $flags = null): void
+    public function sortWithSortKeys(array &$arr): void
     {
-        parent::sortWithSortKeys($arr, $flags);
+        parent::sortWithSortKeys($arr);
         if ($this->backwards) {
             $arr = Arr::reverse($arr);
         }
