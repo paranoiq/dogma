@@ -1,7 +1,7 @@
 <?php declare(strict_types = 1);
 
+use Dogma\Email\EmailMessage;
 use Dogma\Io\File;
-use Dogma\Mail\Message;
 use Tracy\Debugger;
 
 ob_start();
@@ -14,7 +14,7 @@ Debugger::$maxDepth = 5;
 header('Content-Type: text/html; charset=utf-8');
 
 
-$mail = new Message(new File(__DIR__ . '/test.eml'));
+$mail = new EmailMessage(new File(__DIR__ . '/test.eml'));
 
 dump($mail);
 

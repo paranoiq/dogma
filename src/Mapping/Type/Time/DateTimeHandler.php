@@ -7,7 +7,7 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Time\Mapping;
+namespace Dogma\Mapping\Type\Time;
 
 use Dogma\Mapping\Mapper;
 use Dogma\Time\Date;
@@ -18,7 +18,7 @@ use Dogma\Type;
 /**
  * Creates Date/Time/DateTime instances from raw data and vice versa
  */
-class DateTimeHandler implements \Dogma\Mapping\Type\Handler
+class DateTimeHandler implements \Dogma\Mapping\Type\TypeHandler
 {
     use \Dogma\StrictBehaviorMixin;
 

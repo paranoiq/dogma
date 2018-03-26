@@ -7,7 +7,7 @@ use Dogma\Mapping\MappingStep;
 use Dogma\Mapping\MetaData\TypeMetaDataContainer;
 use Dogma\Mapping\Naming\ShortFieldNamingStrategy;
 use Dogma\Mapping\Type\ExportableHandler;
-use Dogma\Mapping\Type\Handler;
+use Dogma\Mapping\Type\TypeHandler;
 use Dogma\Mapping\Type\ScalarsHandler;
 use Dogma\Reflection\MethodTypeParser;
 use Dogma\Tester\Assert;
@@ -32,20 +32,20 @@ $steps = $mapping->getSteps();
 Assert::equal($steps[0], new MappingStep(
     Type::get(Type::INT),
     $scalarsHandler,
-    ['one' => Handler::SINGLE_PARAMETER],
+    ['one' => TypeHandler::SINGLE_PARAMETER],
     'one'
 ));
 Assert::equal($steps[1], new MappingStep(
     Type::get(Type::FLOAT),
     $scalarsHandler,
-    ['two' => Handler::SINGLE_PARAMETER],
+    ['two' => TypeHandler::SINGLE_PARAMETER],
     'two'
 ));
 Assert::equal($steps[2], new MappingStep(
     Type::get(ExportableTestClass::class),
     $exportableHandler,
     ['one' => 'one', 'two' => 'two'],
-    Handler::SINGLE_PARAMETER
+    TypeHandler::SINGLE_PARAMETER
 ));
 
 $mapping = $builder->buildMapping($outerType);
@@ -54,13 +54,13 @@ $steps = $mapping->getSteps();
 Assert::equal($steps[0], new MappingStep(
     Type::get(Type::INT),
     $scalarsHandler,
-    ['one' => Handler::SINGLE_PARAMETER],
+    ['one' => TypeHandler::SINGLE_PARAMETER],
     'three.one'
 ));
 Assert::equal($steps[1], new MappingStep(
     Type::get(Type::FLOAT),
     $scalarsHandler,
-    ['two' => Handler::SINGLE_PARAMETER],
+    ['two' => TypeHandler::SINGLE_PARAMETER],
     'three.two'
 ));
 Assert::equal($steps[2], new MappingStep(
@@ -72,12 +72,12 @@ Assert::equal($steps[2], new MappingStep(
 Assert::equal($steps[3], new MappingStep(
     Type::get(Type::STRING),
     $scalarsHandler,
-    ['four' => Handler::SINGLE_PARAMETER],
+    ['four' => TypeHandler::SINGLE_PARAMETER],
     'four'
 ));
 Assert::equal($steps[4], new MappingStep(
     Type::get(OuterTestClass::class),
     $exportableHandler,
     ['three' => 'three', 'four' => 'four'],
-    Handler::SINGLE_PARAMETER
+    TypeHandler::SINGLE_PARAMETER
 ));

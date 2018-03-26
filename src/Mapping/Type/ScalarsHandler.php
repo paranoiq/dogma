@@ -13,7 +13,7 @@ use Dogma\Check;
 use Dogma\Mapping\Mapper;
 use Dogma\Type;
 
-class ScalarsHandler implements \Dogma\Mapping\Type\Handler
+class ScalarsHandler implements \Dogma\Mapping\Type\TypeHandler
 {
 
     public function acceptsType(Type $type): bool

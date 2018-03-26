@@ -15,7 +15,7 @@ use Dogma\Type;
 /**
  * Creates an array containing specified items from raw data and vice versa
  */
-class ArrayHandler implements \Dogma\Mapping\Type\Handler
+class ArrayHandler implements \Dogma\Mapping\Type\TypeHandler
 {
     use \Dogma\StrictBehaviorMixin;
 
@@ -47,7 +47,7 @@ class ArrayHandler implements \Dogma\Mapping\Type\Handler
         if ($itemType !== null && $itemType->getName() !== Type::MIXED) {
             $array = [];
             foreach ($items as $item) {
-                $array[] = $mapper->map($itemType, [Handler::SINGLE_PARAMETER => $item]);
+                $array[] = $mapper->map($itemType, [TypeHandler::SINGLE_PARAMETER => $item]);
             }
             return $array;
         } else {

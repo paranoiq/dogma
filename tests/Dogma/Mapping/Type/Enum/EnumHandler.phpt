@@ -1,14 +1,15 @@
 <?php declare(strict_types = 1);
 
-namespace Dogma\Mapping\Type;
+namespace Dogma\Tests\Mapping\Type\Enum;
 
 use Dogma\Mapping\Mapper;
 use Dogma\Mapping\StaticMappingContainer;
+use Dogma\Mapping\Type\Enum\EnumHandler;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
 use Dogma\Type;
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 class TestEnum extends \Dogma\Enum\IntEnum
 {

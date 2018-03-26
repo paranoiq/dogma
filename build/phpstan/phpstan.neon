@@ -9,7 +9,7 @@ parameters:
         # misleading
         - '~^Parameter #1 $value of class Dogma\Math\Decimal\Decimal constructor expects string|int, int|string|Dogma\Math\Decimal\Decimal given.~' # if (!$x instanceof C)
         - '~^Method Dogma\Mapping\Type\TupleHandler::getParameters() should return Dogma\Type[] but returns Dogma\Type[]|Dogma\Type|null.~' # guaranteed
-        - '~^Method Dogma\\Http\\HttpDownloadRequest::execute\(\) should return Dogma\\Http\\FileResponse but returns Dogma\\Http\\Response.~' # guaranteed
+        - '~^Method Dogma\\Http\\HttpDownloadRequest::execute\(\) should return Dogma\\Http\\HttpFileResponse but returns Dogma\\Http\\HttpResponse.~' # guaranteed
         - '~^Parameter #1 $row of method Dogma\Datasheet\HtmlTableIterator::formatRow() expects Dogma\Dom\Element, Dogma\Dom\Element|DOMNode given.~' # guaranteed
 
         # missing dependencies

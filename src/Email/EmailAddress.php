@@ -7,9 +7,9 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Mail;
+namespace Dogma\Email;
 
-class Address
+class EmailAddress
 {
     use \Dogma\StrictBehaviorMixin;
 

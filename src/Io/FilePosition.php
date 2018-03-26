@@ -9,7 +9,7 @@
 
 namespace Dogma\Io;
 
-class Position extends \Dogma\Enum\IntEnum
+class FilePosition extends \Dogma\Enum\IntEnum
 {
 
     public const BEGINNING = SEEK_SET;

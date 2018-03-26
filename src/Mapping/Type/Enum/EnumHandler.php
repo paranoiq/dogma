@@ -7,7 +7,7 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Mapping\Type;
+namespace Dogma\Mapping\Type\Enum;
 
 use Dogma\Enum\IntEnum;
 use Dogma\Enum\StringEnum;
@@ -17,7 +17,7 @@ use Dogma\Type;
 /**
  * Creates an enum from raw value and vice versa
  */
-class EnumHandler implements \Dogma\Mapping\Type\Handler
+class EnumHandler implements \Dogma\Mapping\Type\TypeHandler
 {
     use \Dogma\StrictBehaviorMixin;
 

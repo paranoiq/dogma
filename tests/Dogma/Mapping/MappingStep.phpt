@@ -6,10 +6,10 @@ use Dogma\Mapping\Mapper;
 use Dogma\Mapping\MappingStep;
 use Dogma\Mapping\StaticMappingContainer;
 use Dogma\Mapping\Type\ExportableHandler;
+use Dogma\Mapping\Type\Time\DateTimeHandler;
 use Dogma\Reflection\MethodTypeParser;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
-use Dogma\Time\Mapping\DateTimeHandler;
 use Dogma\Type;
 
 require_once __DIR__ . '/../bootstrap.php';

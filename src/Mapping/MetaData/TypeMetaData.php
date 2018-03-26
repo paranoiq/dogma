@@ -10,7 +10,7 @@
 namespace Dogma\Mapping\MetaData;
 
 use Dogma\Check;
-use Dogma\Mapping\Type\Handler;
+use Dogma\Mapping\Type\TypeHandler;
 use Dogma\Type;
 
 class TypeMetaData
@@ -23,15 +23,15 @@ class TypeMetaData
     /** @var \Dogma\Type[] (string $name => $type) */
     private $fields;
 
-    /** @var \Dogma\Mapping\Type\Handler */
+    /** @var \Dogma\Mapping\Type\TypeHandler */
     private $handler;
 
     /**
      * @param \Dogma\Type $type
      * @param \Dogma\Type[] $fields ($name => $type)
-     * @param \Dogma\Mapping\Type\Handler $handler
+     * @param \Dogma\Mapping\Type\TypeHandler $handler
      */
-    public function __construct(Type $type, array $fields, Handler $handler)
+    public function __construct(Type $type, array $fields, TypeHandler $handler)
     {
         Check::itemsOfType($fields, Type::class);
 
@@ -53,7 +53,7 @@ class TypeMetaData
         return $this->fields;
     }
 
-    public function getHandler(): Handler
+    public function getHandler(): TypeHandler
     {
         return $this->handler;
     }

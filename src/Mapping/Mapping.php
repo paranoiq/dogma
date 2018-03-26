@@ -9,7 +9,7 @@
 
 namespace Dogma\Mapping;
 
-use Dogma\Mapping\Type\Handler;
+use Dogma\Mapping\Type\TypeHandler;
 use Dogma\ReverseArrayIterator;
 use Dogma\Type;
 
@@ -56,7 +56,7 @@ class Mapping
         foreach ($this->steps as $step) {
             $step->stepForward($data, $mapper);
         }
-        return $data[Handler::SINGLE_PARAMETER];
+        return $data[TypeHandler::SINGLE_PARAMETER];
     }
 
     /**
@@ -66,7 +66,7 @@ class Mapping
      */
     public function mapBack($instance, Mapper $mapper): array
     {
-        $data = [Handler::SINGLE_PARAMETER => $instance];
+        $data = [TypeHandler::SINGLE_PARAMETER => $instance];
         foreach ($this->reverseSteps as $step) {
             $step->stepBack($data, $mapper);
         }

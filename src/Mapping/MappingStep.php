@@ -9,7 +9,7 @@
 
 namespace Dogma\Mapping;
 
-use Dogma\Mapping\Type\Handler;
+use Dogma\Mapping\Type\TypeHandler;
 use Dogma\Type;
 
 class MappingStep
@@ -19,7 +19,7 @@ class MappingStep
     /** @var \Dogma\Type */
     private $type;
 
-    /** @var \Dogma\Mapping\Type\Handler */
+    /** @var \Dogma\Mapping\Type\TypeHandler */
     private $handler;
 
     /** @var string[] */
@@ -33,11 +33,11 @@ class MappingStep
 
     /**
      * @param \Dogma\Type $type
-     * @param \Dogma\Mapping\Type\Handler $handler
+     * @param \Dogma\Mapping\Type\TypeHandler $handler
      * @param string[] $handlerKeys ($sourceKey => $handlerKey)
      * @param string $destinationKey
      */
-    public function __construct(Type $type, Handler $handler, array $handlerKeys, string $destinationKey)
+    public function __construct(Type $type, TypeHandler $handler, array $handlerKeys, string $destinationKey)
     {
         $this->type = $type;
         $this->handler = $handler;
@@ -57,7 +57,7 @@ class MappingStep
         $sourceData = [];
         $onlyNull = true;
         foreach ($this->handlerKeys as $sourceKey => $handlerKey) {
-            if ($handlerKey === Handler::SINGLE_PARAMETER) {
+            if ($handlerKey === TypeHandler::SINGLE_PARAMETER) {
                 $sourceData = $data[$sourceKey];
                 $onlyNull = false;
             } else {
@@ -91,8 +91,8 @@ class MappingStep
             return;
         }
         $sourceData = $this->handler->exportInstance($this->type, $instance, $mapper);
-        if (isset($this->sourceKeys[Handler::SINGLE_PARAMETER])) {
-            $data[$this->sourceKeys[Handler::SINGLE_PARAMETER]] = $sourceData;
+        if (isset($this->sourceKeys[TypeHandler::SINGLE_PARAMETER])) {
+            $data[$this->sourceKeys[TypeHandler::SINGLE_PARAMETER]] = $sourceData;
         } else {
             foreach ($sourceData as $handlerKey => $value) {
                 $data[$this->sourceKeys[$handlerKey]] = $value;

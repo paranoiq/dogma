@@ -7,7 +7,7 @@ use Dogma\Mapping\Mapping;
 use Dogma\Mapping\MappingStep;
 use Dogma\Mapping\StaticMappingContainer;
 use Dogma\Mapping\Type\ExportableHandler;
-use Dogma\Mapping\Type\Handler;
+use Dogma\Mapping\Type\TypeHandler;
 use Dogma\Mapping\Type\ScalarsHandler;
 use Dogma\Reflection\MethodTypeParser;
 use Dogma\Tester\Assert;
@@ -20,20 +20,20 @@ require_once __DIR__ . '/data/OuterTestClass.php';
 $step1 = new MappingStep(
     Type::get(Type::INT),
     new ScalarsHandler(),
-    ['far_one' => Handler::SINGLE_PARAMETER],
+    ['far_one' => TypeHandler::SINGLE_PARAMETER],
     'exp.one'
 );
 $step2 = new MappingStep(
     Type::get(Type::FLOAT),
     new ScalarsHandler(),
-    ['far_two' => Handler::SINGLE_PARAMETER],
+    ['far_two' => TypeHandler::SINGLE_PARAMETER],
     'exp.two'
 );
 $step3 = new MappingStep(
     Type::get(ExportableTestClass::class),
     new ExportableHandler(new MethodTypeParser()),
     ['exp.one' => 'one', 'exp.two' => 'two'],
-    Handler::SINGLE_PARAMETER
+    TypeHandler::SINGLE_PARAMETER
 );
 
 $mapping = new Mapping(Type::get(ExportableTestClass::class), [$step1, $step2, $step3]);

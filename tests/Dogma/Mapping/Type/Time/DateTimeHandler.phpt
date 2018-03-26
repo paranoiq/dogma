@@ -1,17 +1,17 @@
 <?php declare(strict_types = 1);
 
-namespace Dogma\Tests\Time\Mapping;
+namespace Dogma\Tests\Mapping\Type\Time;
 
 use Dogma\Mapping\Mapper;
 use Dogma\Mapping\StaticMappingContainer;
+use Dogma\Mapping\Type\Time\DateTimeHandler;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
-use Dogma\Time\Mapping\DateTimeHandler;
 use Dogma\Time\Time;
 use Dogma\Type;
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 $handler = new DateTimeHandler();
 $mapper = new Mapper(new StaticMappingContainer([]));

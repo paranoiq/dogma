@@ -10,49 +10,47 @@
 namespace Dogma\Mapping\Type;
 
 use Dogma\Mapping\Mapper;
-use Dogma\Tuple;
 use Dogma\Type;
 
-class TupleHandler implements \Dogma\Mapping\Type\TypeHandler
+class TypeTypeHandler implements \Dogma\Mapping\Type\TypeHandler
 {
-    use \Dogma\StrictBehaviorMixin;
 
     public function acceptsType(Type $type): bool
     {
-        return $type->is(Tuple::class);
+        return $type->is(Type::class);
     }
 
     /**
      * @param \Dogma\Type $type
-     * @return \Dogma\Type[]
+     * @return \Dogma\Type[]|null
      */
-    public function getParameters(Type $type): array
+    public function getParameters(Type $type): ?array
     {
-        return $type->getItemType();
-    }
-
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param \Dogma\Type $type
-     * @param mixed[] $items
-     * @param \Dogma\Mapping\Mapper $mapper
-     * @return \Dogma\Tuple
-     */
-    public function createInstance(Type $type, $items, Mapper $mapper): Tuple
-    {
-        return new Tuple(...$items);
+        return null;
     }
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      * @param \Dogma\Type $type
-     * @param \Dogma\Tuple $instance
+     * @param string $typeId
      * @param \Dogma\Mapping\Mapper $mapper
-     * @return mixed[]
+     * @return \Dogma\Type
      */
-    public function exportInstance(Type $type, $instance, Mapper $mapper): array
+    public function createInstance(Type $type, $typeId, Mapper $mapper): Type
     {
-        return $instance->toArray();
+        return Type::fromId($typeId);
+    }
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @param \Dogma\Type $type
+     * @param \Dogma\Type $typeInstance
+     * @param \Dogma\Mapping\Mapper $mapper
+     * @return string
+     */
+    public function exportInstance(Type $type, $typeInstance, Mapper $mapper): string
+    {
+        return $typeInstance->getId();
     }
 
 }

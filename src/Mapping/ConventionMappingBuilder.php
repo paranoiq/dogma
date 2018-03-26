@@ -12,7 +12,7 @@ namespace Dogma\Mapping;
 use Dogma\Mapping\MetaData\TypeMetaDataContainer;
 use Dogma\Mapping\Naming\NamingStrategy;
 use Dogma\Mapping\Naming\ShortFieldNamingStrategy;
-use Dogma\Mapping\Type\Handler;
+use Dogma\Mapping\Type\TypeHandler;
 use Dogma\Type;
 
 class ConventionMappingBuilder implements \Dogma\Mapping\MappingBuilder
@@ -42,7 +42,7 @@ class ConventionMappingBuilder implements \Dogma\Mapping\MappingBuilder
     public function buildMapping(Type $type): Mapping
     {
         $steps = [];
-        $this->buildStep($type, '', Handler::SINGLE_PARAMETER, $steps);
+        $this->buildStep($type, '', TypeHandler::SINGLE_PARAMETER, $steps);
 
         return new Mapping($type, $steps);
     }

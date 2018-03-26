@@ -9,7 +9,7 @@
 
 // spell-check-ignore: te
 
-namespace Dogma\Mail;
+namespace Dogma\Email;
 
 use Dogma\Io\File;
 use Dogma\Language\Inflector;
@@ -31,7 +31,7 @@ use Dogma\Str;
  * @property-read string $messageId
  * @property-read string $inReplyTo
  */
-class Message
+class EmailMessage
 {
     use \Dogma\StrictBehaviorMixin;
 
@@ -66,7 +66,7 @@ class Message
             ///
             $handler = mailparse_msg_parse_file($this->file->getPath());
             if (!$handler) {
-                throw new \Dogma\Mail\ParsingException('Cannot parse email file.');
+                throw new \Dogma\Email\EmailParsingException('Cannot parse email file.');
             }
 
         } else {
@@ -74,7 +74,7 @@ class Message
             $handler = mailparse_msg_create();
             $res = mailparse_msg_parse($handler, $message);
             if (!$handler || !$res) {
-                throw new \Dogma\Mail\ParsingException('Cannot parse email message.');
+                throw new \Dogma\Email\EmailParsingException('Cannot parse email message.');
             }
             $this->data = $message;
         }
@@ -82,7 +82,7 @@ class Message
         ///
         $structure = mailparse_msg_get_structure($handler);
         if (!$structure) {
-            throw new \Dogma\Mail\ParsingException('Cannot parse email structure.');
+            throw new \Dogma\Email\EmailParsingException('Cannot parse email structure.');
         }
 
         $this->parts = [];
@@ -91,7 +91,7 @@ class Message
             $partHandler = mailparse_msg_get_part($handler, $partId);
             $partData = mailparse_msg_get_part_data($partHandler);
             if (!$partHandler || !$partData) {
-                throw new \Dogma\Mail\ParsingException('Cannot get email part data.');
+                throw new \Dogma\Email\EmailParsingException('Cannot get email part data.');
             }
             $this->parts[$partId] = $partData;
         }
@@ -102,7 +102,7 @@ class Message
     public function setAddressFactory(callable $factory): void
     {
         if (!is_callable($factory)) {
-            throw new \InvalidArgumentException('Message factory must be callable.');
+            throw new \InvalidArgumentException('EmailMessage factory must be callable.');
         }
 
         $this->addressFactory = $factory;
@@ -157,7 +157,7 @@ class Message
     public function getBody(string $type = self::TEXT): ?string
     {
         if ($type !== 'text/plain' && $type !== 'text/html') {
-            throw new \Dogma\Mail\ParsingException('Invalid content type specified. Type can either be "text/plain" or "text/html".');
+            throw new \Dogma\Email\EmailParsingException('Invalid content type specified. Type can either be "text/plain" or "text/html".');
         }
 
         foreach ($this->parts as $part) {
@@ -182,7 +182,7 @@ class Message
     public function getBodyHeaders(string $type = self::TEXT): array
     {
         if ($type !== 'text/plain' && $type !== 'text/html') {
-            throw new \Dogma\Mail\ParsingException('Invalid content type specified. Type can either be "text/plain" or "text/html".');
+            throw new \Dogma\Email\EmailParsingException('Invalid content type specified. Type can either be "text/plain" or "text/html".');
         }
 
         foreach ($this->parts as $part) {
@@ -200,7 +200,7 @@ class Message
      * Returns attachments. May be filtered by mime type.
      * @param string|string[] $contentType
      * @param bool $inlined
-     * @return \Dogma\Mail\Attachment[]
+     * @return \Dogma\Email\EmailAttachment[]
      */
     public function getAttachments($contentType = null, bool $inlined = true): array
     {
@@ -218,7 +218,7 @@ class Message
                 continue;
             }
 
-            $attachments[] = new Attachment(
+            $attachments[] = new EmailAttachment(
                 $this->getAttachmentData($part),
                 $this->getParsedPartHeaders($part)
             );
@@ -258,7 +258,7 @@ class Message
             return $data;
 
         } else {
-            throw new \Dogma\Mail\ParsingException('Unknown transfer encoding.');
+            throw new \Dogma\Email\EmailParsingException('Unknown transfer encoding.');
         }
     }
 
@@ -291,7 +291,7 @@ class Message
     /**
      * Parse addresses from mail header (from, to, cc, bcc, reply-to, return-path, delivered-to, sender…)
      * @param string $header
-     * @return \Dogma\Mail\Address[]
+     * @return \Dogma\Email\EmailAddress[]
      */
     private function parseAddressHeader(string $header): array
     {
@@ -309,9 +309,9 @@ class Message
         return $arr;
     }
 
-    private function createAddress(string $address, string $name): Address
+    private function createAddress(string $address, string $name): EmailAddress
     {
-        return new Address($address, $name);
+        return new EmailAddress($address, $name);
     }
 
     private function decodeHeader(string $header): string
@@ -328,7 +328,7 @@ class Message
                 $message = quoted_printable_decode($message);
 
             } else {
-                throw new \Dogma\Mail\ParsingException(sprintf('Unknown header encoding \'%s\'.', $encoding));
+                throw new \Dogma\Email\EmailParsingException(sprintf('Unknown header encoding \'%s\'.', $encoding));
             }
 
             return $that->convertCharset($message, strtolower($charset));

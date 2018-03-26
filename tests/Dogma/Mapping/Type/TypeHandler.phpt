@@ -4,13 +4,13 @@ namespace Dogma\Tests\Mapping\Type;
 
 use Dogma\Mapping\Mapper;
 use Dogma\Mapping\StaticMappingContainer;
-use Dogma\Mapping\Type\TypeHandler;
+use Dogma\Mapping\Type\TypeTypeHandler;
 use Dogma\Tester\Assert;
 use Dogma\Type;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-$handler = new TypeHandler();
+$handler = new TypeTypeHandler();
 $mapper = new Mapper(new StaticMappingContainer([]));
 
 $typeType = Type::get(Type::class);

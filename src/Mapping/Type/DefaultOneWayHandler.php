@@ -12,7 +12,7 @@ namespace Dogma\Mapping\Type;
 use Dogma\Mapping\Mapper;
 use Dogma\Type;
 
-class DefaultOneWayHandler extends \Dogma\Mapping\Type\ConstructorHandler implements \Dogma\Mapping\Type\Handler
+class DefaultOneWayHandler extends \Dogma\Mapping\Type\ConstructorHandler implements \Dogma\Mapping\Type\TypeHandler
 {
 
     public function acceptsType(Type $type): bool

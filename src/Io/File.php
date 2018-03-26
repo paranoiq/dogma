@@ -349,18 +349,18 @@ class File implements \Dogma\Io\Path
 
     /**
      * @param int $position
-     * @param \Dogma\Io\Position|null $from
+     * @param \Dogma\Io\FilePosition|null $from
      */
-    public function setPosition(int $position, ?Position $from = null): void
+    public function setPosition(int $position, ?FilePosition $from = null): void
     {
         $this->checkOpened();
 
         if ($position < 0) {
             $position *= -1;
-            $from = Position::get(Position::END);
+            $from = FilePosition::get(FilePosition::END);
         }
         if ($from === null) {
-            $from = Position::get(Position::BEGINNING);
+            $from = FilePosition::get(FilePosition::BEGINNING);
         }
 
         error_clear_last();

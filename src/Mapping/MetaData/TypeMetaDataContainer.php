@@ -10,25 +10,25 @@
 namespace Dogma\Mapping\MetaData;
 
 use Dogma\Check;
-use Dogma\Mapping\Type\Handler;
+use Dogma\Mapping\Type\TypeHandler;
 use Dogma\Type;
 
 class TypeMetaDataContainer
 {
     use \Dogma\StrictBehaviorMixin;
 
-    /** @var \Dogma\Mapping\Type\Handler[] */
+    /** @var \Dogma\Mapping\Type\TypeHandler[] */
     private $handlers;
 
     /** @var \Dogma\Mapping\MetaData\TypeMetaData[] (string $typeId => $typeMetaData) */
     private $types;
 
     /**
-     * @param \Dogma\Mapping\Type\Handler[] $handlers
+     * @param \Dogma\Mapping\Type\TypeHandler[] $handlers
      */
     public function __construct(array $handlers)
     {
-        Check::itemsOfType($handlers, Handler::class);
+        Check::itemsOfType($handlers, TypeHandler::class);
 
         $this->handlers = $handlers;
     }
@@ -50,7 +50,7 @@ class TypeMetaDataContainer
             if ($handler->acceptsType($type)) {
                 $params = $handler->getParameters($type);
                 if ($params === null) {
-                    $params = [Handler::SINGLE_PARAMETER => Type::get(Type::MIXED)];
+                    $params = [TypeHandler::SINGLE_PARAMETER => Type::get(Type::MIXED)];
                 }
                 $this->types[$type->getId()] = new TypeMetaData($type, $params, $handler);
                 $added = true;
