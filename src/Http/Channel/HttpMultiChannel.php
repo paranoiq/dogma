@@ -9,13 +9,13 @@
 
 namespace Dogma\Http\Channel;
 
-use Dogma\Http\Response;
+use Dogma\Http\HttpResponse;
 
-class MultiChannel
+class HttpMultiChannel
 {
     use \Dogma\StrictBehaviorMixin;
 
-    /** @var \Dogma\Http\Channel\Channel[] */
+    /** @var \Dogma\Http\Channel\HttpChannel[] */
     private $channels;
 
     /** @var string[] */
@@ -27,7 +27,7 @@ class MultiChannel
     /** @var string[][] (string $subJobName => (string $channelName => string $jobName)) */
     private $queue = [];
 
-    /** @var \Dogma\Http\Response[][] (string $jobName => (string $channelName => \Dogma\Http\Response $response)) */
+    /** @var \Dogma\Http\HttpResponse[][] (string $jobName => (string $channelName => \Dogma\Http\Response $response)) */
     private $finished = [];
 
     /** @var callable */
@@ -43,22 +43,22 @@ class MultiChannel
     private $dispatch;
 
     /**
-     * @param \Dogma\Http\Channel\Channel[] $channels
+     * @param \Dogma\Http\Channel\HttpChannel[] $channels
      */
     public function __construct(array $channels)
     {
         $this->channels = $channels;
 
-        /** @var \Dogma\Http\Channel\Channel $channel */
+        /** @var \Dogma\Http\Channel\HttpChannel $channel */
         foreach ($channels as $channelName => $channel) {
             $this->channelIds[spl_object_hash($channel)] = $channelName;
-            $channel->setResponseHandler(function (Response $response, Channel $channel, string $subJobName): void {
+            $channel->setResponseHandler(function (HttpResponse $response, HttpChannel $channel, string $subJobName): void {
                 $this->responseHandler($response, $channel, $subJobName);
             });
         }
     }
 
-    public function responseHandler(Response $response, Channel $channel, string $subJobName): void
+    public function responseHandler(HttpResponse $response, HttpChannel $channel, string $subJobName): void
     {
         $channelId = spl_object_hash($channel);
         $channelName = $this->channelIds[$channelId];
@@ -80,7 +80,7 @@ class MultiChannel
      */
     private function jobFinished($jobName): void
     {
-        /** @var \Dogma\Http\Response $response */
+        /** @var \Dogma\Http\HttpResponse $response */
         foreach ($this->finished[$jobName] as $response) {
             if ($response->getStatus()->isError()) {
                 $error = true;
@@ -105,7 +105,7 @@ class MultiChannel
     }
 
     /**
-     * @return \Dogma\Http\Channel\Channel[]
+     * @return \Dogma\Http\Channel\HttpChannel[]
      */
     public function getChannels(): array
     {
@@ -196,7 +196,7 @@ class MultiChannel
      * Run a new job and wait for the response.
      * @param string|mixed[] $data
      * @param mixed $context
-     * @return \Dogma\Http\Response[]|null
+     * @return \Dogma\Http\HttpResponse[]|null
      */
     public function fetchJob($data, $context = null): ?array
     {
@@ -213,7 +213,7 @@ class MultiChannel
 
     /**
      * @param string|int $name
-     * @return \Dogma\Http\Response[]|null
+     * @return \Dogma\Http\HttpResponse[]|null
      */
     public function fetch($name = null): ?array
     {
@@ -241,7 +241,7 @@ class MultiChannel
 
     /**
      * @param string|int $name
-     * @return \Dogma\Http\Response[]|null
+     * @return \Dogma\Http\HttpResponse[]|null
      */
     private function fetchNamedJob($name): ?array
     {

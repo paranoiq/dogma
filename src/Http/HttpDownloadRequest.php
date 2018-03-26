@@ -14,16 +14,16 @@ use Dogma\Io\File;
 /**
  * File download request.
  */
-class DownloadRequest extends \Dogma\Http\Request
+class HttpDownloadRequest extends \Dogma\Http\HttpRequest
 {
 
     /** @var \Dogma\Io\File */
     private $file;
 
     /**
-     * @return \Dogma\Http\FileResponse
+     * @return \Dogma\Http\HttpFileResponse
      */
-    public function execute(): Response
+    public function execute(): HttpResponse
     {
         return parent::execute();
     }
@@ -48,14 +48,14 @@ class DownloadRequest extends \Dogma\Http\Request
      *
      * @param string|bool $response
      * @param int $error
-     * @return \Dogma\Http\FileResponse
+     * @return \Dogma\Http\HttpFileResponse
      */
-    public function createResponse($response, int $error): Response
+    public function createResponse($response, int $error): HttpResponse
     {
         $info = $this->getInfo();
         $status = $this->getResponseStatus($error, $info);
 
-        return new FileResponse($status, $this->file, $this->responseHeaders, $info, $this->context, $this->headerParser);
+        return new HttpFileResponse($status, $this->file, $this->responseHeaders, $info, $this->context, $this->headerParser);
     }
 
 }

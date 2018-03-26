@@ -10,20 +10,20 @@
 namespace Dogma\Http\Channel;
 
 use Dogma\Http\Curl\CurlHelper;
-use Dogma\Http\Request;
-use Dogma\Http\Response;
+use Dogma\Http\HttpRequest;
+use Dogma\Http\HttpResponse;
 
 /**
  * HTTP channel for multiple similar requests.
  */
-class Channel
+class HttpChannel
 {
     use \Dogma\StrictBehaviorMixin;
 
-    /** @var \Dogma\Http\Channel\ChannelManager */
+    /** @var \Dogma\Http\Channel\HttpChannelManager */
     private $manager;
 
-    /** @var \Dogma\Http\Request */
+    /** @var \Dogma\Http\HttpRequest */
     private $requestPrototype;
 
     /** @var int */
@@ -50,7 +50,7 @@ class Channel
     /** @var string[]|string[][] (int|string $name => $data) */
     private $running = [];
 
-    /** @var \Dogma\Http\Response[] */
+    /** @var \Dogma\Http\HttpResponse[] */
     private $finished = [];
 
     /** @var mixed[] (int|string $name => $context) */
@@ -65,12 +65,12 @@ class Channel
     /** @var callable */
     private $errorHandler;
 
-    public function __construct(Request $requestPrototype, ?ChannelManager $manager = null)
+    public function __construct(HttpRequest $requestPrototype, ?HttpChannelManager $manager = null)
     {
         $this->requestPrototype = $requestPrototype;
 
         if ($manager === null) {
-            $manager = new ChannelManager();
+            $manager = new HttpChannelManager();
             $manager->addChannel($this);
         }
         $this->manager = $manager;
@@ -80,7 +80,7 @@ class Channel
         }
     }
 
-    public function getRequestPrototype(): Request
+    public function getRequestPrototype(): HttpRequest
     {
         return $this->requestPrototype;
     }
@@ -138,9 +138,9 @@ class Channel
      * Run a new job immediately and wait for the response.
      * @param string|string[] $data
      * @param mixed $context
-     * @return \Dogma\Http\Response|null
+     * @return \Dogma\Http\HttpResponse|null
      */
-    public function fetchJob($data, $context = null): ?Response
+    public function fetchJob($data, $context = null): ?HttpResponse
     {
         $name = $this->addJob($data, $context, null, true);
 
@@ -238,7 +238,7 @@ class Channel
     }
 
     /**
-     * Start a request in CURL. Called by ChannelManager
+     * Start a request in CURL. Called by HttpChannelManager
      * @internal
      *
      * @param string|int|null $name
@@ -282,14 +282,14 @@ class Channel
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * Called by ChannelManager.
+     * Called by HttpChannelManager.
      * @internal
      *
      * @param string|int|int $name
      * @param mixed[] $multiInfo
-     * @param \Dogma\Http\Request $request
+     * @param \Dogma\Http\HttpRequest $request
      */
-    public function jobFinished($name, array $multiInfo, Request $request): void
+    public function jobFinished($name, array $multiInfo, HttpRequest $request): void
     {
         unset($this->running[$name]);
         $data = curl_multi_getcontent($multiInfo['handle']);
@@ -313,9 +313,9 @@ class Channel
 
     /**
      * @param string|int|null $name
-     * @return \Dogma\Http\Response|null
+     * @return \Dogma\Http\HttpResponse|null
      */
-    public function fetch($name = null): ?Response
+    public function fetch($name = null): ?HttpResponse
     {
         if ($name !== null) {
             return $this->fetchByName($name);
@@ -346,9 +346,9 @@ class Channel
 
     /**
      * @param string|int $name
-     * @return \Dogma\Http\Response|null
+     * @return \Dogma\Http\HttpResponse|null
      */
-    private function fetchByName($name): ?Response
+    private function fetchByName($name): ?HttpResponse
     {
         if (!isset($this->queue[$name]) && !isset($this->running[$name]) && !isset($this->finished[$name])) {
             throw new \Dogma\Http\Channel\ChannelException(sprintf('Job named \'%s\' was not found.', $name));

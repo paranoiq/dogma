@@ -13,14 +13,14 @@ use Dogma\Http\Curl\CurlHelper;
 use Dogma\Io\ContentType\ContentType;
 use Dogma\Time\CurrentTimeProvider;
 
-class Response
+class HttpResponse
 {
     use \Dogma\StrictBehaviorMixin;
 
     /** @var mixed[] */
     protected $info;
 
-    /** @var \Dogma\Http\ResponseStatus */
+    /** @var \Dogma\Http\HttpResponseStatus */
     private $status;
 
     /** @var string[] */
@@ -38,24 +38,24 @@ class Response
     /** @var mixed */
     private $context;
 
-    /** @var \Dogma\Http\HeaderParser */
+    /** @var \Dogma\Http\HttpHeaderParser */
     private $headerParser;
 
     /**
-     * @param \Dogma\Http\ResponseStatus $status
+     * @param \Dogma\Http\HttpResponseStatus $status
      * @param string|null $body
      * @param string[] $rawHeaders
      * @param string[] $info
      * @param mixed $context
-     * @param \Dogma\Http\HeaderParser|null $headerParser
+     * @param \Dogma\Http\HttpHeaderParser|null $headerParser
      */
     public function __construct(
-        ResponseStatus $status,
+        HttpResponseStatus $status,
         ?string $body = null,
         array $rawHeaders,
         array $info,
         $context,
-        ?HeaderParser $headerParser = null
+        ?HttpHeaderParser $headerParser = null
     ) {
         $this->status = $status;
         $this->body = $body;
@@ -78,7 +78,7 @@ class Response
         return $this->status->isOk();
     }
 
-    public function getStatus(): ResponseStatus
+    public function getStatus(): HttpResponseStatus
     {
         return $this->status;
     }
@@ -111,10 +111,10 @@ class Response
         return $this->headers[$name] ?? null;
     }
 
-    private function getHeaderParser(): HeaderParser
+    private function getHeaderParser(): HttpHeaderParser
     {
         if ($this->headerParser === null) {
-            $this->headerParser = new HeaderParser(new CurrentTimeProvider());
+            $this->headerParser = new HttpHeaderParser(new CurrentTimeProvider());
         }
         return $this->headerParser;
     }

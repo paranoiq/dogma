@@ -11,21 +11,21 @@ namespace Dogma\Http;
 
 use Dogma\Io\File;
 
-class FileResponse extends \Dogma\Http\Response
+class HttpFileResponse extends \Dogma\Http\HttpResponse
 {
 
     /** @var \Dogma\Io\File */
     private $file;
 
     /**
-     * @param \Dogma\Http\ResponseStatus $status
+     * @param \Dogma\Http\HttpResponseStatus $status
      * @param \Dogma\Io\File $file
      * @param string[] $rawHeaders
      * @param string[] $info
      * @param mixed $context
-     * @param \Dogma\Http\HeaderParser $headerParser
+     * @param \Dogma\Http\HttpHeaderParser $headerParser
      */
-    public function __construct(ResponseStatus $status, File $file, array $rawHeaders, array $info, $context, ?HeaderParser $headerParser = null)
+    public function __construct(HttpResponseStatus $status, File $file, array $rawHeaders, array $info, $context, ?HttpHeaderParser $headerParser = null)
     {
         parent::__construct($status, null, $rawHeaders, $info, $context, $headerParser);
 

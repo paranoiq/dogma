@@ -10,14 +10,14 @@
 namespace Dogma\Http\Channel;
 
 use Dogma\Http\Curl\CurlHelper;
-use Dogma\Http\HeaderParser;
-use Dogma\Http\Request;
+use Dogma\Http\HttpHeaderParser;
+use Dogma\Http\HttpRequest;
 use Dogma\Time\CurrentTimeProvider;
 
 /**
  * Manages parallel requests over multiple HTTP channels.
  */
-class ChannelManager
+class HttpChannelManager
 {
     use \Dogma\StrictBehaviorMixin;
     use \Dogma\NonSerializableMixin;
@@ -32,16 +32,16 @@ class ChannelManager
     /** @var float sum of priorities of all channels */
     private $sumPriorities = 0.0;
 
-    /** @var \Dogma\Http\Channel\Channel[] */
+    /** @var \Dogma\Http\Channel\HttpChannel[] */
     private $channels = [];
 
     /** @var mixed[] ($resourceId => array($channelId, $jobName, $request)) */
     private $resources = [];
 
-    /** @var \Dogma\Http\HeaderParser */
+    /** @var \Dogma\Http\HttpHeaderParser */
     private $headerParser;
 
-    public function __construct(?HeaderParser $headerParser = null)
+    public function __construct(?HttpHeaderParser $headerParser = null)
     {
         $this->headerParser = $headerParser;
         $this->handler = curl_multi_init();
@@ -74,7 +74,7 @@ class ChannelManager
         $this->threadLimit = abs($threads);
     }
 
-    public function addChannel(Channel $channel): void
+    public function addChannel(HttpChannel $channel): void
     {
         $this->channels[spl_object_hash($channel)] = $channel;
         $this->updatePriorities();
@@ -202,19 +202,19 @@ class ChannelManager
     /**
      * Save data for later use.
      * @param resource $resource
-     * @param \Dogma\Http\Channel\Channel $channel
+     * @param \Dogma\Http\Channel\HttpChannel $channel
      * @param string|int $name
-     * @param \Dogma\Http\Request $request
+     * @param \Dogma\Http\HttpRequest $request
      */
-    public function jobStarted($resource, Channel $channel, $name, Request $request): void
+    public function jobStarted($resource, HttpChannel $channel, $name, HttpRequest $request): void
     {
         $this->resources[(string) $resource] = [spl_object_hash($channel), $name, $request];
     }
 
-    public function getHeaderParser(): HeaderParser
+    public function getHeaderParser(): HttpHeaderParser
     {
         if ($this->headerParser === null) {
-            $this->headerParser = new HeaderParser(new CurrentTimeProvider());
+            $this->headerParser = new HttpHeaderParser(new CurrentTimeProvider());
         }
         return $this->headerParser;
     }

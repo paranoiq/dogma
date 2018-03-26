@@ -20,7 +20,7 @@ use Dogma\Type;
 use Dogma\Web\Host;
 use Dogma\Web\Url;
 
-class HeaderParser
+class HttpHeaderParser
 {
     use \Dogma\StrictBehaviorMixin;
 

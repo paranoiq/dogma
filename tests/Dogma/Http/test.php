@@ -3,10 +3,10 @@
 
 namespace Dogma\Test\Http;
 
-use Dogma\Http\Channel\Channel;
-use Dogma\Http\Channel\ChannelManager;
-use Dogma\Http\DownloadRequest;
-use Dogma\Http\Request;
+use Dogma\Http\Channel\HttpChannel;
+use Dogma\Http\Channel\HttpChannelManager;
+use Dogma\Http\HttpDownloadRequest;
+use Dogma\Http\HttpRequest;
 use Tracy\Debugger;
 
 require_once __DIR__ . '/../bootstrap.php';
@@ -19,22 +19,22 @@ header('Content-Type: text/html; charset=utf-8');
 echo '<!DOCTYPE HTML><html><head><title>Dogma\\Http</title></head><body>';
 
 
-$manager = new ChannelManager();
+$manager = new HttpChannelManager();
 
-$requestA = new DownloadRequest('http://lh/vsp/dogma/tests/Dogma/Http/responder.php');
+$requestA = new HttpDownloadRequest('http://lh/vsp/dogma/tests/Dogma/Http/responder.php');
 $requestA->setFollowRedirects(true);
 
-$requestB = new Request('http://lh/vsp/dogma/tests/Dogma/Http/responder.php');
+$requestB = new HttpRequest('http://lh/vsp/dogma/tests/Dogma/Http/responder.php');
 $requestB->setFollowRedirects(true);
 
-$manager->addChannel($channelA = new Channel($requestA, $manager));
-$manager->addChannel($channelB = new Channel($requestB, $manager));
-$manager->addChannel($channelC = new Channel($requestB, $manager));
-$manager->addChannel($channelD = new Channel($requestB, $manager));
-$manager->addChannel($channelE = new Channel($requestB, $manager));
-$manager->addChannel($channelF = new Channel($requestB, $manager));
-$manager->addChannel($channelG = new Channel($requestB, $manager));
-$manager->addChannel($channelH = new Channel($requestB, $manager));
+$manager->addChannel($channelA = new HttpChannel($requestA, $manager));
+$manager->addChannel($channelB = new HttpChannel($requestB, $manager));
+$manager->addChannel($channelC = new HttpChannel($requestB, $manager));
+$manager->addChannel($channelD = new HttpChannel($requestB, $manager));
+$manager->addChannel($channelE = new HttpChannel($requestB, $manager));
+$manager->addChannel($channelF = new HttpChannel($requestB, $manager));
+$manager->addChannel($channelG = new HttpChannel($requestB, $manager));
+$manager->addChannel($channelH = new HttpChannel($requestB, $manager));
 
 $channelG->setPriority(6);
 $channelH->setPriority(12);

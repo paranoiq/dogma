@@ -14,7 +14,7 @@ use Dogma\Http\Curl\CurlHelper;
 /**
  * HTTP request. Holds a CURL resource.
  */
-class Request
+class HttpRequest
 {
     use \Dogma\StrictBehaviorMixin;
     use \Dogma\NonSerializableMixin;
@@ -43,7 +43,7 @@ class Request
     /** @var string */
     private $content;
 
-    /** @var \Dogma\Http\HeaderParser|null */
+    /** @var \Dogma\Http\HttpHeaderParser|null */
     protected $headerParser;
 
     /** @var mixed */
@@ -93,12 +93,12 @@ class Request
         $this->init = $init;
     }
 
-    public function setHeaderParser(HeaderParser $headerParser): void
+    public function setHeaderParser(HttpHeaderParser $headerParser): void
     {
         $this->headerParser = $headerParser;
     }
 
-    public function getHeaderParser(): ?HeaderParser
+    public function getHeaderParser(): ?HttpHeaderParser
     {
         return $this->headerParser;
     }
@@ -349,7 +349,7 @@ class Request
 
     // output handling -------------------------------------------------------------------------------------------------
 
-    public function execute(): Response
+    public function execute(): HttpResponse
     {
         $this->init();
         $this->prepare();
@@ -398,14 +398,14 @@ class Request
      *
      * @param string|bool $response
      * @param int $error
-     * @return \Dogma\Http\Response
+     * @return \Dogma\Http\HttpResponse
      */
-    public function createResponse($response, int $error): Response
+    public function createResponse($response, int $error): HttpResponse
     {
         $info = $this->getInfo();
         $status = $this->getResponseStatus($error, $info);
 
-        return new Response($status, $response, $this->responseHeaders, $info, $this->context, $this->headerParser);
+        return new HttpResponse($status, $response, $this->responseHeaders, $info, $this->context, $this->headerParser);
     }
 
     // internals -------------------------------------------------------------------------------------------------------
@@ -426,17 +426,17 @@ class Request
     /**
      * @param int $error
      * @param mixed[] $info
-     * @return \Dogma\Http\ResponseStatus
+     * @return \Dogma\Http\HttpResponseStatus
      */
-    protected function getResponseStatus(int $error, array $info): ResponseStatus
+    protected function getResponseStatus(int $error, array $info): HttpResponseStatus
     {
         if ($error !== 0) {
-            $status = ResponseStatus::get($error);
+            $status = HttpResponseStatus::get($error);
         } else {
             try {
-                $status = ResponseStatus::get($info['http_code']);
+                $status = HttpResponseStatus::get($info['http_code']);
             } catch (\Dogma\InvalidValueException $e) {
-                $status = ResponseStatus::get(ResponseStatus::UNKNOWN_RESPONSE_CODE);
+                $status = HttpResponseStatus::get(HttpResponseStatus::UNKNOWN_RESPONSE_CODE);
             }
         }
         if ($status->isFatalError()) {
