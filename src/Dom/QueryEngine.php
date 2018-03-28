@@ -244,7 +244,7 @@ class QueryEngine
      */
     public function evaluate(string $query, $context = null)
     {
-        $path = $this->translateQuery($query, null);
+        $path = $this->translateQuery($query);
 
         if ($context) {
             $value = $this->xpath->evaluate($path, $context);

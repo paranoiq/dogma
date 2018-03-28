@@ -69,7 +69,7 @@ class HtmlTableIterator implements \Iterator
     /**
      * @return string[]
      */
-    public function current(): string
+    public function current(): array
     {
         return $this->formatRow($this->rows->item($this->position));
     }

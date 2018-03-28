@@ -194,9 +194,9 @@ class Type
 
     /**
      * @param string $type
-     * @param mixed|null $specific
+     * @param string|null $specific
      */
-    private static function checkSpecific(string $type, $specific = null): void
+    private static function checkSpecific(string $type, ?string $specific = null): void
     {
         if ($type === self::INT && ($specific === Sign::SIGNED || $specific === Sign::UNSIGNED)) {
             return;

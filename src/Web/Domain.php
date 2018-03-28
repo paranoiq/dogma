@@ -27,7 +27,7 @@ class Domain
 
     public static function validate(string $name): bool
     {
-        return preg_match('~^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?[.])+[a-z]{2,6}$~iu', $name);
+        return (bool) preg_match('~^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?[.])+[a-z]{2,6}$~iu', $name);
     }
 
     public function getTld(): Tld

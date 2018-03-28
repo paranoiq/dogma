@@ -545,7 +545,7 @@ final class Check
     {
         if ($type->isInt()) {
             try {
-                self::range($value, ...BitSize::getIntRange($type->getSize(), $type->isSigned()));
+                self::range($value, ...BitSize::getIntRange($type->getSize(), $type->isSigned() ? Sign::SIGNED : Sign::UNSIGNED));
             } catch (ValueOutOfRangeException $e) {
                 throw new ValueOutOfBoundsException($value, $type, $e);
             }

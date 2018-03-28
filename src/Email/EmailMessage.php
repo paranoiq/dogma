@@ -374,13 +374,14 @@ class EmailMessage
      */
     private function getPartBody(array $part): ?string
     {
-        $start = $part['starting-pos-body'];
-        $length = $part['ending-pos-body'] - $start;
+        $start = (int) $part['starting-pos-body'];
+        $length = (int) $part['ending-pos-body'] - $start;
 
         if ($this->data) {
             return substr($this->data, $start, $length);
         } else {
             $this->file->setPosition($start);
+
             return $this->file->read($length);
         }
     }
@@ -398,8 +399,8 @@ class EmailMessage
             return $this->decode($this->getPartBody($part), $encoding);
 
         } else {
-            $start = $part['starting-pos-body'];
-            $length = $part['ending-pos-body'] - $start;
+            $start = (int) $part['starting-pos-body'];
+            $length = (int) $part['ending-pos-body'] - $start;
             $this->file->setPosition($start);
 
             if ($length < self::$bigFileThreshold) {

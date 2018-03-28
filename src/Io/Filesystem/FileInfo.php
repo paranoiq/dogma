@@ -90,7 +90,7 @@ class FileInfo extends \SplFileInfo implements Path
      */
     public function isDot(): bool
     {
-        return $this->getFilename() === '.' | $this->getFilename() === '..';
+        return $this->getFilename() === '.' || $this->getFilename() === '..';
     }
 
 }

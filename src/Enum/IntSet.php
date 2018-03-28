@@ -32,7 +32,7 @@ abstract class IntSet
      * @param int $value
      * @param int[] $values
      */
-    final private function __construct(string $value, array $values)
+    final private function __construct(int $value, array $values)
     {
         $this->value = $value;
         $this->values = $values;
@@ -102,7 +102,7 @@ abstract class IntSet
         return $this->values;
     }
 
-    final public static function isValid(string $value): bool
+    final public static function isValid(int $value): bool
     {
         return self::validateValue($value);
     }

@@ -17,7 +17,7 @@ class InvalidValueException extends Exception
 
     /**
      * @param mixed $value
-     * @param string $type
+     * @param mixed $type
      * @param \Throwable|null $previous
      */
     public function __construct($value, $type, ?\Throwable $previous = null)
