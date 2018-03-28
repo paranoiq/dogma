@@ -17,7 +17,7 @@ trait StaticClassMixin
      */
     final public function __construct()
     {
-        throw new \Dogma\StaticClassException(get_called_class());
+        throw new StaticClassException(get_called_class());
     }
 
     /**
@@ -29,7 +29,7 @@ trait StaticClassMixin
      */
     public static function __callStatic(string $name, $args): void
     {
-        throw new \Dogma\UndefinedMethodException(get_called_class(), $name);
+        throw new UndefinedMethodException(get_called_class(), $name);
     }
 
 }

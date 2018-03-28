@@ -9,9 +9,10 @@
 
 namespace Dogma\Language\Locale;
 
+use Dogma\Enum\StringEnum;
 use Dogma\Language\Collator;
 
-class LocaleColCaseFirst extends \Dogma\Enum\StringEnum implements \Dogma\Language\Locale\LocaleCollationOption
+class LocaleColCaseFirst extends StringEnum implements LocaleCollationOption
 {
 
     public const UPPER = 'upper';

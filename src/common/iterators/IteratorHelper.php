@@ -11,7 +11,7 @@ namespace Dogma;
 
 class IteratorHelper
 {
-    use \Dogma\StaticClassMixin;
+    use StaticClassMixin;
 
     public static function iterableToIterator(iterable $iterable): \Iterator
     {
@@ -20,10 +20,12 @@ class IteratorHelper
         } elseif ($iterable instanceof \Iterator) {
             return $iterable;
         }
+
         while ($iterable instanceof \IteratorAggregate) {
             /** @var \Iterator $iterable */
             $iterable = $iterable->getIterator();
         }
+
         return $iterable;
     }
 

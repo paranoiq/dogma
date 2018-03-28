@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-final class NonCloneableObjectException extends \Dogma\Exception
+final class NonCloneableObjectException extends Exception
 {
 
     public function __construct(string $class, ?\Throwable $previous = null)

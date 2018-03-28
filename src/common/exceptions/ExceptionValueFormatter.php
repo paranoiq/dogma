@@ -11,7 +11,7 @@ namespace Dogma;
 
 class ExceptionValueFormatter
 {
-    use \Dogma\StaticClassMixin;
+    use StaticClassMixin;
 
     /**
      * @param mixed $value

@@ -2,7 +2,9 @@
 
 namespace Dogma\Tests\Mapping;
 
-class ExportableTestClass implements \Dogma\Mapping\Type\Exportable
+use Dogma\Mapping\Type\Exportable;
+
+class ExportableTestClass implements Exportable
 {
 
     /** @var int */

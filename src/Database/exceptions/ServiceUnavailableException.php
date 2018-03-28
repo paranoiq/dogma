@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Server is temporarily unavailable. Connection refused or aborted. */
-class ServiceUnavailableException extends \Dogma\Database\DatabaseException
+class ServiceUnavailableException extends DatabaseException
 {
 
 }

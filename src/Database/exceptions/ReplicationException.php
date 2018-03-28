@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Master/slave replication error. */
-class ReplicationException extends \Dogma\Database\DatabaseException
+class ReplicationException extends DatabaseException
 {
 
 }

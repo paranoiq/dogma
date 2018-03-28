@@ -10,10 +10,11 @@
 namespace Dogma\Enum;
 
 use Dogma\Arr;
+use Dogma\InvalidValueException;
 
 abstract class StringSet
 {
-    use \Dogma\Enum\SetMixin;
+    use SetMixin;
 
     /** @var \Dogma\Enum\StringSet[][] ($class => ($value => $enum)) */
     private static $instances = [];
@@ -51,7 +52,7 @@ abstract class StringSet
         sort($values);
         foreach ($values as $val) {
             if (static::validateValue($val)) {
-                throw new \Dogma\InvalidValueException($val, $class);
+                throw new InvalidValueException($val, $class);
             }
         }
         $value = implode(',', $values);

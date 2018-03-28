@@ -9,7 +9,9 @@
 
 namespace Dogma\Email;
 
-class EmailParsingException extends \Dogma\Exception
+use Dogma\Exception;
+
+class EmailParsingException extends Exception
 {
 
     //

@@ -11,7 +11,7 @@ namespace Dogma;
 
 class Arr
 {
-    use \Dogma\StaticClassMixin;
+    use StaticClassMixin;
 
     /** @internal */
     private const PRESERVE_KEYS = true;
@@ -39,7 +39,7 @@ class Arr
         } elseif ($that instanceof \Traversable) {
             return iterator_to_array($that);
         } else {
-            throw new \Dogma\InvalidTypeException(Type::PHP_ARRAY, $that);
+            throw new InvalidTypeException(Type::PHP_ARRAY, $that);
         }
     }
 

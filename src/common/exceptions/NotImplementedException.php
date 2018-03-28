@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-class NotImplementedException extends \Dogma\Exception
+class NotImplementedException extends Exception
 {
 
 }

@@ -11,7 +11,7 @@ namespace Dogma;
 
 class ChunkIterator extends \IteratorIterator
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var int */
     private $chunkSize;

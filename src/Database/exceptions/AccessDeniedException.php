@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Insufficient user privileges. */
-class AccessDeniedException extends \Dogma\Database\DatabaseException
+class AccessDeniedException extends DatabaseException
 {
 
 }

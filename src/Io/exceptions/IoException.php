@@ -9,10 +9,12 @@
 
 namespace Dogma\Io;
 
+use Dogma\Exception;
+
 /**
  * Filesystem or stream exception
  */
-class IoException extends \Dogma\Exception
+class IoException extends Exception
 {
 
 }

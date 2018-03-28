@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-final class ShouldNotHappenException extends \Dogma\Exception
+final class ShouldNotHappenException extends Exception
 {
 
 }

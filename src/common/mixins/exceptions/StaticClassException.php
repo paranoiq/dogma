@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-class StaticClassException extends \Dogma\Exception
+class StaticClassException extends Exception
 {
 
     public function __construct(string $class, ?\Throwable $previous = null)

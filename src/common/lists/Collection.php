@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-class Collection extends \Dogma\ImmutableArray
+class Collection extends ImmutableArray
 {
 
     /** @var string */
@@ -39,7 +39,7 @@ class Collection extends \Dogma\ImmutableArray
     private function checkAccepted(object $object): void
     {
         if (!$object instanceof $this->accepted) {
-            throw new \Dogma\InvalidTypeException($this->accepted, get_class($object));
+            throw new InvalidTypeException($this->accepted, get_class($object));
         }
     }
 

@@ -11,7 +11,7 @@ namespace Dogma;
 
 class CaseComparison
 {
-    use \Dogma\StaticClassMixin;
+    use StaticClassMixin;
 
     public const CASE_SENSITIVE = 0;
     public const CASE_INSENSITIVE = SORT_FLAG_CASE; // 8

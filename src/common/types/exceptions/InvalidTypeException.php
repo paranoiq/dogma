@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-class InvalidTypeException extends \Dogma\Exception
+class InvalidTypeException extends Exception
 {
 
     /**

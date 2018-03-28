@@ -10,10 +10,12 @@
 namespace Dogma\Enum;
 
 use Dogma\Arr;
+use Dogma\InvalidValueException;
+use Dogma\NonIterable;
 
-abstract class StringEnum implements \Dogma\NonIterable
+abstract class StringEnum implements NonIterable
 {
-    use \Dogma\Enum\EnumMixin;
+    use EnumMixin;
 
     /** @var \Dogma\Enum\StringEnum[][] ($class => ($value => $enum)) */
     private static $instances = [];
@@ -41,7 +43,7 @@ abstract class StringEnum implements \Dogma\NonIterable
         }
 
         if (!static::validateValue($value)) {
-            throw new \Dogma\InvalidValueException($value, $class);
+            throw new InvalidValueException($value, $class);
         }
 
         if (!Arr::containsKey(self::$instances[$class], $value)) {

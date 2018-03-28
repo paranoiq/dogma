@@ -9,9 +9,11 @@
 
 namespace Dogma\System;
 
+use Dogma\StaticClassMixin;
+
 class Php
 {
-    use \Dogma\StaticClassMixin;
+    use StaticClassMixin;
 
     public static function is32bit(): bool
     {

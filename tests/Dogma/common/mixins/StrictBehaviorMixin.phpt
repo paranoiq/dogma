@@ -4,6 +4,8 @@ namespace Dogma\Tests\StrictBehaviorMixin;
 
 use Dogma\StrictBehaviorMixin;
 use Dogma\Tester\Assert;
+use Dogma\UndefinedMethodException;
+use Dogma\UndefinedPropertyException;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -16,24 +18,24 @@ $x = new TestClass();
 
 Assert::throws(function () {
     TestClass::method();
-}, \Dogma\UndefinedMethodException::class);
+}, UndefinedMethodException::class);
 
 Assert::throws(function () use ($x) {
     $x->method();
-}, \Dogma\UndefinedMethodException::class);
+}, UndefinedMethodException::class);
 
 Assert::throws(function () use ($x) {
     $x->property;
-}, \Dogma\UndefinedPropertyException::class);
+}, UndefinedPropertyException::class);
 
 Assert::throws(function () use ($x) {
     $x->property = 1;
-}, \Dogma\UndefinedPropertyException::class);
+}, UndefinedPropertyException::class);
 
 Assert::throws(function () use ($x) {
     isset($x->property);
-}, \Dogma\UndefinedPropertyException::class);
+}, UndefinedPropertyException::class);
 
 Assert::throws(function () use ($x) {
     unset($x->property);
-}, \Dogma\UndefinedPropertyException::class);
+}, UndefinedPropertyException::class);

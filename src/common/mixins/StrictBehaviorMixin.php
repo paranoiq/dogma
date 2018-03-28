@@ -21,7 +21,7 @@ trait StrictBehaviorMixin
      */
     public function __call(string $name, $args): void
     {
-        throw new \Dogma\UndefinedMethodException(get_class($this), $name);
+        throw new UndefinedMethodException(get_class($this), $name);
     }
 
     /**
@@ -33,7 +33,7 @@ trait StrictBehaviorMixin
      */
     public static function __callStatic(string $name, $args): void
     {
-        throw new \Dogma\UndefinedMethodException(get_called_class(), $name);
+        throw new UndefinedMethodException(get_called_class(), $name);
     }
 
     /**
@@ -44,7 +44,7 @@ trait StrictBehaviorMixin
      */
     public function &__get(string $name): void
     {
-        throw new \Dogma\UndefinedPropertyException(get_class($this), $name);
+        throw new UndefinedPropertyException(get_class($this), $name);
     }
 
     /**
@@ -56,7 +56,7 @@ trait StrictBehaviorMixin
      */
     public function __set(string $name, $value): void
     {
-        throw new \Dogma\UndefinedPropertyException(get_class($this), $name);
+        throw new UndefinedPropertyException(get_class($this), $name);
     }
 
     /**
@@ -67,7 +67,7 @@ trait StrictBehaviorMixin
      */
     public function __isset(string $name): void
     {
-        throw new \Dogma\UndefinedPropertyException(get_class($this), $name);
+        throw new UndefinedPropertyException(get_class($this), $name);
     }
 
     /**
@@ -78,7 +78,7 @@ trait StrictBehaviorMixin
      */
     public function __unset(string $name): void
     {
-        throw new \Dogma\UndefinedPropertyException(get_class($this), $name);
+        throw new UndefinedPropertyException(get_class($this), $name);
     }
 
 }

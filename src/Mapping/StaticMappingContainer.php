@@ -9,11 +9,12 @@
 
 namespace Dogma\Mapping;
 
+use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 
-class StaticMappingContainer implements \Dogma\Mapping\MappingContainer
+class StaticMappingContainer implements MappingContainer
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var \Dogma\Mapping\Mapping[] (string $typeId => $mapping) */
     private $mappings;
@@ -27,7 +28,7 @@ class StaticMappingContainer implements \Dogma\Mapping\MappingContainer
     {
         $typeId = $type->getId();
         if (!isset($this->mappings[$typeId])) {
-            throw new \Dogma\Mapping\MappingNotFoundException($type);
+            throw new MappingNotFoundException($type);
         }
         return $this->mappings[$typeId];
     }

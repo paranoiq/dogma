@@ -12,7 +12,7 @@ namespace Dogma\Mapping\Type;
 use Dogma\Mapping\Mapper;
 use Dogma\Type;
 
-class TypeTypeHandler implements \Dogma\Mapping\Type\TypeHandler
+class TypeTypeHandler implements TypeHandler
 {
 
     public function acceptsType(Type $type): bool

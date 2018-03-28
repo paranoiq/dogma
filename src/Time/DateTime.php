@@ -10,16 +10,19 @@
 namespace Dogma\Time;
 
 use Dogma\Check;
+use Dogma\NonIterable;
+use Dogma\NonIterableMixin;
 use Dogma\Str;
+use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 
 /**
  * Immutable date and time class
  */
-class DateTime extends \DateTimeImmutable implements \Dogma\NonIterable, \DateTimeInterface
+class DateTime extends \DateTimeImmutable implements NonIterable, \DateTimeInterface
 {
-    use \Dogma\StrictBehaviorMixin;
-    use \Dogma\NonIterableMixin;
+    use StrictBehaviorMixin;
+    use NonIterableMixin;
 
     public const DEFAULT_FORMAT = 'Y-m-d H:i:s';
     public const FORMAT_EMAIL_HTTP = DATE_RFC2822;

@@ -9,7 +9,7 @@
 
 namespace Dogma\Mapping;
 
-interface Exception
+interface MappingException
 {
 
 }

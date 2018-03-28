@@ -21,9 +21,9 @@ class ErrorHelper
      * Get error object for given error number.
      * @param int $errno
      * @param int|string $system
-     * @return \Dogma\System\Error\Error|null
+     * @return \Dogma\System\Error\SystemError|null
      */
-    public static function getError(int $errno, $system = self::LOCAL): ?Error
+    public static function getError(int $errno, $system = self::LOCAL): ?SystemError
     {
         if (!$system || !is_int($system)) {
             $system = self::detectSystem($system);

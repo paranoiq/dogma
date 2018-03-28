@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Exception caused by user mistake. */
-class QueryException extends \Dogma\Database\DatabaseException
+class QueryException extends DatabaseException
 {
 
 }

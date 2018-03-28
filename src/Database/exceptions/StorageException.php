@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Database storage errors caused by the underlying filesystem. */
-class StorageException extends \Dogma\Database\RuntimeException
+class StorageException extends RuntimeException
 {
 
 }

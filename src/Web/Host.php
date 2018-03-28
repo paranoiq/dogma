@@ -11,10 +11,11 @@ namespace Dogma\Web;
 
 use Dogma\Check;
 use Dogma\Str;
+use Dogma\StrictBehaviorMixin;
 
 class Host
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var string */
     private $host;

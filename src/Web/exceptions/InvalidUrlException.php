@@ -9,12 +9,15 @@
 
 namespace Dogma\Web;
 
-class InvalidUrlException extends \Dogma\InvalidValueException
+use Dogma\Exception;
+use Dogma\InvalidValueException;
+
+class InvalidUrlException extends InvalidValueException
 {
 
     public function __construct(string $value, ?\Throwable $previous = null)
     {
-        \Dogma\Exception::__construct(sprintf('Invalid URL format: \'%s\'', $value), $previous);
+        Exception::__construct(sprintf('Invalid URL format: \'%s\'', $value), $previous);
     }
 
 }

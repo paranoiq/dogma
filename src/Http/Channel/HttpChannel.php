@@ -12,13 +12,14 @@ namespace Dogma\Http\Channel;
 use Dogma\Http\Curl\CurlHelper;
 use Dogma\Http\HttpRequest;
 use Dogma\Http\HttpResponse;
+use Dogma\StrictBehaviorMixin;
 
 /**
  * HTTP channel for multiple similar requests.
  */
 class HttpChannel
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var \Dogma\Http\Channel\HttpChannelManager */
     private $manager;
@@ -170,7 +171,7 @@ class HttpChannel
     public function addJob($data, $context = null, $name = null, bool $forceStart = false)
     {
         if (!is_string($data) && !is_array($data)) {
-            throw new \Dogma\Http\Channel\ChannelException('Illegal job data. Job data can be either string or array.');
+            throw new HttpChannelException('Illegal job data. Job data can be either string or array.');
         }
 
         if (is_string($name) || is_int($name)) {
@@ -181,7 +182,7 @@ class HttpChannel
             $this->queue[$name] = $data;
 
         } else {
-            throw new \Dogma\Http\Channel\ChannelException('Illegal job name. Job name can be only a string or an integer.');
+            throw new HttpChannelException('Illegal job name. Job name can be only a string or an integer.');
         }
 
         if (isset($context)) {
@@ -271,7 +272,7 @@ class HttpChannel
         $handler = $request->getHandler();
         $error = curl_multi_add_handle($this->manager->getHandler(), $handler);
         if ($error !== 0) {
-            throw new \Dogma\Http\Channel\ChannelException(sprintf('CURL error when adding a job: %s', CurlHelper::getCurlMultiErrorName($error)), $error);
+            throw new HttpChannelException(sprintf('CURL error when adding a job: %s', CurlHelper::getCurlMultiErrorName($error)), $error);
         }
 
         $this->running[$name] = $this->queue[$name];
@@ -351,7 +352,7 @@ class HttpChannel
     private function fetchByName($name): ?HttpResponse
     {
         if (!isset($this->queue[$name]) && !isset($this->running[$name]) && !isset($this->finished[$name])) {
-            throw new \Dogma\Http\Channel\ChannelException(sprintf('Job named \'%s\' was not found.', $name));
+            throw new HttpChannelException(sprintf('Job named \'%s\' was not found.', $name));
         }
 
         if (isset($this->finished[$name])) {

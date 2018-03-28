@@ -9,9 +9,12 @@
 
 namespace Dogma\Dom;
 
+use Dogma\NotImplementedException;
+use Dogma\StaticClassMixin;
+
 class Dumper
 {
-    use \Dogma\StaticClassMixin;
+    use StaticClassMixin;
 
     /**
      * @param \Dogma\Dom\Element|\Dogma\Dom\NodeList|\DOMNode $node
@@ -66,7 +69,7 @@ class Dumper
 
         } else {
             echo '[something]';
-            throw new \Dogma\NotImplementedException('Dom dumper found some strange thing.');
+            throw new NotImplementedException('Dom dumper found some strange thing.');
         }
 
         if ($depth === 0) {

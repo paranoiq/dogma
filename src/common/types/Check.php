@@ -14,7 +14,7 @@ namespace Dogma;
  */
 final class Check
 {
-    use \Dogma\StaticClassMixin;
+    use StaticClassMixin;
 
     // min length
     public const NOT_EMPTY = 1;
@@ -38,7 +38,7 @@ final class Check
         switch ($type) {
             case Type::NULL:
                 if (!is_null($value)) {
-                    throw new \Dogma\InvalidTypeException($type, $value);
+                    throw new InvalidTypeException($type, $value);
                 }
                 break;
             case Type::BOOL:
@@ -127,11 +127,11 @@ final class Check
             try {
                 self::type($value, $type, $min, $max);
                 return;
-            } catch (\Dogma\InvalidTypeException $e) {
+            } catch (InvalidTypeException $e) {
                 // pass
             }
         }
-        throw new \Dogma\InvalidTypeException($types, $value);
+        throw new InvalidTypeException($types, $value);
     }
 
     /**
@@ -169,7 +169,7 @@ final class Check
     public static function null($value): void
     {
         if ($value !== null) {
-            throw new \Dogma\InvalidTypeException(Type::NULL, $value);
+            throw new InvalidTypeException(Type::NULL, $value);
         }
     }
 
@@ -188,7 +188,7 @@ final class Check
             $value = (bool) (int) $value;
             return;
         }
-        throw new \Dogma\InvalidTypeException(Type::BOOL, $value);
+        throw new InvalidTypeException(Type::BOOL, $value);
     }
 
     /**
@@ -219,14 +219,14 @@ final class Check
             return;
         }
         if (!is_numeric($value)) {
-            throw new \Dogma\InvalidTypeException(Type::INT, $value);
+            throw new InvalidTypeException(Type::INT, $value);
         }
         $actualType = gettype($value);
         $converted = (int) $value;
         $copy = $converted;
         settype($copy, $actualType);
         if ($copy !== $value && (!is_string($value) || rtrim(rtrim($value, '0'), '.') !== $copy)) {
-            throw new \Dogma\InvalidTypeException(Type::INT, $value);
+            throw new InvalidTypeException(Type::INT, $value);
         }
         if ($min !== null || $max !== null) {
             self::range($value, $min, $max);
@@ -261,10 +261,10 @@ final class Check
     {
         if (is_float($value)) {
             if (is_nan($value)) {
-                throw new \Dogma\InvalidValueException($value, 'valid float');
+                throw new InvalidValueException($value, 'valid float');
             }
             if ($value === INF || $value === -INF) {
-                throw new \Dogma\ValueOutOfRangeException($value, -INF, INF);
+                throw new ValueOutOfRangeException($value, -INF, INF);
             }
             if ($min !== null || $max !== null) {
                 self::range($value, $min, $max);
@@ -275,17 +275,17 @@ final class Check
             return;
         }
         if (!is_numeric($value)) {
-            throw new \Dogma\InvalidTypeException(Type::FLOAT, $value);
+            throw new InvalidTypeException(Type::FLOAT, $value);
         }
         $actualType = gettype($value);
         $converted = (float) $value;
         if ($converted === INF || $converted === -INF) {
-            throw new \Dogma\ValueOutOfRangeException($value, -INF, INF);
+            throw new ValueOutOfRangeException($value, -INF, INF);
         }
         $copy = $converted;
         settype($copy, $actualType);
         if ($copy !== $value && (!is_string($value) || rtrim(rtrim($value, '0'), '.') !== $copy)) {
-            throw new \Dogma\InvalidTypeException(Type::FLOAT, $value);
+            throw new InvalidTypeException(Type::FLOAT, $value);
         }
         if ($min !== null || $max !== null) {
             self::range($value, $min, $max);
@@ -328,7 +328,7 @@ final class Check
             return;
         }
         if (!is_numeric($value)) {
-            throw new \Dogma\InvalidTypeException(Type::STRING, $value);
+            throw new InvalidTypeException(Type::STRING, $value);
         }
         self::float($value);
         $value = (string) $value;
@@ -356,7 +356,7 @@ final class Check
     public static function traversable($value): void
     {
         if (!self::isIterable($value)) {
-            throw new \Dogma\InvalidTypeException('array|Traversable', $value);
+            throw new InvalidTypeException('array|Traversable', $value);
         }
     }
 
@@ -369,7 +369,7 @@ final class Check
     public static function array($value, ?int $minLength = null, ?int $maxLength = null): void
     {
         if (!is_array($value)) {
-            throw new \Dogma\InvalidTypeException(Type::PHP_ARRAY, $value);
+            throw new InvalidTypeException(Type::PHP_ARRAY, $value);
         }
         self::range(count($value), $minLength, $maxLength);
     }
@@ -384,7 +384,7 @@ final class Check
     {
         self::array($value, $minLength, $maxLength);
         if (!self::isPlainArray($value)) {
-            throw new \Dogma\InvalidTypeException('array with integer keys from 0', $value);
+            throw new InvalidTypeException('array with integer keys from 0', $value);
         }
     }
 
@@ -425,10 +425,10 @@ final class Check
     public static function object($value, ?string $className = null): void
     {
         if (!is_object($value)) {
-            throw new \Dogma\InvalidTypeException(Type::OBJECT, $value);
+            throw new InvalidTypeException(Type::OBJECT, $value);
         }
         if ($className !== null && !is_a($value, $className)) {
-            throw new \Dogma\InvalidTypeException($className, $value);
+            throw new InvalidTypeException($className, $value);
         }
     }
 
@@ -453,10 +453,10 @@ final class Check
     public static function resource($value, ?string $type = null): void
     {
         if (!is_resource($value)) {
-            throw new \Dogma\InvalidTypeException(Type::RESOURCE, $value);
+            throw new InvalidTypeException(Type::RESOURCE, $value);
         }
         if ($type !== null && get_resource_type($value) !== $type) {
-            throw new \Dogma\InvalidTypeException(sprintf('%s (%s)', Type::RESOURCE, $type), $value);
+            throw new InvalidTypeException(sprintf('%s (%s)', Type::RESOURCE, $type), $value);
         }
     }
 
@@ -467,7 +467,7 @@ final class Check
     public static function callable($value): void
     {
         if (!is_callable($value)) {
-            throw new \Dogma\InvalidTypeException('callable', $value);
+            throw new InvalidTypeException('callable', $value);
         }
     }
 
@@ -480,10 +480,10 @@ final class Check
     {
         self::string($value);
         if (!class_exists($value, true)) {
-            throw new \Dogma\InvalidValueException($value, 'class name');
+            throw new InvalidValueException($value, 'class name');
         }
         if ($parentClass !== null && !is_subclass_of($value, $parentClass)) {
-            throw new \Dogma\InvalidTypeException(sprintf('child class of %s', $parentClass), $value);
+            throw new InvalidTypeException(sprintf('child class of %s', $parentClass), $value);
         }
     }
 
@@ -495,7 +495,7 @@ final class Check
     {
         self::string($value);
         if (!class_exists($value, true) && !in_array($value, Type::listTypes())) {
-            throw new \Dogma\InvalidValueException($value, 'type name');
+            throw new InvalidValueException($value, 'type name');
         }
     }
 
@@ -531,7 +531,7 @@ final class Check
     public static function match(string $value, string $regexp): void
     {
         if (!preg_match($regexp, $value)) {
-            throw new \Dogma\InvalidValueException($value, $regexp);
+            throw new InvalidValueException($value, $regexp);
         }
     }
 
@@ -546,24 +546,24 @@ final class Check
         if ($type->isInt()) {
             try {
                 self::range($value, ...BitSize::getIntRange($type->getSize(), $type->isSigned()));
-            } catch (\Dogma\ValueOutOfRangeException $e) {
-                throw new \Dogma\ValueOutOfBoundsException($value, $type, $e);
+            } catch (ValueOutOfRangeException $e) {
+                throw new ValueOutOfBoundsException($value, $type, $e);
             }
         } elseif ($type->isFloat() && $type->getSize() === BitSize::BITS_32) {
             $length = strlen(rtrim(str_replace('.', '', $value), '0'));
             // single precision float can handle up to 9 digits of precision
             if ($length > 9) {
-                throw new \Dogma\ValueOutOfBoundsException($value, $type);
+                throw new ValueOutOfBoundsException($value, $type);
             }
         } elseif ($type->isString()) {
             try {
                 /// todo: take into account string encoding?
                 self::range(Str::length($value), 0, $type->getSize());
-            } catch (\Dogma\ValueOutOfRangeException $e) {
-                throw new \Dogma\ValueOutOfBoundsException($value, $type, $e);
+            } catch (ValueOutOfRangeException $e) {
+                throw new ValueOutOfBoundsException($value, $type, $e);
             }
         } else {
-            throw new \Dogma\InvalidArgumentException(sprintf('Cannot check bounds of type %s.', $type->getId()));
+            throw new InvalidArgumentException(sprintf('Cannot check bounds of type %s.', $type->getId()));
         }
     }
 
@@ -577,10 +577,10 @@ final class Check
     public static function range($value, $min = null, $max = null): void
     {
         if ($min !== null && $value < $min) {
-            throw new \Dogma\ValueOutOfRangeException($value, $min, $max);
+            throw new ValueOutOfRangeException($value, $min, $max);
         }
         if ($max !== null && $value > $max) {
-            throw new \Dogma\ValueOutOfRangeException($value, $min, $max);
+            throw new ValueOutOfRangeException($value, $min, $max);
         }
     }
 
@@ -592,7 +592,7 @@ final class Check
     public static function min($value, $min): void
     {
         if ($value < $min) {
-            throw new \Dogma\ValueOutOfRangeException($value, $min, null);
+            throw new ValueOutOfRangeException($value, $min, null);
         }
     }
 
@@ -604,7 +604,7 @@ final class Check
     public static function max($value, $max): void
     {
         if ($value > $max) {
-            throw new \Dogma\ValueOutOfRangeException($value, null, $max);
+            throw new ValueOutOfRangeException($value, null, $max);
         }
     }
 
@@ -615,7 +615,7 @@ final class Check
     public static function positive($value): void
     {
         if ($value <= 0) {
-            throw new \Dogma\ValueOutOfRangeException($value, 0, null);
+            throw new ValueOutOfRangeException($value, 0, null);
         }
     }
 
@@ -626,7 +626,7 @@ final class Check
     public static function nonNegative($value): void
     {
         if ($value < 0) {
-            throw new \Dogma\ValueOutOfRangeException($value, 0, null);
+            throw new ValueOutOfRangeException($value, 0, null);
         }
     }
 
@@ -637,7 +637,7 @@ final class Check
     public static function nonPositive($value): void
     {
         if ($value > 0) {
-            throw new \Dogma\ValueOutOfRangeException($value, null, 0);
+            throw new ValueOutOfRangeException($value, null, 0);
         }
     }
 
@@ -648,7 +648,7 @@ final class Check
     public static function negative($value): void
     {
         if ($value >= 0) {
-            throw new \Dogma\ValueOutOfRangeException($value, null, 0);
+            throw new ValueOutOfRangeException($value, null, 0);
         }
     }
 
@@ -665,7 +665,7 @@ final class Check
             }
         }
         if ($count !== 1) {
-            throw new \Dogma\ValueOutOfRangeException($count, 1, 1);
+            throw new ValueOutOfRangeException($count, 1, 1);
         }
     }
 

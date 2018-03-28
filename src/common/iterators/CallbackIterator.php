@@ -11,7 +11,7 @@ namespace Dogma;
 
 class CallbackIterator extends \IteratorIterator
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var callable */
     private $callback;

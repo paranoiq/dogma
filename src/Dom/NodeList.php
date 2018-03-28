@@ -9,9 +9,11 @@
 
 namespace Dogma\Dom;
 
+use Dogma\StrictBehaviorMixin;
+
 class NodeList implements \Countable, \Iterator
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var \DOMNodeList */
     private $nodeList;

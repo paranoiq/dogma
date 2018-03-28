@@ -9,9 +9,11 @@
 
 namespace Dogma\Mapping\Naming;
 
-class ShortFieldNamingStrategy implements \Dogma\Mapping\Naming\NamingStrategy
+use Dogma\StrictBehaviorMixin;
+
+class ShortFieldNamingStrategy implements NamingStrategy
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     public function translateName(string $localName, string $path, string $fieldSeparator): string
     {

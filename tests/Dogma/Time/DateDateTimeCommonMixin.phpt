@@ -2,6 +2,7 @@
 
 namespace Dogma\Tests\Time;
 
+use Dogma\InvalidValueException;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
 use Dogma\Time\DayOfWeek;
@@ -27,7 +28,7 @@ Assert::false($monday->isDayOfWeek(7));
 Assert::false($monday->isDayOfWeek(DayOfWeek::get(DayOfWeek::SUNDAY)));
 Assert::exception(function () use ($monday) {
     $monday->isDayOfWeek(8);
-}, \Dogma\InvalidValueException::class);
+}, InvalidValueException::class);
 
 // isWeekend()
 Assert::false($monday->isWeekend());
@@ -45,4 +46,4 @@ Assert::false($monday->isMonth(12));
 Assert::false($monday->isMonth(Month::get(Month::DECEMBER)));
 Assert::exception(function () use ($monday) {
     $monday->isMonth(13);
-}, \Dogma\InvalidValueException::class);
+}, InvalidValueException::class);

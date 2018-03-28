@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-class ValueOutOfRangeException extends \Dogma\InvalidValueException
+class ValueOutOfRangeException extends InvalidValueException
 {
 
     /**
@@ -21,17 +21,17 @@ class ValueOutOfRangeException extends \Dogma\InvalidValueException
     public function __construct($value, $min, $max, ?\Throwable $previous = null)
     {
         if ($min === null) {
-            \Dogma\Exception::__construct(
+            Exception::__construct(
                 sprintf('Expected a value lower than %s. Value %s given.', $max, ExceptionValueFormatter::format($value)),
                 $previous
             );
         } elseif ($max === null) {
-            \Dogma\Exception::__construct(
+            Exception::__construct(
                 sprintf('Expected a value higher than %s. Value %s given.', $min, ExceptionValueFormatter::format($value)),
                 $previous
             );
         } else {
-            \Dogma\Exception::__construct(
+            Exception::__construct(
                 sprintf('Expected a value within the range of %s and %s. Value %s given.', $min, $max, ExceptionValueFormatter::format($value)),
                 $previous
             );

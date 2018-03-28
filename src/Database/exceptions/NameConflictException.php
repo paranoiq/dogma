@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Entity (table, column, index...) already exists. */
-class NameConflictException extends \Dogma\Database\LogicErrorException
+class NameConflictException extends LogicErrorException
 {
 
 }

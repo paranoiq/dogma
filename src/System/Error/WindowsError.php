@@ -9,10 +9,12 @@
 
 namespace Dogma\System\Error;
 
+use Dogma\Enum\IntEnum;
+
 /**
  * Windows system errors (@see http://msdn.microsoft.com/en-us/library/windows/desktop/ms681382(v=vs.85).aspx)
  */
-class WindowsError extends \Dogma\Enum\IntEnum implements \Dogma\System\Error\Error
+class WindowsError extends IntEnum implements SystemError
 {
 
     public const ERROR_SUCCESS = 0;

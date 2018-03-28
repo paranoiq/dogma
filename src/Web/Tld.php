@@ -10,8 +10,9 @@
 namespace Dogma\Web;
 
 use Dogma\Country\Country;
+use Dogma\Enum\PartialStringEnum;
 
-final class Tld extends \Dogma\Enum\PartialStringEnum
+final class Tld extends PartialStringEnum
 {
 
     // common TLD

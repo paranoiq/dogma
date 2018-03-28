@@ -9,10 +9,12 @@
 
 namespace Dogma\Language;
 
+use Dogma\Enum\StringEnum;
+
 /**
  * 2-letter language codes by ISO-639
  */
-class Language extends \Dogma\Enum\StringEnum
+class Language extends StringEnum
 {
 
     public const ABKHAZ = 'ab';

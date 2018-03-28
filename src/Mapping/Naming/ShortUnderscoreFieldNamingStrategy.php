@@ -10,10 +10,11 @@
 namespace Dogma\Mapping\Naming;
 
 use Dogma\Language\Inflector;
+use Dogma\StrictBehaviorMixin;
 
-class ShortUnderscoreFieldNamingStrategy implements \Dogma\Mapping\Naming\NamingStrategy
+class ShortUnderscoreFieldNamingStrategy implements NamingStrategy
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     public function translateName(string $localName, string $path, string $fieldSeparator): string
     {

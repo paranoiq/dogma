@@ -3,6 +3,7 @@
 namespace Dogma\Tests\NonIterableMixin;
 
 use Dogma\NonIterableMixin;
+use Dogma\NonIterableObjectException;
 use Dogma\Tester\Assert;
 
 require_once __DIR__ . '/../../bootstrap.php';
@@ -17,4 +18,4 @@ Assert::throws(function () {
     foreach ($x as $y) {
         // pass
     }
-}, \Dogma\NonIterableObjectException::class);
+}, NonIterableObjectException::class);

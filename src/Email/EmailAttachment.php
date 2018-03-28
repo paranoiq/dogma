@@ -10,10 +10,11 @@
 namespace Dogma\Email;
 
 use Dogma\Io\File;
+use Dogma\StrictBehaviorMixin;
 
 class EmailAttachment
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** Content disposition */
     public const ATTACHMENT = 'attachment';

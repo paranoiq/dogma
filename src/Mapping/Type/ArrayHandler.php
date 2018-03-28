@@ -10,14 +10,15 @@
 namespace Dogma\Mapping\Type;
 
 use Dogma\Mapping\Mapper;
+use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 
 /**
  * Creates an array containing specified items from raw data and vice versa
  */
-class ArrayHandler implements \Dogma\Mapping\Type\TypeHandler
+class ArrayHandler implements TypeHandler
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     public function acceptsType(Type $type): bool
     {

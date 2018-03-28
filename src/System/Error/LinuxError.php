@@ -11,10 +11,12 @@
 
 namespace Dogma\System\Error;
 
+use Dogma\Enum\IntEnum;
+
 /**
  * Linux system errors
  */
-class LinuxError extends \Dogma\Enum\IntEnum implements \Dogma\System\Error\Error
+class LinuxError extends IntEnum implements SystemError
 {
 
     // common with Unix:

@@ -10,13 +10,19 @@
 namespace Dogma\Enum;
 
 use Dogma\Arr;
+use Dogma\InvalidTypeException;
+use Dogma\InvalidValueException;
+use Dogma\NonCloneableMixin;
+use Dogma\NonIterableMixin;
+use Dogma\NonSerializableMixin;
+use Dogma\StrictBehaviorMixin;
 
 trait EnumMixin
 {
-    use \Dogma\StrictBehaviorMixin;
-    use \Dogma\NonIterableMixin;
-    use \Dogma\NonCloneableMixin;
-    use \Dogma\NonSerializableMixin;
+    use StrictBehaviorMixin;
+    use NonIterableMixin;
+    use NonCloneableMixin;
+    use NonSerializableMixin;
 
     public function __toString(): string
     {
@@ -48,7 +54,7 @@ trait EnumMixin
     {
         if (!self::isValid($value)) {
             $class = get_called_class();
-            throw new \Dogma\InvalidValueException($value, $class);
+            throw new InvalidValueException($value, $class);
         }
     }
 
@@ -60,7 +66,7 @@ trait EnumMixin
         if (is_scalar($value)) {
             $value = static::get($value);
         } elseif (get_class($value) !== static::class) {
-            throw new \Dogma\InvalidTypeException(static::class, $value);
+            throw new InvalidTypeException(static::class, $value);
         }
 
         return $this->value === $value->value;

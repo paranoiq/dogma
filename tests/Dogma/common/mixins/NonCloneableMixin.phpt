@@ -3,6 +3,7 @@
 namespace Dogma\Tests\NonCloneableMixin;
 
 use Dogma\NonCloneableMixin;
+use Dogma\NonCloneableObjectException;
 use Dogma\Tester\Assert;
 
 require_once __DIR__ . '/../../bootstrap.php';
@@ -15,4 +16,4 @@ class TestClass
 Assert::throws(function () {
     $x = new TestClass();
     $y = clone($x);
-}, \Dogma\NonCloneableObjectException::class);
+}, NonCloneableObjectException::class);

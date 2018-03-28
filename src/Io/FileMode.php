@@ -11,9 +11,11 @@
 
 namespace Dogma\Io;
 
+use Dogma\StaticClassMixin;
+
 class FileMode
 {
-    use \Dogma\StaticClassMixin;
+    use StaticClassMixin;
 
     // if not found: ERROR; keep content
     public const OPEN_READ = 'rb';

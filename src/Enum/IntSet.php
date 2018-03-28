@@ -10,10 +10,11 @@
 namespace Dogma\Enum;
 
 use Dogma\Arr;
+use Dogma\InvalidValueException;
 
 abstract class IntSet
 {
-    use \Dogma\Enum\SetMixin;
+    use SetMixin;
 
     /** @var \Dogma\Enum\IntSet[][] ($class => ($value => $enum)) */
     private static $instances = [];
@@ -58,7 +59,7 @@ abstract class IntSet
             $found = $value & $val;
             if ($found) {
                 if (!static::validateValue($val)) {
-                    throw new \Dogma\InvalidValueException($val, $class);
+                    throw new InvalidValueException($val, $class);
                 }
                 $values[] = $val;
             }

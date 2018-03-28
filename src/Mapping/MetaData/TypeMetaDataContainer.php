@@ -10,12 +10,14 @@
 namespace Dogma\Mapping\MetaData;
 
 use Dogma\Check;
+use Dogma\Mapping\Type\NoHandlerForTypeException;
 use Dogma\Mapping\Type\TypeHandler;
+use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 
 class TypeMetaDataContainer
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var \Dogma\Mapping\Type\TypeHandler[] */
     private $handlers;
@@ -57,7 +59,7 @@ class TypeMetaDataContainer
             }
         }
         if (!$added) {
-            throw new \Dogma\Mapping\Type\NoHandlerForTypeException($type);
+            throw new NoHandlerForTypeException($type);
         }
     }
 

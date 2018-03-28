@@ -1,12 +1,14 @@
 <?php declare(strict_types = 1);
 
-namespace Dogma\Enum;
+namespace Dogma\Tests\Enum;
 
+use Dogma\Enum\IntEnum;
+use Dogma\InvalidTypeException;
 use Dogma\Tester\Assert;
 
 require_once __DIR__ . '/../bootstrap.php';
 
-class TestEnum extends \Dogma\Enum\IntEnum
+class TestEnum extends IntEnum
 {
 
     public const ONE = 1;
@@ -33,7 +35,7 @@ Assert::same($one->getConstantName(), 'ONE');
 // equals()
 Assert::exception(function () use ($one) {
     $one->equals(new \stdClass);
-}, \Dogma\InvalidTypeException::class);
+}, InvalidTypeException::class);
 Assert::false($one->equals($two));
 Assert::true($one->equals($oneAgain));
 

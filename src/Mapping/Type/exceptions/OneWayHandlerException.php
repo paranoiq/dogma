@@ -9,7 +9,9 @@
 
 namespace Dogma\Mapping\Type;
 
-class OneWayHandlerException extends \Dogma\Exception implements \Dogma\Mapping\Type\Exception
+use Dogma\Exception;
+
+class OneWayHandlerException extends Exception implements MappingTypeException
 {
 
     /** @var mixed */

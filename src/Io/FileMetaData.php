@@ -11,9 +11,11 @@
 
 namespace Dogma\Io;
 
+use Dogma\StrictBehaviorMixin;
+
 class FileMetaData
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var int[]|string[] */
     private $stat;
@@ -32,7 +34,7 @@ class FileMetaData
         $stat = stat($path);
 
         if ($stat === false) {
-            throw new \Dogma\Io\FileException('Cannot acquire file metadata.', error_get_last());
+            throw new FileException('Cannot acquire file metadata.', error_get_last());
         }
 
         return new self($stat);

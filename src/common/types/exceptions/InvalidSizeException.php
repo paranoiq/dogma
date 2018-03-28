@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-class InvalidSizeException extends \Dogma\Exception
+class InvalidSizeException extends Exception
 {
 
     /**

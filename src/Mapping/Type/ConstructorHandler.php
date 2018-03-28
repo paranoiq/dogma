@@ -17,7 +17,7 @@ use ReflectionClass;
 /**
  * Creates instance via keyword 'new' by filling constructor parameters
  */
-abstract class ConstructorHandler implements \Dogma\Mapping\Type\TypeHandler
+abstract class ConstructorHandler implements TypeHandler
 {
 
     /** @var \Dogma\Reflection\MethodTypeParser */

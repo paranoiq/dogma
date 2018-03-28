@@ -10,10 +10,11 @@
 namespace Dogma\Http\Channel;
 
 use Dogma\Http\HttpResponse;
+use Dogma\StrictBehaviorMixin;
 
 class HttpMultiChannel
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var \Dogma\Http\Channel\HttpChannel[] */
     private $channels;
@@ -162,7 +163,7 @@ class HttpMultiChannel
             $name = ++$this->lastIndex;
 
         } else {
-            throw new \Dogma\Http\Channel\ChannelException('Illegal job name. Job name can be only a string or an integer.');
+            throw new HttpChannelException('Illegal job name. Job name can be only a string or an integer.');
         }
 
         if ($this->dispatch) {
@@ -246,7 +247,7 @@ class HttpMultiChannel
     private function fetchNamedJob($name): ?array
     {
         if (!isset($this->queue[$name]) && !isset($this->finished[$name])) {
-            throw new \Dogma\Http\Channel\ChannelException(sprintf('Job named \'%s\' was not found.', $name));
+            throw new HttpChannelException(sprintf('Job named \'%s\' was not found.', $name));
         }
 
         if (isset($this->finished[$name]) && count($this->finished[$name]) === count($this->channels)) {
@@ -318,7 +319,7 @@ class HttpMultiChannel
             return $data;
 
         } else {
-            throw new \Dogma\Http\Channel\ChannelException('Illegal job data. Job data can be either string or array.');
+            throw new HttpChannelException('Illegal job data. Job data can be either string or array.');
         }
 
         return $jobs;

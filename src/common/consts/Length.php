@@ -11,7 +11,7 @@ namespace Dogma;
 
 class Length
 {
-    use \Dogma\StaticClassMixin;
+    use StaticClassMixin;
 
     public const FIXED = 'fixed';
 

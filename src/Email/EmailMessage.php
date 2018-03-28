@@ -15,6 +15,8 @@ use Dogma\Io\File;
 use Dogma\Language\Inflector;
 use Dogma\PowersOfTwo;
 use Dogma\Str;
+use Dogma\StrictBehaviorMixin;
+use Dogma\Time\DateTime;
 
 /**
  * Mime mail parser. Parses mail message from a File or string.
@@ -33,7 +35,7 @@ use Dogma\Str;
  */
 class EmailMessage
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     public const TEXT = 'text/plain';
     public const HTML = 'text/html';
@@ -66,7 +68,7 @@ class EmailMessage
             ///
             $handler = mailparse_msg_parse_file($this->file->getPath());
             if (!$handler) {
-                throw new \Dogma\Email\EmailParsingException('Cannot parse email file.');
+                throw new EmailParsingException('Cannot parse email file.');
             }
 
         } else {
@@ -74,7 +76,7 @@ class EmailMessage
             $handler = mailparse_msg_create();
             $res = mailparse_msg_parse($handler, $message);
             if (!$handler || !$res) {
-                throw new \Dogma\Email\EmailParsingException('Cannot parse email message.');
+                throw new EmailParsingException('Cannot parse email message.');
             }
             $this->data = $message;
         }
@@ -82,7 +84,7 @@ class EmailMessage
         ///
         $structure = mailparse_msg_get_structure($handler);
         if (!$structure) {
-            throw new \Dogma\Email\EmailParsingException('Cannot parse email structure.');
+            throw new EmailParsingException('Cannot parse email structure.');
         }
 
         $this->parts = [];
@@ -91,7 +93,7 @@ class EmailMessage
             $partHandler = mailparse_msg_get_part($handler, $partId);
             $partData = mailparse_msg_get_part_data($partHandler);
             if (!$partHandler || !$partData) {
-                throw new \Dogma\Email\EmailParsingException('Cannot get email part data.');
+                throw new EmailParsingException('Cannot get email part data.');
             }
             $this->parts[$partId] = $partData;
         }
@@ -157,7 +159,7 @@ class EmailMessage
     public function getBody(string $type = self::TEXT): ?string
     {
         if ($type !== 'text/plain' && $type !== 'text/html') {
-            throw new \Dogma\Email\EmailParsingException('Invalid content type specified. Type can either be "text/plain" or "text/html".');
+            throw new EmailParsingException('Invalid content type specified. Type can either be "text/plain" or "text/html".');
         }
 
         foreach ($this->parts as $part) {
@@ -182,7 +184,7 @@ class EmailMessage
     public function getBodyHeaders(string $type = self::TEXT): array
     {
         if ($type !== 'text/plain' && $type !== 'text/html') {
-            throw new \Dogma\Email\EmailParsingException('Invalid content type specified. Type can either be "text/plain" or "text/html".');
+            throw new EmailParsingException('Invalid content type specified. Type can either be "text/plain" or "text/html".');
         }
 
         foreach ($this->parts as $part) {
@@ -258,7 +260,7 @@ class EmailMessage
             return $data;
 
         } else {
-            throw new \Dogma\Email\EmailParsingException('Unknown transfer encoding.');
+            throw new EmailParsingException('Unknown transfer encoding.');
         }
     }
 
@@ -277,7 +279,7 @@ class EmailMessage
             //
 
             if (in_array($name, ['date', 'resent-date', 'delivery-date', 'expires'], true)) {
-                $value = new \Dogma\Time\DateTime($value);
+                $value = new DateTime($value);
 
             } elseif (in_array($name, ['from', 'to', 'cc', 'bcc', 'reply-to', 'return-path', 'sender'], true)) {
                 $value = $this->parseAddressHeader($value);
@@ -328,7 +330,7 @@ class EmailMessage
                 $message = quoted_printable_decode($message);
 
             } else {
-                throw new \Dogma\Email\EmailParsingException(sprintf('Unknown header encoding \'%s\'.', $encoding));
+                throw new EmailParsingException(sprintf('Unknown header encoding \'%s\'.', $encoding));
             }
 
             return $that->convertCharset($message, strtolower($charset));

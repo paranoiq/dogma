@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-final class NonIterableObjectException extends \Dogma\Exception
+final class NonIterableObjectException extends Exception
 {
 
     public function __construct(string $class, ?\Throwable $previous = null)

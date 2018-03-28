@@ -9,7 +9,9 @@
 
 namespace Dogma\Io\ContentType;
 
-class ContentTypeDetectionException extends \Dogma\Exception
+use Dogma\Exception;
+
+class ContentTypeDetectionException extends Exception
 {
 
 }

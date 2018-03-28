@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Duplicate entry (integrity constraint error). */
-class DuplicateEntryException extends \Dogma\Database\IntegrityConstraintException
+class DuplicateEntryException extends IntegrityConstraintException
 {
 
 }

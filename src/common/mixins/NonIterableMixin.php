@@ -19,7 +19,7 @@ trait NonIterableMixin
      */
     public function getIterator(): void
     {
-        throw new \Dogma\NonIterableObjectException(get_class($this));
+        throw new NonIterableObjectException(get_class($this));
     }
 
 }

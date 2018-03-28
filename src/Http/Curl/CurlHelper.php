@@ -9,9 +9,11 @@
 
 namespace Dogma\Http\Curl;
 
+use Dogma\StaticClassMixin;
+
 class CurlHelper
 {
-    use \Dogma\StaticClassMixin;
+    use StaticClassMixin;
 
     // Errors ----------------------------------------------------------------------------------------------------------
 

@@ -9,7 +9,7 @@
 
 namespace Dogma\Dom;
 
-class QueryEngineException extends \Dogma\Dom\DomException
+class QueryEngineException extends DomException
 {
 
     //

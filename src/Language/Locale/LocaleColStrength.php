@@ -10,8 +10,9 @@
 namespace Dogma\Language\Locale;
 
 use Collator;
+use Dogma\Enum\StringEnum;
 
-class LocaleColStrength extends \Dogma\Enum\StringEnum implements \Dogma\Language\Locale\LocaleCollationOption
+class LocaleColStrength extends StringEnum implements LocaleCollationOption
 {
 
     public const PRIMARY = 'primary';

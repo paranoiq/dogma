@@ -10,8 +10,9 @@
 namespace Dogma\Enum;
 
 use Dogma\Arr;
+use Dogma\InvalidRegularExpressionException;
 
-abstract class PartialIntEnum extends \Dogma\Enum\IntEnum
+abstract class PartialIntEnum extends IntEnum
 {
 
     public static function isKnownValue(int $value): bool
@@ -24,7 +25,7 @@ abstract class PartialIntEnum extends \Dogma\Enum\IntEnum
         $regexp = '/^' . static::getValueRegexp() . '?$/';
         $result = preg_match($regexp, $value);
         if ($result === false) {
-            throw new \Dogma\InvalidRegularExpressionException($regexp);
+            throw new InvalidRegularExpressionException($regexp);
         }
         return (bool) $result;
     }

@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Events or event scheduler error. */
-class EventException extends \Dogma\Database\DatabaseException
+class EventException extends DatabaseException
 {
 
 }

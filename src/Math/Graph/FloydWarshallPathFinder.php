@@ -9,6 +9,8 @@
 
 namespace Dogma\Math\Graph;
 
+use Dogma\StrictBehaviorMixin;
+
 /**
  * Floyd-Warshall algorithm for finding all shortest paths in oriented weighted graph.
  * All the hard work is done in constructor to enable serialization and caching.
@@ -18,7 +20,7 @@ namespace Dogma\Math\Graph;
  */
 class FloydWarshallPathFinder
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var int[] */
     private $weights;

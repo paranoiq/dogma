@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Connection failure. */
-class ConnectionErrorException extends \Dogma\Database\DatabaseException
+class ConnectionErrorException extends DatabaseException
 {
 
 }

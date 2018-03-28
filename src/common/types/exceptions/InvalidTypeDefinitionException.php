@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-class InvalidTypeDefinitionException extends \Dogma\Exception
+class InvalidTypeDefinitionException extends Exception
 {
 
     public function __construct(string $definition, ?\Throwable $previous = null)

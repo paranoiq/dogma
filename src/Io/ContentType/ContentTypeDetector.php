@@ -11,10 +11,11 @@ namespace Dogma\Io\ContentType;
 
 use Dogma\Io\Path;
 use Dogma\Language\Encoding;
+use Dogma\StrictBehaviorMixin;
 
 class ContentTypeDetector
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var string|null */
     private $magicFile;
@@ -35,7 +36,7 @@ class ContentTypeDetector
         error_clear_last();
         $typeHandler = finfo_open(FILEINFO_MIME_TYPE, $this->magicFile);
         if ($typeHandler === false) {
-            throw new \Dogma\Io\ContentType\ContentTypeDetectionException('Cannot initialize finfo extension.', error_get_last());
+            throw new ContentTypeDetectionException('Cannot initialize finfo extension.', error_get_last());
         }
         $this->typeHandler = $typeHandler;
     }
@@ -45,7 +46,7 @@ class ContentTypeDetector
         error_clear_last();
         $encodingHandler = finfo_open(FILEINFO_MIME_ENCODING, $this->magicFile);
         if ($encodingHandler === false) {
-            throw new \Dogma\Io\ContentType\ContentTypeDetectionException('Cannot initialize finfo extension.', error_get_last());
+            throw new ContentTypeDetectionException('Cannot initialize finfo extension.', error_get_last());
         }
         $this->encodingHandler = $encodingHandler;
     }

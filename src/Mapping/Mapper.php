@@ -9,11 +9,12 @@
 
 namespace Dogma\Mapping;
 
+use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 
 class Mapper
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var \Dogma\Mapping\MappingContainer */
     private $mappings;

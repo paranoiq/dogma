@@ -9,10 +9,12 @@
 
 namespace Dogma\Language;
 
+use Dogma\Enum\StringEnum;
+
 /**
  * Encoding codes accepted by mbstring and iconv (except BINARY; not all of them)
  */
-class Encoding extends \Dogma\Enum\StringEnum
+class Encoding extends StringEnum
 {
 
     public const BINARY = 'BINARY';

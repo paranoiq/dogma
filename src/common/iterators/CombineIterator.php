@@ -11,7 +11,7 @@ namespace Dogma;
 
 class CombineIterator implements \Iterator
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var \Iterator */
     private $keys;

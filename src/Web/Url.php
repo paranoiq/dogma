@@ -9,9 +9,11 @@
 
 namespace Dogma\Web;
 
+use Dogma\StrictBehaviorMixin;
+
 class Url
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var \Nette\Http\Url */
     private $url;
@@ -21,7 +23,7 @@ class Url
         try {
             $this->url = new \Nette\Http\Url($url);
         } catch (\Nette\InvalidArgumentException $e) {
-            throw new \Dogma\Web\InvalidUrlException($url);
+            throw new InvalidUrlException($url);
         }
     }
 

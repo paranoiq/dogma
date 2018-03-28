@@ -9,9 +9,11 @@
 
 namespace Dogma\Email;
 
+use Dogma\StrictBehaviorMixin;
+
 class EmailAddress
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var string */
     private $name;

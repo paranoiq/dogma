@@ -7,17 +7,11 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\System\Error;
+namespace Dogma\Http;
 
-interface Error
+class HttpResponseException extends HttpException
 {
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
-     * @return int
-     */
-    public function getValue(); // compatible with Enum
-
-    public function getDescription(): string;
+    //
 
 }

@@ -11,13 +11,15 @@ namespace Dogma\Io\Filesystem;
 
 use Dogma\Io\File;
 use Dogma\Io\FileMode;
+use Dogma\Io\Path;
+use Dogma\StrictBehaviorMixin;
 
 /**
  * File Info
  */
-class FileInfo extends \SplFileInfo implements \Dogma\Io\Path
+class FileInfo extends \SplFileInfo implements Path
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /* inherits:
     getATime()

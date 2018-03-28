@@ -14,7 +14,7 @@ use Dogma\Language\Encoding;
 /**
  * Text file reader/writer
  */
-class TextFile extends \Dogma\Io\File
+class TextFile extends File
 {
 
     /** @var string */
@@ -69,7 +69,7 @@ class TextFile extends \Dogma\Io\File
             if ($this->endOfFileReached()) {
                 return null;
             } else {
-                throw new \Dogma\Io\FileException('Cannot read data from file.', error_get_last());
+                throw new FileException('Cannot read data from file.', error_get_last());
             }
         }
         if ($this->encoding !== $this->internalEncoding) {
@@ -101,7 +101,7 @@ class TextFile extends \Dogma\Io\File
             if ($this->endOfFileReached()) {
                 return [];
             } else {
-                throw new \Dogma\Io\FileException('Cannot read data from file.', error_get_last());
+                throw new FileException('Cannot read data from file.', error_get_last());
             }
         }
 
@@ -132,7 +132,7 @@ class TextFile extends \Dogma\Io\File
         $written = fputcsv($this->handle, $row, $delimiter, $quoteChar);
 
         if ($written === false) {
-            throw new \Dogma\Io\FileException('Cannot write CSV row', error_get_last());
+            throw new FileException('Cannot write CSV row', error_get_last());
         }
 
         return $written;
@@ -144,7 +144,7 @@ class TextFile extends \Dogma\Io\File
         $result = iconv($this->encoding, $this->internalEncoding, $string);
 
         if ($result === false) {
-            throw new \Dogma\Io\FileException('Cannot convert file encoding.', error_get_last());
+            throw new FileException('Cannot convert file encoding.', error_get_last());
         }
 
         return $result;
@@ -156,7 +156,7 @@ class TextFile extends \Dogma\Io\File
         $result = iconv($this->internalEncoding, $this->encoding, $string);
 
         if ($result === false) {
-            throw new \Dogma\Io\FileException('Cannot convert file encoding.', error_get_last());
+            throw new FileException('Cannot convert file encoding.', error_get_last());
         }
 
         return $result;

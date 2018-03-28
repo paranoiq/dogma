@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Concurrency issues. */
-class ConcurrencyException extends \Dogma\Database\DatabaseException
+class ConcurrencyException extends DatabaseException
 {
 
 }

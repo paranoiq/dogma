@@ -9,12 +9,14 @@
 
 namespace Dogma\Dom;
 
+use Dogma\StrictBehaviorMixin;
+
 /**
  * @property-read string $nodeName
  */
 class Element
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var \Dogma\Dom\QueryEngine */
     private $engine;

@@ -11,7 +11,7 @@ namespace Dogma;
 
 class Order
 {
-    use \Dogma\StaticClassMixin;
+    use StaticClassMixin;
 
     public const ASCENDING = SORT_ASC; // 4
     public const DESCENDING = SORT_DESC; // 3

@@ -9,9 +9,11 @@
 
 namespace Dogma\Time;
 
-class ConstantTimeProvider implements \Dogma\Time\TimeProvider
+use Dogma\StrictBehaviorMixin;
+
+class ConstantTimeProvider implements TimeProvider
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var \Dogma\Time\DateTime */
     private $dateTime;

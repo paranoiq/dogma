@@ -12,14 +12,16 @@ namespace Dogma\Mapping\Type\Enum;
 use Dogma\Enum\IntEnum;
 use Dogma\Enum\StringEnum;
 use Dogma\Mapping\Mapper;
+use Dogma\Mapping\Type\TypeHandler;
+use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 
 /**
  * Creates an enum from raw value and vice versa
  */
-class EnumHandler implements \Dogma\Mapping\Type\TypeHandler
+class EnumHandler implements TypeHandler
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     public function acceptsType(Type $type): bool
     {

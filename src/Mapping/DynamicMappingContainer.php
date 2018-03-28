@@ -9,11 +9,12 @@
 
 namespace Dogma\Mapping;
 
+use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 
-class DynamicMappingContainer implements \Dogma\Mapping\MappingContainer
+class DynamicMappingContainer implements MappingContainer
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var \Dogma\Mapping\MappingBuilder */
     private $mappingBuilder;

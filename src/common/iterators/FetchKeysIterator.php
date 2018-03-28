@@ -11,7 +11,7 @@ namespace Dogma;
 
 class FetchKeysIterator extends \IteratorIterator
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var int|string */
     private $keysKey;
@@ -44,7 +44,7 @@ class FetchKeysIterator extends \IteratorIterator
         } else {
             $value = parent::current();
             if (!is_array($value) && !$value instanceof \ArrayAccess) {
-                throw new \Dogma\InvalidTypeException('array or ArrayAccess', $value);
+                throw new InvalidTypeException('array or ArrayAccess', $value);
             }
             return $value[$this->valuesKey];
         }
@@ -60,7 +60,7 @@ class FetchKeysIterator extends \IteratorIterator
         } else {
             $value = parent::current();
             if (!is_array($value) && !$value instanceof \ArrayAccess) {
-                throw new \Dogma\InvalidTypeException('array or ArrayAccess', $value);
+                throw new InvalidTypeException('array or ArrayAccess', $value);
             }
             return $value[$this->keysKey];
         }

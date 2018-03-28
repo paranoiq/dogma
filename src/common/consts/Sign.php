@@ -11,7 +11,7 @@ namespace Dogma;
 
 class Sign
 {
-    use \Dogma\StaticClassMixin;
+    use StaticClassMixin;
 
     public const SIGNED = 'signed';
     public const UNSIGNED = 'unsigned';

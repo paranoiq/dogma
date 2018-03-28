@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Operation is not supported in this context, configuration or version. */
-class NotSupportedException extends \Dogma\Database\LogicErrorException
+class NotSupportedException extends LogicErrorException
 {
 
 }

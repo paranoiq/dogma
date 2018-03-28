@@ -31,7 +31,7 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
                 parent::__construct($path, $flags);
             }
         } catch (\UnexpectedValueException $e) {
-            throw new \Dogma\Io\Filesystem\DirectoryException($e->getMessage(), $e);
+            throw new DirectoryException($e->getMessage(), $e);
         }
     }
 

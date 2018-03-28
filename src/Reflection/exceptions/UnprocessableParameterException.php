@@ -9,7 +9,9 @@
 
 namespace Dogma\Reflection;
 
-class UnprocessableParameterException extends \Dogma\Exception implements \Dogma\Reflection\Exception
+use Dogma\Exception;
+
+class UnprocessableParameterException extends Exception implements ReflectionException
 {
 
     /**

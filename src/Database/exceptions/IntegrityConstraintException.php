@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Integrity constraint error. */
-class IntegrityConstraintException extends \Dogma\Database\QueryException
+class IntegrityConstraintException extends QueryException
 {
 
 }

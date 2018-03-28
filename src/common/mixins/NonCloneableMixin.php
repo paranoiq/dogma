@@ -19,7 +19,7 @@ trait NonCloneableMixin
      */
     final public function __clone()
     {
-        throw new \Dogma\NonCloneableObjectException(get_class($this));
+        throw new NonCloneableObjectException(get_class($this));
     }
 
 }

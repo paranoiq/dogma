@@ -10,12 +10,13 @@
 namespace Dogma\Mapping\Type;
 
 use Dogma\Mapping\Mapper;
+use Dogma\StrictBehaviorMixin;
 use Dogma\Tuple;
 use Dogma\Type;
 
-class TupleHandler implements \Dogma\Mapping\Type\TypeHandler
+class TupleHandler implements TypeHandler
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     public function acceptsType(Type $type): bool
     {

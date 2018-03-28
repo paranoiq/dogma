@@ -7,9 +7,11 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Reflection;
+namespace Dogma\Http;
 
-interface Exception
+class HttpRequestException extends HttpException
 {
+
+    //
 
 }

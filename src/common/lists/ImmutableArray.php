@@ -11,8 +11,8 @@ namespace Dogma;
 
 class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
 {
-    use \Dogma\StrictBehaviorMixin;
-    use \Dogma\ImmutableArrayAccessMixin;
+    use StrictBehaviorMixin;
+    use ImmutableArrayAccessMixin;
 
     /** @internal */
     private const PRESERVE_KEYS = true;
@@ -63,7 +63,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         } elseif ($that instanceof \Traversable) {
             return iterator_to_array($that);
         } else {
-            throw new \Dogma\InvalidTypeException(Type::PHP_ARRAY, $that);
+            throw new InvalidTypeException(Type::PHP_ARRAY, $that);
         }
     }
 

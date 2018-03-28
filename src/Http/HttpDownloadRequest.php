@@ -14,7 +14,7 @@ use Dogma\Io\File;
 /**
  * File download request.
  */
-class HttpDownloadRequest extends \Dogma\Http\HttpRequest
+class HttpDownloadRequest extends HttpRequest
 {
 
     /** @var \Dogma\Io\File */

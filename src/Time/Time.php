@@ -10,14 +10,17 @@
 namespace Dogma\Time;
 
 use Dogma\Check;
+use Dogma\NonIterable;
+use Dogma\NonIterableMixin;
+use Dogma\StrictBehaviorMixin;
 
 /**
  * Time of day.
  */
-class Time implements \Dogma\NonIterable
+class Time implements NonIterable
 {
-    use \Dogma\StrictBehaviorMixin;
-    use \Dogma\NonIterableMixin;
+    use StrictBehaviorMixin;
+    use NonIterableMixin;
 
     public const DEFAULT_FORMAT = 'H:i:s';
 
@@ -38,7 +41,7 @@ class Time implements \Dogma\NonIterable
             try {
                 $dateTime = new \DateTime($time);
             } catch (\Throwable $e) {
-                throw new \Dogma\Time\InvalidDateTimeException($time, $e);
+                throw new InvalidDateTimeException($time, $e);
             }
             $hours = (int) $dateTime->format('h');
             $minutes = (int) $dateTime->format('i');
@@ -65,7 +68,7 @@ class Time implements \Dogma\NonIterable
     {
         $dateTime = \DateTime::createFromFormat($format, $timeString);
         if ($dateTime === false) {
-            throw new \Dogma\Time\InvalidDateTimeException('xxx');
+            throw new InvalidDateTimeException('xxx');
         }
 
         return new static($dateTime->format(self::DEFAULT_FORMAT));

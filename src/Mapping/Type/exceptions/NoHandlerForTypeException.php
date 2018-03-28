@@ -9,9 +9,10 @@
 
 namespace Dogma\Mapping\Type;
 
+use Dogma\Exception;
 use Dogma\Type;
 
-class NoHandlerForTypeException extends \Dogma\Exception implements \Dogma\Mapping\Type\Exception
+class NoHandlerForTypeException extends Exception implements MappingTypeException
 {
 
     /** @var \Dogma\Type */

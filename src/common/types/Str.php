@@ -47,7 +47,7 @@ class Str extends \Nette\Utils\Strings
         } elseif (is_string($collation) || $collation instanceof Locale) {
             $collation = new Collator($collation);
         } elseif (!$collation instanceof \Collator) {
-            throw new \Dogma\InvalidValueException($collation, [Type::STRING, \Collator::class, Locale::class]);
+            throw new InvalidValueException($collation, [Type::STRING, \Collator::class, Locale::class]);
         }
         return $collation->compare($first, $second);
     }

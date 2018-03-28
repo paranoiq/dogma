@@ -12,7 +12,7 @@ namespace Dogma\Mapping\Type;
 use Dogma\Mapping\Mapper;
 use Dogma\Type;
 
-class DefaultOneWayHandler extends \Dogma\Mapping\Type\ConstructorHandler implements \Dogma\Mapping\Type\TypeHandler
+class DefaultOneWayHandler extends ConstructorHandler implements TypeHandler
 {
 
     public function acceptsType(Type $type): bool
@@ -28,7 +28,7 @@ class DefaultOneWayHandler extends \Dogma\Mapping\Type\ConstructorHandler implem
      */
     public function exportInstance(Type $type, $instance, Mapper $mapper): void
     {
-        throw new \Dogma\Mapping\Type\OneWayHandlerException($instance, $this);
+        throw new OneWayHandlerException($instance, $this);
     }
 
 }

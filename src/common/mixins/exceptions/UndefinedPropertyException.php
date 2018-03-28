@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-class UndefinedPropertyException extends \Dogma\Exception
+class UndefinedPropertyException extends Exception
 {
 
     public function __construct(string $class, string $property, ?\Throwable $previous = null)

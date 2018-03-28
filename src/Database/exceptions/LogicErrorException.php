@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Statement logic error. You are doing something wrong. */
-class LogicErrorException extends \Dogma\Database\QueryException
+class LogicErrorException extends QueryException
 {
 
 }

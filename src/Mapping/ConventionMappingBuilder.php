@@ -13,11 +13,12 @@ use Dogma\Mapping\MetaData\TypeMetaDataContainer;
 use Dogma\Mapping\Naming\NamingStrategy;
 use Dogma\Mapping\Naming\ShortFieldNamingStrategy;
 use Dogma\Mapping\Type\TypeHandler;
+use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 
-class ConventionMappingBuilder implements \Dogma\Mapping\MappingBuilder
+class ConventionMappingBuilder implements MappingBuilder
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var \Dogma\Mapping\MetaData\TypeMetaDataContainer */
     private $typeMetaData;

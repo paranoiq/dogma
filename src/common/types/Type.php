@@ -19,9 +19,9 @@ use Dogma\Language\Locale\Locale;
  */
 class Type
 {
-    use \Dogma\StrictBehaviorMixin;
-    use \Dogma\NonCloneableMixin;
-    use \Dogma\NonSerializableMixin;
+    use StrictBehaviorMixin;
+    use NonCloneableMixin;
+    use NonSerializableMixin;
 
     // types
     public const BOOL = 'bool';
@@ -144,7 +144,7 @@ class Type
                 case $arg === null:
                     continue;
                 default:
-                    throw new \Dogma\InvalidArgumentException(sprintf(
+                    throw new InvalidArgumentException(sprintf(
                         'Unexpected or duplicate argument %s at position %d.',
                         ExceptionValueFormatter::format($arg),
                         $i
@@ -189,7 +189,7 @@ class Type
         } elseif ($type === self::STRING && $size > 0) {
             return;
         }
-        throw new \Dogma\InvalidSizeException($type, $size, []);
+        throw new InvalidSizeException($type, $size, []);
     }
 
     /**
@@ -207,7 +207,7 @@ class Type
         if ($type === self::RESOURCE && ResourceType::isValid($specific)) {
             return;
         }
-        throw new \Dogma\InvalidTypeException($type, sprintf('%s(%s)', $type, $specific));
+        throw new InvalidTypeException($type, sprintf('%s(%s)', $type, $specific));
     }
 
     public static function bool(bool $nullable = false): self
@@ -355,7 +355,7 @@ class Type
         }
 
         if (!preg_match('/^([^(<?]+)(?:\\(([^)]+)\\))?(?:<(.*)>)?(\\?)?$/', $id, $match)) {
-            throw new \Dogma\InvalidTypeDefinitionException($id);
+            throw new InvalidTypeDefinitionException($id);
         }
         $match = Arr::padTo($match, 5, false);
         list(, $baseId, $params, $itemIds, $nullable) = $match;
@@ -386,7 +386,7 @@ class Type
                         $locale = Locale::get($param);
                         break;
                     default:
-                        throw new \Dogma\InvalidTypeDefinitionException($id);
+                        throw new InvalidTypeDefinitionException($id);
                 }
             }
             if ($specific) {
@@ -424,7 +424,7 @@ class Type
             return self::tupleOf(...$itemTypes);
         } else {
             if (count($itemTypes) !== 1) {
-                throw new \Dogma\InvalidTypeDefinitionException($id);
+                throw new InvalidTypeDefinitionException($id);
             }
             if ($baseId === self::PHP_ARRAY) {
                 return self::arrayOf($itemTypes[0], $nullable);

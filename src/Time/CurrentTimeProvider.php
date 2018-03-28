@@ -9,9 +9,11 @@
 
 namespace Dogma\Time;
 
-class CurrentTimeProvider implements \Dogma\Time\TimeProvider
+use Dogma\StrictBehaviorMixin;
+
+class CurrentTimeProvider implements TimeProvider
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var \DateTimeZone|null */
     private $timeZone;

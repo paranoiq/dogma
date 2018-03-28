@@ -11,7 +11,7 @@ namespace Dogma;
 
 class ArrayIterator implements \Iterator
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var mixed[] */
     private $array;

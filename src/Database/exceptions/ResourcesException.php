@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Resource or configuration limit reached. */
-class ResourcesException extends \Dogma\Database\FailureException
+class ResourcesException extends FailureException
 {
 
 }

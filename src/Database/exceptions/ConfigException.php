@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Wrong or unreadable configuration file. */
-class ConfigException extends \Dogma\Database\FailureException
+class ConfigException extends FailureException
 {
 
 }

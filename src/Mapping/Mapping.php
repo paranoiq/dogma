@@ -11,11 +11,12 @@ namespace Dogma\Mapping;
 
 use Dogma\Mapping\Type\TypeHandler;
 use Dogma\ReverseArrayIterator;
+use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 
 class Mapping
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var \Dogma\Type */
     private $type;

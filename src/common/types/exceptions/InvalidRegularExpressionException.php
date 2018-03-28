@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-class InvalidRegularExpressionException extends \Dogma\InvalidValueException
+class InvalidRegularExpressionException extends InvalidValueException
 {
 
     /**
@@ -18,7 +18,7 @@ class InvalidRegularExpressionException extends \Dogma\InvalidValueException
      */
     public function __construct($regexp, ?\Throwable $previous = null)
     {
-        \Dogma\Exception::__construct(
+        Exception::__construct(
             sprintf('Value \'%s\' is not a valid regular expression.', $regexp),
             $previous
         );

@@ -11,9 +11,11 @@
 
 namespace Dogma\Web;
 
+use Dogma\StrictBehaviorMixin;
+
 class Domain
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var string */
     private $name;

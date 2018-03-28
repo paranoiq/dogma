@@ -68,7 +68,7 @@ class Document extends \DOMDocument
         libxml_clear_errors();
         if (!parent::loadXML($source, $options)) {
             $error = libxml_get_last_error();
-            throw new \Dogma\Dom\DomException('Cannot load HTML document: ' . trim($error->message) . ' on line #' . $error->line, $error->code);
+            throw new DomException('Cannot load HTML document: ' . trim($error->message) . ' on line #' . $error->line, $error->code);
         }
     }
 
@@ -83,7 +83,7 @@ class Document extends \DOMDocument
         libxml_clear_errors();
         if (!parent::loadHTML($source, $options)) {
             $error = libxml_get_last_error();
-            throw new \Dogma\Dom\DomException('Cannot load HTML document: ' . trim($error->message) . ' on line #' . $error->line, $error->code);
+            throw new DomException('Cannot load HTML document: ' . trim($error->message) . ' on line #' . $error->line, $error->code);
         }
     }
 
@@ -98,7 +98,7 @@ class Document extends \DOMDocument
         libxml_clear_errors();
         if (!parent::loadHTMLFile($fileName)) {
             $error = libxml_get_last_error();
-            throw new \Dogma\Dom\DomException('Cannot load HTML document: ' . trim($error->message) . ' on line #' . $error->line, $error->code);
+            throw new DomException('Cannot load HTML document: ' . trim($error->message) . ' on line #' . $error->line, $error->code);
         }
     }
 

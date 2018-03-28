@@ -11,7 +11,7 @@ namespace Dogma;
 
 class BitSize
 {
-    use \Dogma\StaticClassMixin;
+    use StaticClassMixin;
 
     public const BITS_8 = 8;
     public const BITS_16 = 16;
@@ -55,7 +55,7 @@ class BitSize
     {
         $sizes = self::getIntSizes();
         if (!Arr::contains($sizes, $size)) {
-            throw new \Dogma\InvalidSizeException(Type::INT, $size, $sizes);
+            throw new InvalidSizeException(Type::INT, $size, $sizes);
         }
     }
 
@@ -67,7 +67,7 @@ class BitSize
     {
         $sizes = self::getFloatSizes();
         if (!Arr::contains($sizes, $size)) {
-            throw new \Dogma\InvalidSizeException(Type::FLOAT, $size, $sizes);
+            throw new InvalidSizeException(Type::FLOAT, $size, $sizes);
         }
     }
 

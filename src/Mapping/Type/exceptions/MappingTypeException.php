@@ -7,11 +7,11 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Http;
+namespace Dogma\Mapping\Type;
 
-class ResponseException extends \Dogma\Http\HttpException
+use Dogma\Mapping\MappingException;
+
+interface MappingTypeException extends MappingException
 {
-
-    //
 
 }

@@ -10,11 +10,12 @@
 namespace Dogma\Mapping;
 
 use Dogma\Mapping\Type\TypeHandler;
+use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 
 class MappingStep
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var \Dogma\Type */
     private $type;

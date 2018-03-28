@@ -12,6 +12,9 @@ namespace Dogma\Http\Channel;
 use Dogma\Http\Curl\CurlHelper;
 use Dogma\Http\HttpHeaderParser;
 use Dogma\Http\HttpRequest;
+use Dogma\NonCloneableMixin;
+use Dogma\NonSerializableMixin;
+use Dogma\StrictBehaviorMixin;
 use Dogma\Time\CurrentTimeProvider;
 
 /**
@@ -19,9 +22,9 @@ use Dogma\Time\CurrentTimeProvider;
  */
 class HttpChannelManager
 {
-    use \Dogma\StrictBehaviorMixin;
-    use \Dogma\NonSerializableMixin;
-    use \Dogma\NonCloneableMixin;
+    use StrictBehaviorMixin;
+    use NonSerializableMixin;
+    use NonCloneableMixin;
 
     /** @var resource (curl) */
     private $handler;
@@ -46,7 +49,7 @@ class HttpChannelManager
         $this->headerParser = $headerParser;
         $this->handler = curl_multi_init();
         if (!$this->handler) {
-            throw new \Dogma\Http\Channel\ChannelException('Cannot initialize CURL multi-request.');
+            throw new HttpChannelException('Cannot initialize CURL multi-request.');
         }
     }
 
@@ -129,7 +132,7 @@ class HttpChannelManager
         do {
             $error = curl_multi_exec($this->handler, $active);
             if ($error > 0) {
-                throw new \Dogma\Http\Channel\ChannelException('CURL error when starting jobs: ' . CurlHelper::getCurlMultiErrorName($error), $error);
+                throw new HttpChannelException('CURL error when starting jobs: ' . CurlHelper::getCurlMultiErrorName($error), $error);
             }
         } while ($error === CURLM_CALL_MULTI_PERFORM);
 
@@ -148,7 +151,7 @@ class HttpChannelManager
 
             $error = curl_multi_remove_handle($this->handler, $info['handle']);
             if ($error) {
-                throw new \Dogma\Http\Channel\ChannelException('CURL error when reading results: ' . CurlHelper::getCurlMultiErrorName($error), $error);
+                throw new HttpChannelException('CURL error when reading results: ' . CurlHelper::getCurlMultiErrorName($error), $error);
             }
 
             $channel->jobFinished($name, $info, $request);

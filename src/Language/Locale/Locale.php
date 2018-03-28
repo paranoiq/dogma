@@ -17,11 +17,12 @@ use Dogma\Language\Language;
 use Dogma\Language\Script;
 use Dogma\Money\Currency;
 use Dogma\Str;
+use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 
 class Locale
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var self[] */
     private static $instances = [];

@@ -11,7 +11,9 @@
 
 namespace Dogma\Language\Locale;
 
-class LocaleCalendar extends \Dogma\Enum\StringEnum
+use Dogma\Enum\StringEnum;
+
+class LocaleCalendar extends StringEnum
 {
 
     public const BUDDHIST = 'buddhist';

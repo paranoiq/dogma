@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Remote server or FEDERATED engine error. */
-class RemoteStorageException extends \Dogma\Database\DatabaseException
+class RemoteStorageException extends DatabaseException
 {
 
 }

@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-class ValueOutOfBoundsException extends \Dogma\ValueOutOfRangeException
+class ValueOutOfBoundsException extends ValueOutOfRangeException
 {
 
     /**
@@ -19,7 +19,7 @@ class ValueOutOfBoundsException extends \Dogma\ValueOutOfRangeException
      */
     public function __construct($value, $type, ?\Throwable $previous = null)
     {
-        \Dogma\Exception::__construct(
+        Exception::__construct(
             sprintf('Value %s cannot fit to data type %s.', ExceptionValueFormatter::format($value), ExceptionTypeFormatter::format($type)),
             $previous
         );

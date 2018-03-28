@@ -9,9 +9,11 @@
 
 namespace Dogma\Io;
 
-class FilePath implements \Dogma\Io\Path
+use Dogma\StrictBehaviorMixin;
+
+class FilePath implements Path
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var string */
     private $path;

@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-class InvalidInterfaceException extends \Dogma\InvalidTypeException
+class InvalidInterfaceException extends InvalidTypeException
 {
 
     /**
@@ -29,9 +29,9 @@ class InvalidInterfaceException extends \Dogma\InvalidTypeException
             $class = false;
         }
         if ($class) {
-            \Dogma\Exception::__construct(sprintf('Expected an instance of %s. %s given.', $expectedInterface, $type), $previous);
+            Exception::__construct(sprintf('Expected an instance of %s. %s given.', $expectedInterface, $type), $previous);
         } else {
-            \Dogma\Exception::__construct(sprintf('Expected an object implementing %s. %s given.', $expectedInterface, $type), $previous);
+            Exception::__construct(sprintf('Expected an object implementing %s. %s given.', $expectedInterface, $type), $previous);
         }
     }
 

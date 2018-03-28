@@ -14,7 +14,7 @@ namespace Dogma;
  */
 class Regexp
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     public const DOLLAR_MATCH_END_ONLY = 'D';
     public const CASE_INSENSITIVE = 'i';

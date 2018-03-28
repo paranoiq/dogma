@@ -10,11 +10,12 @@
 namespace Dogma\Mapping;
 
 use Dogma\ArrayIterator;
+use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 
 class MappingIterator implements \Iterator
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var \Iterator */
     private $source;

@@ -9,15 +9,16 @@
 
 namespace Dogma\Mapping\Type;
 
+use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 
 /**
  * Extracts raw data from instance via \Dogma\Exportable interface
  */
-class ExportableHandler extends \Dogma\Mapping\Type\ConstructorHandler implements \Dogma\Mapping\Type\TypeHandler
+class ExportableHandler extends ConstructorHandler implements TypeHandler
 {
-    use \Dogma\StrictBehaviorMixin;
-    use \Dogma\Mapping\Type\ExportableHandlerMixin;
+    use StrictBehaviorMixin;
+    use ExportableHandlerMixin;
 
     public function acceptsType(Type $type): bool
     {

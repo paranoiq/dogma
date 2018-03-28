@@ -11,7 +11,7 @@ namespace Dogma\Http;
 
 use Dogma\Io\File;
 
-class HttpFileResponse extends \Dogma\Http\HttpResponse
+class HttpFileResponse extends HttpResponse
 {
 
     /** @var \Dogma\Io\File */

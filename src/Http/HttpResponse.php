@@ -11,11 +11,12 @@ namespace Dogma\Http;
 
 use Dogma\Http\Curl\CurlHelper;
 use Dogma\Io\ContentType\ContentType;
+use Dogma\StrictBehaviorMixin;
 use Dogma\Time\CurrentTimeProvider;
 
 class HttpResponse
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var mixed[] */
     protected $info;
@@ -157,7 +158,7 @@ class HttpResponse
             $id = $name;
             $name = CurlHelper::getCurlInfoName($id);
             if ($name === null) {
-                throw new \Dogma\Http\ResponseException(sprintf('Unknown CURL info \'%s\'!', $id));
+                throw new HttpResponseException(sprintf('Unknown CURL info \'%s\'!', $id));
             }
         }
 

@@ -3,8 +3,11 @@
 namespace Dogma\Tests\Type;
 
 use Dogma\Check;
+use Dogma\InvalidTypeException;
+use Dogma\InvalidValueException;
 use Dogma\Tester\Assert;
 use Dogma\Type;
+use Dogma\ValueOutOfRangeException;
 use stdClass;
 use Tracy\Debugger;
 
@@ -146,13 +149,13 @@ foreach ($subjects as $name => $possibleTypes) {
                 throw $e;
             } elseif (in_array($type, $possibleTypes)) {
                 Assert::fail(sprintf('Subject %s `%s` should be casted to type %s. %s thrown instead.', $name, $before, $type, $class));
-            } elseif ($class === \Dogma\InvalidTypeException::class
+            } elseif ($class === InvalidTypeException::class
                 && !($type === Type::FLOAT && is_float($subject) && (is_nan($subject) || $subject === INF || $subject === -INF))) {
                 // pass
-            } elseif ($class === \Dogma\InvalidValueException::class
+            } elseif ($class === InvalidValueException::class
                 && is_float($subject) && is_nan($subject)) {
                 // pass
-            } elseif ($class === \Dogma\ValueOutOfRangeException::class
+            } elseif ($class === ValueOutOfRangeException::class
                 && is_float($subject) && ($subject === INF || $subject === -INF)) {
                 // pass
             } elseif ($type === Type::FLOAT && is_float($subject) && (is_nan($subject) || $subject === INF || $subject === -INF)) {

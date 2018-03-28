@@ -13,11 +13,12 @@ namespace Dogma\Http;
 
 use Dogma\Arr;
 use Dogma\Check;
+use Dogma\Enum\PartialIntEnum;
 
 /**
  * HTTP 1.1 response status codes and CURL error codes
  */
-class HttpResponseStatus extends \Dogma\Enum\PartialIntEnum
+class HttpResponseStatus extends PartialIntEnum
 {
 
     public const S100_CONTINUE = 100;

@@ -11,7 +11,9 @@
 
 namespace Dogma\Language\Locale;
 
-class LocaleCollation extends \Dogma\Enum\StringEnum
+use Dogma\Enum\StringEnum;
+
+class LocaleCollation extends StringEnum
 {
 
     public const BIG5 = 'big5han';

@@ -4,6 +4,7 @@ namespace Dogma\Tests\ChunkIterator;
 
 use Dogma\ChunkIterator;
 use Dogma\Tester\Assert;
+use Dogma\ValueOutOfRangeException;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -24,4 +25,4 @@ Assert::same($result, []);
 
 Assert::throws(function () {
     new ChunkIterator([], 0);
-}, \Dogma\ValueOutOfRangeException::class);
+}, ValueOutOfRangeException::class);

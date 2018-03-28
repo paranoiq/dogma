@@ -9,7 +9,9 @@
 
 namespace Dogma\Time;
 
-class InvalidDateTimeException extends \Dogma\Exception
+use Dogma\Exception;
+
+class InvalidDateTimeException extends Exception
 {
 
     public function __construct(string $dateTimeString, ?\Throwable $previous = null)

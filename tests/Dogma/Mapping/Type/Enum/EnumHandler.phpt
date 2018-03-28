@@ -2,6 +2,7 @@
 
 namespace Dogma\Tests\Mapping\Type\Enum;
 
+use Dogma\Enum\IntEnum;
 use Dogma\Mapping\Mapper;
 use Dogma\Mapping\StaticMappingContainer;
 use Dogma\Mapping\Type\Enum\EnumHandler;
@@ -11,7 +12,7 @@ use Dogma\Type;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
-class TestEnum extends \Dogma\Enum\IntEnum
+class TestEnum extends IntEnum
 {
 
     public const ONE = 1;

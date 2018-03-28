@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Operation was aborted by admin. */
-class AbortedException extends \Dogma\Database\ConcurrencyException
+class AbortedException extends ConcurrencyException
 {
 
 }

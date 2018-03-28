@@ -19,7 +19,7 @@ trait NonSerializableMixin
      */
     final public function __sleep(): void
     {
-        throw new \Dogma\NonSerializableObjectException(get_class($this));
+        throw new NonSerializableObjectException(get_class($this));
     }
 
     /**
@@ -29,7 +29,7 @@ trait NonSerializableMixin
      */
     final public function __wakeup(): void
     {
-        throw new \Dogma\NonSerializableObjectException(get_class($this));
+        throw new NonSerializableObjectException(get_class($this));
     }
 
 }

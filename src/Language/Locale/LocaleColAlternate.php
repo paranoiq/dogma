@@ -9,9 +9,10 @@
 
 namespace Dogma\Language\Locale;
 
+use Dogma\Enum\StringEnum;
 use Dogma\Language\Collator;
 
-class LocaleColAlternate extends \Dogma\Enum\StringEnum implements \Dogma\Language\Locale\LocaleCollationOption
+class LocaleColAlternate extends StringEnum implements LocaleCollationOption
 {
 
     public const NON_IGNORABLE = 'non-ignorable';

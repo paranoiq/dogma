@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-class UndefinedMethodException extends \Dogma\Exception
+class UndefinedMethodException extends Exception
 {
 
     public function __construct(string $class, string $method, ?\Throwable $previous = null)

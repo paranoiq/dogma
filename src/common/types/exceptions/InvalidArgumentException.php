@@ -9,12 +9,12 @@
 
 namespace Dogma;
 
-class InvalidArgumentException extends \Dogma\InvalidValueException
+class InvalidArgumentException extends InvalidValueException
 {
 
     public function __construct(string $message, ?\Throwable $previous = null)
     {
-        \Dogma\Exception::__construct($message, $previous);
+        Exception::__construct($message, $previous);
     }
 
 }

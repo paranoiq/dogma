@@ -9,7 +9,7 @@
 
 namespace Dogma\Io;
 
-class FileException extends \Dogma\Io\IoException
+class FileException extends IoException
 {
 
     /** @var mixed[]|null */

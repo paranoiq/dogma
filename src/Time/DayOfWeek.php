@@ -9,10 +9,12 @@
 
 namespace Dogma\Time;
 
+use Dogma\Enum\IntEnum;
+
 /**
  * Day of week as defined in ISO-8601 (1 for Monday through 7 for Sunday)
  */
-class DayOfWeek extends \Dogma\Enum\IntEnum
+class DayOfWeek extends IntEnum
 {
 
     public const MONDAY = 1;

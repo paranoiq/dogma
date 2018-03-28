@@ -11,7 +11,7 @@ namespace Dogma;
 
 final class DogmaLoader
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var static */
     private static $instance;

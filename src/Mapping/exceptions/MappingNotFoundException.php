@@ -9,9 +9,10 @@
 
 namespace Dogma\Mapping;
 
+use Dogma\Exception;
 use Dogma\Type;
 
-class MappingNotFoundException extends \Dogma\Exception implements \Dogma\Mapping\Exception
+class MappingNotFoundException extends Exception implements MappingException
 {
 
     /** @var \Dogma\Type */

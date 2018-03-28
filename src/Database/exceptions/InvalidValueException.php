@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Invalid value given by user or returned by query. */
-class InvalidValueException extends \Dogma\Database\SyntaxErrorException
+class InvalidValueException extends SyntaxErrorException
 {
 
 }

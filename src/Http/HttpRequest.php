@@ -10,14 +10,17 @@
 namespace Dogma\Http;
 
 use Dogma\Http\Curl\CurlHelper;
+use Dogma\InvalidValueException;
+use Dogma\NonSerializableMixin;
+use Dogma\StrictBehaviorMixin;
 
 /**
  * HTTP request. Holds a CURL resource.
  */
 class HttpRequest
 {
-    use \Dogma\StrictBehaviorMixin;
-    use \Dogma\NonSerializableMixin;
+    use StrictBehaviorMixin;
+    use NonSerializableMixin;
 
     /** @var resource (curl) */
     private $curl;
@@ -57,7 +60,7 @@ class HttpRequest
         error_clear_last();
         $curl = curl_init();
         if ($curl === false) {
-            throw new \Dogma\Http\RequestException(sprintf('Cannot initialize curl. Error: %s', error_get_last()['message']));
+            throw new HttpRequestException(sprintf('Cannot initialize curl. Error: %s', error_get_last()['message']));
         }
         $this->curl = $curl;
 
@@ -79,7 +82,7 @@ class HttpRequest
     {
         if ($this->init !== null) {
             if (!($this->init)($this)) {
-                throw new \Dogma\Http\RequestException('Request initialization failed!');
+                throw new HttpRequestException('Request initialization failed!');
             }
             $this->init = null;
         }
@@ -159,7 +162,7 @@ class HttpRequest
             $this->setVariables($data);
 
         } else {
-            throw new \Dogma\Http\RequestException('Job data may be only a string or array!');
+            throw new HttpRequestException('Job data may be only a string or array!');
         }
     }
 
@@ -206,7 +209,7 @@ class HttpRequest
                 $this->setOption(CURLOPT_CUSTOMREQUEST, $this->method);
                 break;
             default:
-                throw new \Dogma\Http\RequestException(sprintf('Unknown method \'%s\'!', $this->method));
+                throw new HttpRequestException(sprintf('Unknown method \'%s\'!', $this->method));
         }
     }
 
@@ -219,18 +222,18 @@ class HttpRequest
         if (is_string($name)) {
             $number = CurlHelper::getCurlOptionNumber($name);
             if (is_null($number)) {
-                throw new \Dogma\Http\RequestException(sprintf('Unknown CURL option \'%s\'!', $name));
+                throw new HttpRequestException(sprintf('Unknown CURL option \'%s\'!', $name));
             }
 
         } elseif (!is_int($name)) {
-            throw new \Dogma\Http\RequestException('Option name must be a string or a CURLOPT_* constant!');
+            throw new HttpRequestException('Option name must be a string or a CURLOPT_* constant!');
 
         } else {
             $number = $name;
         }
 
         if (!curl_setopt($this->curl, $number, $value)) {
-            throw new \Dogma\Http\RequestException('Invalid CURL option.');
+            throw new HttpRequestException('Invalid CURL option.');
         }
     }
 
@@ -417,7 +420,7 @@ class HttpRequest
     {
         $info = curl_getinfo($this->curl);
         if ($info === false) {
-            throw new \Dogma\Http\RequestException('Info cannot be obtained from CURL.');
+            throw new HttpRequestException('Info cannot be obtained from CURL.');
         }
 
         return $info;
@@ -435,12 +438,12 @@ class HttpRequest
         } else {
             try {
                 $status = HttpResponseStatus::get($info['http_code']);
-            } catch (\Dogma\InvalidValueException $e) {
+            } catch (InvalidValueException $e) {
                 $status = HttpResponseStatus::get(HttpResponseStatus::UNKNOWN_RESPONSE_CODE);
             }
         }
         if ($status->isFatalError()) {
-            throw new \Dogma\Http\RequestException(sprintf('Fatal error occurred during request execution: %s', $status->getConstantName()), $status->getValue());
+            throw new HttpRequestException(sprintf('Fatal error occurred during request execution: %s', $status->getConstantName()), $status->getValue());
         }
 
         return $status;
@@ -480,7 +483,7 @@ class HttpRequest
         }
 
         if ($this->content !== null && $this->variables !== []) {
-            throw new \Dogma\Http\RequestException('Both data content and variables are set. Only one at a time can be sent!');
+            throw new HttpRequestException('Both data content and variables are set. Only one at a time can be sent!');
         }
 
         if ($this->content) {
@@ -495,7 +498,7 @@ class HttpRequest
             $this->preparePost();
         } else {
             $names = array_keys($this->variables);
-            throw new \Dogma\Http\RequestException(
+            throw new HttpRequestException(
                 'Redundant request variable' . (count($names) > 1 ? 's' : '') . ' \'' . implode("', '", $names) . '\' in request data.'
             );
         }
@@ -509,7 +512,7 @@ class HttpRequest
             $fileName = substr($this->content, 1);
             $file = fopen($fileName, 'r');
             if (!$file) {
-                throw new \Dogma\Http\RequestException(sprintf('Could not open file %s.', $fileName));
+                throw new HttpRequestException(sprintf('Could not open file %s.', $fileName));
             }
 
             $this->setOption(CURLOPT_INFILE, $file);
@@ -524,7 +527,7 @@ class HttpRequest
     {
         foreach ($this->variables as $name => $value) {
             if ($value === null) {
-                throw new \Dogma\Http\RequestException(sprintf('POST parameter \'%s\' must be filled.', $name));
+                throw new HttpRequestException(sprintf('POST parameter \'%s\' must be filled.', $name));
             }
         }
         $this->setOption(CURLOPT_POSTFIELDS, $this->variables);
@@ -559,7 +562,7 @@ class HttpRequest
     {
         foreach ($vars as $name => $short) {
             if (!isset($this->variables[$name])) {
-                throw new \Dogma\Http\RequestException(sprintf('URL variable \'%s\' is missing in request data.', $name));
+                throw new HttpRequestException(sprintf('URL variable \'%s\' is missing in request data.', $name));
             }
 
             if ($short) {

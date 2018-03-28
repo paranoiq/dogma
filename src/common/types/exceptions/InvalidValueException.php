@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-class InvalidValueException extends \Dogma\Exception
+class InvalidValueException extends Exception
 {
 
     /** @var mixed */

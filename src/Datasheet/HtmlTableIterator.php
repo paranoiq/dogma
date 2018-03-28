@@ -10,10 +10,11 @@
 namespace Dogma\Datasheet;
 
 use Dogma\Dom\Element;
+use Dogma\StrictBehaviorMixin;
 
 class HtmlTableIterator implements \Iterator
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var \Dogma\Dom\Element */
     private $table;

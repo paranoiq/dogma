@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Table partitioning error. */
-class PartitioningException extends \Dogma\Database\DatabaseException
+class PartitioningException extends DatabaseException
 {
 
 }

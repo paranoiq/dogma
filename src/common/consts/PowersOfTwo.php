@@ -11,7 +11,7 @@ namespace Dogma;
 
 final class PowersOfTwo
 {
-    use \Dogma\StaticClassMixin;
+    use StaticClassMixin;
 
     public const _1 = 1; // 0
     public const _2 = 2;

@@ -9,7 +9,9 @@
 
 namespace Dogma\Io\Filesystem;
 
-class DirectoryException extends \Dogma\Io\IoException
+use Dogma\Io\IoException;
+
+class DirectoryException extends IoException
 {
 
 }

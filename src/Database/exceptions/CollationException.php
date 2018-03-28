@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Text collation error or mismatch. */
-class CollationException extends \Dogma\Database\SyntaxErrorException
+class CollationException extends SyntaxErrorException
 {
 
 }

@@ -9,9 +9,11 @@
 
 namespace Dogma\System;
 
+use Dogma\StaticClassMixin;
+
 class Environment
 {
-    use \Dogma\StaticClassMixin;
+    use StaticClassMixin;
 
     public static function isWindows(): bool
     {

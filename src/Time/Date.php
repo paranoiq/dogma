@@ -10,15 +10,18 @@
 namespace Dogma\Time;
 
 use Dogma\Check;
+use Dogma\NonIterable;
+use Dogma\NonIterableMixin;
+use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 
 /**
  * Date class.
  */
-class Date implements \Dogma\NonIterable
+class Date implements NonIterable
 {
-    use \Dogma\StrictBehaviorMixin;
-    use \Dogma\NonIterableMixin;
+    use StrictBehaviorMixin;
+    use NonIterableMixin;
 
     public const DEFAULT_FORMAT = 'Y-m-d';
 
@@ -30,7 +33,7 @@ class Date implements \Dogma\NonIterable
         try {
             $this->dateTime = new \DateTime($dateString);
         } catch (\Throwable $e) {
-            throw new \Dogma\Time\InvalidDateTimeException($dateString, $e);
+            throw new InvalidDateTimeException($dateString, $e);
         }
     }
 

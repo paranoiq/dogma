@@ -11,17 +11,21 @@
 
 namespace Dogma\Io;
 
+use Dogma\InvalidArgumentException;
 use Dogma\Io\Filesystem\FileInfo;
+use Dogma\NonCloneableMixin;
+use Dogma\NonSerializableMixin;
 use Dogma\ResourceType;
+use Dogma\StrictBehaviorMixin;
 
 /**
  * Binary file reader/writer
  */
-class File implements \Dogma\Io\Path
+class File implements Path
 {
-    use \Dogma\StrictBehaviorMixin;
-    use \Dogma\NonCloneableMixin;
-    use \Dogma\NonSerializableMixin;
+    use StrictBehaviorMixin;
+    use NonCloneableMixin;
+    use NonSerializableMixin;
 
     /** @var int */
     public static $defaultChunkSize = 8192;
@@ -57,7 +61,7 @@ class File implements \Dogma\Io\Path
         } elseif ($file instanceof FilePath || $file instanceof FileInfo) {
             $this->path = $file->getPath();
         } else {
-            throw new \Dogma\InvalidArgumentException('Argument $file must be a file path or a stream resource.');
+            throw new InvalidArgumentException('Argument $file must be a file path or a stream resource.');
         }
 
         $this->mode = $mode;
@@ -81,7 +85,7 @@ class File implements \Dogma\Io\Path
         $handle = tmpfile();
 
         if ($handle === false) {
-            throw new \Dogma\Io\FileException('Cannot create a temporary file.', error_get_last());
+            throw new FileException('Cannot create a temporary file.', error_get_last());
         }
 
         return new static($handle, FileMode::CREATE_OR_TRUNCATE_READ_WRITE);
@@ -133,10 +137,10 @@ class File implements \Dogma\Io\Path
     {
         $destination = dirname($path);
         if (!is_dir($destination)) {
-            throw new \Dogma\Io\FileException(sprintf('Directory %s is not writable.', $destination));
+            throw new FileException(sprintf('Directory %s is not writable.', $destination));
         }
         if (!rename($this->getPath(), $destination)) {
-            throw new \Dogma\Io\FileException(sprintf('Cannot move file \'%s\' to \'%s\'.', $this->getPath(), $path));
+            throw new FileException(sprintf('Cannot move file \'%s\' to \'%s\'.', $this->getPath(), $path));
         }
         chmod($destination, 0666);
 
@@ -159,7 +163,7 @@ class File implements \Dogma\Io\Path
             $handle = fopen($this->path, $this->mode, false);
         }
         if ($handle === false) {
-            throw new \Dogma\Io\FileException(sprintf('Cannot open file in mode \'%s\'.', $this->mode), error_get_last());
+            throw new FileException(sprintf('Cannot open file in mode \'%s\'.', $this->mode), error_get_last());
         }
         $this->handle = $handle;
     }
@@ -172,7 +176,7 @@ class File implements \Dogma\Io\Path
         $result = fclose($this->handle);
 
         if ($result === false) {
-            throw new \Dogma\Io\FileException('Cannot close file.', error_get_last());
+            throw new FileException('Cannot close file.', error_get_last());
         }
         $this->metaData = null;
         $this->handle = null;
@@ -188,7 +192,7 @@ class File implements \Dogma\Io\Path
         if ($feof === true) {
             $error = error_get_last();
             if ($error !== null) {
-                throw new \Dogma\Io\FileException('File interrupted.', $error);
+                throw new FileException('File interrupted.', $error);
             }
         }
 
@@ -208,9 +212,9 @@ class File implements \Dogma\Io\Path
 
         if ($data === false) {
             if ($this->endOfFileReached()) {
-                throw new \Dogma\Io\FileException('Cannot read data from file. End of file was reached.', error_get_last());
+                throw new FileException('Cannot read data from file. End of file was reached.', error_get_last());
             } else {
-                throw new \Dogma\Io\FileException('Cannot read data from file.', error_get_last());
+                throw new FileException('Cannot read data from file.', error_get_last());
             }
         }
 
@@ -247,7 +251,7 @@ class File implements \Dogma\Io\Path
                 call_user_func($destination, $buff);
 
             } else {
-                throw new \Dogma\InvalidArgumentException('Destination must be File or callable!');
+                throw new InvalidArgumentException('Destination must be File or callable!');
             }
         }
 
@@ -276,7 +280,7 @@ class File implements \Dogma\Io\Path
         $result = fwrite($this->handle, $data);
 
         if ($result === false) {
-            throw new \Dogma\Io\FileException('Cannot write data to file.', error_get_last());
+            throw new FileException('Cannot write data to file.', error_get_last());
         }
     }
 
@@ -292,7 +296,7 @@ class File implements \Dogma\Io\Path
         $result = ftruncate($this->handle, $size);
 
         if ($result === false) {
-            throw new \Dogma\Io\FileException('Cannot truncate file.', error_get_last());
+            throw new FileException('Cannot truncate file.', error_get_last());
         }
 
         $this->setPosition($size);
@@ -309,7 +313,7 @@ class File implements \Dogma\Io\Path
         $result = fflush($this->handle);
 
         if ($result === false) {
-            throw new \Dogma\Io\FileException('Cannot flush file cache.', error_get_last());
+            throw new FileException('Cannot flush file cache.', error_get_last());
         }
         $this->metaData = null;
     }
@@ -328,9 +332,9 @@ class File implements \Dogma\Io\Path
 
         if ($result === false) {
             if ($wouldBlock) {
-                throw new \Dogma\Io\FileException('Non-blocking lock cannot be acquired.', error_get_last());
+                throw new FileException('Non-blocking lock cannot be acquired.', error_get_last());
             } else {
-                throw new \Dogma\Io\FileException('Cannot lock file.', error_get_last());
+                throw new FileException('Cannot lock file.', error_get_last());
             }
         }
     }
@@ -343,7 +347,7 @@ class File implements \Dogma\Io\Path
         $result = flock($this->handle, LOCK_UN);
 
         if ($result === false) {
-            throw new \Dogma\Io\FileException('Cannot unlock file.', error_get_last());
+            throw new FileException('Cannot unlock file.', error_get_last());
         }
     }
 
@@ -367,7 +371,7 @@ class File implements \Dogma\Io\Path
         $result = fseek($this->handle, $position, $from);
 
         if ($result !== 0) {
-            throw new \Dogma\Io\FileException('Cannot set file pointer position.', error_get_last());
+            throw new FileException('Cannot set file pointer position.', error_get_last());
         }
     }
 
@@ -379,7 +383,7 @@ class File implements \Dogma\Io\Path
         $position = ftell($this->handle);
 
         if ($position === false) {
-            throw new \Dogma\Io\FileException('Cannot get file pointer position.', error_get_last());
+            throw new FileException('Cannot get file pointer position.', error_get_last());
         }
 
         return $position;
@@ -392,7 +396,7 @@ class File implements \Dogma\Io\Path
                 error_clear_last();
                 $stat = fstat($this->handle);
                 if (!$stat) {
-                    throw new \Dogma\Io\FileException('Cannot acquire file metadata.', error_get_last());
+                    throw new FileException('Cannot acquire file metadata.', error_get_last());
                 }
                 $this->metaData = new FileMetaData($stat);
             } else {
@@ -456,7 +460,7 @@ class File implements \Dogma\Io\Path
     private function checkOpened(): void
     {
         if ($this->handle === null) {
-            throw new \Dogma\Io\FileException('File is already closed.');
+            throw new FileException('File is already closed.');
         }
     }
 

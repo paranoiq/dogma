@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** User extensions or UDF error. */
-class ExtensionException extends \Dogma\Database\DatabaseException
+class ExtensionException extends DatabaseException
 {
 
 }

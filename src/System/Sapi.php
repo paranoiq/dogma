@@ -10,8 +10,9 @@
 namespace Dogma\System;
 
 use Dogma\Arr;
+use Dogma\Enum\StringEnum;
 
-class Sapi extends \Dogma\Enum\StringEnum
+class Sapi extends StringEnum
 {
 
     public const AOL_SERVER = 'aolserver';

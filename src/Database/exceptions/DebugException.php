@@ -10,7 +10,7 @@
 namespace Dogma\Database;
 
 /** Debugging and unhandled user errors. */
-class DebugException extends \Dogma\Database\QueryException
+class DebugException extends QueryException
 {
 
 }

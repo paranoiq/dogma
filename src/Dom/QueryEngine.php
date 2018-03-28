@@ -10,6 +10,8 @@
 namespace Dogma\Dom;
 
 use Dogma\Str;
+use Dogma\StrictBehaviorMixin;
+use Dogma\Time\Date;
 use Dogma\Time\DateTime;
 
 /**
@@ -17,7 +19,7 @@ use Dogma\Time\DateTime;
  */
 class QueryEngine
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var \DOMXPath */
     private $xpath;
@@ -169,7 +171,7 @@ class QueryEngine
             $alias = $name;
         }
         if (in_array($alias, $this->nativeFunctions)) {
-            throw new \Dogma\Dom\QueryEngineException(sprintf('Function \'%s\' is already registered.', $alias));
+            throw new QueryEngineException(sprintf('Function \'%s\' is already registered.', $alias));
         }
 
         if ($expectNode) {
@@ -203,7 +205,7 @@ class QueryEngine
             $list = $this->xpath->query($path);
         }
         if ($list === false) {
-            throw new \Dogma\Dom\QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
+            throw new QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
         }
 
         return new NodeList($list, $this);
@@ -224,7 +226,7 @@ class QueryEngine
             $list = $this->xpath->query($path);
         }
         if ($list === false) {
-            throw new \Dogma\Dom\QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
+            throw new QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
         }
 
         if (!count($list)) {
@@ -250,14 +252,14 @@ class QueryEngine
             $value = $this->xpath->evaluate($path);
         }
         if ($value === false) {
-            throw new \Dogma\Dom\QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
+            throw new QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
         }
 
         if (substr($query, 0, 5) === 'date(') {
-            return $value ? new \Dogma\Time\Date($value) : null;
+            return $value ? new Date($value) : null;
 
         } elseif (substr($query, 0, 9) === 'datetime(') {
-            return $value ? new \Dogma\Time\DateTime($value) : null;
+            return $value ? new DateTime($value) : null;
 
         } elseif (substr($query, 0, 4) === 'int(') {
             if (!is_numeric($value)) {
@@ -422,7 +424,7 @@ class QueryEngine
 
         $date = DateTime::createFromFormat($format, $string);
         if (!$date) {
-            throw new \Dogma\Dom\QueryEngineException(
+            throw new QueryEngineException(
                 sprintf('Cannot create DateTime object from \'%s\' using format \'%s\'.', $string, $format)
             );
         }
@@ -438,7 +440,7 @@ class QueryEngine
 
         $date = DateTime::createFromFormat($format, $string);
         if (!$date) {
-            throw new \Dogma\Dom\QueryEngineException(
+            throw new QueryEngineException(
                 sprintf('Cannot create DateTime object from \'%s\' using format \'%s\'.', $string, $format)
             );
         }

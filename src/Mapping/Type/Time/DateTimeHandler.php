@@ -10,6 +10,8 @@
 namespace Dogma\Mapping\Type\Time;
 
 use Dogma\Mapping\Mapper;
+use Dogma\Mapping\Type\TypeHandler;
+use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
 use Dogma\Time\Time;
@@ -18,9 +20,9 @@ use Dogma\Type;
 /**
  * Creates Date/Time/DateTime instances from raw data and vice versa
  */
-class DateTimeHandler implements \Dogma\Mapping\Type\TypeHandler
+class DateTimeHandler implements TypeHandler
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var string */
     private $dateTimeFormat;

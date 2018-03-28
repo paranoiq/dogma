@@ -9,7 +9,7 @@
 
 namespace Dogma;
 
-final class NonSerializableObjectException extends \Dogma\Exception
+final class NonSerializableObjectException extends Exception
 {
 
     public function __construct(string $class, ?\Throwable $previous = null)

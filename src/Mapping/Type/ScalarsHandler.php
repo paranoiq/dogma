@@ -10,10 +10,11 @@
 namespace Dogma\Mapping\Type;
 
 use Dogma\Check;
+use Dogma\InvalidTypeException;
 use Dogma\Mapping\Mapper;
 use Dogma\Type;
 
-class ScalarsHandler implements \Dogma\Mapping\Type\TypeHandler
+class ScalarsHandler implements TypeHandler
 {
 
     public function acceptsType(Type $type): bool
@@ -65,7 +66,7 @@ class ScalarsHandler implements \Dogma\Mapping\Type\TypeHandler
                 }
                 return $value;
             default:
-                throw new \Dogma\InvalidTypeException(Type::SCALAR, $value);
+                throw new InvalidTypeException(Type::SCALAR, $value);
         }
     }
 

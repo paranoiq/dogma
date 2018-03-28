@@ -9,7 +9,9 @@
 
 namespace Dogma\Reflection;
 
-class InvalidMethodAnnotationException extends \Dogma\Exception implements \Dogma\Reflection\Exception
+use Dogma\Exception;
+
+class InvalidMethodAnnotationException extends Exception implements ReflectionException
 {
 
     /**

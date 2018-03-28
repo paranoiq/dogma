@@ -7,9 +7,11 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Mapping\Type;
+namespace Dogma\Http\Channel;
 
-interface Exception extends \Dogma\Mapping\Exception
+use Dogma\Http\HttpException;
+
+class HttpChannelException extends HttpException
 {
 
 }

@@ -14,6 +14,7 @@ use Dogma\Io\ContentType\ContentType;
 use Dogma\Language\Encoding;
 use Dogma\Language\Locale\Locale;
 use Dogma\Str;
+use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateTime;
 use Dogma\Time\TimeProvider;
 use Dogma\Type;
@@ -22,7 +23,7 @@ use Dogma\Web\Url;
 
 class HttpHeaderParser
 {
-    use \Dogma\StrictBehaviorMixin;
+    use StrictBehaviorMixin;
 
     /** @var string[] */
     private static $types = [
