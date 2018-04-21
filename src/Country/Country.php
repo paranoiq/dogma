@@ -86,7 +86,6 @@ class Country extends StringEnum
     public const ERITREA = 'ER';
     public const ESTONIA = 'EE';
     public const ETHIOPIA = 'ET';
-    public const EU = 'EU';
     public const FALKLAND_ISLANDS = 'FK';
     public const FAROE_ISLANDS = 'FO';
     public const FIJI = 'FJ';
@@ -340,7 +339,6 @@ class Country extends StringEnum
         self::ERITREA => 'Eritrea',
         self::ESTONIA => 'Estonia',
         self::ETHIOPIA => 'Ethiopia',
-        self::EU => 'Europe (region)',
         self::FALKLAND_ISLANDS => 'Falkland Islands (Malvinas)',
         self::FAROE_ISLANDS => 'Faroe Islands',
         self::FIJI => 'Fiji',
@@ -593,7 +591,6 @@ class Country extends StringEnum
         self::ERITREA => 'eritrea',
         self::SPAIN => 'spain',
         self::ETHIOPIA => 'ethiopia',
-        self::EU => 'eu',
         self::FINLAND => 'finland',
         self::FIJI => 'fiji',
         self::FALKLAND_ISLANDS => 'falkland-islands',
