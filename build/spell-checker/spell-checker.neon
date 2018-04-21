@@ -12,6 +12,7 @@ dictionariesByFileName:
     *Language.php: skip
     *LocaleNumbers.php: skip
     *Inflector.php: skip
+    *Port.php: skip
     *ResourceType.php: skip
     *Script.php: skip
     *Sapi.php: skip
