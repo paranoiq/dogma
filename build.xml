@@ -18,6 +18,11 @@
     <property name="path.tester.executable" value="${path.bin}/tester"/>
     <property name="path.tests" value="${path.root}/tests"/>
 
+    <!-- shortcuts -->
+    <target name="t" depends="tests"/>
+    <target name="tc" depends="tests-coverage"/>
+    <target name="da" depends="dump-autoload"/>
+
     <target name="check" depends="check-php"/>
 
     <target name="check-php" depends="phplint,phpcs,tests,phpstan,spell-check"/>
@@ -27,8 +32,6 @@
             <arg value="install"/>
         </exec>
     </target>
-
-    <target name="da" depends="dump-autoload"/>
 
     <target name="dump-autoload">
         <exec executable="${path.composer.executable}" logoutput="true" passthru="true" checkreturn="true">
@@ -57,11 +60,9 @@
 
     <target name="phpstan">
         <exec executable="${path.phpstan.executable}" logoutput="true" passthru="true" checkreturn="true">
-            <arg value="analyse"/>
-            <arg value="-c"/>
-            <arg path="${path.phpstan.config}"/>
-            <arg value="-l"/>
-            <arg value="5"/>
+            <arg line="analyse"/>
+            <arg line="-c ${path.phpstan.config}"/>
+            <arg line="-l 5"/>
             <arg path="${path.src}"/>
             <arg path="${path.tests}"/>
         </exec>
@@ -70,18 +71,28 @@
     <target name="tests">
         <exec executable="${path.tester.executable}" logoutput="true" passthru="true" checkreturn="true">
             <arg path="${path.tests}"/>
-            <arg path="-c"/>
+            <arg line="-c ${path.tests}"/>
+            <arg line="--colors 1"/>
+        </exec>
+    </target>
+
+    <target name="tests-coverage">
+        <exec executable="${path.tester.executable}" logoutput="true" passthru="true" checkreturn="true">
+            <arg line="-p phpdbg"/>
             <arg path="${path.tests}"/>
-            <arg path="--colors"/>
-            <arg path="1"/>
+            <arg line="-c ${path.tests}"/>
+            <arg line="--colors 1"/>
+            <arg line="--coverage ${path.tests}/coverage.html"/>
+            <arg line="--coverage-src ${path.src}"/>
         </exec>
     </target>
 
     <target name="spell-check">
         <exec executable="${path.spell-checker.executable}" logoutput="true" passthru="true" checkreturn="true">
-            <arg line="-L --config ${path.spell-checker.config}"/>
+            <arg line="--config ${path.spell-checker.config}"/>
             <arg line="--checkDictionaryFiles"/>
             <arg line="--memoryLimit 1024M"/>
+            <arg line="--noLogo"/>
         </exec>
     </target>
 
