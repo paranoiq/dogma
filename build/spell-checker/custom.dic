@@ -68,6 +68,12 @@ libcurl
 # packages
 fromager
 
+# names
+euler
+fibonacci
+tribonacci
+lucas
+
 # ~en
 inits
 mixin
@@ -91,6 +97,7 @@ instanceof
 subtype
 nonspacing
 enquiry
+inv
 
 # en
 inlined
