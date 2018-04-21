@@ -16,6 +16,7 @@ dictionariesByFileName:
     *ResourceType.php: skip
     *Script.php: skip
     *Sapi.php: skip
+    *TimeZone.php: skip
     *Tld.php: skip
     *Transliterator.php: skip
     *UriScheme.php: skip
