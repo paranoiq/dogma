@@ -671,6 +671,23 @@ final class Check
 
     /**
      * @param mixed $value
+     * @param mixed ...$allowedValues
+     * @throws \Dogma\InvalidValueException
+     */
+    public static function enum($value, ...$allowedValues): void
+    {
+        if (!in_array($value, $allowedValues, true)) {
+            $allowed = implode('|', Arr::map($allowedValues, function ($value) {
+                return (is_scalar($value) || is_object($value) && method_exists($value, '__toString'))
+                    ? (string) $value
+                    : gettype($value);
+            }));
+            throw new InvalidValueException($value, $allowed);
+        }
+    }
+
+    /**
+     * @param mixed $value
      * @return bool
      */
     public static function isIterable($value): bool
