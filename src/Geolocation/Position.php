@@ -11,6 +11,7 @@ namespace Dogma\Geolocation;
 
 use Dogma\Check;
 use Dogma\Mapping\Type\Exportable;
+use Dogma\Math\Constant;
 use Dogma\Math\Vector\Vector3;
 use Dogma\NonIterable;
 use Dogma\NonIterableMixin;
@@ -27,7 +28,7 @@ class Position implements NonIterable, Exportable
     public const PLANET_EARTH_RADIUS = 6371000.0;
 
     /** @var float [m] */
-    private $planetRadius;
+    private $planetRadius = self::PLANET_EARTH_RADIUS;
 
     /** @var float [degrees] */
     private $latitude;
@@ -42,30 +43,30 @@ class Position implements NonIterable, Exportable
     {
         Check::range($latitude, -90.0, 90.0);
         Check::range($longitude, -180.0, 180.0);
-        Check::nullableFloat($planetRadius, 0.0);
+        Check::min($planetRadius, 0.0);
 
         $this->latitude = $latitude;
         $this->longitude = $longitude;
         $this->planetRadius = $planetRadius;
     }
 
-    public static function fromRadians(float $latRad, float $lonRad, ?float $planetRadius = null): self
+    public static function fromRadians(float $latRad, float $lonRad, float $planetRadius = self::PLANET_EARTH_RADIUS): self
     {
-        Check::range($latRad, -M_PI_2, M_PI_2);
-        Check::range($lonRad, -M_PI, M_PI);
+        Check::range($latRad, -Constant::HALF_PI, Constant::HALF_PI);
+        Check::range($lonRad, -Constant::PI, Constant::PI);
 
         $position = new static(rad2deg($latRad), rad2deg($lonRad), $planetRadius);
 
         return $position;
     }
 
-    public static function fromNormalVector(float $x, float $y, float $z, ?float $planetRadius = null): self
+    public static function fromNormalVector(float $x, float $y, float $z, float $planetRadius = self::PLANET_EARTH_RADIUS): self
     {
         Check::range($x, 0.0, 1.0);
         Check::range($y, 0.0, 1.0);
         Check::range($z, 0.0, 1.0);
 
-        list($latRad, $lonRad) = Vector3::normalVectorToRadians($x, $y, $z);
+        [$latRad, $lonRad] = Vector3::normalVectorToRadians($x, $y, $z);
 
         $position = new static(rad2deg($latRad), rad2deg($lonRad), $planetRadius);
         $position->normalVector = [$x, $y, $z];
@@ -107,6 +108,7 @@ class Position implements NonIterable, Exportable
         if ($this->normalVector === null) {
             $this->normalVector = Vector3::radiansToNormalVector(deg2rad($this->latitude), deg2rad($this->longitude));
         }
+
         return $this->normalVector;
     }
 
