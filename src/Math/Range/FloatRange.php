@@ -417,6 +417,7 @@ class FloatRange
                 } elseif ($a->end < $b->start || ($a->end === $b->start && ($a->endExclusive || $b->startExclusive))
                     || $a->start > $b->end || ($a->start === $b->end && ($a->startExclusive || $b->endExclusive))) {
                     // a1----a1    b1----b1
+                    continue;
                 } elseif ($a->start === $b->start && $a->startExclusive === $b->startExclusive) {
                     if ($a->end === $b->end && $a->endExclusive === $b->endExclusive) {
                         // a1=b1----a2=b2

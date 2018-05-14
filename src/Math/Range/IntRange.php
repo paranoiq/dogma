@@ -321,16 +321,16 @@ class IntRange implements Range
                     continue;
                 } elseif ($a->end < $b->start || $a->start > $b->end) {
                     // a1----a1    b1----b1
+                    continue;
                 } elseif ($a->start === $b->start) {
-                    if ($a->end === $b->end) {
-                        // a1=b1----a2=b2
-                    } elseif ($a->end > $b->end) {
+                    if ($a->end > $b->end) {
                         // a1=b1----b2----a2
                         $items[$i] = $b;
                         $items[] = new static($b->end + 1, $a->end);
                         $starts[count($items) - 1] = $i + 1;
                         $a = $b;
                     } else {
+                        // a1=b1----a2=b2
                         // a1=b1----a2----b2
                     }
                 } elseif ($a->start < $b->start) {
@@ -357,9 +357,7 @@ class IntRange implements Range
                         $a = $new;
                     }
                 } else {
-                    if ($a->end === $b->end) {
-                        // b1----a1----a2=b2
-                    } elseif ($a->end > $b->end) {
+                    if ($a->end > $b->end) {
                         // b1----a1----b2----a2
                         $new = new static($a->start, $b->end);
                         $items[$i] = $new;
@@ -367,6 +365,7 @@ class IntRange implements Range
                         $starts[count($items) - 1] = $i + 1;
                         $a = $new;
                     } else {
+                        // b1----a1----a2=b2
                         // b1----a1----a2----b2
                     }
                 }

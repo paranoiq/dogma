@@ -42,14 +42,13 @@ class FloydWarshallPathFinder
      */
     public function __construct(array $weights)
     {
-        // array: assumption, that all nodes has an outgoing edge
         if (array_keys($weights) === range(0, count($weights))) {
+            // array: assumption, that all nodes has an outgoing edge
             $this->weights = $weights;
             /// bug: wrong if last nodes has no outgoing edges
             $this->nodeCount = count($this->weights);
-
-        // hashmap: replace keys with numeric indexes
         } else {
+            // hashmap: replace keys with numeric indexes
             $n = 0;
             $nodeNames = [];
             $normalized = [];

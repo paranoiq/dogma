@@ -7,7 +7,7 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-// spell-check-ignore: NUL SOH STX ETX EOT ENQ ACK LF DLE NAK ETB ESC FS
+// spell-check-ignore: NUL SOH STX ETX EOT ENQ ACK LF DLE NAK ESC FS
 
 namespace Dogma;
 

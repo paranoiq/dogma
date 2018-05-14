@@ -243,12 +243,12 @@ class Locale
      */
     public function getKeywords(): array
     {
-        return isset($this->components['keywords']) ? $this->components['keywords'] : [];
+        return $this->components['keywords'] ?? [];
     }
 
     public function getKeyword(string $keyword): ?string
     {
-        return isset($this->components['keywords'][$keyword]) ? $this->components['keywords'][$keyword] : null;
+        return $this->components['keywords'][$keyword] ?? null;
     }
 
     public function getCurrency(): ?Currency

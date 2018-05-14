@@ -241,7 +241,6 @@ class HttpChannel
     /**
      * Start a request in CURL. Called by HttpChannelManager
      * @internal
-     *
      * @param string|int|null $name
      */
     public function startJob($name = null): void
@@ -285,7 +284,6 @@ class HttpChannel
     /**
      * Called by HttpChannelManager.
      * @internal
-     *
      * @param string|int|int $name
      * @param mixed[] $multiInfo
      * @param \Dogma\Http\HttpRequest $request

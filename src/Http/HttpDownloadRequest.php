@@ -45,7 +45,6 @@ class HttpDownloadRequest extends HttpRequest
     /**
      * Called by Channel.
      * @internal
-     *
      * @param string|bool $response
      * @param int $error
      * @return \Dogma\Http\HttpFileResponse

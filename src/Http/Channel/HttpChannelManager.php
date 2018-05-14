@@ -121,7 +121,6 @@ class HttpChannelManager
             if ($ready > 0) {
                 return $ready;
             }
-
         } while ($active > 0 && $ready !== -1);
 
         return 0;

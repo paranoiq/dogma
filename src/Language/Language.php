@@ -587,9 +587,7 @@ class Language extends StringEnum
         self::ZULU => 'isizulu',
     ];
 
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     private static $idents = [
         self::ABKHAZ => 'abkhaz',
         self::AFAR => 'afar',

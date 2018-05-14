@@ -30,6 +30,15 @@
         <exclude name="SlevomatCodingStandard.ControlStructures.RequireYodaComparison.RequiredYodaComparison"/>
         <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.IncorrectWhitespaceBetweenOpenTagAndDeclare"/>
         <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.IncorrectWhitespaceAfterDeclare"/>
+        <exclude name="SlevomatCodingStandard.Commenting.DisallowOneLinePropertyDocComment.OneLinePropertyComment"/>
+        <exclude name="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix"/>
+        <exclude name="SlevomatCodingStandard.ControlStructures.EarlyExit.UselessElse"/>
+        <exclude name="SlevomatCodingStandard.ControlStructures.EarlyExit.UselessElseIf"/>
+        <exclude name="SlevomatCodingStandard.Commenting.DocCommentSpacing.IncorrectLinesCountBetweenDescriptionAndAnnotations"/>
+        <exclude name="SlevomatCodingStandard.ControlStructures.EarlyExit.EarlyExitNotUsed"/>
+        <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedIf"/>
+        <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedElse"/>
+        <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedElseif"/>
 
         <exclude-pattern>testClass</exclude-pattern>
     </rule>

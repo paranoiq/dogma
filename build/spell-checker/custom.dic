@@ -3,10 +3,7 @@
 mailparse
 msg
 struct
-io
 bcc
-nl
-cdata
 UDF
 redir
 uint

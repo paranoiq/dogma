@@ -12,6 +12,4 @@ namespace Dogma\Dom;
 class QueryEngineException extends DomException
 {
 
-    //
-
 }

@@ -171,6 +171,7 @@ class HttpMultiChannel
         } else {
             $subJobs = $this->dispatch($data);
         }
+
         foreach ($subJobs as $channel => $job) {
             $subJobName = $this->channels[$channel]->addJob($job, $context);
             $this->queue[$subJobName][$channel] = $name;
@@ -205,10 +206,12 @@ class HttpMultiChannel
         foreach ($jobs as $channel => $job) {
             $jobs[$channel] = $this->channels[$channel]->runJob($job, $context, null);
         }
+
         $responses = [];
         foreach ($jobs as $channel => $subJobName) {
             $responses[$channel] = $this->channels[$channel]->fetch($subJobName);
         }
+
         return $responses;
     }
 
@@ -253,6 +256,7 @@ class HttpMultiChannel
         if (isset($this->finished[$name]) && count($this->finished[$name]) === count($this->channels)) {
             $responses = $this->finished[$name];
             unset($this->finished[$name]);
+
             return $responses;
         }
 
@@ -267,6 +271,7 @@ class HttpMultiChannel
 
         $response = $this->finished[$name];
         unset($this->finished[$name]);
+
         return $response;
     }
 
@@ -290,6 +295,7 @@ class HttpMultiChannel
                 return false;
             }
         }
+
         return true;
     }
 
@@ -313,11 +319,9 @@ class HttpMultiChannel
             foreach ($this->channels as $name => $channel) {
                 $jobs[$name] = $data;
             }
-
         } elseif (is_array($data)) {
             // default - array is indexed by channel name
             return $data;
-
         } else {
             throw new HttpChannelException('Illegal job data. Job data can be either string or array.');
         }

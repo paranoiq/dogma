@@ -266,9 +266,7 @@ class Country extends StringEnum
     public const ZAMBIA = 'ZM';
     public const ZIMBABWE = 'ZW';
 
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     private static $names = [
         self::AFGHANISTAN => 'Afghanistan',
         self::ALAND_ISLANDS => 'Aland Islands',
@@ -520,9 +518,7 @@ class Country extends StringEnum
         self::ZIMBABWE => 'Zimbabwe',
     ];
 
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     private static $idents = [
         self::ANDORRA => 'andorra',
         self::UNITED_ARAB_EMIRATES => 'united-arab-emirates',

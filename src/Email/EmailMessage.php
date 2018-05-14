@@ -7,8 +7,6 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-// spell-check-ignore: te
-
 namespace Dogma\Email;
 
 use Dogma\Io\File;
@@ -70,7 +68,6 @@ class EmailMessage
             if (!$handler) {
                 throw new EmailParsingException('Cannot parse email file.');
             }
-
         } else {
             ///
             $handler = mailparse_msg_create();
@@ -240,8 +237,7 @@ class EmailMessage
         }
 
         $name = Inflector::dasherize(Inflector::underscore($name));
-        $val = isset($this->headers[$name]) ? $this->headers[$name]
-            : (isset($this->headers['x-' . $name]) ? $this->headers['x-' . $name] : null);
+        $val = $this->headers[$name] ?? $this->headers['x-' . $name] ?? null;
 
         return $val;
     }
@@ -275,8 +271,6 @@ class EmailMessage
                 $this->decodeHeaders($value);
                 continue;
             }
-
-            //
 
             if (in_array($name, ['date', 'resent-date', 'delivery-date', 'expires'], true)) {
                 $value = new DateTime($value);

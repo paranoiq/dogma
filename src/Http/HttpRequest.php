@@ -224,10 +224,8 @@ class HttpRequest
             if (is_null($number)) {
                 throw new HttpRequestException(sprintf('Unknown CURL option \'%s\'!', $name));
             }
-
         } elseif (!is_int($name)) {
             throw new HttpRequestException('Option name must be a string or a CURLOPT_* constant!');
-
         } else {
             $number = $name;
         }
@@ -387,7 +385,6 @@ class HttpRequest
     /**
      * Called by RequestManager.
      * @internal
-     *
      * @return resource
      */
     public function getHandler()
@@ -398,7 +395,6 @@ class HttpRequest
     /**
      * Called by RequestManager.
      * @internal
-     *
      * @param string|bool $response
      * @param int $error
      * @return \Dogma\Http\HttpResponse

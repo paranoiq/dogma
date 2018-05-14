@@ -14,6 +14,4 @@ use Dogma\Exception;
 class EmailParsingException extends Exception
 {
 
-    //
-
 }

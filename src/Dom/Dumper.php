@@ -66,7 +66,6 @@ class Dumper
                 echo '    ';
                 self::dump($item, $maxDepth, $depth + 1, true);
             }
-
         } else {
             echo '[something]';
             throw new NotImplementedException('Dom dumper found some strange thing.');
