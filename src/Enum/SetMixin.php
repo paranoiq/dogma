@@ -57,7 +57,7 @@ trait SetMixin
     /**
      * @param string|int $value
      */
-    final public function check($value): void
+    final public static function check($value): void
     {
         if (!self::isValid($value)) {
             $class = get_called_class();
