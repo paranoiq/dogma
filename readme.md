@@ -1,14 +1,21 @@
 Dogma
 ========
 
-Dogma is a paranoiqs collection of libraries used on several private projects.
-Due to a limited time for development, some parts may be now broken.
-Nobody should use this. Backward compatibility is not maintained. You have been warned.
+The standard library you wish PHP had.
+
+Collection of:
+- basic types
+- interfaces
+- iterable types and iterators
+- constant list and enumerations
+- math/graph algorithms
+- easy to use wrappers over built in functions
+- some essential libraries
 
 
 Requirements
 --------
- - **PHP 7.1**
+ - **PHP-64 7.1+**
 
 
 Author:

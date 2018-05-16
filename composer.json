@@ -1,9 +1,9 @@
 {
     "name": "dogma/dogma",
     "type": "library",
-    "description": "Collection of libraries sharing the same base and the same ideology - simplicity, self-explaining API, good design. Includes Database, Data sheet, XML/HTML DOM, HTTP, Filesystem and Email tools.",
+    "description": "The standard library you wish PHP had.",
     "homepage": "http://github.com/paranoiq/dogma",
-    "license": ["BSD-3"],
+    "license": ["BSD-3-Clause"],
     "authors": [
         {
             "name": "Vlasta Neubauer",
@@ -34,7 +34,7 @@
         "spell-checker/dictionary-en": "~0.1"
     },
     "autoload": {
-        "files": ["src/loader.php"]
+        "classmap": ["src", "tests"]
     },
     "config": {
         "bin-dir": "bin"
