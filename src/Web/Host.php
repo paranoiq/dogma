@@ -34,6 +34,11 @@ class Host
         $this->port = $port;
     }
 
+    public function format(): string
+    {
+        return $this->port === null ? $this->host : $this->host . ':' . $this->port;
+    }
+
     public function getTld(): Tld
     {
         $parts = explode('.', $this->host);

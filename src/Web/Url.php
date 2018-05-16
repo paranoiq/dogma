@@ -27,6 +27,11 @@ class Url
         }
     }
 
+    public function getValue(): string
+    {
+        return $this->url->getAbsoluteUrl();
+    }
+
     public function getScheme(): UriScheme
     {
         return UriScheme::get($this->url->getScheme());

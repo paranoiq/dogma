@@ -28,6 +28,11 @@ class Domain
         return (bool) preg_match('~^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?[.])+[a-z]{2,6}$~iu', $name);
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     public function getTld(): Tld
     {
         $parts = explode('.', $this->name);
