@@ -9,31 +9,53 @@
 
 namespace Dogma\Time;
 
+use Dogma\Arr;
 use Dogma\Check;
-use Dogma\NonIterable;
+use Dogma\Comparable;
+use Dogma\Equalable;
 use Dogma\NonIterableMixin;
+use Dogma\Order;
 use Dogma\StrictBehaviorMixin;
+use Dogma\Time\Provider\TimeProvider;
 use Dogma\Type;
 
 /**
  * Date class.
  */
-class Date implements NonIterable
+class Date implements DateOrTime
 {
     use StrictBehaviorMixin;
     use NonIterableMixin;
 
+    public const MIN = '0001-01-01';
+    public const MAX = '9999-12-31';
+
+    public const MIN_DAY_NUMBER = 0;
+    public const MAX_DAY_NUMBER = 3652058;
+
     public const DEFAULT_FORMAT = 'Y-m-d';
 
-    /** @var \DateTime */
+    /** @var int */
+    private $dayNumber;
+
+    /** @var \DateTimeImmutable|null */
     private $dateTime;
 
-    public function __construct(string $dateString = 'today 00:00:00')
+    /**
+     * @param int|string $dayNumberOrDateString
+     */
+    public function __construct($dayNumberOrDateString = 'today')
     {
-        try {
-            $this->dateTime = new \DateTime($dateString);
-        } catch (\Throwable $e) {
-            throw new InvalidDateTimeException($dateString, $e);
+        if (is_int($dayNumberOrDateString)) {
+            Check::range($dayNumberOrDateString, self::MIN_DAY_NUMBER, self::MAX_DAY_NUMBER);
+            $this->dayNumber = $dayNumberOrDateString;
+        } else {
+            try {
+                $this->dateTime = (new \DateTimeImmutable($dayNumberOrDateString))->setTime(0, 0, 0);
+                $this->dayNumber = self::calculateDayNumber($this->dateTime);
+            } catch (\Throwable $e) {
+                throw new InvalidDateTimeException($dayNumberOrDateString, $e);
+            }
         }
     }
 
@@ -60,26 +82,73 @@ class Date implements NonIterable
         return new static(sprintf('%d-%d-%d 00:00:00', $year, $month, $day));
     }
 
-    public function __clone()
+    public static function createFromDayNumber(int $dayNumber): self
     {
-        $this->dateTime = clone($this->dateTime);
+        return new static($dayNumber);
     }
+
+    final public function __clone()
+    {
+        $this->dateTime = null;
+    }
+
+    // modifications ---------------------------------------------------------------------------------------------------
+
+    public function modify(string $value): self
+    {
+        return static::createFromDateTimeInterface($this->getDateTime()->modify($value));
+    }
+
+    public function addDay(): self
+    {
+        return new static($this->dayNumber + 1);
+    }
+
+    public function subtractDay(): self
+    {
+        return new static($this->dayNumber - 1);
+    }
+
+    // queries ---------------------------------------------------------------------------------------------------------
 
     public function format(string $format = self::DEFAULT_FORMAT): string
     {
-        return $this->dateTime->format($format);
+        return $this->getDateTime()->format($format);
+    }
+
+    public function toDateTime(?\DateTimeZone $timeZone = null): DateTime
+    {
+        return DateTime::createFromDateAndTime($this, new Time(0), $timeZone);
+    }
+
+    public function getDayNumber(): int
+    {
+        return $this->dayNumber;
+    }
+
+    /**
+     * Returns number of day since 0001-01-01 (day 0)
+     * @param \DateTimeInterface $dateTime
+     * @return int
+     */
+    public static function calculateDayNumber(\DateTimeInterface $dateTime): int
+    {
+        $start = new \DateTimeImmutable(self::MIN . ' 00:00:00');
+        $diff = $dateTime->diff($start, true);
+
+        return $diff->days;
     }
 
     /**
      * @param \DateTimeInterface|\Dogma\Time\Date $date
      * @param bool $absolute
-     * @return \DateInterval|bool
+     * @return \DateInterval
      */
-    public function diff($date, bool $absolute = false)
+    public function diff($date, bool $absolute = false): \DateInterval
     {
         Check::types($date, [\DateTimeInterface::class, self::class]);
 
-        return (new \DateTime($this->format()))->diff(new \DateTime($date->format(self::DEFAULT_FORMAT)), $absolute);
+        return (new \DateTimeImmutable($this->format()))->diff(new \DateTimeImmutable($date->format(self::DEFAULT_FORMAT)), $absolute);
     }
 
     public function getStart(?\DateTimeZone $timeZone = null): DateTime
@@ -102,46 +171,65 @@ class Date implements NonIterable
         return $this->getStart($timeZone)->setTime(23, 59, 59)->format($format ?? DateTime::DEFAULT_FORMAT);
     }
 
-    public function compare(Date $date): int
+    /**
+     * @param self $other
+     * @return int
+     */
+    public function compare(Comparable $other): int
     {
-        return $this->isAfter($date) ? 1 : ($this->isBefore($date) ? -1 : 0);
+        $other instanceof self || Check::object($other, self::class);
+
+        return $this->dayNumber <=> $other->dayNumber;
     }
 
-    public function isEqual(Date $date): bool
+    /**
+     * @param self $other
+     * @return bool
+     */
+    public function equals(Equalable $other): bool
     {
-        return $this->format() === $date->format();
+        $other instanceof self || Check::object($other, self::class);
+
+        return $this->dayNumber === $other->dayNumber;
     }
 
     public function isBefore(Date $date): bool
     {
-        return $this->format() < $date->format();
+        return $this->dayNumber < $date->dayNumber;
     }
 
     public function isAfter(Date $date): bool
     {
-        return $this->format() > $date->format();
+        return $this->dayNumber > $date->dayNumber;
+    }
+
+    public function isSameOrBefore(Date $date): bool
+    {
+        return $this->dayNumber <= $date->dayNumber;
+    }
+
+    public function isSameOrAfter(Date $date): bool
+    {
+        return $this->dayNumber >= $date->dayNumber;
     }
 
     public function isBetween(Date $sinceDate, Date $untilDate): bool
     {
-        $thisDate = $this->format();
-
-        return $thisDate >= $sinceDate->format() && $thisDate <= $untilDate->format();
+        return $this->dayNumber >= $sinceDate->dayNumber && $this->dayNumber <= $untilDate->dayNumber;
     }
 
     public function isFuture(?TimeProvider $timeProvider = null): bool
     {
-        return $this->format() > ($timeProvider !== null ? $timeProvider->getDate() : new Date('today'))->format();
+        $today = $timeProvider !== null ? $timeProvider->getDate() : new Date();
+
+        return $this->dayNumber > $today->dayNumber;
     }
 
     public function isPast(?TimeProvider $timeProvider = null): bool
     {
-        return $this->format() < ($timeProvider !== null ? $timeProvider->getDate() : new Date('today'))->format();
-    }
+        $today = $timeProvider !== null ? $timeProvider->getDate() : new Date();
 
-    public function getDayOfWeekEnum(): DayOfWeek
-    {
-        return DayOfWeek::get((int) $this->format('N'));
+        return $this->dayNumber < $today->dayNumber;
     }
 
     /**
@@ -156,17 +244,12 @@ class Date implements NonIterable
             $day = DayOfWeek::get($day);
         }
 
-        return (int) $this->format('N') === $day->getValue();
+        return (($this->dayNumber % 7) + 1) === $day->getValue();
     }
 
     public function isWeekend(): bool
     {
-        return $this->format('N') > 5;
-    }
-
-    public function getMonthEnum(): Month
-    {
-        return Month::get((int) $this->format('n'));
+        return (($this->dayNumber % 7) + 1) > DayOfWeek::FRIDAY;
     }
 
     /**
@@ -182,6 +265,55 @@ class Date implements NonIterable
         }
 
         return (int) $this->format('n') === $month->getValue();
+    }
+
+    // getters ---------------------------------------------------------------------------------------------------------
+
+    public function getDayOfWeekEnum(): DayOfWeek
+    {
+        return DayOfWeek::get(($this->dayNumber % 7) + 1);
+    }
+
+    public function getMonthEnum(): Month
+    {
+        return Month::get((int) $this->format('n'));
+    }
+
+    private function getDateTime(): \DateTimeImmutable
+    {
+        if ($this->dateTime === null) {
+            $this->dateTime = new \DateTimeImmutable(self::MIN . ' +' . $this->dayNumber . ' days');
+        }
+
+        return $this->dateTime;
+    }
+
+    // static ----------------------------------------------------------------------------------------------------------
+
+    public static function min(self ...$items): self
+    {
+        return Arr::minBy($items, function (self $date) {
+            return $date->dayNumber;
+        });
+    }
+
+    public static function max(self ...$items): self
+    {
+        return Arr::maxBy($items, function (self $date) {
+            return $date->dayNumber;
+        });
+    }
+
+    /**
+     * @param \Dogma\Time\Date[] $items
+     * @param int $flags
+     * @return \Dogma\Time\Date[]
+     */
+    public static function sort(array $items, int $flags = Order::ASCENDING): array
+    {
+        return Arr::sortWith($items, function (Date $a, Date $b) {
+            return $a->dayNumber <=> $b->dayNumber;
+        }, $flags);
     }
 
 }

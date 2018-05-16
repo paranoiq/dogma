@@ -628,23 +628,43 @@ class TimeZone extends PartialStringEnum
         return !self::isKnownValue($this->getValue());
     }
 
-    public function getTimeZone(): \DateTimeZone
+    // DateTimeZone ----------------------------------------------------------------------------------------------------
+
+    public function getDateTimeZone(): \DateTimeZone
     {
         return new \DateTimeZone($this->getValue());
     }
 
-    public static function createTimeZone(string $name): \DateTimeZone
+    private static function createDateTimeZone(string $name): \DateTimeZone
     {
         try {
             $timeZone = self::get($name);
-            if ($timeZone->isDeprecated()) {
-                throw new InvalidOrDeprecatedTimeZoneException($name);
-            }
         } catch (InvalidValueException $e) {
             throw new InvalidOrDeprecatedTimeZoneException($name);
         }
 
-        return $timeZone->getTimeZone();
+        return $timeZone->getDateTimeZone();
+    }
+
+    public static function getUtc(): \DateTimeZone
+    {
+        static $utcTimeZone;
+
+        if ($utcTimeZone === null) {
+            $utcTimeZone = self::createDateTimeZone(self::UTC);
+        }
+
+        return $utcTimeZone;
+    }
+
+    public static function getDefault(): \DateTimeZone
+    {
+        return self::createDateTimeZone(date_default_timezone_get());
+    }
+
+    public static function setDefault(self $timeZone): void
+    {
+        date_default_timezone_set($timeZone->getValue());
     }
 
 }

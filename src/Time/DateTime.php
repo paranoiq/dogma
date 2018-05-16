@@ -10,22 +10,37 @@
 namespace Dogma\Time;
 
 use Dogma\Check;
-use Dogma\NonIterable;
+use Dogma\Comparable;
+use Dogma\Equalable;
 use Dogma\NonIterableMixin;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
+use Dogma\Time\Provider\TimeProvider;
 use Dogma\Type;
 
 /**
- * Immutable date and time class
+ * Immutable date and time class.
+ *
+ * Timestamps are always considered to be based on UTC.
+ *
+ * Comparisons and intervals are based on microseconds since unix epoch, giving a possible range of about ±280.000 years.
  */
-class DateTime extends \DateTimeImmutable implements NonIterable, \DateTimeInterface
+class DateTime extends \DateTimeImmutable implements DateOrTime, \DateTimeInterface
 {
     use StrictBehaviorMixin;
     use NonIterableMixin;
 
+    public const MIN = '0001-01-01 00:00:00.000000';
+    public const MAX = '9999-12-31 23:59:59.999999';
+
+    public const MIN_MICRO_TIMESTAMP = -62135596800000000;
+    public const MAX_MICRO_TIMESTAMP = 253402300799999999;
+
     public const DEFAULT_FORMAT = 'Y-m-d H:i:s';
     public const FORMAT_EMAIL_HTTP = DATE_RFC2822;
+
+    /** @var int */
+    private $microTimestamp;
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
@@ -51,7 +66,40 @@ class DateTime extends \DateTimeImmutable implements NonIterable, \DateTimeInter
 
     public static function createFromTimestamp(int $timestamp, ?\DateTimeZone $timeZone = null): self
     {
-        return static::createFromFormat('U', (string) $timestamp, $timeZone);
+        $dateTime = static::createFromFormat('U', (string) $timestamp, TimeZone::getUtc());
+        if ($timeZone === null) {
+            $timeZone = TimeZone::getDefault();
+        }
+        $dateTime = $dateTime->setTimezone($timeZone);
+
+        return $dateTime;
+    }
+
+    public static function createFromFloatTimestamp(float $timestamp, ?\DateTimeZone $timeZone = null): self
+    {
+        $formatted = number_format($timestamp, 6, '.', '');
+
+        $dateTime = static::createFromFormat('U.u', $formatted, TimeZone::getUtc());
+        if ($timeZone === null) {
+            $timeZone = TimeZone::getDefault();
+        }
+        $dateTime = $dateTime->setTimezone($timeZone);
+
+        return $dateTime;
+    }
+
+    public static function createFromMicroTimestamp(int $microTimestamp, ?\DateTimeZone $timeZone = null): self
+    {
+        $timestamp = (int) floor($microTimestamp / 1000000);
+        $miliseconds = Str::padLeft((string) ($microTimestamp - $timestamp * 1000000), 6, '0');
+
+        $dateTime = static::createFromFormat('U.u', $timestamp . '.' . $miliseconds, TimeZone::getUtc());
+        if ($timeZone === null) {
+            $timeZone = TimeZone::getDefault();
+        }
+        $dateTime = $dateTime->setTimezone($timeZone);
+
+        return $dateTime;
     }
 
     public static function createFromDateTimeInterface(\DateTimeInterface $dateTime, ?\DateTimeZone $timeZone = null): self
@@ -59,7 +107,10 @@ class DateTime extends \DateTimeImmutable implements NonIterable, \DateTimeInter
         if ($timeZone === null) {
             $timeZone = $dateTime->getTimezone();
         }
-        return new static($dateTime->format(self::DEFAULT_FORMAT), $timeZone);
+        $timestamp = $dateTime->getTimestamp();
+        $microseconds = (int) $dateTime->format('u');
+
+        return self::createFromMicroTimestamp($timestamp * 1000000 + $microseconds, $timeZone);
     }
 
     public static function createFromDateAndTime(Date $date, Time $time, ?\DateTimeZone $timeZone = null): self
@@ -68,33 +119,37 @@ class DateTime extends \DateTimeImmutable implements NonIterable, \DateTimeInter
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param string $modify
-     * @return static
+     * Called by modify() etc.
      */
-    public function modify($modify): self
+    public function __clone()
     {
-        return new static(parent::modify($modify));
+        $this->microTimestamp = null;
+    }
+
+    // modifications ---------------------------------------------------------------------------------------------------
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @param \DateInterval $interval
+     * @return self
+     */
+    public function add($interval): self
+    {
+        $that = parent::add($interval);
+
+        return static::createFromDateTimeInterface($that);
     }
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param string $format
-     * @return string
+     * @param \DateInterval $interval
+     * @return self
      */
-    public function format($format = self::DEFAULT_FORMAT): string
+    public function sub($interval): self
     {
-        return parent::format($format);
-    }
+        $that = parent::sub($interval);
 
-    public function getDate(): Date
-    {
-        return new Date($this->format(Date::DEFAULT_FORMAT));
-    }
-
-    public function getTime(): Time
-    {
-        return new Time($this->format(Time::DEFAULT_FORMAT));
+        return static::createFromDateTimeInterface($that);
     }
 
     /**
@@ -111,9 +166,12 @@ class DateTime extends \DateTimeImmutable implements NonIterable, \DateTimeInter
             return self::createFromDateTimeInterface(parent::setTime($time->getHours(), $time->getMinutes(), $time->getSeconds()));
         }
         if ($minutes === null && $seconds === null && is_string($time) && Str::contains($time, ':')) {
-            @list($time, $minutes, $seconds) = explode(':', $time);
+            $parts = explode(':', $time);
+            $time = $parts[0];
+            $minutes = $parts[1] ?? null;
+            $seconds = (string) $parts[2] ?? '';
             if (Str::contains($seconds, '.')) {
-                @list($seconds, $microseconds) = explode('.', $seconds);
+                [$seconds, $microseconds] = explode('.', $seconds);
                 $microseconds = (int) (('0.' . $microseconds) * 1000000);
             }
         }
@@ -121,14 +179,55 @@ class DateTime extends \DateTimeImmutable implements NonIterable, \DateTimeInter
         return self::createFromDateTimeInterface(parent::setTime((int) $time, (int) $minutes, (int) $seconds, (int) $microseconds));
     }
 
-    public function compare(\DateTimeInterface $dateTime): int
+    // queries ---------------------------------------------------------------------------------------------------------
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @param string $format
+     * @return string
+     */
+    public function format($format = self::DEFAULT_FORMAT): string
     {
-        return $this > $dateTime ? 1 : ($dateTime > $this ? -1 : 0);
+        return parent::format($format);
     }
 
-    public function isEqual(\DateTimeInterface $dateTime): bool
+    /**
+     * @param self $other
+     * @return int
+     */
+    public function compare(Comparable $other): int
     {
-        return $this->getTimestamp() === $dateTime->getTimestamp();
+        $other instanceof self || Check::object($other, self::class);
+
+        return $this > $other ? 1 : ($other > $this ? -1 : 0);
+    }
+
+    /**
+     * @param self $other
+     * @return bool
+     */
+    public function equals(Equalable $other): bool
+    {
+        $other instanceof self || Check::object($other, self::class);
+
+        return $this->getMicroTimestamp() === $other->getMicroTimestamp();
+    }
+
+    public function equalsUpTo(\DateTimeInterface $other, DateTimeUnit $unit): bool
+    {
+        $format = $unit->getComparisonFormat();
+
+        return $this->format($format) === $other->format($format);
+    }
+
+    public function timeZoneEquals(\DateTimeInterface $other): bool
+    {
+        return $this->getTimezone()->getName() === $other->getTimezone()->getName();
+    }
+
+    public function timeOffsetEquals(\DateTimeInterface $other): bool
+    {
+        return $this->getTimezone()->getOffset($this) === $other->getTimezone()->getOffset($other);
     }
 
     public function isBefore(\DateTimeInterface $dateTime): bool
@@ -226,11 +325,6 @@ class DateTime extends \DateTimeImmutable implements NonIterable, \DateTimeInter
         return $this->isBetween($tomorrow->getStart(), $tomorrow->getEnd());
     }
 
-    public function getDayOfWeekEnum(): DayOfWeek
-    {
-        return DayOfWeek::get((int) $this->format('N'));
-    }
-
     /**
      * @param int|\Dogma\Time\DayOfWeek $day
      * @return bool
@@ -251,11 +345,6 @@ class DateTime extends \DateTimeImmutable implements NonIterable, \DateTimeInter
         return $this->format('N') > 5;
     }
 
-    public function getMonthEnum(): Month
-    {
-        return Month::get((int) $this->format('n'));
-    }
-
     /**
      * @param int|\Dogma\Time\Month $month
      * @return bool
@@ -269,6 +358,59 @@ class DateTime extends \DateTimeImmutable implements NonIterable, \DateTimeInter
         }
 
         return (int) $this->format('n') === $month->getValue();
+    }
+
+    // getters ---------------------------------------------------------------------------------------------------------
+
+    public function getDate(): Date
+    {
+        return new Date($this->format(Date::DEFAULT_FORMAT));
+    }
+
+    public function getTime(): Time
+    {
+        return new Time($this->format(Time::DEFAULT_FORMAT));
+    }
+
+    public function getMicroTimestamp(): int
+    {
+        if ($this->microTimestamp === null) {
+            $timestamp = $this->getTimestamp();
+            $microseconds = (int) $this->format('u');
+            $this->microTimestamp = $timestamp * 1000000 + $microseconds;
+        }
+
+        return $this->microTimestamp;
+    }
+
+    public function getYear(): int
+    {
+        return (int) $this->format('Y');
+    }
+
+    public function getMonth(): int
+    {
+        return (int) $this->format('m');
+    }
+
+    public function getMonthEnum(): Month
+    {
+        return Month::get((int) $this->format('n'));
+    }
+
+    public function getDay(): int
+    {
+        return (int) $this->format('d');
+    }
+
+    public function getDayOfWeek(): int
+    {
+        return (int) $this->format('N');
+    }
+
+    public function getDayOfWeekEnum(): DayOfWeek
+    {
+        return DayOfWeek::get((int) $this->format('N'));
     }
 
 }

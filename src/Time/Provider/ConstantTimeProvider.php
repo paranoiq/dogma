@@ -7,9 +7,11 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Time;
+namespace Dogma\Time\Provider;
 
 use Dogma\StrictBehaviorMixin;
+use Dogma\Time\Date;
+use Dogma\Time\DateTime;
 
 class ConstantTimeProvider implements TimeProvider
 {

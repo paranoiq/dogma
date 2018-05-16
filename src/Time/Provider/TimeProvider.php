@@ -7,14 +7,18 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Time;
+namespace Dogma\Time\Provider;
 
-class InvalidDateTimeException extends TimeException
+use Dogma\Time\Date;
+use Dogma\Time\DateTime;
+
+interface TimeProvider
 {
 
-    public function __construct(string $dateTimeString, ?\Throwable $previous = null)
-    {
-        parent::__construct(sprintf('Invalid date/time string: %s', $dateTimeString), $previous);
-    }
+    public function getDate(): Date;
+
+    public function getDateTime(): DateTime;
+
+    public function getTimeZone(): \DateTimeZone;
 
 }

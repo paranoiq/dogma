@@ -15,7 +15,7 @@ use Dogma\Http\HttpRequest;
 use Dogma\NonCloneableMixin;
 use Dogma\NonSerializableMixin;
 use Dogma\StrictBehaviorMixin;
-use Dogma\Time\CurrentTimeProvider;
+use Dogma\Time\Provider\CurrentTimeProvider;
 
 /**
  * Manages parallel requests over multiple HTTP channels.

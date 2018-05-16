@@ -16,7 +16,7 @@ use Dogma\Language\Locale\Locale;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateTime;
-use Dogma\Time\TimeProvider;
+use Dogma\Time\Provider\TimeProvider;
 use Dogma\Type;
 use Dogma\Web\Host;
 use Dogma\Web\Url;
@@ -45,7 +45,7 @@ class HttpHeaderParser
         HttpHeader::X_WAP_PROFILE => Url::class,
     ];
 
-    /** @var \Dogma\Time\TimeProvider */
+    /** @var \Dogma\Time\Provider\TimeProvider */
     private $timeProvider;
 
     public function __construct(TimeProvider $timeProvider)

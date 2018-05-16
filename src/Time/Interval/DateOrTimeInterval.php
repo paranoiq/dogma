@@ -7,14 +7,13 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Time;
+namespace Dogma\Time\Interval;
 
-class InvalidDateTimeException extends TimeException
+use Dogma\Comparable;
+use Dogma\Equalable;
+use Dogma\Math\Interval\Interval;
+
+interface DateOrTimeInterval /*<T>*/ extends Interval /*<T>*/, Equalable, Comparable
 {
-
-    public function __construct(string $dateTimeString, ?\Throwable $previous = null)
-    {
-        parent::__construct(sprintf('Invalid date/time string: %s', $dateTimeString), $previous);
-    }
 
 }

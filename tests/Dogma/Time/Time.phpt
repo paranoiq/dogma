@@ -15,9 +15,8 @@ $seconds = 11045;
 
 // __construct()
 Assert::throws(function () {
-    new Time('asdf');
-}, InvalidDateTimeException::class);
-Assert::same((new Time($timeString))->format(), $timeString);
+    new Time(-200);
+}, ValueOutOfRangeException::class);
 
 // createFromParts()
 Assert::throws(function () {
@@ -25,6 +24,12 @@ Assert::throws(function () {
 }, ValueOutOfRangeException::class);
 Assert::type(Time::createFromParts(3, 4, 5), Time::class);
 Assert::same(Time::createFromParts(3, 4, 5)->format(), $timeString);
+
+// createFromString()
+Assert::throws(function () {
+    new Time('asdf');
+}, InvalidDateTimeException::class);
+Assert::same((new Time($timeString))->format(), $timeString);
 
 // createFromSeconds()
 Assert::throws(function () {
@@ -40,8 +45,8 @@ Assert::throws(function () {
 Assert::type(Time::createFromFormat(Time::DEFAULT_FORMAT, $timeString), Time::class);
 Assert::same(Time::createFromFormat(Time::DEFAULT_FORMAT, $timeString)->format(), $timeString);
 
-// getSecondsSinceMidnight()
-Assert::same($time->getSecondsSinceMidnight(), $seconds);
+// getMicroTime()
+Assert::same($time->getMicroTime(), $seconds * 1000000);
 
 // getHours()
 Assert::same($time->getHours(), 3);
@@ -53,8 +58,8 @@ Assert::same($time->getMinutes(), 4);
 Assert::same($time->getSeconds(), 5);
 
 // isEqual()
-Assert::false($time->isEqual(new Time(0)));
-Assert::true($time->isEqual(new Time($timeString)));
+Assert::false($time->equals(new Time(0)));
+Assert::true($time->equals(new Time($timeString)));
 
 // isBetween()
 Assert::false($time->isBetween('10:00:00', '12:00:00'));

@@ -12,7 +12,7 @@ namespace Dogma\Http;
 use Dogma\Http\Curl\CurlHelper;
 use Dogma\Io\ContentType\ContentType;
 use Dogma\StrictBehaviorMixin;
-use Dogma\Time\CurrentTimeProvider;
+use Dogma\Time\Provider\CurrentTimeProvider;
 
 class HttpResponse
 {

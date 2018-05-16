@@ -9,12 +9,7 @@
 
 namespace Dogma\Time;
 
-class InvalidDateTimeException extends TimeException
+class InvalidFormattingStringException extends TimeException
 {
-
-    public function __construct(string $dateTimeString, ?\Throwable $previous = null)
-    {
-        parent::__construct(sprintf('Invalid date/time string: %s', $dateTimeString), $previous);
-    }
 
 }

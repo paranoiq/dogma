@@ -9,13 +9,13 @@
 
 namespace Dogma\Time;
 
-interface TimeProvider
+use Dogma\Comparable;
+use Dogma\Equalable;
+use Dogma\NonIterable;
+
+interface DateOrTime extends NonIterable, Equalable, Comparable
 {
 
-    public function getDate(): Date;
-
-    public function getDateTime(): DateTime;
-
-    public function getTimeZone(): \DateTimeZone;
+    public function format(string $format): string;
 
 }

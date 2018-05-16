@@ -9,14 +9,15 @@
 
 namespace Dogma\Time;
 
-class InvalidOrDeprecatedTimeZoneException extends TimeException
+class TimeZoneMismatchException extends TimeException
 {
 
-    public function __construct(string $name, ?\Throwable $previous = null)
+    public function __construct(\DateTimeZone $first, \DateTimeZone $second, ?\Throwable $previous = null)
     {
         $message = sprintf(
-            'Time zone name "%s" is not valid or is deprecated. See https://secure.php.net/manual/en/timezones.others.php for deprecated time zones info.',
-            $name
+            'DateTimes must have matching time zones. Time zones "%s" and "%s" given.',
+            $first->getName(),
+            $second->getName()
         );
 
         parent::__construct($message, $previous);
