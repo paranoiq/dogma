@@ -69,4 +69,40 @@ class Month extends IntEnum
         ];
     }
 
+    /**
+     * @param bool $leapYear
+     * @return int[]
+     */
+    public static function getLengths(bool $leapYear = false): array
+    {
+        return $leapYear
+            ? [
+                self::JANUARY => 31,
+                self::FEBRUARY => 29,
+                self::MARCH => 31,
+                self::APRIL => 30,
+                self::MAY => 31,
+                self::JUNE => 30,
+                self::JULY => 31,
+                self::AUGUST => 31,
+                self::SEPTEMBER => 30,
+                self::OCTOBER => 31,
+                self::NOVEMBER => 30,
+                self::DECEMBER => 31,
+            ] : [
+                self::JANUARY => 31,
+                self::FEBRUARY => 28,
+                self::MARCH => 31,
+                self::APRIL => 30,
+                self::MAY => 31,
+                self::JUNE => 30,
+                self::JULY => 31,
+                self::AUGUST => 31,
+                self::SEPTEMBER => 30,
+                self::OCTOBER => 31,
+                self::NOVEMBER => 30,
+                self::DECEMBER => 31,
+            ];
+    }
+
 }
