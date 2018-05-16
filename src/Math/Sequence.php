@@ -83,6 +83,10 @@ class Sequence
      */
     public static function primesUntil(int $max): array
     {
+        if ($max < 2) {
+            return [];
+        }
+
         while (self::$lastSieved < $max) {
             self::sieve();
         }
