@@ -4,6 +4,7 @@ namespace Dogma\Tests\CombineIterator;
 
 use Dogma\CombineIterator;
 use Dogma\Tester\Assert;
+use Dogma\UnevenIteratorSourcesException;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -15,34 +16,39 @@ foreach (new CombineIterator($keys, $values) as $k => $v) {
 }
 Assert::same($result, [4 => 1, 5 => 2, 6 => 3]);
 
-$values = [1, 2, 3];
-$keys = [4, 5];
-$result = [];
-foreach (new CombineIterator($keys, $values) as $k => $v) {
-    $result[$k] = $v;
-}
-Assert::same($result, [4 => 1, 5 => 2]);
+Assert::exception(function () {
+    $values = [1, 2, 3];
+    $keys = [4, 5];
+    $result = [];
+    foreach (new CombineIterator($keys, $values) as $k => $v) {
+        $result[$k] = $v;
+    }
+}, UnevenIteratorSourcesException::class);
 
-$values = [1, 2];
-$keys = [4, 5, 6];
-$result = [];
-foreach (new CombineIterator($keys, $values) as $k => $v) {
-    $result[$k] = $v;
-}
-Assert::same($result, [4 => 1, 5 => 2]);
+Assert::exception(function () {
+    $values = [1, 2];
+    $keys = [4, 5, 6];
+    $result = [];
+    foreach (new CombineIterator($keys, $values) as $k => $v) {
+        $result[$k] = $v;
+    }
+}, UnevenIteratorSourcesException::class);
 
-$values = [1, 2, 3];
-$keys = [];
-$result = [];
-foreach (new CombineIterator($keys, $values) as $k => $v) {
-    $result[$k] = $v;
-}
-Assert::same($result, []);
+Assert::exception(function () {
+    $values = [1, 2, 3];
+    $keys = [];
+    $result = [];
+    foreach (new CombineIterator($keys, $values) as $k => $v) {
+        $result[$k] = $v;
+    }
+}, UnevenIteratorSourcesException::class);
 
-$values = [];
-$keys = [4, 5, 6];
-$result = [];
-foreach (new CombineIterator($keys, $values) as $k => $v) {
-    $result[$k] = $v;
-}
-Assert::same($result, []);
+Assert::exception(function () {
+    $values = [];
+    $keys = [4, 5, 6];
+    $result = [];
+    foreach (new CombineIterator($keys, $values) as $k => $v) {
+        $result[$k] = $v;
+    }
+    Assert::same($result, []);
+}, UnevenIteratorSourcesException::class);

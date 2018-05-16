@@ -9,6 +9,9 @@
 
 namespace Dogma;
 
+/**
+ * Minimal interface replacement of \ArrayIterator
+ */
 class ArrayIterator implements \Iterator
 {
     use StrictBehaviorMixin;

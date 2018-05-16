@@ -9,16 +9,23 @@
 
 namespace Dogma;
 
+/**
+ * Calls given callback on each value or key and returns result.
+ */
 class CallbackIterator extends \IteratorIterator
 {
     use StrictBehaviorMixin;
 
     /** @var callable */
-    private $callback;
+    private $valuesCallback;
 
-    public function __construct(iterable $iterable, callable $callback)
+    /** @var callable|null */
+    private $keysCallback;
+
+    public function __construct(iterable $iterable, callable $valuesCallback, ?callable $keysCallback = null)
     {
-        $this->callback = $callback;
+        $this->valuesCallback = $valuesCallback;
+        $this->keysCallback = $keysCallback;
 
         $iterable = IteratorHelper::iterableToIterator($iterable);
 
@@ -28,11 +35,25 @@ class CallbackIterator extends \IteratorIterator
     /**
      * @return mixed
      */
+    public function key()
+    {
+        $key = parent::key();
+
+        if ($this->keysCallback === null) {
+            return $key;
+        }
+
+        return call_user_func($this->keysCallback, $key);
+    }
+
+    /**
+     * @return mixed
+     */
     public function current()
     {
-        $current = parent::current();
+        $value = parent::current();
 
-        return call_user_func($this->callback, $current);
+        return call_user_func($this->valuesCallback, $value);
     }
 
 }

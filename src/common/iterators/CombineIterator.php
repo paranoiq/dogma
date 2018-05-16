@@ -9,6 +9,9 @@
 
 namespace Dogma;
 
+/**
+ * Combines values from two given iterators as keys and values. Iterators should return same number of items.
+ */
 class CombineIterator implements \Iterator
 {
     use StrictBehaviorMixin;
@@ -39,7 +42,16 @@ class CombineIterator implements \Iterator
 
     public function valid(): bool
     {
-        return $this->keys->valid() && $this->values->valid();
+        $keysValid = $this->keys->valid();
+        $valuesValid = $this->values->valid();
+        if ($keysValid xor $valuesValid) {
+            throw new UnevenIteratorSourcesException($keysValid
+                ? 'Values iterator runned out of values.'
+                : 'Keys iterator runned out of values.'
+            );
+        }
+
+        return $keysValid && $valuesValid;
     }
 
     /**

@@ -9,6 +9,9 @@
 
 namespace Dogma;
 
+/**
+ * Returns only selected keys from iterated arrays (eg. rows) as keys and values.
+ */
 class FetchKeysIterator extends \IteratorIterator
 {
     use StrictBehaviorMixin;

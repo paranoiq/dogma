@@ -9,6 +9,9 @@
 
 namespace Dogma;
 
+/**
+ * For iterating and array in reverse order without making a reversed copy of the array.
+ */
 class ReverseArrayIterator implements \Iterator
 {
     use StrictBehaviorMixin;
