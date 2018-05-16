@@ -7,23 +7,23 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Math\Range;
+namespace Dogma\Math\Interval;
 
-interface RangeSet /*<T>*/
+interface IntervalSet /*<T>*/
 {
 
     /**
-     * @return \Dogma\Math\Range\Range[]
+     * @return \Dogma\Math\Interval\Interval[]
      */
-    public function getRanges(): array;
+    public function getIntervals(): array;
 
     public function isEmpty(): bool;
 
     //public function containsValue(T $value): bool;
 
     /**
-     * @return mixed|\Dogma\Math\Range\Range
+     * @return mixed|\Dogma\Math\Interval\Interval
      */
-    public function envelope();//: Range<T>;
+    public function envelope();//: Interval<T>;
 
 }

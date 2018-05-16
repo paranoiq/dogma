@@ -7,13 +7,13 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Math\Range;
+namespace Dogma\Math\Interval;
 
 use Dogma\Arr;
 use Dogma\Check;
 use Dogma\StrictBehaviorMixin;
 
-class IntRange implements Range
+class IntInterval implements Interval
 {
     use StrictBehaviorMixin;
 
@@ -34,16 +34,16 @@ class IntRange implements Range
         $this->end = $end;
     }
 
-    public static function createEmpty(): self
+    public static function empty(): self
     {
-        $range = new static(0, 0);
-        $range->start = self::MAX;
-        $range->end = self::MIN;
+        $interval = new static(0, 0);
+        $interval->start = self::MAX;
+        $interval->end = self::MIN;
 
-        return $range;
+        return $interval;
     }
 
-    public static function createAll(): self
+    public static function all(): self
     {
         return new static(self::MIN, self::MAX);
     }
@@ -82,9 +82,9 @@ class IntRange implements Range
         return $this->start > $this->end;
     }
 
-    public function equals(self $range): bool
+    public function equals(self $interval): bool
     {
-        return $this->start === $range->start && $this->end === $range->end;
+        return $this->start === $interval->start && $this->end === $interval->end;
     }
 
     public function containsValue(int $value): bool
@@ -92,64 +92,64 @@ class IntRange implements Range
         return $value >= $this->start && $value <= $this->end;
     }
 
-    public function contains(self $range): bool
+    public function contains(self $interval): bool
     {
-        return $this->start <= $range->start && $this->end >= $range->end && !$range->isEmpty();
+        return $this->start <= $interval->start && $this->end >= $interval->end && !$interval->isEmpty();
     }
 
-    public function intersects(self $range): bool
+    public function intersects(self $interval): bool
     {
-        return ($range->start >= $this->start && $range->start <= $this->end) || ($range->end >= $this->start && $range->end <= $this->end);
+        return ($interval->start >= $this->start && $interval->start <= $this->end) || ($interval->end >= $this->start && $interval->end <= $this->end);
     }
 
-    public function touches(self $range): bool
+    public function touches(self $interval): bool
     {
-        return $this->start === $range->end + 1 || $this->end === $range->start - 1;
+        return $this->start === $interval->end + 1 || $this->end === $interval->start - 1;
     }
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    public function split(int $parts): IntRangeSet
+    public function split(int $parts): IntIntervalSet
     {
         Check::min($parts, 1);
 
         if ($this->isEmpty()) {
-            return new IntRangeSet([$this]);
+            return new IntIntervalSet([$this]);
         }
 
         $partSize = ($this->end - $this->start + 1) / $parts;
-        $borders = [];
+        $intervalStarts = [];
         for ($n = 1; $n < $parts; $n++) {
-            $borders[] = (int) round($this->start + $partSize * $n);
+            $intervalStarts[] = (int) round($this->start + $partSize * $n);
         }
-        $borders = array_unique($borders);
+        $intervalStarts = array_unique($intervalStarts);
 
-        if ($borders === []) {
-            return new IntRangeSet([$this]);
+        if ($intervalStarts === []) {
+            return new IntIntervalSet([$this]);
         }
 
-        return $this->splitBy($borders);
+        return $this->splitBy($intervalStarts);
     }
 
     /**
-     * @param int[] $rangeStarts
-     * @return \Dogma\Math\Range\IntRangeSet
+     * @param int[] $intervalStarts
+     * @return \Dogma\Math\Interval\IntIntervalSet
      */
-    public function splitBy(array $rangeStarts): IntRangeSet
+    public function splitBy(array $intervalStarts): IntIntervalSet
     {
-        $rangeStarts = Arr::sort($rangeStarts);
+        $intervalStarts = Arr::sort($intervalStarts);
         $results = [$this];
         $i = 0;
-        foreach ($rangeStarts as $rangeStart) {
-            $range = $results[$i];
-            if ($range->containsValue($rangeStart) && $range->containsValue($rangeStart - 1)) {
-                $results[$i] = new static($range->start, $rangeStart - 1);
-                $results[] = new static($rangeStart, $range->end);
+        foreach ($intervalStarts as $intervalStart) {
+            $interval = $results[$i];
+            if ($interval->containsValue($intervalStart) && $interval->containsValue($intervalStart - 1)) {
+                $results[$i] = new static($interval->start, $intervalStart - 1);
+                $results[] = new static($intervalStart, $interval->end);
                 $i++;
             }
         }
 
-        return new IntRangeSet($results);
+        return new IntIntervalSet($results);
     }
 
     // A1****A2****B1****B2 -> [A1, B2]
@@ -179,12 +179,12 @@ class IntRange implements Range
         $items = self::sortByStart($items);
 
         $result = array_shift($items);
-        /** @var \Dogma\Math\Range\IntRange $item */
+        /** @var \Dogma\Math\Interval\IntInterval $item */
         foreach ($items as $item) {
             if ($result->end >= $item->start) {
                 $result = new static(max($result->start, $item->start), min($result->end, $item->end));
             } else {
-                return static::createEmpty();
+                return static::empty();
             }
         }
 
@@ -194,14 +194,14 @@ class IntRange implements Range
     // A or B
     // A1****B1****A2****B2 -> {[A1, B2]}
     // A1****A2    B1****B2 -> {[A1, A2], [B1, B2]}
-    public function union(self ...$items): IntRangeSet
+    public function union(self ...$items): IntIntervalSet
     {
         $items[] = $this;
         $items = self::sortByStart($items);
 
         $current = array_shift($items);
         $results = [$current];
-        /** @var \Dogma\Math\Range\IntRange $item */
+        /** @var \Dogma\Math\Interval\IntInterval $item */
         foreach ($items as $item) {
             if ($item->isEmpty()) {
                 continue;
@@ -215,13 +215,13 @@ class IntRange implements Range
             }
         }
 
-        return new IntRangeSet($results);
+        return new IntIntervalSet($results);
     }
 
     // A xor B
     // A1****B1----A2****B2 -> {[A1, A2], [B1, B2]}
     // A1****A2    B1****B2 -> {[A1, A2], [B1, B2]}
-    public function difference(self ...$items): IntRangeSet
+    public function difference(self ...$items): IntIntervalSet
     {
         $items[] = $this;
         $overlaps = self::countOverlaps(...$items);
@@ -233,55 +233,55 @@ class IntRange implements Range
             }
         }
 
-        return new IntRangeSet($results);
+        return new IntIntervalSet($results);
     }
 
     // A minus B
     // A1****B1----A2----B2 -> {[A1, B1]}
     // A1****A2    B1----B2 -> {[A1, A2]}
-    public function subtract(self ...$items): IntRangeSet
+    public function subtract(self ...$items): IntIntervalSet
     {
-        $ranges = [$this];
+        $intervals = [$this];
 
         foreach ($items as $item) {
             if ($item->isEmpty()) {
                 continue;
             }
-            /** @var \Dogma\Math\Range\IntRange $range */
-            foreach ($ranges as $r => $range) {
-                unset($ranges[$r]);
-                if ($range->start < $item->start && $range->end > $item->end) {
-                    $ranges[] = new static($range->start, $item->start - 1);
-                    $ranges[] = new static($item->end + 1, $range->end);
-                } elseif ($range->start < $item->start) {
-                    $ranges[] = new static($range->start, min($range->end, $item->start - 1));
-                } elseif ($range->end > $item->end) {
-                    $ranges[] = new static(max($range->start, $item->end + 1), $range->end);
+            /** @var \Dogma\Math\Interval\IntInterval $interval */
+            foreach ($intervals as $r => $interval) {
+                unset($intervals[$r]);
+                if ($interval->start < $item->start && $interval->end > $item->end) {
+                    $intervals[] = new static($interval->start, $item->start - 1);
+                    $intervals[] = new static($item->end + 1, $interval->end);
+                } elseif ($interval->start < $item->start) {
+                    $intervals[] = new static($interval->start, min($interval->end, $item->start - 1));
+                } elseif ($interval->end > $item->end) {
+                    $intervals[] = new static(max($interval->start, $item->end + 1), $interval->end);
                 }
             }
         }
 
-        return new IntRangeSet(array_values($ranges));
+        return new IntIntervalSet(array_values($intervals));
     }
 
     // All minus A
-    public function invert(): IntRangeSet
+    public function invert(): IntIntervalSet
     {
-        return self::createAll()->subtract($this);
+        return self::all()->subtract($this);
     }
 
     // static ----------------------------------------------------------------------------------------------------------
 
     /**
-     * @param \Dogma\Math\Range\IntRange ...$items
-     * @return \Dogma\Math\Range\IntRange[][]|int[][] ($ident => ($range, $count))
+     * @param \Dogma\Math\Interval\IntInterval ...$items
+     * @return \Dogma\Math\Interval\IntInterval[][]|int[][] ($ident => ($interval, $count))
      */
     public static function countOverlaps(self ...$items): array
     {
         $overlaps = self::explodeOverlaps(...$items);
 
         $results = [];
-        /** @var \Dogma\Math\Range\IntRange $overlap */
+        /** @var \Dogma\Math\Interval\IntInterval $overlap */
         foreach ($overlaps as $overlap) {
             $ident = $overlap->format();
             if (isset($results[$ident])) {
@@ -296,8 +296,8 @@ class IntRange implements Range
 
     /**
      * O(n log n)
-     * @param \Dogma\Math\Range\IntRange ...$items
-     * @return \Dogma\Math\Range\IntRange[]
+     * @param \Dogma\Math\Interval\IntInterval ...$items
+     * @return \Dogma\Math\Interval\IntInterval[]
      */
     public static function explodeOverlaps(self ...$items): array
     {
@@ -313,11 +313,13 @@ class IntRange implements Range
                 $i++;
                 continue;
             }
-            /** @var \Dogma\Math\Range\IntRange $b */
+            /** @var \Dogma\Math\Interval\IntInterval $b */
             foreach ($items as $j => $b) {
-                if ($j < $starts[$i]) {
+                if ($i === $j) {
+                    // same item
                     continue;
-                } elseif ($i === $j) {
+                } elseif ($j < $starts[$i]) {
+                    // already checked
                     continue;
                 } elseif ($a->end < $b->start || $a->start > $b->end) {
                     // a1----a1    b1----b1
@@ -377,23 +379,23 @@ class IntRange implements Range
     }
 
     /**
-     * @param self[] $ranges
+     * @param self[] $intervals
      * @return self[]
      */
-    public static function sort(array $ranges): array
+    public static function sort(array $intervals): array
     {
-        return Arr::sortWith($ranges, function (IntRange $a, IntRange $b) {
+        return Arr::sortWith($intervals, function (IntInterval $a, IntInterval $b) {
             return $a->start <=> $b->start ?: $a->end <=> $b->end;
         });
     }
 
     /**
-     * @param self[] $ranges
+     * @param self[] $intervals
      * @return self[]
      */
-    public static function sortByStart(array $ranges): array
+    public static function sortByStart(array $intervals): array
     {
-        return Arr::sortWith($ranges, function (IntRange $a, IntRange $b) {
+        return Arr::sortWith($intervals, function (IntInterval $a, IntInterval $b) {
             return $a->start <=> $b->start;
         });
     }
