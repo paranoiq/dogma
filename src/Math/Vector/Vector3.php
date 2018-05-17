@@ -7,6 +7,8 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
+// spell-check-ignore: bz
+
 namespace Dogma\Math\Vector;
 
 use Dogma\Math\FloatCalc;
@@ -36,27 +38,26 @@ class Vector3
      * @param float $x
      * @param float $y
      * @param float $z
-     * @return float[] ($latRad, $lonRad)
+     * @return float[] ($latitude, $longitude)
      */
     public static function normalVectorToRadians(float $x, float $y, float $z): array
     {
-        $lonRad = atan2($y, $x);
-        $hyp = sqrt($x * $x + $y * $y);
-        $latRad = atan2($z, $hyp);
+        $latitude = atan2($y, $x);
+        $longitude = atan2($z, sqrt($x * $x + $y * $y));
 
-        return [$latRad, $lonRad];
+        return [$longitude, $latitude];
     }
 
     /**
-     * @param float $latRad
-     * @param float $lonRad
+     * @param float $latitude
+     * @param float $longitude
      * @return float[] ($x, $y, $z)
      */
-    public static function radiansToNormalVector(float $latRad, float $lonRad): array
+    public static function radiansToNormalVector(float $latitude, float $longitude): array
     {
-        $x = cos($latRad) * cos($lonRad);
-        $y = cos($latRad) * sin($lonRad);
-        $z = sin($latRad);
+        $x = cos($latitude) * cos($longitude);
+        $y = cos($latitude) * sin($longitude);
+        $z = sin($latitude);
 
         return [$x, $y, $z];
     }

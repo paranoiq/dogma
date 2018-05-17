@@ -7,6 +7,8 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
+// spell-check-ignore: latlong
+
 namespace Dogma\Geolocation;
 
 use Dogma\Check;
@@ -50,12 +52,12 @@ class Position implements NonIterable, Exportable
         $this->planetRadius = $planetRadius;
     }
 
-    public static function fromRadians(float $latRad, float $lonRad, float $planetRadius = self::PLANET_EARTH_RADIUS): self
+    public static function fromRadians(float $latitude, float $longitude, float $planetRadius = self::PLANET_EARTH_RADIUS): self
     {
-        Check::range($latRad, -Constant::HALF_PI, Constant::HALF_PI);
-        Check::range($lonRad, -Constant::PI, Constant::PI);
+        Check::range($latitude, -Constant::HALF_PI, Constant::HALF_PI);
+        Check::range($longitude, -Constant::PI, Constant::PI);
 
-        $position = new static(rad2deg($latRad), rad2deg($lonRad), $planetRadius);
+        $position = new static(rad2deg($latitude), rad2deg($longitude), $planetRadius);
 
         return $position;
     }
@@ -66,9 +68,9 @@ class Position implements NonIterable, Exportable
         Check::range($y, 0.0, 1.0);
         Check::range($z, 0.0, 1.0);
 
-        [$latRad, $lonRad] = Vector3::normalVectorToRadians($x, $y, $z);
+        [$latitude, $longitude] = Vector3::normalVectorToRadians($x, $y, $z);
 
-        $position = new static(rad2deg($latRad), rad2deg($lonRad), $planetRadius);
+        $position = new static(rad2deg($latitude), rad2deg($longitude), $planetRadius);
         $position->normalVector = [$x, $y, $z];
 
         return $position;
