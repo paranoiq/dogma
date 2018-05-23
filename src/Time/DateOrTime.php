@@ -16,6 +16,6 @@ use Dogma\NonIterable;
 interface DateOrTime extends NonIterable, Equalable, Comparable
 {
 
-    public function format(string $format): string;
+    public function format(string $format = ''): string;
 
 }
