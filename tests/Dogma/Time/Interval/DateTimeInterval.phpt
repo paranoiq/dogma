@@ -6,6 +6,7 @@ use Dogma\Tester\Assert;
 use Dogma\Time\DateTime;
 use Dogma\Time\Interval\DateTimeInterval;
 use Dogma\Time\Interval\DateTimeIntervalSet;
+use Dogma\Time\InvalidIntervalException;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -29,6 +30,11 @@ $r = function (int $start, int $end, bool $openStart = false, bool $openEnd = tr
 $s = function (DateTimeInterval ...$items) {
     return new DateTimeIntervalSet($items);
 };
+
+// __construct()
+Assert::exception(function () {
+    new DateTimeInterval(new DateTime('today'), new DateTime('yesterday'));
+}, InvalidIntervalException::class);
 
 // shift()
 Assert::equal($interval->shift('+1 day'), $r(11, 21));

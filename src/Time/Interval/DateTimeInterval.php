@@ -17,6 +17,7 @@ use Dogma\Math\Interval\IntInterval;
 use Dogma\Math\Interval\OpenClosedInterval;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateTime;
+use Dogma\Time\InvalidIntervalException;
 
 /**
  * Interval of times including date. Based on FloatInterval.
@@ -48,6 +49,10 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         $this->end = $end;
         $this->openStart = $openStart;
         $this->openEnd = $openEnd;
+
+        if ($this->start > $this->end) {
+            throw new InvalidIntervalException($this->start, $this->end);
+        }
 
         if ($start->equals($end)) {
             if ($openStart || $openEnd) {
