@@ -25,7 +25,7 @@
 
     <target name="check" depends="check-php"/>
 
-    <target name="check-php" depends="phplint,phpcs,tests,phpstan,spell-check"/>
+    <target name="check-php" depends="phplint,tests,phpstan,spell-check,phpcs"/>
 
     <target name="composer">
         <exec executable="${path.composer.executable}" logoutput="true" passthru="true" checkreturn="true">
