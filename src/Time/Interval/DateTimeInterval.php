@@ -148,7 +148,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
 
     public function isEmpty(): bool
     {
-        return $this->start > $this->end || ($this->start->equals($this->end) && $this->openStart && $this->openEnd);
+        return $this->start->equals($this->end) && $this->openStart && $this->openEnd;
     }
 
     /**
