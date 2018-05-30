@@ -18,6 +18,7 @@ TimeZone::setDefault(TimeZone::get(TimeZone::EUROPE_PRAGUE));
 
 $utcTimeZone = new \DateTimeZone('UTC');
 $localTimeZone = TimeZone::getDefault();
+$localOffsetTimeZone = new \DateTimeZone('+01:00');
 
 $dateTimeString = '2000-01-02 03:04:05';
 $dateTimeStringUtc = '2000-01-02 02:04:05';
@@ -25,6 +26,7 @@ $timestamp = 946778645;
 $date = new Date('2000-01-02');
 $time = new Time('03:04:05');
 $dateTime = new DateTime($dateTimeString);
+$dateTimeByOffset = new DateTime($dateTimeString, $localOffsetTimeZone);
 $dateTimeNative = new \DateTime($dateTimeString);
 $dateTimeImmutable = new \DateTimeImmutable($dateTimeString);
 
@@ -105,11 +107,13 @@ Assert::same($today->compare($yesterday), 1);
 Assert::same($today->compare($today), 0);
 Assert::same($today->compare($tomorrow), -1);
 
-// isEqual()
+// isEquals()
 Assert::false($today->equals($yesterday));
 Assert::false($today->equals($tomorrow));
 Assert::false($today->equals($today2));
 Assert::true($today->equals($today));
+
+Assert::true($dateTime->equals($dateTimeByOffset));
 
 // isBefore()
 Assert::false($today->isBefore($yesterday));

@@ -57,7 +57,7 @@ Assert::same($time->getMinutes(), 4);
 // getSeconds()
 Assert::same($time->getSeconds(), 5);
 
-// isEqual()
+// isEquals()
 Assert::false($time->equals(new Time(0)));
 Assert::true($time->equals(new Time($timeString)));
 
