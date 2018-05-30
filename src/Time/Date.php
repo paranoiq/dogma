@@ -87,6 +87,16 @@ class Date implements DateOrTime
         return new static($dayNumber);
     }
 
+    public static function createFromFormat(string $format, string $timeString): self
+    {
+        $dateTime = \DateTime::createFromFormat($format, $timeString);
+        if ($dateTime === false) {
+            throw new InvalidDateTimeException('xxx');
+        }
+
+        return self::createFromDateTimeInterface($dateTime);
+    }
+
     final public function __clone()
     {
         $this->dateTime = null;

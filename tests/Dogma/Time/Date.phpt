@@ -42,6 +42,13 @@ Assert::same(Date::createFromDateTimeInterface(new DateTime('2000-01-02'))->form
 Assert::type(Date::createFromComponents(2001, 2, 3), Date::class);
 Assert::same(Date::createFromComponents(2001, 2, 3)->format('Y-m-d'), '2001-02-03');
 
+// createFromFormat()
+Assert::type(Date::createFromFormat(Date::DEFAULT_FORMAT, $dateString), Date::class);
+Assert::same(Date::createFromFormat(Date::DEFAULT_FORMAT, $dateString)->format(), $dateString);
+Assert::exception(function () {
+    Date::createFromFormat('Y-m-d', '12:00:00');
+}, InvalidDateTimeException::class);
+
 // format()
 Assert::same($date->format('j.n.Y'), date('j.n.Y', $timestamp));
 
