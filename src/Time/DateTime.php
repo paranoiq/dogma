@@ -60,6 +60,9 @@ class DateTime extends \DateTimeImmutable implements DateOrTime, \DateTimeInterf
         } else {
             $dateTime = parent::createFromFormat($format, $timeString, $timeZone);
         }
+        if ($dateTime === false) {
+            throw new InvalidDateTimeException($timeString);
+        }
 
         return new static($dateTime->format(self::DEFAULT_FORMAT), $timeZone ?? $dateTime->getTimezone());
     }
