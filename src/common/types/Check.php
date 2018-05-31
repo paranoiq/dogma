@@ -34,6 +34,9 @@ final class Check
     {
         if (is_array($type)) {
             [$type, $itemTypes] = $type;
+        } elseif (strpos($type, '<') !== false) {
+            [$type, $itemType] = explode('<', $type);
+            $itemTypes = [trim($itemType, '>')];
         }
         switch ($type) {
             case Type::NULL:
@@ -76,7 +79,9 @@ final class Check
                 self::resource($value, $min);
                 break;
             case Type::PHP_CALLABLE:
-                if ($max !== null) {
+                if ($min !== null) {
+                    throw new \InvalidArgumentException(sprintf('Parameter $min is not applicable with type %s.', $type));
+                } elseif ($max !== null) {
                     throw new \InvalidArgumentException(sprintf('Parameter $max is not applicable with type %s.', $type));
                 }
                 self::callable($value);

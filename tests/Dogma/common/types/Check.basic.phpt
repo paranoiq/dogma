@@ -35,6 +35,12 @@ $array = ['a' => 1, 'b' => 2, 'c' => 3];
 $vector = [1, 2, 3];
 $mixed = [1, 2, 'a', 'b'];
 
+// type()
+Check::type($vector, 'array<int>');
+Assert::exception(function () use ($mixed) {
+    Check::itemsOfType($mixed, Type::INT);
+}, InvalidTypeException::class);
+
 // itemsOfType()
 Check::itemsOfType($array, Type::INT);
 Assert::exception(function () use ($mixed) {
