@@ -9,7 +9,10 @@
 
 namespace Dogma\Math\Interval;
 
-interface Interval /*<T>*/
+use Dogma\Comparable;
+use Dogma\Equalable;
+
+interface Interval /*<T>*/ extends Equalable, Comparable
 {
 
     /**
@@ -29,12 +32,12 @@ interface Interval /*<T>*/
     public function format(): string;
 
     /**
-     * @return mixed (T)
+     * @return mixed
      */
-    public function getStart();//: T
+    public function getStart(); //: T
 
     /**
-     * @return mixed (T)
+     * @return mixed
      */
     public function getEnd(); //: T
 
@@ -95,15 +98,15 @@ interface Interval /*<T>*/
     // static ----------------------------------------------------------------------------------------------------------
 
     /**
-     * @param \Dogma\Math\Interval\Interval<T> ...$items
-     * @return \Dogma\Math\Interval\Interval<T>[][]|int[][] ($ident => ($interval, $count))
+     * @param \Dogma\Math\Interval\Interval ...$items
+     * @return \Dogma\Math\Interval\Interval[][]|int[][] ($ident => ($interval, $count))
      */
     //public static function countOverlaps(self ...$items): array;
 
     /**
      * O(n log n)
-     * @param \Dogma\Math\Interval\Interval<T> ...$items
-     * @return \Dogma\Math\Interval\Interval<T>[]
+     * @param \Dogma\Math\Interval\Interval ...$items
+     * @return \Dogma\Math\Interval\Interval[]
      */
     //public static function explodeOverlaps(self ...$items): array;
 

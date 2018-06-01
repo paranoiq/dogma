@@ -5,6 +5,6 @@ namespace Dogma;
 interface Equalable
 {
 
-    public function equals(self $other): bool;
+    public function equals(Equalable $other): bool;
 
 }

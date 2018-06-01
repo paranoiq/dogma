@@ -11,6 +11,8 @@ namespace Dogma\Math\Interval;
 
 use Dogma\Arr;
 use Dogma\Check;
+use Dogma\Comparable;
+use Dogma\Equalable;
 use Dogma\StrictBehaviorMixin;
 
 class IntInterval implements Interval
@@ -82,9 +84,26 @@ class IntInterval implements Interval
         return $this->start > $this->end;
     }
 
-    public function equals(self $interval): bool
+    /**
+     * @param \Dogma\Math\Interval\IntInterval $other
+     * @return bool
+     */
+    public function equals(Equalable $other): bool
     {
-        return $this->start === $interval->start && $this->end === $interval->end;
+        $other instanceof self || Check::object($other, self::class);
+
+        return $this->start === $other->start && $this->end === $other->end;
+    }
+
+    /**
+     * @param \Dogma\Math\Interval\IntInterval $other
+     * @return int
+     */
+    public function compare(Comparable $other): int
+    {
+        $other instanceof self || Check::object($other, self::class);
+
+        return $this->start <=> $other->start ?: $this->end <=> $other->end;
     }
 
     public function containsValue(int $value): bool

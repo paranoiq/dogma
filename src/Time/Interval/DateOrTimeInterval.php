@@ -9,11 +9,9 @@
 
 namespace Dogma\Time\Interval;
 
-use Dogma\Comparable;
-use Dogma\Equalable;
 use Dogma\Math\Interval\Interval;
 
-interface DateOrTimeInterval /*<T>*/ extends Interval /*<T>*/, Equalable, Comparable
+interface DateOrTimeInterval /*<T>*/ extends Interval /*<T>*/
 {
 
 }

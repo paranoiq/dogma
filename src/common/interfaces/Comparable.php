@@ -9,6 +9,6 @@ interface Comparable
      * @param \Dogma\Comparable $other
      * @return int @see \Dogma\ComparisonResult
      */
-    public function compare(self $other): int;
+    public function compare(Comparable $other): int;
 
 }

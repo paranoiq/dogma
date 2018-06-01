@@ -11,6 +11,8 @@ namespace Dogma\Math\Interval;
 
 use Dogma\Arr;
 use Dogma\Check;
+use Dogma\Comparable;
+use Dogma\Equalable;
 use Dogma\InvalidValueException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
@@ -143,13 +145,30 @@ class FloatInterval implements OpenClosedInterval
         return $this->start > $this->end || ($this->start === $this->end && $this->openStart && $this->openEnd);
     }
 
-    public function equals(self $interval): bool
+    /**
+     * @param \Dogma\Math\Interval\FloatInterval $other
+     * @return bool
+     */
+    public function equals(Equalable $other): bool
     {
-        return ($this->start === $interval->start
-            && $this->end === $interval->end
-            && $this->openStart === $interval->openStart
-            && $this->openEnd === $interval->openEnd)
-            || ($this->isEmpty() && $interval->isEmpty());
+        $other instanceof self || Check::object($other, self::class);
+
+        return ($this->start === $other->start
+            && $this->end === $other->end
+            && $this->openStart === $other->openStart
+            && $this->openEnd === $other->openEnd)
+            || ($this->isEmpty() && $other->isEmpty());
+    }
+
+    /**
+     * @param \Dogma\Math\Interval\FloatInterval $other
+     * @return int
+     */
+    public function compare(Comparable $other): int
+    {
+        $other instanceof self || Check::object($other, self::class);
+
+        return $this->start <=> $other->start ?: $other->openStart <=> $this->openStart ?: $this->end <=> $other->end ?: $other->openStart <=> $this->openEnd;
     }
 
     public function containsValue(float $value): bool
@@ -486,8 +505,8 @@ class FloatInterval implements OpenClosedInterval
     public static function sort(array $intervals): array
     {
         return Arr::sortWith($intervals, function (FloatInterval $a, FloatInterval $b) {
-            return $a->start <=> $b->start ?: !$b->openStart <=> !$a->openStart
-                ?: $a->end <=> $b->end ?: !$b->openEnd <=> !$a->openEnd;
+            return $a->start <=> $b->start ?: $a->openStart <=> $b->openStart
+                ?: $a->end <=> $b->end ?: $a->openEnd <=> $b->openEnd;
         });
     }
 
