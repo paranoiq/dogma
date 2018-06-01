@@ -15,7 +15,7 @@ use Dogma\Equalable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 
-class DateIntervalSet implements Equalable
+class DateIntervalSet implements DateOrTimeIntervalSet
 {
     use StrictBehaviorMixin;
 

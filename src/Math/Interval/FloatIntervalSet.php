@@ -10,6 +10,7 @@
 namespace Dogma\Math\Interval;
 
 use Dogma\Check;
+use Dogma\Equalable;
 use Dogma\StrictBehaviorMixin;
 
 class FloatIntervalSet implements IntervalSet
@@ -40,6 +41,27 @@ class FloatIntervalSet implements IntervalSet
     public function isEmpty(): bool
     {
         return $this->intervals === [];
+    }
+
+    /**
+     * @param self $other
+     * @return bool
+     */
+    public function equals(Equalable $other): bool
+    {
+        $other instanceof self || Check::object($other, self::class);
+
+        $otherIntervals = $other->getIntervals();
+        if (count($this->intervals) !== count($otherIntervals)) {
+            return false;
+        }
+        foreach ($this->intervals as $i => $interval) {
+            if (!$interval->equals($otherIntervals[$i])) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function containsValue(float $value): bool

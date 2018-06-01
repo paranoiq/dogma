@@ -9,7 +9,9 @@
 
 namespace Dogma\Math\Interval;
 
-interface IntervalSet /*<T>*/
+use Dogma\Equalable;
+
+interface IntervalSet /*<T>*/ extends Equalable
 {
 
     /**
