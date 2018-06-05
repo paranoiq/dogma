@@ -18,7 +18,7 @@ class IntIntervalSet implements IntervalSet
     use StrictBehaviorMixin;
 
     /** @var \Dogma\Math\Interval\IntInterval[] */
-    private $intervals;
+    private $intervals = [];
 
     /**
      * @param \Dogma\Math\Interval\IntInterval[] $intervals
@@ -27,7 +27,11 @@ class IntIntervalSet implements IntervalSet
     {
         Check::itemsOfType($intervals, IntInterval::class);
 
-        $this->intervals = $intervals;
+        foreach ($intervals as $interval) {
+            if (!$interval->isEmpty()) {
+                $this->intervals[] = $interval;
+            }
+        }
     }
 
     /**
@@ -82,6 +86,93 @@ class IntIntervalSet implements IntervalSet
         } else {
             return end($this->intervals)->envelope(...$this->intervals);
         }
+    }
+
+    /**
+     * Join overlapping intervals in set.
+     * @return self
+     */
+    public function normalize(): self
+    {
+        $intervals = IntInterval::sortByStart($this->intervals);
+        for ($n = 0; $n < count($intervals) - 1; $n++) {
+            if ($intervals[$n]->intersects($intervals[$n + 1])) {
+                $intervals[$n] = $intervals[$n]->envelope($intervals[$n + 1]);
+                unset($intervals[$n + 1]);
+                $intervals = array_values($intervals);
+            }
+        }
+
+        return new static($intervals);
+    }
+
+    /**
+     * Add another set of intervals to this one without normalisation.
+     * @param self $set
+     * @return self
+     */
+    public function add(self $set): self
+    {
+        return self::addIntervals(...$set->intervals);
+    }
+
+    public function addIntervals(IntInterval ...$intervals): self
+    {
+        return new static(array_merge($this->intervals, $intervals));
+    }
+
+    /**
+     * Remove another set of intervals from this one.
+     * @param self $set
+     * @return self
+     */
+    public function subtract(self $set): self
+    {
+        return self::subtractIntervals(...$set->intervals);
+    }
+
+    public function subtractIntervals(IntInterval ...$intervals): self
+    {
+        $sources = $this->intervals;
+        $results = [];
+        while ($result = array_shift($sources)) {
+            foreach ($intervals as $interval) {
+                $result = $result->subtract($interval);
+                if (count($result->intervals) === 2) {
+                    $sources[] = $result->intervals[1];
+                }
+                $result = $result->intervals[0];
+            }
+            if (!$result->isEmpty()) {
+                $results[] = $result;
+            }
+        }
+
+        return new static($results);
+    }
+
+    /**
+     * Intersect with another set of intervals.
+     * @param self $set
+     * @return self
+     */
+    public function intersect(self $set): self
+    {
+        return self::intersectIntervals(...$set->intervals);
+    }
+
+    public function intersectIntervals(IntInterval ...$intervals): self
+    {
+        $results = [];
+        foreach ($this->intervals as $result) {
+            foreach ($intervals as $interval) {
+                if ($result->intersects($interval)) {
+                    $results[] = $result->intersect($interval);
+                }
+            }
+        }
+
+        return new static($results);
     }
 
 }
