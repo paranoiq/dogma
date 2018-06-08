@@ -107,4 +107,19 @@ class Month extends IntEnum
             ];
     }
 
+    public function getName(): string
+    {
+        return self::getNames()[$this->getValue()];
+    }
+
+    public function getShortcut(): string
+    {
+        return self::getShortcuts()[$this->getName()];
+    }
+
+    public function getDays(bool $leapYear): int
+    {
+        return self::getDays($leapYear)[$this->getValue()];
+    }
+
 }

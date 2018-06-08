@@ -12,10 +12,13 @@ namespace Dogma\Time;
 use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\NonIterable;
+use Dogma\Time\Format\DateTimeValues;
 
 interface DateOrTime extends NonIterable, Equalable, Comparable
 {
 
     public function format(string $format = ''): string;
+
+    public function fillValues(DateTimeValues $values): void;
 
 }

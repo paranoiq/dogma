@@ -59,4 +59,14 @@ class DayOfWeek extends IntEnum
         ];
     }
 
+    public function getName(): string
+    {
+        return self::getNames()[$this->getValue()];
+    }
+
+    public function getShortcut(): string
+    {
+        return self::getShortcuts()[$this->getValue()];
+    }
+
 }

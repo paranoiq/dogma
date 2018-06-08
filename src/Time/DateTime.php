@@ -15,6 +15,7 @@ use Dogma\Equalable;
 use Dogma\NonIterableMixin;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
+use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Provider\TimeProvider;
 use Dogma\Type;
 
@@ -414,6 +415,31 @@ class DateTime extends \DateTimeImmutable implements DateOrTime, \DateTimeInterf
     public function getDayOfWeekEnum(): DayOfWeek
     {
         return DayOfWeek::get((int) $this->format('N'));
+    }
+
+    public function fillValues(DateTimeValues $values): void
+    {
+        $results = explode('|', $this->format('Y|L|z|m|d|N|W|o|H|i|s|v|u|p|P'));
+
+        $values->year = (int) $results[0];
+        $values->leapYear = (bool) $results[1];
+        $values->dayOfYear = (int) $results[2];
+        $values->quarter = (int) ($results[3] / 3);
+        $values->month = (int) $results[3];
+        $values->day = (int) $results[4];
+        $values->dayOfWeek = (int) $results[5];
+        $values->weekOfYear = (int) $results[6];
+        $values->isoWeekYear = (int) $results[7];
+
+        $values->hours = (int) $results[8];
+        $values->minutes = (int) $results[9];
+        $values->seconds = (int) $results[10];
+        $values->miliseconds = (int) $results[11];
+        $values->microseconds = (int) $results[12];
+
+        $values->dst = (bool) $results[13];
+        $values->offset = $results[14];
+        $values->timezone = $this->getTimezone();
     }
 
 }

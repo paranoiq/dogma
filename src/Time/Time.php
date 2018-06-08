@@ -14,6 +14,7 @@ use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\NonIterableMixin;
 use Dogma\StrictBehaviorMixin;
+use Dogma\Time\Format\DateTimeValues;
 
 /**
  * Time of day.
@@ -192,6 +193,17 @@ class Time implements DateOrTime
         Check::types($time, [\DateTimeInterface::class, self::class]);
 
         return (new \DateTimeImmutable($this->format()))->diff(new \DateTimeImmutable($time->format(self::DEFAULT_FORMAT)), $absolute);
+    }
+
+    public function fillValues(DateTimeValues $values): void
+    {
+        $results = explode('|', $this->format('H|i|s|v|u'));
+
+        $values->hours = (int) $results[0];
+        $values->minutes = (int) $results[1];
+        $values->seconds = (int) $results[2];
+        $values->miliseconds = (int) $results[3];
+        $values->microseconds = (int) $results[4];
     }
 
 }

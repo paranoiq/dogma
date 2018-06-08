@@ -16,6 +16,7 @@ use Dogma\Equalable;
 use Dogma\NonIterableMixin;
 use Dogma\Order;
 use Dogma\StrictBehaviorMixin;
+use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Provider\TimeProvider;
 use Dogma\Type;
 
@@ -279,16 +280,6 @@ class Date implements DateOrTime
 
     // getters ---------------------------------------------------------------------------------------------------------
 
-    public function getDayOfWeekEnum(): DayOfWeek
-    {
-        return DayOfWeek::get(($this->dayNumber % 7) + 1);
-    }
-
-    public function getMonthEnum(): Month
-    {
-        return Month::get((int) $this->format('n'));
-    }
-
     private function getDateTime(): \DateTimeImmutable
     {
         if ($this->dateTime === null) {
@@ -296,6 +287,51 @@ class Date implements DateOrTime
         }
 
         return $this->dateTime;
+    }
+
+    public function getYear(): int
+    {
+        return (int) $this->format('Y');
+    }
+
+    public function getMonth(): int
+    {
+        return (int) $this->format('m');
+    }
+
+    public function getMonthEnum(): Month
+    {
+        return Month::get((int) $this->format('n'));
+    }
+
+    public function getDay(): int
+    {
+        return (int) $this->format('d');
+    }
+
+    public function getDayOfWeek(): int
+    {
+        return (int) $this->format('N');
+    }
+
+    public function getDayOfWeekEnum(): DayOfWeek
+    {
+        return DayOfWeek::get(($this->dayNumber % 7) + 1);
+    }
+
+    public function fillValues(DateTimeValues $values): void
+    {
+        $results = explode('|', $this->format('Y|L|z|m|d|N|W|o'));
+
+        $values->year = (int) $results[0];
+        $values->leapYear = (bool) $results[1];
+        $values->dayOfYear = (int) $results[2];
+        $values->quarter = (int) ($results[3] / 3);
+        $values->month = (int) $results[3];
+        $values->day = (int) $results[4];
+        $values->dayOfWeek = (int) $results[5];
+        $values->weekOfYear = (int) $results[6];
+        $values->isoWeekYear = (int) $results[7];
     }
 
     // static ----------------------------------------------------------------------------------------------------------
