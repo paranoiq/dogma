@@ -50,7 +50,7 @@ class Time implements DateOrTime
                 throw new InvalidDateTimeException($microsecondsOrTimeString, $e);
             }
 
-            $hours = (int) $dateTime->format('h');
+            $hours = (int) $dateTime->format('H');
             $minutes = (int) $dateTime->format('i');
             $seconds = (int) $dateTime->format('s');
             $microseconds = (int) $dateTime->format('u');
