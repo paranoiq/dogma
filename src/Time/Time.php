@@ -14,6 +14,7 @@ use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\NonIterableMixin;
 use Dogma\StrictBehaviorMixin;
+use Dogma\Time\Format\DateTimeFormatter;
 use Dogma\Time\Format\DateTimeValues;
 
 /**
@@ -27,13 +28,18 @@ class Time implements DateOrTime
     public const MIN = '00:00:00.000000';
     public const MAX = '23:59:59.999999';
 
+    public const DAY_MICROSECONDS = Seconds::DAY * 1000000;
+
     public const MIN_MICROSECONDS = 0;
-    public const MAX_MICROSECONDS = (Seconds::DAY * 1000000) - 1;
+    public const MAX_MICROSECONDS = self::DAY_MICROSECONDS - 1;
 
     public const DEFAULT_FORMAT = 'H:i:s';
 
     /** @var int|string */
     private $microseconds;
+
+    /** @var \DateTimeImmutable|null */
+    private $dateTime;
 
     /**
      * @param int|string $microsecondsOrTimeString
@@ -95,19 +101,35 @@ class Time implements DateOrTime
         return self::createFromParts($hours, $minutes, $seconds, $microseconds);
     }
 
+    final public function __clone()
+    {
+        $this->dateTime = null;
+    }
+
     public function toDateTime(?Date $date = null, ?\DateTimeZone $timeZone = null): DateTime
     {
         return DateTime::createFromDateAndTime($date ?? new Date(), $this, $timeZone);
     }
 
-    public function format(string $format = self::DEFAULT_FORMAT): string
+    public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeFormatter $formatter = null): string
     {
-        $midnightTimestamp = mktime(0, 0, 0);
-        $dateTime = DateTime::createFromMicroTimestamp($midnightTimestamp * 1000000 + $this->microseconds);
-        $dateTime = $dateTime->setTimezone(TimeZone::getDefault());
+        if ($formatter === null) {
+            return $this->getDateTime()->format($format);
+        } else {
+            return $formatter->format($this, $format);
+        }
+    }
 
-        // cannot use date(), because it does not accept float (microseconds)
-        return $dateTime->format($format);
+    private function getDateTime(): \DateTimeImmutable
+    {
+        if ($this->dateTime === null) {
+            $total = $this->microseconds % self::DAY_MICROSECONDS;
+            $seconds = (int) floor($total / 1000000);
+            $microseconds = $total - ($seconds * 1000000);
+            $this->dateTime = new \DateTimeImmutable(DateTime::MIN . ' +' . $seconds . ' seconds +' . $microseconds . ' microseconds');
+        }
+
+        return $this->dateTime;
     }
 
     public function getMicroTime(): int

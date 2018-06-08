@@ -16,6 +16,7 @@ use Dogma\Equalable;
 use Dogma\NonIterableMixin;
 use Dogma\Order;
 use Dogma\StrictBehaviorMixin;
+use Dogma\Time\Format\DateTimeFormatter;
 use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Provider\TimeProvider;
 use Dogma\Type;
@@ -122,9 +123,13 @@ class Date implements DateOrTime
 
     // queries ---------------------------------------------------------------------------------------------------------
 
-    public function format(string $format = self::DEFAULT_FORMAT): string
+    public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeFormatter $formatter = null): string
     {
-        return $this->getDateTime()->format($format);
+        if ($formatter === null) {
+            return $this->getDateTime()->format($format);
+        } else {
+            return $formatter->format($this, $format);
+        }
     }
 
     public function toDateTime(?\DateTimeZone $timeZone = null): DateTime

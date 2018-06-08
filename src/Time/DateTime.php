@@ -15,6 +15,7 @@ use Dogma\Equalable;
 use Dogma\NonIterableMixin;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
+use Dogma\Time\Format\DateTimeFormatter;
 use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Provider\TimeProvider;
 use Dogma\Type;
@@ -188,11 +189,16 @@ class DateTime extends \DateTimeImmutable implements DateOrTime, \DateTimeInterf
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      * @param string $format
+     * @param \Dogma\Time\Format\DateTimeFormatter|null $formatter
      * @return string
      */
-    public function format($format = self::DEFAULT_FORMAT): string
+    public function format($format = self::DEFAULT_FORMAT, ?DateTimeFormatter $formatter = null): string
     {
-        return parent::format($format);
+        if ($formatter === null) {
+            return parent::format($format);
+        } else {
+            return $formatter->format($this, $format);
+        }
     }
 
     /**
