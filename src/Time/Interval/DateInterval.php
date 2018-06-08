@@ -150,7 +150,11 @@ class DateInterval implements DateOrTimeInterval
 
     public function contains(self $interval): bool
     {
-        return !$interval->isEmpty() && $this->start->isSameOrBefore($interval->start) && $this->end->isSameOrAfter($interval->end);
+        if ($this->isEmpty() || $interval->isEmpty()) {
+            return false;
+        }
+
+        return $this->start->isSameOrBefore($interval->start) && $this->end->isSameOrAfter($interval->end);
     }
 
     public function intersects(self $interval): bool
@@ -158,6 +162,10 @@ class DateInterval implements DateOrTimeInterval
         return $this->containsValue($interval->start) || $this->containsValue($interval->end);
     }
 
+    /**
+     * @param \Dogma\Time\Interval\DateInterval $interval
+     * @return bool
+     */
     public function touches(self $interval): bool
     {
         return $this->start->equals($interval->end->addDay()) || $this->end->equals($interval->start->subtractDay());

@@ -54,13 +54,11 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
             throw new InvalidIntervalException($this->start, $this->end);
         }
 
-        if ($start->equals($end)) {
-            if ($openStart || $openEnd) {
-                // default createEmpty()
-                $this->start = new DateTime(self::MAX);
-                $this->end = new DateTime(self::MIN);
-                $this->openStart = $this->openEnd = false;
-            }
+        if ($start->equals($end) && ($openStart || $openEnd)) {
+            // default createEmpty()
+            $this->start = new DateTime(self::MAX);
+            $this->end = new DateTime(self::MIN);
+            $this->openStart = $this->openEnd = false;
         }
     }
 
@@ -190,8 +188,10 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
 
     public function contains(self $interval): bool
     {
-        return !$interval->isEmpty()
-            && (($this->openStart && !$interval->openStart) ? $interval->start > $this->start : $interval->start >= $this->start)
+        if ($this->isEmpty() || $interval->isEmpty()) {
+            return false;
+        }
+        return (($this->openStart && !$interval->openStart) ? $interval->start > $this->start : $interval->start >= $this->start)
             && (($this->openEnd && !$interval->openEnd) ? $interval->end < $this->end : $interval->end <= $this->end);
     }
 
@@ -200,6 +200,11 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         return $this->containsValue($interval->start) || $this->containsValue($interval->end) || $interval->containsValue($this->start) || $interval->containsValue($this->end);
     }
 
+    /**
+     * @param \Dogma\Time\Interval\DateTimeInterval $interval
+     * @param bool $exclusive
+     * @return bool
+     */
     public function touches(self $interval, bool $exclusive = false): bool
     {
         return ($this->start->getMicroTimestamp() === $interval->end->getMicroTimestamp() && ($exclusive ? ($this->openStart xor $interval->openEnd) : true))
@@ -264,6 +269,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         $end = new DateTime(self::MIN);
         $startExclusive = true;
         $endExclusive = true;
+        /** @var \Dogma\Time\Interval\DateTimeInterval $item */
         foreach ($items as $item) {
             if ($item->start < $start) {
                 $start = $item->start;
