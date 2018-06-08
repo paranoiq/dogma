@@ -33,7 +33,7 @@ class Time implements DateOrTime
     public const MIN_MICROSECONDS = 0;
     public const MAX_MICROSECONDS = self::DAY_MICROSECONDS - 1;
 
-    public const DEFAULT_FORMAT = 'H:i:s';
+    public const DEFAULT_FORMAT = 'H:i:s.u';
 
     /** @var int|string */
     private $microseconds;

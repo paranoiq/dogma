@@ -53,7 +53,7 @@ Assert::exception(function () {
 Assert::same($date->format('j.n.Y'), date('j.n.Y', $timestamp));
 
 // toDateTime()
-Assert::same($date->toDateTime()->format(), '2000-01-02 00:00:00');
+Assert::equal($date->toDateTime(), new DateTime('2000-01-02 00:00:00'));
 
 // getDayNumber()
 Assert::same($date->getDayNumber(), 730120);
@@ -61,16 +61,16 @@ Assert::same((new Date(Date::MIN))->getDayNumber(), Date::MIN_DAY_NUMBER);
 Assert::same((new Date(Date::MAX))->getDayNumber(), Date::MAX_DAY_NUMBER);
 
 // getStart()
-Assert::same($date->getStart($utcTimeZone)->format(), '2000-01-02 00:00:00');
+Assert::equal($date->getStart($utcTimeZone), new DateTime('2000-01-02 00:00:00', $utcTimeZone));
 
 // getEnd()
-Assert::same($date->getEnd($utcTimeZone)->format(), '2000-01-02 23:59:59');
+Assert::equal($date->getEnd($utcTimeZone), new DateTime('2000-01-02 23:59:59', $utcTimeZone));
 
 // getStartFormatted()
-Assert::same($date->getStartFormatted(null, $utcTimeZone), '2000-01-02 00:00:00');
+Assert::same($date->getStartFormatted('Y-m-d H:i:s', $utcTimeZone), '2000-01-02 00:00:00');
 
 // getEndFormatted()
-Assert::same($date->getEndFormatted(null, $utcTimeZone), '2000-01-02 23:59:59');
+Assert::same($date->getEndFormatted('Y-m-d H:i:s', $utcTimeZone), '2000-01-02 23:59:59');
 
 $today = new Date('today 12:00');
 $today2 = new Date('today 13:00');

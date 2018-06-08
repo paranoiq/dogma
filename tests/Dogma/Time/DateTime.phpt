@@ -20,11 +20,13 @@ $utcTimeZone = new \DateTimeZone('UTC');
 $localTimeZone = TimeZone::getDefault();
 $localOffsetTimeZone = new \DateTimeZone('+01:00');
 
-$dateTimeString = '2000-01-02 03:04:05';
-$dateTimeStringUtc = '2000-01-02 02:04:05';
+$dateTimeString = '2000-01-02 03:04:05.000006';
+$dateTimeStringUtc = '2000-01-02 02:04:05.000006';
 $timestamp = 946778645;
+$floatTimestamp = 946778645.000006;
+$microTimestamp = 946778645000006;
 $date = new Date('2000-01-02');
-$time = new Time('03:04:05');
+$time = new Time('03:04:05.000006');
 $dateTime = new DateTime($dateTimeString);
 $dateTimeByOffset = new DateTime($dateTimeString, $localOffsetTimeZone);
 $dateTimeNative = new \DateTime($dateTimeString);
@@ -40,21 +42,21 @@ Assert::exception(function () {
 
 // createFromTimestamp()
 Assert::type(DateTime::createFromTimestamp($timestamp), DateTime::class);
-Assert::same(DateTime::createFromTimestamp($timestamp, $utcTimeZone)->format(), $dateTimeStringUtc);
-Assert::same(DateTime::createFromTimestamp($timestamp, $localTimeZone)->format(), $dateTimeString);
-Assert::same(DateTime::createFromTimestamp($timestamp)->format(), $dateTimeString);
+Assert::same(DateTime::createFromTimestamp($timestamp, $utcTimeZone)->format(), '2000-01-02 02:04:05.000000');
+Assert::same(DateTime::createFromTimestamp($timestamp, $localTimeZone)->format(), '2000-01-02 03:04:05.000000');
+Assert::same(DateTime::createFromTimestamp($timestamp)->format(), '2000-01-02 03:04:05.000000');
 
 // createFromFloatTimestamp()
-Assert::type(DateTime::createFromFloatTimestamp((float) $timestamp), DateTime::class);
-Assert::same(DateTime::createFromFloatTimestamp((float) $timestamp, $utcTimeZone)->format(), $dateTimeStringUtc);
-Assert::same(DateTime::createFromFloatTimestamp((float) $timestamp, $localTimeZone)->format(), $dateTimeString);
-Assert::same(DateTime::createFromFloatTimestamp((float) $timestamp)->format(), $dateTimeString);
+Assert::type(DateTime::createFromFloatTimestamp($floatTimestamp), DateTime::class);
+Assert::same(DateTime::createFromFloatTimestamp($floatTimestamp, $utcTimeZone)->format(), $dateTimeStringUtc);
+Assert::same(DateTime::createFromFloatTimestamp($floatTimestamp, $localTimeZone)->format(), $dateTimeString);
+Assert::same(DateTime::createFromFloatTimestamp($floatTimestamp)->format(), $dateTimeString);
 
 // createFromMicroTimestamp()
-Assert::type(DateTime::createFromMicroTimestamp($timestamp * 1000000), DateTime::class);
-Assert::same(DateTime::createFromMicroTimestamp($timestamp * 1000000, $utcTimeZone)->format(), $dateTimeStringUtc);
-Assert::same(DateTime::createFromMicroTimestamp($timestamp * 1000000, $localTimeZone)->format(), $dateTimeString);
-Assert::same(DateTime::createFromMicroTimestamp($timestamp * 1000000)->format(), $dateTimeString);
+Assert::type(DateTime::createFromMicroTimestamp($microTimestamp), DateTime::class);
+Assert::same(DateTime::createFromMicroTimestamp($microTimestamp, $utcTimeZone)->format(), $dateTimeStringUtc);
+Assert::same(DateTime::createFromMicroTimestamp($microTimestamp, $localTimeZone)->format(), $dateTimeString);
+Assert::same(DateTime::createFromMicroTimestamp($microTimestamp)->format(), $dateTimeString);
 
 // createFromDateTimeInterface()
 Assert::type(DateTime::createFromDateTimeInterface($dateTime), DateTime::class);
@@ -95,12 +97,12 @@ Assert::same($today->getDate()->format(), date(Date::DEFAULT_FORMAT));
 
 // getTime()
 Assert::type($today->getTime(), Time::class);
-Assert::same($today->getTime()->format(), '12:00:00');
+Assert::equal($today->getTime(), new Time('12:00:00'));
 
 // setTime()
-Assert::same($today->setTime(3, 4, 5)->format(Time::DEFAULT_FORMAT), '03:04:05');
-Assert::same($today->setTime('03:04:05')->format(Time::DEFAULT_FORMAT), '03:04:05');
-Assert::same($today->setTime(new Time('03:04:05'))->format(Time::DEFAULT_FORMAT), '03:04:05');
+Assert::same($today->setTime(3, 4, 5, 6)->format(Time::DEFAULT_FORMAT), '03:04:05.000006');
+Assert::same($today->setTime('03:04:05.000006')->format(Time::DEFAULT_FORMAT), '03:04:05.000006');
+Assert::same($today->setTime(new Time('03:04:05.000006'))->format(Time::DEFAULT_FORMAT), '03:04:05.000006');
 
 // compare()
 Assert::same($today->compare($yesterday), 1);

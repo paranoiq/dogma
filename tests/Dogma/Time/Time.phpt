@@ -9,34 +9,33 @@ use Dogma\ValueOutOfRangeException;
 
 require_once __DIR__ . '/../bootstrap.php';
 
-$timeString = '03:04:05';
+$timeString = '03:04:05.000006';
 $time = new Time($timeString);
-$seconds = 11045;
+$microSeconds = 11045000006;
 
 // __construct()
 Assert::throws(function () {
     new Time(-200);
 }, ValueOutOfRangeException::class);
+Assert::throws(function () {
+    new Time('asdf');
+}, InvalidDateTimeException::class);
+
+Assert::same((new Time($timeString))->format(), $timeString);
 
 // createFromParts()
 Assert::throws(function () {
     Time::createFromParts(-1, 0, 0);
 }, ValueOutOfRangeException::class);
-Assert::type(Time::createFromParts(3, 4, 5), Time::class);
-Assert::same(Time::createFromParts(3, 4, 5)->format(), $timeString);
-
-// createFromString()
-Assert::throws(function () {
-    new Time('asdf');
-}, InvalidDateTimeException::class);
-Assert::same((new Time($timeString))->format(), $timeString);
+Assert::type(Time::createFromParts(3, 4, 5, 6), Time::class);
+Assert::same(Time::createFromParts(3, 4, 5, 6)->format(), $timeString);
 
 // createFromSeconds()
 Assert::throws(function () {
     Time::createFromSeconds(-1);
 }, ValueOutOfRangeException::class);
-Assert::type(Time::createFromSeconds($seconds), Time::class);
-Assert::same(Time::createFromSeconds($seconds)->format(), $timeString);
+Assert::type(Time::createFromSeconds((int) ($microSeconds / 1000000)), Time::class);
+Assert::same(Time::createFromSeconds((int) ($microSeconds / 1000000))->format(), '03:04:05.000000');
 
 // createFromFormat()
 Assert::throws(function () {
@@ -46,7 +45,7 @@ Assert::type(Time::createFromFormat(Time::DEFAULT_FORMAT, $timeString), Time::cl
 Assert::same(Time::createFromFormat(Time::DEFAULT_FORMAT, $timeString)->format(), $timeString);
 
 // getMicroTime()
-Assert::same($time->getMicroTime(), $seconds * 1000000);
+Assert::same($time->getMicroTime(), $microSeconds);
 
 // getHours()
 Assert::same($time->getHours(), 3);

@@ -38,7 +38,7 @@ class DateTime extends \DateTimeImmutable implements DateOrTime, \DateTimeInterf
     public const MIN_MICRO_TIMESTAMP = -62135596800000000;
     public const MAX_MICRO_TIMESTAMP = 253402300799999999;
 
-    public const DEFAULT_FORMAT = 'Y-m-d H:i:s';
+    public const DEFAULT_FORMAT = 'Y-m-d H:i:s.u';
     public const FORMAT_EMAIL_HTTP = DATE_RFC2822;
 
     /** @var int */
@@ -168,7 +168,7 @@ class DateTime extends \DateTimeImmutable implements DateOrTime, \DateTimeInterf
     public function setTime($time, $minutes = null, $seconds = null, $microseconds = null): self
     {
         if ($time instanceof Time) {
-            return self::createFromDateTimeInterface(parent::setTime($time->getHours(), $time->getMinutes(), $time->getSeconds()));
+            return self::createFromDateTimeInterface(parent::setTime($time->getHours(), $time->getMinutes(), $time->getSeconds(), $time->getMicroseconds()));
         }
         if ($minutes === null && $seconds === null && is_string($time) && Str::contains($time, ':')) {
             $parts = explode(':', $time);

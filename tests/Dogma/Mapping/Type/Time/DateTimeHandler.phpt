@@ -31,9 +31,9 @@ Assert::same($handler->getParameters($dateTimeType), null);
 Assert::same($handler->getParameters($dateType), null);
 Assert::same($handler->getParameters($timeType), null);
 
-$dateTimeString = '2000-01-02 03:04:05';
+$dateTimeString = '2000-01-02 03:04:05.000000';
 $dateString = '2000-01-02';
-$timeString = '03:04:05';
+$timeString = '03:04:05.000000';
 
 // createInstance()
 $dateTimeInstance = $handler->createInstance($dateTimeType, $dateTimeString, $mapper);
