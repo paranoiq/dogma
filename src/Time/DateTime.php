@@ -96,9 +96,9 @@ class DateTime extends \DateTimeImmutable implements DateOrTime, \DateTimeInterf
     public static function createFromMicroTimestamp(int $microTimestamp, ?\DateTimeZone $timeZone = null): self
     {
         $timestamp = (int) floor($microTimestamp / 1000000);
-        $miliseconds = Str::padLeft((string) ($microTimestamp - $timestamp * 1000000), 6, '0');
+        $microseconds = $microTimestamp - $timestamp * 1000000;
 
-        $dateTime = static::createFromFormat('U.u', $timestamp . '.' . $miliseconds, TimeZone::getUtc());
+        $dateTime = static::createFromTimestamp($timestamp, TimeZone::getUtc())->modify('+' . $microseconds . ' microseconds');
         if ($timeZone === null) {
             $timeZone = TimeZone::getDefault();
         }
@@ -115,7 +115,7 @@ class DateTime extends \DateTimeImmutable implements DateOrTime, \DateTimeInterf
         $timestamp = $dateTime->getTimestamp();
         $microseconds = (int) $dateTime->format('u');
 
-        return self::createFromMicroTimestamp($timestamp * 1000000 + $microseconds, $timeZone);
+        return self::createFromTimestamp($timestamp, $timeZone)->modify('+' . $microseconds . ' microseconds');
     }
 
     public static function createFromDateAndTime(Date $date, Time $time, ?\DateTimeZone $timeZone = null): self
