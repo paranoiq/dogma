@@ -6,13 +6,15 @@ use Dogma\Str;
 use Dogma\Tester\Assert;
 use Dogma\Time\Interval\TimeInterval;
 use Dogma\Time\Interval\TimeIntervalSet;
+use Dogma\Time\Span\DateTimeSpan;
+use Dogma\Time\Span\TimeSpan;
 use Dogma\Time\Time;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-$startDate = new Time('10:00:00.000000');
-$endDate = new Time('20:00:00.000000');
-$interval = TimeInterval::openEnd($startDate, $endDate);
+$startTime = new Time('10:00:00.000000');
+$endTime = new Time('20:00:00.000000');
+$interval = TimeInterval::openEnd($startTime, $endTime);
 
 $empty = TimeInterval::empty();
 $all = TimeInterval::all();
@@ -40,6 +42,12 @@ Assert::equal($interval->getStart(), new Time('10:00:00.000000'));
 
 // getEnd()
 Assert::equal($interval->getEnd(), new Time('20:00:00.000000'));
+
+// getSpan()
+Assert::equal($interval->getSpan(), new DateTimeSpan(0, 0, 0, 10));
+
+// getTimeSpan()
+Assert::equal($interval->getTimeSpan(), new TimeSpan(10));
 
 // isEmpty()
 Assert::false($interval->isEmpty());

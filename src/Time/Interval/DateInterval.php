@@ -17,6 +17,8 @@ use Dogma\Math\Interval\IntInterval;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\InvalidIntervalException;
+use Dogma\Time\Span\DateSpan;
+use Dogma\Time\Span\DateTimeSpan;
 
 /**
  * Interval of dates. Based on IntInterval.
@@ -78,6 +80,16 @@ class DateInterval implements DateOrTimeInterval
     }
 
     // queries ---------------------------------------------------------------------------------------------------------
+
+    public function getSpan(): DateTimeSpan
+    {
+        return DateTimeSpan::createFromDateInterval($this->start->diff($this->end));
+    }
+
+    public function getDateSpan(): DateSpan
+    {
+        return DateSpan::createFromDateInterval($this->start->diff($this->end));
+    }
 
     public function toDayNumberIntInterval(): IntInterval
     {

@@ -16,6 +16,8 @@ use Dogma\Equalable;
 use Dogma\Math\Interval\OpenClosedInterval;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\InvalidTimeIntervalException;
+use Dogma\Time\Span\DateTimeSpan;
+use Dogma\Time\Span\TimeSpan;
 use Dogma\Time\Time;
 
 /**
@@ -114,6 +116,16 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
     }
 
     // queries ---------------------------------------------------------------------------------------------------------
+
+    public function getSpan(): DateTimeSpan
+    {
+        return DateTimeSpan::createFromDateInterval($this->start->diff($this->end));
+    }
+
+    public function getTimeSpan(): TimeSpan
+    {
+        return TimeSpan::createFromDateInterval($this->start->diff($this->end));
+    }
 
     public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
     {

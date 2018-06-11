@@ -4,6 +4,8 @@ namespace Dogma\Tests\Time\Interval;
 
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
+use Dogma\Time\Span\DateSpan;
+use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Interval\DateInterval;
 use Dogma\Time\Interval\DateIntervalSet;
 use Dogma\Time\InvalidIntervalException;
@@ -39,6 +41,12 @@ Assert::equal($interval->getStart(), new Date('2000-01-10'));
 
 // getEnd()
 Assert::equal($interval->getEnd(), new Date('2000-01-20'));
+
+// getSpan()
+Assert::equal($interval->getSpan(), new DateTimeSpan(0, 0, 10));
+
+// getDateSpan()
+Assert::equal($interval->getDateSpan(), new DateSpan(0, 0, 10));
 
 // isEmpty()
 Assert::false($interval->isEmpty());

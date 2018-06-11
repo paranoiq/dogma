@@ -7,16 +7,14 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Time\Interval;
+namespace Dogma\Time;
 
-use Dogma\Math\Interval\Interval;
-use Dogma\Time\Span\DateTimeSpan;
-
-interface DateOrTimeInterval /*<T>*/ extends Interval /*<T>*/
+class InvalidTimeSpanException extends TimeException
 {
 
-    public function getSpan(): DateTimeSpan;
-
-    //public function splitByUnit(DateTimeUnit $unit): DateOrTimeIntervalSet<T>
+    public function __construct(string $intervalString, ?\Throwable $previous = null)
+    {
+        parent::__construct(sprintf('Invalid date/time interval: %s', $intervalString), $previous);
+    }
 
 }

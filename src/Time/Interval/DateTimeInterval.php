@@ -18,6 +18,7 @@ use Dogma\Math\Interval\OpenClosedInterval;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateTime;
 use Dogma\Time\InvalidIntervalException;
+use Dogma\Time\Span\DateTimeSpan;
 
 /**
  * Interval of times including date. Based on FloatInterval.
@@ -104,6 +105,11 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
     }
 
     // queries ---------------------------------------------------------------------------------------------------------
+
+    public function getSpan(): DateTimeSpan
+    {
+        return DateTimeSpan::createFromDateInterval($this->start->diff($this->end));
+    }
 
     public function toTimestampIntInterval(): IntInterval
     {

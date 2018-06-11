@@ -7,16 +7,11 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Time\Interval;
+namespace Dogma\Language\Localization;
 
-use Dogma\Math\Interval\Interval;
-use Dogma\Time\Span\DateTimeSpan;
-
-interface DateOrTimeInterval /*<T>*/ extends Interval /*<T>*/
+interface Translator
 {
 
-    public function getSpan(): DateTimeSpan;
-
-    //public function splitByUnit(DateTimeUnit $unit): DateOrTimeIntervalSet<T>
+    public function translate(string $string, ?int $number = null): string;
 
 }

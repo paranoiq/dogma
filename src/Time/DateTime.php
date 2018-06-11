@@ -18,6 +18,7 @@ use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeFormatter;
 use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Provider\TimeProvider;
+use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Type;
 
 /**
@@ -135,23 +136,34 @@ class DateTime extends \DateTimeImmutable implements DateOrTime, \DateTimeInterf
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param \DateInterval $interval
+     * @param \DateInterval|\Dogma\Time\Span\DateOrTimeSpan $interval
      * @return self
      */
     public function add($interval): self
     {
-        $that = parent::add($interval);
+        if ($interval instanceof \DateInterval) {
+            $that = parent::add($interval);
+        } elseif (!$interval->isMixed()) {
+            $interval = $interval->toNative();
+            $that = parent::add($interval);
+        } else {
+            [$positive, $negative] = $interval->toPositiveAndNegative();
+            $that = parent::add($positive)->add($negative);
+        }
 
         return static::createFromDateTimeInterface($that);
     }
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param \DateInterval $interval
+     * @param \DateInterval|\Dogma\Time\Span\DateOrTimeSpan $interval
      * @return self
      */
     public function sub($interval): self
     {
+        if ($interval instanceof DateTimeSpan) {
+            return $this->add($interval->invert());
+        }
         $that = parent::sub($interval);
 
         return static::createFromDateTimeInterface($that);
@@ -199,6 +211,18 @@ class DateTime extends \DateTimeImmutable implements DateOrTime, \DateTimeInterf
         } else {
             return $formatter->format($this, $format);
         }
+    }
+
+    /**
+     * @param \DateTimeInterface $other
+     * @param bool $absolute
+     * @return \Dogma\Time\Span\DateTimeSpan
+     */
+    public function diffInterval(\DateTimeInterface $other, bool $absolute = false): DateTimeSpan
+    {
+        $interval = parent::diff($other, $absolute);
+
+        return DateTimeSpan::createFromDateInterval($interval);
     }
 
     /**
