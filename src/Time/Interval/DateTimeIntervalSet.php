@@ -27,9 +27,9 @@ class DateTimeIntervalSet implements DateOrTimeIntervalSet
      */
     public function __construct(array $intervals)
     {
-        $this->intervals = Arr::filter($intervals, function (DateTimeInterval $interval): bool {
+        $this->intervals = Arr::values(Arr::filter($intervals, function (DateTimeInterval $interval): bool {
             return !$interval->isEmpty();
-        });
+        }));
     }
 
     public function format(string $format = DateTimeInterval::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
