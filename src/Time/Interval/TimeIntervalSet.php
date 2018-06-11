@@ -104,7 +104,7 @@ class TimeIntervalSet implements DateOrTimeIntervalSet
     }
 
     /**
-     * Add another set of intervals to this one without normalisation.
+     * Add another set of intervals to this one without normalization.
      * @param self $set
      * @return self
      */
