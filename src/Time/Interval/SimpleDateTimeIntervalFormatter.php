@@ -32,6 +32,9 @@ class SimpleDateTimeIntervalFormatter implements DateTimeIntervalFormatter
         if ($interval instanceof DateInterval) {
             $start = $interval->getStart()->toDateTime();
             $end = $interval->getEnd()->toDateTime();
+        } elseif ($interval instanceof TimeInterval) {
+            $start = $interval->getStart()->toDateTime();
+            $end = $interval->getEnd()->toDateTime();
         } else {
             $start = $interval->getStart();
             $end = $interval->getEnd();

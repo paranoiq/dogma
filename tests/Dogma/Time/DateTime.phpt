@@ -109,7 +109,7 @@ Assert::same($today->compare($yesterday), 1);
 Assert::same($today->compare($today), 0);
 Assert::same($today->compare($tomorrow), -1);
 
-// isEquals()
+// equals()
 Assert::false($today->equals($yesterday));
 Assert::false($today->equals($tomorrow));
 Assert::false($today->equals($today2));

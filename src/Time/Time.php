@@ -9,16 +9,24 @@
 
 namespace Dogma\Time;
 
+use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\NonIterableMixin;
+use Dogma\Order;
+use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeFormatter;
 use Dogma\Time\Format\DateTimeValues;
 
 /**
- * Time of day.
+ * Time of day without a date and timezone.
+ *
+ * Times like 27:00:00 (up to 48 hours) can be created.
+ * TimeInterval will automatically normalize end of interval after midnight to value higher than 24:00:00.
+ * When compared 27:00:00 will be equal to 03:00:00 (modulo arithmetic).
+ * When formatted 27:00:00 will results "03:00:00".
  */
 class Time implements DateOrTime
 {
@@ -32,6 +40,7 @@ class Time implements DateOrTime
 
     public const MIN_MICROSECONDS = 0;
     public const MAX_MICROSECONDS = self::DAY_MICROSECONDS - 1;
+    private const MAX_DENORMALIZED = 172799999999; // 48 hours - 1 microsecond
 
     public const DEFAULT_FORMAT = 'H:i:s.u';
 
@@ -47,9 +56,20 @@ class Time implements DateOrTime
     public function __construct($microsecondsOrTimeString)
     {
         if (is_int($microsecondsOrTimeString)) {
-            Check::range($microsecondsOrTimeString, self::MIN_MICROSECONDS, self::MAX_MICROSECONDS);
+            Check::range($microsecondsOrTimeString, self::MIN_MICROSECONDS, self::MAX_DENORMALIZED);
 
             $this->microseconds = $microsecondsOrTimeString;
+        } elseif (preg_match('/^([0-4]?[0-9])[:.]([0-5]?[0-9])(?:[:.]([0-5]?[0-9](\\.[0-9]{1,6})?))?$/', $microsecondsOrTimeString, $m)) {
+            $hours = (int) $m[1];
+            $minutes = (int) $m[2];
+            $seconds = isset($m[3]) ? (int) $m[3] : 0;
+            $microseconds = isset($m[4]) ? (int) Str::padRight(ltrim($m[4], '.'), 6, '0') : 0;
+
+            $total = ($hours * 3600 + $minutes * 60 + $seconds) * 1000000 + $microseconds;
+            if ($total > self::MAX_DENORMALIZED) {
+                throw new InvalidDateTimeException($microsecondsOrTimeString);
+            }
+            $this->microseconds = $total;
         } else {
             try {
                 $dateTime = new \DateTime($microsecondsOrTimeString);
@@ -62,11 +82,6 @@ class Time implements DateOrTime
             $seconds = (int) $dateTime->format('s');
             $microseconds = (int) $dateTime->format('u');
 
-            Check::range($hours, 0, 23);
-            Check::range($minutes, 0, 59);
-            Check::range($seconds, 0, 59);
-            Check::range($microseconds, 0, 1000000);
-
             $this->microseconds = ($hours * 3600 + $minutes * 60 + $seconds) * 1000000 + $microseconds;
         }
     }
@@ -76,12 +91,21 @@ class Time implements DateOrTime
         return new static($secondsSinceMidnight * 1000000);
     }
 
+    public static function createFromDateTimeInterface(\DateTimeInterface $dateTime): Time
+    {
+        if ($dateTime instanceof DateTime) {
+            return $dateTime->getTime();
+        } else {
+            return DateTime::createFromDateTimeInterface($dateTime)->getTime();
+        }
+    }
+
     public static function createFromParts(int $hours, int $minutes = 0, int $seconds = 0, int $microseconds = 0): self
     {
-        Check::range($hours, 0, 23);
+        Check::range($hours, 0, 47);
         Check::range($minutes, 0, 59);
         Check::range($seconds, 0, 59);
-        Check::range($microseconds, 0, 1000000);
+        Check::range($microseconds, 0, 999999);
 
         return new static(($hours * 3600 + $minutes * 60 + $seconds) * 1000000 + $microseconds);
     }
@@ -101,15 +125,44 @@ class Time implements DateOrTime
         return self::createFromParts($hours, $minutes, $seconds, $microseconds);
     }
 
+    public function normalize(): self
+    {
+        if ($this->microseconds <= self::MAX_MICROSECONDS) {
+            return $this;
+        } else {
+            return new static($this->microseconds % self::DAY_MICROSECONDS);
+        }
+    }
+
+    public function denormalize(): self
+    {
+        if ($this->microseconds >= self::MAX_MICROSECONDS) {
+            return $this;
+        } else {
+            return new static($this->microseconds + self::DAY_MICROSECONDS);
+        }
+    }
+
     final public function __clone()
     {
         $this->dateTime = null;
     }
 
-    public function toDateTime(?Date $date = null, ?\DateTimeZone $timeZone = null): DateTime
+    // modifications ---------------------------------------------------------------------------------------------------
+
+    public function modify(string $value): self
     {
-        return DateTime::createFromDateAndTime($date ?? new Date(), $this, $timeZone);
+        $denormalized = $this->microseconds >= self::MAX_MICROSECONDS;
+        $that = static::createFromDateTimeInterface($this->getDateTime()->modify($value));
+
+        if ($denormalized) {
+            return $that->denormalize();
+        }
+
+        return $that;
     }
+
+    // queries ---------------------------------------------------------------------------------------------------------
 
     public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeFormatter $formatter = null): string
     {
@@ -119,6 +172,82 @@ class Time implements DateOrTime
             return $formatter->format($this, $format);
         }
     }
+
+    public function toDateTime(?Date $date = null, ?\DateTimeZone $timeZone = null): DateTime
+    {
+        return DateTime::createFromDateAndTime($date ?? new Date(), $this, $timeZone);
+    }
+
+    /**
+     * @param self $other
+     * @return bool
+     */
+    public function equals(Equalable $other): bool
+    {
+        $other instanceof self || Check::object($other, self::class);
+
+        return ($this->microseconds % self::DAY_MICROSECONDS) === ($other->microseconds % self::DAY_MICROSECONDS);
+    }
+
+    /**
+     * @param self $other
+     * @return int
+     */
+    public function compare(Comparable $other): int
+    {
+        $other instanceof self || Check::object($other, self::class);
+
+        return ($this->microseconds % self::DAY_MICROSECONDS) <=> ($other->microseconds % self::DAY_MICROSECONDS);
+    }
+
+    public function isBefore(Time $time): bool
+    {
+        return ($this->microseconds % self::DAY_MICROSECONDS) < ($time->microseconds % self::DAY_MICROSECONDS);
+    }
+
+    public function isAfter(Time $time): bool
+    {
+        return ($this->microseconds % self::DAY_MICROSECONDS) > ($time->microseconds % self::DAY_MICROSECONDS);
+    }
+
+    public function isSameOrBefore(Time $time): bool
+    {
+        return ($this->microseconds % self::DAY_MICROSECONDS) <= ($time->microseconds % self::DAY_MICROSECONDS);
+    }
+
+    public function isSameOrAfter(Time $time): bool
+    {
+        return ($this->microseconds % self::DAY_MICROSECONDS) >= ($time->microseconds % self::DAY_MICROSECONDS);
+    }
+
+    public function isBetween(Time $since, Time $until): bool
+    {
+        $sinceTime = $since->microseconds % self::DAY_MICROSECONDS;
+        $untilTime = $until->microseconds % self::DAY_MICROSECONDS;
+        $thisTime = $this->microseconds % self::DAY_MICROSECONDS;
+
+        if ($sinceTime < $untilTime) {
+            return $thisTime >= $sinceTime && $thisTime <= $untilTime;
+        } elseif ($sinceTime > $untilTime) {
+            return $thisTime >= $sinceTime || $thisTime <= $untilTime;
+        } else {
+            return $thisTime === $sinceTime;
+        }
+    }
+
+    /**
+     * @param \DateTimeInterface|\Dogma\Time\Time $time
+     * @param bool $absolute
+     * @return \DateInterval
+     */
+    public function diff($time, bool $absolute = false): \DateInterval
+    {
+        Check::types($time, [\DateTimeInterface::class, self::class]);
+
+        return (new \DateTimeImmutable($this->format()))->diff(new \DateTimeImmutable($time->format(self::DEFAULT_FORMAT)), $absolute);
+    }
+
+    // getters ---------------------------------------------------------------------------------------------------------
 
     private function getDateTime(): \DateTimeImmutable
     {
@@ -139,7 +268,7 @@ class Time implements DateOrTime
 
     public function getHours(): int
     {
-        return (int) floor($this->microseconds / 1000000 / 3600);
+        return (int) floor(($this->microseconds % self::DAY_MICROSECONDS) / 1000000 / 3600);
     }
 
     public function getMinutes(): int
@@ -157,66 +286,6 @@ class Time implements DateOrTime
         return $this->microseconds % 1000000;
     }
 
-    /**
-     * @param self $other
-     * @return bool
-     */
-    public function equals(Equalable $other): bool
-    {
-        $other instanceof self || Check::object($other, self::class);
-
-        return $this->microseconds === $other->microseconds;
-    }
-
-    /**
-     * @param self $other
-     * @return int
-     */
-    public function compare(Comparable $other): int
-    {
-        $other instanceof self || Check::object($other, self::class);
-
-        return $this->microseconds <=> $other->microseconds;
-    }
-
-    /**
-     * @param \Dogma\Time\Time|string|int $since
-     * @param \Dogma\Time\Time|string|int $until
-     * @return bool
-     */
-    public function isBetween($since, $until): bool
-    {
-        if (!$since instanceof Time) {
-            $since = new static($since);
-        }
-        if (!$until instanceof Time) {
-            $until = new static($until);
-        }
-        $sinceSeconds = $since->microseconds;
-        $untilSeconds = $until->microseconds;
-        $thisSeconds = $this->microseconds;
-
-        if ($sinceSeconds < $untilSeconds) {
-            return $thisSeconds >= $sinceSeconds && $thisSeconds <= $untilSeconds;
-        } elseif ($sinceSeconds > $untilSeconds) {
-            return $thisSeconds >= $sinceSeconds || $thisSeconds <= $untilSeconds;
-        } else {
-            return $thisSeconds === $sinceSeconds;
-        }
-    }
-
-    /**
-     * @param \DateTimeInterface|\Dogma\Time\Time $time
-     * @param bool $absolute
-     * @return \DateInterval
-     */
-    public function diff($time, bool $absolute = false): \DateInterval
-    {
-        Check::types($time, [\DateTimeInterface::class, self::class]);
-
-        return (new \DateTimeImmutable($this->format()))->diff(new \DateTimeImmutable($time->format(self::DEFAULT_FORMAT)), $absolute);
-    }
-
     public function fillValues(DateTimeValues $values): void
     {
         $results = explode('|', $this->format('H|i|s|v|u'));
@@ -226,6 +295,34 @@ class Time implements DateOrTime
         $values->seconds = (int) $results[2];
         $values->miliseconds = (int) $results[3];
         $values->microseconds = (int) $results[4];
+    }
+
+    // static ----------------------------------------------------------------------------------------------------------
+
+    public static function min(self ...$items): self
+    {
+        return Arr::minBy($items, function (self $time) {
+            return $time->microseconds;
+        });
+    }
+
+    public static function max(self ...$items): self
+    {
+        return Arr::maxBy($items, function (self $time) {
+            return $time->microseconds;
+        });
+    }
+
+    /**
+     * @param \Dogma\Time\Time[] $items
+     * @param int $flags
+     * @return \Dogma\Time\Time[]
+     */
+    public static function sort(array $items, int $flags = Order::ASCENDING): array
+    {
+        return Arr::sortWith($items, function (Time $a, Time $b) {
+            return $a->microseconds <=> $b->microseconds;
+        }, $flags);
     }
 
 }
