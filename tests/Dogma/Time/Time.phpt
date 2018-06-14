@@ -27,10 +27,10 @@ Assert::same((new Time($timeString))->format(), $timeString);
 
 // createFromParts()
 Assert::throws(function () {
-    Time::createFromParts(-1, 0, 0);
+    Time::createFromComponents(-1, 0, 0);
 }, ValueOutOfRangeException::class);
-Assert::type(Time::createFromParts(3, 4, 5, 6), Time::class);
-Assert::same(Time::createFromParts(3, 4, 5, 6)->format(), $timeString);
+Assert::type(Time::createFromComponents(3, 4, 5, 6), Time::class);
+Assert::same(Time::createFromComponents(3, 4, 5, 6)->format(), $timeString);
 
 // createFromSeconds()
 Assert::throws(function () {

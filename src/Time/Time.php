@@ -91,16 +91,7 @@ class Time implements DateOrTime
         return new static($secondsSinceMidnight * 1000000);
     }
 
-    public static function createFromDateTimeInterface(\DateTimeInterface $dateTime): Time
-    {
-        if ($dateTime instanceof DateTime) {
-            return $dateTime->getTime();
-        } else {
-            return DateTime::createFromDateTimeInterface($dateTime)->getTime();
-        }
-    }
-
-    public static function createFromParts(int $hours, int $minutes = 0, int $seconds = 0, int $microseconds = 0): self
+    public static function createFromComponents(int $hours, int $minutes = 0, int $seconds = 0, int $microseconds = 0): self
     {
         Check::range($hours, 0, 47);
         Check::range($minutes, 0, 59);
@@ -108,6 +99,15 @@ class Time implements DateOrTime
         Check::range($microseconds, 0, 999999);
 
         return new static(($hours * 3600 + $minutes * 60 + $seconds) * 1000000 + $microseconds);
+    }
+
+    public static function createFromDateTimeInterface(\DateTimeInterface $dateTime): Time
+    {
+        if ($dateTime instanceof DateTime) {
+            return $dateTime->getTime();
+        } else {
+            return DateTime::createFromDateTimeInterface($dateTime)->getTime();
+        }
     }
 
     public static function createFromFormat(string $format, string $timeString): self
@@ -122,7 +122,7 @@ class Time implements DateOrTime
         $seconds = (int) $dateTime->format('s');
         $microseconds = (int) $dateTime->format('u');
 
-        return self::createFromParts($hours, $minutes, $seconds, $microseconds);
+        return self::createFromComponents($hours, $minutes, $seconds, $microseconds);
     }
 
     public function normalize(): self
