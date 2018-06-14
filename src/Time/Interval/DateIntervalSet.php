@@ -73,7 +73,7 @@ class DateIntervalSet implements DateOrTimeIntervalSet
         return true;
     }
 
-    public function contains(Date $value): bool
+    public function containsValue(Date $value): bool
     {
         foreach ($this->intervals as $interval) {
             if ($interval->containsValue($value)) {
