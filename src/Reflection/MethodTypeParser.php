@@ -194,7 +194,7 @@ class MethodTypeParser implements NonIterable
                 if (!preg_match('/@param\\s+(&|[.]{3})?\\s*((?:\\\\?[^\\s\\[\\]\\|]+(?:\\[\\])*\\|?)+)\s*(&|[.]{3})?(?:\\s*\\$([^\\s]+))?/u', $row, $matches)) {
                     throw new InvalidMethodAnnotationException($method, 'invalid @param annotation format at: ' . $row);
                 }
-                @list(, $mod1, $types, $mod2, $name) = $matches;
+                @[, $mod1, $types, $mod2, $name] = $matches;
                 $variadic = $mod1 === '...' || $mod2 === '...';
                 $types = explode('|', $types);
                 $nullable = false;

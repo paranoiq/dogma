@@ -295,7 +295,7 @@ class EmailMessage
 
         $arr = [];
         foreach ($data as $item) {
-            list($name, $address, ) = array_values($item);
+            [$name, $address] = array_values($item);
 
             $name = $address === $name ? null
                 : (strpos($name, '=?') !== false ? $this->decodeHeader($name) : $name);
@@ -315,7 +315,7 @@ class EmailMessage
         // =?utf-8?q?Test=3a=20P=c5=99=c3=...?=
         $that = $this;
         $header = Str::replace($header, '/(=\\?[^?]+\\?[^?]\\?[^?]+\\?=)/', function ($match) use ($that) {
-            list(, $charset, $encoding, $message,) = explode('?', $match[0]);
+            [, $charset, $encoding, $message] = explode('?', $match[0]);
 
             if (strtolower($encoding) === 'b') {
                 $message = base64_decode($message);

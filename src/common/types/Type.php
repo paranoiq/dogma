@@ -358,7 +358,7 @@ class Type
             throw new InvalidTypeDefinitionException($id);
         }
         $match = Arr::padTo($match, 5, false);
-        list(, $baseId, $params, $itemIds, $nullable) = $match;
+        [, $baseId, $params, $itemIds, $nullable] = $match;
         $nullable = (bool) $nullable;
 
         $size = $specific = $encoding = $locale = null;

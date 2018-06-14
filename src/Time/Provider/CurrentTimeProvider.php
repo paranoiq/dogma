@@ -10,7 +10,6 @@
 namespace Dogma\Time\Provider;
 
 use Dogma\StrictBehaviorMixin;
-
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
 
