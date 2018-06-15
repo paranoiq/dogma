@@ -16,9 +16,11 @@ use Dogma\Equalable;
 use Dogma\Math\Interval\IntInterval;
 use Dogma\Math\Interval\OpenClosedInterval;
 use Dogma\StrictBehaviorMixin;
+use Dogma\Time\Date;
 use Dogma\Time\DateTime;
 use Dogma\Time\InvalidIntervalException;
 use Dogma\Time\Span\DateTimeSpan;
+use Dogma\Time\Time;
 
 /**
  * Interval of times including date. Based on FloatInterval.
@@ -61,6 +63,26 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
             $this->end = new DateTime(self::MIN);
             $this->openStart = $this->openEnd = false;
         }
+    }
+
+    public static function createFromDateAndTimeInterval(Date $date, TimeInterval $timeInterval, ?\DateTimeZone $timeZone = null): self
+    {
+        return new static(
+            DateTime::createFromDateAndTime($date, $timeInterval->getStart(), $timeZone),
+            DateTime::createFromDateAndTime($date, $timeInterval->getEnd(), $timeZone),
+            $timeInterval->hasOpenStart(),
+            $timeInterval->hasOpenEnd()
+        );
+    }
+
+    public static function createFromDateIntervalAndTime(DateInterval $dateInterval, Time $time, ?\DateTimeZone $timeZone = null, bool $openStart = false, bool $openEnd = false): self
+    {
+        return new static(
+            DateTime::createFromDateAndTime($dateInterval->getStart(), $time, $timeZone),
+            DateTime::createFromDateAndTime($dateInterval->getEnd(), $time, $timeZone),
+            $openStart,
+            $openEnd
+        );
     }
 
     public static function closed(DateTime $start, DateTime $end): self

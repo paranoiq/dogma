@@ -101,6 +101,21 @@ class DateInterval implements DateOrTimeInterval
         return new IntInterval($this->start->getStart()->getTimestamp(), $this->end->getStart()->getTimestamp());
     }
 
+    /**
+     * @return \Dogma\Time\Date[]
+     */
+    public function toDateArray(): array
+    {
+        $date = $this->start;
+        $dates = [];
+        do {
+            $dates[] = $date;
+            $date = $date->addDay();
+        } while ($date->isSameOrBefore($this->start));
+
+        return $dates;
+    }
+
     public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
     {
         if ($formatter === null) {

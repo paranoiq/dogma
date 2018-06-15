@@ -134,6 +134,11 @@ class DateTime extends \DateTimeImmutable implements DateOrTime, \DateTimeInterf
 
     public static function createFromDateAndTime(Date $date, Time $time, ?\DateTimeZone $timeZone = null): self
     {
+        // morning hours of next day
+        if ($time->getMicroTime() > Time::MAX_MICROSECONDS) {
+            $date = $date->addDay();
+        }
+
         return new static($date->format(Date::DEFAULT_FORMAT) . ' ' . $time->format(Time::DEFAULT_FORMAT), $timeZone);
     }
 

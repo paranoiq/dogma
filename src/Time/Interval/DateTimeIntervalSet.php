@@ -13,6 +13,7 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Equalable;
 use Dogma\StrictBehaviorMixin;
+use Dogma\Time\Date;
 use Dogma\Time\DateTime;
 
 class DateTimeIntervalSet implements DateOrTimeIntervalSet
@@ -30,6 +31,98 @@ class DateTimeIntervalSet implements DateOrTimeIntervalSet
         $this->intervals = Arr::values(Arr::filter($intervals, function (DateTimeInterval $interval): bool {
             return !$interval->isEmpty();
         }));
+    }
+
+    public static function createFromDateAndTimeIntervalSet(Date $date, TimeIntervalSet $timeIntervalSet, ?\DateTimeZone $timeZone = null): self
+    {
+        $intervals = [];
+        foreach ($timeIntervalSet->getIntervals() as $timeInterval) {
+            $intervals[] = DateTimeInterval::createFromDateAndTimeInterval($date, $timeInterval, $timeZone);
+        }
+
+        return new static($intervals);
+    }
+
+    public static function createFromDateIntervalAndTimeInterval(DateInterval $dateInterval, TimeInterval $timeInterval, ?\DateTimeZone $timeZone = null): self
+    {
+        $intervals = [];
+        foreach ($dateInterval->toDateArray() as $date) {
+            $intervals[] = DateTimeInterval::createFromDateAndTimeInterval($date, $timeInterval, $timeZone);
+        }
+
+        return new static($intervals);
+    }
+
+    public static function createFromDateIntervalAndTimeIntervalSet(DateInterval $dateInterval, TimeIntervalSet $timeIntervalSet, ?\DateTimeZone $timeZone = null): self
+    {
+        $intervals = [];
+        foreach ($dateInterval->toDateArray() as $date) {
+            foreach ($timeIntervalSet->getIntervals() as $timeInterval) {
+                $intervals[] = DateTimeInterval::createFromDateAndTimeInterval($date, $timeInterval, $timeZone);
+            }
+        }
+
+        return new static($intervals);
+    }
+
+    public static function createFromDateIntervalSetAndTimeInterval(DateIntervalSet $dateIntervalSet, TimeInterval $timeInterval, ?\DateTimeZone $timeZone = null): self
+    {
+        $intervals = [];
+        foreach ($dateIntervalSet->getIntervals() as $dateInterval) {
+            foreach ($dateInterval->toDateArray() as $date) {
+                $intervals[] = DateTimeInterval::createFromDateAndTimeInterval($date, $timeInterval, $timeZone);
+            }
+        }
+
+        return new static($intervals);
+    }
+
+    public static function createFromDateIntervalSetAndTimeIntervalSet(DateIntervalSet $dateIntervalSet, TimeIntervalSet $timeIntervalSet, ?\DateTimeZone $timeZone = null): self
+    {
+        $intervals = [];
+        foreach ($dateIntervalSet->getIntervals() as $dateInterval) {
+            foreach ($dateInterval->toDateArray() as $date) {
+                foreach ($timeIntervalSet->getIntervals() as $timeInterval) {
+                    $intervals[] = DateTimeInterval::createFromDateAndTimeInterval($date, $timeInterval, $timeZone);
+                }
+            }
+        }
+
+        return new static($intervals);
+    }
+
+    public static function createFromDateIntervalAndWeekDayHoursSet(DateInterval $dateInterval, WeekDayHoursSet $weekDayHoursSet, ?\DateTimeZone $timeZone = null): self
+    {
+        $intervals = [];
+        foreach ($dateInterval->toDateArray() as $date) {
+            $weekDayHours = $weekDayHoursSet->getByDayNumber($date->getDayOfWeek());
+            if ($weekDayHours === null) {
+                continue;
+            }
+            foreach ($weekDayHours->getTimeIntervals() as $timeInterval) {
+                $intervals[] = DateTimeInterval::createFromDateAndTimeInterval($date, $timeInterval, $timeZone);
+            }
+        }
+
+        return new static($intervals);
+    }
+
+    public static function createFromDateIntervalSetAndWeekDayHoursSet(DateIntervalSet $dateIntervalSet, WeekDayHoursSet $weekDayHoursSet, ?\DateTimeZone $timeZone = null): self
+    {
+        $intervals = [];
+        foreach ($dateIntervalSet->getIntervals() as $dateInterval) {
+            foreach ($dateInterval->toDateArray() as $date) {
+                $weekDayHours = $weekDayHoursSet->getByDayNumber($date->getDayOfWeek());
+                if ($weekDayHours === null) {
+                    continue;
+                }
+                foreach ($weekDayHours->getTimeIntervals() as $timeInterval) {
+                    $intervals[] = DateTimeInterval::createFromDateAndTimeInterval($date, $timeInterval, $timeZone);
+                }
+            }
+        }
+
+        return new static($intervals);
     }
 
     public function format(string $format = DateTimeInterval::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
@@ -112,7 +205,7 @@ class DateTimeIntervalSet implements DateOrTimeIntervalSet
     }
 
     /**
-     * Add another set of intervals to this one without normalisation.
+     * Add another set of intervals to this one without normalization.
      * @param self $set
      * @return self
      */
