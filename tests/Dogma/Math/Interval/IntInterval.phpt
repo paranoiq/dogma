@@ -31,6 +31,14 @@ Assert::same($interval->getStart(), 1);
 // getEnd()
 Assert::same($interval->getEnd(), 5);
 
+// getLength()
+Assert::same($interval->getLength(), 4);
+Assert::same($empty->getLength(), 0);
+
+// getCount()
+Assert::same($interval->getCount(), 5);
+Assert::same($empty->getCount(), 0);
+
 // isEmpty()
 Assert::false($interval->isEmpty());
 Assert::false((new IntInterval(1, 1))->isEmpty());

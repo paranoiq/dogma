@@ -47,3 +47,13 @@ Assert::equal($s($r(1, 10))->subtract($s($r(3, 4), $r(7, 8))), $s($r(1, 3, false
 
 // intersect()
 Assert::equal($s($r(1, 5), $r(10, 15))->intersect($s($r(4, 12), $r(14, 20))), $s($r(4, 5), $r(10, 12), $r(14, 15)));
+
+$set = $s(FloatInterval::empty(), $r(1, 1), $r(1, 2), $r(1, 3));
+
+// filterByLength()
+Assert::equal($set->filterByLength('>', 1), $s($r(1, 3)));
+Assert::equal($set->filterByLength('>=', 1), $s($r(1, 2), $r(1, 3)));
+Assert::equal($set->filterByLength('=', 1), $s($r(1, 2)));
+Assert::equal($set->filterByLength('<>', 1), $s(FloatInterval::empty(), $r(1, 1), $r(1, 3)));
+Assert::equal($set->filterByLength('<=', 1), $s(FloatInterval::empty(), $r(1, 1), $r(1, 2)));
+Assert::equal($set->filterByLength('<', 1), $s(FloatInterval::empty(), $r(1, 1)));

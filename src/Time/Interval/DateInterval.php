@@ -91,6 +91,16 @@ class DateInterval implements DateOrTimeInterval
         return DateSpan::createFromDateInterval($this->start->diff($this->end));
     }
 
+    public function getLengthInDays(): int
+    {
+        return $this->isEmpty() ? 0 : $this->end->getDayNumber() - $this->start->getDayNumber();
+    }
+
+    public function getDayCount(): int
+    {
+        return $this->isEmpty() ? 0 : $this->end->getDayNumber() - $this->start->getDayNumber() + 1;
+    }
+
     public function toDayNumberIntInterval(): IntInterval
     {
         return new IntInterval($this->start->getDayNumber(), $this->end->getDayNumber());

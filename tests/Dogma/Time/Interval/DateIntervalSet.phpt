@@ -51,3 +51,21 @@ Assert::equal($s($i(1, 10))->subtract($s($i(3, 4), $i(7, 8))), $s($i(1, 2), $i(5
 
 // intersect()
 Assert::equal($s($i(1, 5), $i(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $s($i(4, 5), $i(10, 12), $i(14, 15)));
+
+$set = $s(DateInterval::empty(), $i(1, 1), $i(1, 2), $i(1, 3));
+
+// filterByLength()
+Assert::equal($set->filterByLength('>', 1), $s($i(1, 3)));
+Assert::equal($set->filterByLength('>=', 1), $s($i(1, 2), $i(1, 3)));
+Assert::equal($set->filterByLength('=', 1), $s($i(1, 2)));
+Assert::equal($set->filterByLength('<>', 1), $s(DateInterval::empty(), $i(1, 1), $i(1, 3)));
+Assert::equal($set->filterByLength('<=', 1), $s(DateInterval::empty(), $i(1, 1), $i(1, 2)));
+Assert::equal($set->filterByLength('<', 1), $s(DateInterval::empty(), $i(1, 1)));
+
+// filterByCount()
+Assert::equal($set->filterByDayCount('>', 1), $s($i(1, 2), $i(1, 3)));
+Assert::equal($set->filterByDayCount('>=', 1), $s($i(1, 1), $i(1, 2), $i(1, 3)));
+Assert::equal($set->filterByDayCount('=', 1), $s($i(1, 1)));
+Assert::equal($set->filterByDayCount('<>', 1), $s(DateInterval::empty(), $i(1, 2), $i(1, 3)));
+Assert::equal($set->filterByDayCount('<=', 1), $s(DateInterval::empty(), $i(1, 1)));
+Assert::equal($set->filterByDayCount('<', 1), $s(DateInterval::empty()));

@@ -10,6 +10,7 @@
 namespace Dogma\Math\Interval;
 
 use Dogma\Check;
+use Dogma\Compare;
 use Dogma\Equalable;
 use Dogma\StrictBehaviorMixin;
 
@@ -169,6 +170,53 @@ class IntIntervalSet implements IntervalSet
                 if ($result->intersects($interval)) {
                     $results[] = $result->intersect($interval);
                 }
+            }
+        }
+
+        return new static($results);
+    }
+
+    public function filterByLength(string $operator, int $length): self
+    {
+        return $this->filterByCount($operator, $length + 1);
+    }
+
+    public function filterByCount(string $operator, int $count): self
+    {
+        $results = [];
+        foreach ($this->intervals as $interval) {
+            $result = $interval->getCount() <=> $count;
+            switch ($operator) {
+                case Compare::LESSER:
+                    if ($result === -1) {
+                        $results[] = $interval;
+                    }
+                    break;
+                case Compare::LESSER_OR_EQUAL:
+                    if ($result !== 1) {
+                        $results[] = $interval;
+                    }
+                    break;
+                case Compare::EQUAL:
+                    if ($result === 0) {
+                        $results[] = $interval;
+                    }
+                    break;
+                case Compare::NOT_EQUAL:
+                    if ($result !== 0) {
+                        $results[] = $interval;
+                    }
+                    break;
+                case Compare::GREATER_OR_EQUAL:
+                    if ($result !== -1) {
+                        $results[] = $interval;
+                    }
+                    break;
+                case Compare::GREATER:
+                    if ($result === 1) {
+                        $results[] = $interval;
+                    }
+                    break;
             }
         }
 

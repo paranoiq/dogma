@@ -79,6 +79,16 @@ class IntInterval implements Interval
         return $this->end;
     }
 
+    public function getLength(): int
+    {
+        return $this->start > $this->end ? 0 : $this->end - $this->start;
+    }
+
+    public function getCount(): int
+    {
+        return $this->start > $this->end ? 0 : $this->end - $this->start + 1;
+    }
+
     public function isEmpty(): bool
     {
         return $this->start > $this->end;

@@ -127,6 +127,11 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
         return TimeSpan::createFromDateInterval($this->start->diff($this->end));
     }
 
+    public function getLengthInMicroseconds(): int
+    {
+        return $this->isEmpty() ? 0 : $this->end->getMicroTime() - $this->start->getMicroTime();
+    }
+
     public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
     {
         if ($formatter === null) {

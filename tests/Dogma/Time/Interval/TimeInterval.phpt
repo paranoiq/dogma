@@ -6,6 +6,7 @@ use Dogma\Str;
 use Dogma\Tester\Assert;
 use Dogma\Time\Interval\TimeInterval;
 use Dogma\Time\Interval\TimeIntervalSet;
+use Dogma\Time\Seconds;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Span\TimeSpan;
 use Dogma\Time\Time;
@@ -48,6 +49,10 @@ Assert::equal($interval->getSpan(), new DateTimeSpan(0, 0, 0, 10));
 
 // getTimeSpan()
 Assert::equal($interval->getTimeSpan(), new TimeSpan(10));
+
+// getLengthInMicroseconds()
+Assert::same($interval->getLengthInMicroseconds(), Seconds::HOUR * 10 * 1000000);
+Assert::same($empty->getLengthInMicroseconds(), 0);
 
 // isEmpty()
 Assert::false($interval->isEmpty());

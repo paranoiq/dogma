@@ -265,7 +265,7 @@ class DateSpan implements DateOrTimeSpan
         return $this->days;
     }
 
-    public function getDaysTotal(): float
+    public function getDaysTotal(): int
     {
         return $this->getDays()
             + $this->months * 30

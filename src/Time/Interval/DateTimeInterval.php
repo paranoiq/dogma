@@ -143,6 +143,11 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         return new IntInterval($this->start->getMicroTimestamp(), $this->end->getMicroTimestamp());
     }
 
+    public function getLengthInMicroseconds(): int
+    {
+        return $this->isEmpty() ? 0 : $this->end->getMicroTimestamp() - $this->start->getMicroTimestamp();
+    }
+
     public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
     {
         if ($formatter === null) {

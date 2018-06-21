@@ -4,6 +4,7 @@ namespace Dogma\Tests\Time\Interval;
 
 use Dogma\Tester\Assert;
 use Dogma\Time\DateTime;
+use Dogma\Time\Seconds;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Interval\DateTimeInterval;
 use Dogma\Time\Interval\DateTimeIntervalSet;
@@ -48,6 +49,10 @@ Assert::equal($interval->getEnd(), new DateTime('2000-01-20 00:00:00.000000'));
 
 // getSpan()
 Assert::equal($interval->getSpan(), new DateTimeSpan(0, 0, 10));
+
+// getLengthInMicroseconds()
+Assert::same($interval->getLengthInMicroseconds(), Seconds::DAY * 10 * 1000000);
+Assert::same($empty->getLengthInMicroseconds(), 0);
 
 // isEmpty()
 Assert::false($interval->isEmpty());

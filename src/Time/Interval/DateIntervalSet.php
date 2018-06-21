@@ -11,6 +11,7 @@ namespace Dogma\Time\Interval;
 
 use Dogma\Arr;
 use Dogma\Check;
+use Dogma\Compare;
 use Dogma\Equalable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
@@ -174,6 +175,53 @@ class DateIntervalSet implements DateOrTimeIntervalSet
                 if ($result->intersects($interval)) {
                     $results[] = $result->intersect($interval);
                 }
+            }
+        }
+
+        return new static($results);
+    }
+
+    public function filterByLength(string $operator, int $days): self
+    {
+        return $this->filterByDayCount($operator, $days + 1);
+    }
+
+    public function filterByDayCount(string $operator, int $days): self
+    {
+        $results = [];
+        foreach ($this->intervals as $interval) {
+            $result = $interval->getDayCount() <=> $days;
+            switch ($operator) {
+                case Compare::LESSER:
+                    if ($result === -1) {
+                        $results[] = $interval;
+                    }
+                    break;
+                case Compare::LESSER_OR_EQUAL:
+                    if ($result !== 1) {
+                        $results[] = $interval;
+                    }
+                    break;
+                case Compare::EQUAL:
+                    if ($result === 0) {
+                        $results[] = $interval;
+                    }
+                    break;
+                case Compare::NOT_EQUAL:
+                    if ($result !== 0) {
+                        $results[] = $interval;
+                    }
+                    break;
+                case Compare::GREATER_OR_EQUAL:
+                    if ($result !== -1) {
+                        $results[] = $interval;
+                    }
+                    break;
+                case Compare::GREATER:
+                    if ($result === 1) {
+                        $results[] = $interval;
+                    }
+                    break;
             }
         }
 

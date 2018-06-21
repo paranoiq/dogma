@@ -48,6 +48,14 @@ Assert::equal($interval->getSpan(), new DateTimeSpan(0, 0, 10));
 // getDateSpan()
 Assert::equal($interval->getDateSpan(), new DateSpan(0, 0, 10));
 
+// getLengthInDays()
+Assert::same($interval->getLengthInDays(), 10);
+Assert::same($empty->getLengthInDays(), 0);
+
+// getDayCount()
+Assert::same($interval->getDayCount(), 11);
+Assert::same($empty->getDayCount(), 0);
+
 // isEmpty()
 Assert::false($interval->isEmpty());
 Assert::false($all->isEmpty());

@@ -36,6 +36,11 @@ Assert::same($open->getStart(), 1.0);
 Assert::same($closed->getEnd(), 5.0);
 Assert::same($open->getEnd(), 5.0);
 
+// getLength()
+Assert::same($closed->getLength(), 4.0);
+Assert::same($open->getLength(), 4.0);
+Assert::same($empty->getLength(), 0.0);
+
 // hasOpenStart()
 Assert::false($closed->hasOpenStart());
 Assert::true($open->hasOpenStart());
