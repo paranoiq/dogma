@@ -6,6 +6,7 @@ use Dogma\InvalidValueException;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
 use Dogma\Time\DayOfWeek;
+use Dogma\Time\Interval\DateTimeInterval;
 use Dogma\Time\InvalidDateTimeException;
 use Dogma\Tester\Assert;
 use Dogma\Time\Month;
@@ -54,6 +55,9 @@ Assert::same($date->format('j.n.Y'), date('j.n.Y', $timestamp));
 
 // toDateTime()
 Assert::equal($date->toDateTime(), new DateTime('2000-01-02 00:00:00'));
+
+// toDateTimeInterval()
+Assert::equal($date->toDateTimeInterval(), new DateTimeInterval(new DateTime('2000-01-02 00:00:00'), new DateTime('2000-01-03 00:00:00'), false, true));
 
 // getDayNumber()
 Assert::same($date->getDayNumber(), 730120);

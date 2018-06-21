@@ -18,6 +18,7 @@ use Dogma\Order;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeFormatter;
 use Dogma\Time\Format\DateTimeValues;
+use Dogma\Time\Interval\DateTimeInterval;
 use Dogma\Time\Provider\TimeProvider;
 use Dogma\Type;
 
@@ -135,6 +136,11 @@ class Date implements DateOrTime
     public function toDateTime(?\DateTimeZone $timeZone = null): DateTime
     {
         return DateTime::createFromDateAndTime($this, new Time(0), $timeZone);
+    }
+
+    public function toDateTimeInterval(?\DateTimeZone $timeZone = null): DateTimeInterval
+    {
+        return new DateTimeInterval($this->getStart($timeZone), $this->addDay()->getStart(), false, true);
     }
 
     public function getDayNumber(): int
