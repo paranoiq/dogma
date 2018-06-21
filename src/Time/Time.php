@@ -36,11 +36,9 @@ class Time implements DateOrTime
     public const MIN = '00:00:00.000000';
     public const MAX = '23:59:59.999999';
 
-    public const DAY_MICROSECONDS = Seconds::DAY * 1000000;
-
     public const MIN_MICROSECONDS = 0;
-    public const MAX_MICROSECONDS = self::DAY_MICROSECONDS - 1;
-    private const MAX_DENORMALIZED = 172799999999; // 48 hours - 1 microsecond
+    public const MAX_MICROSECONDS = Microseconds::DAY - 1;
+    private const MAX_DENORMALIZED = self::MAX_MICROSECONDS + Microseconds::DAY;
 
     public const DEFAULT_FORMAT = 'H:i:s.u';
 
@@ -130,7 +128,7 @@ class Time implements DateOrTime
         if ($this->microseconds <= self::MAX_MICROSECONDS) {
             return $this;
         } else {
-            return new static($this->microseconds % self::DAY_MICROSECONDS);
+            return new static($this->microseconds % Microseconds::DAY);
         }
     }
 
@@ -139,7 +137,7 @@ class Time implements DateOrTime
         if ($this->microseconds >= self::MAX_MICROSECONDS) {
             return $this;
         } else {
-            return new static($this->microseconds + self::DAY_MICROSECONDS);
+            return new static($this->microseconds + Microseconds::DAY);
         }
     }
 
@@ -186,7 +184,7 @@ class Time implements DateOrTime
     {
         $other instanceof self || Check::object($other, self::class);
 
-        return ($this->microseconds % self::DAY_MICROSECONDS) === ($other->microseconds % self::DAY_MICROSECONDS);
+        return ($this->microseconds % Microseconds::DAY) === ($other->microseconds % Microseconds::DAY);
     }
 
     /**
@@ -197,34 +195,34 @@ class Time implements DateOrTime
     {
         $other instanceof self || Check::object($other, self::class);
 
-        return ($this->microseconds % self::DAY_MICROSECONDS) <=> ($other->microseconds % self::DAY_MICROSECONDS);
+        return ($this->microseconds % Microseconds::DAY) <=> ($other->microseconds % Microseconds::DAY);
     }
 
     public function isBefore(Time $time): bool
     {
-        return ($this->microseconds % self::DAY_MICROSECONDS) < ($time->microseconds % self::DAY_MICROSECONDS);
+        return ($this->microseconds % Microseconds::DAY) < ($time->microseconds % Microseconds::DAY);
     }
 
     public function isAfter(Time $time): bool
     {
-        return ($this->microseconds % self::DAY_MICROSECONDS) > ($time->microseconds % self::DAY_MICROSECONDS);
+        return ($this->microseconds % Microseconds::DAY) > ($time->microseconds % Microseconds::DAY);
     }
 
     public function isSameOrBefore(Time $time): bool
     {
-        return ($this->microseconds % self::DAY_MICROSECONDS) <= ($time->microseconds % self::DAY_MICROSECONDS);
+        return ($this->microseconds % Microseconds::DAY) <= ($time->microseconds % Microseconds::DAY);
     }
 
     public function isSameOrAfter(Time $time): bool
     {
-        return ($this->microseconds % self::DAY_MICROSECONDS) >= ($time->microseconds % self::DAY_MICROSECONDS);
+        return ($this->microseconds % Microseconds::DAY) >= ($time->microseconds % Microseconds::DAY);
     }
 
     public function isBetween(Time $since, Time $until): bool
     {
-        $sinceTime = $since->microseconds % self::DAY_MICROSECONDS;
-        $untilTime = $until->microseconds % self::DAY_MICROSECONDS;
-        $thisTime = $this->microseconds % self::DAY_MICROSECONDS;
+        $sinceTime = $since->microseconds % Microseconds::DAY;
+        $untilTime = $until->microseconds % Microseconds::DAY;
+        $thisTime = $this->microseconds % Microseconds::DAY;
 
         if ($sinceTime < $untilTime) {
             return $thisTime >= $sinceTime && $thisTime <= $untilTime;
@@ -252,7 +250,7 @@ class Time implements DateOrTime
     private function getDateTime(): \DateTimeImmutable
     {
         if ($this->dateTime === null) {
-            $total = $this->microseconds % self::DAY_MICROSECONDS;
+            $total = $this->microseconds % Microseconds::DAY;
             $seconds = (int) floor($total / 1000000);
             $microseconds = $total - ($seconds * 1000000);
             $this->dateTime = new \DateTimeImmutable(DateTime::MIN . ' +' . $seconds . ' seconds +' . $microseconds . ' microseconds');
@@ -268,7 +266,7 @@ class Time implements DateOrTime
 
     public function getHours(): int
     {
-        return (int) floor(($this->microseconds % self::DAY_MICROSECONDS) / 1000000 / 3600);
+        return (int) floor(($this->microseconds % Microseconds::DAY) / 1000000 / 3600);
     }
 
     public function getMinutes(): int

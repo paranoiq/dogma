@@ -5,6 +5,7 @@ namespace Dogma\Tests\Math\Interval;
 use Dogma\Tester\Assert;
 use Dogma\Time\Interval\TimeInterval;
 use Dogma\Time\Interval\TimeIntervalSet;
+use Dogma\Time\Microseconds;
 use Dogma\Time\Seconds;
 use Dogma\Time\Time;
 
@@ -55,12 +56,11 @@ Assert::equal($s($i(1, 10))->subtract($s($i(3, 4), $i(7, 8))), $s($i(1, 3), $i(4
 Assert::equal($s($i(1, 5), $i(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $s($i(4, 5), $i(10, 12), $i(14, 15)));
 
 $set = $s(TimeInterval::empty(), $i(1, 1), $i(1, 2), $i(1, 3));
-$microseconds = Seconds::HOUR * 1000000;
 
 // filterByLength()
-Assert::equal($set->filterByLength('>', $microseconds), $s($i(1, 3)));
-Assert::equal($set->filterByLength('>=', $microseconds), $s($i(1, 2), $i(1, 3)));
-Assert::equal($set->filterByLength('=', $microseconds), $s($i(1, 2)));
-Assert::equal($set->filterByLength('<>', $microseconds), $s(TimeInterval::empty(), $i(1, 1), $i(1, 3)));
-Assert::equal($set->filterByLength('<=', $microseconds), $s(TimeInterval::empty(), $i(1, 1), $i(1, 2)));
-Assert::equal($set->filterByLength('<', $microseconds), $s(TimeInterval::empty(), $i(1, 1)));
+Assert::equal($set->filterByLength('>', Microseconds::HOUR), $s($i(1, 3)));
+Assert::equal($set->filterByLength('>=', Microseconds::HOUR), $s($i(1, 2), $i(1, 3)));
+Assert::equal($set->filterByLength('=', Microseconds::HOUR), $s($i(1, 2)));
+Assert::equal($set->filterByLength('<>', Microseconds::HOUR), $s(TimeInterval::empty(), $i(1, 1), $i(1, 3)));
+Assert::equal($set->filterByLength('<=', Microseconds::HOUR), $s(TimeInterval::empty(), $i(1, 1), $i(1, 2)));
+Assert::equal($set->filterByLength('<', Microseconds::HOUR), $s(TimeInterval::empty(), $i(1, 1)));

@@ -16,6 +16,7 @@ use Dogma\Equalable;
 use Dogma\Math\Interval\OpenClosedInterval;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\InvalidTimeIntervalException;
+use Dogma\Time\Microseconds;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Span\TimeSpan;
 use Dogma\Time\Time;
@@ -54,21 +55,21 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
         $startTime = $start->getMicroTime();
         $endTime = $end->getMicroTime();
 
-        if ($startTime >= Time::DAY_MICROSECONDS) {
-            $startTime %= Time::DAY_MICROSECONDS;
+        if ($startTime >= Microseconds::DAY) {
+            $startTime %= Microseconds::DAY;
             $start = $start->normalize();
         }
-        if ($endTime >= Time::DAY_MICROSECONDS) {
-            $endTime %= Time::DAY_MICROSECONDS;
+        if ($endTime >= Microseconds::DAY) {
+            $endTime %= Microseconds::DAY;
             $end = $end->normalize();
         }
         if ($startTime > $endTime) {
-            $endTime += Time::DAY_MICROSECONDS;
+            $endTime += Microseconds::DAY;
             $end = $end->denormalize();
         }
 
         $length = $endTime - $startTime;
-        if ($length > Time::DAY_MICROSECONDS) {
+        if ($length > Microseconds::DAY) {
             throw new InvalidTimeIntervalException($start, $end);
         }
 

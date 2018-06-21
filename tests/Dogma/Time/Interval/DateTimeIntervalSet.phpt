@@ -6,6 +6,7 @@ use Dogma\Tester\Assert;
 use Dogma\Time\DateTime;
 use Dogma\Time\Interval\DateTimeInterval;
 use Dogma\Time\Interval\DateTimeIntervalSet;
+use Dogma\Time\Microseconds;
 use Dogma\Time\Seconds;
 
 require_once __DIR__ . '/../../bootstrap.php';
@@ -55,12 +56,11 @@ Assert::equal($s($i(1, 10))->subtract($s($i(3, 4), $i(7, 8))), $s($i(1, 3), $i(4
 Assert::equal($s($i(1, 5), $i(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $s($i(4, 5), $i(10, 12), $i(14, 15)));
 
 $set = $s(DateTimeInterval::empty(), $i(1, 1), $i(1, 2), $i(1, 3));
-$microseconds = Seconds::DAY * 1000000;
 
 // filterByLength()
-Assert::equal($set->filterByLength('>', $microseconds), $s($i(1, 3)));
-Assert::equal($set->filterByLength('>=', $microseconds), $s($i(1, 2), $i(1, 3)));
-Assert::equal($set->filterByLength('=', $microseconds), $s($i(1, 2)));
-Assert::equal($set->filterByLength('<>', $microseconds), $s(DateTimeInterval::empty(), $i(1, 1), $i(1, 3)));
-Assert::equal($set->filterByLength('<=', $microseconds), $s(DateTimeInterval::empty(), $i(1, 1), $i(1, 2)));
-Assert::equal($set->filterByLength('<', $microseconds), $s(DateTimeInterval::empty(), $i(1, 1)));
+Assert::equal($set->filterByLength('>', Microseconds::DAY), $s($i(1, 3)));
+Assert::equal($set->filterByLength('>=', Microseconds::DAY), $s($i(1, 2), $i(1, 3)));
+Assert::equal($set->filterByLength('=', Microseconds::DAY), $s($i(1, 2)));
+Assert::equal($set->filterByLength('<>', Microseconds::DAY), $s(DateTimeInterval::empty(), $i(1, 1), $i(1, 3)));
+Assert::equal($set->filterByLength('<=', Microseconds::DAY), $s(DateTimeInterval::empty(), $i(1, 1), $i(1, 2)));
+Assert::equal($set->filterByLength('<', Microseconds::DAY), $s(DateTimeInterval::empty(), $i(1, 1)));
