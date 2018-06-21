@@ -179,12 +179,12 @@ class Date implements DateOrTime
 
     public function getEnd(?\DateTimeZone $timeZone = null): DateTime
     {
-        return (new DateTime($this->format(), $timeZone))->setTime(23, 59, 59);
+        return (new DateTime($this->format(), $timeZone))->setTime(23, 59, 59, 999999);
     }
 
     public function getEndFormatted(?string $format = null, ?\DateTimeZone $timeZone = null): string
     {
-        return $this->getStart($timeZone)->setTime(23, 59, 59)->format($format ?? DateTime::DEFAULT_FORMAT);
+        return $this->getStart($timeZone)->setTime(23, 59, 59, 999999)->format($format ?? DateTime::DEFAULT_FORMAT);
     }
 
     /**

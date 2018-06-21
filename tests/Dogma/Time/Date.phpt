@@ -61,10 +61,10 @@ Assert::same((new Date(Date::MIN))->getDayNumber(), Date::MIN_DAY_NUMBER);
 Assert::same((new Date(Date::MAX))->getDayNumber(), Date::MAX_DAY_NUMBER);
 
 // getStart()
-Assert::equal($date->getStart($utcTimeZone), new DateTime('2000-01-02 00:00:00', $utcTimeZone));
+Assert::equal($date->getStart($utcTimeZone), new DateTime('2000-01-02 00:00:00.000000', $utcTimeZone));
 
 // getEnd()
-Assert::equal($date->getEnd($utcTimeZone), new DateTime('2000-01-02 23:59:59', $utcTimeZone));
+Assert::equal($date->getEnd($utcTimeZone), new DateTime('2000-01-02 23:59:59.999999', $utcTimeZone));
 
 // getStartFormatted()
 Assert::same($date->getStartFormatted('Y-m-d H:i:s', $utcTimeZone), '2000-01-02 00:00:00');
