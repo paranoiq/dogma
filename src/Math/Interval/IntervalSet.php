@@ -45,4 +45,12 @@ interface IntervalSet /*<T>*/ extends Equalable
 
     //public function intersect(Interval<T> ...$intervals): IntervalSet<T>;
 
+    //public function filterByLength(string $operator, int|float $length): IntervalSet<T>;
+
+    /**
+     * @param callable $mapper
+     * @return self|mixed
+     */
+    public function map(callable $mapper);
+
 }

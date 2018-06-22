@@ -218,4 +218,17 @@ class FloatIntervalSet implements IntervalSet
         return new static($results);
     }
 
+    public function map(callable $mapper): self
+    {
+        $results = [];
+        foreach ($this->intervals as $interval) {
+            $result = $mapper($interval);
+            if ($result !== null) {
+                $results[] = $result;
+            }
+        }
+
+        return new static($results);
+    }
+
 }
