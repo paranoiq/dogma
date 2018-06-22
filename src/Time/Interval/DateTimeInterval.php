@@ -18,7 +18,7 @@ use Dogma\Math\Interval\OpenClosedInterval;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
-use Dogma\Time\InvalidIntervalException;
+use Dogma\Time\InvalidIntervalStartEndOrderException;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Time;
 
@@ -54,7 +54,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         $this->openEnd = $openEnd;
 
         if ($this->start > $this->end) {
-            throw new InvalidIntervalException($this->start, $this->end);
+            throw new InvalidIntervalStartEndOrderException($this->start, $this->end);
         }
 
         if ($start->equals($end) && ($openStart || $openEnd)) {
@@ -121,6 +121,10 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
 
     // modifications ---------------------------------------------------------------------------------------------------
 
+    /**
+     * @param string $value
+     * @return static
+     */
     public function shift(string $value): self
     {
         return new static($this->start->modify($value), $this->end->modify($value), $this->openStart, $this->openEnd);

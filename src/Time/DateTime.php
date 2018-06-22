@@ -236,7 +236,7 @@ class DateTime extends \DateTimeImmutable implements DateOrTime, \DateTimeInterf
      * @param bool $absolute
      * @return \Dogma\Time\Span\DateTimeSpan
      */
-    public function diffInterval(\DateTimeInterface $other, bool $absolute = false): DateTimeSpan
+    public function difference(\DateTimeInterface $other, bool $absolute = false): DateTimeSpan
     {
         $interval = parent::diff($other, $absolute);
 

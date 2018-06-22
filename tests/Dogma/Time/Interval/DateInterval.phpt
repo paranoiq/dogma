@@ -4,11 +4,11 @@ namespace Dogma\Tests\Time\Interval;
 
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
+use Dogma\Time\InvalidIntervalStartEndOrderException;
 use Dogma\Time\Span\DateSpan;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Interval\DateInterval;
 use Dogma\Time\Interval\DateIntervalSet;
-use Dogma\Time\InvalidIntervalException;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -31,7 +31,7 @@ $s = function (DateInterval ...$items) {
 // __construct()
 Assert::exception(function () {
     new DateInterval(new Date('today'), new Date('yesterday'));
-}, InvalidIntervalException::class);
+}, InvalidIntervalStartEndOrderException::class);
 
 // shift()
 Assert::equal($interval->shift('+1 day'), $r(11, 21));

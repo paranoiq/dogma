@@ -16,7 +16,7 @@ use Dogma\Equalable;
 use Dogma\Math\Interval\IntInterval;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
-use Dogma\Time\InvalidIntervalException;
+use Dogma\Time\InvalidIntervalStartEndOrderException;
 use Dogma\Time\Span\DateSpan;
 use Dogma\Time\Span\DateTimeSpan;
 
@@ -44,7 +44,7 @@ class DateInterval implements DateOrTimeInterval
         $this->end = $end;
 
         if ($start->getDayNumber() > $end->getDayNumber()) {
-            throw new InvalidIntervalException($this->start, $this->end);
+            throw new InvalidIntervalStartEndOrderException($this->start, $this->end);
         }
     }
 

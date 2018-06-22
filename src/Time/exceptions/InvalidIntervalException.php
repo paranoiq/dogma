@@ -12,17 +12,4 @@ namespace Dogma\Time;
 class InvalidIntervalException extends TimeException
 {
 
-    /**
-     * @param \Dogma\Time\DateOrTime $start
-     * @param \Dogma\Time\DateOrTime $end
-     * @param \Throwable|null $previous
-     */
-    public function __construct(DateOrTime $start, DateOrTime $end, ?\Throwable $previous = null)
-    {
-        parent::__construct(
-            sprintf('Start %s should be less than or equal to end %s.', $start->format(), $end->format()),
-            $previous
-        );
-    }
-
 }
