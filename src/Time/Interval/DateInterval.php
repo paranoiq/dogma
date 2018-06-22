@@ -74,6 +74,10 @@ class DateInterval implements DateOrTimeInterval
 
     // modifications ---------------------------------------------------------------------------------------------------
 
+    /**
+     * @param string $value
+     * @return static
+     */
     public function shift(string $value): self
     {
         return new static($this->start->modify($value), $this->end->modify($value));

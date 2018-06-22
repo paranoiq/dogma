@@ -9,32 +9,27 @@
 
 namespace Dogma\Time\Interval;
 
-use Dogma\Check;
 use Dogma\Time\Date;
-use Dogma\Time\DateTime;
 use Dogma\Time\DayOfWeek;
-use Dogma\Time\InvalidWeekIntervalException;
-use Dogma\Time\Microseconds;
+use Dogma\Time\InvalidWeekDateIntervalException;
 
 /**
- * DateTimeInterval aligned to a single week boundaries.
+ * DateInterval aligned to a single week boundaries.
  * Week always starts with monday and ends with sunday.
  * WeekInterval cannot be empty.
  */
-class WeekInterval extends DateTimeInterval
+class WeekDateInterval extends DateInterval
 {
 
-    public function __construct(DateTime $start, DateTime $end, bool $openStart = false, bool $openEnd = true)
+    public function __construct(Date $start, Date $end)
     {
         if ($start->getDayOfWeek() !== DayOfWeek::MONDAY) {
-            throw new InvalidWeekIntervalException($start, $end);
-        } elseif ($start->getTime()->getMicroTime() !== 0) {
-            throw new InvalidWeekIntervalException($start, $end);
-        } elseif ($start->difference($end)->getMicrosecondsTotal() !== Microseconds::WEEK) {
-            throw new InvalidWeekIntervalException($start, $end);
+            throw new InvalidWeekDateIntervalException($start, $end);
+        } elseif ($start->difference($end)->getDaysTotal() !== 6) {
+            throw new InvalidWeekDateIntervalException($start, $end);
         }
 
-        parent::__construct($start, $end, $openStart, $openEnd);
+        parent::__construct($start, $end);
     }
 
     public static function createFromDate(Date $date): self
@@ -42,29 +37,24 @@ class WeekInterval extends DateTimeInterval
         return self::createFromIsoYearAndWeek((int) $date->format('o'), (int) $date->format('W'));
     }
 
-    public static function createFromDateTime(DateTime $dateTime): self
+    public static function createFromDateTimeInterface(\DateTimeInterface $dateTime): self
     {
         return self::createFromIsoYearAndWeek((int) $dateTime->format('o'), (int) $dateTime->format('W'));
     }
 
-    public static function createFromIsoYearAndWeek(int $year, int $week, ?\DateTimeZone $timeZone = null): self
+    public static function createFromIsoYearAndWeek(int $year, int $week): self
     {
-        Check::range($year, 0, 9999);
-        Check::range($week, 1, 53);
+        $start = Date::createFromIsoYearAndWeek($year, $week, DayOfWeek::MONDAY);
+        $end = $start->modify('+ 6 days');
 
-        $dateTime = new \DateTime('today 00:00:00', $timeZone);
-        $dateTime->setISODate($year, $week);
-        $start = DateTime::createFromDateTimeInterface($dateTime, $timeZone);
-        $end = $start->modify('+ 1 week');
-
-        return new static($start, $end, false, true);
+        return new static($start, $end);
     }
 
     /**
-     * @param \Dogma\Time\Interval\DateTimeInterval $interval
+     * @param \Dogma\Time\Interval\DateInterval $interval
      * @return self[]
      */
-    public static function createOverlappingIntervals(DateTimeInterval $interval): array
+    public static function createOverlappingIntervals(DateInterval $interval): array
     {
         if ($interval->isEmpty()) {
             return [];
@@ -75,7 +65,7 @@ class WeekInterval extends DateTimeInterval
         do {
             $intervals[] = self::createFromIsoYearAndWeek((int) $current->format('o'), (int) $current->format('W'));
             $current = $current->modify('+ 1 week');
-        } while ($current < $interval->getEnd());
+        } while ($current <= $interval->getEnd());
 
         return $intervals;
     }

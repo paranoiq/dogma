@@ -19,6 +19,7 @@ use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeFormatter;
 use Dogma\Time\Format\DateTimeValues;
+use Dogma\Time\Span\TimeSpan;
 
 /**
  * Time of day without a date and timezone.
@@ -243,6 +244,13 @@ class Time implements DateOrTime
         Check::types($time, [\DateTimeInterface::class, self::class]);
 
         return (new \DateTimeImmutable($this->format()))->diff(new \DateTimeImmutable($time->format(self::DEFAULT_FORMAT)), $absolute);
+    }
+
+    public function difference(Time $other, bool $absolute = false): TimeSpan
+    {
+        $interval = self::diff($other, $absolute);
+
+        return TimeSpan::createFromDateInterval($interval);
     }
 
     // getters ---------------------------------------------------------------------------------------------------------

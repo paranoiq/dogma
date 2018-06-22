@@ -20,6 +20,7 @@ use Dogma\Time\Format\DateTimeFormatter;
 use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Interval\DateTimeInterval;
 use Dogma\Time\Provider\TimeProvider;
+use Dogma\Time\Span\DateSpan;
 use Dogma\Type;
 
 /**
@@ -83,6 +84,18 @@ class Date implements DateOrTime
         Check::range($day, 1, 31);
 
         return new static(sprintf('%d-%d-%d 00:00:00', $year, $month, $day));
+    }
+
+    public static function createFromIsoYearAndWeek(int $year, int $week, int $dayOfWeek): self
+    {
+        Check::range($year, 1, 9999);
+        Check::range($week, 1, 53);
+        Check::range($dayOfWeek, 1, 7);
+
+        $dateTime = new \DateTime('today 00:00:00');
+        $dateTime->setISODate($year, $week, $dayOfWeek);
+
+        return static::createFromDateTimeInterface($dateTime);
     }
 
     public static function createFromDayNumber(int $dayNumber): self
@@ -171,6 +184,13 @@ class Date implements DateOrTime
         Check::types($date, [\DateTimeInterface::class, self::class]);
 
         return (new \DateTimeImmutable($this->format()))->diff(new \DateTimeImmutable($date->format(self::DEFAULT_FORMAT)), $absolute);
+    }
+
+    public function difference(Date $other, bool $absolute = false): DateSpan
+    {
+        $interval = self::diff($other, $absolute);
+
+        return DateSpan::createFromDateInterval($interval);
     }
 
     public function getStart(?\DateTimeZone $timeZone = null): DateTime

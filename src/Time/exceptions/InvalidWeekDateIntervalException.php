@@ -9,7 +9,7 @@
 
 namespace Dogma\Time;
 
-class InvalidWeekIntervalException extends InvalidIntervalException
+class InvalidWeekDateIntervalException extends InvalidIntervalException
 {
 
     /**
@@ -20,7 +20,7 @@ class InvalidWeekIntervalException extends InvalidIntervalException
     public function __construct(DateOrTime $start, DateOrTime $end, ?\Throwable $previous = null)
     {
         parent::__construct(
-            sprintf('Interval start and end should be aligned to start and end of a week. Start time %s and end time %s are not.', $start->format(), $end->format()),
+            sprintf('Interval start and end should be aligned to start and end of a week (monday and sunday). Start date %s and end date %s are not.', $start->format(), $end->format()),
             $previous
         );
     }
