@@ -3,7 +3,9 @@
 namespace Dogma\Tests\Time\Interval;
 
 use Dogma\Tester\Assert;
+use Dogma\Time\Date;
 use Dogma\Time\DateTime;
+use Dogma\Time\Interval\DateInterval;
 use Dogma\Time\InvalidIntervalStartEndOrderException;
 use Dogma\Time\Interval\DateTimeInterval;
 use Dogma\Time\Interval\DateTimeIntervalSet;
@@ -49,6 +51,9 @@ Assert::equal($interval->getEnd(), new DateTime('2000-01-20 00:00:00.000000'));
 
 // getSpan()
 Assert::equal($interval->getSpan(), new DateTimeSpan(0, 0, 10));
+
+// toDateInterval()
+Assert::equal($interval->toDateInterval(), new DateInterval(new Date('2000-01-10'), new Date('2000-01-19')));
 
 // getLengthInMicroseconds()
 Assert::same($interval->getLengthInMicroseconds(), Microseconds::DAY * 10);

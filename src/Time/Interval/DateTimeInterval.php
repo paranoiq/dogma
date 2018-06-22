@@ -137,6 +137,22 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         return DateTimeSpan::createFromDateInterval($this->start->diff($this->end));
     }
 
+    public function toDateInterval(): DateInterval
+    {
+        if ($this->isEmpty()) {
+            return DateInterval::empty();
+        }
+
+        $start = $this->openStart && $this->start->getTime()->getMicroTime() === Time::MAX_MICROSECONDS
+            ? $this->start->getDate()->addDay()
+            : $this->start->getDate();
+        $end = $this->openEnd && $this->end->getTime()->getMicroTime() === Time::MIN_MICROSECONDS
+            ? $this->end->getDate()->subtractDay()
+            : $this->end->getDate();
+
+        return new DateInterval($start, $end);
+    }
+
     public function toTimestampIntInterval(): IntInterval
     {
         return new IntInterval($this->start->getTimestamp(), $this->end->getTimestamp());

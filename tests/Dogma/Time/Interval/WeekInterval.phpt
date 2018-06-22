@@ -59,3 +59,6 @@ Assert::equal($interval->next(), $next);
 // createOverlappingIntervals()
 Assert::equal(WeekInterval::createOverlappingIntervals($interval), [$interval]);
 Assert::equal(WeekInterval::createOverlappingIntervals(new DateTimeInterval($dt(5), $dt(20))), [$previous, $interval, $next]);
+
+// toDateInterval()
+Assert::same($interval->toDateInterval()->getDayCount(), 7);
