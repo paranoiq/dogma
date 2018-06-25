@@ -28,10 +28,7 @@ interface IntervalSet /*<T>*/ extends Equalable
      */
     public function envelope();//: Interval<T>;
 
-    /**
-     * @return mixed|\Dogma\Math\Interval\IntervalSet
-     */
-    //public function normalize();//: IntervalSet<T>;
+    //public function normalize(): IntervalSet<T>;
 
     //public function add(IntervalSet<T> $set): IntervalSet<T>;
 
