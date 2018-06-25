@@ -27,10 +27,6 @@ Assert::throws(function () {
 Assert::type(new Date(), Date::class);
 Assert::same((new Date('today'))->format(), date(Date::DEFAULT_FORMAT));
 
-// createFromTimestamp()
-Assert::type(Date::createFromTimestamp($timestamp), Date::class);
-Assert::same(Date::createFromTimestamp($timestamp)->format(), $dateString);
-
 // createFromDateTimeInterface()
 Assert::type(Date::createFromDateTimeInterface($dateTime), Date::class);
 Assert::type(Date::createFromDateTimeInterface($dateTimeImmutable), Date::class);

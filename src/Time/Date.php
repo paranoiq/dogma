@@ -63,11 +63,6 @@ class Date implements DateOrDateTime
         }
     }
 
-    public static function createFromTimestamp(int $timestamp): Date
-    {
-        return DateTime::createFromTimestamp($timestamp)->getDate();
-    }
-
     public static function createFromDateTimeInterface(\DateTimeInterface $dateTime): Date
     {
         if ($dateTime instanceof DateTime) {

@@ -53,11 +53,6 @@ class DateInterval implements DateOrTimeInterval
         return new static(Date::createFromDayNumber($interval->getStart()), Date::createFromDayNumber($interval->getEnd()));
     }
 
-    public static function createFromTimestampIntInterval(IntInterval $interval): self
-    {
-        return new static(Date::createFromTimestamp($interval->getStart()), Date::createFromTimestamp($interval->getEnd()));
-    }
-
     public static function empty(): self
     {
         $interval = new static(new Date(), new Date());
