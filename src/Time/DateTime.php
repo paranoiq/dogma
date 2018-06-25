@@ -28,7 +28,7 @@ use Dogma\Type;
  *
  * Comparisons and intervals are based on microseconds since unix epoch, giving a possible range of about ±280.000 years.
  */
-class DateTime extends \DateTimeImmutable implements DateOrTime, \DateTimeInterface
+class DateTime extends \DateTimeImmutable implements DateOrDateTime, \DateTimeInterface
 {
     use StrictBehaviorMixin;
     use NonIterableMixin;

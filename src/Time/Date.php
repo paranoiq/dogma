@@ -26,7 +26,7 @@ use Dogma\Type;
 /**
  * Date class.
  */
-class Date implements DateOrTime
+class Date implements DateOrDateTime
 {
     use StrictBehaviorMixin;
     use NonIterableMixin;
