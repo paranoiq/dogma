@@ -33,6 +33,11 @@ Assert::exception(function () {
     new DateInterval(new Date('today'), new Date('yesterday'));
 }, InvalidIntervalStartEndOrderException::class);
 
+// toDateArray()
+Assert::equal($r(1, 1)->toDateArray(), [$d(1)]);
+Assert::equal($r(1, 2)->toDateArray(), [$d(1), $d(2)]);
+Assert::equal($empty->toDateArray(), []);
+
 // shift()
 Assert::equal($interval->shift('+1 day'), $r(11, 21));
 
