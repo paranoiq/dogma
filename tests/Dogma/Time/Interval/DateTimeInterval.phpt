@@ -144,14 +144,16 @@ Assert::equal($interval->union($all), $s($all));
 Assert::equal($interval->union($empty), $s($interval));
 
 // difference()
-/*
 Assert::equal($interval->difference($r(15, 30)), $s($r(10, 15), $r(20, 30)));
 Assert::equal($interval->difference($r(5, 15)), $s($r(5, 10), $r(15, 20)));
 Assert::equal($interval->difference($r(5, 15), $r(15, 30)), $s($r(5, 10), $r(20, 30)));
 Assert::equal($interval->difference($r(25, 30)), $s($interval, $r(25, 30)));
-Assert::equal($interval->difference($all), $s(new DateTimeInterval(new DateTime(DateTime::MIN), $d(10)), new DateTimeInterval($d(20), new DateTime(DateTime::MAX))));
+Assert::equal($interval->difference($all), $s(
+    new DateTimeInterval(new DateTime(DateTime::MIN), $d(10), false, true),
+    new DateTimeInterval($d(20), new DateTime(DateTime::MAX))
+));
 Assert::equal($interval->difference($empty), $s($interval));
-*/
+
 // subtract()
 Assert::equal($interval->subtract($r(5, 15)), $s($r(15, 20)));
 Assert::equal($interval->subtract($r(15, 25)), $s($r(10, 15)));
