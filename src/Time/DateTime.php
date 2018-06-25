@@ -460,6 +460,26 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, \DateTimeIn
         return DayOfWeek::get((int) $this->format('N'));
     }
 
+    public function getHours(): int
+    {
+        return (int) $this->format('G');
+    }
+
+    public function getMinutes(): int
+    {
+        return (int) $this->format('i');
+    }
+
+    public function getSeconds(): int
+    {
+        return (int) $this->format('s');
+    }
+
+    public function getMicroseconds(): int
+    {
+        return (int) $this->format('u');
+    }
+
     public function fillValues(DateTimeValues $values): void
     {
         $results = explode('|', $this->format('Y|L|z|m|d|N|W|o|H|i|s|v|u|p|P'));
