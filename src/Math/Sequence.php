@@ -63,7 +63,7 @@ class Sequence
     }
 
     /**
-     * Returns firs n primes
+     * Returns first n primes
      * @param int $count
      * @return int[]
      */
