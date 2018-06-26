@@ -13,7 +13,9 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
+use Dogma\Math\ModuloCalc;
 use Dogma\NonIterableMixin;
+use Dogma\NotImplementedException;
 use Dogma\Order;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
@@ -161,6 +163,203 @@ class Time implements DateOrTime
         return $that;
     }
 
+    /**
+     * Round to closest value from given list of values for given unit
+     * (eg. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
+     * @param \Dogma\Time\DateTimeUnit $unit
+     * @param int[]|null $allowedValues
+     * @return \Dogma\Time\Time
+     */
+    public function roundTo(DateTimeUnit $unit, ?array $allowedValues = null): self
+    {
+        if ($allowedValues === null) {
+            $allowedValues = [0];
+        }
+        switch ($unit->getValue()) {
+            case DateTimeUnit::HOUR:
+                [$hours, $overflow] = ModuloCalc::roundTo($this->getHours() + $this->getMinutes() / 60 + $this->getSeconds() / 3600 + $this->getMicroseconds() / 3600 / 1000000, $allowedValues, 24);
+                return static::createFromComponents($hours, 0, 0, 0);
+            case DateTimeUnit::MINUTE:
+                [$minutes, $overflow] = ModuloCalc::roundTo($this->getMinutes() + $this->getSeconds() / 3600 + $this->getMicroseconds() / 3600 / 1000000, $allowedValues, 60);
+                $hours = $this->getHours();
+                if ($overflow) {
+                    $hours++;
+                    if ($hours === 24) {
+                        $hours = 0;
+                    }
+                }
+                return static::createFromComponents($hours, $minutes, 0, 0);
+            case DateTimeUnit::SECOND:
+                [$seconds, $overflow] = ModuloCalc::roundTo($this->getSeconds() + $this->getMicroseconds() / 3600 / 1000000, $allowedValues, 60);
+                $hours = $this->getHours();
+                $minutes = $this->getMinutes();
+                if ($overflow) {
+                    $minutes++;
+                    if ($minutes === 60) {
+                        $minutes = 0;
+                        $hours++;
+                        if ($hours === 24) {
+                            $hours = 0;
+                        }
+                    }
+                }
+                return static::createFromComponents($hours, $minutes, $seconds, 0);
+            case DateTimeUnit::MILISECOND:
+                [$miliseconds, $overflow] = ModuloCalc::roundTo($this->getMicroseconds() / 1000, $allowedValues, 1000);
+                $hours = $this->getHours();
+                $minutes = $this->getMinutes();
+                $seconds = $this->getSeconds();
+                if ($overflow) {
+                    $seconds++;
+                    if ($seconds === 60) {
+                        $seconds = 0;
+                        $minutes++;
+                        if ($minutes === 60) {
+                            $minutes = 0;
+                            $hours++;
+                            if ($hours === 24) {
+                                $hours = 0;
+                            }
+                        }
+                    }
+                }
+                return static::createFromComponents($hours, $minutes, $seconds, $miliseconds * 1000);
+            case DateTimeUnit::MICROSECOND:
+                [$microseconds, $overflow] = ModuloCalc::roundTo($this->getMicroseconds(), $allowedValues, 1000000);
+                $hours = $this->getHours();
+                $minutes = $this->getMinutes();
+                $seconds = $this->getSeconds();
+                if ($overflow) {
+                    $seconds++;
+                    if ($seconds === 60) {
+                        $seconds = 0;
+                        $minutes++;
+                        if ($minutes === 60) {
+                            $minutes = 0;
+                            $hours++;
+                            if ($hours === 24) {
+                                $hours = 0;
+                            }
+                        }
+                    }
+                }
+                return static::createFromComponents($hours, $minutes, $seconds, $microseconds);
+            default:
+                throw new NotImplementedException('Only time units can be aligned.');
+        }
+    }
+
+    /**
+     * Round to firs upper value from given list of values for given unit
+     * (eg. 15:32:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
+     * @param \Dogma\Time\DateTimeUnit $unit
+     * @param int[]|null $allowedValues
+     * @return \Dogma\Time\Time
+     */
+    public function roundUpTo(DateTimeUnit $unit, ?array $allowedValues = null): self
+    {
+        if ($allowedValues === null) {
+            $allowedValues = [0];
+        }
+
+        switch ($unit->getValue()) {
+            case DateTimeUnit::HOUR:
+                [$hours, $overflow] = ModuloCalc::roundUpTo($this->getHours(), $allowedValues, 24);
+                if ($overflow) {
+                    $hours += 24;
+                }
+                return static::createFromComponents($hours, 0, 0, 0);
+            case DateTimeUnit::MINUTE:
+                [$minutes, $overflow] = ModuloCalc::roundUpTo($this->getMinutes(), $allowedValues, 60);
+                $hours = $this->getHours();
+                if ($overflow) {
+                    $hours++;
+                }
+                return static::createFromComponents($hours, $minutes, 0, 0);
+            case DateTimeUnit::SECOND:
+                [$seconds, $overflow] = ModuloCalc::roundUpTo($this->getSeconds(), $allowedValues, 60);
+                $hours = $this->getHours();
+                $minutes = $this->getMinutes();
+                if ($overflow) {
+                    $minutes++;
+                    if ($minutes === 60) {
+                        $minutes = 0;
+                        $hours++;
+                    }
+                }
+                return static::createFromComponents($hours, $minutes, $seconds, 0);
+            case DateTimeUnit::MILISECOND:
+                [$miliseconds, $overflow] = ModuloCalc::roundUpTo((int) ceil($this->getMicroseconds() / 1000), $allowedValues, 1000);
+                $hours = $this->getHours();
+                $minutes = $this->getMinutes();
+                $seconds = $this->getSeconds();
+                if ($overflow) {
+                    $seconds++;
+                    if ($seconds === 60) {
+                        $seconds = 0;
+                        $minutes++;
+                        if ($minutes === 60) {
+                            $minutes = 0;
+                            $hours++;
+                        }
+                    }
+                }
+                return static::createFromComponents($hours, $minutes, $seconds, $miliseconds * 1000);
+            case DateTimeUnit::MICROSECOND:
+                [$microseconds, $overflow] = ModuloCalc::roundUpTo($this->getMicroseconds(), $allowedValues, 1000000);
+                $hours = $this->getHours();
+                $minutes = $this->getMinutes();
+                $seconds = $this->getSeconds();
+                if ($overflow) {
+                    $seconds++;
+                    if ($seconds === 60) {
+                        $seconds = 0;
+                        $minutes++;
+                        if ($minutes === 60) {
+                            $minutes = 0;
+                            $hours++;
+                        }
+                    }
+                }
+                return static::createFromComponents($hours, $minutes, $seconds, $microseconds);
+            default:
+                throw new NotImplementedException('Only time units can be aligned.');
+        }
+    }
+
+    /**
+     * Round to firs lower value from given list of values for given unit
+     * (eg. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:30:00)
+     * @param \Dogma\Time\DateTimeUnit $unit
+     * @param int[]|null $allowedValues
+     * @return \Dogma\Time\Time
+     */
+    public function roundDownTo(DateTimeUnit $unit, ?array $allowedValues = null): self
+    {
+        if ($allowedValues === null) {
+            $allowedValues = [0];
+        }
+        switch ($unit->getValue()) {
+            case DateTimeUnit::HOUR:
+                $hours = ModuloCalc::roundDownTo($this->getHours(), $allowedValues, 24);
+                return static::createFromComponents($hours, 0, 0, 0);
+            case DateTimeUnit::MINUTE:
+                $minutes = ModuloCalc::roundDownTo($this->getMinutes(), $allowedValues, 60);
+                return static::createFromComponents($this->getHours(), $minutes, 0, 0);
+            case DateTimeUnit::SECOND:
+                $seconds = ModuloCalc::roundDownTo($this->getSeconds(), $allowedValues, 60);
+                return static::createFromComponents($this->getHours(), $this->getMinutes(), $seconds, 0);
+            case DateTimeUnit::MILISECOND:
+                $miliseconds = ModuloCalc::roundDownTo((int) floor($this->getMicroseconds() / 1000), $allowedValues, 1000);
+                return static::createFromComponents($this->getHours(), $this->getMinutes(), $this->getSeconds(), $miliseconds * 1000);
+            case DateTimeUnit::MICROSECOND:
+                $microseconds = ModuloCalc::roundDownTo($this->getMicroseconds(), $allowedValues, 1000000);
+                return static::createFromComponents($this->getHours(), $this->getMinutes(), $this->getSeconds(), $microseconds);
+            default:
+                throw new NotImplementedException('Only time units can be aligned.');
+        }
+    }
+
     // queries ---------------------------------------------------------------------------------------------------------
 
     public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeFormatter $formatter = null): string
@@ -285,6 +484,11 @@ class Time implements DateOrTime
     public function getSeconds(): int
     {
         return floor($this->microseconds / 1000000) % 60;
+    }
+
+    public function getMiliseconds(): int
+    {
+        return (int) round(($this->microseconds % 1000000) / 1000);
     }
 
     public function getMicroseconds(): int

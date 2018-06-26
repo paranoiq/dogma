@@ -2,6 +2,7 @@
 
 namespace Dogma\Tests\Time;
 
+use Dogma\Time\DateTimeUnit;
 use Dogma\Time\Time;
 use Dogma\Time\InvalidDateTimeException;
 use Dogma\Tester\Assert;
@@ -115,3 +116,75 @@ Assert::false($time->isSameOrAfter($after));
 Assert::false($time->isBetween(new Time('10:00:00'), new Time('12:00:00')));
 Assert::true($time->isBetween(new Time('02:00:00'), new Time('04:00:00')));
 Assert::true($time->isBetween(new Time('22:00:00'), new TIme('04:00:00')));
+
+// rounding
+
+$hour = DateTimeUnit::hour();
+$minute = DateTimeUnit::minute();
+$second = DateTimeUnit::second();
+$milisecond = DateTimeUnit::milisecond();
+$microsecond = DateTimeUnit::microsecond();
+$hours = [0, 8, 16];
+$minutes = [0, 15, 30, 45];
+$seconds = [0, 15, 30, 45];
+$miliseconds = [0, 250, 500, 750];
+$microseconds = [0, 250000, 500000, 750000];
+$upperTime = new Time('06:12:12.200000');
+$criticalTime = new Time('23:59:59.999999');
+
+// roundTo()
+Assert::equal($time->roundTo($hour, $hours), new Time('00:00:00.000000'));
+Assert::equal($time->roundTo($minute, $minutes), new Time('03:00:00.000000'));
+Assert::equal($time->roundTo($second, $seconds), new Time('03:04:00.000000'));
+Assert::equal($time->roundTo($milisecond, $miliseconds), new Time('03:04:05.000000'));
+Assert::equal($time->roundTo($microsecond, $microseconds), new Time('03:04:05.000000'));
+
+Assert::equal($upperTime->roundTo($hour, $hours), new Time('08:00:00.000000'));
+Assert::equal($upperTime->roundTo($minute, $minutes), new Time('06:15:00.000000'));
+Assert::equal($upperTime->roundTo($second, $seconds), new Time('06:12:15.000000'));
+Assert::equal($upperTime->roundTo($milisecond, $miliseconds), new Time('06:12:12.250000'));
+Assert::equal($upperTime->roundTo($microsecond, $microseconds), new Time('06:12:12.250000'));
+
+Assert::equal($criticalTime->roundTo($hour, $hours), new Time('00:00:00.000000'));
+Assert::equal($criticalTime->roundTo($minute, $minutes), new Time('00:00:00.000000'));
+Assert::equal($criticalTime->roundTo($second, $seconds), new Time('00:00:00.000000'));
+Assert::equal($criticalTime->roundTo($milisecond, $miliseconds), new Time('00:00:00.000000'));
+Assert::equal($criticalTime->roundTo($microsecond, $microseconds), new Time('00:00:00.000000'));
+
+// roundUpTo()
+Assert::equal($time->roundUpTo($hour, $hours), new Time('08:00:00.000000'));
+Assert::equal($time->roundUpTo($minute, $minutes), new Time('03:15:00.000000'));
+Assert::equal($time->roundUpTo($second, $seconds), new Time('03:04:15.000000'));
+Assert::equal($time->roundUpTo($milisecond, $miliseconds), new Time('03:04:05.250000'));
+Assert::equal($time->roundUpTo($microsecond, $microseconds), new Time('03:04:05.250000'));
+
+Assert::equal($upperTime->roundUpTo($hour, $hours), new Time('08:00:00.000000'));
+Assert::equal($upperTime->roundUpTo($minute, $minutes), new Time('06:15:00.000000'));
+Assert::equal($upperTime->roundUpTo($second, $seconds), new Time('06:12:15.000000'));
+Assert::equal($upperTime->roundUpTo($milisecond, $miliseconds), new Time('06:12:12.250000'));
+Assert::equal($upperTime->roundUpTo($microsecond, $microseconds), new Time('06:12:12.250000'));
+
+Assert::equal($criticalTime->roundUpTo($hour, $hours), new Time('00:00:00.000000'));
+Assert::equal($criticalTime->roundUpTo($minute, $minutes), new Time('00:00:00.000000'));
+Assert::equal($criticalTime->roundUpTo($second, $seconds), new Time('00:00:00.000000'));
+Assert::equal($criticalTime->roundUpTo($milisecond, $miliseconds), new Time('00:00:00.000000'));
+Assert::equal($criticalTime->roundUpTo($microsecond, $microseconds), new Time('00:00:00.000000'));
+
+// roundDownTo()
+Assert::equal($time->roundDownTo($hour, $hours), new Time('00:00:00.000000'));
+Assert::equal($time->roundDownTo($minute, $minutes), new Time('03:00:00.000000'));
+Assert::equal($time->roundDownTo($second, $seconds), new Time('03:04:00.000000'));
+Assert::equal($time->roundDownTo($milisecond, $miliseconds), new Time('03:04:05.000000'));
+Assert::equal($time->roundDownTo($microsecond, $microseconds), new Time('03:04:05.000000'));
+
+Assert::equal($upperTime->roundDownTo($hour, $hours), new Time('00:00:00.000000'));
+Assert::equal($upperTime->roundDownTo($minute, $minutes), new Time('06:00:00.000000'));
+Assert::equal($upperTime->roundDownTo($second, $seconds), new Time('06:12:00.000000'));
+Assert::equal($upperTime->roundDownTo($milisecond, $miliseconds), new Time('06:12:12.000000'));
+Assert::equal($upperTime->roundDownTo($microsecond, $microseconds), new Time('06:12:12.000000'));
+
+Assert::equal($criticalTime->roundDownTo($hour, $hours), new Time('16:00:00.000000'));
+Assert::equal($criticalTime->roundDownTo($minute, $minutes), new Time('23:45:00.000000'));
+Assert::equal($criticalTime->roundDownTo($second, $seconds), new Time('23:59:45.000000'));
+Assert::equal($criticalTime->roundDownTo($milisecond, $miliseconds), new Time('23:59:59.750000'));
+Assert::equal($criticalTime->roundDownTo($microsecond, $microseconds), new Time('23:59:59.750000'));

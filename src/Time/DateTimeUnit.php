@@ -19,6 +19,56 @@ class DateTimeUnit extends StringEnum
     public const MILISECOND = 'milisecond';
     public const MICROSECOND = 'microsecond';
 
+    public static function year(): self
+    {
+        return self::get(self::YEAR);
+    }
+
+    public static function quarter(): self
+    {
+        return self::get(self::QUARTER);
+    }
+
+    public static function month(): self
+    {
+        return self::get(self::MONTH);
+    }
+
+    public static function week(): self
+    {
+        return self::get(self::WEEK);
+    }
+
+    public static function day(): self
+    {
+        return self::get(self::DAY);
+    }
+
+    public static function hour(): self
+    {
+        return self::get(self::HOUR);
+    }
+
+    public static function minute(): self
+    {
+        return self::get(self::MINUTE);
+    }
+
+    public static function second(): self
+    {
+        return self::get(self::SECOND);
+    }
+
+    public static function milisecond(): self
+    {
+        return self::get(self::MILISECOND);
+    }
+
+    public static function microsecond(): self
+    {
+        return self::get(self::MICROSECOND);
+    }
+
     /**
      * @return string[]
      */
