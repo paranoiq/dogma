@@ -78,6 +78,16 @@ class DateInterval implements DateOrTimeInterval
         return new static($this->start->modify($value), $this->end->modify($value));
     }
 
+    public function setStart(Date $start): self
+    {
+        return new static($start, $this->end);
+    }
+
+    public function setEnd(Date $end): self
+    {
+        return new static($this->start, $end);
+    }
+
     // queries ---------------------------------------------------------------------------------------------------------
 
     public function getSpan(): DateTimeSpan

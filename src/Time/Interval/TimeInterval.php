@@ -116,6 +116,16 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
         return new static($this->start->modify($value), $this->end->modify($value), $this->openStart, $this->openEnd);
     }
 
+    public function setStart(Time $start): self
+    {
+        return new static($start, $this->end, $this->openStart, $this->openEnd);
+    }
+
+    public function setEnd(Time $end): self
+    {
+        return new static($this->start, $end, $this->openStart, $this->openEnd);
+    }
+
     // queries ---------------------------------------------------------------------------------------------------------
 
     public function getSpan(): DateTimeSpan

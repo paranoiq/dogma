@@ -17,8 +17,8 @@ class ModuloCalc
     use StaticClassMixin;
 
     /**
-     * Rounds value to the closest value from give set.
-     * Sets $overflow return parameter to true when maximal value is picked, but minimal value is returned.
+     * Rounds value to the closest value from given set.
+     * Sets overflow to true when maximal value is picked, but minimal value is returned.
      * @param int|float $value
      * @param int[]|float[] $allowedValues
      * @param int $modulus
@@ -55,8 +55,8 @@ class ModuloCalc
     }
 
     /**
-     * Rounds value to first bigger or same value.
-     * Sets $overflow return parameter to true when maximal value is picked, but minimal value is returned.
+     * Rounds value to first bigger or same value from given set.
+     * Sets overflow to true when maximal value is picked, but minimal value is returned.
      * @param int|float $value
      * @param int[]|float[] $allowedValues
      * @param int $modulus
@@ -90,7 +90,7 @@ class ModuloCalc
     }
 
     /**
-     * Rounds value up to first smaller or same value.
+     * Rounds value up to first smaller or same value from given set.
      * Cannot overflow.
      * @param int|float $value
      * @param int[]|float[] $allowedValues
