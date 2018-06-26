@@ -866,6 +866,36 @@ class Arr
         return $res;
     }
 
+    /**
+     * @param mixed[] $array
+     * @param int $positions
+     * @return mixed[]
+     */
+    public static function rotateLeft(array $array, int $positions = 1): array
+    {
+        if ($array === []) {
+            return $array;
+        }
+        $positions = $positions % count($array);
+
+        return array_merge(array_slice($array, $positions), array_slice($array, 0, $positions));
+    }
+
+    /**
+     * @param mixed[] $array
+     * @param int $positions
+     * @return mixed[]
+     */
+    public static function rotateRight(array $array, int $positions = 1): array
+    {
+        if ($array === []) {
+            return $array;
+        }
+        $positions = $positions % count($array);
+
+        return array_merge(array_slice($array, -$positions), array_slice($array, 0, -$positions));
+    }
+
     // filtering -------------------------------------------------------------------------------------------------------
 
     /**

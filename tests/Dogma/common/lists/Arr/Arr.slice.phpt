@@ -111,3 +111,13 @@ Assert::same(Arr::takeRight($empty, 2), []);
 // takeWhile()
 Assert::same(Arr::takeWhile($array, $f), [1, 2]);
 Assert::same(Arr::takeWhile($empty, $f), []);
+
+// rotateLeft()
+Assert::same(Arr::rotateLeft([], 2), []);
+Assert::same(Arr::rotateLeft([1, 2, 3, 4, 5, 6], 2), [3, 4, 5, 6, 1, 2]);
+Assert::same(Arr::rotateLeft([1, 2, 3, 4, 5, 6], 8), [3, 4, 5, 6, 1, 2]);
+
+// rotateRight()
+Assert::same(Arr::rotateRight([], 2), []);
+Assert::same(Arr::rotateRight([1, 2, 3, 4, 5, 6], 2), [5, 6, 1, 2, 3, 4]);
+Assert::same(Arr::rotateRight([1, 2, 3, 4, 5, 6], 8), [5, 6, 1, 2, 3, 4]);
