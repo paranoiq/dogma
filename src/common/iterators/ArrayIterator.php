@@ -17,7 +17,7 @@ class ArrayIterator implements \Iterator
     use StrictBehaviorMixin;
 
     /** @var mixed[] */
-    private $array;
+    protected $array;
 
     /**
      * @param mixed[] $array
