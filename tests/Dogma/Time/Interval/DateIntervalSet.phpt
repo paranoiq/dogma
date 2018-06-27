@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Dogma\Tests\Math\Interval;
+namespace Dogma\Tests\Time\Interval;
 
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;

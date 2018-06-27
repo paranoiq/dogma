@@ -337,7 +337,7 @@ class Date implements DateOrDateTime
 
     public function getDayOfWeek(): int
     {
-        return (int) $this->format('N');
+        return ($this->dayNumber % 7) + 1;
     }
 
     public function getDayOfWeekEnum(): DayOfWeek
