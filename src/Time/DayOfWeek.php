@@ -69,4 +69,11 @@ class DayOfWeek extends IntEnum
         return self::getShortcuts()[$this->getValue()];
     }
 
+    public function isWeekend(): bool
+    {
+        $value = $this->getValue();
+
+        return $value === self::SATURDAY || $value === self::SUNDAY;
+    }
+
 }
