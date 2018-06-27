@@ -14,6 +14,7 @@ use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntInterval;
+use Dogma\Math\Interval\IntervalParser;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\InvalidIntervalStartEndOrderException;
@@ -51,6 +52,25 @@ class DateInterval implements DateOrTimeInterval
     public static function createFromDayNumberIntInterval(IntInterval $interval): self
     {
         return new static(Date::createFromDayNumber($interval->getStart()), Date::createFromDayNumber($interval->getEnd()));
+    }
+
+    public static function createFromString(string $string): self
+    {
+        [$start, $end, $openStart, $openEnd] = IntervalParser::parseString($string);
+
+        $start = new Date($start);
+        $end = new Date($end);
+        if ($openStart) {
+            $start = $start->addDay();
+        }
+        if ($openEnd) {
+            $end = $end->subtractDay();
+        }
+        if ($start->getDayNumber() > $end->getDayNumber()) {
+            return self::empty();
+        }
+
+        return new static($start, $end);
     }
 
     public static function empty(): self

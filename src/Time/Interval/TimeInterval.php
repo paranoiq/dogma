@@ -13,6 +13,7 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
+use Dogma\Math\Interval\IntervalParser;
 use Dogma\Math\Interval\OpenClosedInterval;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\InvalidTimeIntervalException;
@@ -50,7 +51,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
     /** @var bool */
     private $openEnd = false;
 
-    public function __construct(Time $start, Time $end, bool $openStart = false, bool $openEnd = false)
+    public function __construct(Time $start, Time $end, bool $openStart = false, bool $openEnd = true)
     {
         $startTime = $start->getMicroTime();
         $endTime = $end->getMicroTime();
@@ -77,6 +78,16 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
         $this->end = $end;
         $this->openStart = $openStart;
         $this->openEnd = $openEnd;
+    }
+
+    public static function createFromString(string $string): self
+    {
+        [$start, $end, $openStart, $openEnd] = IntervalParser::parseString($string);
+
+        $start = new Time($start);
+        $end = new Time($end);
+
+        return new static($start, $end, $openStart ?? false, $openEnd ?? true);
     }
 
     public static function closed(Time $start, Time $end): self

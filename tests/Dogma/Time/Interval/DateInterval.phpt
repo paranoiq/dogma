@@ -2,6 +2,7 @@
 
 namespace Dogma\Tests\Time\Interval;
 
+use Dogma\Math\Interval\InvalidIntervalStringFormatException;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
 use Dogma\Time\InvalidIntervalStartEndOrderException;
@@ -32,6 +33,22 @@ $s = function (DateInterval ...$items) {
 Assert::exception(function () {
     new DateInterval(new Date('today'), new Date('yesterday'));
 }, InvalidIntervalStartEndOrderException::class);
+
+// createFromString()
+Assert::equal(DateInterval::createFromString('2000-01-10,2000-01-20'), $interval);
+Assert::equal(DateInterval::createFromString('2000-01-10|2000-01-20'), $interval);
+Assert::equal(DateInterval::createFromString('2000-01-10/2000-01-20'), $interval);
+Assert::equal(DateInterval::createFromString('2000-01-10 - 2000-01-20'), $interval);
+Assert::equal(DateInterval::createFromString('[2000-01-10,2000-01-20]'), $interval);
+Assert::equal(DateInterval::createFromString('[2000-01-10,2000-01-21)'), $interval);
+Assert::equal(DateInterval::createFromString('(2000-01-09,2000-01-21)'), $interval);
+Assert::equal(DateInterval::createFromString('(2000-01-09,2000-01-20]'), $interval);
+Assert::exception(function () {
+    DateInterval::createFromString('foo|bar|baz');
+}, InvalidIntervalStringFormatException::class);
+Assert::exception(function () {
+    DateInterval::createFromString('foo');
+}, InvalidIntervalStringFormatException::class);
 
 // toDateArray()
 Assert::equal($r(1, 1)->toDateArray(), [$d(1)]);

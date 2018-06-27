@@ -2,6 +2,7 @@
 
 namespace Dogma\Tests\Time\Interval;
 
+use Dogma\Math\Interval\InvalidIntervalStringFormatException;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
@@ -16,7 +17,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 $startDate = new DateTime('2000-01-10 00:00:00.000000');
 $endDate = new DateTime('2000-01-20 00:00:00.000000');
-$interval = DateTimeInterval::openEnd($startDate, $endDate);
+$interval = new DateTimeInterval($startDate, $endDate);
 $empty = DateTimeInterval::empty();
 $all = DateTimeInterval::all();
 
@@ -39,6 +40,22 @@ $s = function (DateTimeInterval ...$items) {
 Assert::exception(function () {
     new DateTimeInterval(new DateTime('today'), new DateTime('yesterday'));
 }, InvalidIntervalStartEndOrderException::class);
+
+// createFromString()
+Assert::equal(DateTimeInterval::createFromString('2000-01-10 00:00,2000-01-20 00:00'), $interval);
+Assert::equal(DateTimeInterval::createFromString('2000-01-10 00:00|2000-01-20 00:00'), $interval);
+Assert::equal(DateTimeInterval::createFromString('2000-01-10 00:00/2000-01-20 00:00'), $interval);
+Assert::equal(DateTimeInterval::createFromString('2000-01-10 00:00 - 2000-01-20 00:00'), $interval);
+Assert::equal(DateTimeInterval::createFromString('[2000-01-10 00:00,2000-01-20 00:00]'), new DateTimeInterval($startDate, $endDate, false, false));
+Assert::equal(DateTimeInterval::createFromString('[2000-01-10 00:00,2000-01-20 00:00)'), $interval);
+Assert::equal(DateTimeInterval::createFromString('(2000-01-10 00:00,2000-01-20 00:00)'), new DateTimeInterval($startDate, $endDate, true, true));
+Assert::equal(DateTimeInterval::createFromString('(2000-01-10 00:00,2000-01-20 00:00]'), new DateTimeInterval($startDate, $endDate, true, false));
+Assert::exception(function () {
+    DateTimeInterval::createFromString('foo|bar|baz');
+}, InvalidIntervalStringFormatException::class);
+Assert::exception(function () {
+    DateTimeInterval::createFromString('foo');
+}, InvalidIntervalStringFormatException::class);
 
 // shift()
 Assert::equal($interval->shift('+1 day'), $r(11, 21));

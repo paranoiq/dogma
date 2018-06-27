@@ -2,6 +2,7 @@
 
 namespace Dogma\Tests\Time\Interval;
 
+use Dogma\Math\Interval\InvalidIntervalStringFormatException;
 use Dogma\Str;
 use Dogma\Tester\Assert;
 use Dogma\Time\Interval\TimeInterval;
@@ -15,7 +16,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 $startTime = new Time('10:00:00.000000');
 $endTime = new Time('20:00:00.000000');
-$interval = TimeInterval::openEnd($startTime, $endTime);
+$interval = new TimeInterval($startTime, $endTime);
 
 $empty = TimeInterval::empty();
 $all = TimeInterval::all();
@@ -34,6 +35,22 @@ $r = function (int $start, int $end, bool $openStart = false, bool $openEnd = tr
 $s = function (TimeInterval ...$items) {
     return new TimeIntervalSet($items);
 };
+
+// createFromString()
+Assert::equal(TimeInterval::createFromString('10:00,20:00'), $interval);
+Assert::equal(TimeInterval::createFromString('10:00|20:00'), $interval);
+Assert::equal(TimeInterval::createFromString('10:00/20:00'), $interval);
+Assert::equal(TimeInterval::createFromString('10:00 - 20:00'), $interval);
+Assert::equal(TimeInterval::createFromString('[10:00,20:00]'), new TimeInterval($startTime, $endTime, false, false));
+Assert::equal(TimeInterval::createFromString('[10:00,20:00)'), $interval);
+Assert::equal(TimeInterval::createFromString('(10:00,20:00)'), new TimeInterval($startTime, $endTime, true, true));
+Assert::equal(TimeInterval::createFromString('(10:00,20:00]'), new TimeInterval($startTime, $endTime, true, false));
+Assert::exception(function () {
+    TimeInterval::createFromString('foo|bar|baz');
+}, InvalidIntervalStringFormatException::class);
+Assert::exception(function () {
+    TimeInterval::createFromString('foo');
+}, InvalidIntervalStringFormatException::class);
 
 // shift()
 Assert::equal($interval->shift('+1 hour'), $r(11, 21));
@@ -139,7 +156,7 @@ Assert::equal($interval->difference($r(15, 25)), $s($r(10, 15), $r(20, 25)));
 Assert::equal($interval->difference($r(5, 15)), $s($r(5, 10), $r(15, 20)));
 Assert::equal($interval->difference($r(5, 15), $r(15, 25)), $s($r(5, 10), $r(20, 25)));
 Assert::equal($interval->difference($r(22, 25)), $s($interval, $r(22, 25)));
-Assert::equal($interval->difference($all), $s(new TimeInterval(new Time(Time::MIN), $t(10), false, true), new TimeInterval($t(20), new Time(Time::MAX))));
+Assert::equal($interval->difference($all), $s(new TimeInterval(new Time(Time::MIN), $t(10), false, true), new TimeInterval($t(20), new Time(Time::MAX), false, false)));
 Assert::equal($interval->difference($empty), $s($interval));
 
 // subtract()
@@ -153,7 +170,7 @@ Assert::equal($all->subtract($empty), $s($all));
 Assert::equal($empty->subtract($empty), $s());
 
 // invert()
-Assert::equal($interval->invert(), $s(new TimeInterval(new Time(Time::MIN), $t(10), false, true), new TimeInterval($t(20), new Time(Time::MAX))));
+Assert::equal($interval->invert(), $s(new TimeInterval(new Time(Time::MIN), $t(10), false, true), new TimeInterval($t(20), new Time(Time::MAX), false, false)));
 Assert::equal($empty->invert(), $s($all));
 Assert::equal($all->invert(), $s($empty));
 

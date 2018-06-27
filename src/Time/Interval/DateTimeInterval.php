@@ -14,6 +14,7 @@ use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntInterval;
+use Dogma\Math\Interval\IntervalParser;
 use Dogma\Math\Interval\OpenClosedInterval;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
@@ -46,7 +47,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
     /** @var bool */
     private $openEnd;
 
-    public function __construct(DateTime $start, DateTime $end, bool $openStart = false, bool $openEnd = false)
+    public function __construct(DateTime $start, DateTime $end, bool $openStart = false, bool $openEnd = true)
     {
         $this->start = $start;
         $this->end = $end;
@@ -65,6 +66,16 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         }
     }
 
+    public static function createFromString(string $string): self
+    {
+        [$start, $end, $openStart, $openEnd] = IntervalParser::parseString($string);
+
+        $start = new DateTime($start);
+        $end = new DateTime($end);
+
+        return new static($start, $end, $openStart ?? false, $openEnd ?? true);
+    }
+
     public static function createFromDateAndTimeInterval(Date $date, TimeInterval $timeInterval, ?\DateTimeZone $timeZone = null): self
     {
         return new static(
@@ -75,7 +86,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         );
     }
 
-    public static function createFromDateIntervalAndTime(DateInterval $dateInterval, Time $time, ?\DateTimeZone $timeZone = null, bool $openStart = false, bool $openEnd = false): self
+    public static function createFromDateIntervalAndTime(DateInterval $dateInterval, Time $time, ?\DateTimeZone $timeZone = null, bool $openStart = false, bool $openEnd = true): self
     {
         return new static(
             DateTime::createFromDateAndTime($dateInterval->getStart(), $time, $timeZone),
