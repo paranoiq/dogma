@@ -27,7 +27,6 @@ Assert::throws(static function (): void {
 
 Assert::same((new Time($timeString))->format(), $timeString);
 
-
 createFromComponents:
 Assert::throws(static function (): void {
     Time::createFromComponents(-1, 0, 0);
