@@ -76,10 +76,21 @@ Assert::false($interval->isEmpty());
 Assert::false($all->isEmpty());
 Assert::true($empty->isEmpty());
 
+// isOverMidnight()
+Assert::false($interval->isOverMidnight());
+Assert::true(TimeInterval::createFromString('20:00 - 04:00')->isOverMidnight());
+
 // equals()
 Assert::true($interval->equals($r(10, 20)));
 Assert::false($interval->equals($r(10, 15)));
 Assert::false($interval->equals($r(15, 20)));
+
+// compare()
+Assert::same($interval->compare($r(10, 19)), 1);
+Assert::same($interval->compare($r(10, 21)), -1);
+Assert::same($interval->compare($interval), 0);
+Assert::same($interval->compare($r(9, 19)), 1);
+Assert::same($interval->compare($r(11, 21)), -1);
 
 // containsValue()
 Assert::true($interval->containsValue($t(10)));

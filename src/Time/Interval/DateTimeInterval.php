@@ -13,7 +13,6 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
-use Dogma\Math\Interval\IntInterval;
 use Dogma\Math\Interval\IntervalParser;
 use Dogma\Math\Interval\OpenClosedInterval;
 use Dogma\StrictBehaviorMixin;
@@ -168,16 +167,6 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
             : $this->end->getDate();
 
         return new DateInterval($start, $end);
-    }
-
-    public function toTimestampIntInterval(): IntInterval
-    {
-        return new IntInterval($this->start->getTimestamp(), $this->end->getTimestamp());
-    }
-
-    public function toMicroTimestampIntInterval(): IntInterval
-    {
-        return new IntInterval($this->start->getMicroTimestamp(), $this->end->getMicroTimestamp());
     }
 
     public function getLengthInMicroseconds(): int

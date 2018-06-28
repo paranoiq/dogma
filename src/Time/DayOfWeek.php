@@ -27,6 +27,41 @@ class DayOfWeek extends IntEnum
     public const SATURDAY = 6;
     public const SUNDAY = 7;
 
+    public static function monday(): self
+    {
+        return self::get(self::MONDAY);
+    }
+
+    public static function tuesday(): self
+    {
+        return self::get(self::TUESDAY);
+    }
+
+    public static function wednesday(): self
+    {
+        return self::get(self::WEDNESDAY);
+    }
+
+    public static function thursday(): self
+    {
+        return self::get(self::THURSDAY);
+    }
+
+    public static function friday(): self
+    {
+        return self::get(self::FRIDAY);
+    }
+
+    public static function saturday(): self
+    {
+        return self::get(self::SATURDAY);
+    }
+
+    public static function sunday(): self
+    {
+        return self::get(self::SUNDAY);
+    }
+
     /**
      * @return string[]
      */

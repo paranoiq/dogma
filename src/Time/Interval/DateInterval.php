@@ -49,11 +49,6 @@ class DateInterval implements DateOrTimeInterval
         }
     }
 
-    public static function createFromDayNumberIntInterval(IntInterval $interval): self
-    {
-        return new static(Date::createFromDayNumber($interval->getStart()), Date::createFromDayNumber($interval->getEnd()));
-    }
-
     public static function createFromString(string $string): self
     {
         [$start, $end, $openStart, $openEnd] = IntervalParser::parseString($string);

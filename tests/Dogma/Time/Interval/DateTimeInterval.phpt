@@ -7,11 +7,14 @@ use Dogma\Tester\Assert;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
 use Dogma\Time\Interval\DateInterval;
+use Dogma\Time\Interval\TimeInterval;
+use Dogma\Time\InvalidFormattingStringException;
 use Dogma\Time\InvalidIntervalStartEndOrderException;
 use Dogma\Time\Interval\DateTimeInterval;
 use Dogma\Time\Interval\DateTimeIntervalSet;
 use Dogma\Time\Microseconds;
 use Dogma\Time\Span\DateTimeSpan;
+use Dogma\Time\Time;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -57,6 +60,24 @@ Assert::exception(function () {
     DateTimeInterval::createFromString('foo');
 }, InvalidIntervalStringFormatException::class);
 
+// createFromDateAndTimeInterval()
+Assert::equal(DateTimeInterval::createFromDateAndTimeInterval(
+    new Date('2000-01-01'),
+    new TimeInterval(new Time('10:00'), new Time('20:00'))
+), DateTimeInterval::createFromString('2000-01-01 10:00 - 2000-01-01 20:00'));
+
+// createFromDateIntervalAndTime()
+Assert::equal(DateTimeInterval::createFromDateIntervalAndTime(
+    DateInterval::createFromString('2000-01-01 - 2000-01-05'),
+    new Time('10:00')
+), DateTimeInterval::createFromString('2000-01-01 10:00 - 2000-01-05 10:00'));
+
+// format()
+Assert::same($interval->format('d|-d'), '10-20');
+Assert::exception(function () use ($interval) {
+    $interval->format('d|-d|-d');
+}, InvalidFormattingStringException::class);
+
 // shift()
 Assert::equal($interval->shift('+1 day'), $r(11, 21));
 
@@ -85,6 +106,13 @@ Assert::true($empty->isEmpty());
 Assert::true($interval->equals($r(10, 20)));
 Assert::false($interval->equals($r(10, 15)));
 Assert::false($interval->equals($r(15, 20)));
+
+// compare()
+Assert::same($interval->compare($r(10, 19)), 1);
+Assert::same($interval->compare($r(10, 21)), -1);
+Assert::same($interval->compare($interval), 0);
+Assert::same($interval->compare($r(9, 19)), 1);
+Assert::same($interval->compare($r(11, 21)), -1);
 
 // containsValue()
 Assert::true($interval->containsValue($d(10)));

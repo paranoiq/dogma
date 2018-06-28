@@ -26,7 +26,7 @@ Assert::throws(function () {
 
 Assert::same((new Time($timeString))->format(), $timeString);
 
-// createFromParts()
+// createFromComponents()
 Assert::throws(function () {
     Time::createFromComponents(-1, 0, 0);
 }, ValueOutOfRangeException::class);

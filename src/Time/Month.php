@@ -29,6 +29,66 @@ class Month extends IntEnum
     public const NOVEMBER = 11;
     public const DECEMBER = 12;
 
+    public static function january(): self
+    {
+        return self::get(self::JANUARY);
+    }
+
+    public static function february(): self
+    {
+        return self::get(self::FEBRUARY);
+    }
+
+    public static function march(): self
+    {
+        return self::get(self::MARCH);
+    }
+
+    public static function april(): self
+    {
+        return self::get(self::APRIL);
+    }
+
+    public static function may(): self
+    {
+        return self::get(self::MAY);
+    }
+
+    public static function june(): self
+    {
+        return self::get(self::JUNE);
+    }
+
+    public static function july(): self
+    {
+        return self::get(self::JULY);
+    }
+
+    public static function august(): self
+    {
+        return self::get(self::AUGUST);
+    }
+
+    public static function september(): self
+    {
+        return self::get(self::SEPTEMBER);
+    }
+
+    public static function october(): self
+    {
+        return self::get(self::OCTOBER);
+    }
+
+    public static function november(): self
+    {
+        return self::get(self::NOVEMBER);
+    }
+
+    public static function december(): self
+    {
+        return self::get(self::DECEMBER);
+    }
+
     /**
      * @return string[]
      */

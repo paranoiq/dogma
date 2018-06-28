@@ -130,7 +130,7 @@ class DateTimeUnit extends StringEnum
      */
     public function getComparisonFormat(): string
     {
-        return self::getComparisonFormat()[$this->getValue()];
+        return self::getComparisonFormats()[$this->getValue()];
     }
 
 }

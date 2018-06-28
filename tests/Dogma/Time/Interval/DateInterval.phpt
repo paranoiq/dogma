@@ -55,6 +55,9 @@ Assert::equal($r(1, 1)->toDateArray(), [$d(1)]);
 Assert::equal($r(1, 2)->toDateArray(), [$d(1), $d(2)]);
 Assert::equal($empty->toDateArray(), []);
 
+// format()
+Assert::same($interval->format('d|-d'), '10-20');
+
 // shift()
 Assert::equal($interval->shift('+1 day'), $r(11, 21));
 
@@ -87,6 +90,13 @@ Assert::true($empty->isEmpty());
 Assert::true($interval->equals($r(10, 20)));
 Assert::false($interval->equals($r(10, 15)));
 Assert::false($interval->equals($r(15, 20)));
+
+// compare()
+Assert::same($interval->compare($r(10, 19)), 1);
+Assert::same($interval->compare($r(10, 21)), -1);
+Assert::same($interval->compare($interval), 0);
+Assert::same($interval->compare($r(9, 19)), 1);
+Assert::same($interval->compare($r(11, 21)), -1);
 
 // containsValue()
 Assert::true($interval->containsValue($d(10)));

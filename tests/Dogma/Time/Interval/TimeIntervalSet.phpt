@@ -6,7 +6,6 @@ use Dogma\Tester\Assert;
 use Dogma\Time\Interval\TimeInterval;
 use Dogma\Time\Interval\TimeIntervalSet;
 use Dogma\Time\Microseconds;
-use Dogma\Time\Seconds;
 use Dogma\Time\Time;
 
 require_once __DIR__ . '/../../bootstrap.php';

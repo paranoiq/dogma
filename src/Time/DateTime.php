@@ -499,6 +499,10 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, \DateTimeIn
 
     public function equalsUpTo(\DateTimeInterface $other, DateTimeUnit $unit): bool
     {
+        if ($unit->equals(DateTimeUnit::QUARTER)) {
+            return $this->getYear() === (int) $other->format('Y')
+                && (int) ceil($this->getMonth() / 3) === (int) ceil($other->format('m') / 3);
+        }
         $format = $unit->getComparisonFormat();
 
         return $this->format($format) === $other->format($format);
