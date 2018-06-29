@@ -3,6 +3,7 @@
 namespace Dogma\Tests\Time;
 
 use Dogma\InvalidValueException;
+use Dogma\Tester\Assert;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
 use Dogma\Time\DateTimeUnit;
@@ -11,7 +12,6 @@ use Dogma\Time\InvalidDateTimeException;
 use Dogma\Time\Month;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Time;
-use Dogma\Tester\Assert;
 use Dogma\Time\TimeZone;
 
 require_once __DIR__ . '/../bootstrap.php';
@@ -38,7 +38,7 @@ $dateTimeImmutable = new \DateTimeImmutable($dateTimeString);
 Assert::type(DateTime::createFromFormat(DateTime::DEFAULT_FORMAT, $dateTimeString), DateTime::class);
 Assert::same(DateTime::createFromFormat(DateTime::DEFAULT_FORMAT, $dateTimeString)->format(), $dateTimeString);
 Assert::equal(DateTime::createFromFormat(DateTime::DEFAULT_FORMAT, $dateTimeString, $utcTimeZone)->getTimezone(), $utcTimeZone);
-Assert::exception(function () {
+Assert::exception(function (): void {
     DateTime::createFromFormat('Y-m-d', '12:00:00');
 }, InvalidDateTimeException::class);
 
@@ -265,17 +265,17 @@ $saturday = new Date('2016-11-05');
 $sunday = new Date('2016-11-06');
 
 // getDayOfWeekEnum()
-Assert::same($monday->getDayOfWeekEnum(), DayOfWeek::get(DayOfWeek::MONDAY));
-Assert::same($friday->getDayOfWeekEnum(), DayOfWeek::get(DayOfWeek::FRIDAY));
-Assert::same($saturday->getDayOfWeekEnum(), DayOfWeek::get(DayOfWeek::SATURDAY));
-Assert::same($sunday->getDayOfWeekEnum(), DayOfWeek::get(DayOfWeek::SUNDAY));
+Assert::same($monday->getDayOfWeekEnum(), DayOfWeek::monday());
+Assert::same($friday->getDayOfWeekEnum(), DayOfWeek::friday());
+Assert::same($saturday->getDayOfWeekEnum(), DayOfWeek::saturday());
+Assert::same($sunday->getDayOfWeekEnum(), DayOfWeek::sunday());
 
 // isDayOfWeek()
 Assert::true($monday->isDayOfWeek(1));
-Assert::true($monday->isDayOfWeek(DayOfWeek::get(DayOfWeek::MONDAY)));
+Assert::true($monday->isDayOfWeek(DayOfWeek::monday()));
 Assert::false($monday->isDayOfWeek(7));
-Assert::false($monday->isDayOfWeek(DayOfWeek::get(DayOfWeek::SUNDAY)));
-Assert::exception(function () use ($monday) {
+Assert::false($monday->isDayOfWeek(DayOfWeek::sunday()));
+Assert::exception(function () use ($monday): void {
     $monday->isDayOfWeek(8);
 }, InvalidValueException::class);
 
@@ -286,14 +286,14 @@ Assert::true($saturday->isWeekend());
 Assert::true($sunday->isWeekend());
 
 // getMonthEnum()
-Assert::same($monday->getMonthEnum(), Month::get(Month::NOVEMBER));
+Assert::same($monday->getMonthEnum(), Month::november());
 
 // isMonth()
 Assert::true($monday->isMonth(11));
-Assert::true($monday->isMonth(Month::get(Month::NOVEMBER)));
+Assert::true($monday->isMonth(Month::november()));
 Assert::false($monday->isMonth(12));
-Assert::false($monday->isMonth(Month::get(Month::DECEMBER)));
-Assert::exception(function () use ($monday) {
+Assert::false($monday->isMonth(Month::december()));
+Assert::exception(function () use ($monday): void {
     $monday->isMonth(13);
 }, InvalidValueException::class);
 

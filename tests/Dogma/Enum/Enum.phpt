@@ -11,8 +11,13 @@ require_once __DIR__ . '/../bootstrap.php';
 class TestEnum extends IntEnum
 {
 
+    /** @var int */
     public const ONE = 1;
+
+    /** @var int */
     public const TWO = 2;
+
+    /** @var int */
     public const THREE = 3;
 
 }
@@ -33,8 +38,8 @@ Assert::same($one->getValue(), 1);
 Assert::same($one->getConstantName(), 'ONE');
 
 // equals()
-Assert::exception(function () use ($one) {
-    $one->equals(new \stdClass);
+Assert::exception(function () use ($one): void {
+    $one->equals(new \stdClass());
 }, InvalidTypeException::class);
 Assert::false($one->equals($two));
 Assert::true($one->equals($oneAgain));

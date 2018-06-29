@@ -12,12 +12,13 @@ require_once __DIR__ . '/../../bootstrap.php';
 class TestClass
 {
     use StaticClassMixin;
+
 }
 
-Assert::throws(function () {
+Assert::throws(function (): void {
     $x = new TestClass();
 }, StaticClassException::class);
 
-Assert::throws(function () {
+Assert::throws(function (): void {
     TestClass::method();
 }, UndefinedMethodException::class);

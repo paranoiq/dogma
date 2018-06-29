@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $array = [1, 2, 3, 4];
 $empty = [];
 
-$f = function ($v) {
+$f = function ($v): bool {
     return $v < 3;
 };
 

@@ -48,7 +48,7 @@ Assert::same($array->indexWhere(function (int $v): bool {
 }, 2), 3);
 
 // lastIndexWhere()
-Assert::null($array->lastIndexWhere(function () {
+Assert::null($array->lastIndexWhere(function (): bool {
     return false;
 }));
 Assert::same($array->lastIndexWhere(function (int $v): bool {

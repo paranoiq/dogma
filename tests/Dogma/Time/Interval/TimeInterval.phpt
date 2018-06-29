@@ -21,10 +21,10 @@ $interval = new TimeInterval($startTime, $endTime);
 $empty = TimeInterval::empty();
 $all = TimeInterval::all();
 
-$t = function (int $hour) {
+$t = function (int $hour): Time {
     return new Time(Str::padLeft($hour, 2, '0') . ':00:00.000000');
 };
-$r = function (int $start, int $end, bool $openStart = false, bool $openEnd = true) {
+$i = function (int $start, int $end, bool $openStart = false, bool $openEnd = true): TimeInterval {
     return new TimeInterval(
         new Time(Str::padLeft($start, 2, '0') . ':00:00.000000'),
         new Time(Str::padLeft($end, 2, '0') . ':00:00.000000'),
@@ -32,7 +32,7 @@ $r = function (int $start, int $end, bool $openStart = false, bool $openEnd = tr
         $openEnd
     );
 };
-$s = function (TimeInterval ...$items) {
+$s = function (TimeInterval ...$items): TimeIntervalSet {
     return new TimeIntervalSet($items);
 };
 
@@ -45,15 +45,15 @@ Assert::equal(TimeInterval::createFromString('[10:00,20:00]'), new TimeInterval(
 Assert::equal(TimeInterval::createFromString('[10:00,20:00)'), $interval);
 Assert::equal(TimeInterval::createFromString('(10:00,20:00)'), new TimeInterval($startTime, $endTime, true, true));
 Assert::equal(TimeInterval::createFromString('(10:00,20:00]'), new TimeInterval($startTime, $endTime, true, false));
-Assert::exception(function () {
+Assert::exception(function (): void {
     TimeInterval::createFromString('foo|bar|baz');
 }, InvalidIntervalStringFormatException::class);
-Assert::exception(function () {
+Assert::exception(function (): void {
     TimeInterval::createFromString('foo');
 }, InvalidIntervalStringFormatException::class);
 
 // shift()
-Assert::equal($interval->shift('+1 hour'), $r(11, 21));
+Assert::equal($interval->shift('+1 hour'), $i(11, 21));
 
 // getStart()
 Assert::equal($interval->getStart(), new Time('10:00:00.000000'));
@@ -81,16 +81,16 @@ Assert::false($interval->isOverMidnight());
 Assert::true(TimeInterval::createFromString('20:00 - 04:00')->isOverMidnight());
 
 // equals()
-Assert::true($interval->equals($r(10, 20)));
-Assert::false($interval->equals($r(10, 15)));
-Assert::false($interval->equals($r(15, 20)));
+Assert::true($interval->equals($i(10, 20)));
+Assert::false($interval->equals($i(10, 15)));
+Assert::false($interval->equals($i(15, 20)));
 
 // compare()
-Assert::same($interval->compare($r(10, 19)), 1);
-Assert::same($interval->compare($r(10, 21)), -1);
+Assert::same($interval->compare($i(10, 19)), 1);
+Assert::same($interval->compare($i(10, 21)), -1);
 Assert::same($interval->compare($interval), 0);
-Assert::same($interval->compare($r(9, 19)), 1);
-Assert::same($interval->compare($r(11, 21)), -1);
+Assert::same($interval->compare($i(9, 19)), 1);
+Assert::same($interval->compare($i(11, 21)), -1);
 
 // containsValue()
 Assert::true($interval->containsValue($t(10)));
@@ -100,33 +100,33 @@ Assert::false($interval->containsValue($t(5)));
 Assert::false($interval->containsValue($t(20)));
 
 // contains()
-Assert::true($interval->contains($r(10, 20)));
-Assert::true($interval->contains($r(10, 15)));
-Assert::true($interval->contains($r(15, 20)));
-Assert::false($interval->contains($r(5, 20)));
-Assert::false($interval->contains($r(10, 23)));
-Assert::false($interval->contains($r(1, 5)));
+Assert::true($interval->contains($i(10, 20)));
+Assert::true($interval->contains($i(10, 15)));
+Assert::true($interval->contains($i(15, 20)));
+Assert::false($interval->contains($i(5, 20)));
+Assert::false($interval->contains($i(10, 23)));
+Assert::false($interval->contains($i(1, 5)));
 Assert::false($interval->contains($empty));
 
 // intersects()
-Assert::true($interval->intersects($r(10, 20)));
-Assert::true($interval->intersects($r(5, 15)));
-Assert::true($interval->intersects($r(15, 23)));
-Assert::false($interval->intersects($r(1, 5)));
+Assert::true($interval->intersects($i(10, 20)));
+Assert::true($interval->intersects($i(5, 15)));
+Assert::true($interval->intersects($i(15, 23)));
+Assert::false($interval->intersects($i(1, 5)));
 Assert::false($interval->intersects($empty));
 
 // touches()
-Assert::true($interval->touches($r(1, 10)));
-Assert::true($interval->touches($r(20, 23)));
-Assert::false($interval->touches($r(1, 11)));
-Assert::false($interval->touches($r(19, 23)));
-Assert::false($interval->touches($r(21, 23)));
+Assert::true($interval->touches($i(1, 10)));
+Assert::true($interval->touches($i(20, 23)));
+Assert::false($interval->touches($i(1, 11)));
+Assert::false($interval->touches($i(19, 23)));
+Assert::false($interval->touches($i(21, 23)));
 Assert::false($interval->touches($empty));
 
 // split()
 $splitMode = TimeInterval::SPLIT_OPEN_ENDS;
 Assert::equal($interval->split(1, $splitMode), $s($interval));
-Assert::equal($interval->split(2, $splitMode), $s($r(10, 15), $r(15, 20)));
+Assert::equal($interval->split(2, $splitMode), $s($i(10, 15), $i(15, 20)));
 Assert::equal($interval->split(3, $splitMode), $s(
     TimeInterval::openEnd(new Time('10:00:00'), new Time('13:20:00')),
     TimeInterval::openEnd(new Time('13:20:00'), new Time('16:40:00')),
@@ -135,46 +135,46 @@ Assert::equal($interval->split(3, $splitMode), $s(
 Assert::equal($empty->split(5, $splitMode), $s());
 
 // splitBy()
-Assert::equal($interval->splitBy([$t(5), $t(15), $t(25)], $splitMode), $s($r(10, 15), $r(15, 20)));
+Assert::equal($interval->splitBy([$t(5), $t(15), $t(25)], $splitMode), $s($i(10, 15), $i(15, 20)));
 Assert::equal($empty->splitBy([$t(5)], $splitMode), $s());
 
 // envelope()
-Assert::equal($interval->envelope($r(5, 15)), $r(5, 20));
-Assert::equal($interval->envelope($r(15, 25)), $r(10, 25));
-Assert::equal($interval->envelope($r(1, 5)), $r(1, 20));
-Assert::equal($interval->envelope($r(21, 25)), $r(10, 25));
-Assert::equal($interval->envelope($r(4, 5), $r(21, 25)), $r(4, 25));
+Assert::equal($interval->envelope($i(5, 15)), $i(5, 20));
+Assert::equal($interval->envelope($i(15, 25)), $i(10, 25));
+Assert::equal($interval->envelope($i(1, 5)), $i(1, 20));
+Assert::equal($interval->envelope($i(21, 25)), $i(10, 25));
+Assert::equal($interval->envelope($i(4, 5), $i(21, 25)), $i(4, 25));
 Assert::equal($interval->envelope($empty), $interval);
 
 // intersect()
-Assert::equal($interval->intersect($r(1, 15)), $r(10, 15));
-Assert::equal($interval->intersect($r(15, 25)), $r(15, 20));
-Assert::equal($interval->intersect($r(1, 18), $r(14, 25)), $r(14, 18));
-Assert::equal($interval->intersect($r(1, 5)), $empty);
-Assert::equal($interval->intersect($r(1, 5), $r(5, 15)), $empty);
+Assert::equal($interval->intersect($i(1, 15)), $i(10, 15));
+Assert::equal($interval->intersect($i(15, 25)), $i(15, 20));
+Assert::equal($interval->intersect($i(1, 18), $i(14, 25)), $i(14, 18));
+Assert::equal($interval->intersect($i(1, 5)), $empty);
+Assert::equal($interval->intersect($i(1, 5), $i(5, 15)), $empty);
 Assert::equal($interval->intersect($empty), $empty);
 
 // union()
-Assert::equal($interval->union($r(1, 15)), $s($r(1, 20)));
-Assert::equal($interval->union($r(15, 25)), $s($r(10, 25)));
-Assert::equal($interval->union($r(4, 15), $r(15, 25)), $s($r(4, 25)));
-Assert::equal($interval->union($r(25, 26)), $s($r(25, 26), $interval));
+Assert::equal($interval->union($i(1, 15)), $s($i(1, 20)));
+Assert::equal($interval->union($i(15, 25)), $s($i(10, 25)));
+Assert::equal($interval->union($i(4, 15), $i(15, 25)), $s($i(4, 25)));
+Assert::equal($interval->union($i(25, 26)), $s($i(25, 26), $interval));
 Assert::equal($interval->union($all), $s($all));
 Assert::equal($interval->union($empty), $s($interval));
 
 // difference()
-Assert::equal($interval->difference($r(15, 25)), $s($r(10, 15), $r(20, 25)));
-Assert::equal($interval->difference($r(5, 15)), $s($r(5, 10), $r(15, 20)));
-Assert::equal($interval->difference($r(5, 15), $r(15, 25)), $s($r(5, 10), $r(20, 25)));
-Assert::equal($interval->difference($r(22, 25)), $s($interval, $r(22, 25)));
+Assert::equal($interval->difference($i(15, 25)), $s($i(10, 15), $i(20, 25)));
+Assert::equal($interval->difference($i(5, 15)), $s($i(5, 10), $i(15, 20)));
+Assert::equal($interval->difference($i(5, 15), $i(15, 25)), $s($i(5, 10), $i(20, 25)));
+Assert::equal($interval->difference($i(22, 25)), $s($interval, $i(22, 25)));
 Assert::equal($interval->difference($all), $s(new TimeInterval(new Time(Time::MIN), $t(10), false, true), new TimeInterval($t(20), new Time(Time::MAX), false, false)));
 Assert::equal($interval->difference($empty), $s($interval));
 
 // subtract()
-Assert::equal($interval->subtract($r(5, 15)), $s($r(15, 20)));
-Assert::equal($interval->subtract($r(15, 25)), $s($r(10, 15)));
-Assert::equal($interval->subtract($r(13, 17)), $s($r(10, 13), $r(17, 20)));
-Assert::equal($interval->subtract($r(5, 10), $r(20, 25)), $s($r(10, 20)));
+Assert::equal($interval->subtract($i(5, 15)), $s($i(15, 20)));
+Assert::equal($interval->subtract($i(15, 25)), $s($i(10, 15)));
+Assert::equal($interval->subtract($i(13, 17)), $s($i(10, 13), $i(17, 20)));
+Assert::equal($interval->subtract($i(5, 10), $i(20, 25)), $s($i(10, 20)));
 Assert::equal($interval->subtract($empty), $s($interval));
 Assert::equal($interval->subtract($all), $s());
 Assert::equal($all->subtract($empty), $s($all));
@@ -187,35 +187,35 @@ Assert::equal($all->invert(), $s($empty));
 
 // countOverlaps()
 Assert::equal(TimeInterval::countOverlaps($empty), []);
-Assert::equal(TimeInterval::countOverlaps($interval, $r(5, 15)), [
-    [$r(5, 10), 1],
-    [$r(10, 15), 2],
-    [$r(15, 20), 1],
+Assert::equal(TimeInterval::countOverlaps($interval, $i(5, 15)), [
+    [$i(5, 10), 1],
+    [$i(10, 15), 2],
+    [$i(15, 20), 1],
 ]);
-Assert::equal(TimeInterval::countOverlaps($r(5, 15, false, false), $r(10, 20, false, false), $r(15, 25, false, false)), [
-    [$r(5, 10, false, true), 1],
-    [$r(10, 15, false, true), 2],
-    [$r(15, 15, false, false), 3],
-    [$r(15, 20, true, false), 2],
-    [$r(20, 25, true, false), 1],
+Assert::equal(TimeInterval::countOverlaps($i(5, 15, false, false), $i(10, 20, false, false), $i(15, 25, false, false)), [
+    [$i(5, 10, false, true), 1],
+    [$i(10, 15, false, true), 2],
+    [$i(15, 15, false, false), 3],
+    [$i(15, 20, true, false), 2],
+    [$i(20, 25, true, false), 1],
 ]);
 
 // explodeOverlaps()
 Assert::equal(TimeInterval::explodeOverlaps($empty), []);
-Assert::equal($s(...TimeInterval::explodeOverlaps($interval, $r(5, 15))), $s(
-    $r(5, 10),
-    $r(10, 15),
-    $r(10, 15),
-    $r(15, 20)
+Assert::equal($s(...TimeInterval::explodeOverlaps($interval, $i(5, 15))), $s(
+    $i(5, 10),
+    $i(10, 15),
+    $i(10, 15),
+    $i(15, 20)
 ));
-Assert::equal($s(...TimeInterval::explodeOverlaps($r(5, 15, false, false), $r(10, 20, false, false), $r(15, 25, false, false))), $s(
-    $r(5, 10, false, true),
-    $r(10, 15, false, true),
-    $r(10, 15, false, true),
-    $r(15, 15, false, false),
-    $r(15, 15, false, false),
-    $r(15, 15, false, false),
-    $r(15, 20, true, false),
-    $r(15, 20, true, false),
-    $r(20, 25, true, false)
+Assert::equal($s(...TimeInterval::explodeOverlaps($i(5, 15, false, false), $i(10, 20, false, false), $i(15, 25, false, false))), $s(
+    $i(5, 10, false, true),
+    $i(10, 15, false, true),
+    $i(10, 15, false, true),
+    $i(15, 15, false, false),
+    $i(15, 15, false, false),
+    $i(15, 15, false, false),
+    $i(15, 20, true, false),
+    $i(15, 20, true, false),
+    $i(20, 25, true, false)
 ));

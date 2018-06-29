@@ -17,7 +17,7 @@ foreach (new RoundRobinIterator($first, $second, $third) as $k => $v) {
 }
 Assert::same($result, [1, 4, 7, 2, 5, 8, 3, 6, 9]);
 
-Assert::exception(function () {
+Assert::exception(function (): void {
     $first = [1, 2];
     $second = [4, 5, 6];
     $third = [7, 8, 9];
@@ -27,7 +27,7 @@ Assert::exception(function () {
     }
 }, UnevenIteratorSourcesException::class);
 
-Assert::exception(function () {
+Assert::exception(function (): void {
     $first = [1, 2, 3];
     $second = [4, 5, 6];
     $third = [7, 8];
@@ -37,7 +37,7 @@ Assert::exception(function () {
     }
 }, UnevenIteratorSourcesException::class);
 
-Assert::exception(function () {
+Assert::exception(function (): void {
     $first = [];
     $second = [4, 5, 6];
     $third = [7, 8, 9];
@@ -47,7 +47,7 @@ Assert::exception(function () {
     }
 }, UnevenIteratorSourcesException::class);
 
-Assert::exception(function () {
+Assert::exception(function (): void {
     $first = [1, 2, 3];
     $second = [4, 5, 6];
     $third = [];

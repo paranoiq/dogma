@@ -14,22 +14,22 @@ $startDate = new Date('2000-01-10');
 $endDate = new Date('2000-01-16');
 $interval = new WeekDateInterval($startDate, $endDate);
 
-$d = function (int $day) {
+$d = function (int $day): Date {
     return new Date('2000-01-' . $day);
 };
 
 // wrong start day
-Assert::exception(function () use ($d) {
+Assert::exception(function () use ($d): void {
     new WeekDateInterval($d(1), $d(8));
 }, InvalidWeekDateIntervalException::class);
 
 // too short
-Assert::exception(function () use ($startDate, $d) {
+Assert::exception(function () use ($startDate, $d): void {
     new WeekDateInterval($startDate, $d(15));
 }, InvalidWeekDateIntervalException::class);
 
 // too long
-Assert::exception(function () use ($startDate, $d) {
+Assert::exception(function () use ($startDate, $d): void {
     new WeekDateInterval($startDate, $d(20));
 }, InvalidWeekDateIntervalException::class);
 

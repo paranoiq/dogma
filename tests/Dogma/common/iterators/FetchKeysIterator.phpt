@@ -43,7 +43,7 @@ foreach (new FetchKeysIterator($array, null, null) as $k => $v) {
 Assert::same($result, $array);
 
 $result = [];
-Assert::throws(function () use ($invalid, $result) {
+Assert::throws(function () use ($invalid, $result): void {
     foreach (new FetchKeysIterator($invalid, 'a', null) as $k => $v) {
         $result[$k] = $v;
     }
@@ -51,7 +51,7 @@ Assert::throws(function () use ($invalid, $result) {
 Assert::same($result, []);
 
 $result = [];
-Assert::throws(function () use ($invalid, $result) {
+Assert::throws(function () use ($invalid, $result): void {
     foreach (new FetchKeysIterator($invalid, null, 'b') as $k => $v) {
         $result[$k] = $v;
     }

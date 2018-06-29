@@ -3,7 +3,6 @@
 namespace Dogma\Tests\ImmutableArray;
 
 use Dogma\Arr;
-use Dogma\ImmutableArray;
 use Dogma\Tester\Assert;
 
 require_once __DIR__ . '/../../../bootstrap.php';

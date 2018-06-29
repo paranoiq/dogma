@@ -11,11 +11,12 @@ require_once __DIR__ . '/../../bootstrap.php';
 class TestClass implements \IteratorAggregate
 {
     use NonIterableMixin;
+
 }
 
-Assert::throws(function () {
+Assert::throws(function (): void {
     $x = new TestClass();
     foreach ($x as $y) {
-        // pass
+        $y = 0;
     }
 }, NonIterableObjectException::class);

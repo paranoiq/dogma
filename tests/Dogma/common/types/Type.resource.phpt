@@ -112,6 +112,6 @@ Assert::same($resourceNullable->getTypeWithoutParams(), $resourceNullable);
 Assert::same($resourceAspell->getTypeWithoutParams(), $resource);
 
 // getInstance()
-Assert::exception(function () use ($resource) {
+Assert::exception(function () use ($resource): void {
     $resource->getInstance('abc');
 }, \Error::class);

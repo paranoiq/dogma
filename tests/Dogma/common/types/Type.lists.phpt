@@ -156,7 +156,7 @@ Assert::same($collectionNullable->getTypeWithoutParams(), $collectionNullable);
 Assert::same($collection->getTypeWithoutParams(), $collection);
 
 // getInstance()
-Assert::exception(function () use ($array) {
+Assert::exception(function () use ($array): void {
     $array->getInstance('abc');
 }, \Error::class);
 Assert::equal($collection->getInstance(\DateTime::class), new Collection(\DateTime::class));

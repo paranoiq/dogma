@@ -18,16 +18,16 @@ Assert::null(Arr::indexOfSlice($array, [3, 4, 5]));
 Assert::same(Arr::indexOfSlice($array, [2, 3, 4]), 1);
 
 // corresponds()
-Assert::false(Arr::corresponds($array, [1, 4, 9], function ($a, $b) {
+Assert::false(Arr::corresponds($array, [1, 4, 9], function ($a, $b): bool {
     return $a * $a === $b;
 }));
-Assert::true(Arr::corresponds($array, [1, 4, 9, 16], function ($a, $b) {
+Assert::true(Arr::corresponds($array, [1, 4, 9, 16], function ($a, $b): bool {
     return $a * $a === $b;
 }));
-Assert::false(Arr::corresponds($array, [1, 4, 9, 16, 25], function ($a, $b) {
+Assert::false(Arr::corresponds($array, [1, 4, 9, 16, 25], function ($a, $b): bool {
     return $a * $a === $b;
 }));
-Assert::false(Arr::corresponds($array, [1, 2, 3, 4], function ($a, $b) {
+Assert::false(Arr::corresponds($array, [1, 2, 3, 4], function ($a, $b): bool {
     return $a * $a === $b;
 }));
 

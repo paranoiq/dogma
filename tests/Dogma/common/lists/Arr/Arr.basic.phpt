@@ -40,7 +40,7 @@ Assert::contains(Arr::values($array), Arr::randomValue($array));
 
 // doForEach()
 $x = 0;
-Arr::doForEach($array, function (int $v) use (&$x) {
+Arr::doForEach($array, function (int $v) use (&$x): void {
     $x += $v;
 });
 Assert::same($x, 6);

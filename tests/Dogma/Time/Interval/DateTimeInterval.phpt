@@ -7,11 +7,11 @@ use Dogma\Tester\Assert;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
 use Dogma\Time\Interval\DateInterval;
+use Dogma\Time\Interval\DateTimeInterval;
+use Dogma\Time\Interval\DateTimeIntervalSet;
 use Dogma\Time\Interval\TimeInterval;
 use Dogma\Time\InvalidFormattingStringException;
 use Dogma\Time\InvalidIntervalStartEndOrderException;
-use Dogma\Time\Interval\DateTimeInterval;
-use Dogma\Time\Interval\DateTimeIntervalSet;
 use Dogma\Time\Microseconds;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Time;
@@ -24,10 +24,10 @@ $interval = new DateTimeInterval($startDate, $endDate);
 $empty = DateTimeInterval::empty();
 $all = DateTimeInterval::all();
 
-$d = function (int $day) {
+$d = function (int $day): DateTime {
     return new DateTime('2000-01-' . $day . ' 00:00:00');
 };
-$r = function (int $start, int $end, bool $openStart = false, bool $openEnd = true) {
+$i = function (int $start, int $end, bool $openStart = false, bool $openEnd = true): DateTimeInterval {
     return new DateTimeInterval(
         new DateTime('2000-01-' . $start . ' 00:00:00.000000'),
         new DateTime('2000-01-' . $end . ' 00:00:00.000000'),
@@ -35,12 +35,12 @@ $r = function (int $start, int $end, bool $openStart = false, bool $openEnd = tr
         $openEnd
     );
 };
-$s = function (DateTimeInterval ...$items) {
+$s = function (DateTimeInterval ...$items): DateTimeIntervalSet {
     return new DateTimeIntervalSet($items);
 };
 
 // __construct()
-Assert::exception(function () {
+Assert::exception(function (): void {
     new DateTimeInterval(new DateTime('today'), new DateTime('yesterday'));
 }, InvalidIntervalStartEndOrderException::class);
 
@@ -53,10 +53,10 @@ Assert::equal(DateTimeInterval::createFromString('[2000-01-10 00:00,2000-01-20 0
 Assert::equal(DateTimeInterval::createFromString('[2000-01-10 00:00,2000-01-20 00:00)'), $interval);
 Assert::equal(DateTimeInterval::createFromString('(2000-01-10 00:00,2000-01-20 00:00)'), new DateTimeInterval($startDate, $endDate, true, true));
 Assert::equal(DateTimeInterval::createFromString('(2000-01-10 00:00,2000-01-20 00:00]'), new DateTimeInterval($startDate, $endDate, true, false));
-Assert::exception(function () {
+Assert::exception(function (): void {
     DateTimeInterval::createFromString('foo|bar|baz');
 }, InvalidIntervalStringFormatException::class);
-Assert::exception(function () {
+Assert::exception(function (): void {
     DateTimeInterval::createFromString('foo');
 }, InvalidIntervalStringFormatException::class);
 
@@ -74,12 +74,12 @@ Assert::equal(DateTimeInterval::createFromDateIntervalAndTime(
 
 // format()
 Assert::same($interval->format('d|-d'), '10-20');
-Assert::exception(function () use ($interval) {
+Assert::exception(function () use ($interval): void {
     $interval->format('d|-d|-d');
 }, InvalidFormattingStringException::class);
 
 // shift()
-Assert::equal($interval->shift('+1 day'), $r(11, 21));
+Assert::equal($interval->shift('+1 day'), $i(11, 21));
 
 // getStart()
 Assert::equal($interval->getStart(), new DateTime('2000-01-10 00:00:00.000000'));
@@ -103,16 +103,16 @@ Assert::false($all->isEmpty());
 Assert::true($empty->isEmpty());
 
 // equals()
-Assert::true($interval->equals($r(10, 20)));
-Assert::false($interval->equals($r(10, 15)));
-Assert::false($interval->equals($r(15, 20)));
+Assert::true($interval->equals($i(10, 20)));
+Assert::false($interval->equals($i(10, 15)));
+Assert::false($interval->equals($i(15, 20)));
 
 // compare()
-Assert::same($interval->compare($r(10, 19)), 1);
-Assert::same($interval->compare($r(10, 21)), -1);
+Assert::same($interval->compare($i(10, 19)), 1);
+Assert::same($interval->compare($i(10, 21)), -1);
 Assert::same($interval->compare($interval), 0);
-Assert::same($interval->compare($r(9, 19)), 1);
-Assert::same($interval->compare($r(11, 21)), -1);
+Assert::same($interval->compare($i(9, 19)), 1);
+Assert::same($interval->compare($i(11, 21)), -1);
 
 // containsValue()
 Assert::true($interval->containsValue($d(10)));
@@ -126,33 +126,33 @@ Assert::true($interval->containsDateTime(new \DateTime('2000-01-15')));
 Assert::true($interval->containsDateTime(new \DateTimeImmutable('2000-01-15')));
 
 // contains()
-Assert::true($interval->contains($r(10, 20)));
-Assert::true($interval->contains($r(10, 15)));
-Assert::true($interval->contains($r(15, 20)));
-Assert::false($interval->contains($r(5, 20)));
-Assert::false($interval->contains($r(10, 25)));
-Assert::false($interval->contains($r(1, 5)));
+Assert::true($interval->contains($i(10, 20)));
+Assert::true($interval->contains($i(10, 15)));
+Assert::true($interval->contains($i(15, 20)));
+Assert::false($interval->contains($i(5, 20)));
+Assert::false($interval->contains($i(10, 25)));
+Assert::false($interval->contains($i(1, 5)));
 Assert::false($interval->contains($empty));
 
 // intersects()
-Assert::true($interval->intersects($r(10, 20)));
-Assert::true($interval->intersects($r(5, 15)));
-Assert::true($interval->intersects($r(15, 25)));
-Assert::false($interval->intersects($r(1, 5)));
+Assert::true($interval->intersects($i(10, 20)));
+Assert::true($interval->intersects($i(5, 15)));
+Assert::true($interval->intersects($i(15, 25)));
+Assert::false($interval->intersects($i(1, 5)));
 Assert::false($interval->intersects($empty));
 
 // touches()
-Assert::true($interval->touches($r(1, 10)));
-Assert::true($interval->touches($r(20, 25)));
-Assert::false($interval->touches($r(1, 11)));
-Assert::false($interval->touches($r(19, 25)));
-Assert::false($interval->touches($r(21, 25)));
+Assert::true($interval->touches($i(1, 10)));
+Assert::true($interval->touches($i(20, 25)));
+Assert::false($interval->touches($i(1, 11)));
+Assert::false($interval->touches($i(19, 25)));
+Assert::false($interval->touches($i(21, 25)));
 Assert::false($interval->touches($empty));
 
 // split()
 $splitMode = DateTimeInterval::SPLIT_OPEN_ENDS;
 Assert::equal($interval->split(1, $splitMode), $s($interval));
-Assert::equal($interval->split(2, $splitMode), $s($r(10, 15), $r(15, 20)));
+Assert::equal($interval->split(2, $splitMode), $s($i(10, 15), $i(15, 20)));
 Assert::equal($interval->split(3, $splitMode), $s(
     DateTimeInterval::openEnd(new DateTime('2000-01-10 00:00:00'), new DateTime('2000-01-13 08:00:00')),
     DateTimeInterval::openEnd(new DateTime('2000-01-13 08:00:00'), new DateTime('2000-01-16 16:00:00')),
@@ -161,38 +161,38 @@ Assert::equal($interval->split(3, $splitMode), $s(
 Assert::equal($empty->split(5, $splitMode), $s());
 
 // splitBy()
-Assert::equal($interval->splitBy([$d(5), $d(15), $d(25)], $splitMode), $s($r(10, 15), $r(15, 20)));
+Assert::equal($interval->splitBy([$d(5), $d(15), $d(25)], $splitMode), $s($i(10, 15), $i(15, 20)));
 Assert::equal($empty->splitBy([$d(5)], $splitMode), $s());
 
 // envelope()
-Assert::equal($interval->envelope($r(5, 15)), $r(5, 20));
-Assert::equal($interval->envelope($r(15, 25)), $r(10, 25));
-Assert::equal($interval->envelope($r(1, 5)), $r(1, 20));
-Assert::equal($interval->envelope($r(25, 30)), $r(10, 30));
-Assert::equal($interval->envelope($r(1, 5), $r(25, 30)), $r(1, 30));
+Assert::equal($interval->envelope($i(5, 15)), $i(5, 20));
+Assert::equal($interval->envelope($i(15, 25)), $i(10, 25));
+Assert::equal($interval->envelope($i(1, 5)), $i(1, 20));
+Assert::equal($interval->envelope($i(25, 30)), $i(10, 30));
+Assert::equal($interval->envelope($i(1, 5), $i(25, 30)), $i(1, 30));
 Assert::equal($interval->envelope($empty), $interval);
 
 // intersect()
-Assert::equal($interval->intersect($r(1, 15)), $r(10, 15));
-Assert::equal($interval->intersect($r(15, 30)), $r(15, 20));
-Assert::equal($interval->intersect($r(1, 18), $r(14, 30)), $r(14, 18));
-Assert::equal($interval->intersect($r(1, 5)), $empty);
-Assert::equal($interval->intersect($r(1, 5), $r(5, 15)), $empty);
+Assert::equal($interval->intersect($i(1, 15)), $i(10, 15));
+Assert::equal($interval->intersect($i(15, 30)), $i(15, 20));
+Assert::equal($interval->intersect($i(1, 18), $i(14, 30)), $i(14, 18));
+Assert::equal($interval->intersect($i(1, 5)), $empty);
+Assert::equal($interval->intersect($i(1, 5), $i(5, 15)), $empty);
 Assert::equal($interval->intersect($empty), $empty);
 
 // union()
-Assert::equal($interval->union($r(1, 15)), $s($r(1, 20)));
-Assert::equal($interval->union($r(15, 30)), $s($r(10, 30)));
-Assert::equal($interval->union($r(1, 15), $r(15, 30)), $s($r(1, 30)));
-Assert::equal($interval->union($r(25, 30)), $s($interval, $r(25, 30)));
+Assert::equal($interval->union($i(1, 15)), $s($i(1, 20)));
+Assert::equal($interval->union($i(15, 30)), $s($i(10, 30)));
+Assert::equal($interval->union($i(1, 15), $i(15, 30)), $s($i(1, 30)));
+Assert::equal($interval->union($i(25, 30)), $s($interval, $i(25, 30)));
 Assert::equal($interval->union($all), $s($all));
 Assert::equal($interval->union($empty), $s($interval));
 
 // difference()
-Assert::equal($interval->difference($r(15, 30)), $s($r(10, 15), $r(20, 30)));
-Assert::equal($interval->difference($r(5, 15)), $s($r(5, 10), $r(15, 20)));
-Assert::equal($interval->difference($r(5, 15), $r(15, 30)), $s($r(5, 10), $r(20, 30)));
-Assert::equal($interval->difference($r(25, 30)), $s($interval, $r(25, 30)));
+Assert::equal($interval->difference($i(15, 30)), $s($i(10, 15), $i(20, 30)));
+Assert::equal($interval->difference($i(5, 15)), $s($i(5, 10), $i(15, 20)));
+Assert::equal($interval->difference($i(5, 15), $i(15, 30)), $s($i(5, 10), $i(20, 30)));
+Assert::equal($interval->difference($i(25, 30)), $s($interval, $i(25, 30)));
 Assert::equal($interval->difference($all), $s(
     new DateTimeInterval(new DateTime(DateTime::MIN), $d(10), false, true),
     new DateTimeInterval($d(20), new DateTime(DateTime::MAX))
@@ -200,10 +200,10 @@ Assert::equal($interval->difference($all), $s(
 Assert::equal($interval->difference($empty), $s($interval));
 
 // subtract()
-Assert::equal($interval->subtract($r(5, 15)), $s($r(15, 20)));
-Assert::equal($interval->subtract($r(15, 25)), $s($r(10, 15)));
-Assert::equal($interval->subtract($r(13, 17)), $s($r(10, 13), $r(17, 20)));
-Assert::equal($interval->subtract($r(5, 10), $r(20, 25)), $s($r(10, 20)));
+Assert::equal($interval->subtract($i(5, 15)), $s($i(15, 20)));
+Assert::equal($interval->subtract($i(15, 25)), $s($i(10, 15)));
+Assert::equal($interval->subtract($i(13, 17)), $s($i(10, 13), $i(17, 20)));
+Assert::equal($interval->subtract($i(5, 10), $i(20, 25)), $s($i(10, 20)));
 Assert::equal($interval->subtract($empty), $s($interval));
 Assert::equal($interval->subtract($all), $s());
 Assert::equal($all->subtract($empty), $s($all));
@@ -216,35 +216,35 @@ Assert::equal($all->invert(), $s($empty));
 
 // countOverlaps()
 Assert::equal(DateTimeInterval::countOverlaps($empty), []);
-Assert::equal(DateTimeInterval::countOverlaps($interval, $r(5, 15)), [
-    [$r(5, 10), 1],
-    [$r(10, 15), 2],
-    [$r(15, 20), 1],
+Assert::equal(DateTimeInterval::countOverlaps($interval, $i(5, 15)), [
+    [$i(5, 10), 1],
+    [$i(10, 15), 2],
+    [$i(15, 20), 1],
 ]);
-Assert::equal(DateTimeInterval::countOverlaps($r(5, 15, false, false), $r(10, 20, false, false), $r(15, 25, false, false)), [
-    [$r(5, 10, false, true), 1],
-    [$r(10, 15, false, true), 2],
-    [$r(15, 15, false, false), 3],
-    [$r(15, 20, true, false), 2],
-    [$r(20, 25, true, false), 1],
+Assert::equal(DateTimeInterval::countOverlaps($i(5, 15, false, false), $i(10, 20, false, false), $i(15, 25, false, false)), [
+    [$i(5, 10, false, true), 1],
+    [$i(10, 15, false, true), 2],
+    [$i(15, 15, false, false), 3],
+    [$i(15, 20, true, false), 2],
+    [$i(20, 25, true, false), 1],
 ]);
 
 // explodeOverlaps()
 Assert::equal(DateTimeInterval::explodeOverlaps($empty), []);
-Assert::equal($s(...DateTimeInterval::explodeOverlaps($interval, $r(5, 15))), $s(
-    $r(5, 10),
-    $r(10, 15),
-    $r(10, 15),
-    $r(15, 20)
+Assert::equal($s(...DateTimeInterval::explodeOverlaps($interval, $i(5, 15))), $s(
+    $i(5, 10),
+    $i(10, 15),
+    $i(10, 15),
+    $i(15, 20)
 ));
-Assert::equal($s(...DateTimeInterval::explodeOverlaps($r(5, 15, false, false), $r(10, 20, false, false), $r(15, 25, false, false))), $s(
-    $r(5, 10, false, true),
-    $r(10, 15, false, true),
-    $r(10, 15, false, true),
-    $r(15, 15, false, false),
-    $r(15, 15, false, false),
-    $r(15, 15, false, false),
-    $r(15, 20, true, false),
-    $r(15, 20, true, false),
-    $r(20, 25, true, false)
+Assert::equal($s(...DateTimeInterval::explodeOverlaps($i(5, 15, false, false), $i(10, 20, false, false), $i(15, 25, false, false))), $s(
+    $i(5, 10, false, true),
+    $i(10, 15, false, true),
+    $i(10, 15, false, true),
+    $i(15, 15, false, false),
+    $i(15, 15, false, false),
+    $i(15, 15, false, false),
+    $i(15, 20, true, false),
+    $i(15, 20, true, false),
+    $i(20, 25, true, false)
 ));

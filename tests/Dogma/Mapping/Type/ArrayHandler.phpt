@@ -2,9 +2,9 @@
 
 namespace Dogma\Tests\Mapping\Type;
 
-use Dogma\Mapping\Mapper;
 use Dogma\Mapping\ConventionMappingBuilder;
 use Dogma\Mapping\DynamicMappingContainer;
+use Dogma\Mapping\Mapper;
 use Dogma\Mapping\MetaData\TypeMetaDataContainer;
 use Dogma\Mapping\Naming\ShortFieldNamingStrategy;
 use Dogma\Mapping\Type\ArrayHandler;

@@ -102,6 +102,6 @@ Assert::same($boolNullable->getNonNullableType(), $bool);
 Assert::same($boolNullable->getTypeWithoutParams(), $boolNullable);
 
 // getInstance()
-Assert::exception(function () use ($bool) {
+Assert::exception(function () use ($bool): void {
     $bool->getInstance();
 }, \Error::class);

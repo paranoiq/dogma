@@ -20,19 +20,19 @@ Assert::same($array->indexOfSlice([2, 3, 4]), 1);
 Assert::same($array->indexOfSlice(new \ArrayIterator([2, 3, 4])), 1);
 
 // corresponds()
-Assert::false($array->corresponds([1, 4, 9], function ($a, $b) {
+Assert::false($array->corresponds([1, 4, 9], function ($a, $b): bool {
     return $a * $a === $b;
 }));
-Assert::true($array->corresponds([1, 4, 9, 16], function ($a, $b) {
+Assert::true($array->corresponds([1, 4, 9, 16], function ($a, $b): bool {
     return $a * $a === $b;
 }));
-Assert::false($array->corresponds([1, 4, 9, 16, 25], function ($a, $b) {
+Assert::false($array->corresponds([1, 4, 9, 16, 25], function ($a, $b): bool {
     return $a * $a === $b;
 }));
-Assert::false($array->corresponds([1, 2, 3, 4], function ($a, $b) {
+Assert::false($array->corresponds([1, 2, 3, 4], function ($a, $b): bool {
     return $a * $a === $b;
 }));
-Assert::true($array->corresponds(new \ArrayIterator([1, 4, 9, 16]), function ($a, $b) {
+Assert::true($array->corresponds(new \ArrayIterator([1, 4, 9, 16]), function ($a, $b): bool {
     return $a * $a === $b;
 }));
 

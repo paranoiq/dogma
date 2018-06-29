@@ -19,9 +19,9 @@ Assert::true($tuple->offsetExists(1));
 Assert::false($tuple->offsetExists(2));
 Assert::same($tuple[0], 123);
 Assert::same($tuple[1], 'abc');
-Assert::exception(function () use ($tuple) {
+Assert::exception(function () use ($tuple): void {
     $tuple[0] = 456;
 }, \BadMethodCallException::class);
-Assert::exception(function () use ($tuple) {
+Assert::exception(function () use ($tuple): void {
     unset($tuple[0]);
 }, \BadMethodCallException::class);

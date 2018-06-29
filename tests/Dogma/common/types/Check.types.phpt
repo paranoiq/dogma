@@ -8,22 +8,35 @@ use Dogma\InvalidValueException;
 use Dogma\Tester\Assert;
 use Dogma\Type;
 use Dogma\ValueOutOfRangeException;
-use stdClass;
 use Tracy\Debugger;
+use stdClass;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
 class TestClass1
 {
+
+    /** @var int */
     public $a = 1;
+
+    /** @var int */
     public $b = 2;
+
+    /** @var int */
     public $c = 3;
+
 }
 
 class TestClass2
 {
+
+    /** @var int */
     public $a = 1;
+
+    /** @var int */
     protected $b = 2;
+
+    /** @var int */
     private $c = 3;
 
     public function test(): bool
@@ -35,6 +48,7 @@ class TestClass2
     {
         return true;
     }
+
 }
 
 $stdClassEmpty = function (): stdClass {

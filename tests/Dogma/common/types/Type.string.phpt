@@ -137,6 +137,6 @@ Assert::same($stringNullable->getTypeWithoutParams(), $stringNullable);
 Assert::same($stringAllParams->getTypeWithoutParams(), $stringNullable);
 
 // getInstance()
-Assert::exception(function () use ($string) {
+Assert::exception(function () use ($string): void {
     $string->getInstance();
 }, \Error::class);

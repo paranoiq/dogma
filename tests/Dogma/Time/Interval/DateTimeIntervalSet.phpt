@@ -18,13 +18,13 @@ use Dogma\Time\Microseconds;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-$dt = function (int $day) {
+$dt = function (int $day): DateTime {
     return DateTime::createFromComponents(2000, 1, $day);
 };
-$i = function (int $start, int $end, bool $openStart = false, bool $openEnd = true) use ($dt) {
+$i = function (int $start, int $end, bool $openStart = false, bool $openEnd = true) use ($dt): DateTimeInterval {
     return new DateTimeInterval($dt($start), $dt($end), $openStart, $openEnd);
 };
-$s = function (DateTimeInterval ...$items) {
+$s = function (DateTimeInterval ...$items): DateTimeIntervalSet {
     return new DateTimeIntervalSet($items);
 };
 
@@ -39,11 +39,11 @@ Assert::equal(DateTimeIntervalSet::createFromDateAndTimeIntervalSet(
     new Date('2000-01-01'),
     new TimeIntervalSet([
         TimeInterval::createFromString('10:00 - 11:00'),
-        TimeInterval::createFromString('12:00 - 13:00')
+        TimeInterval::createFromString('12:00 - 13:00'),
     ])
 ), new DateTimeIntervalSet([
     DateTimeInterval::createFromString('2000-01-01 10:00 - 2000-01-01 11:00'),
-    DateTimeInterval::createFromString('2000-01-01 12:00 - 2000-01-01 13:00')
+    DateTimeInterval::createFromString('2000-01-01 12:00 - 2000-01-01 13:00'),
 ]));
 
 // createFromDateIntervalAndTimeInterval()
@@ -52,7 +52,7 @@ Assert::equal(DateTimeIntervalSet::createFromDateIntervalAndTimeInterval(
     TimeInterval::createFromString('10:00 - 11:00')
 ), new DateTimeIntervalSet([
     DateTimeInterval::createFromString('2000-01-01 10:00 - 2000-01-01 11:00'),
-    DateTimeInterval::createFromString('2000-01-02 10:00 - 2000-01-02 11:00')
+    DateTimeInterval::createFromString('2000-01-02 10:00 - 2000-01-02 11:00'),
 ]));
 
 // createFromDateIntervalAndTimeIntervalSet()
@@ -60,13 +60,13 @@ Assert::equal(DateTimeIntervalSet::createFromDateIntervalAndTimeIntervalSet(
     DateInterval::createFromString('2000-01-01 - 2000-01-02'),
     new TimeIntervalSet([
         TimeInterval::createFromString('10:00 - 11:00'),
-        TimeInterval::createFromString('12:00 - 13:00')
+        TimeInterval::createFromString('12:00 - 13:00'),
     ])
 ), new DateTimeIntervalSet([
     DateTimeInterval::createFromString('2000-01-01 10:00 - 2000-01-01 11:00'),
     DateTimeInterval::createFromString('2000-01-01 12:00 - 2000-01-01 13:00'),
     DateTimeInterval::createFromString('2000-01-02 10:00 - 2000-01-02 11:00'),
-    DateTimeInterval::createFromString('2000-01-02 12:00 - 2000-01-02 13:00')
+    DateTimeInterval::createFromString('2000-01-02 12:00 - 2000-01-02 13:00'),
 ]));
 
 // createFromDateIntervalSetAndTimeInterval()
@@ -91,7 +91,7 @@ Assert::equal(DateTimeIntervalSet::createFromDateIntervalSetAndTimeIntervalSet(
     ]),
     new TimeIntervalSet([
         TimeInterval::createFromString('10:00 - 11:00'),
-        TimeInterval::createFromString('12:00 - 13:00')
+        TimeInterval::createFromString('12:00 - 13:00'),
     ])
 ), new DateTimeIntervalSet([
     DateTimeInterval::createFromString('2000-01-01 10:00 - 2000-01-01 11:00'),

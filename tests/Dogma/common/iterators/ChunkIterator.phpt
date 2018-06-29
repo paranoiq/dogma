@@ -23,6 +23,6 @@ foreach (new ChunkIterator($empty, 10) as $k => $v) {
 }
 Assert::same($result, []);
 
-Assert::throws(function () {
+Assert::throws(function (): void {
     new ChunkIterator([], 0);
 }, ValueOutOfRangeException::class);

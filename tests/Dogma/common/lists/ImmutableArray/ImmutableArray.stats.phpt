@@ -34,7 +34,7 @@ Assert::same($array->min(), 1);
 Assert::null($empty->min());
 
 // maxBy()
-Assert::same($array->maxBy(function ($v) {
+Assert::same($array->maxBy(function ($v): float {
     return 1 / $v;
 }), 1);
 

@@ -10,13 +10,13 @@ use Dogma\Time\Time;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-$t = function (int $hours) {
+$t = function (int $hours): Time {
     return Time::createFromComponents($hours);
 };
-$i = function (int $start, int $end, bool $openStart = false, bool $openEnd = true) use ($t) {
+$i = function (int $start, int $end, bool $openStart = false, bool $openEnd = true) use ($t): TimeInterval {
     return new TimeInterval($t($start), $t($end), $openStart, $openEnd);
 };
-$s = function (TimeInterval ...$items) {
+$s = function (TimeInterval ...$items): TimeIntervalSet {
     return new TimeIntervalSet($items);
 };
 

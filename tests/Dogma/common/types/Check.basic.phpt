@@ -37,19 +37,19 @@ $mixed = [1, 2, 'a', 'b'];
 
 // type()
 Check::type($vector, 'array<int>');
-Assert::exception(function () use ($mixed) {
+Assert::exception(function () use ($mixed): void {
     Check::itemsOfType($mixed, Type::INT);
 }, InvalidTypeException::class);
 
 // itemsOfType()
 Check::itemsOfType($array, Type::INT);
-Assert::exception(function () use ($mixed) {
+Assert::exception(function () use ($mixed): void {
     Check::itemsOfType($mixed, Type::INT);
 }, InvalidTypeException::class);
 
 // itemsOfTypes()
 Check::itemsOfTypes($mixed, [Type::INT, Type::STRING]);
-Assert::exception(function () use ($mixed) {
+Assert::exception(function () use ($mixed): void {
     Check::itemsOfTypes($mixed, [Type::INT, Type::FLOAT]);
 }, InvalidTypeException::class);
 
@@ -58,54 +58,54 @@ Check::traversable($array);
 Check::traversable($vector);
 Check::traversable(new \SplFixedArray());
 Check::traversable(new \stdClass());
-Assert::exception(function () {
+Assert::exception(function (): void {
     Check::traversable(new \Exception());
 }, InvalidTypeException::class);
 
 // phpArray()
 Check::array($array);
-Assert::exception(function () use ($null) {
+Assert::exception(function () use ($null): void {
     Check::array($null);
 }, InvalidTypeException::class);
 
 // plainArray()
 Check::plainArray($vector);
-Assert::exception(function () use ($array) {
+Assert::exception(function () use ($array): void {
     Check::plainArray($array);
 }, InvalidTypeException::class);
 
 // tuple()
 Check::tuple(new Tuple(123, 'abc'), [Type::INT, Type::STRING]);
-Assert::exception(function () {
+Assert::exception(function (): void {
     Check::tuple(new Tuple(123, 'abc', 789), [Type::INT, Type::STRING]);
 }, ValueOutOfRangeException::class);
-Assert::exception(function () {
+Assert::exception(function (): void {
     Check::tuple(new Tuple(123), [Type::INT, Type::STRING]);
 }, ValueOutOfRangeException::class);
-Assert::exception(function () {
+Assert::exception(function (): void {
     Check::tuple(new Tuple('abc', 123), [Type::INT, Type::STRING]);
 }, InvalidTypeException::class);
-Assert::exception(function () use ($array) {
+Assert::exception(function () use ($array): void {
     Check::tuple($array, [Type::INT, Type::STRING]);
 }, InvalidTypeException::class);
 
 
 // object()
 Check::object(new \stdClass(), \stdClass::class);
-Assert::exception(function () use ($array) {
+Assert::exception(function () use ($array): void {
     Check::object($array, \stdClass::class);
 }, InvalidTypeException::class);
 
 // className()
 Check::className(\stdClass::class);
-Assert::exception(function () {
+Assert::exception(function (): void {
     Check::className(Type::STRING);
 }, InvalidValueException::class);
 
 // typeName
 Check::typeName(\stdClass::class);
 Check::typeName(Type::STRING);
-Assert::exception(function () {
+Assert::exception(function (): void {
     Check::typeName('asdf');
 }, InvalidValueException::class);
 
@@ -113,30 +113,30 @@ Assert::exception(function () {
 $small = -100;
 $big = 100;
 
-Assert::exception(function () use ($small) {
+Assert::exception(function () use ($small): void {
     Check::int($small, 0);
 }, ValueOutOfRangeException::class);
 
-Assert::exception(function () use ($big) {
+Assert::exception(function () use ($big): void {
     Check::int($big, 0, 10);
 }, ValueOutOfRangeException::class);
 
-Assert::exception(function () use ($small) {
+Assert::exception(function () use ($small): void {
     Check::float($small, 0.0);
 }, ValueOutOfRangeException::class);
 
-Assert::exception(function () use ($big) {
+Assert::exception(function () use ($big): void {
     Check::float($big, 0.0, 10.0);
 }, ValueOutOfRangeException::class);
 
 $short = 'abc';
 $long = 'abcabcabc';
 
-Assert::exception(function () use ($short) {
+Assert::exception(function () use ($short): void {
     Check::string($short, 5);
 }, ValueOutOfRangeException::class);
 
-Assert::exception(function () use ($long) {
+Assert::exception(function () use ($long): void {
     Check::string($long, 5, 6);
 }, ValueOutOfRangeException::class);
 
@@ -144,13 +144,16 @@ Assert::exception(function () use ($long) {
 Check::oneOf($short);
 Check::oneOf($short, $null);
 Check::oneOf($null, $short);
-Assert::exception(function () use ($short) {
+Assert::exception(function () use ($short): void {
     Check::oneOf($short, $short);
 }, ValueOutOfRangeException::class);
 
 class TestTraversable implements \IteratorAggregate
 {
 
+    /**
+     * @return mixed[]
+     */
     public function getIterator(): array
     {
         return [];
@@ -160,11 +163,11 @@ class TestTraversable implements \IteratorAggregate
 
 class TestNonTraversable
 {
-    // pass
+
 }
 
 // isTraversable()
-Assert::true(Check::isIterable(array()));
+Assert::true(Check::isIterable([]));
 Assert::true(Check::isIterable(new \stdClass()));
 Assert::true(Check::isIterable(new TestTraversable()));
 Assert::false(Check::isIterable(new TestNonTraversable()));

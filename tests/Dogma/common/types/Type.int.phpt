@@ -130,6 +130,6 @@ Assert::same($intNullable->getTypeWithoutParams(), $intNullable);
 Assert::same($intSizeUnsignedNullable->getTypeWithoutParams(), $intNullable);
 
 // getInstance()
-Assert::exception(function () use ($int) {
+Assert::exception(function () use ($int): void {
     $int->getInstance();
 }, \Error::class);

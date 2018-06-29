@@ -9,13 +9,13 @@ use Dogma\Time\Interval\DateIntervalSet;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-$d = function (int $day) {
+$d = function (int $day): Date {
     return Date::createFromComponents(2000, 1, $day);
 };
-$i = function (int $start, int $end) use ($d) {
+$i = function (int $start, int $end) use ($d): DateInterval {
     return new DateInterval($d($start), $d($end));
 };
-$s = function (DateInterval ...$items) {
+$s = function (DateInterval ...$items): DateIntervalSet {
     return new DateIntervalSet($items);
 };
 

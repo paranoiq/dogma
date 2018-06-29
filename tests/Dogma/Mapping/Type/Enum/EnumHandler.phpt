@@ -15,7 +15,10 @@ require_once __DIR__ . '/../../../bootstrap.php';
 class TestEnum extends IntEnum
 {
 
+    /** @var int */
     public const ONE = 1;
+
+    /** @var int */
     public const TWO = 2;
 
 }

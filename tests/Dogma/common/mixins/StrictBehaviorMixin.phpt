@@ -12,30 +12,31 @@ require_once __DIR__ . '/../../bootstrap.php';
 class TestClass
 {
     use StrictBehaviorMixin;
+
 }
 
 $x = new TestClass();
 
-Assert::throws(function () {
+Assert::throws(function (): void {
     TestClass::method();
 }, UndefinedMethodException::class);
 
-Assert::throws(function () use ($x) {
+Assert::throws(function () use ($x): void {
     $x->method();
 }, UndefinedMethodException::class);
 
-Assert::throws(function () use ($x) {
+Assert::throws(function () use ($x): void {
     $x->property;
 }, UndefinedPropertyException::class);
 
-Assert::throws(function () use ($x) {
+Assert::throws(function () use ($x): void {
     $x->property = 1;
 }, UndefinedPropertyException::class);
 
-Assert::throws(function () use ($x) {
+Assert::throws(function () use ($x): void {
     isset($x->property);
 }, UndefinedPropertyException::class);
 
-Assert::throws(function () use ($x) {
+Assert::throws(function () use ($x): void {
     unset($x->property);
 }, UndefinedPropertyException::class);

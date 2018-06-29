@@ -105,6 +105,6 @@ Assert::same($callable->getTypeWithoutParams(), $callable);
 Assert::same($callableNullable->getTypeWithoutParams(), $callableNullable);
 
 // getInstance()
-Assert::exception(function () use ($callable) {
+Assert::exception(function () use ($callable): void {
     $callable->getInstance();
 }, \Error::class);

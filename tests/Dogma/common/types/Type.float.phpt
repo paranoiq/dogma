@@ -111,6 +111,6 @@ Assert::same($floatNullable->getTypeWithoutParams(), $floatNullable);
 Assert::same($single->getTypeWithoutParams(), $float);
 
 // getInstance()
-Assert::exception(function () use ($float) {
+Assert::exception(function () use ($float): void {
     $float->getInstance();
 }, \Error::class);

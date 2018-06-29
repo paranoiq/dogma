@@ -26,7 +26,7 @@ Assert::true($handler->acceptsType(Type::get('Any')));
 // getParameters()
 Assert::equal($handler->getParameters($dateTimeType), [
     'time' => Type::get(Type::MIXED),
-    'object' => Type::get(Type::MIXED)
+    'object' => Type::get(Type::MIXED),
 ]);
 
 // createInstance()
@@ -38,6 +38,6 @@ Assert::type($dateInstance, DateTime::class);
 Assert::same($dateInstance->format('Y-m-d H:i:s'), '2001-02-03 04:05:06');
 
 // exportInstance()
-Assert::throws(function () use ($handler, $mapper, $dateTimeType) {
+Assert::throws(function () use ($handler, $mapper, $dateTimeType): void {
     $handler->exportInstance($dateTimeType, new DateTime(), $mapper);
 }, OneWayHandlerException::class);

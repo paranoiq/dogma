@@ -34,9 +34,9 @@ Assert::same(
     ['@return' => Type::int(64)]
 );
 
-$test = function ($methodName, $expectedRaw, $expectedType) use ($parser, $class, $rawKeys) {
+$test = function ($methodName, $expectedRaw, $expectedType) use ($parser, $class, $rawKeys): void {
     if (is_string($expectedRaw)) {
-        Assert::throws(function () use ($parser, $class, $methodName) {
+        Assert::throws(function () use ($parser, $class, $methodName): void {
             $parser->getTypesRaw($class->getMethod($methodName));
         }, $expectedRaw);
     } else {
@@ -47,7 +47,7 @@ $test = function ($methodName, $expectedRaw, $expectedType) use ($parser, $class
         Assert::same($params, $expectedRaw);
     }
     if (is_string($expectedType)) {
-        Assert::throws(function () use ($parser, $class, $methodName) {
+        Assert::throws(function () use ($parser, $class, $methodName): void {
             $parser->getTypes($class->getMethod($methodName));
         }, $expectedType);
     } else {

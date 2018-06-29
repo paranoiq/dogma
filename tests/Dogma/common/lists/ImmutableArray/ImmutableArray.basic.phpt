@@ -46,15 +46,15 @@ Assert::true($array->offsetExists(0));
 Assert::false($array->offsetExists(3));
 
 Assert::same($array->offsetGet(0), 1);
-Assert::error(function () use ($array) {
+Assert::error(function () use ($array): void {
     $array->offsetGet(3);
 }, E_NOTICE, 'Undefined offset: 3');
 
-Assert::exception(function () use ($array) {
+Assert::exception(function () use ($array): void {
     $array->offsetSet(3, 4);
 }, \BadMethodCallException::class);
 
-Assert::exception(function () use ($array) {
+Assert::exception(function () use ($array): void {
     $array->offsetUnset(0);
 }, \BadMethodCallException::class);
 
@@ -78,7 +78,7 @@ Assert::contains($array->values()->toArray(), $array->randomValue());
 
 // doForEach()
 $x = 0;
-$array->doForEach(function (int $v) use (&$x) {
+$array->doForEach(function (int $v) use (&$x): void {
     $x += $v;
 });
 Assert::same($x, 6);
