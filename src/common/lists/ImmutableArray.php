@@ -728,6 +728,26 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return new static($res);
     }
 
+    public function rotateLeft(int $positions = 1): self
+    {
+        if ($this->items === []) {
+            return $this;
+        }
+        $positions = $positions % count($this->items);
+
+        return new static(array_merge(array_slice($this->items, $positions), array_slice($this->items, 0, $positions)));
+    }
+
+    public function rotateRight(int $positions = 1): self
+    {
+        if ($this->items === []) {
+            return $this;
+        }
+        $positions = $positions % count($this->items);
+
+        return new static(array_merge(array_slice($this->items, -$positions), array_slice($this->items, 0, -$positions)));
+    }
+
     // filtering -------------------------------------------------------------------------------------------------------
 
     public function collect(callable $function): self

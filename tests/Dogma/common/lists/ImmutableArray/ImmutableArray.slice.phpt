@@ -113,3 +113,15 @@ Assert::same($empty->takeRight(2)->toArray(), []);
 // takeWhile()
 Assert::same($array->takeWhile($f)->toArray(), [1, 2]);
 Assert::same($empty->takeWhile($f)->toArray(), []);
+
+$array = new ImmutableArray([1, 2, 3, 4, 5, 6]);
+
+// rotateLeft()
+Assert::same($empty->rotateLeft(2)->toArray(), []);
+Assert::same($array->rotateLeft(2)->toArray(), [3, 4, 5, 6, 1, 2]);
+Assert::same($array->rotateLeft(8)->toArray(), [3, 4, 5, 6, 1, 2]);
+
+// rotateRight()
+Assert::same($empty->rotateRight(2)->toArray(), []);
+Assert::same($array->rotateRight(2)->toArray(), [5, 6, 1, 2, 3, 4]);
+Assert::same($array->rotateRight(8)->toArray(), [5, 6, 1, 2, 3, 4]);
