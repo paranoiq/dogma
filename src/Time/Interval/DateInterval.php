@@ -140,6 +140,11 @@ class DateInterval implements DateOrTimeInterval
         return $this->isEmpty() ? 0 : $this->end->getDayNumber() - $this->start->getDayNumber() + 1;
     }
 
+    public function toDateTimeInterval(?\DateTimeZone $timeZone = null): DateTimeInterval
+    {
+        return new DateTimeInterval($this->start->getStart($timeZone), $this->end->addDay()->getStart($timeZone));
+    }
+
     public function toDayNumberIntInterval(): IntInterval
     {
         return new IntInterval($this->start->getDayNumber(), $this->end->getDayNumber());

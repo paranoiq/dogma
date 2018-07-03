@@ -63,6 +63,9 @@ Assert::exception(function () use ($startDate): void {
     DateInterval::createFromStartAndLength($startDate, DateTimeUnit::hour(), 2);
 }, InvalidDateTimeUnitException::class);
 
+// toDateTimeInterval()
+Assert::equal($interval->toDateTimeInterval(), DateTimeInterval::createFromString('2000-01-10 00:00 - 2000-01-21 00:00'));
+
 // toDateArray()
 Assert::equal($i(1, 1)->toDateArray(), [$d(1)]);
 Assert::equal($i(1, 2)->toDateArray(), [$d(1), $d(2)]);
