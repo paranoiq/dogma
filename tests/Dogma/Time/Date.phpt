@@ -66,12 +66,6 @@ Assert::equal($date->getStart($utcTimeZone), new DateTime('2000-01-02 00:00:00.0
 // getEnd()
 Assert::equal($date->getEnd($utcTimeZone), new DateTime('2000-01-02 23:59:59.999999', $utcTimeZone));
 
-// getStartFormatted()
-Assert::same($date->getStartFormatted('Y-m-d H:i:s', $utcTimeZone), '2000-01-02 00:00:00');
-
-// getEndFormatted()
-Assert::same($date->getEndFormatted('Y-m-d H:i:s', $utcTimeZone), '2000-01-02 23:59:59');
-
 $today = new Date('today 12:00');
 $today2 = new Date('today 13:00');
 $yesterday = new Date('yesterday');
