@@ -18,6 +18,7 @@ use Dogma\Math\Interval\OpenClosedInterval;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
+use Dogma\Time\DateTimeUnit;
 use Dogma\Time\InvalidIntervalStartEndOrderException;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Time;
@@ -73,6 +74,19 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         $end = new DateTime($end);
 
         return new static($start, $end, $openStart ?? false, $openEnd ?? true);
+    }
+
+    public static function createFromStartAndLength(DateTime $start, DateTimeUnit $unit, int $amount, bool $openStart = false, bool $openEnd = true): self
+    {
+        if ($unit === DateTimeUnit::quarter()) {
+            $unit = DateTimeUnit::month();
+            $amount *= 3;
+        } elseif ($unit === DateTimeUnit::milisecond()) {
+            $unit = DateTimeUnit::microsecond();
+            $amount *= 1000;
+        }
+
+        return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue()), $openStart, $openEnd);
     }
 
     public static function createFromDateAndTimeInterval(Date $date, TimeInterval $timeInterval, ?\DateTimeZone $timeZone = null): self

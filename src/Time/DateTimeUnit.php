@@ -76,6 +76,7 @@ class DateTimeUnit extends StringEnum
     {
         return [
             self::YEAR,
+            self::QUARTER,
             self::MONTH,
             self::WEEK,
             self::DAY,

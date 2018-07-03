@@ -17,6 +17,8 @@ use Dogma\Math\Interval\IntInterval;
 use Dogma\Math\Interval\IntervalParser;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
+use Dogma\Time\DateTimeUnit;
+use Dogma\Time\InvalidDateTimeUnitException;
 use Dogma\Time\InvalidIntervalStartEndOrderException;
 use Dogma\Time\Span\DateSpan;
 use Dogma\Time\Span\DateTimeSpan;
@@ -66,6 +68,19 @@ class DateInterval implements DateOrTimeInterval
         }
 
         return new static($start, $end);
+    }
+
+    public static function createFromStartAndLength(Date $start, DateTimeUnit $unit, int $amount): self
+    {
+        if (!$unit->isDate()) {
+            throw new InvalidDateTimeUnitException($unit);
+        }
+        if ($unit === DateTimeUnit::quarter()) {
+            $unit = DateTimeUnit::month();
+            $amount *= 3;
+        }
+
+        return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue() . ' -1 day'));
     }
 
     public static function empty(): self

@@ -5,8 +5,11 @@ namespace Dogma\Tests\Time\Interval;
 use Dogma\Math\Interval\InvalidIntervalStringFormatException;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
+use Dogma\Time\DateTimeUnit;
 use Dogma\Time\Interval\DateInterval;
 use Dogma\Time\Interval\DateIntervalSet;
+use Dogma\Time\Interval\DateTimeInterval;
+use Dogma\Time\InvalidDateTimeUnitException;
 use Dogma\Time\InvalidIntervalStartEndOrderException;
 use Dogma\Time\Span\DateSpan;
 use Dogma\Time\Span\DateTimeSpan;
@@ -49,6 +52,16 @@ Assert::exception(function (): void {
 Assert::exception(function (): void {
     DateInterval::createFromString('foo');
 }, InvalidIntervalStringFormatException::class);
+
+// createFromStartAndLength()
+Assert::equal(DateInterval::createFromStartAndLength($startDate, DateTimeUnit::year(), 2), new DateInterval($startDate, new Date('2002-01-09')));
+Assert::equal(DateInterval::createFromStartAndLength($startDate, DateTimeUnit::quarter(), 2), new DateInterval($startDate, new Date('2000-07-09')));
+Assert::equal(DateInterval::createFromStartAndLength($startDate, DateTimeUnit::month(), 2), new DateInterval($startDate, new Date('2000-03-09')));
+Assert::equal(DateInterval::createFromStartAndLength($startDate, DateTimeUnit::week(), 2), new DateInterval($startDate, new Date('2000-01-23')));
+Assert::equal(DateInterval::createFromStartAndLength($startDate, DateTimeUnit::day(), 2), new DateInterval($startDate, new Date('2000-01-11')));
+Assert::exception(function () use ($startDate): void {
+    DateInterval::createFromStartAndLength($startDate, DateTimeUnit::hour(), 2);
+}, InvalidDateTimeUnitException::class);
 
 // toDateArray()
 Assert::equal($i(1, 1)->toDateArray(), [$d(1)]);

@@ -5,8 +5,10 @@ namespace Dogma\Tests\Time\Interval;
 use Dogma\Math\Interval\InvalidIntervalStringFormatException;
 use Dogma\Str;
 use Dogma\Tester\Assert;
+use Dogma\Time\DateTimeUnit;
 use Dogma\Time\Interval\TimeInterval;
 use Dogma\Time\Interval\TimeIntervalSet;
+use Dogma\Time\InvalidDateTimeUnitException;
 use Dogma\Time\Microseconds;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Span\TimeSpan;
@@ -51,6 +53,16 @@ Assert::exception(function (): void {
 Assert::exception(function (): void {
     TimeInterval::createFromString('foo');
 }, InvalidIntervalStringFormatException::class);
+
+// createFromStartAndLength()
+Assert::equal(TimeInterval::createFromStartAndLength($startTime, DateTimeUnit::hour(), 2), new TimeInterval($startTime, new Time('12:00')));
+Assert::equal(TimeInterval::createFromStartAndLength($startTime, DateTimeUnit::minute(), 2), new TimeInterval($startTime, new Time('10:02')));
+Assert::equal(TimeInterval::createFromStartAndLength($startTime, DateTimeUnit::second(), 2), new TimeInterval($startTime, new Time('10:00:02')));
+Assert::equal(TimeInterval::createFromStartAndLength($startTime, DateTimeUnit::milisecond(), 2), new TimeInterval($startTime, new Time('10:00:00.002')));
+Assert::equal(TimeInterval::createFromStartAndLength($startTime, DateTimeUnit::microsecond(), 2), new TimeInterval($startTime, new Time('10:00:00.000002')));
+Assert::exception(function () use ($startTime): void {
+    TimeInterval::createFromStartAndLength($startTime, DateTimeUnit::day(), 2);
+}, InvalidDateTimeUnitException::class);
 
 // shift()
 Assert::equal($interval->shift('+1 hour'), $i(11, 21));

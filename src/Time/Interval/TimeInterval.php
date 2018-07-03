@@ -16,6 +16,8 @@ use Dogma\Equalable;
 use Dogma\Math\Interval\IntervalParser;
 use Dogma\Math\Interval\OpenClosedInterval;
 use Dogma\StrictBehaviorMixin;
+use Dogma\Time\DateTimeUnit;
+use Dogma\Time\InvalidDateTimeUnitException;
 use Dogma\Time\InvalidTimeIntervalException;
 use Dogma\Time\Microseconds;
 use Dogma\Time\Span\DateTimeSpan;
@@ -88,6 +90,19 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
         $end = new Time($end);
 
         return new static($start, $end, $openStart ?? false, $openEnd ?? true);
+    }
+
+    public static function createFromStartAndLength(Time $start, DateTimeUnit $unit, int $amount, bool $openStart = false, bool $openEnd = true): self
+    {
+        if (!$unit->isTime()) {
+            throw new InvalidDateTimeUnitException($unit);
+        }
+        if ($unit === DateTimeUnit::milisecond()) {
+            $unit = DateTimeUnit::microsecond();
+            $amount *= 1000;
+        }
+
+        return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue()), $openStart, $openEnd);
     }
 
     public static function closed(Time $start, Time $end): self
