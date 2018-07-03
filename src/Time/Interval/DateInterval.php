@@ -202,6 +202,11 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         return new DateTimeInterval($this->start->getStart($timeZone), $this->end->addDay()->getStart($timeZone));
     }
 
+    public function toDateTimeInterval(?\DateTimeZone $timeZone = null): DateTimeInterval
+    {
+        return new DateTimeInterval($this->start->getStart($timeZone), $this->end->addDay()->getStart($timeZone));
+    }
+
     public function toDayNumberIntInterval(): IntInterval
     {
         return new IntInterval($this->start->getJulianDay(), $this->end->getJulianDay());
