@@ -11,6 +11,14 @@ namespace Dogma\Math;
 
 use Dogma\PowersOfTwo;
 use Dogma\StaticClassMixin;
+use function array_combine;
+use function array_merge;
+use function array_slice;
+use function count;
+use function min;
+use function next;
+use function range;
+use function round;
 
 class Sequence
 {

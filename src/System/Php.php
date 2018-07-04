@@ -10,6 +10,14 @@
 namespace Dogma\System;
 
 use Dogma\StaticClassMixin;
+use const INFO_GENERAL;
+use const PHP_INT_SIZE;
+use function extension_loaded;
+use function ob_get_clean;
+use function ob_start;
+use function php_sapi_name;
+use function phpinfo;
+use function preg_match;
 
 class Php
 {

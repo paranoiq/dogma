@@ -9,6 +9,11 @@
 
 namespace Dogma;
 
+use const SORT_NATURAL;
+use const SORT_NUMERIC;
+use const SORT_REGULAR;
+use const SORT_STRING;
+
 class Sorting
 {
     use StaticClassMixin;

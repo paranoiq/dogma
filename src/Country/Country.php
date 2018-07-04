@@ -10,6 +10,10 @@
 namespace Dogma\Country;
 
 use Dogma\Enum\StringEnum;
+use function array_search;
+use function chr;
+use function ord;
+use function strtoupper;
 
 /**
  * 2-letter country code by ISO-3166-1

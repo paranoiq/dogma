@@ -11,6 +11,7 @@ namespace Dogma\Mapping;
 
 use Dogma\Exception;
 use Dogma\Type;
+use function sprintf;
 
 class MappingNotFoundException extends Exception implements MappingException
 {

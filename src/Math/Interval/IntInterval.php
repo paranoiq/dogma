@@ -14,6 +14,17 @@ use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\StrictBehaviorMixin;
+use const PHP_INT_MAX;
+use const PHP_INT_MIN;
+use function array_fill;
+use function array_shift;
+use function array_unique;
+use function array_values;
+use function count;
+use function max;
+use function min;
+use function round;
+use function sprintf;
 
 class IntInterval implements Interval
 {

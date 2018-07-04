@@ -9,6 +9,21 @@
 
 namespace Dogma;
 
+use const DIRECTORY_SEPARATOR;
+use function array_pop;
+use function dirname;
+use function explode;
+use function glob;
+use function implode;
+use function is_dir;
+use function is_file;
+use function ltrim;
+use function spl_autoload_register;
+use function sprintf;
+use function str_replace;
+use function strtr;
+use function substr;
+
 final class DogmaLoader
 {
     use StrictBehaviorMixin;

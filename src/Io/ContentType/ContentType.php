@@ -11,6 +11,7 @@ namespace Dogma\Io\ContentType;
 
 use Dogma\Enum\PartialStringEnum;
 use Dogma\Str;
+use function array_search;
 
 class ContentType extends PartialStringEnum
 {

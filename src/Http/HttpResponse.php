@@ -13,6 +13,8 @@ use Dogma\Http\Curl\CurlHelper;
 use Dogma\Io\ContentType\ContentType;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Provider\CurrentTimeProvider;
+use function is_int;
+use function sprintf;
 
 class HttpResponse
 {

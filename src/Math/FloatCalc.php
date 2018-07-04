@@ -10,6 +10,7 @@
 namespace Dogma\Math;
 
 use Dogma\StaticClassMixin;
+use function abs;
 
 class FloatCalc
 {

@@ -11,6 +11,9 @@ namespace Dogma\Time;
 
 use Dogma\Enum\PartialStringEnum;
 use Dogma\InvalidValueException;
+use function date_default_timezone_get;
+use function date_default_timezone_set;
+use function in_array;
 
 class TimeZone extends PartialStringEnum
 {

@@ -10,6 +10,9 @@
 namespace Dogma\Dom;
 
 use Dogma\StrictBehaviorMixin;
+use function array_shift;
+use function call_user_func;
+use function func_get_args;
 
 /**
  * @property-read string $nodeName

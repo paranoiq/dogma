@@ -10,6 +10,9 @@
 namespace Dogma\Io;
 
 use Dogma\Enum\IntEnum;
+use const SEEK_CUR;
+use const SEEK_END;
+use const SEEK_SET;
 
 class FilePosition extends IntEnum
 {

@@ -15,6 +15,11 @@ use Dogma\Language\Localization\Translator;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\Formatting;
+use function abs;
+use function in_array;
+use function number_format;
+use function rtrim;
+use function str_split;
 
 class DateTimeSpanFormatter
 {

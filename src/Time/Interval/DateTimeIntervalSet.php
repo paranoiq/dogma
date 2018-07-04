@@ -16,6 +16,12 @@ use Dogma\Equalable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
+use function array_merge;
+use function array_shift;
+use function array_values;
+use function count;
+use function implode;
+use function reset;
 
 class DateTimeIntervalSet implements DateOrTimeIntervalSet
 {

@@ -9,6 +9,8 @@
 
 namespace Dogma;
 
+use function get_class;
+
 class Collection extends ImmutableArray
 {
 

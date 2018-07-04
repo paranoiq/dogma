@@ -16,6 +16,14 @@ use Dogma\NonCloneableMixin;
 use Dogma\NonIterableMixin;
 use Dogma\NonSerializableMixin;
 use Dogma\StrictBehaviorMixin;
+use function count;
+use function end;
+use function explode;
+use function get_called_class;
+use function get_class;
+use function implode;
+use function is_scalar;
+use function sprintf;
 
 trait SetMixin
 {

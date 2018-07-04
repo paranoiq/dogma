@@ -13,6 +13,11 @@ namespace Dogma\Math\Vector;
 
 use Dogma\Math\FloatCalc;
 use Dogma\StrictBehaviorMixin;
+use function abs;
+use function atan2;
+use function cos;
+use function sin;
+use function sqrt;
 
 class Vector3
 {

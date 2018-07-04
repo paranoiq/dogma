@@ -9,6 +9,8 @@
 
 namespace Dogma;
 
+use function is_array;
+
 /**
  * Returns only selected keys from iterated arrays (eg. rows) as keys and values.
  */

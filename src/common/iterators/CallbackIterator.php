@@ -9,6 +9,8 @@
 
 namespace Dogma;
 
+use function call_user_func;
+
 /**
  * Calls given callback on each value or key and returns result.
  */

@@ -9,6 +9,8 @@
 
 namespace Dogma;
 
+use function is_array;
+
 class IteratorHelper
 {
     use StaticClassMixin;

@@ -11,6 +11,9 @@ namespace Dogma\Enum;
 
 use Dogma\Arr;
 use Dogma\InvalidRegularExpressionException;
+use function get_called_class;
+use function preg_match;
+use function sprintf;
 
 abstract class PartialStringEnum extends StringEnum
 {

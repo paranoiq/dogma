@@ -9,6 +9,8 @@
 
 namespace Dogma;
 
+use function sprintf;
+
 class InvalidTypeException extends Exception
 {
 

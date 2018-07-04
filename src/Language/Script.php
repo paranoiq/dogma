@@ -10,6 +10,9 @@
 namespace Dogma\Language;
 
 use Dogma\Enum\StringEnum;
+use function array_search;
+use function strtolower;
+use function ucfirst;
 
 class Script extends StringEnum
 {

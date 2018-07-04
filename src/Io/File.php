@@ -17,6 +17,36 @@ use Dogma\NonCloneableMixin;
 use Dogma\NonSerializableMixin;
 use Dogma\ResourceType;
 use Dogma\StrictBehaviorMixin;
+use const LOCK_UN;
+use function basename;
+use function call_user_func;
+use function chmod;
+use function dirname;
+use function error_clear_last;
+use function error_get_last;
+use function fclose;
+use function feof;
+use function fflush;
+use function flock;
+use function fopen;
+use function fread;
+use function fseek;
+use function fstat;
+use function ftell;
+use function ftruncate;
+use function fwrite;
+use function get_resource_type;
+use function is_callable;
+use function is_dir;
+use function is_resource;
+use function is_string;
+use function min;
+use function rename;
+use function sprintf;
+use function str_replace;
+use function stream_get_meta_data;
+use function strlen;
+use function tmpfile;
 
 /**
  * Binary file reader/writer

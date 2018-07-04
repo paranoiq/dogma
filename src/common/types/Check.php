@@ -9,6 +9,38 @@
 
 namespace Dogma;
 
+use const INF;
+use function array_keys;
+use function class_exists;
+use function count;
+use function explode;
+use function get_resource_type;
+use function gettype;
+use function implode;
+use function in_array;
+use function is_a;
+use function is_array;
+use function is_callable;
+use function is_float;
+use function is_integer;
+use function is_nan;
+use function is_numeric;
+use function is_object;
+use function is_resource;
+use function is_scalar;
+use function is_string;
+use function is_subclass_of;
+use function method_exists;
+use function preg_match;
+use function range;
+use function rtrim;
+use function settype;
+use function sprintf;
+use function str_replace;
+use function strlen;
+use function strpos;
+use function trim;
+
 /**
  * Type and range validations
  */
@@ -40,7 +72,7 @@ final class Check
         }
         switch ($type) {
             case Type::NULL:
-                if (!is_null($value)) {
+                if ($value !== null) {
                     throw new InvalidTypeException($type, $value);
                 }
                 break;

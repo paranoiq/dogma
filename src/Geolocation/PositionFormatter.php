@@ -13,6 +13,9 @@ namespace Dogma\Geolocation;
 
 use Dogma\Math\Angle\AngleFormatter;
 use Dogma\StaticClassMixin;
+use function abs;
+use function in_array;
+use function str_split;
 
 class PositionFormatter
 {

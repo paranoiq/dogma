@@ -14,6 +14,24 @@ use Dogma\NonIterableMixin;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 use ReflectionMethod;
+use function array_keys;
+use function array_merge;
+use function array_search;
+use function array_unique;
+use function array_values;
+use function class_exists;
+use function count;
+use function explode;
+use function in_array;
+use function is_subclass_of;
+use function ltrim;
+use function preg_match;
+use function preg_replace;
+use function rtrim;
+use function sprintf;
+use function strstr;
+use function strtolower;
+use function trim;
 
 class MethodTypeParser implements NonIterable
 {

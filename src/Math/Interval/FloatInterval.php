@@ -16,6 +16,15 @@ use Dogma\Equalable;
 use Dogma\InvalidValueException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
+use const INF;
+use function array_fill;
+use function array_shift;
+use function array_unique;
+use function array_values;
+use function count;
+use function is_nan;
+use function number_format;
+use function sprintf;
 
 class FloatInterval implements OpenClosedInterval
 {

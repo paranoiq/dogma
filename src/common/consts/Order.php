@@ -9,6 +9,9 @@
 
 namespace Dogma;
 
+use const SORT_ASC;
+use const SORT_DESC;
+
 class Order
 {
     use StaticClassMixin;

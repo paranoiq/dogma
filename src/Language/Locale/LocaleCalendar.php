@@ -12,6 +12,7 @@
 namespace Dogma\Language\Locale;
 
 use Dogma\Enum\StringEnum;
+use function strtolower;
 
 class LocaleCalendar extends StringEnum
 {

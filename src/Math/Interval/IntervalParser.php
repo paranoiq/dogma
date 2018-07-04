@@ -10,6 +10,10 @@
 namespace Dogma\Math\Interval;
 
 use Dogma\StaticClassMixin;
+use function count;
+use function explode;
+use function substr;
+use function trim;
 
 class IntervalParser
 {

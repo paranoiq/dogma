@@ -12,6 +12,7 @@
 namespace Dogma\Language\Locale;
 
 use Dogma\Enum\PartialStringEnum;
+use function strtolower;
 
 class LocaleKeyword extends PartialStringEnum
 {

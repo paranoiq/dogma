@@ -9,6 +9,8 @@
 
 namespace Dogma;
 
+use function sprintf;
+
 final class NonCloneableObjectException extends Exception
 {
 

@@ -13,6 +13,15 @@ use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
+use function count;
+use function in_array;
+use function is_array;
+use function is_numeric;
+use function is_scalar;
+use function is_string;
+use function sprintf;
+use function strtoupper;
+use function substr;
 
 /**
  * Simple query engine based on XPath 1.0

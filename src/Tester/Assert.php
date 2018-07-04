@@ -10,6 +10,18 @@
 namespace Dogma\Tester;
 
 use Dogma\Equalable;
+use const SORT_STRING;
+use function abs;
+use function array_keys;
+use function current;
+use function get_class;
+use function is_array;
+use function is_finite;
+use function is_float;
+use function is_object;
+use function ksort;
+use function max;
+use function next;
 
 /**
  * Tester\Assert with fixed order of parameters

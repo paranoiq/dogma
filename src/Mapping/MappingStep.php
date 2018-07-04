@@ -12,6 +12,7 @@ namespace Dogma\Mapping;
 use Dogma\Mapping\Type\TypeHandler;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
+use function array_flip;
 
 class MappingStep
 {

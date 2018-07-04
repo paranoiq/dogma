@@ -13,6 +13,23 @@ namespace Dogma;
 
 use Dogma\Language\Encoding;
 use Dogma\Language\Locale\Locale;
+use function array_pop;
+use function count;
+use function end;
+use function explode;
+use function func_get_args;
+use function implode;
+use function in_array;
+use function is_array;
+use function is_bool;
+use function is_int;
+use function is_string;
+use function is_subclass_of;
+use function preg_match;
+use function preg_split;
+use function sprintf;
+use function str_replace;
+use function strlen;
 
 /**
  * Type metadata

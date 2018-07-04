@@ -11,6 +11,8 @@ namespace Dogma\Dom\Html;
 
 use Dogma\Dom\Element;
 use Dogma\StrictBehaviorMixin;
+use function count;
+use function sprintf;
 
 class HtmlTableIterator implements \Iterator
 {

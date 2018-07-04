@@ -10,6 +10,8 @@
 namespace Dogma\Mapping\Naming;
 
 use Dogma\StrictBehaviorMixin;
+use function end;
+use function explode;
 
 class ShortFieldNamingStrategy implements NamingStrategy
 {

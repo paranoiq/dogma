@@ -10,6 +10,31 @@
 namespace Dogma\Http\Curl;
 
 use Dogma\StaticClassMixin;
+use const CURLINFO_CONNECT_TIME;
+use const CURLINFO_CONTENT_LENGTH_DOWNLOAD;
+use const CURLINFO_CONTENT_LENGTH_UPLOAD;
+use const CURLINFO_CONTENT_TYPE;
+use const CURLINFO_EFFECTIVE_URL;
+use const CURLINFO_FILETIME;
+use const CURLINFO_HEADER_OUT;
+use const CURLINFO_HEADER_SIZE;
+use const CURLINFO_HTTP_CODE;
+use const CURLINFO_NAMELOOKUP_TIME;
+use const CURLINFO_PRETRANSFER_TIME;
+use const CURLINFO_REDIRECT_COUNT;
+use const CURLINFO_REDIRECT_TIME;
+use const CURLINFO_REQUEST_SIZE;
+use const CURLINFO_SIZE_DOWNLOAD;
+use const CURLINFO_SIZE_UPLOAD;
+use const CURLINFO_SPEED_DOWNLOAD;
+use const CURLINFO_SPEED_UPLOAD;
+use const CURLINFO_SSL_VERIFYRESULT;
+use const CURLINFO_STARTTRANSFER_TIME;
+use const CURLINFO_TOTAL_TIME;
+use function constant;
+use function get_defined_constants;
+use function strtoupper;
+use function substr;
 
 class CurlHelper
 {

@@ -14,6 +14,9 @@ use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
+use function abs;
+use function floor;
+use function round;
 
 /**
  * Replacement of \DateInterval

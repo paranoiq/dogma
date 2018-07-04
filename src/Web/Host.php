@@ -12,6 +12,8 @@ namespace Dogma\Web;
 use Dogma\Check;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
+use function end;
+use function explode;
 
 class Host
 {

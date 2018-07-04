@@ -11,6 +11,9 @@ namespace Dogma\Time\Interval;
 
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\InvalidFormattingStringException;
+use function count;
+use function explode;
+use function sprintf;
 
 /**
  * Uses standard PHP date() formatting and "|" separator for start and end part of formatting string.

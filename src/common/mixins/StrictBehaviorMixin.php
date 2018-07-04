@@ -9,6 +9,9 @@
 
 namespace Dogma;
 
+use function get_called_class;
+use function get_class;
+
 trait StrictBehaviorMixin
 {
 

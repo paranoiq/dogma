@@ -18,6 +18,8 @@ use Dogma\Math\Vector\Vector3;
 use Dogma\NonIterable;
 use Dogma\NonIterableMixin;
 use Dogma\StrictBehaviorMixin;
+use function deg2rad;
+use function rad2deg;
 
 /**
  * http://www.movable-type.co.uk/scripts/latlong.html

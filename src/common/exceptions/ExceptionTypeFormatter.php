@@ -9,6 +9,17 @@
 
 namespace Dogma;
 
+use function array_map;
+use function get_class;
+use function get_resource_type;
+use function gettype;
+use function implode;
+use function is_array;
+use function is_object;
+use function is_resource;
+use function is_string;
+use function sprintf;
+
 class ExceptionTypeFormatter
 {
     use StaticClassMixin;

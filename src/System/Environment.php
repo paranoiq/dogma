@@ -10,6 +10,9 @@
 namespace Dogma\System;
 
 use Dogma\StaticClassMixin;
+use const PHP_OS;
+use function strstr;
+use function strtolower;
 
 class Environment
 {

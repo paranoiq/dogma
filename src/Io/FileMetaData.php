@@ -12,6 +12,9 @@
 namespace Dogma\Io;
 
 use Dogma\StrictBehaviorMixin;
+use function error_clear_last;
+use function error_get_last;
+use function stat;
 
 class FileMetaData
 {

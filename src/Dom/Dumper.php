@@ -11,6 +11,11 @@ namespace Dogma\Dom;
 
 use Dogma\NotImplementedException;
 use Dogma\StaticClassMixin;
+use function count;
+use function htmlspecialchars;
+use function preg_replace;
+use function str_repeat;
+use function trim;
 
 class Dumper
 {

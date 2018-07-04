@@ -13,6 +13,17 @@ use Dogma\Language\Collator;
 use Dogma\Language\Locale\Locale;
 use Dogma\Language\Transliterator;
 use Dogma\Language\UnicodeCharacterCategory;
+use function is_string;
+use function mb_strlen;
+use function mb_substr;
+use function min;
+use function range;
+use function str_replace;
+use function strcasecmp;
+use function strcmp;
+use function strlen;
+use function strpos;
+use function substr;
 
 /**
  * UTF-8 strings manipulation

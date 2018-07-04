@@ -7,6 +7,7 @@ use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\InvalidTimeSpanException;
+use function floor;
 
 /**
  * Time interval without fixed start time and end time. Whole days only.

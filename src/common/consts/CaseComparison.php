@@ -9,6 +9,8 @@
 
 namespace Dogma;
 
+use const SORT_FLAG_CASE;
+
 class CaseComparison
 {
     use StaticClassMixin;

@@ -12,6 +12,9 @@
 namespace Dogma\System\Error;
 
 use Dogma\Enum\IntEnum;
+use function str_replace;
+use function strtolower;
+use function ucfirst;
 
 /**
  * Linux system errors

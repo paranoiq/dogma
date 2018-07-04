@@ -11,6 +11,11 @@ namespace Dogma\Enum;
 
 use Dogma\Arr;
 use Dogma\InvalidValueException;
+use function array_search;
+use function get_called_class;
+use function implode;
+use function in_array;
+use function sort;
 
 abstract class StringSet
 {

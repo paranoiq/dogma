@@ -9,6 +9,10 @@
 
 namespace Dogma;
 
+use function implode;
+use function is_array;
+use function sprintf;
+
 class InvalidSizeException extends Exception
 {
 

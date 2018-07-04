@@ -22,6 +22,12 @@ use Dogma\Time\DateTimeUnit;
 use Dogma\Time\InvalidIntervalStartEndOrderException;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Time;
+use function array_fill;
+use function array_shift;
+use function array_unique;
+use function array_values;
+use function count;
+use function round;
 
 /**
  * Interval of times including date. Based on FloatInterval.

@@ -10,6 +10,9 @@
 namespace Dogma\Web;
 
 use Dogma\StrictBehaviorMixin;
+use function end;
+use function explode;
+use function preg_match;
 
 class Domain
 {

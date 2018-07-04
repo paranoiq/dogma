@@ -12,6 +12,7 @@ namespace Dogma\Mapping;
 use Dogma\ArrayIterator;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
+use function is_array;
 
 class MappingIterator implements \Iterator
 {

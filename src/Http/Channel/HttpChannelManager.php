@@ -16,6 +16,17 @@ use Dogma\NonCloneableMixin;
 use Dogma\NonSerializableMixin;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Provider\CurrentTimeProvider;
+use const CURLM_CALL_MULTI_PERFORM;
+use const PHP_INT_MIN;
+use function abs;
+use function count;
+use function curl_multi_close;
+use function curl_multi_exec;
+use function curl_multi_info_read;
+use function curl_multi_init;
+use function curl_multi_remove_handle;
+use function curl_multi_select;
+use function spl_object_hash;
 
 /**
  * Manages parallel requests over multiple HTTP channels.

@@ -11,6 +11,8 @@ namespace Dogma\Mapping\Naming;
 
 use Dogma\Language\Inflector;
 use Dogma\StrictBehaviorMixin;
+use function end;
+use function explode;
 
 class ShortUnderscoreFieldNamingStrategy implements NamingStrategy
 {

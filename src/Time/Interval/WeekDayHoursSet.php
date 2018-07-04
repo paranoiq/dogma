@@ -12,6 +12,7 @@ namespace Dogma\Time\Interval;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DayOfWeek;
 use Dogma\Time\InvalidWeekDayHoursSetException;
+use function ksort;
 
 class WeekDayHoursSet
 {

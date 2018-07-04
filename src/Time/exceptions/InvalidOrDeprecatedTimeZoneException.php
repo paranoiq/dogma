@@ -9,6 +9,8 @@
 
 namespace Dogma\Time;
 
+use function sprintf;
+
 class InvalidOrDeprecatedTimeZoneException extends TimeException
 {
 

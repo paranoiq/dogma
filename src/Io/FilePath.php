@@ -10,6 +10,8 @@
 namespace Dogma\Io;
 
 use Dogma\StrictBehaviorMixin;
+use function basename;
+use function str_replace;
 
 class FilePath implements Path
 {

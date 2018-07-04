@@ -15,6 +15,7 @@ use Dogma\Mapping\Naming\ShortFieldNamingStrategy;
 use Dogma\Mapping\Type\TypeHandler;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
+use function rtrim;
 
 class ConventionMappingBuilder implements MappingBuilder
 {

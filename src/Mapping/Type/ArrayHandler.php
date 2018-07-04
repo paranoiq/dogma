@@ -12,6 +12,7 @@ namespace Dogma\Mapping\Type;
 use Dogma\Mapping\Mapper;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
+use function count;
 
 /**
  * Creates an array containing specified items from raw data and vice versa

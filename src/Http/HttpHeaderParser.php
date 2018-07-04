@@ -20,6 +20,11 @@ use Dogma\Time\Provider\TimeProvider;
 use Dogma\Type;
 use Dogma\Web\Host;
 use Dogma\Web\Url;
+use function array_shift;
+use function array_unshift;
+use function explode;
+use function is_array;
+use function trim;
 
 class HttpHeaderParser
 {

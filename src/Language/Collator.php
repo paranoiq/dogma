@@ -15,6 +15,7 @@ use Dogma\Language\Locale\Locale;
 use Dogma\Language\Locale\LocaleCollation;
 use Dogma\Language\Locale\LocaleKeyword;
 use Dogma\Type;
+use function is_string;
 
 class Collator extends \Collator
 {

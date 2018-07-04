@@ -10,6 +10,8 @@
 namespace Dogma\Email;
 
 use Dogma\StrictBehaviorMixin;
+use function sprintf;
+use function strtolower;
 
 class EmailAddress
 {

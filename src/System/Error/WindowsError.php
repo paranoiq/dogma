@@ -10,6 +10,10 @@
 namespace Dogma\System\Error;
 
 use Dogma\Enum\IntEnum;
+use function preg_replace;
+use function str_replace;
+use function strtolower;
+use function ucfirst;
 
 /**
  * Windows system errors (@see http://msdn.microsoft.com/en-us/library/windows/desktop/ms681382(v=vs.85).aspx)

@@ -22,6 +22,13 @@ use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeFormatter;
 use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Span\TimeSpan;
+use function ceil;
+use function explode;
+use function floor;
+use function is_int;
+use function ltrim;
+use function preg_match;
+use function round;
 
 /**
  * Time of day without a date and timezone.

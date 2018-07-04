@@ -9,6 +9,10 @@
 
 namespace Dogma;
 
+use const PHP_INT_MAX;
+use const PHP_INT_MIN;
+use const PHP_INT_SIZE;
+
 class BitSize
 {
     use StaticClassMixin;

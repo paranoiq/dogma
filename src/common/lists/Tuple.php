@@ -9,6 +9,8 @@
 
 namespace Dogma;
 
+use function count;
+
 /**
  * Immutable list of fixed number of parameters
  */

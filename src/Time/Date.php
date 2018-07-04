@@ -22,6 +22,9 @@ use Dogma\Time\Interval\DateTimeInterval;
 use Dogma\Time\Provider\TimeProvider;
 use Dogma\Time\Span\DateSpan;
 use Dogma\Type;
+use function explode;
+use function is_int;
+use function sprintf;
 
 /**
  * Date class.

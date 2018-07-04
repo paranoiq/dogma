@@ -9,6 +9,8 @@
 
 namespace Dogma;
 
+use function sprintf;
+
 class UndefinedPropertyException extends Exception
 {
 

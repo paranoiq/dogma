@@ -10,6 +10,8 @@
 namespace Dogma\Http;
 
 use Dogma\Io\File;
+use const CURLOPT_BINARYTRANSFER;
+use const CURLOPT_FILE;
 
 /**
  * File download request.

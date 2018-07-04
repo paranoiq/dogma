@@ -14,6 +14,7 @@ parameters:
 
         # missing dependencies
         - '~^Function mailparse_.* not found~'
+        - '~^Used function mailparse_.* not found.~'
 
         # wrong reflection. todo: send PR to phpstan
         - '~^Method DOMXPath::registerPhpFunctions\(\) invoked with 1 parameter, 0 required~'

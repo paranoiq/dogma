@@ -12,6 +12,13 @@ namespace Dogma\Io\ContentType;
 use Dogma\Io\Path;
 use Dogma\Language\Encoding;
 use Dogma\StrictBehaviorMixin;
+use const FILEINFO_MIME_ENCODING;
+use const FILEINFO_MIME_TYPE;
+use function error_clear_last;
+use function error_get_last;
+use function finfo_buffer;
+use function finfo_file;
+use function finfo_open;
 
 class ContentTypeDetector
 {

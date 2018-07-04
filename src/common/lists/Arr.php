@@ -9,6 +9,62 @@
 
 namespace Dogma;
 
+use function array_chunk;
+use function array_column;
+use function array_combine;
+use function array_count_values;
+use function array_diff;
+use function array_diff_assoc;
+use function array_diff_key;
+use function array_diff_uassoc;
+use function array_diff_ukey;
+use function array_filter;
+use function array_flip;
+use function array_intersect;
+use function array_intersect_assoc;
+use function array_intersect_key;
+use function array_intersect_uassoc;
+use function array_intersect_ukey;
+use function array_key_exists;
+use function array_keys;
+use function array_map;
+use function array_merge;
+use function array_pad;
+use function array_product;
+use function array_push;
+use function array_rand;
+use function array_reduce;
+use function array_replace;
+use function array_reverse;
+use function array_search;
+use function array_slice;
+use function array_splice;
+use function array_sum;
+use function array_udiff;
+use function array_udiff_assoc;
+use function array_udiff_uassoc;
+use function array_uintersect;
+use function array_uintersect_assoc;
+use function array_uintersect_uassoc;
+use function array_unique;
+use function array_unshift;
+use function array_values;
+use function arsort;
+use function asort;
+use function count;
+use function end;
+use function is_array;
+use function iterator_to_array;
+use function krsort;
+use function ksort;
+use function max;
+use function min;
+use function range;
+use function reset;
+use function shuffle;
+use function uasort;
+use function uksort;
+
 class Arr
 {
     use StaticClassMixin;

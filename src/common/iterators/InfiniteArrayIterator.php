@@ -9,6 +9,8 @@
 
 namespace Dogma;
 
+use function count;
+
 /**
  * Repeats given array infinitely, including keys.
  */

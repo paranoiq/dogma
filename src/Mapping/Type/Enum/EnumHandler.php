@@ -15,6 +15,7 @@ use Dogma\Mapping\Mapper;
 use Dogma\Mapping\Type\TypeHandler;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
+use function call_user_func;
 
 /**
  * Creates an enum from raw value and vice versa

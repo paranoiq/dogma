@@ -19,6 +19,13 @@ use Dogma\Money\Currency;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
+use function array_filter;
+use function array_values;
+use function implode;
+use function is_string;
+use function preg_match;
+use function reset;
+use function sprintf;
 
 class Locale
 {

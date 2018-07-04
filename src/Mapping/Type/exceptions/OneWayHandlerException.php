@@ -10,6 +10,8 @@
 namespace Dogma\Mapping\Type;
 
 use Dogma\Exception;
+use function get_class;
+use function sprintf;
 
 class OneWayHandlerException extends Exception implements MappingTypeException
 {

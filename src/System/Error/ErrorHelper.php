@@ -9,6 +9,11 @@
 
 namespace Dogma\System\Error;
 
+use const PHP_OS;
+use function is_int;
+use function strpos;
+use function strtolower;
+
 class ErrorHelper
 {
 

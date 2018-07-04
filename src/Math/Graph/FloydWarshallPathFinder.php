@@ -10,6 +10,12 @@
 namespace Dogma\Math\Graph;
 
 use Dogma\StrictBehaviorMixin;
+use const PHP_INT_MAX;
+use function array_keys;
+use function array_reverse;
+use function count;
+use function range;
+use function sprintf;
 
 /**
  * Floyd-Warshall algorithm for finding all shortest paths in oriented weighted graph.

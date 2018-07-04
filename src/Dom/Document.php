@@ -9,6 +9,13 @@
 
 namespace Dogma\Dom;
 
+use function libxml_clear_errors;
+use function libxml_get_last_error;
+use function libxml_use_internal_errors;
+use function preg_match;
+use function substr;
+use function trim;
+
 class Document extends \DOMDocument
 {
 

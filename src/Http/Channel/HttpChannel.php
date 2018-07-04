@@ -13,6 +13,18 @@ use Dogma\Http\Curl\CurlHelper;
 use Dogma\Http\HttpRequest;
 use Dogma\Http\HttpResponse;
 use Dogma\StrictBehaviorMixin;
+use function abs;
+use function array_keys;
+use function array_shift;
+use function count;
+use function curl_multi_add_handle;
+use function curl_multi_getcontent;
+use function is_array;
+use function is_int;
+use function is_string;
+use function range;
+use function sprintf;
+use function time;
 
 /**
  * HTTP channel for multiple similar requests.

@@ -10,6 +10,7 @@
 namespace Dogma\Language\Locale;
 
 use Dogma\Enum\StringEnum;
+use function strtolower;
 
 class LocaleNumbers extends StringEnum
 {

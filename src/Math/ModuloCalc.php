@@ -11,6 +11,13 @@ namespace Dogma\Math;
 
 use Dogma\InvalidArgumentException;
 use Dogma\StaticClassMixin;
+use function array_values;
+use function count;
+use function in_array;
+use function max;
+use function min;
+use function rsort;
+use function sort;
 
 /**
  * Calculations in modular arithmetic.

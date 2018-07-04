@@ -11,6 +11,7 @@ namespace Dogma\Web;
 
 use Dogma\Exception;
 use Dogma\InvalidValueException;
+use function sprintf;
 
 class InvalidUrlException extends InvalidValueException
 {

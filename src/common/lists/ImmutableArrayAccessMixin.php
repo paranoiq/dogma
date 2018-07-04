@@ -9,6 +9,8 @@
 
 namespace Dogma;
 
+use function array_key_exists;
+
 trait ImmutableArrayAccessMixin
 {
 

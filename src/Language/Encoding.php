@@ -10,6 +10,7 @@
 namespace Dogma\Language;
 
 use Dogma\Enum\StringEnum;
+use function strtoupper;
 
 /**
  * Encoding codes accepted by mbstring and iconv (except BINARY; not all of them)

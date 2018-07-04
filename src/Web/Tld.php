@@ -11,6 +11,8 @@ namespace Dogma\Web;
 
 use Dogma\Country\Country;
 use Dogma\Enum\PartialStringEnum;
+use function array_search;
+use function strlen;
 
 final class Tld extends PartialStringEnum
 {

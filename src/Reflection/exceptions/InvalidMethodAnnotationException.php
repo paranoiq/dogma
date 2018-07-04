@@ -10,6 +10,7 @@
 namespace Dogma\Reflection;
 
 use Dogma\Exception;
+use function sprintf;
 
 class InvalidMethodAnnotationException extends Exception implements ReflectionException
 {

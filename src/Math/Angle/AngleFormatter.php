@@ -10,6 +10,12 @@
 namespace Dogma\Math\Angle;
 
 use Dogma\StrictBehaviorMixin;
+use function abs;
+use function floor;
+use function in_array;
+use function number_format;
+use function rtrim;
+use function str_split;
 
 class AngleFormatter
 {

@@ -15,6 +15,27 @@ use Dogma\PowersOfTwo;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateTime;
+use function array_key_exists;
+use function array_values;
+use function base64_decode;
+use function call_user_func;
+use function explode;
+use function iconv;
+use function in_array;
+use function is_array;
+use function mailparse_msg_create;
+use function mailparse_msg_free;
+use function mailparse_msg_get_part;
+use function mailparse_msg_get_part_data;
+use function mailparse_msg_get_structure;
+use function mailparse_msg_parse;
+use function mailparse_msg_parse_file;
+use function mailparse_rfc822_parse_addresses;
+use function quoted_printable_decode;
+use function sprintf;
+use function strpos;
+use function strtolower;
+use function substr;
 
 /**
  * Mime mail parser. Parses mail message from a File or string.
@@ -100,10 +121,6 @@ class EmailMessage
 
     public function setAddressFactory(callable $factory): void
     {
-        if (!is_callable($factory)) {
-            throw new \InvalidArgumentException('EmailMessage factory must be callable.');
-        }
-
         $this->addressFactory = $factory;
     }
 

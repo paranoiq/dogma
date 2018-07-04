@@ -12,11 +12,7 @@ namespace Dogma\System\Error;
 interface SystemError
 {
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
-     * @return int
-     */
-    public function getValue(); // compatible with Enum
+    public function getValue(): int;
 
     public function getDescription(): string;
 

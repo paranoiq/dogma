@@ -8,6 +8,7 @@ use Dogma\Http\Channel\HttpChannelManager;
 use Dogma\Http\HttpDownloadRequest;
 use Dogma\Http\HttpRequest;
 use Tracy\Debugger;
+use function header;
 
 require_once __DIR__ . '/../bootstrap.php';
 require_once __DIR__ . '/../../../src/loader.php';
@@ -60,5 +61,5 @@ while ($response = $channelA->fetch()) {
     echo $response->getBody();
 }
 
-dump($response);
-dump($manager);
+//dump($response);
+//dump($manager);

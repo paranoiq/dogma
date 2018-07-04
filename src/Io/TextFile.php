@@ -10,6 +10,12 @@
 namespace Dogma\Io;
 
 use Dogma\Language\Encoding;
+use function error_clear_last;
+use function error_get_last;
+use function fgetcsv;
+use function fgets;
+use function fputcsv;
+use function iconv;
 
 /**
  * Text file reader/writer

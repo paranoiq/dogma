@@ -11,6 +11,7 @@ namespace Dogma\Email;
 
 use Dogma\Io\File;
 use Dogma\StrictBehaviorMixin;
+use function strlen;
 
 class EmailAttachment
 {

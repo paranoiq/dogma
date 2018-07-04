@@ -12,6 +12,7 @@ namespace Dogma\Enum;
 use Dogma\Arr;
 use Dogma\InvalidValueException;
 use Dogma\NonIterable;
+use function get_called_class;
 
 abstract class StringEnum implements NonIterable
 {

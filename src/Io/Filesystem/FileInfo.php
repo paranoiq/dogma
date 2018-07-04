@@ -13,6 +13,8 @@ use Dogma\Io\File;
 use Dogma\Io\FileMode;
 use Dogma\Io\Path;
 use Dogma\StrictBehaviorMixin;
+use function basename;
+use function str_replace;
 
 /**
  * File Info

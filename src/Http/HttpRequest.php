@@ -13,6 +13,66 @@ use Dogma\Http\Curl\CurlHelper;
 use Dogma\InvalidValueException;
 use Dogma\NonSerializableMixin;
 use Dogma\StrictBehaviorMixin;
+use const CURLAUTH_ANYSAFE;
+use const CURLOPT_BINARYTRANSFER;
+use const CURLOPT_CONNECTTIMEOUT;
+use const CURLOPT_CONNECTTIMEOUT_MS;
+use const CURLOPT_COOKIE;
+use const CURLOPT_COOKIEFILE;
+use const CURLOPT_COOKIEJAR;
+use const CURLOPT_CUSTOMREQUEST;
+use const CURLOPT_FOLLOWLOCATION;
+use const CURLOPT_HEADERFUNCTION;
+use const CURLOPT_HTTPAUTH;
+use const CURLOPT_HTTPGET;
+use const CURLOPT_HTTPHEADER;
+use const CURLOPT_INFILE;
+use const CURLOPT_INFILESIZE;
+use const CURLOPT_MAXREDIRS;
+use const CURLOPT_NOBODY;
+use const CURLOPT_POST;
+use const CURLOPT_POSTFIELDS;
+use const CURLOPT_PROXY;
+use const CURLOPT_PROXYPORT;
+use const CURLOPT_PROXYUSERPWD;
+use const CURLOPT_PUT;
+use const CURLOPT_REFERER;
+use const CURLOPT_RETURNTRANSFER;
+use const CURLOPT_SSLKEY;
+use const CURLOPT_SSLKEYPASSWD;
+use const CURLOPT_SSLKEYTYPE;
+use const CURLOPT_SSL_VERIFYHOST;
+use const CURLOPT_SSL_VERIFYPEER;
+use const CURLOPT_TIMEOUT;
+use const CURLOPT_TIMEOUT_MS;
+use const CURLOPT_URL;
+use const CURLOPT_USERAGENT;
+use const CURLOPT_USERPWD;
+use const PREG_SET_ORDER;
+use function array_keys;
+use function array_merge;
+use function count;
+use function curl_copy_handle;
+use function curl_errno;
+use function curl_exec;
+use function curl_getinfo;
+use function curl_init;
+use function curl_setopt;
+use function error_clear_last;
+use function error_get_last;
+use function fopen;
+use function implode;
+use function is_array;
+use function is_int;
+use function is_string;
+use function preg_match_all;
+use function preg_replace;
+use function sprintf;
+use function strlen;
+use function strtolower;
+use function substr;
+use function trim;
+use function urlencode;
 
 /**
  * HTTP request. Holds a CURL resource.
@@ -221,7 +281,7 @@ class HttpRequest
     {
         if (is_string($name)) {
             $number = CurlHelper::getCurlOptionNumber($name);
-            if (is_null($number)) {
+            if ($number === null) {
                 throw new HttpRequestException(sprintf('Unknown CURL option \'%s\'!', $name));
             }
         } elseif (!is_int($name)) {
@@ -249,7 +309,7 @@ class HttpRequest
             $this->setOption(CURLOPT_TIMEOUT, (int) $timeout);
         }
 
-        if (is_null($connectTimeout)) {
+        if ($connectTimeout === null) {
             return;
         }
 
@@ -263,7 +323,7 @@ class HttpRequest
     public function setFollowRedirects(bool $follow = true, ?int $max = null): void
     {
         $this->setOption(CURLOPT_FOLLOWLOCATION, $follow);
-        if (!is_null($max)) {
+        if ($max !== null) {
             $this->setOption(CURLOPT_MAXREDIRS, (int) $max);
         }
     }

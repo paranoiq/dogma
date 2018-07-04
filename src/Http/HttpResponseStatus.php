@@ -14,6 +14,10 @@ namespace Dogma\Http;
 use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Enum\PartialIntEnum;
+use function str_replace;
+use function strtolower;
+use function substr;
+use function ucwords;
 
 /**
  * HTTP 1.1 response status codes and CURL error codes

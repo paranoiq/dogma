@@ -22,6 +22,12 @@ use Dogma\Time\InvalidDateTimeUnitException;
 use Dogma\Time\InvalidIntervalStartEndOrderException;
 use Dogma\Time\Span\DateSpan;
 use Dogma\Time\Span\DateTimeSpan;
+use function array_fill;
+use function array_shift;
+use function array_unique;
+use function array_values;
+use function count;
+use function round;
 
 /**
  * Interval of dates. Based on IntInterval.

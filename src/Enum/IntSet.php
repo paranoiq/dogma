@@ -11,6 +11,9 @@ namespace Dogma\Enum;
 
 use Dogma\Arr;
 use Dogma\InvalidValueException;
+use function array_search;
+use function get_called_class;
+use function in_array;
 
 abstract class IntSet
 {

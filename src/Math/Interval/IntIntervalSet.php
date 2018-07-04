@@ -13,6 +13,11 @@ use Dogma\Check;
 use Dogma\Compare;
 use Dogma\Equalable;
 use Dogma\StrictBehaviorMixin;
+use function array_merge;
+use function array_shift;
+use function array_values;
+use function count;
+use function end;
 
 class IntIntervalSet implements IntervalSet
 {

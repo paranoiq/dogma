@@ -9,6 +9,11 @@
 
 namespace Dogma;
 
+use function current;
+use function key;
+use function next;
+use function reset;
+
 /**
  * Minimal interface replacement of \ArrayIterator
  */

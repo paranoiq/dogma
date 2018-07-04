@@ -68,6 +68,8 @@
         <properties>
             <property name="namespacesRequiredToUse" type="array" value="Dogma"/>
             <property name="fullyQualifiedKeywords" type="array" value="T_EXTENDS,T_IMPLEMENTS"/>
+            <property name="allowFallbackGlobalFunctions" value="false"/>
+            <property name="allowFallbackGlobalConstants" value="false"/>
             <property name="allowFullyQualifiedExceptions" value="true"/>
             <property name="allowPartialUses" value="false"/>
         </properties>

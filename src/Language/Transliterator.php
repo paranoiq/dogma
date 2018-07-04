@@ -10,6 +10,12 @@
 namespace Dogma\Language;
 
 use Dogma\StrictBehaviorMixin;
+use function array_map;
+use function explode;
+use function implode;
+use function intl_get_error_message;
+use function is_array;
+use function sprintf;
 
 /**
  * @see http://userguide.icu-project.org/transforms/general

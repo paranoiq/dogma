@@ -10,6 +10,9 @@
 namespace Dogma\Io;
 
 use Dogma\Enum\IntEnum;
+use const LOCK_EX;
+use const LOCK_NB;
+use const LOCK_SH;
 
 class LockType extends IntEnum
 {

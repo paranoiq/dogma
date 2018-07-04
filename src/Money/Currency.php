@@ -10,6 +10,8 @@
 namespace Dogma\Money;
 
 use Dogma\Enum\StringEnum;
+use function array_search;
+use function strtoupper;
 
 class Currency extends StringEnum
 {

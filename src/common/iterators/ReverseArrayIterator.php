@@ -9,6 +9,11 @@
 
 namespace Dogma;
 
+use function current;
+use function end;
+use function key;
+use function prev;
+
 /**
  * For iterating and array in reverse order without making a reversed copy of the array.
  */

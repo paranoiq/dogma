@@ -10,6 +10,9 @@
 namespace Dogma\Math;
 
 use Dogma\StaticClassMixin;
+use function array_merge;
+use function strlen;
+use function substr;
 
 class Combinatorics
 {

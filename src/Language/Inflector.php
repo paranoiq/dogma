@@ -9,10 +9,21 @@
 
 namespace Dogma\Language;
 
+use Dogma\StaticClassMixin;
 use Dogma\Str;
+use function array_key_exists;
+use function array_values;
+use function in_array;
+use function lcfirst;
+use function preg_match;
+use function preg_replace;
+use function strtolower;
+use function strval;
+use function ucfirst;
 
 class Inflector
 {
+    use StaticClassMixin;
 
     /** @var string[] */
     public static $singulars = [

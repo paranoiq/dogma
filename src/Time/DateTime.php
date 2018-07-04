@@ -22,6 +22,14 @@ use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Provider\TimeProvider;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Type;
+use const DATE_RFC2822;
+use function ceil;
+use function explode;
+use function floor;
+use function is_int;
+use function is_string;
+use function number_format;
+use function sprintf;
 
 /**
  * Immutable date and time class.

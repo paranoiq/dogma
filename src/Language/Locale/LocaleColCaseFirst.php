@@ -11,6 +11,7 @@ namespace Dogma\Language\Locale;
 
 use Dogma\Enum\StringEnum;
 use Dogma\Language\Collator;
+use function strtolower;
 
 class LocaleColCaseFirst extends StringEnum implements LocaleCollationOption
 {

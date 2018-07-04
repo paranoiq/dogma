@@ -9,6 +9,8 @@
 
 namespace Dogma;
 
+use function count;
+
 /**
  * Cycles through given iterators. Iterators should return same number of items.
  */

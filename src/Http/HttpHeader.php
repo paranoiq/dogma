@@ -12,6 +12,10 @@
 namespace Dogma\Http;
 
 use Dogma\Enum\PartialStringEnum;
+use function array_map;
+use function explode;
+use function implode;
+use function strtolower;
 
 class HttpHeader extends PartialStringEnum
 {

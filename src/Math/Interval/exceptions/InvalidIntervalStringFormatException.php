@@ -9,6 +9,8 @@
 
 namespace Dogma\Math\Interval;
 
+use function sprintf;
+
 class InvalidIntervalStringFormatException extends \Dogma\Exception
 {
 

@@ -10,6 +10,8 @@
 namespace Dogma\Language;
 
 use Dogma\Enum\StringEnum;
+use function array_search;
+use function strtolower;
 
 /**
  * 2-letter language codes by ISO-639
