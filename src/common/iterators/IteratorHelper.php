@@ -15,6 +15,10 @@ class IteratorHelper
 {
     use StaticClassMixin;
 
+    /**
+     * @param iterable|mixed[] $iterable
+     * @return \Iterator
+     */
     public static function iterableToIterator(iterable $iterable): \Iterator
     {
         if (is_array($iterable)) {

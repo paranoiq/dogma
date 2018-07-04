@@ -2573,10 +2573,6 @@ class ContentType extends PartialStringEnum
         return BaseContentType::getValueRegexp() . '\\/[0-9a-z.+-]+';
     }
 
-    /**
-     * @param string $extension
-     * @return self|null
-     */
     public static function findByExtension(string $extension): ?self
     {
         if (isset(self::$extensions[$extension])) {

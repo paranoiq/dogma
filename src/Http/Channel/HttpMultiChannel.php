@@ -165,12 +165,9 @@ class HttpMultiChannel
      */
     public function addJob($data, $context = null, $name = null)
     {
-        if (is_string($name) || is_int($name)) {
-            // ok
-        } elseif ($name === null) {
+        if ($name === null) {
             $name = ++$this->lastIndex;
-
-        } else {
+        } elseif (!is_string($name) && !is_int($name)) {
             throw new HttpChannelException('Illegal job name. Job name can be only a string or an integer.');
         }
 

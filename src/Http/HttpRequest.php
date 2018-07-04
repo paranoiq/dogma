@@ -148,9 +148,6 @@ class HttpRequest
         }
     }
 
-    /**
-     * @param callable $init
-     */
     public function setInit(callable $init): void
     {
         $this->init = $init;
@@ -184,17 +181,11 @@ class HttpRequest
 
     // basic operations ------------------------------------------------------------------------------------------------
 
-    /**
-     * @param string $url
-     */
     public function setUrl(string $url): void
     {
         $this->url = $url;
     }
 
-    /**
-     * @param string $url
-     */
     public function appendUrl(string $url): void
     {
         $this->setUrl($this->url . $url);

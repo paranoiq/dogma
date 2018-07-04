@@ -14,11 +14,6 @@ interface DateTimeIntervalFormatter
 
     public const START_END_SEPARATOR = '|';
 
-    /**
-     * @param \Dogma\Time\Interval\DateOrTimeInterval $interval
-     * @param string|null $format
-     * @return string
-     */
     public function format(DateOrTimeInterval $interval, ?string $format = null): string;
 
 }

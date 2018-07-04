@@ -209,10 +209,6 @@ class Type
         throw new InvalidSizeException($type, $size, []);
     }
 
-    /**
-     * @param string $type
-     * @param string|null $specific
-     */
     private static function checkSpecific(string $type, ?string $specific = null): void
     {
         if ($type === self::INT && ($specific === Sign::SIGNED || $specific === Sign::UNSIGNED)) {

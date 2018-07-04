@@ -73,7 +73,13 @@ class DateTimeHandler implements TypeHandler
      */
     public function createInstance(Type $type, $value, Mapper $mapper)
     {
-        return $type->getInstance($value);
+        if ($type->isImplementing(Date::class)) {
+            return Date::createFromFormat($this->dateFormat, $value);
+        } elseif ($type->isImplementing(Time::class)) {
+            return Time::createFromFormat($this->timeFormat, $value);
+        } else {
+            return DateTime::createFromFormat($this->dateTimeFormat, $value, $this->timeZone);
+        }
     }
 
     /**
@@ -84,7 +90,13 @@ class DateTimeHandler implements TypeHandler
      */
     public function exportInstance(Type $type, $instance, Mapper $mapper): string
     {
-        return $instance->format();
+        if ($instance instanceof Date) {
+            return $instance->format($this->dateFormat);
+        } elseif ($instance instanceof Time) {
+            return $instance->format($this->timeFormat);
+        } else {
+            return $instance->format($this->dateTimeFormat);
+        }
     }
 
 }

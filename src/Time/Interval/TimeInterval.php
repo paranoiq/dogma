@@ -253,7 +253,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
     }
 
     /**
-     * @param self $interval
+     * @param \Dogma\Time\Interval\TimeInterval $interval
      * @return bool
      */
     public function contains(self $interval): bool
@@ -471,6 +471,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
                 } elseif ($startLower) {
                     if ($intervalEndTime < $itemStartTime || ($intervalEndTime === $itemStartTime && $interval->openEnd && !$item->openStart)) {
                         // r1****r2    i1----i2
+                        continue;
                     } else {
                         // r1****i1----r2----i2
                         unset($results[$r]);
@@ -479,6 +480,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
                 } elseif ($endHigher) {
                     if ($intervalStartTime > $itemEndTime || ($intervalStartTime === $itemEndTime && $interval->openStart && !$item->openEnd)) {
                         // i1----i2    r1****r2
+                        continue;
                     } else {
                         // i1----r1----i2****r2
                         unset($results[$r]);
@@ -555,9 +557,11 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
                 if ($aEndTime < $bStartTime || ($aEndTime === $bStartTime && ($a->openEnd || $b->openStart))
                     || $aStartTime > $bEndTime || ($aStartTime === $bEndTime && ($a->openStart || $b->openEnd))) {
                     // a1----a1    b1----b1
+                    continue;
                 } elseif ($aStartTime === $bStartTime && $a->openStart === $b->openStart) {
                     if ($aEndTime === $bEndTime && $a->openEnd === $b->openEnd) {
                         // a1=b1----a2=b2
+                        continue;
                     } elseif ($aEndTime > $bEndTime || ($aEndTime === $bEndTime && $a->openEnd === false)) {
                         // a1=b1----b2----a2
                         $items[$i] = $b;
@@ -568,6 +572,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
                         $aEndTime = $a->getEnd()->getMicroTime();
                     } else {
                         // a1=b1----a2----b2
+                        continue;
                     }
                 } elseif ($aStartTime < $bStartTime || ($aStartTime === $bStartTime && $a->openStart === false)) {
                     if ($aEndTime === $bEndTime && $a->openEnd === $b->openEnd) {
@@ -601,6 +606,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
                 } else {
                     if ($aEndTime === $bEndTime && $a->openEnd === $b->openEnd) {
                         // b1----a1----a2=b2
+                        continue;
                     } elseif ($aEndTime > $bEndTime || ($aEndTime === $bEndTime && $a->openEnd === false)) {
                         // b1----a1----b2----a2
                         $new = new static($a->start, $b->end, $a->openStart, $b->openEnd);
@@ -612,6 +618,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
                         $aEndTime = $a->getEnd()->getMicroTime();
                     } else {
                         // b1----a1----a2----b2
+                        continue;
                     }
                 }
             }

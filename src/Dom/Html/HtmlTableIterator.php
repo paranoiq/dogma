@@ -52,17 +52,11 @@ class HtmlTableIterator implements \Iterator
         $this->position++;
     }
 
-    /**
-     * @return bool
-     */
     public function valid(): bool
     {
         return $this->position < count($this->rows);
     }
 
-    /**
-     * @return int
-     */
     public function key(): int
     {
         return $this->position;

@@ -40,6 +40,10 @@ class Locale
     /** @var string[]|string[][] */
     private $components;
 
+    /**
+     * @param string $value
+     * @param string[]|string[][] $components
+     */
     final private function __construct(string $value, array $components)
     {
         $this->value = $value;

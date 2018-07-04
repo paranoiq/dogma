@@ -372,6 +372,7 @@ class FloatInterval implements OpenClosedInterval
                 } elseif ($startLower) {
                     if ($interval->end < $item->start || ($interval->end === $item->start && $interval->openEnd && !$item->openStart)) {
                         // r1****r2    i1----i2
+                        continue;
                     } else {
                         // r1****i1----r2----i2
                         unset($results[$r]);
@@ -380,6 +381,7 @@ class FloatInterval implements OpenClosedInterval
                 } elseif ($endHigher) {
                     if ($interval->start > $item->end || ($interval->start === $item->end && $interval->openStart && !$item->openEnd)) {
                         // i1----i2    r1****r2
+                        continue;
                     } else {
                         // i1----r1----i2****r2
                         unset($results[$r]);
@@ -459,6 +461,7 @@ class FloatInterval implements OpenClosedInterval
                 } elseif ($a->start === $b->start && $a->openStart === $b->openStart) {
                     if ($a->end === $b->end && $a->openEnd === $b->openEnd) {
                         // a1=b1----a2=b2
+                        continue;
                     } elseif ($a->end > $b->end || ($a->end === $b->end && $a->openEnd === false)) {
                         // a1=b1----b2----a2
                         $items[$i] = $b;
@@ -467,6 +470,7 @@ class FloatInterval implements OpenClosedInterval
                         $a = $b;
                     } else {
                         // a1=b1----a2----b2
+                        continue;
                     }
                 } elseif ($a->start < $b->start || ($a->start === $b->start && $a->openStart === false)) {
                     if ($a->end === $b->end && $a->openEnd === $b->openEnd) {
@@ -494,6 +498,7 @@ class FloatInterval implements OpenClosedInterval
                 } else {
                     if ($a->end === $b->end && $a->openEnd === $b->openEnd) {
                         // b1----a1----a2=b2
+                        continue;
                     } elseif ($a->end > $b->end || ($a->end === $b->end && $a->openEnd === false)) {
                         // b1----a1----b2----a2
                         $new = new static($a->start, $b->end, $a->openStart, $b->openEnd);
@@ -503,6 +508,7 @@ class FloatInterval implements OpenClosedInterval
                         $a = $new;
                     } else {
                         // b1----a1----a2----b2
+                        continue;
                     }
                 }
             }

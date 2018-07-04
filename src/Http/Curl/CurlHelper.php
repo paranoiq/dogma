@@ -40,8 +40,6 @@ class CurlHelper
 {
     use StaticClassMixin;
 
-    // Errors ----------------------------------------------------------------------------------------------------------
-
     public static function getCurlErrorName(int $error): string
     {
         $constants = get_defined_constants(true);
@@ -67,8 +65,6 @@ class CurlHelper
         return 'UNKNOWN_ERROR';
     }
 
-    // Options ---------------------------------------------------------------------------------------------------------
-
     public static function getCurlOptionNumber(string $name): int
     {
         $name = strtoupper($name);
@@ -76,10 +72,6 @@ class CurlHelper
         return constant('CURLOPT_' . $name);
     }
 
-    /**
-     * @param int $option
-     * @return string|null
-     */
     public static function getCurlOptionName(int $option): ?string
     {
         $constants = get_defined_constants(true);
@@ -92,12 +84,6 @@ class CurlHelper
         return null;
     }
 
-    // Info ------------------------------------------------------------------------------------------------------------
-
-    /**
-     * @param int $number
-     * @return string|null
-     */
     public static function getCurlInfoName(int $number): ?string
     {
         static $translate = [

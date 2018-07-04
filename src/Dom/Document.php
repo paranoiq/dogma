@@ -9,6 +9,7 @@
 
 namespace Dogma\Dom;
 
+use Dogma\NotImplementedException;
 use function libxml_clear_errors;
 use function libxml_get_last_error;
 use function libxml_use_internal_errors;
@@ -37,7 +38,8 @@ class Document extends \DOMDocument
         }
 
         if (substr($document, 0, 1) === '@') {
-            ///
+            /// from file
+            throw new NotImplementedException('File ');
 
         } else {
             if (preg_match('/<!DOCTYPE\\s+HTML/i', $document)) {
@@ -123,10 +125,6 @@ class Document extends \DOMDocument
         return $element ? $this->wrap($element) : null;
     }
 
-    /**
-     * @param string $xpath
-     * @return \Dogma\Dom\NodeList
-     */
     public function find(string $xpath): NodeList
     {
         return $this->engine->find($xpath);

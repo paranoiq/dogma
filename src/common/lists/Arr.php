@@ -83,7 +83,7 @@ class Arr
     }
 
     /**
-     * @param iterable $that
+     * @param iterable|mixed[] $that
      * @return mixed[]
      */
     public static function toArray(iterable $that): array

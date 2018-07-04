@@ -33,6 +33,12 @@ class MappingIterator implements \Iterator
     /** @var int */
     private $key = 0;
 
+    /**
+     * @param iterable|mixed[] $source
+     * @param \Dogma\Type $type
+     * @param \Dogma\Mapping\Mapper $mapper
+     * @param bool $reverse
+     */
     public function __construct(iterable $source, Type $type, Mapper $mapper, bool $reverse = false)
     {
         if (is_array($source)) {
@@ -47,9 +53,6 @@ class MappingIterator implements \Iterator
         $this->reverse = $reverse;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function rewind(): void
     {
         $this->source->rewind();

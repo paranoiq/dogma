@@ -374,6 +374,7 @@ class IntInterval implements Interval
                     } else {
                         // a1=b1----a2=b2
                         // a1=b1----a2----b2
+                        continue;
                     }
                 } elseif ($a->start < $b->start) {
                     if ($a->end === $b->end) {
@@ -409,6 +410,7 @@ class IntInterval implements Interval
                     } else {
                         // b1----a1----a2=b2
                         // b1----a1----a2----b2
+                        continue;
                     }
                 }
             }

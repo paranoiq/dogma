@@ -36,12 +36,12 @@ class TestClass2
     /** @var int */
     protected $b = 2;
 
-    /** @var int */
-    private $c = 3;
+    /** @var bool */
+    private $c = true;
 
     public function test(): bool
     {
-        return true;
+        return $this->c;
     }
 
     public static function testStatic(): bool
@@ -165,13 +165,13 @@ foreach ($subjects as $name => $possibleTypes) {
                 Assert::fail(sprintf('Subject %s `%s` should be casted to type %s. %s thrown instead.', $name, $before, $type, $class));
             } elseif ($class === InvalidTypeException::class
                 && !($type === Type::FLOAT && is_float($subject) && (is_nan($subject) || $subject === INF || $subject === -INF))) {
-                // pass
+                continue;
             } elseif ($class === InvalidValueException::class
                 && is_float($subject) && is_nan($subject)) {
-                // pass
+                continue;
             } elseif ($class === ValueOutOfRangeException::class
                 && is_float($subject) && ($subject === INF || $subject === -INF)) {
-                // pass
+                continue;
             } elseif ($type === Type::FLOAT && is_float($subject) && (is_nan($subject) || $subject === INF || $subject === -INF)) {
                 Assert::fail(sprintf('Subject %s `%s` casted to %s should throw an InvalidValueException. %s thrown instead.', $name, $before, $type, $class));
             } else {

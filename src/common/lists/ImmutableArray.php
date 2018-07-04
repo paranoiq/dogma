@@ -91,11 +91,20 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return new static($values);
     }
 
+    /**
+     * @param iterable|mixed[] $that
+     * @return self
+     */
     public static function from(iterable $that): self
     {
         return new static(self::convertToArray($that));
     }
 
+    /**
+     * @param iterable|mixed[] $keys
+     * @param iterable|mixed[] $values
+     * @return self
+     */
     public static function combine(iterable $keys, iterable $values): self
     {
         $keys = self::convertToArray($keys);
@@ -105,7 +114,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * @param iterable $that
+     * @param iterable|mixed[] $that
      * @return mixed[]
      */
     private static function convertToArray(iterable $that): array
@@ -439,11 +448,20 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
 
     // comparison ------------------------------------------------------------------------------------------------------
 
+    /**
+     * @param iterable|mixed[] $array
+     * @return bool
+     */
     public function containsSlice(iterable $array): bool
     {
         return $this->indexOfSlice($array, 0) !== null;
     }
 
+    /**
+     * @param iterable|mixed[] $array
+     * @param int $from
+     * @return int|null
+     */
     public function indexOfSlice(iterable $array, int $from = 0): ?int
     {
         /** @var self $that */
@@ -459,6 +477,11 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return null;
     }
 
+    /**
+     * @param iterable|mixed[] $array
+     * @param callable $function
+     * @return bool
+     */
     public function corresponds(iterable $array, callable $function): bool
     {
         $iterator = $this->getIterator();
@@ -472,6 +495,10 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return !$iterator->valid();
     }
 
+    /**
+     * @param iterable|mixed[] $array
+     * @return bool
+     */
     public function hasSameElements(iterable $array): bool
     {
         return $this->corresponds($array, function ($a, $b) {
@@ -479,6 +506,11 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         });
     }
 
+    /**
+     * @param iterable|mixed[] $slice
+     * @param int $from
+     * @return bool
+     */
     public function startsWith(iterable $slice, int $from = 0): bool
     {
         /** @var \Iterator $iterator */
@@ -494,6 +526,10 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return true;
     }
 
+    /**
+     * @param iterable|mixed[] $slice
+     * @return bool
+     */
     public function endsWith(iterable $slice): bool
     {
         $slice = Arr::toArray($slice);
@@ -1020,6 +1056,10 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return $this->appendAll($values);
     }
 
+    /**
+     * @param iterable|mixed[] $values
+     * @return self
+     */
     public function appendAll(iterable $values): self
     {
         $res = $this->toArray();
@@ -1038,6 +1078,10 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return $this->prependAll($values);
     }
 
+    /**
+     * @param iterable|mixed[] $values
+     * @return self
+     */
     public function prependAll(iterable $values): self
     {
         if (!is_array($values)) {
@@ -1061,6 +1105,10 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return new static($arr);
     }
 
+    /**
+     * @param iterable|mixed[] $replacements
+     * @return self
+     */
     public function replaceAll(iterable $replacements): self
     {
         if (!is_array($replacements)) {
@@ -1099,6 +1147,11 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return new static($arr);
     }
 
+    /**
+     * @param int $from
+     * @param mixed[] $patch
+     * @return self
+     */
     public function insert(int $from, array $patch): self
     {
         $arr = $this->toArray();
@@ -1106,6 +1159,10 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return new static($arr);
     }
 
+    /**
+     * @param iterable|mixed[] $that
+     * @return self
+     */
     public function merge(iterable $that): self
     {
         if (!is_array($that)) {
@@ -1117,6 +1174,10 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
 
     // diffing ---------------------------------------------------------------------------------------------------------
 
+    /**
+     * @param iterable|mixed[] ...$args
+     * @return self
+     */
     public function diff(iterable ...$args): self
     {
         $self = $this->toArray();
@@ -1128,6 +1189,11 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return new static($arr);
     }
 
+    /**
+     * @param callable $function
+     * @param iterable|mixed[] ...$args
+     * @return self
+     */
     public function diffWith(callable $function, iterable ...$args): self
     {
         $self = $this->toArray();
@@ -1140,6 +1206,10 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return new static($arr);
     }
 
+    /**
+     * @param iterable|mixed[] ...$args
+     * @return self
+     */
     public function diffKeys(iterable ...$args): self
     {
         $self = $this->toArray();
@@ -1151,6 +1221,11 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return new static($arr);
     }
 
+    /**
+     * @param callable $function
+     * @param iterable|mixed[] ...$args
+     * @return self
+     */
     public function diffKeysWith(callable $function, iterable ...$args): self
     {
         $self = $this->toArray();
@@ -1163,6 +1238,10 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return new static($arr);
     }
 
+    /**
+     * @param iterable|mixed[] ...$args
+     * @return self
+     */
     public function diffPairs(iterable ...$args): self
     {
         $self = $this->toArray();
@@ -1174,6 +1253,12 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return new static($arr);
     }
 
+    /**
+     * @param callable|null $function
+     * @param callable|null $keysFunction
+     * @param iterable|mixed[] ...$args
+     * @return self
+     */
     public function diffPairsWith(?callable $function = null, ?callable $keysFunction = null, iterable ...$args): self
     {
         $self = $this->toArray();
@@ -1196,6 +1281,10 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return new static($arr);
     }
 
+    /**
+     * @param iterable|mixed[] ...$args
+     * @return self
+     */
     public function intersect(iterable ...$args): self
     {
         $self = $this->toArray();
@@ -1207,6 +1296,11 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return new static($arr);
     }
 
+    /**
+     * @param callable $function
+     * @param iterable|mixed[] ...$args
+     * @return self
+     */
     public function intersectWith(callable $function, iterable ...$args): self
     {
         $self = $this->toArray();
@@ -1219,6 +1313,10 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return new static($arr);
     }
 
+    /**
+     * @param iterable|mixed[] ...$args
+     * @return self
+     */
     public function intersectKeys(iterable ...$args): self
     {
         $self = $this->toArray();
@@ -1230,6 +1328,11 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return new static($arr);
     }
 
+    /**
+     * @param callable $function
+     * @param iterable|mixed[] ...$args
+     * @return self
+     */
     public function intersectKeysWith(callable $function, iterable ...$args): self
     {
         $self = $this->toArray();
@@ -1242,6 +1345,10 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return new static($arr);
     }
 
+    /**
+     * @param iterable|mixed[] ...$args
+     * @return self
+     */
     public function intersectPairs(iterable ...$args): self
     {
         $self = $this->toArray();
@@ -1253,6 +1360,12 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return new static($arr);
     }
 
+    /**
+     * @param callable|null $function
+     * @param callable|null $keysFunction
+     * @param iterable|mixed[] ...$args
+     * @return self
+     */
     public function intersectPairsWith(?callable $function = null, ?callable $keysFunction = null, iterable ...$args): self
     {
         $self = $this->toArray();

@@ -31,14 +31,14 @@ Assert::same($handler->getParameters($dateTimeType), null);
 Assert::same($handler->getParameters($dateType), null);
 Assert::same($handler->getParameters($timeType), null);
 
-$dateTimeString = '2000-01-02 03:04:05.000000';
+$dateTimeString = '2000-01-02 03:04:05';
 $dateString = '2000-01-02';
-$timeString = '03:04:05.000000';
+$timeString = '03:04:05';
 
 // createInstance()
 $dateTimeInstance = $handler->createInstance($dateTimeType, $dateTimeString, $mapper);
 Assert::type($dateTimeInstance, DateTime::class);
-Assert::same($dateTimeInstance->format(), $dateTimeString);
+Assert::same($dateTimeInstance->format(), $dateTimeString . '.000000');
 
 $dateInstance = $handler->createInstance($dateType, $dateString, $mapper);
 Assert::type($dateInstance, Date::class);
@@ -46,7 +46,7 @@ Assert::same($dateInstance->format(), $dateString);
 
 $timeInstance = $handler->createInstance($timeType, $timeString, $mapper);
 Assert::type($timeInstance, Time::class);
-Assert::same($timeInstance->format(), $timeString);
+Assert::same($timeInstance->format(), $timeString . '.000000');
 
 // exportInstance()
 Assert::same($handler->exportInstance($dateTimeType, $dateTimeInstance, $mapper), $dateTimeString);

@@ -38,14 +38,6 @@ class MethodTypeParser implements NonIterable
     use StrictBehaviorMixin;
     use NonIterableMixin;
 
-    /** @var string[] */
-    private $typeList;
-
-    public function __construct()
-    {
-        $this->typeList = Type::listTypes();
-    }
-
     /**
      * @param \ReflectionMethod $method
      * @return \Dogma\Type[]

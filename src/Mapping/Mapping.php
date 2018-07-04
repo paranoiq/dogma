@@ -39,6 +39,11 @@ class Mapping
         $this->reverseSteps = new ReverseArrayIterator($steps);
     }
 
+    public function getType(): Type
+    {
+        return $this->type;
+    }
+
     /**
      * @return \Dogma\Mapping\MappingStep[]
      */

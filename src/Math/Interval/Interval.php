@@ -62,7 +62,7 @@ interface Interval /*<T>*/ extends Equalable, Comparable
     public function split(int $parts);//: IntervalSet<T>;
 
     /**
-     * @param array<T> $intervalStarts
+     * @param mixed[]|array<T> $intervalStarts
      * @return mixed|\Dogma\Math\Interval\IntervalSet
      */
     public function splitBy(array $intervalStarts);//: IntervalSet<T>;

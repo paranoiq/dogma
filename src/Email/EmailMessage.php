@@ -322,16 +322,10 @@ class EmailMessage
         return $arr;
     }
 
-    private function createAddress(string $address, string $name): EmailAddress
-    {
-        return new EmailAddress($address, $name);
-    }
-
     private function decodeHeader(string $header): string
     {
         // =?utf-8?q?Test=3a=20P=c5=99=c3=...?=
-        $that = $this;
-        $header = Str::replace($header, '/(=\\?[^?]+\\?[^?]\\?[^?]+\\?=)/', function ($match) use ($that) {
+        $header = Str::replace($header, '/(=\\?[^?]+\\?[^?]\\?[^?]+\\?=)/', function ($match) {
             [, $charset, $encoding, $message] = explode('?', $match[0]);
 
             if (strtolower($encoding) === 'b') {
@@ -344,7 +338,7 @@ class EmailMessage
                 throw new EmailParsingException(sprintf('Unknown header encoding \'%s\'.', $encoding));
             }
 
-            return $that->convertCharset($message, strtolower($charset));
+            return $this->convertCharset($message, strtolower($charset));
         });
 
         return $header;
@@ -419,10 +413,9 @@ class EmailMessage
 
             } else {
                 $temporaryFile = File::createTemporaryFile();
-                $that = $this;
 
-                $this->file->copyData(function ($chunk) use ($that, $temporaryFile, $encoding): void {
-                    $temporaryFile->write($that->decode($chunk, $encoding));
+                $this->file->copyData(function ($chunk) use ($temporaryFile, $encoding): void {
+                    $temporaryFile->write($this->decode($chunk, $encoding));
                 }, $start, $length);
 
                 $temporaryFile->setPosition(0);

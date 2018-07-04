@@ -49,6 +49,12 @@ class ConventionMappingBuilder implements MappingBuilder
         return new Mapping($type, $steps);
     }
 
+    /**
+     * @param \Dogma\Type $type
+     * @param string $path
+     * @param string $destinationKey
+     * @param \Dogma\Mapping\MappingStep[] $steps
+     */
     private function buildStep(Type $type, string $path, string $destinationKey, array &$steps): void
     {
         $typeMetaData = $this->typeMetaData->getType($type);

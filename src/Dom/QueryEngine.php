@@ -457,12 +457,6 @@ class QueryEngine
         return $date->format('Y-m-d H:i:s');
     }
 
-    /**
-     * @param string $string
-     * @param string $true
-     * @param string $false
-     * @return bool|null
-     */
     public static function bool(string $string, string $true = 'true', string $false = 'false'): ?bool
     {
         $string = strtoupper($string);

@@ -40,6 +40,14 @@ class Vector3
     }
 
     /**
+     * @return float[]
+     */
+    public function getValues(): array
+    {
+        return [$this->x, $this->y, $this->z];
+    }
+
+    /**
      * @param float $x
      * @param float $y
      * @param float $z

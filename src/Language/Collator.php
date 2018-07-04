@@ -12,8 +12,8 @@ namespace Dogma\Language;
 use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Language\Locale\Locale;
-use Dogma\Language\Locale\LocaleCollation;
 use Dogma\Language\Locale\LocaleKeyword;
+use Dogma\NotImplementedException;
 use Dogma\Type;
 use function is_string;
 
@@ -35,6 +35,9 @@ class Collator extends \Collator
         }
 
         $collation = $locale->getCollation();
+        if ($collation !== null) {
+            throw new NotImplementedException('Named collations are not supported.');
+        }
         $options = $locale->getCollationOptions();
 
         if ($collation === null && $options === []) {
@@ -45,7 +48,7 @@ class Collator extends \Collator
 
             parent::__construct($safeLocale->getValue());
 
-            $this->configure($collation, $options);
+            $this->configure($options);
         }
     }
 
@@ -59,14 +62,10 @@ class Collator extends \Collator
     }
 
     /**
-     * @param \Dogma\Language\Locale\LocaleCollation|null $collation
      * @param mixed[] $collationOptions
      */
-    public function configure(?LocaleCollation $collation = null, array $collationOptions = []): void
+    public function configure(array $collationOptions = []): void
     {
-        if ($collation !== null) {
-            /// not supported?
-        }
         /** @var \Dogma\Language\Locale\LocaleCollationOption $value */
         foreach ($collationOptions as $keyword => $value) {
             switch ($keyword) {

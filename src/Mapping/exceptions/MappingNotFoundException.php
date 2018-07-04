@@ -25,9 +25,6 @@ class MappingNotFoundException extends Exception implements MappingException
         $this->type = $size;
     }
 
-    /**
-     * @return \Dogma\Type
-     */
     public function getType(): Type
     {
         return $this->type;

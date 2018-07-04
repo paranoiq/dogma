@@ -22,6 +22,10 @@ class CombineIterator implements \Iterator
     /** @var \Iterator */
     private $values;
 
+    /**
+     * @param iterable|mixed[] $keys
+     * @param iterable|mixed[] $values
+     */
     public function __construct(iterable $keys, iterable $values)
     {
         $this->keys = IteratorHelper::iterableToIterator($keys);
@@ -45,9 +49,8 @@ class CombineIterator implements \Iterator
         $keysValid = $this->keys->valid();
         $valuesValid = $this->values->valid();
         if ($keysValid xor $valuesValid) {
-            throw new UnevenIteratorSourcesException($keysValid
-                ? 'Values iterator runned out of values.'
-                : 'Keys iterator runned out of values.'
+            throw new UnevenIteratorSourcesException(
+                $keysValid ? 'Values iterator runned out of values.' : 'Keys iterator runned out of values.'
             );
         }
 

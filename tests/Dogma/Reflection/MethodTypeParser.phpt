@@ -83,8 +83,8 @@ $test(
 );
 $test(
     'testClass',
-    ['one' => [[\Exception::class]]],
-    ['one' => Type::get(\Exception::class)]
+    ['one' => [[\DateTime::class]]],
+    ['one' => Type::get(\DateTime::class)]
 );
 $test(
     'testSelf',
@@ -198,8 +198,8 @@ $test(
 );
 $test(
     'testAnnotationClass',
-    ['one' => [[\Exception::class]]],
-    ['one' => Type::get(\Exception::class)]
+    ['one' => [[\DateTime::class]]],
+    ['one' => Type::get(\DateTime::class)]
 );
 $test(
     'testAnnotationSelf',
@@ -213,8 +213,8 @@ $test(
 );
 $test(
     'testTypehintAndAnnotationClass',
-    ['one' => [[\Exception::class]]],
-    ['one' => Type::get(\Exception::class)]
+    ['one' => [[\DateTime::class]]],
+    ['one' => Type::get(\DateTime::class)]
 );
 $test(
     'testAnnotationWithoutName',
@@ -228,7 +228,7 @@ $test(
 );
 $test(
     'testAnnotationDimensionMismatch',
-    ['one' => [[\Exception::class, 'int[]']]],
+    ['one' => [[\DateTime::class, 'int[]']]],
     InvalidMethodAnnotationException::class
 );
 $test(

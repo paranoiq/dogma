@@ -18,9 +18,9 @@ class InvalidMethodAnnotationException extends Exception implements ReflectionEx
     /**
      * @param string $method
      * @param string $message
-     * @param \Exception $previous
+     * @param \Throwable $previous
      */
-    public function __construct(\ReflectionMethod $method, string $message, ?\Exception $previous = null)
+    public function __construct(\ReflectionMethod $method, string $message, ?\Throwable $previous = null)
     {
         parent::__construct(sprintf(
             'Invalid method annotation on %s::%s: %s',

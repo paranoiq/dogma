@@ -19,6 +19,9 @@ class StaticMappingContainer implements MappingContainer
     /** @var \Dogma\Mapping\Mapping[] (string $typeId => $mapping) */
     private $mappings;
 
+    /**
+     * @param \Dogma\Mapping\Mapping[] $mappings
+     */
     public function __construct(array $mappings)
     {
         $this->mappings = $mappings;

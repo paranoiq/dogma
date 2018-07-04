@@ -37,18 +37,12 @@ class Url
         return UriScheme::get($this->url->getScheme());
     }
 
-    /**
-     * @return string|null
-     */
-    public function getUser(): string
+    public function getUser(): ?string
     {
         return $this->url->getUser();
     }
 
-    /**
-     * @return string|null
-     */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->url->getPassword();
     }

@@ -26,7 +26,7 @@ class ChunkIterator extends \IteratorIterator
     private $chunk;
 
     /**
-     * @param iterable $iterable
+     * @param iterable|mixed[] $iterable
      * @param int $chunkSize
      */
     public function __construct(iterable $iterable, int $chunkSize)

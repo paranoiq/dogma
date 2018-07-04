@@ -281,7 +281,7 @@ class DateInterval implements DateOrTimeInterval
     }
 
     /**
-     * @param \Dogma\Time\Date $intervalStarts
+     * @param \Dogma\Time\Date[] $intervalStarts
      * @return \Dogma\Time\Interval\DateIntervalSet
      */
     public function splitBy(array $intervalStarts): DateIntervalSet
@@ -464,6 +464,7 @@ class DateInterval implements DateOrTimeInterval
                     continue;
                 } elseif ($a->end->isBefore($b->start) || $a->start->isAfter($b->end)) {
                     // a1----a1    b1----b1
+                    continue;
                 } elseif ($a->start->equals($b->start)) {
                     if ($a->end->isAfter($b->end)) {
                         // a1=b1----b2----a2
@@ -474,6 +475,7 @@ class DateInterval implements DateOrTimeInterval
                     } else {
                         // a1=b1----a2=b2
                         // a1=b1----a2----b2
+                        continue;
                     }
                 } elseif ($a->start->isBefore($b->start)) {
                     if ($a->end->equals($b->end)) {
@@ -509,6 +511,7 @@ class DateInterval implements DateOrTimeInterval
                     } else {
                         // b1----a1----a2=b2
                         // b1----a1----a2----b2
+                        continue;
                     }
                 }
             }

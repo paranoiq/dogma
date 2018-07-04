@@ -24,6 +24,11 @@ class CallbackIterator extends \IteratorIterator
     /** @var callable|null */
     private $keysCallback;
 
+    /**
+     * @param iterable|mixed[] $iterable
+     * @param callable $valuesCallback
+     * @param callable|null $keysCallback
+     */
     public function __construct(iterable $iterable, callable $valuesCallback, ?callable $keysCallback = null)
     {
         $this->valuesCallback = $valuesCallback;

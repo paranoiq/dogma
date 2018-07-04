@@ -138,9 +138,6 @@ class HttpResponse
         return $this->cookies;
     }
 
-    /**
-     * @return \Dogma\Io\ContentType\ContentType|null
-     */
     public function getContentType(): ?ContentType
     {
         return $this->getHeader(HttpHeader::CONTENT_TYPE);

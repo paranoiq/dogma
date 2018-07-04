@@ -32,7 +32,7 @@ class MethodTypeParserTestClass
         //
     }
 
-    public function testClass(\Exception $one): void
+    public function testClass(\DateTime $one): void
     {
         //
     }
@@ -162,7 +162,7 @@ class MethodTypeParserTestClass
     }
 
     /**
-     * @param \Exception $one
+     * @param \DateTime $one
      */
     public function testAnnotationClass($one): void
     {
@@ -186,15 +186,15 @@ class MethodTypeParserTestClass
     }
 
     /**
-     * @param \Exception $one
+     * @param \DateTime $one
      */
-    public function testTypehintAndAnnotationClass(\Exception $one): void
+    public function testTypehintAndAnnotationClass(\DateTime $one): void
     {
         //
     }
 
     /**
-     * @param Exception $one
+     * @param DateTime $one
      */
     public function testAnnotationIncompleteClass($one): void
     {
@@ -253,7 +253,7 @@ class MethodTypeParserTestClass
     }
 
     /**
-     * @param \Exception|int[] $one
+     * @param \DateTime|int[] $one
      */
     public function testAnnotationDimensionMismatch($one): void
     {

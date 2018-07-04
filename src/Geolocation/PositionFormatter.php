@@ -70,10 +70,11 @@ class PositionFormatter
 
     public function format(
         Position $position,
-        string $format = self::FORMAT_DEFAULT,
+        ?string $format = null,
         ?string $angleFormatter = null
     ): string
     {
+        $format = $format ?? $this->format;
         $angleFormatter = $angleFormatter ?? $this->angleFormatter;
 
         $result = '';

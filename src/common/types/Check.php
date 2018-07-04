@@ -172,7 +172,7 @@ final class Check
     }
 
     /**
-     * @param iterable $items
+     * @param iterable|mixed[] $items
      * @param string $type
      * @param int|float|null $valueMin
      * @param int|float|null $valueMax
@@ -186,7 +186,7 @@ final class Check
     }
 
     /**
-     * @param iterable $items
+     * @param iterable|mixed[] $items
      * @param string[] $types
      * @param int|float|null $valueMin
      * @param int|float|null $valueMax

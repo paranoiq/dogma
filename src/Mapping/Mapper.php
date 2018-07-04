@@ -44,6 +44,11 @@ class Mapper
         return $this->mappings->getMapping($type)->mapBack($data, $this);
     }
 
+    /**
+     * @param \Dogma\Type $type
+     * @param iterable|mixed[] $data
+     * @return \Traversable
+     */
     public function mapMany(Type $type, iterable $data): \Traversable
     {
         $iterator = new MappingIterator($data, $type->getItemType(), $this);
@@ -54,6 +59,11 @@ class Mapper
         return $result;
     }
 
+    /**
+     * @param \Dogma\Type $type
+     * @param iterable|mixed[] $data
+     * @return \Dogma\Mapping\MappingIterator
+     */
     public function reverseMapMany(Type $type, iterable $data): MappingIterator
     {
         return new MappingIterator($data, $type->getItemType(), $this, true);

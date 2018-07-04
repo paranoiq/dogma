@@ -25,7 +25,7 @@ class FetchKeysIterator extends \IteratorIterator
     private $valuesKey;
 
     /**
-     * @param iterable $iterable
+     * @param iterable|mixed[] $iterable
      * @param string|null $keysKey
      * @param string|null $valuesKey
      */

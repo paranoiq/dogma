@@ -22,11 +22,12 @@
     <!-- shortcuts -->
     <target name="t" depends="tests"/>
     <target name="tc" depends="tests-coverage"/>
+    <target name="cs" depends="phpcs-src,phpcs-tests"/>
     <target name="da" depends="dump-autoload"/>
 
     <target name="check" depends="check-php"/>
 
-    <target name="check-php" depends="phplint,tests,phpstan,phpcs,phpcs-tests,spell-check"/>
+    <target name="check-php" depends="phplint,tests,phpstan,phpcs-src,phpcs-tests,spell-check"/>
 
     <target name="composer">
         <exec executable="${path.composer.executable}" logoutput="true" passthru="true" checkreturn="true">
@@ -40,7 +41,7 @@
         </exec>
     </target>
 
-    <target name="phpcs">
+    <target name="phpcs-src">
         <exec executable="${path.phpcs.executable}" logoutput="true" passthru="true" checkreturn="true">
             <arg value="--standard=${path.phpcs.ruleset}"/>
             <arg value="--extensions=php"/>

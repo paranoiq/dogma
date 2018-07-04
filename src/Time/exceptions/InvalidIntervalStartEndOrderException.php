@@ -14,11 +14,6 @@ use function sprintf;
 class InvalidIntervalStartEndOrderException extends InvalidIntervalException
 {
 
-    /**
-     * @param \Dogma\Time\DateOrTime $start
-     * @param \Dogma\Time\DateOrTime $end
-     * @param \Throwable|null $previous
-     */
     public function __construct(DateOrTime $start, DateOrTime $end, ?\Throwable $previous = null)
     {
         parent::__construct(

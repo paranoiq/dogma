@@ -381,10 +381,6 @@ class File implements Path
         }
     }
 
-    /**
-     * @param int $position
-     * @param \Dogma\Io\FilePosition|null $from
-     */
     public function setPosition(int $position, ?FilePosition $from = null): void
     {
         $this->checkOpened();

@@ -27,6 +27,9 @@ class RoundRobinIterator implements \Iterator
     /** @var int */
     private $key;
 
+    /**
+     * @param iterable|mixed[] ...$iterables
+     */
     public function __construct(iterable ...$iterables)
     {
         $this->iterators = [];
