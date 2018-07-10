@@ -148,14 +148,14 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
         return new static($this->start->modify($value), $this->end->modify($value), $this->openStart, $this->openEnd);
     }
 
-    public function setStart(Time $start): self
+    public function setStart(Time $start, ?bool $open = null): self
     {
-        return new static($start, $this->end, $this->openStart, $this->openEnd);
+        return new static($start, $this->end, $open ?? $this->openStart, $this->openEnd);
     }
 
-    public function setEnd(Time $end): self
+    public function setEnd(Time $end, ?bool $open = null): self
     {
-        return new static($this->start, $end, $this->openStart, $this->openEnd);
+        return new static($this->start, $end, $this->openStart, $open ?? $this->openEnd);
     }
 
     // queries ---------------------------------------------------------------------------------------------------------
