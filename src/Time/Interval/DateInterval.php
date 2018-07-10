@@ -161,7 +161,7 @@ class DateInterval implements DateOrTimeInterval
      */
     public function toDateArray(): array
     {
-        if ($this->start > $this->end) {
+        if ($this->start->getDayNumber() > $this->end->getDayNumber()) {
             return [];
         }
 
