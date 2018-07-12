@@ -243,7 +243,9 @@ class DateTimeIntervalSet implements DateOrTimeIntervalSet
         while ($result = array_shift($sources)) {
             foreach ($intervals as $interval) {
                 $result = $result->subtract($interval);
-                if (count($result->intervals) === 2) {
+                if (count($result->intervals) === 0) {
+                    continue 2;
+                } elseif (count($result->intervals) === 2) {
                     $sources[] = $result->intervals[1];
                 }
                 $result = $result->intervals[0];
