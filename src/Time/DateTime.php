@@ -12,9 +12,7 @@ namespace Dogma\Time;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
-use Dogma\Math\ModuloCalc;
 use Dogma\NonIterableMixin;
-use Dogma\NotImplementedException;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeFormatter;
@@ -38,7 +36,7 @@ use function sprintf;
  *
  * Comparisons and intervals are based on microseconds since unix epoch, giving a possible range of about ±280.000 years.
  */
-class DateTime extends \DateTimeImmutable implements DateOrDateTime, \DateTimeInterface
+class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrTime, \DateTimeInterface
 {
     use StrictBehaviorMixin;
     use NonIterableMixin;
@@ -233,93 +231,10 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, \DateTimeIn
      */
     public function roundTo(DateTimeUnit $unit, ?array $allowedValues = null): self
     {
-        if ($allowedValues === null) {
-            $allowedValues = [0];
-        }
-        switch ($unit->getValue()) {
-            case DateTimeUnit::HOUR:
-                [$hours, $overflow] = ModuloCalc::roundTo($this->getHours() + $this->getMinutes() / 60 + $this->getSeconds() / 3600 + $this->getMicroseconds() / 3600 / 1000000, $allowedValues, 24);
-                $date = $this->getDate();
-                if ($overflow) {
-                    $date = $date->addDay();
-                }
-                return static::createFromDateAndTime($date, Time::createFromComponents($hours, 0, 0, 0), $this->getTimezone());
-            case DateTimeUnit::MINUTE:
-                [$minutes, $overflow] = ModuloCalc::roundTo($this->getMinutes() + $this->getSeconds() / 3600 + $this->getMicroseconds() / 3600 / 1000000, $allowedValues, 60);
-                $date = $this->getDate();
-                $hours = $this->getHours();
-                if ($overflow) {
-                    $hours++;
-                    if ($hours === 24) {
-                        $hours = 0;
-                        $date = $date->addDay();
-                    }
-                }
-                return static::createFromDateAndTime($date, Time::createFromComponents($hours, $minutes, 0, 0), $this->getTimezone());
-            case DateTimeUnit::SECOND:
-                [$seconds, $overflow] = ModuloCalc::roundTo($this->getSeconds() + $this->getMicroseconds() / 3600 / 1000000, $allowedValues, 60);
-                $date = $this->getDate();
-                $hours = $this->getHours();
-                $minutes = $this->getMinutes();
-                if ($overflow) {
-                    $minutes++;
-                    if ($minutes === 60) {
-                        $minutes = 0;
-                        $hours++;
-                        if ($hours === 24) {
-                            $hours = 0;
-                            $date = $date->addDay();
-                        }
-                    }
-                }
-                return static::createFromDateAndTime($date, Time::createFromComponents($hours, $minutes, $seconds, 0), $this->getTimezone());
-            case DateTimeUnit::MILISECOND:
-                [$miliseconds, $overflow] = ModuloCalc::roundTo($this->getMicroseconds() / 1000, $allowedValues, 1000);
-                $date = $this->getDate();
-                $hours = $this->getHours();
-                $minutes = $this->getMinutes();
-                $seconds = $this->getSeconds();
-                if ($overflow) {
-                    $seconds++;
-                    if ($seconds === 60) {
-                        $seconds = 0;
-                        $minutes++;
-                        if ($minutes === 60) {
-                            $minutes = 0;
-                            $hours++;
-                            if ($hours === 24) {
-                                $hours = 0;
-                                $date = $date->addDay();
-                            }
-                        }
-                    }
-                }
-                return static::createFromDateAndTime($date, Time::createFromComponents($hours, $minutes, $seconds, $miliseconds * 1000), $this->getTimezone());
-            case DateTimeUnit::MICROSECOND:
-                [$microseconds, $overflow] = ModuloCalc::roundTo($this->getMicroseconds(), $allowedValues, 1000000);
-                $date = $this->getDate();
-                $hours = $this->getHours();
-                $minutes = $this->getMinutes();
-                $seconds = $this->getSeconds();
-                if ($overflow) {
-                    $seconds++;
-                    if ($seconds === 60) {
-                        $seconds = 0;
-                        $minutes++;
-                        if ($minutes === 60) {
-                            $minutes = 0;
-                            $hours++;
-                            if ($hours === 24) {
-                                $hours = 0;
-                                $date = $date->addDay();
-                            }
-                        }
-                    }
-                }
-                return static::createFromDateAndTime($date, Time::createFromComponents($hours, $minutes, $seconds, $microseconds), $this->getTimezone());
-            default:
-                throw new NotImplementedException('Only time units can be aligned.');
-        }
+        /** @var self $that */
+        $that = TimeCalc::roundTo($this, $unit, $allowedValues);
+
+        return $that;
     }
 
     /**
@@ -331,94 +246,10 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, \DateTimeIn
      */
     public function roundUpTo(DateTimeUnit $unit, ?array $allowedValues = null): self
     {
-        if ($allowedValues === null) {
-            $allowedValues = [0];
-        }
+        /** @var self $that */
+        $that = TimeCalc::roundUpTo($this, $unit, $allowedValues);
 
-        switch ($unit->getValue()) {
-            case DateTimeUnit::HOUR:
-                [$hours, $overflow] = ModuloCalc::roundUpTo($this->getHours(), $allowedValues, 24);
-                $date = $this->getDate();
-                if ($overflow) {
-                    $date = $date->addDay();
-                }
-                return static::createFromDateAndTime($date, Time::createFromComponents($hours, 0, 0, 0), $this->getTimezone());
-            case DateTimeUnit::MINUTE:
-                [$minutes, $overflow] = ModuloCalc::roundUpTo($this->getMinutes(), $allowedValues, 60);
-                $date = $this->getDate();
-                $hours = $this->getHours();
-                if ($overflow) {
-                    $hours++;
-                    if ($hours === 24) {
-                        $hours = 0;
-                        $date = $date->addDay();
-                    }
-                }
-                return static::createFromDateAndTime($date, Time::createFromComponents($hours, $minutes, 0, 0), $this->getTimezone());
-            case DateTimeUnit::SECOND:
-                [$seconds, $overflow] = ModuloCalc::roundUpTo($this->getSeconds(), $allowedValues, 60);
-                $date = $this->getDate();
-                $hours = $this->getHours();
-                $minutes = $this->getMinutes();
-                if ($overflow) {
-                    $minutes++;
-                    if ($minutes === 60) {
-                        $minutes = 0;
-                        $hours++;
-                        if ($hours === 24) {
-                            $hours = 0;
-                            $date = $date->addDay();
-                        }
-                    }
-                }
-                return static::createFromDateAndTime($date, Time::createFromComponents($hours, $minutes, $seconds, 0), $this->getTimezone());
-            case DateTimeUnit::MILISECOND:
-                [$miliseconds, $overflow] = ModuloCalc::roundUpTo((int) ceil($this->getMicroseconds() / 1000), $allowedValues, 1000);
-                $date = $this->getDate();
-                $hours = $this->getHours();
-                $minutes = $this->getMinutes();
-                $seconds = $this->getSeconds();
-                if ($overflow) {
-                    $seconds++;
-                    if ($seconds === 60) {
-                        $seconds = 0;
-                        $minutes++;
-                        if ($minutes === 60) {
-                            $minutes = 0;
-                            $hours++;
-                            if ($hours === 24) {
-                                $hours = 0;
-                                $date = $date->addDay();
-                            }
-                        }
-                    }
-                }
-                return static::createFromDateAndTime($date, Time::createFromComponents($hours, $minutes, $seconds, $miliseconds * 1000), $this->getTimezone());
-            case DateTimeUnit::MICROSECOND:
-                [$microseconds, $overflow] = ModuloCalc::roundUpTo($this->getMicroseconds(), $allowedValues, 1000000);
-                $date = $this->getDate();
-                $hours = $this->getHours();
-                $minutes = $this->getMinutes();
-                $seconds = $this->getSeconds();
-                if ($overflow) {
-                    $seconds++;
-                    if ($seconds === 60) {
-                        $seconds = 0;
-                        $minutes++;
-                        if ($minutes === 60) {
-                            $minutes = 0;
-                            $hours++;
-                            if ($hours === 24) {
-                                $hours = 0;
-                                $date = $date->addDay();
-                            }
-                        }
-                    }
-                }
-                return static::createFromDateAndTime($date, Time::createFromComponents($hours, $minutes, $seconds, $microseconds), $this->getTimezone());
-            default:
-                throw new NotImplementedException('Only time units can be aligned.');
-        }
+        return $that;
     }
 
     /**
@@ -430,33 +261,10 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, \DateTimeIn
      */
     public function roundDownTo(DateTimeUnit $unit, ?array $allowedValues = null): self
     {
-        if ($allowedValues === null) {
-            $allowedValues = [0];
-        }
-        switch ($unit->getValue()) {
-            case DateTimeUnit::HOUR:
-                $hours = ModuloCalc::roundDownTo($this->getHours(), $allowedValues, 24);
-                $date = $this->getDate();
-                return static::createFromDateAndTime($date, Time::createFromComponents($hours, 0, 0, 0), $this->getTimezone());
-            case DateTimeUnit::MINUTE:
-                $minutes = ModuloCalc::roundDownTo($this->getMinutes(), $allowedValues, 60);
-                $date = $this->getDate();
-                return static::createFromDateAndTime($date, Time::createFromComponents($this->getHours(), $minutes, 0, 0), $this->getTimezone());
-            case DateTimeUnit::SECOND:
-                $seconds = ModuloCalc::roundDownTo($this->getSeconds(), $allowedValues, 60);
-                $date = $this->getDate();
-                return static::createFromDateAndTime($date, Time::createFromComponents($this->getHours(), $this->getMinutes(), $seconds, 0), $this->getTimezone());
-            case DateTimeUnit::MILISECOND:
-                $miliseconds = ModuloCalc::roundDownTo((int) floor($this->getMicroseconds() / 1000), $allowedValues, 1000);
-                $date = $this->getDate();
-                return static::createFromDateAndTime($date, Time::createFromComponents($this->getHours(), $this->getMinutes(), $this->getSeconds(), $miliseconds * 1000), $this->getTimezone());
-            case DateTimeUnit::MICROSECOND:
-                $microseconds = ModuloCalc::roundDownTo($this->getMicroseconds(), $allowedValues, 1000000);
-                $date = $this->getDate();
-                return static::createFromDateAndTime($date, Time::createFromComponents($this->getHours(), $this->getMinutes(), $this->getSeconds(), $microseconds), $this->getTimezone());
-            default:
-                throw new NotImplementedException('Only time units can be aligned.');
-        }
+        /** @var self $that */
+        $that = TimeCalc::roundDownTo($this, $unit, $allowedValues);
+
+        return $that;
     }
 
     // queries ---------------------------------------------------------------------------------------------------------

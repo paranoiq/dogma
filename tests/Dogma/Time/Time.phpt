@@ -132,6 +132,8 @@ $microseconds = [0, 250000, 500000, 750000];
 $upperTime = new Time('06:12:12.200000');
 $criticalTime = new Time('23:59:59.999999');
 
+Assert::equal((new Time('14:55:00.000000'))->roundUpTo($minute, [20]), new Time('15:20:00.000000'));
+
 // roundTo()
 Assert::equal($time->roundTo($hour, $hours), new Time('00:00:00.000000'));
 Assert::equal($time->roundTo($minute, $minutes), new Time('03:00:00.000000'));

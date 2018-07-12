@@ -7,7 +7,7 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-// spell-check-ignore: µs pty df hl yz
+// spell-check-ignore: pty df hl yz
 
 namespace Dogma\Time\Span;
 

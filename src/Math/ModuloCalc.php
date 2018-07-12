@@ -10,7 +10,9 @@
 namespace Dogma\Math;
 
 use Dogma\InvalidArgumentException;
+use Dogma\Overflow;
 use Dogma\StaticClassMixin;
+use function abs;
 use function array_values;
 use function count;
 use function in_array;
@@ -57,36 +59,21 @@ class ModuloCalc
      * @param int|float $value
      * @param int[]|float[] $allowedValues
      * @param int $modulus
-     * @return int[]|float[]|bool[] (int|float $result, bool $overflow)
+     * @return int[]|float[] (int|float $result, int $overflow)
      */
     public static function roundTo($value, array $allowedValues, int $modulus): array
     {
-        self::checkValues($allowedValues, $modulus);
+        [$downValue, $underflow] = self::roundDownTo($value, $allowedValues, $modulus);
+        [$upValue, $overflow] = self::roundUpTo($value, $allowedValues, $modulus);
 
-        sort($allowedValues);
-        if (in_array(0, $allowedValues)) {
-            $allowedValues[] = $modulus;
-        }
+        $realDownValue = $underflow === Overflow::UNDERFLOW ? $downValue - $modulus : $downValue;
+        $realUpValue = $overflow === Overflow::OVERFLOW ? $upValue + $modulus : $upValue;
 
-        $pickedValue = null;
-        foreach ($allowedValues as $allowedValue) {
-            if ($value < $allowedValue) {
-                if ($allowedValue - $value < $value - $pickedValue) {
-                    $pickedValue = $allowedValue;
-                }
-                break;
-            }
-            $pickedValue = $allowedValue;
-        }
-
-        if ($pickedValue === $modulus) {
-            $overflow = true;
-            $pickedValue = 0;
+        if (abs($value - $realDownValue) < abs($value - $realUpValue)) {
+            return [$downValue, $underflow];
         } else {
-            $overflow = false;
+            return [$upValue, $overflow];
         }
-
-        return [$pickedValue, $overflow];
     }
 
     /**
@@ -95,7 +82,7 @@ class ModuloCalc
      * @param int|float $value
      * @param int[]|float[] $allowedValues
      * @param int $modulus
-     * @return int[]|float[]|bool[] (int|float $result, bool $overflow)
+     * @return int[]|float[] (int|float $result, int $overflow)
      */
     public static function roundUpTo($value, array $allowedValues, int $modulus): array
     {
@@ -113,12 +100,14 @@ class ModuloCalc
                 break;
             }
         }
-
-        if ($pickedValue === $modulus) {
-            $overflow = true;
+        if ($pickedValue === null) {
+            $overflow = Overflow::OVERFLOW;
+            $pickedValue = $allowedValues[0];
+        } elseif ($pickedValue === $modulus) {
+            $overflow = Overflow::OVERFLOW;
             $pickedValue = 0;
         } else {
-            $overflow = false;
+            $overflow = Overflow::NONE;
         }
 
         return [$pickedValue, $overflow];
@@ -130,9 +119,9 @@ class ModuloCalc
      * @param int|float $value
      * @param int[]|float[] $allowedValues
      * @param int $modulus
-     * @return int|float
+     * @return int[]|float[] (int|float $result, int $overflow)
      */
-    public static function roundDownTo($value, array $allowedValues, int $modulus)
+    public static function roundDownTo($value, array $allowedValues, int $modulus): array
     {
         self::checkValues($allowedValues, $modulus);
 
@@ -145,7 +134,17 @@ class ModuloCalc
             }
         }
 
-        return $pickedValue;
+        if ($pickedValue === null) {
+            $overflow = Overflow::UNDERFLOW;
+            $pickedValue = $allowedValues[0];
+        } elseif ($pickedValue === $modulus) {
+            $overflow = Overflow::UNDERFLOW;
+            $pickedValue = 0;
+        } else {
+            $overflow = Overflow::NONE;
+        }
+
+        return [$pickedValue, $overflow];
     }
 
     /**

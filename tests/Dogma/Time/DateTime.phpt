@@ -313,6 +313,8 @@ $microseconds = [0, 250000, 500000, 750000];
 $upperTime = new DateTime('2000-01-02 06:12:12.200000');
 $criticalTime = new DateTime('2000-01-02 23:59:59.999999');
 
+Assert::equal((new DateTime('2018-07-17 14:55:00.000000'))->roundUpTo($minute, [20]), new DateTime('2018-07-17 15:20:00.000000'));
+
 // roundTo()
 Assert::equal($dateTime->roundTo($hour, $hours), new DateTime('2000-01-02 00:00:00.000000'));
 Assert::equal($dateTime->roundTo($minute, $minutes), new DateTime('2000-01-02 03:00:00.000000'));
