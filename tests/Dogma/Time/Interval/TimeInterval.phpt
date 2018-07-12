@@ -47,6 +47,10 @@ Assert::equal(TimeInterval::createFromString('[10:00,20:00]'), new TimeInterval(
 Assert::equal(TimeInterval::createFromString('[10:00,20:00)'), $interval);
 Assert::equal(TimeInterval::createFromString('(10:00,20:00)'), new TimeInterval($startTime, $endTime, true, true));
 Assert::equal(TimeInterval::createFromString('(10:00,20:00]'), new TimeInterval($startTime, $endTime, true, false));
+Assert::equal(TimeInterval::createFromString('00:00 - 00:00'), new TimeInterval($t(0), $t(0)));
+Assert::equal(TimeInterval::createFromString('00:00 - 00:00')->getLengthInMicroseconds(), 0);
+Assert::equal(TimeInterval::createFromString('00:00 - 24:00'), new TimeInterval($t(0), $t(24)));
+Assert::equal(TimeInterval::createFromString('00:00 - 24:00')->getLengthInMicroseconds(), Microseconds::DAY);
 Assert::exception(function (): void {
     TimeInterval::createFromString('foo|bar|baz');
 }, InvalidIntervalStringFormatException::class);

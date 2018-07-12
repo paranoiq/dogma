@@ -68,7 +68,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
             $startTime %= Microseconds::DAY;
             $start = $start->normalize();
         }
-        if ($endTime >= Microseconds::DAY) {
+        if ($endTime > Microseconds::DAY) {
             $endTime %= Microseconds::DAY;
             $end = $end->normalize();
         }
