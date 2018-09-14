@@ -39,6 +39,7 @@ use function sprintf;
 use function str_replace;
 use function strlen;
 use function strpos;
+use function substr;
 use function trim;
 
 /**
@@ -240,6 +241,8 @@ final class Check
         self::bool($value);
     }
 
+    // integers --------------------------------------------------------------------------------------------------------
+
     /**
      * @param mixed $value
      * @param int|null $min
@@ -285,6 +288,275 @@ final class Check
         }
         self::int($value, $min, $max);
     }
+
+    /**
+     * @param mixed $value
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     */
+    public static function uint(&$value, ?int $max = null): void
+    {
+        self::int($value, null, $max);
+        self::intBounds($value, 64, false);
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     */
+    public static function nullableUint(&$value, ?int $max = null): void
+    {
+        if ($value === null) {
+            return;
+        }
+        self::int($value, null, $max);
+        self::intBounds($value, 64, false);
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $min
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function int8(&$value, ?int $min = null, ?int $max = null): void
+    {
+        self::int($value, $min, $max);
+        self::intBounds($value, 8);
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $min
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function nullableInt8(&$value, ?int $min = null, ?int $max = null): void
+    {
+        if ($value === null) {
+            return;
+        }
+        self::int($value, $min, $max);
+        self::intBounds($value, 8);
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function uint8(&$value, ?int $max = null): void
+    {
+        self::int($value, null, $max);
+        self::intBounds($value, 8, false);
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function nullableUint8(&$value, ?int $max = null): void
+    {
+        if ($value === null) {
+            return;
+        }
+        self::int($value, null, $max);
+        self::intBounds($value, 8, false);
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $min
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function int16(&$value, ?int $min = null, ?int $max = null): void
+    {
+        self::int($value, $min, $max);
+        self::intBounds($value, 16);
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $min
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function nullableInt16(&$value, ?int $min = null, ?int $max = null): void
+    {
+        if ($value === null) {
+            return;
+        }
+        self::int($value, $min, $max);
+        self::intBounds($value, 16);
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function uint16(&$value, ?int $max = null): void
+    {
+        self::int($value, null, $max);
+        self::intBounds($value, 16, false);
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function nullableUint16(&$value, ?int $max = null): void
+    {
+        if ($value === null) {
+            return;
+        }
+        self::int($value, null, $max);
+        self::intBounds($value, 16, false);
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $min
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function int24(&$value, ?int $min = null, ?int $max = null): void
+    {
+        self::int($value, $min, $max);
+        self::intBounds($value, 24);
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $min
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function nullableInt24(&$value, ?int $min = null, ?int $max = null): void
+    {
+        if ($value === null) {
+            return;
+        }
+        self::int($value, $min, $max);
+        self::intBounds($value, 24);
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function uint24(&$value, ?int $max = null): void
+    {
+        self::int($value, null, $max);
+        self::intBounds($value, 24, false);
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function nullableUint24(&$value, ?int $max = null): void
+    {
+        if ($value === null) {
+            return;
+        }
+        self::int($value, null, $max);
+        self::intBounds($value, 24, false);
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $min
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function int32(&$value, ?int $min = null, ?int $max = null): void
+    {
+        self::int($value, $min, $max);
+        self::intBounds($value, 32);
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $min
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function nullableInt32(&$value, ?int $min = null, ?int $max = null): void
+    {
+        if ($value === null) {
+            return;
+        }
+        self::int($value, $min, $max);
+        self::intBounds($value, 32);
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function uint32(&$value, ?int $max = null): void
+    {
+        self::int($value, null, $max);
+        self::intBounds($value, 32, false);
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function nullableUint32(&$value, ?int $max = null): void
+    {
+        if ($value === null) {
+            return;
+        }
+        self::int($value, null, $max);
+        self::intBounds($value, 32, false);
+    }
+
+    // floats ----------------------------------------------------------------------------------------------------------
 
     /**
      * @param mixed $value
@@ -349,6 +621,50 @@ final class Check
         self::float($value, $min, $max);
     }
 
+    // decimal (float) -------------------------------------------------------------------------------------------------
+
+    /**
+     * @param mixed $value
+     * @param float|null $totalDigits
+     * @param float|null $afterDigits
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\InvalidValueException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function decimal(&$value, int $totalDigits, int $afterDigits = 0): void
+    {
+        self::float($value);
+        $stringValue = $value . '.';
+        [$before, $after] = explode('.', $stringValue);
+        if ($before[0] === '-') {
+            $before = substr($before, 1);
+        }
+        if (strlen($after) > $afterDigits) {
+            throw new ValueOutOfBoundsException($value, sprintf('decimal(%d,%d)', $totalDigits, $afterDigits));
+        }
+        if (strlen($before) + strlen($after) > $totalDigits) {
+            throw new ValueOutOfBoundsException($value, sprintf('decimal(%d,%d)', $totalDigits, $afterDigits));
+        }
+    }
+
+    /**
+     * @param mixed $value
+     * @param float|null $totalDigits
+     * @param float|null $afterDigits
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\InvalidValueException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function nullableDecimal(&$value, int $totalDigits, int $afterDigits = 0): void
+    {
+        if ($value === null) {
+            return;
+        }
+        self::decimal($value, $totalDigits, $afterDigits);
+    }
+
+    // strings ---------------------------------------------------------------------------------------------------------
+
     /**
      * @param mixed $value
      * @param int|null $minLength
@@ -385,6 +701,8 @@ final class Check
         }
         self::string($value, $minLength, $maxLength);
     }
+
+    // lists -----------------------------------------------------------------------------------------------------------
 
     /**
      * @param mixed $value
@@ -454,6 +772,8 @@ final class Check
         self::tuple($value, $types);
     }
 
+    // objects ---------------------------------------------------------------------------------------------------------
+
     /**
      * @param mixed $value
      * @param string|null $className
@@ -481,6 +801,8 @@ final class Check
         }
         self::object($value, $className);
     }
+
+    // other -----------------------------------------------------------------------------------------------------------
 
     /**
      * @param mixed $value
@@ -536,6 +858,8 @@ final class Check
         }
     }
 
+    // helpers ---------------------------------------------------------------------------------------------------------
+
     /**
      * @param string $value
      * @param int|null $min
@@ -576,7 +900,7 @@ final class Check
      * Checks type specific bounds
      * @param mixed $value
      * @param \Dogma\Type $type
-     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
      */
     public static function bounds($value, Type $type): void
     {
@@ -601,6 +925,22 @@ final class Check
             }
         } else {
             throw new InvalidArgumentException(sprintf('Cannot check bounds of type %s.', $type->getId()));
+        }
+    }
+
+    /**
+     * Checks type specific bounds for integers
+     * @param mixed $value
+     * @param int $size
+     * @param bool $signed
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function intBounds($value, int $size, bool $signed = true): void
+    {
+        try {
+            self::range($value, ...BitSize::getIntRange($size, $signed ? Sign::SIGNED : Sign::UNSIGNED));
+        } catch (ValueOutOfRangeException $e) {
+            throw new ValueOutOfBoundsException($value, sprintf('%sint(%d)', $signed ? '' : 'u', $size), $e);
         }
     }
 
