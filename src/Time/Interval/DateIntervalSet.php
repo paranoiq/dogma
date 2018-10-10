@@ -15,12 +15,14 @@ use Dogma\Compare;
 use Dogma\Equalable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
+use function array_map;
 use function array_merge;
 use function array_shift;
 use function array_values;
 use function count;
 use function implode;
 use function reset;
+use function sort;
 
 class DateIntervalSet implements DateOrTimeIntervalSet
 {
@@ -37,6 +39,39 @@ class DateIntervalSet implements DateOrTimeIntervalSet
         $this->intervals = Arr::values(Arr::filter($intervals, function (DateInterval $interval): bool {
             return !$interval->isEmpty();
         }));
+    }
+
+    /**
+     * @param \Dogma\Time\Date[] $dates
+     * @return \Dogma\Time\Interval\DateIntervalSet
+     */
+    public static function createFromDateArray(array $dates): self
+    {
+        sort($dates);
+        $intervals = [];
+        $start = $previous = reset($dates);
+        foreach ($dates as $date) {
+            if ($date->getDayNumber() > $previous->getDayNumber() + 1) {
+                $intervals[] = new DateInterval($start, $previous);
+                $start = $date;
+            }
+            $previous = $date;
+        }
+        if ($start !== false) {
+            $intervals[] = new DateInterval($start, $previous);
+        }
+
+        return new static($intervals);
+    }
+
+    /**
+     * @return \Dogma\Time\Date[]
+     */
+    public function toDateArray(): array
+    {
+        return array_merge(...array_map(function (DateInterval $interval) {
+            return $interval->toDateArray();
+        }, $this->intervals));
     }
 
     public function format(string $format = DateInterval::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string

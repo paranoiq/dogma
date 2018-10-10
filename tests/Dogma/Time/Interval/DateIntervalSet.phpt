@@ -24,6 +24,16 @@ $emptyInterval = DateInterval::empty();
 
 $set = new DateIntervalSet([$interval]);
 
+// createFromDateArray()
+Assert::equal(DateIntervalSet::createFromDateArray([]), $s());
+Assert::equal(DateIntervalSet::createFromDateArray([$d(1), $d(2), $d(3), $d(4), $d(5)]), $s($interval));
+Assert::equal(DateIntervalSet::createFromDateArray([$d(1), $d(2), $d(4), $d(5)]), $s($i(1, 2), $i(4, 5)));
+
+// toDateArray()
+Assert::equal($emptyInterval->toDateArray(), []);
+Assert::equal($interval->toDateArray(), [$d(1), $d(2), $d(3), $d(4), $d(5)]);
+Assert::equal($s($i(1, 2), $i(4, 5))->toDateArray(), [$d(1), $d(2), $d(4), $d(5)]);
+
 // isEmpty()
 Assert::true((new DateIntervalSet([]))->isEmpty());
 Assert::true((new DateIntervalSet([$emptyInterval]))->isEmpty());
