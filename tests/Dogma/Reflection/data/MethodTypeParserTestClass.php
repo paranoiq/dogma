@@ -5,7 +5,7 @@ namespace Dogma\Tests\Reflection;
 class MethodTypeParserTestClass
 {
 
-    // @codingStandardsIgnoreStart
+    // phpcs:disable
 
     public function testNoType($one): void
     {
@@ -340,6 +340,6 @@ class MethodTypeParserTestClass
         //
     }
 
-    // @codingStandardsIgnoreEnd
+    // phpcs:enable
 
 }

@@ -94,14 +94,12 @@ $subjects = [
     'float' => [123.456, Type::FLOAT, Type::STRING],
     'floatNan' => [NAN],
     'floatInf' => [INF],
-    // @codingStandardsIgnoreStart
+    // phpcs:ignore
     'floatInfNegative' => [-INF],
-    // @codingStandardsIgnoreEnd
     'floatInt' => [123.0, Type::INT, Type::FLOAT, Type::STRING],
     'floatZero' => [0.0, Type::BOOL, Type::INT, Type::FLOAT, Type::STRING],
-    // @codingStandardsIgnoreStart
+    // phpcs:ignore
     'floatZeroNegative' => [-0.0, Type::BOOL, Type::INT, Type::FLOAT, Type::STRING],
-    // @codingStandardsIgnoreEnd
     'floatOne' => [1.0, Type::BOOL, Type::INT, Type::FLOAT, Type::STRING],
 
     'stringEmpty' => ['', Type::BOOL, Type::STRING],
