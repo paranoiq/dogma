@@ -54,7 +54,7 @@ class Constant
     public const QUARTER_PI = M_PI_4; // π/4
     public const INV_PI = M_1_PI; // 1/π
     public const TWO_INV_PI = M_2_PI; // 2/π
-    public const INV_SQRT_PI = M_SQRTPI; // 1/√π
+    public const SQRT_PI = M_SQRTPI; // √π
     public const TWO_INV_SQRT_PI = M_2_SQRTPI; // 2/√π
 
     public const SQRT_2 = M_SQRT2; // √2
