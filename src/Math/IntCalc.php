@@ -14,18 +14,11 @@ use function abs;
 use function ceil;
 use function floor;
 
-class FloatCalc
+class IntCalc
 {
     use StaticClassMixin;
 
-    public const EPSILON = 0.0000000000001;
-
-    public static function equals(float $first, float $second, float $epsilon = self::EPSILON): bool
-    {
-        return abs($first - $second) < $epsilon;
-    }
-
-    public static function roundTo(float $number, float $multiple): float
+    public static function roundTo(int $number, int $multiple): int
     {
         $up = self::roundUpTo($number, $multiple);
         $down = self::roundDownTo($number, $multiple);
@@ -33,18 +26,18 @@ class FloatCalc
         return abs($up - $number) > abs($number - $down) ? $down : $up;
     }
 
-    public static function roundDownTo(float $number, float $multiple): float
+    public static function roundDownTo(int $number, int $multiple): int
     {
         $multiple = abs($multiple);
 
-        return floor($number / $multiple) * $multiple;
+        return (int) (floor($number / $multiple) * $multiple);
     }
 
-    public static function roundUpTo(float $number, float $multiple): float
+    public static function roundUpTo(int $number, int $multiple): int
     {
         $multiple = abs($multiple);
 
-        return ceil($number / $multiple) * $multiple;
+        return (int) (ceil($number / $multiple) * $multiple);
     }
 
 }
