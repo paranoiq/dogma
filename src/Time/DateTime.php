@@ -204,6 +204,32 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
         return static::createFromDateTimeInterface($that);
     }
 
+    public function addUnit(DateTimeUnit $unit, int $amount = 1): self
+    {
+        if ($unit->equals(DateTimeUnit::QUARTER)) {
+            $unit = DateTimeUnit::get(DateTimeUnit::MONTH);
+            $amount *= 3;
+        } elseif ($unit->equals(DateTimeUnit::MILISECOND)) {
+            $unit = DateTimeUnit::get(DateTimeUnit::MICROSECOND);
+            $amount *= 1000;
+        }
+
+        return $this->modify('+' . $amount . ' ' . $unit->getValue() . 's');
+    }
+
+    public function subtractUnit(DateTimeUnit $unit, int $amount = 1): self
+    {
+        if ($unit->equals(DateTimeUnit::QUARTER)) {
+            $unit = DateTimeUnit::get(DateTimeUnit::MONTH);
+            $amount *= 3;
+        } elseif ($unit->equals(DateTimeUnit::MILISECOND)) {
+            $unit = DateTimeUnit::get(DateTimeUnit::MICROSECOND);
+            $amount *= 1000;
+        }
+
+        return $this->modify('-' . $amount . ' ' . $unit->getValue() . 's');
+    }
+
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      * @param \Dogma\Time\Time|int|string $time

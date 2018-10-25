@@ -13,8 +13,10 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
+use Dogma\Math\IntCalc;
 use Dogma\Math\Interval\IntervalParser;
 use Dogma\Math\Interval\OpenClosedInterval;
+use Dogma\NotImplementedException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
@@ -22,11 +24,13 @@ use Dogma\Time\DateTimeUnit;
 use Dogma\Time\InvalidIntervalStartEndOrderException;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Time;
+use Dogma\Time\TimeCalc;
 use function array_fill;
 use function array_shift;
 use function array_unique;
 use function array_values;
 use function count;
+use function range;
 use function round;
 
 /**
@@ -292,7 +296,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    public function split(int $parts, int $splitMode = self::SPLIT_CLOSED): DateTimeIntervalSet
+    public function split(int $parts, int $splitMode = self::SPLIT_OPEN_ENDS): DateTimeIntervalSet
     {
         Check::min($parts, 1);
 
@@ -319,7 +323,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
      * @param int $splitMode
      * @return \Dogma\Time\Interval\DateTimeIntervalSet
      */
-    public function splitBy(array $intervalStarts, int $splitMode = self::SPLIT_CLOSED): DateTimeIntervalSet
+    public function splitBy(array $intervalStarts, int $splitMode = self::SPLIT_OPEN_ENDS): DateTimeIntervalSet
     {
         if ($this->isEmpty()) {
             return new DateTimeIntervalSet([]);
@@ -339,6 +343,130 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         }
 
         return new DateTimeIntervalSet($results);
+    }
+
+    /**
+     * Splits interval into smaller by increments of given unit from the beginning of interval.
+     *
+     * @param \Dogma\Time\DateTimeUnit $unit
+     * @param int $amount
+     * @param int $splitMode
+     * @return \Dogma\Time\Interval\DateTimeIntervalSet
+     */
+    public function splitByUnit(DateTimeUnit $unit, int $amount = 1, int $splitMode = self::SPLIT_OPEN_ENDS): DateTimeIntervalSet
+    {
+        Check::positive($amount);
+
+        $intervalStarts = [];
+        $start = $this->start->addUnit($unit, $amount);
+        while ($this->containsValue($start)) {
+            $intervalStarts[] = $start;
+            $start = $start->addUnit($unit, $amount);
+        }
+
+        return $this->splitBy($intervalStarts, $splitMode);
+    }
+
+    /**
+     * Splits interval into parts with borders aligned to given reference or to a beginning of splitting unit.
+     * eg. [2018-01-15 - 2018-02-15] split by 1 month will return two intervals:
+     *  [2018-01-15 - 2018-01-31] and [2018-02-01 - 2018-02-15]
+     *
+     * When no reference is given, base for splitting will be calculated by rounding given unit* to a number divisible by given amount.
+     * *) in context of a superior unit - number of month in year, iso number of week in year, number of day in month...
+     *  eg. for 5 months beginning of May or October will be used as base.
+     *
+     * @param \Dogma\Time\DateTimeUnit $unit
+     * @param int $amount
+     * @param \Dogma\Time\DateTime|null $reference
+     * @param int $splitMode
+     * @return \Dogma\Time\Interval\DateTimeIntervalSet
+     */
+    public function splitByUnitAligned(DateTimeUnit $unit, int $amount = 1, ?DateTime $reference = null, int $splitMode = self::SPLIT_OPEN_ENDS): DateTimeIntervalSet
+    {
+        Check::positive($amount);
+
+        if ($reference === null) {
+            switch ($unit->getValue()) {
+                case DateTimeUnit::YEAR:
+                    $year = $this->start->getYear();
+                    if ($amount > 1) {
+                        $year = IntCalc::roundDownTo($year, $amount);
+                    }
+                    $reference = DateTime::createFromComponents($year, 1, 1, 0, 0, 0, 0, $this->start->getTimezone());
+                    break;
+                case DateTimeUnit::QUARTER:
+                    if ($amount > 1) {
+                        throw new NotImplementedException('Behavior of quarters for amount larger than 1 is not defined.');
+                    }
+                    $month = (int) IntCalc::roundDownTo($this->start->getMonth() - 1, 3) + 1;
+                    $reference = DateTime::createFromComponents($this->start->getYear(), $month, 1, 0, 0, 0, 0, $this->start->getTimezone());
+                    break;
+                case DateTimeUnit::MONTH:
+                    $month = $this->start->getMonth();
+                    if ($amount > 1) {
+                        $month = IntCalc::roundDownTo($month - 1, $amount) + 1;
+                    }
+                    $reference = DateTime::createFromComponents($this->start->getYear(), $month, 1, 0, 0, 0, 0, $this->start->getTimezone());
+                    break;
+                case DateTimeUnit::WEEK:
+                    if ($amount > 1) {
+                        $year = (int) $this->start->format('o');
+                        $week = (int) $this->start->format('W');
+                        $week = IntCalc::roundDownTo($week - 1, $amount) + 1;
+                        $reference = Date::createFromIsoYearAndWeek($year, $week, 1)->toDateTime($this->start->getTimezone());
+                    } else {
+                        $dayOfWeek = $this->start->getDayOfWeek();
+                        $reference = $this->start->modify('-' . ($dayOfWeek - 1) . ' days')->setTime(0, 0, 0, 0);
+                    }
+                    break;
+                case DateTimeUnit::DAY:
+                    $day = $this->start->getDay();
+                    if ($amount > 1) {
+                        $day = IntCalc::roundDownTo($day - 1, $amount) + 1;
+                    }
+                    $reference = DateTime::createFromComponents($this->start->getYear(), $this->start->getMonth(), $day, 0, 0, 0, 0, $this->start->getTimezone());
+                    break;
+                case DateTimeUnit::HOUR:
+                    $hours = null;
+                    if ($amount > 1) {
+                        $hours = range(0, 23, $amount);
+                    }
+                    $reference = TimeCalc::roundDownTo($this->start, $unit, $hours);
+                    break;
+                case DateTimeUnit::MINUTE:
+                case DateTimeUnit::SECOND:
+                    $units = null;
+                    if ($amount > 1) {
+                        $units = range(0, 59, $amount);
+                    }
+                    $reference = TimeCalc::roundDownTo($this->start, $unit, $units);
+                    break;
+                case DateTimeUnit::MILISECOND:
+                    $miliseconds = null;
+                    if ($amount > 1) {
+                        $miliseconds = range(0, 999, $amount);
+                    }
+                    $reference = TimeCalc::roundDownTo($this->start, $unit, $miliseconds);
+                    break;
+                case DateTimeUnit::MICROSECOND:
+                    $microseconds = null;
+                    if ($amount > 1) {
+                        $microseconds = range(0, 999999, $amount);
+                    }
+                    $reference = TimeCalc::roundDownTo($this->start, $unit, $microseconds);
+                    break;
+            }
+        }
+
+        $intervalStarts = [];
+        $start = $reference->addUnit($unit, $amount);
+        while ($this->containsValue($start)) {
+            $intervalStarts[] = $start;
+            $start = $start->addUnit($unit, $amount);
+        }
+
+        return $this->splitBy($intervalStarts, $splitMode);
     }
 
     public function envelope(self ...$items): self
