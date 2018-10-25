@@ -26,13 +26,13 @@ Assert::true($handler->acceptsType(Type::get('Any')));
 // getParameters()
 Assert::equal($handler->getParameters($dateTimeType), [
     'time' => Type::get(Type::MIXED),
-    'object' => Type::get(Type::MIXED),
+    'timezone' => Type::get(Type::MIXED),
 ]);
 
 // createInstance()
 $dateInstance = $handler->createInstance($dateTimeType, [
     'time' => '2001-02-03 04:05:06',
-    'object' => new \DateTimeZone('+01:00'),
+    'timezone' => new \DateTimeZone('+01:00'),
 ], $mapper);
 Assert::type($dateInstance, DateTime::class);
 Assert::same($dateInstance->format('Y-m-d H:i:s'), '2001-02-03 04:05:06');
