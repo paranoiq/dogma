@@ -116,7 +116,16 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
         return $dateTime;
     }
 
-    public static function createFromComponents(int $year, int $month, int $day, int $hours = 0, int $minutes = 0, int $seconds = 0, int $microseconds = 0): self
+    public static function createFromComponents(
+        int $year,
+        int $month,
+        int $day,
+        int $hours = 0,
+        int $minutes = 0,
+        int $seconds = 0,
+        int $microseconds = 0,
+        ?\DateTimeZone $timeZone = null
+    ): self
     {
         Check::range($year, 1, 9999);
         Check::range($month, 1, 12);
@@ -126,7 +135,7 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
         Check::range($seconds, 0, 59);
         Check::range($microseconds, 0, 999999);
 
-        return new static(sprintf('%d-%d-%d %d:%d:%d.%d', $year, $month, $day, $hours, $minutes, $seconds, $microseconds));
+        return new static(sprintf('%d-%d-%d %d:%d:%d.%d', $year, $month, $day, $hours, $minutes, $seconds, $microseconds), $timeZone);
     }
 
     public static function createFromDateTimeInterface(\DateTimeInterface $dateTime, ?\DateTimeZone $timeZone = null): self
