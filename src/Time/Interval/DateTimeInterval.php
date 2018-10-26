@@ -32,6 +32,7 @@ use function array_values;
 use function count;
 use function range;
 use function round;
+use function usort;
 
 /**
  * Interval of times including date. Based on FloatInterval.
@@ -727,10 +728,12 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
      */
     public static function sort(array $intervals): array
     {
-        return Arr::sortWith($intervals, function (DateTimeInterval $a, DateTimeInterval $b) {
+        usort($intervals, function (DateTimeInterval $a, DateTimeInterval $b) {
             return $a->start->getMicroTimestamp() <=> $b->start->getMicroTimestamp()
                 ?: $a->end->getMicroTimestamp() <=> $b->end->getMicroTimestamp();
         });
+
+        return $intervals;
     }
 
     /**
@@ -739,9 +742,11 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
      */
     public static function sortByStart(array $intervals): array
     {
-        return Arr::sortWith($intervals, function (DateTimeInterval $a, DateTimeInterval $b) {
+        usort($intervals, function (DateTimeInterval $a, DateTimeInterval $b) {
             return $a->start->getMicroTimestamp() <=> $b->start->getMicroTimestamp();
         });
+
+        return $intervals;
     }
 
 }

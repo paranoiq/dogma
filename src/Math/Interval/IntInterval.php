@@ -25,6 +25,7 @@ use function max;
 use function min;
 use function round;
 use function sprintf;
+use function usort;
 
 class IntInterval implements Interval
 {
@@ -426,9 +427,11 @@ class IntInterval implements Interval
      */
     public static function sort(array $intervals): array
     {
-        return Arr::sortWith($intervals, function (IntInterval $a, IntInterval $b) {
+        usort($intervals, function (IntInterval $a, IntInterval $b) {
             return $a->start <=> $b->start ?: $a->end <=> $b->end;
         });
+
+        return $intervals;
     }
 
     /**
@@ -437,9 +440,11 @@ class IntInterval implements Interval
      */
     public static function sortByStart(array $intervals): array
     {
-        return Arr::sortWith($intervals, function (IntInterval $a, IntInterval $b) {
+        usort($intervals, function (IntInterval $a, IntInterval $b) {
             return $a->start <=> $b->start;
         });
+
+        return $intervals;
     }
 
 }

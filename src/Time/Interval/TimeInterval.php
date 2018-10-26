@@ -29,6 +29,7 @@ use function array_unique;
 use function array_values;
 use function count;
 use function round;
+use function usort;
 
 /**
  * Interval of times without date.
@@ -634,9 +635,11 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
      */
     public static function sort(array $intervals): array
     {
-        return Arr::sortWith($intervals, function (TimeInterval $a, TimeInterval $b) {
+        usort($intervals, function (TimeInterval $a, TimeInterval $b) {
             return $a->start->getMicroTime() <=> $b->start->getMicroTime() ?: $a->end->getMicroTime() <=> $b->end->getMicroTime();
         });
+
+        return $intervals;
     }
 
     /**
@@ -645,9 +648,11 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
      */
     public static function sortByStart(array $intervals): array
     {
-        return Arr::sortWith($intervals, function (TimeInterval $a, TimeInterval $b) {
+        usort($intervals, function (TimeInterval $a, TimeInterval $b) {
             return $a->start->getMicroTime() <=> $b->start->getMicroTime();
         });
+
+        return $intervals;
     }
 
 }

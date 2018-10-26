@@ -29,6 +29,7 @@ use function array_unique;
 use function array_values;
 use function count;
 use function round;
+use function usort;
 
 /**
  * Interval of nights (eg. length of stay in a hotel in days). Based on IntInterval.
@@ -544,9 +545,11 @@ class NightInterval implements DateOrTimeInterval
      */
     public static function sort(array $intervals): array
     {
-        return Arr::sortWith($intervals, function (NightInterval $a, NightInterval $b) {
+        usort($intervals, function (NightInterval $a, NightInterval $b) {
             return $a->start->getDayNumber() <=> $b->start->getDayNumber() ?: $a->end->getDayNumber() <=> $b->end->getDayNumber();
         });
+
+        return $intervals;
     }
 
     /**
@@ -555,9 +558,11 @@ class NightInterval implements DateOrTimeInterval
      */
     public static function sortByStart(array $intervals): array
     {
-        return Arr::sortWith($intervals, function (NightInterval $a, NightInterval $b) {
+        usort($intervals, function (NightInterval $a, NightInterval $b) {
             return $a->start->getDayNumber() <=> $b->start->getDayNumber();
         });
+
+        return $intervals;
     }
 
 }

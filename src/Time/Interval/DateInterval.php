@@ -28,6 +28,7 @@ use function array_unique;
 use function array_values;
 use function count;
 use function round;
+use function usort;
 
 /**
  * Interval of dates. Based on IntInterval.
@@ -527,9 +528,11 @@ class DateInterval implements DateOrTimeInterval
      */
     public static function sort(array $intervals): array
     {
-        return Arr::sortWith($intervals, function (DateInterval $a, DateInterval $b) {
+        usort($intervals, function (DateInterval $a, DateInterval $b) {
             return $a->start->getDayNumber() <=> $b->start->getDayNumber() ?: $a->end->getDayNumber() <=> $b->end->getDayNumber();
         });
+
+        return $intervals;
     }
 
     /**
@@ -538,9 +541,11 @@ class DateInterval implements DateOrTimeInterval
      */
     public static function sortByStart(array $intervals): array
     {
-        return Arr::sortWith($intervals, function (DateInterval $a, DateInterval $b) {
+        usort($intervals, function (DateInterval $a, DateInterval $b) {
             return $a->start->getDayNumber() <=> $b->start->getDayNumber();
         });
+
+        return $intervals;
     }
 
 }

@@ -25,6 +25,7 @@ use function count;
 use function is_nan;
 use function number_format;
 use function sprintf;
+use function usort;
 
 class FloatInterval implements OpenClosedInterval
 {
@@ -524,10 +525,12 @@ class FloatInterval implements OpenClosedInterval
      */
     public static function sort(array $intervals): array
     {
-        return Arr::sortWith($intervals, function (FloatInterval $a, FloatInterval $b) {
+        usort($intervals, function (FloatInterval $a, FloatInterval $b) {
             return $a->start <=> $b->start ?: $a->openStart <=> $b->openStart
                 ?: $a->end <=> $b->end ?: $a->openEnd <=> $b->openEnd;
         });
+
+        return $intervals;
     }
 
     /**
@@ -536,9 +539,11 @@ class FloatInterval implements OpenClosedInterval
      */
     public static function sortByStart(array $intervals): array
     {
-        return Arr::sortWith($intervals, function (FloatInterval $a, FloatInterval $b) {
+        usort($intervals, function (FloatInterval $a, FloatInterval $b) {
             return $a->start <=> $b->start ?: $b->openStart <=> $a->openStart;
         });
+
+        return $intervals;
     }
 
 }

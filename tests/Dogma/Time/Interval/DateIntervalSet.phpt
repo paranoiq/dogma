@@ -52,6 +52,7 @@ Assert::equal($s($i(1, 2), $i(4, 5))->envelope(), $interval);
 
 // normalize()
 Assert::equal($s($i(1, 4), $i(2, 5))->normalize(), $set);
+Assert::equal($s($i(10, 13), $i(5, 9), $i(18, 21), $i(5, 6), $i(15, 19))->normalize(), $s($i(5, 13), $i(15, 21)));
 
 // add()
 Assert::equal($s($i(1, 2), $i(3, 4), $i(5, 6)), $s($i(1, 2))->add($s($i(3, 4), $i(5, 6))));

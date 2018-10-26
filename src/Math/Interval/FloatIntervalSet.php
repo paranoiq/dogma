@@ -15,7 +15,6 @@ use Dogma\Equalable;
 use Dogma\StrictBehaviorMixin;
 use function array_merge;
 use function array_shift;
-use function array_values;
 use function count;
 use function end;
 
@@ -101,11 +100,11 @@ class FloatIntervalSet implements IntervalSet
     public function normalize(): self
     {
         $intervals = FloatInterval::sortByStart($this->intervals);
-        for ($n = 0; $n < count($intervals) - 1; $n++) {
-            if ($intervals[$n]->intersects($intervals[$n + 1])) {
-                $intervals[$n] = $intervals[$n]->envelope($intervals[$n + 1]);
-                unset($intervals[$n + 1]);
-                $intervals = array_values($intervals);
+        $count = count($intervals) - 1;
+        for ($n = 0; $n < $count; $n++) {
+            if ($intervals[$n]->intersects($intervals[$n + 1]) || $intervals[$n]->touches($intervals[$n + 1])) {
+                $intervals[$n + 1] = $intervals[$n]->envelope($intervals[$n + 1]);
+                unset($intervals[$n]);
             }
         }
 
