@@ -382,7 +382,7 @@ class DateInterval implements DateOrTimeInterval, Pokeable
         $overlaps = self::countOverlaps(...$items);
 
         $results = [];
-        foreach ($overlaps as $i => [$item, $count]) {
+        foreach ($overlaps as [$item, $count]) {
             if ($count === 1) {
                 $results[] = $item;
             }

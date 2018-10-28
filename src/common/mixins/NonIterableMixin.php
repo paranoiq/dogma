@@ -9,8 +9,6 @@
 
 namespace Dogma;
 
-use function get_class;
-
 trait NonIterableMixin
 {
 
@@ -21,7 +19,7 @@ trait NonIterableMixin
      */
     public function getIterator(): void
     {
-        throw new NonIterableObjectException(get_class($this));
+        throw new NonIterableObjectException(static::class);
     }
 
 }

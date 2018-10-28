@@ -12,7 +12,6 @@ namespace Dogma\Enum;
 use Dogma\Arr;
 use Dogma\InvalidValueException;
 use Dogma\NonIterable;
-use function get_called_class;
 
 abstract class StringEnum implements NonIterable
 {
@@ -38,7 +37,7 @@ abstract class StringEnum implements NonIterable
      */
     final public static function get(string $value): self
     {
-        $class = get_called_class();
+        $class = static::class;
         if (empty(self::$availableValues[$class])) {
             self::init($class);
         }
@@ -62,7 +61,7 @@ abstract class StringEnum implements NonIterable
      */
     public static function validateValue(string &$value): bool
     {
-        $class = get_called_class();
+        $class = static::class;
         if (empty(self::$availableValues[$class])) {
             self::init($class);
         }
@@ -85,7 +84,7 @@ abstract class StringEnum implements NonIterable
      */
     final public static function getAllowedValues(): array
     {
-        $class = get_called_class();
+        $class = static::class;
         if (empty(self::$availableValues[$class])) {
             self::init($class);
         }

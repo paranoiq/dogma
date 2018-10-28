@@ -265,6 +265,7 @@ class QueryEngine
         } else {
             $value = $this->xpath->evaluate($path);
         }
+
         if ($value === false) {
             throw new QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
         }
@@ -277,11 +278,13 @@ class QueryEngine
             if (!is_numeric($value)) {
                 return null;
             }
+
             return (int) $value;
         } elseif (substr($query, 0, 5) === 'bool(' && isset($value)) {
             if ($value === '') {
                 return null;
             }
+
             return (bool) $value;
         } else {
             return $value;

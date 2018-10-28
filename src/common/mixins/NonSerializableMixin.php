@@ -9,8 +9,6 @@
 
 namespace Dogma;
 
-use function get_class;
-
 trait NonSerializableMixin
 {
 
@@ -21,7 +19,7 @@ trait NonSerializableMixin
      */
     final public function __sleep(): void
     {
-        throw new NonSerializableObjectException(get_class($this));
+        throw new NonSerializableObjectException(static::class);
     }
 
     /**
@@ -31,7 +29,7 @@ trait NonSerializableMixin
      */
     final public function __wakeup(): void
     {
-        throw new NonSerializableObjectException(get_class($this));
+        throw new NonSerializableObjectException(static::class);
     }
 
 }

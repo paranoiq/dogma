@@ -9,8 +9,6 @@
 
 namespace Dogma;
 
-use function get_called_class;
-
 trait StaticClassMixin
 {
 
@@ -19,7 +17,7 @@ trait StaticClassMixin
      */
     final public function __construct()
     {
-        throw new StaticClassException(get_called_class());
+        throw new StaticClassException(static::class);
     }
 
     /**
@@ -31,7 +29,7 @@ trait StaticClassMixin
      */
     public static function __callStatic(string $name, $args): void
     {
-        throw new UndefinedMethodException(get_called_class(), $name);
+        throw new UndefinedMethodException(static::class, $name);
     }
 
 }

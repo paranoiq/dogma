@@ -9,8 +9,6 @@
 
 namespace Dogma;
 
-use function get_class;
-
 trait NonCloneableMixin
 {
 
@@ -21,7 +19,7 @@ trait NonCloneableMixin
      */
     final public function __clone()
     {
-        throw new NonCloneableObjectException(get_class($this));
+        throw new NonCloneableObjectException(static::class);
     }
 
 }

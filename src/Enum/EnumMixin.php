@@ -19,7 +19,6 @@ use Dogma\StrictBehaviorMixin;
 use function count;
 use function end;
 use function explode;
-use function get_called_class;
 use function get_class;
 use function implode;
 use function is_scalar;
@@ -34,7 +33,7 @@ trait EnumMixin
 
     public function __toString(): string
     {
-        $parts = explode('\\', get_called_class());
+        $parts = explode('\\', static::class);
 
         return sprintf('%s: %s', end($parts), $this->value);
     }
@@ -50,9 +49,7 @@ trait EnumMixin
 
     final public function getConstantName(): string
     {
-        $class = get_called_class();
-
-        return Arr::indexOf(self::$availableValues[$class], $this->value);
+        return Arr::indexOf(self::$availableValues[static::class], $this->value);
     }
 
     /**
@@ -61,8 +58,7 @@ trait EnumMixin
     final public function check($value): void
     {
         if (!self::isValid($value)) {
-            $class = get_called_class();
-            throw new InvalidValueException($value, $class);
+            throw new InvalidValueException($value, static::class);
         }
     }
 
@@ -85,7 +81,7 @@ trait EnumMixin
      */
     final public static function getInstances(): array
     {
-        $class = get_called_class();
+        $class = static::class;
         if (empty(self::$availableValues[$class])) {
             self::init($class);
         }

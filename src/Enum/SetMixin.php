@@ -19,7 +19,6 @@ use Dogma\StrictBehaviorMixin;
 use function count;
 use function end;
 use function explode;
-use function get_called_class;
 use function get_class;
 use function implode;
 use function is_scalar;
@@ -34,7 +33,7 @@ trait SetMixin
 
     public function __toString(): string
     {
-        $classNameParts = explode('\\', get_called_class());
+        $classNameParts = explode('\\', static::class);
 
         return sprintf('%s: %s', end($classNameParts), implode(',', $this->values));
     }
@@ -53,10 +52,9 @@ trait SetMixin
      */
     final public function getConstantNames(): array
     {
-        $class = get_called_class();
         $names = [];
         foreach ($this->getValues() as $value) {
-            $names[] = Arr::indexOf(self::$availableValues[$class], $value);
+            $names[] = Arr::indexOf(self::$availableValues[static::class], $value);
         }
 
         return $names;
@@ -68,8 +66,7 @@ trait SetMixin
     final public static function check($value): void
     {
         if (!self::isValid($value)) {
-            $class = get_called_class();
-            throw new InvalidValueException($value, $class);
+            throw new InvalidValueException($value, static::class);
         }
     }
 
@@ -92,7 +89,7 @@ trait SetMixin
      */
     final public static function getInstances(): array
     {
-        $class = get_called_class();
+        $class = static::class;
         if (empty(self::$availableValues[$class])) {
             self::init($class);
         }

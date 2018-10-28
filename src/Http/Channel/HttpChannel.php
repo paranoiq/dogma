@@ -234,9 +234,9 @@ class HttpChannel
      */
     public function canStartJob(): bool
     {
-        return !empty($this->queue)
-            && !$this->stopped
+        return !$this->stopped
             && !$this->isPaused()
+            && $this->queue !== []
             && count($this->running) < $this->threadLimit;
     }
 
@@ -426,6 +426,7 @@ class HttpChannel
         if (is_int($this->paused) && $this->paused <= time()) {
             $this->paused = false;
         }
+
         return $this->paused;
     }
 

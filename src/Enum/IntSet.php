@@ -12,7 +12,6 @@ namespace Dogma\Enum;
 use Dogma\Arr;
 use Dogma\InvalidValueException;
 use function array_search;
-use function get_called_class;
 use function in_array;
 
 abstract class IntSet
@@ -47,7 +46,7 @@ abstract class IntSet
      */
     final public static function get(int ...$values): self
     {
-        $class = get_called_class();
+        $class = static::class;
         if (empty(self::$availableValues[$class])) {
             self::init($class);
         }
@@ -84,7 +83,7 @@ abstract class IntSet
      */
     public static function validateValue(int &$value): bool
     {
-        $class = get_called_class();
+        $class = static::class;
         if (empty(self::$availableValues[$class])) {
             self::init($class);
         }
@@ -115,7 +114,7 @@ abstract class IntSet
      */
     final public static function getAllowedValues(): array
     {
-        $class = get_called_class();
+        $class = static::class;
         if (empty(self::$availableValues[$class])) {
             self::init($class);
         }

@@ -9,9 +9,6 @@
 
 namespace Dogma;
 
-use function get_called_class;
-use function get_class;
-
 trait StrictBehaviorMixin
 {
 
@@ -24,7 +21,7 @@ trait StrictBehaviorMixin
      */
     public function __call(string $name, $args): void
     {
-        throw new UndefinedMethodException(get_class($this), $name);
+        throw new UndefinedMethodException(static::class, $name);
     }
 
     /**
@@ -36,7 +33,7 @@ trait StrictBehaviorMixin
      */
     public static function __callStatic(string $name, $args): void
     {
-        throw new UndefinedMethodException(get_called_class(), $name);
+        throw new UndefinedMethodException(static::class, $name);
     }
 
     /**
@@ -47,7 +44,7 @@ trait StrictBehaviorMixin
      */
     public function &__get(string $name): void
     {
-        throw new UndefinedPropertyException(get_class($this), $name);
+        throw new UndefinedPropertyException(static::class, $name);
     }
 
     /**
@@ -59,7 +56,7 @@ trait StrictBehaviorMixin
      */
     public function __set(string $name, $value): void
     {
-        throw new UndefinedPropertyException(get_class($this), $name);
+        throw new UndefinedPropertyException(static::class, $name);
     }
 
     /**
@@ -70,7 +67,7 @@ trait StrictBehaviorMixin
      */
     public function __isset(string $name): void
     {
-        throw new UndefinedPropertyException(get_class($this), $name);
+        throw new UndefinedPropertyException(static::class, $name);
     }
 
     /**
@@ -81,7 +78,7 @@ trait StrictBehaviorMixin
      */
     public function __unset(string $name): void
     {
-        throw new UndefinedPropertyException(get_class($this), $name);
+        throw new UndefinedPropertyException(static::class, $name);
     }
 
 }

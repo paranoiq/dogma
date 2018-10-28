@@ -11,7 +11,6 @@ namespace Dogma\Enum;
 
 use Dogma\Arr;
 use Dogma\InvalidRegularExpressionException;
-use function get_called_class;
 use function preg_match;
 use function sprintf;
 
@@ -35,7 +34,7 @@ abstract class PartialStringEnum extends StringEnum
 
     public static function getValueRegexp(): string
     {
-        throw new \LogicException(sprintf('Validation rule cannot be created automatically for class %s. Reimplement the validateValue() or getValueRegexp() method.', get_called_class()));
+        throw new \LogicException(sprintf('Validation rule cannot be created automatically for class %s. Reimplement the validateValue() or getValueRegexp() method.', static::class));
     }
 
 }
