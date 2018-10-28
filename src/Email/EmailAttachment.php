@@ -24,7 +24,7 @@ class EmailAttachment
     /** @var string */
     private $data;
 
-    /** @var \Dogma\Io\File|string */
+    /** @var \Dogma\Io\File|null */
     private $file;
 
     /** @var string[] */
@@ -98,7 +98,7 @@ class EmailAttachment
      */
     public function getFile(): File
     {
-        if ($this->file) {
+        if ($this->file !== null) {
             return $this->file;
         } else {
             $this->file = File::createTemporaryFile();

@@ -28,7 +28,6 @@ class IteratorHelper
         }
 
         while ($iterable instanceof \IteratorAggregate) {
-            /** @var \Iterator $iterable */
             $iterable = $iterable->getIterator();
         }
 

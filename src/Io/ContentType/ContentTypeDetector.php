@@ -27,10 +27,10 @@ class ContentTypeDetector
     /** @var string|null */
     private $magicFile;
 
-    /** @var resource */
+    /** @var resource|null */
     private $typeHandler;
 
-    /** @var resource */
+    /** @var resource|null */
     private $encodingHandler;
 
     public function __construct(?string $magicFile = null)

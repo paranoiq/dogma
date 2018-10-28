@@ -37,7 +37,7 @@ class HttpChannelManager
     use NonSerializableMixin;
     use NonCloneableMixin;
 
-    /** @var resource|null (curl) */
+    /** @var resource|bool (curl) */
     private $handler;
 
     /** @var int maximum threads for all channels */
@@ -66,7 +66,7 @@ class HttpChannelManager
 
     public function __destruct()
     {
-        if ($this->handler) {
+        if ($this->handler !== false) {
             curl_multi_close($this->handler);
         }
     }

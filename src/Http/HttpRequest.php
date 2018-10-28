@@ -82,7 +82,7 @@ class HttpRequest
     use StrictBehaviorMixin;
     use NonSerializableMixin;
 
-    /** @var resource|null (curl) */
+    /** @var resource|bool (curl) */
     private $curl;
 
     /** @var callable|null */
@@ -118,7 +118,7 @@ class HttpRequest
     public function __construct(?string $url = null, ?string $method = null)
     {
         error_clear_last();
-        /** @var resource|false $curl */
+        /** @var resource|boolean $curl */
         $curl = curl_init();
         if ($curl === false) {
             throw new HttpRequestException(sprintf('Cannot initialize curl. Error: %s', error_get_last()['message']));
@@ -625,7 +625,7 @@ class HttpRequest
 
     final public function __clone()
     {
-        if ($this->curl) {
+        if ($this->curl !== null) {
             $this->curl = curl_copy_handle($this->curl);
         }
         // need to set the closure to $this again

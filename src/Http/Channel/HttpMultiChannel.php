@@ -49,7 +49,7 @@ class HttpMultiChannel
     private $errorHandler;
 
     /** @var callable|null */
-    private $dispatch;
+    private $dispatcher;
 
     /**
      * @param \Dogma\Http\Channel\HttpChannel[] $channels
@@ -99,15 +99,15 @@ class HttpMultiChannel
             }
         }
 
-        if ($this->errorHandler && isset($error)) {
+        if ($this->errorHandler !== null && isset($error)) {
             ($this->errorHandler)($this->finished[$jobName], $this);
             unset($this->finished[$jobName]);
 
-        } elseif ($this->redirectHandler && isset($redirect)) {
+        } elseif ($this->redirectHandler !== null && isset($redirect)) {
             ($this->redirectHandler)($this->finished[$jobName], $this);
             unset($this->finished[$jobName]);
 
-        } elseif ($this->responseHandler) {
+        } elseif ($this->responseHandler !== null) {
             ($this->responseHandler)($this->finished[$jobName], $this);
             unset($this->finished[$jobName]);
         }
@@ -153,7 +153,7 @@ class HttpMultiChannel
      */
     public function setDispatchFunction(callable $function): void
     {
-        $this->dispatch = $function;
+        $this->dispatcher = $function;
     }
 
     /**
@@ -171,8 +171,8 @@ class HttpMultiChannel
             throw new HttpChannelException('Illegal job name. Job name can be only a string or an integer.');
         }
 
-        if ($this->dispatch) {
-            $subJobs = ($this->dispatch)($data, $this->channels);
+        if ($this->dispatcher !== null) {
+            $subJobs = ($this->dispatcher)($data, $this->channels);
         } else {
             $subJobs = $this->dispatch($data);
         }

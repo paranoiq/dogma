@@ -424,7 +424,7 @@ class QueryEngine
 
     public static function date(string $string, string $format = 'Y-m-d'): string
     {
-        if (!$string) {
+        if ($string === '') {
             return '';
         }
 
@@ -443,7 +443,7 @@ class QueryEngine
 
     public static function datetime(string $string, string $format = 'Y-m-d H:i:s'): string
     {
-        if (!$string) {
+        if ($string === '') {
             return '';
         }
 

@@ -298,15 +298,15 @@ class HttpChannel
         $response = $request->createResponse($data, $multiInfo['result']);
         $this->finished[$name] = $response;
 
-        if ($this->errorHandler && $response->getStatus()->isError()) {
+        if ($this->errorHandler !== null && $response->getStatus()->isError()) {
             ($this->errorHandler)($response, $this, $name);
             unset($this->finished[$name]);
 
-        } elseif ($this->redirectHandler && $response->getStatus()->isRedirect()) {
+        } elseif ($this->redirectHandler !== null && $response->getStatus()->isRedirect()) {
             ($this->redirectHandler)($response, $this, $name);
             unset($this->finished[$name]);
 
-        } elseif ($this->responseHandler) {
+        } elseif ($this->responseHandler !== null) {
             ($this->responseHandler)($response, $this, $name);
             unset($this->finished[$name]);
         }

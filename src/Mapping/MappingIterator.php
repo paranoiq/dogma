@@ -43,15 +43,13 @@ class MappingIterator implements \Iterator
     public function __construct(iterable $source, Type $type, Mapper $mapper, bool $reverse = false)
     {
         if (is_array($source)) {
-            $source = new ArrayIterator($source);
+            $this->source = new ArrayIterator($source);
         } elseif ($source instanceof \IteratorAggregate) {
-            $source = IteratorHelper::iterableToIterator($source);
+            $this->source = IteratorHelper::iterableToIterator($source);
+        } elseif ($source instanceof \Iterator) {
+            $this->source = $source;
         }
 
-        /** @var \Iterator $source */
-        $source = $source;
-
-        $this->source = $source;
         $this->type = $type;
         $this->mapper = $mapper;
         $this->reverse = $reverse;

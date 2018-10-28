@@ -17,6 +17,7 @@ use Dogma\Math\IntCalc;
 use Dogma\Math\Interval\IntervalParser;
 use Dogma\Math\Interval\OpenClosedInterval;
 use Dogma\NotImplementedException;
+use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
@@ -230,7 +231,8 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
 
     public function isEmpty(): bool
     {
-        return $this->start > $this->end || ($this->start->equals($this->end) && $this->openStart && $this->openEnd);
+        return $this->start > $this->end
+            || ($this->start->equals($this->end) && $this->openStart && $this->openEnd);
     }
 
     /**
@@ -392,80 +394,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         Check::positive($amount);
 
         if ($reference === null) {
-            switch ($unit->getValue()) {
-                case DateTimeUnit::YEAR:
-                    $year = $this->start->getYear();
-                    if ($amount > 1) {
-                        $year = IntCalc::roundDownTo($year, $amount);
-                    }
-                    $reference = DateTime::createFromComponents($year, 1, 1, 0, 0, 0, 0, $this->start->getTimezone());
-                    break;
-                case DateTimeUnit::QUARTER:
-                    if ($amount > 1) {
-                        throw new NotImplementedException('Behavior of quarters for amount larger than 1 is not defined.');
-                    }
-                    $month = IntCalc::roundDownTo($this->start->getMonth() - 1, 3) + 1;
-                    $reference = DateTime::createFromComponents($this->start->getYear(), $month, 1, 0, 0, 0, 0, $this->start->getTimezone());
-                    break;
-                case DateTimeUnit::MONTH:
-                    $month = $this->start->getMonth();
-                    if ($amount > 1) {
-                        $month = IntCalc::roundDownTo($month - 1, $amount) + 1;
-                    }
-                    $reference = DateTime::createFromComponents($this->start->getYear(), $month, 1, 0, 0, 0, 0, $this->start->getTimezone());
-                    break;
-                case DateTimeUnit::WEEK:
-                    if ($amount > 1) {
-                        $year = (int) $this->start->format('o');
-                        $week = (int) $this->start->format('W');
-                        $week = IntCalc::roundDownTo($week - 1, $amount) + 1;
-                        $reference = Date::createFromIsoYearAndWeek($year, $week, 1)->toDateTime($this->start->getTimezone());
-                    } else {
-                        $dayOfWeek = $this->start->getDayOfWeek();
-                        $reference = $this->start->modify('-' . ($dayOfWeek - 1) . ' days')->setTime(0, 0, 0, 0);
-                    }
-                    break;
-                case DateTimeUnit::DAY:
-                    $day = $this->start->getDay();
-                    if ($amount > 1) {
-                        $day = IntCalc::roundDownTo($day - 1, $amount) + 1;
-                    }
-                    $reference = DateTime::createFromComponents($this->start->getYear(), $this->start->getMonth(), $day, 0, 0, 0, 0, $this->start->getTimezone());
-                    break;
-                case DateTimeUnit::HOUR:
-                    $hours = null;
-                    if ($amount > 1) {
-                        $hours = range(0, 23, $amount);
-                    }
-                    /** @var \Dogma\Time\DateTime $reference */
-                    $reference = TimeCalc::roundDownTo($this->start, $unit, $hours);
-                    break;
-                case DateTimeUnit::MINUTE:
-                case DateTimeUnit::SECOND:
-                    $units = null;
-                    if ($amount > 1) {
-                        $units = range(0, 59, $amount);
-                    }
-                    /** @var \Dogma\Time\DateTime $reference */
-                    $reference = TimeCalc::roundDownTo($this->start, $unit, $units);
-                    break;
-                case DateTimeUnit::MILISECOND:
-                    $miliseconds = null;
-                    if ($amount > 1) {
-                        $miliseconds = range(0, 999, $amount);
-                    }
-                    /** @var \Dogma\Time\DateTime $reference */
-                    $reference = TimeCalc::roundDownTo($this->start, $unit, $miliseconds);
-                    break;
-                case DateTimeUnit::MICROSECOND:
-                    $microseconds = null;
-                    if ($amount > 1) {
-                        $microseconds = range(0, 999999, $amount);
-                    }
-                    /** @var \Dogma\Time\DateTime $reference */
-                    $reference = TimeCalc::roundDownTo($this->start, $unit, $microseconds);
-                    break;
-            }
+            $reference = $this->createReference($unit, $amount);
         }
 
         $intervalStarts = [];
@@ -476,6 +405,91 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         }
 
         return $this->splitBy($intervalStarts, $splitMode);
+    }
+
+    private function createReference(DateTimeUnit $unit, int $amount): DateTime
+    {
+        switch ($unit->getValue()) {
+            case DateTimeUnit::YEAR:
+                $year = $this->start->getYear();
+                if ($amount > 1) {
+                    $year = IntCalc::roundDownTo($year, $amount);
+                }
+
+                return DateTime::createFromComponents($year, 1, 1, 0, 0, 0, 0, $this->start->getTimezone());
+            case DateTimeUnit::QUARTER:
+                if ($amount > 1) {
+                    throw new NotImplementedException('Behavior of quarters for amount larger than 1 is not defined.');
+                }
+                $month = IntCalc::roundDownTo($this->start->getMonth() - 1, 3) + 1;
+
+                return DateTime::createFromComponents($this->start->getYear(), $month, 1, 0, 0, 0, 0, $this->start->getTimezone());
+            case DateTimeUnit::MONTH:
+                $month = $this->start->getMonth();
+                if ($amount > 1) {
+                    $month = IntCalc::roundDownTo($month - 1, $amount) + 1;
+                }
+
+                return DateTime::createFromComponents($this->start->getYear(), $month, 1, 0, 0, 0, 0, $this->start->getTimezone());
+            case DateTimeUnit::WEEK:
+                if ($amount > 1) {
+                    $year = (int) $this->start->format('o');
+                    $week = (int) $this->start->format('W');
+                    $week = IntCalc::roundDownTo($week - 1, $amount) + 1;
+
+                    return Date::createFromIsoYearAndWeek($year, $week, 1)->toDateTime($this->start->getTimezone());
+                } else {
+                    $dayOfWeek = $this->start->getDayOfWeek();
+
+                    return $this->start->modify('-' . ($dayOfWeek - 1) . ' days')->setTime(0, 0, 0, 0);
+                }
+            case DateTimeUnit::DAY:
+                $day = $this->start->getDay();
+                if ($amount > 1) {
+                    $day = IntCalc::roundDownTo($day - 1, $amount) + 1;
+                }
+
+                return DateTime::createFromComponents($this->start->getYear(), $this->start->getMonth(), $day, 0, 0, 0, 0, $this->start->getTimezone());
+            case DateTimeUnit::HOUR:
+                $hours = null;
+                if ($amount > 1) {
+                    $hours = range(0, 23, $amount);
+                }
+                /** @var \Dogma\Time\DateTime $reference */
+                $reference = TimeCalc::roundDownTo($this->start, $unit, $hours);
+
+                return $reference;
+            case DateTimeUnit::MINUTE:
+            case DateTimeUnit::SECOND:
+                $units = null;
+                if ($amount > 1) {
+                    $units = range(0, 59, $amount);
+                }
+                /** @var \Dogma\Time\DateTime $reference */
+                $reference = TimeCalc::roundDownTo($this->start, $unit, $units);
+
+                return $reference;
+            case DateTimeUnit::MILISECOND:
+                $miliseconds = null;
+                if ($amount > 1) {
+                    $miliseconds = range(0, 999, $amount);
+                }
+                /** @var \Dogma\Time\DateTime $reference */
+                $reference = TimeCalc::roundDownTo($this->start, $unit, $miliseconds);
+
+                return $reference;
+            case DateTimeUnit::MICROSECOND:
+                $microseconds = null;
+                if ($amount > 1) {
+                    $microseconds = range(0, 999999, $amount);
+                }
+                /** @var \Dogma\Time\DateTime $reference */
+                $reference = TimeCalc::roundDownTo($this->start, $unit, $microseconds);
+
+                return $reference;
+            default:
+                throw new ShouldNotHappenException('Unreachable');
+        }
     }
 
     public function envelope(self ...$items): self

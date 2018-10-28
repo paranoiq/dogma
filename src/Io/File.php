@@ -112,7 +112,7 @@ class File implements Path
     public static function createTemporaryFile(): self
     {
         error_clear_last();
-        /** @var resource|false $handle */
+        /** @var resource|bool $handle */
         $handle = tmpfile();
 
         if ($handle === false) {
