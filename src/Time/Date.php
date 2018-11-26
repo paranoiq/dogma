@@ -128,9 +128,19 @@ class Date implements DateOrDateTime
         return new static($this->dayNumber + 1);
     }
 
+    public function addDays(int $days): self
+    {
+        return new static($this->dayNumber + $days);
+    }
+
     public function subtractDay(): self
     {
         return new static($this->dayNumber - 1);
+    }
+
+    public function subtractDays(int $days): self
+    {
+        return new static($this->dayNumber - $days);
     }
 
     // queries ---------------------------------------------------------------------------------------------------------
