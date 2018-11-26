@@ -50,4 +50,11 @@ interface IntervalSet /*<T>*/ extends Equalable
      */
     public function map(callable $mapper);
 
+    /**
+     * Map and filter
+     * @param callable $mapper
+     * @return self|mixed
+     */
+    public function collect(callable $mapper);
+
 }

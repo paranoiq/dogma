@@ -234,6 +234,16 @@ class TimeIntervalSet implements DateOrTimeIntervalSet
     {
         $results = [];
         foreach ($this->intervals as $interval) {
+            $results[] = $mapper($interval);
+        }
+
+        return new static($results);
+    }
+
+    public function collect(callable $mapper): self
+    {
+        $results = [];
+        foreach ($this->intervals as $interval) {
             $result = $mapper($interval);
             if ($result !== null) {
                 $results[] = $result;
