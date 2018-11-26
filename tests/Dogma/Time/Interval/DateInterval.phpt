@@ -186,7 +186,10 @@ Assert::equal($interval->difference($i(15, 30)), $s($i(10, 14), $i(21, 30)));
 Assert::equal($interval->difference($i(5, 15)), $s($i(5, 9), $i(16, 20)));
 Assert::equal($interval->difference($i(5, 15), $i(15, 30)), $s($i(5, 9), $i(21, 30)));
 Assert::equal($interval->difference($i(25, 30)), $s($interval, $i(25, 30)));
-Assert::equal($interval->difference($all), $s(new DateInterval(new Date(Date::MIN), $d(9)), new DateInterval($d(21), new Date(Date::MAX))));
+Assert::equal($interval->difference($all), $s(
+    new DateInterval(new Date(Date::MIN), $d(9)),
+    new DateInterval($d(21), new Date(Date::MAX))
+));
 Assert::equal($interval->difference($empty), $s($interval));
 
 // subtract()
@@ -200,7 +203,10 @@ Assert::equal($all->subtract($empty), $s($all));
 Assert::equal($empty->subtract($empty), $s());
 
 // invert()
-Assert::equal($interval->invert(), $s(new DateInterval(new Date(Date::MIN), $d(9)), new DateInterval($d(21), new Date(Date::MAX))));
+Assert::equal($interval->invert(), $s(
+    new DateInterval(new Date(Date::MIN), $d(9)),
+    new DateInterval($d(21), new Date(Date::MAX))
+));
 Assert::equal($empty->invert(), $s($all));
 Assert::equal($all->invert(), $s($empty));
 

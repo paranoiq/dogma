@@ -183,7 +183,10 @@ Assert::equal($interval->difference($i(15, 25)), $s($i(10, 15), $i(20, 25)));
 Assert::equal($interval->difference($i(5, 15)), $s($i(5, 10), $i(15, 20)));
 Assert::equal($interval->difference($i(5, 15), $i(15, 25)), $s($i(5, 10), $i(20, 25)));
 Assert::equal($interval->difference($i(22, 25)), $s($interval, $i(22, 25)));
-Assert::equal($interval->difference($all), $s(new TimeInterval(new Time(Time::MIN), $t(10), false, true), new TimeInterval($t(20), new Time(Time::MAX), false, false)));
+Assert::equal($interval->difference($all), $s(
+    new TimeInterval(new Time(Time::MIN), $t(10), false, true),
+    new TimeInterval($t(20), new Time(Time::MAX), false, false)
+));
 Assert::equal($interval->difference($empty), $s($interval));
 
 // subtract()
@@ -197,7 +200,10 @@ Assert::equal($all->subtract($empty), $s($all));
 Assert::equal($empty->subtract($empty), $s());
 
 // invert()
-Assert::equal($interval->invert(), $s(new TimeInterval(new Time(Time::MIN), $t(10), false, true), new TimeInterval($t(20), new Time(Time::MAX), false, false)));
+Assert::equal($interval->invert(), $s(
+    new TimeInterval(new Time(Time::MIN), $t(10), false, true),
+    new TimeInterval($t(20), new Time(Time::MAX), false, false)
+));
 Assert::equal($empty->invert(), $s($all));
 Assert::equal($all->invert(), $s($empty));
 
@@ -208,7 +214,11 @@ Assert::equal(TimeInterval::countOverlaps($interval, $i(5, 15)), [
     [$i(10, 15), 2],
     [$i(15, 20), 1],
 ]);
-Assert::equal(TimeInterval::countOverlaps($i(5, 15, false, false), $i(10, 20, false, false), $i(15, 25, false, false)), [
+Assert::equal(TimeInterval::countOverlaps(
+    $i(5, 15, false, false),
+    $i(10, 20, false, false),
+    $i(15, 25, false, false)
+), [
     [$i(5, 10, false, true), 1],
     [$i(10, 15, false, true), 2],
     [$i(15, 15, false, false), 3],
@@ -224,7 +234,11 @@ Assert::equal($s(...TimeInterval::explodeOverlaps($interval, $i(5, 15))), $s(
     $i(10, 15),
     $i(15, 20)
 ));
-Assert::equal($s(...TimeInterval::explodeOverlaps($i(5, 15, false, false), $i(10, 20, false, false), $i(15, 25, false, false))), $s(
+Assert::equal($s(...TimeInterval::explodeOverlaps(
+    $i(5, 15, false, false),
+    $i(10, 20, false, false),
+    $i(15, 25, false, false)
+)), $s(
     $i(5, 10, false, true),
     $i(10, 15, false, true),
     $i(10, 15, false, true),

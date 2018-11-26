@@ -50,12 +50,12 @@ class DateInterval implements DateOrTimeInterval
 
     public function __construct(Date $start, Date $end)
     {
+        if ($start->getDayNumber() > $end->getDayNumber()) {
+            throw new InvalidIntervalStartEndOrderException($start, $end);
+        }
+
         $this->start = $start;
         $this->end = $end;
-
-        if ($start->getDayNumber() > $end->getDayNumber()) {
-            throw new InvalidIntervalStartEndOrderException($this->start, $this->end);
-        }
     }
 
     public static function createFromString(string $string): self

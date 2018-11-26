@@ -60,14 +60,14 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
 
     public function __construct(DateTime $start, DateTime $end, bool $openStart = false, bool $openEnd = true)
     {
+        if ($start > $end) {
+            throw new InvalidIntervalStartEndOrderException($start, $end);
+        }
+
         $this->start = $start;
         $this->end = $end;
         $this->openStart = $openStart;
         $this->openEnd = $openEnd;
-
-        if ($this->start > $this->end) {
-            throw new InvalidIntervalStartEndOrderException($this->start, $this->end);
-        }
 
         if ($start->equals($end) && ($openStart || $openEnd)) {
             // default createEmpty()

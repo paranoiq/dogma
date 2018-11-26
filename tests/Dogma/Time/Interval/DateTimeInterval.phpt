@@ -223,7 +223,10 @@ Assert::equal($all->subtract($empty), $s($all));
 Assert::equal($empty->subtract($empty), $s());
 
 // invert()
-Assert::equal($interval->invert(), $s(new DateTimeInterval(new DateTime(DateTime::MIN), $d(10), false, true), new DateTimeInterval($d(20), new DateTime(DateTime::MAX))));
+Assert::equal($interval->invert(), $s(
+    new DateTimeInterval(new DateTime(DateTime::MIN), $d(10), false, true),
+    new DateTimeInterval($d(20), new DateTime(DateTime::MAX))
+));
 Assert::equal($empty->invert(), $s($all));
 Assert::equal($all->invert(), $s($empty));
 
@@ -234,7 +237,11 @@ Assert::equal(DateTimeInterval::countOverlaps($interval, $i(5, 15)), [
     [$i(10, 15), 2],
     [$i(15, 20), 1],
 ]);
-Assert::equal(DateTimeInterval::countOverlaps($i(5, 15, false, false), $i(10, 20, false, false), $i(15, 25, false, false)), [
+Assert::equal(DateTimeInterval::countOverlaps(
+    $i(5, 15, false, false),
+    $i(10, 20, false, false),
+    $i(15, 25, false, false)
+), [
     [$i(5, 10, false, true), 1],
     [$i(10, 15, false, true), 2],
     [$i(15, 15, false, false), 3],
@@ -250,7 +257,11 @@ Assert::equal($s(...DateTimeInterval::explodeOverlaps($interval, $i(5, 15))), $s
     $i(10, 15),
     $i(15, 20)
 ));
-Assert::equal($s(...DateTimeInterval::explodeOverlaps($i(5, 15, false, false), $i(10, 20, false, false), $i(15, 25, false, false))), $s(
+Assert::equal($s(...DateTimeInterval::explodeOverlaps(
+    $i(5, 15, false, false),
+    $i(10, 20, false, false),
+    $i(15, 25, false, false)
+)), $s(
     $i(5, 10, false, true),
     $i(10, 15, false, true),
     $i(10, 15, false, true),
