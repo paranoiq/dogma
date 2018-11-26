@@ -15,18 +15,6 @@ use Dogma\Equalable;
 interface Interval /*<T>*/ extends Equalable, Comparable
 {
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
-     * @return self
-     */
-    public static function empty(); //: self<T>
-
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
-     * @return self
-     */
-    public static function all(); //: self<T>
-
     // queries ---------------------------------------------------------------------------------------------------------
 
     public function format(): string;
