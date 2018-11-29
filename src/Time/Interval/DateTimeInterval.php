@@ -281,7 +281,11 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
 
     public function intersects(self $interval): bool
     {
-        return $this->containsValue($interval->start) || $this->containsValue($interval->end) || $interval->containsValue($this->start) || $interval->containsValue($this->end);
+        return $this->containsValue($interval->start)
+            || $this->containsValue($interval->end)
+            || $interval->containsValue($this->start)
+            || $interval->containsValue($this->end)
+            || ($this->start->equals($interval->start) && $this->end->equals($interval->end));
     }
 
     /**

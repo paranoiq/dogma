@@ -263,7 +263,7 @@ class NightInterval implements DateOrTimeInterval
 
     public function intersects(self $interval): bool
     {
-        return $this->containsValue($interval->start) || $this->containsValue($interval->end);
+        return $this->start->isBefore($interval->end) && $this->end->isAfter($interval->start);
     }
 
     /**

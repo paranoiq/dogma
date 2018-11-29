@@ -101,17 +101,20 @@ Assert::false($open->contains($r(1, 5, false, true)));
 Assert::true($open->contains($r(1, 5, true, true)));
 
 // intersects()
+Assert::true($closed->intersects($r(-5, 10)));
 Assert::true($closed->intersects($r(1, 5)));
 Assert::true($closed->intersects($r(0, 1)));
 Assert::true($closed->intersects($r(5, 6)));
 Assert::false($closed->intersects($r(-1, 0)));
 Assert::false($closed->intersects($empty));
 
+Assert::true($open->intersects($r(-5, 10)));
 Assert::true($open->intersects($r(1, 5)));
 Assert::true($open->intersects($r(0, 1)));
 Assert::true($open->intersects($r(5, 6)));
 Assert::false($open->intersects($r(0, 1, false, true)));
 Assert::false($open->intersects($r(5, 6, true)));
+Assert::true($open->intersects(FloatInterval::open(1, 5)));
 
 // touches()
 Assert::true($closed->touches($r(-10, 1)));

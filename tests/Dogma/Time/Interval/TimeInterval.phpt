@@ -125,6 +125,7 @@ Assert::false($interval->contains($i(1, 5)));
 Assert::false($interval->contains($empty));
 
 // intersects()
+Assert::true($interval->intersects($i(5, 22)));
 Assert::true($interval->intersects($i(10, 20)));
 Assert::true($interval->intersects($i(5, 15)));
 Assert::true($interval->intersects($i(15, 23)));

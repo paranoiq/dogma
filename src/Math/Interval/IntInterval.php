@@ -140,7 +140,7 @@ class IntInterval implements Interval
 
     public function intersects(self $interval): bool
     {
-        return ($interval->start >= $this->start && $interval->start <= $this->end) || ($interval->end >= $this->start && $interval->end <= $this->end);
+        return $this->start <= $interval->end && $this->end >= $interval->start;
     }
 
     public function touches(self $interval): bool

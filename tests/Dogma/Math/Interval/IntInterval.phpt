@@ -67,6 +67,7 @@ Assert::false($interval->contains($r(-1, 0)));
 Assert::false($interval->contains($empty));
 
 // intersects()
+Assert::true($interval->intersects($r(-5, 10)));
 Assert::true($interval->intersects($r(1, 5)));
 Assert::true($interval->intersects($r(0, 1)));
 Assert::true($interval->intersects($r(5, 6)));

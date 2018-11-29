@@ -243,7 +243,7 @@ class DateIntervalData implements Equalable, Comparable
      */
     public function intersects($interval): bool
     {
-        return $this->containsValue($interval->getStart()) || $this->containsValue($interval->getEnd());
+        return $this->start->isSameOrBefore($interval->getEnd()) && $this->end->isSameOrAfter($interval->getStart());
     }
 
     /**

@@ -201,7 +201,11 @@ class FloatInterval implements OpenClosedInterval
 
     public function intersects(self $interval): bool
     {
-        return $this->containsValue($interval->start) || $this->containsValue($interval->end) || $interval->containsValue($this->start) || $interval->containsValue($this->end);
+        return $this->containsValue($interval->start)
+            || $this->containsValue($interval->end)
+            || $interval->containsValue($this->start)
+            || $interval->containsValue($this->end)
+            || ($this->start === $interval->start && $this->end === $interval->end);
     }
 
     public function touches(self $interval, bool $exclusive = false): bool
