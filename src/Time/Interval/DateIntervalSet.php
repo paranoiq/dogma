@@ -68,9 +68,11 @@ class DateIntervalSet implements DateOrTimeIntervalSet
      */
     public function toDateArray(): array
     {
+        $intervals = $this->normalize()->getIntervals();
+
         return array_merge(...array_map(function (DateInterval $interval) {
             return $interval->toDateArray();
-        }, $this->intervals));
+        }, $intervals));
     }
 
     public function format(string $format = DateInterval::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
