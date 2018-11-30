@@ -239,7 +239,8 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
         $other instanceof self || Check::object($other, self::class);
 
         return $this->start->compare($other->start)
-            ?: $this->end->getMicroTime() <=> $other->end->getMicroTime(); // cannot use Time::compare() because of 00:00 vs 24:00
+            ?: $this->end->getMicroTime() <=> $other->end->getMicroTime() // cannot use Time::compare() because of 00:00 vs 24:00
+            ?: $this->openEnd <=> $other->openEnd;
     }
 
     public function containsValue(Time $value): bool

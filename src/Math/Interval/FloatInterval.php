@@ -183,7 +183,7 @@ class FloatInterval implements OpenClosedInterval
     {
         $other instanceof self || Check::object($other, self::class);
 
-        return $this->start <=> $other->start ?: $other->openStart <=> $this->openStart ?: $this->end <=> $other->end ?: $other->openStart <=> $this->openEnd;
+        return $this->start <=> $other->start ?: $other->openStart <=> $this->openStart ?: $this->end <=> $other->end ?: $other->openEnd <=> $this->openEnd;
     }
 
     public function containsValue(float $value): bool
