@@ -12,6 +12,7 @@ namespace Dogma\Time\IntervalData;
 use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Equalable;
+use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\Interval\DateInterval;
@@ -23,7 +24,7 @@ use function count;
 use function max;
 use function min;
 
-class DateIntervalDataSet implements Equalable
+class DateIntervalDataSet implements Equalable, Pokeable
 {
     use StrictBehaviorMixin;
 
@@ -52,6 +53,13 @@ class DateIntervalDataSet implements Equalable
         }, $set->getIntervals());
 
         return new static($intervals);
+    }
+
+    public function poke(): void
+    {
+        foreach ($this->intervals as $interval) {
+            $interval->poke();
+        }
     }
 
     /**

@@ -15,6 +15,7 @@ use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntervalParser;
 use Dogma\Math\Interval\OpenClosedInterval;
+use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateTimeUnit;
 use Dogma\Time\InvalidDateTimeUnitException;
@@ -39,7 +40,7 @@ use function usort;
  *
  * Span between start and end of interval cannot be more than 24 hours.
  */
-class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
+class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
 {
     use StrictBehaviorMixin;
 
@@ -140,6 +141,12 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval
     public static function all(): self
     {
         return new static(new Time(self::MIN), new Time(self::MAX), false, false);
+    }
+
+    public function poke(): void
+    {
+        $this->start->format();
+        $this->end->format();
     }
 
     // modifications ---------------------------------------------------------------------------------------------------

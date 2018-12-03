@@ -15,6 +15,7 @@ use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntInterval;
 use Dogma\Math\Interval\IntervalParser;
+use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTimeUnit;
@@ -33,7 +34,7 @@ use function usort;
 /**
  * Interval of dates. Based on IntInterval.
  */
-class DateInterval implements DateOrTimeInterval
+class DateInterval implements DateOrTimeInterval, Pokeable
 {
     use StrictBehaviorMixin;
 
@@ -102,6 +103,12 @@ class DateInterval implements DateOrTimeInterval
     public static function all(): self
     {
         return new static(new Date(self::MIN), new Date(self::MAX));
+    }
+
+    public function poke(): void
+    {
+        $this->start->format();
+        $this->end->format();
     }
 
     // modifications ---------------------------------------------------------------------------------------------------

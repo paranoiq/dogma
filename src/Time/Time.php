@@ -15,6 +15,7 @@ use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\NonIterableMixin;
 use Dogma\Order;
+use Dogma\Pokeable;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeFormatter;
@@ -35,7 +36,7 @@ use function round;
  * When compared 27:00:00 will be equal to 03:00:00 (modulo arithmetic).
  * When formatted 27:00:00 will result in "03:00:00".
  */
-class Time implements DateTimeOrTime
+class Time implements DateTimeOrTime, Pokeable
 {
     use StrictBehaviorMixin;
     use NonIterableMixin;
@@ -146,6 +147,11 @@ class Time implements DateTimeOrTime
         } else {
             return new static($this->microseconds + Microseconds::DAY);
         }
+    }
+
+    public function poke(): void
+    {
+        $this->getDateTime();
     }
 
     final public function __clone()

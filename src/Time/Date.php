@@ -15,6 +15,7 @@ use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\NonIterableMixin;
 use Dogma\Order;
+use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeFormatter;
 use Dogma\Time\Format\DateTimeValues;
@@ -29,7 +30,7 @@ use function sprintf;
 /**
  * Date class.
  */
-class Date implements DateOrDateTime
+class Date implements DateOrDateTime, Pokeable
 {
     use StrictBehaviorMixin;
     use NonIterableMixin;
@@ -109,6 +110,11 @@ class Date implements DateOrDateTime
         }
 
         return self::createFromDateTimeInterface($dateTime);
+    }
+
+    public function poke(): void
+    {
+        $this->getDateTime();
     }
 
     final public function __clone()

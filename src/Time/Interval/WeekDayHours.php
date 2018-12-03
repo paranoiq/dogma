@@ -9,10 +9,11 @@
 
 namespace Dogma\Time\Interval;
 
+use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DayOfWeek;
 
-class WeekDayHours
+class WeekDayHours implements Pokeable
 {
     use StrictBehaviorMixin;
 
@@ -31,6 +32,11 @@ class WeekDayHours
     public static function createFromOpeningTime(DayOfWeek $day, TimeInterval $opening, ?TimeInterval $break = null): self
     {
         return new static($day, $break !== null ? $opening->subtract($break) : new TimeIntervalSet([$opening]));
+    }
+
+    public function poke(): void
+    {
+        $this->hours->poke();
     }
 
     public function getDay(): DayOfWeek

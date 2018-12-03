@@ -13,6 +13,7 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Compare;
 use Dogma\Equalable;
+use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use function array_map;
@@ -23,7 +24,7 @@ use function implode;
 use function reset;
 use function sort;
 
-class DateIntervalSet implements DateOrTimeIntervalSet
+class DateIntervalSet implements DateOrTimeIntervalSet, Pokeable
 {
     use StrictBehaviorMixin;
 
@@ -61,6 +62,13 @@ class DateIntervalSet implements DateOrTimeIntervalSet
         }
 
         return new static($intervals);
+    }
+
+    public function poke(): void
+    {
+        foreach ($this->intervals as $interval) {
+            $interval->poke();
+        }
     }
 
     /**

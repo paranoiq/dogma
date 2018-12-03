@@ -9,12 +9,13 @@
 
 namespace Dogma\Time\Interval;
 
+use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DayOfWeek;
 use Dogma\Time\InvalidWeekDayHoursSetException;
 use function ksort;
 
-class WeekDayHoursSet
+class WeekDayHoursSet implements Pokeable
 {
     use StrictBehaviorMixin;
 
@@ -34,6 +35,13 @@ class WeekDayHoursSet
             $this->weekDayHours[$day] = $weekDayHours;
         }
         ksort($this->weekDayHours);
+    }
+
+    public function poke(): void
+    {
+        foreach ($this->weekDayHours as $hours) {
+            $hours->poke();
+        }
     }
 
     /**

@@ -13,6 +13,7 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Compare;
 use Dogma\Equalable;
+use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Time;
 use function array_merge;
@@ -21,7 +22,7 @@ use function count;
 use function implode;
 use function reset;
 
-class TimeIntervalSet implements DateOrTimeIntervalSet
+class TimeIntervalSet implements DateOrTimeIntervalSet, Pokeable
 {
     use StrictBehaviorMixin;
 
@@ -36,6 +37,13 @@ class TimeIntervalSet implements DateOrTimeIntervalSet
         $this->intervals = Arr::values(Arr::filter($intervals, function (TimeInterval $interval): bool {
             return !$interval->isEmpty();
         }));
+    }
+
+    public function poke(): void
+    {
+        foreach ($this->intervals as $interval) {
+            $interval->poke();
+        }
     }
 
     public function format(string $format = TimeInterval::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string

@@ -12,6 +12,7 @@ namespace Dogma\Time\IntervalData;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
+use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\Interval\DateInterval;
@@ -25,7 +26,7 @@ use function usort;
 /**
  * Interval of dates with data bound to it.
  */
-class DateIntervalData implements Equalable, Comparable
+class DateIntervalData implements Equalable, Comparable, Pokeable
 {
     use StrictBehaviorMixin;
 
@@ -83,6 +84,12 @@ class DateIntervalData implements Equalable, Comparable
     public static function all($data): self
     {
         return new static(new Date(self::MIN), new Date(self::MAX), $data);
+    }
+
+    public function poke(): void
+    {
+        $this->start->format();
+        $this->end->format();
     }
 
     // modifications ---------------------------------------------------------------------------------------------------

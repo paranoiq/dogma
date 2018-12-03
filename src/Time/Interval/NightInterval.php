@@ -15,6 +15,7 @@ use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntInterval;
 use Dogma\Math\Interval\IntervalParser;
+use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTimeUnit;
@@ -40,7 +41,7 @@ use function usort;
  * This class exist to emphasize the difference between "list of days" (DateInterval) and "time to stay" (NightInterval) types
  * while keeping the internals human friendly and thus preventing off-by-one errors.
  */
-class NightInterval implements DateOrTimeInterval
+class NightInterval implements DateOrTimeInterval, Pokeable
 {
     use StrictBehaviorMixin;
 
@@ -118,6 +119,11 @@ class NightInterval implements DateOrTimeInterval
     public static function all(): self
     {
         return new static(new Date(self::MIN), new Date(self::MAX));
+    }
+
+    public function poke(): void
+    {
+        $this->format();
     }
 
     // modifications ---------------------------------------------------------------------------------------------------
