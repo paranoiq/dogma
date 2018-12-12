@@ -56,13 +56,13 @@ class SimplePdo extends \PDO
 
     /**
      * @param string $dsn
-     * @param string|null $username
+     * @param string|null $userName
      * @param string|null $password
      * @param mixed[] $options
      */
-    public function __construct(string $dsn, ?string $username, ?string $password, array $options = [])
+    public function __construct(string $dsn, ?string $userName, ?string $password, array $options = [])
     {
-        parent::__construct($dsn, $username, $password, $options);
+        parent::__construct($dsn, $userName, $password, $options);
 
         $this->setAttribute(self::MYSQL_ATTR_USE_BUFFERED_QUERY, true); // does not work with EMULATE_PREPARES = OFF
         //$this->setAttribute(self::ATTR_EMULATE_PREPARES, false); // want this, but it seriously fucks up exec()
