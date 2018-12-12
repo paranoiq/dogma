@@ -69,7 +69,7 @@ foreach ($options as $option => $type) {
                 $sum += $ratio;
             }
 
-            $rand = rand(0, $sum * 1000000000) / 1000000000;
+            $rand = rand(0, intval($sum * 1000000000)) / 1000000000;
             $selected = 0;
             foreach ($rats as $status => $ratio) {
                 if ($rand < $ratio) {

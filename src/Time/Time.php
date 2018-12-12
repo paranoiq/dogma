@@ -240,7 +240,7 @@ class Time implements DateTimeOrTime, Pokeable
      */
     public function equals(Equalable $other): bool
     {
-        $other instanceof self || Check::object($other, self::class);
+        Check::instance($other, self::class);
 
         return ($this->microseconds % Microseconds::DAY) === ($other->microseconds % Microseconds::DAY);
     }
@@ -251,7 +251,7 @@ class Time implements DateTimeOrTime, Pokeable
      */
     public function compare(Comparable $other): int
     {
-        $other instanceof self || Check::object($other, self::class);
+        Check::instance($other, self::class);
 
         return ($this->microseconds % Microseconds::DAY) <=> ($other->microseconds % Microseconds::DAY);
     }

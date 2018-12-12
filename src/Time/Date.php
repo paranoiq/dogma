@@ -223,7 +223,7 @@ class Date implements DateOrDateTime, Pokeable
      */
     public function compare(Comparable $other): int
     {
-        $other instanceof self || Check::object($other, self::class);
+        Check::instance($other, self::class);
 
         return $this->dayNumber <=> $other->dayNumber;
     }
@@ -234,7 +234,7 @@ class Date implements DateOrDateTime, Pokeable
      */
     public function equals(Equalable $other): bool
     {
-        $other instanceof self || Check::object($other, self::class);
+        Check::instance($other, self::class);
 
         return $this->dayNumber === $other->dayNumber;
     }

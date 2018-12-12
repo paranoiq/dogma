@@ -37,7 +37,7 @@ class HttpChannelManager
     use NonSerializableMixin;
     use NonCloneableMixin;
 
-    /** @var resource (curl) */
+    /** @var resource|null (curl) */
     private $handler;
 
     /** @var int maximum threads for all channels */

@@ -213,7 +213,7 @@ class DateInterval implements DateOrTimeInterval, Pokeable
      */
     public function equals(Equalable $other): bool
     {
-        $other instanceof self || Check::object($other, self::class);
+        Check::instance($other, self::class);
 
         return $this->start->equals($other->start) && $this->end->equals($other->end);
     }
@@ -224,7 +224,7 @@ class DateInterval implements DateOrTimeInterval, Pokeable
      */
     public function compare(Comparable $other): int
     {
-        $other instanceof self || Check::object($other, self::class);
+        Check::instance($other, self::class);
 
         return $this->start->compare($other->start) ?: $this->end->compare($other->end);
     }

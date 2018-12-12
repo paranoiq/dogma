@@ -332,7 +332,7 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
      */
     public function compare(Comparable $other): int
     {
-        $other instanceof self || Check::object($other, self::class);
+        Check::instance($other, self::class);
 
         return $this > $other ? 1 : ($other > $this ? -1 : 0);
     }
@@ -343,7 +343,7 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
      */
     public function equals(Equalable $other): bool
     {
-        $other instanceof self || Check::object($other, self::class);
+        Check::instance($other, self::class);
 
         return $this->getMicroTimestamp() === $other->getMicroTimestamp();
     }

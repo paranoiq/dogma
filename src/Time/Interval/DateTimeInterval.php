@@ -239,7 +239,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
      */
     public function equals(Equalable $other): bool
     {
-        $other instanceof self || Check::object($other, self::class);
+        Check::instance($other, self::class);
 
         return ($this->start->equals($other->start)
             && $this->end->equals($other->end)
@@ -254,7 +254,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
      */
     public function compare(Comparable $other): int
     {
-        $other instanceof self || Check::object($other, self::class);
+        Check::instance($other, self::class);
 
         return $this->start->compare($other->start) ?: $this->end->compare($other->end);
     }
@@ -404,7 +404,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
                     if ($amount > 1) {
                         throw new NotImplementedException('Behavior of quarters for amount larger than 1 is not defined.');
                     }
-                    $month = (int) IntCalc::roundDownTo($this->start->getMonth() - 1, 3) + 1;
+                    $month = IntCalc::roundDownTo($this->start->getMonth() - 1, 3) + 1;
                     $reference = DateTime::createFromComponents($this->start->getYear(), $month, 1, 0, 0, 0, 0, $this->start->getTimezone());
                     break;
                 case DateTimeUnit::MONTH:
@@ -437,6 +437,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
                     if ($amount > 1) {
                         $hours = range(0, 23, $amount);
                     }
+                    /** @var \Dogma\Time\DateTime $reference */
                     $reference = TimeCalc::roundDownTo($this->start, $unit, $hours);
                     break;
                 case DateTimeUnit::MINUTE:
@@ -445,6 +446,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
                     if ($amount > 1) {
                         $units = range(0, 59, $amount);
                     }
+                    /** @var \Dogma\Time\DateTime $reference */
                     $reference = TimeCalc::roundDownTo($this->start, $unit, $units);
                     break;
                 case DateTimeUnit::MILISECOND:
@@ -452,6 +454,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
                     if ($amount > 1) {
                         $miliseconds = range(0, 999, $amount);
                     }
+                    /** @var \Dogma\Time\DateTime $reference */
                     $reference = TimeCalc::roundDownTo($this->start, $unit, $miliseconds);
                     break;
                 case DateTimeUnit::MICROSECOND:
@@ -459,6 +462,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
                     if ($amount > 1) {
                         $microseconds = range(0, 999999, $amount);
                     }
+                    /** @var \Dogma\Time\DateTime $reference */
                     $reference = TimeCalc::roundDownTo($this->start, $unit, $microseconds);
                     break;
             }

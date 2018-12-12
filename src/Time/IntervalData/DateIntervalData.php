@@ -141,7 +141,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
     }
 
     /**
-     * @return \Dogma\Time\Date[]|\Dogma\Equalable[] array of pairs (Date $date, Equalable $data)
+     * @return \Dogma\Time\Date[]|mixed[] array of pairs (Date $date, mixed $data)
      */
     public function toDateDataArray(): array
     {
@@ -188,7 +188,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
      */
     public function equals(Equalable $other): bool
     {
-        $other instanceof self || Check::object($other, self::class);
+        Check::instance($other, self::class);
 
         return $this->start->equals($other->start) && $this->end->equals($other->end) && $this->dataEquals($other->data);
     }
@@ -212,7 +212,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
      */
     public function compare(Comparable $other): int
     {
-        $other instanceof self || Check::object($other, self::class);
+        Check::instance($other, self::class);
 
         return $this->start->compare($other->start)
             ?: $this->end->compare($other->end);

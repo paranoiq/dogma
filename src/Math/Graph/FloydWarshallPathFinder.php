@@ -28,7 +28,7 @@ class FloydWarshallPathFinder
 {
     use StrictBehaviorMixin;
 
-    /** @var int[] */
+    /** @var int[][] */
     private $weights;
 
     /** @var int */
@@ -37,10 +37,10 @@ class FloydWarshallPathFinder
     /** @var string[] */
     private $nodeNames;
 
-    /** @var int[] */
+    /** @var int[][] */
     private $distances = [[]];
 
-    /** @var mixed[] */
+    /** @var mixed[][] */
     private $predecessors = [[]];
 
     /**

@@ -24,7 +24,7 @@ class EmailAttachment
     /** @var string */
     private $data;
 
-    /** @var \Dogma\Io\File */
+    /** @var \Dogma\Io\File|string */
     private $file;
 
     /** @var string[] */

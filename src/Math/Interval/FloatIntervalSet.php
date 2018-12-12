@@ -58,7 +58,7 @@ class FloatIntervalSet implements IntervalSet
      */
     public function equals(Equalable $other): bool
     {
-        $other instanceof self || Check::object($other, self::class);
+        Check::instance($other, self::class);
 
         $otherIntervals = $other->getIntervals();
         if (count($this->intervals) !== count($otherIntervals)) {

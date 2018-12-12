@@ -10,6 +10,7 @@
 namespace Dogma\Mapping;
 
 use Dogma\ArrayIterator;
+use Dogma\IteratorHelper;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 use function is_array;
@@ -44,8 +45,11 @@ class MappingIterator implements \Iterator
         if (is_array($source)) {
             $source = new ArrayIterator($source);
         } elseif ($source instanceof \IteratorAggregate) {
-            $source = $source->getIterator();
+            $source = IteratorHelper::iterableToIterator($source);
         }
+
+        /** @var \Iterator $source */
+        $source = $source;
 
         $this->source = $source;
         $this->type = $type;

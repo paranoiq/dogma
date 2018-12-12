@@ -557,7 +557,7 @@ class DateTimeSpanFormatter
                         }
                         break;
                     case self::MICROSECONDS_TOTAL:
-                        $microseconds = (int) $span->getMicrosecondsTotal();
+                        $microseconds = $span->getMicrosecondsTotal();
                         $group .= $microseconds;
                         if ($microseconds !== 0) {
                             $groupValid = true;

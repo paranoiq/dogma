@@ -39,16 +39,16 @@ class HttpMultiChannel
     /** @var \Dogma\Http\HttpResponse[][] (string $jobName => (string $channelName => \Dogma\Http\Response $response)) */
     private $finished = [];
 
-    /** @var callable */
+    /** @var callable|null */
     private $responseHandler;
 
-    /** @var callable */
+    /** @var callable|null */
     private $redirectHandler;
 
-    /** @var callable */
+    /** @var callable|null */
     private $errorHandler;
 
-    /** @var callable */
+    /** @var callable|null */
     private $dispatch;
 
     /**

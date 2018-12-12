@@ -82,7 +82,7 @@ class HttpRequest
     use StrictBehaviorMixin;
     use NonSerializableMixin;
 
-    /** @var resource (curl) */
+    /** @var resource|null (curl) */
     private $curl;
 
     /** @var callable|null */
@@ -118,6 +118,7 @@ class HttpRequest
     public function __construct(?string $url = null, ?string $method = null)
     {
         error_clear_last();
+        /** @var resource|false $curl */
         $curl = curl_init();
         if ($curl === false) {
             throw new HttpRequestException(sprintf('Cannot initialize curl. Error: %s', error_get_last()['message']));
@@ -315,7 +316,7 @@ class HttpRequest
     {
         $this->setOption(CURLOPT_FOLLOWLOCATION, $follow);
         if ($max !== null) {
-            $this->setOption(CURLOPT_MAXREDIRS, (int) $max);
+            $this->setOption(CURLOPT_MAXREDIRS, $max);
         }
     }
 

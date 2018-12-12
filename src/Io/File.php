@@ -112,6 +112,7 @@ class File implements Path
     public static function createTemporaryFile(): self
     {
         error_clear_last();
+        /** @var resource|false $handle */
         $handle = tmpfile();
 
         if ($handle === false) {
@@ -394,7 +395,7 @@ class File implements Path
         }
 
         error_clear_last();
-        $result = fseek($this->handle, $position, $from);
+        $result = fseek($this->handle, $position, $from->getValue());
 
         if ($result !== 0) {
             throw new FileException('Cannot set file pointer position.', error_get_last());

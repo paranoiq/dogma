@@ -39,6 +39,7 @@ use function sprintf;
 use function str_replace;
 use function strlen;
 use function strpos;
+use function strval;
 use function substr;
 use function trim;
 
@@ -265,7 +266,7 @@ final class Check
         $converted = (int) $value;
         $copy = $converted;
         settype($copy, $actualType);
-        if ($copy !== $value && (!is_string($value) || rtrim(rtrim($value, '0'), '.') !== $copy)) {
+        if ($copy !== $value && (!is_string($value) || rtrim(rtrim($value, '0'), '.') !== strval($copy))) {
             throw new InvalidTypeException(Type::INT, $value);
         }
         if ($min !== null || $max !== null) {
@@ -593,7 +594,7 @@ final class Check
         }
         $copy = $converted;
         settype($copy, $actualType);
-        if ($copy !== $value && (!is_string($value) || rtrim(rtrim($value, '0'), '.') !== $copy)) {
+        if ($copy !== $value && (!is_string($value) || rtrim(rtrim($value, '0'), '.') !== strval($copy))) {
             throw new InvalidTypeException(Type::FLOAT, $value);
         }
         if ($min !== null || $max !== null) {
@@ -784,6 +785,18 @@ final class Check
         if (!is_object($value)) {
             throw new InvalidTypeException(Type::OBJECT, $value);
         }
+        if ($className !== null && !is_a($value, $className)) {
+            throw new InvalidTypeException($className, $value);
+        }
+    }
+
+    /**
+     * @param mixed $value
+     * @param string|null $className
+     * @throws \Dogma\InvalidTypeException
+     */
+    public static function instance($value, string $className): void
+    {
         if ($className !== null && !is_a($value, $className)) {
             throw new InvalidTypeException($className, $value);
         }

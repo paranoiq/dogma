@@ -179,7 +179,7 @@ class DateTimeSpan implements DateOrTimeSpan
         $dateInterval = new \DateInterval('P0Y');
 
         if ($that->isNegative()) {
-            $dateInterval->invert = true;
+            $dateInterval->invert = 1;
             $that = $that->invert();
         }
         $dateInterval->y = $that->years;
@@ -201,7 +201,7 @@ class DateTimeSpan implements DateOrTimeSpan
     {
         $positive = new \DateInterval('P0Y');
         $negative = new \DateInterval('P0Y');
-        $negative->invert = true;
+        $negative->invert = 1;
 
         if ($this->years >= 0) {
             $positive->y = $this->years;

@@ -69,13 +69,13 @@ class HttpChannel
     /** @var mixed[] (int|string $name => $context) */
     private $contexts = [];
 
-    /** @var callable */
+    /** @var callable|null */
     private $responseHandler;
 
-    /** @var callable */
+    /** @var callable|null */
     private $redirectHandler;
 
-    /** @var callable */
+    /** @var callable|null */
     private $errorHandler;
 
     public function __construct(HttpRequest $requestPrototype, ?HttpChannelManager $manager = null)

@@ -72,7 +72,7 @@ class TimeIntervalSet implements DateOrTimeIntervalSet, Pokeable
      */
     public function equals(Equalable $other): bool
     {
-        $other instanceof self || Check::object($other, self::class);
+        Check::instance($other, self::class);
 
         $otherIntervals = $other->getIntervals();
         if (count($this->intervals) !== count($otherIntervals)) {

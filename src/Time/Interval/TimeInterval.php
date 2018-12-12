@@ -229,7 +229,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
      */
     public function equals(Equalable $other): bool
     {
-        $other instanceof self || Check::object($other, self::class);
+        Check::instance($other, self::class);
 
         return $this->start->equals($other->start)
             && $this->end->getMicroTime() === $other->end->getMicroTime() // cannot use Time::equals() because of 00:00 vs 24:00
@@ -243,7 +243,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
      */
     public function compare(Comparable $other): int
     {
-        $other instanceof self || Check::object($other, self::class);
+        Check::instance($other, self::class);
 
         return $this->start->compare($other->start)
             ?: $this->end->getMicroTime() <=> $other->end->getMicroTime() // cannot use Time::compare() because of 00:00 vs 24:00

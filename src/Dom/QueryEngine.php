@@ -13,6 +13,7 @@ use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
+use Dogma\Time\InvalidDateTimeException;
 use function count;
 use function in_array;
 use function is_array;
@@ -209,8 +210,10 @@ class QueryEngine
     {
         $path = $this->translateQuery($query, (bool) $context);
         if ($context) {
+            /** @var \DOMNodeList|false $list */
             $list = $this->xpath->query($path, $context);
         } else {
+            /** @var \DOMNodeList|false $list */
             $list = $this->xpath->query($path);
         }
         if ($list === false) {
@@ -230,8 +233,10 @@ class QueryEngine
     {
         $path = $this->translateQuery($query, (bool) $context);
         if ($context) {
+            /** @var \DOMNodeList|false $list */
             $list = $this->xpath->query($path, $context);
         } else {
+            /** @var \DOMNodeList|false $list */
             $list = $this->xpath->query($path);
         }
         if ($list === false) {
@@ -420,10 +425,13 @@ class QueryEngine
             return '';
         }
 
-        $date = DateTime::createFromFormat($format, $string);
-        if (!$date) {
+        try {
+            $date = DateTime::createFromFormat($format, $string);
+        } catch (InvalidDateTimeException $e) {
             throw new QueryEngineException(
-                sprintf('Cannot create DateTime object from \'%s\' using format \'%s\'.', $string, $format)
+                sprintf('Cannot create DateTime object from \'%s\' using format \'%s\'.', $string, $format),
+                0,
+                $e
             );
         }
 
@@ -436,10 +444,13 @@ class QueryEngine
             return '';
         }
 
-        $date = DateTime::createFromFormat($format, $string);
-        if (!$date) {
+        try {
+            $date = DateTime::createFromFormat($format, $string);
+        } catch (InvalidDateTimeException $e) {
             throw new QueryEngineException(
-                sprintf('Cannot create DateTime object from \'%s\' using format \'%s\'.', $string, $format)
+                sprintf('Cannot create DateTime object from \'%s\' using format \'%s\'.', $string, $format),
+                0,
+                $e
             );
         }
 
