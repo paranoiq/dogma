@@ -20,7 +20,7 @@ Assert::same(IntCalc::roundTo(20, 3), 21);
 Assert::same(IntCalc::roundTo(22, 3), 21);
 Assert::same(IntCalc::roundTo(-20, 3), -21);
 Assert::same(IntCalc::roundTo(-22, 3), -21);
-Assert::same(intCalc::roundTo(20, -3), 21);
+Assert::same(IntCalc::roundTo(20, -3), 21);
 Assert::same(IntCalc::roundTo(22, -3), 21);
 
 // roundUpTo()

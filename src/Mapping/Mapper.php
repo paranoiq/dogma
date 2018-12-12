@@ -47,7 +47,7 @@ class Mapper
     /**
      * @param \Dogma\Type $type
      * @param iterable|mixed[] $data
-     * @return \Traversable
+     * @return \Traversable|mixed[]
      */
     public function mapMany(Type $type, iterable $data): \Traversable
     {

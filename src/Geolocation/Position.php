@@ -59,9 +59,7 @@ class Position implements NonIterable, Exportable
         Check::range($latitude, -Constant::HALF_PI, Constant::HALF_PI);
         Check::range($longitude, -Constant::PI, Constant::PI);
 
-        $position = new static(rad2deg($latitude), rad2deg($longitude), $planetRadius);
-
-        return $position;
+        return new static(rad2deg($latitude), rad2deg($longitude), $planetRadius);
     }
 
     public static function fromNormalVector(float $x, float $y, float $z, float $planetRadius = self::PLANET_EARTH_RADIUS): self

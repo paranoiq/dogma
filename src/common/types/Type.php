@@ -159,7 +159,7 @@ class Type
                     $locale = $arg;
                     break;
                 case $arg === null:
-                    continue;
+                    continue 2;
                 default:
                     throw new InvalidArgumentException(sprintf(
                         'Unexpected or duplicate argument %s at position %d.',

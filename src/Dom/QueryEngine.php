@@ -266,22 +266,18 @@ class QueryEngine
 
         if (substr($query, 0, 5) === 'date(') {
             return $value ? new Date($value) : null;
-
         } elseif (substr($query, 0, 9) === 'datetime(') {
             return $value ? new DateTime($value) : null;
-
         } elseif (substr($query, 0, 4) === 'int(') {
             if (!is_numeric($value)) {
                 return null;
             }
             return (int) $value;
-
         } elseif (substr($query, 0, 5) === 'bool(' && isset($value)) {
             if ($value === '') {
                 return null;
             }
             return (bool) $value;
-
         } else {
             return $value;
         }
@@ -327,19 +323,14 @@ class QueryEngine
 
         if (is_scalar($node) || $node instanceof \DateTime) {
             return $node;
-
         } elseif (!$node) {
             return null;
-
         } elseif ($node instanceof \DOMAttr) {
             return $node->value;
-
         } elseif ($node instanceof \DOMText) {
             return $node->wholeText;
-
         } elseif ($node instanceof \DOMCdataSection || $node instanceof \DOMComment || $node instanceof \DOMProcessingInstruction) {
             return $node->data;
-
         } else {
             return $node->textContent;
         }
@@ -375,10 +366,8 @@ class QueryEngine
             function ($match) use ($nativeFunctions, $userFunctions) {
                 if (in_array($match[1], $nativeFunctions)) {
                     return $match[1] . '(';
-
                 } elseif (in_array($match[1], $userFunctions)) {
                     return sprintf('php:functionString(\'%s\', ', $match[1]);
-
                 } else {
                     throw new \DOMException(sprintf('XPath compilation failure: Functions \'%s\' is not enabled.', $match[1]));
                 }

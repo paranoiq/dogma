@@ -83,9 +83,7 @@ class Element
      */
     public function &__get(string $name)
     {
-        $val = $this->element->$name;
-
-        return $val;
+        return $this->element->$name;
     }
 
     /**

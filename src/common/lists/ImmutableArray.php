@@ -1259,7 +1259,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
      * @param iterable|mixed[] ...$args
      * @return self
      */
-    public function diffPairsWith(?callable $function = null, ?callable $keysFunction = null, iterable ...$args): self
+    public function diffPairsWith(?callable $function, ?callable $keysFunction, iterable ...$args): self
     {
         $self = $this->toArray();
         $args = array_map([self::class, 'convertToArray'], $args);
@@ -1366,7 +1366,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
      * @param iterable|mixed[] ...$args
      * @return self
      */
-    public function intersectPairsWith(?callable $function = null, ?callable $keysFunction = null, iterable ...$args): self
+    public function intersectPairsWith(?callable $function, ?callable $keysFunction, iterable ...$args): self
     {
         $self = $this->toArray();
         $args = array_map([self::class, 'convertToArray'], $args);

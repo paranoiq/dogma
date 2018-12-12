@@ -33,7 +33,7 @@ class Combinatorics
             $factors = self::sumFactorize($number - $factor);
             foreach ($factors as $variant) {
                 $variants[] = array_merge([$factor], $variant);
-            };
+            }
         }
         return $variants;
     }
@@ -51,9 +51,9 @@ class Combinatorics
             foreach ($lengths as $length) {
                 $substrings[] = substr($string, $offset, $length);
                 $offset = $offset + $length;
-            };
+            }
             $variants[] = $substrings;
-        };
+        }
         return $variants;
     }
 

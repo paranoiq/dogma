@@ -1427,7 +1427,7 @@ class Arr
      * @param mixed[] ...$args
      * @return mixed[]
      */
-    public static function diffPairsWith(array $array, ?callable $function = null, ?callable $keysFunction = null, array ...$args): array
+    public static function diffPairsWith(array $array, ?callable $function, ?callable $keysFunction, array ...$args): array
     {
         if ($function && $keysFunction) {
             $args[] = $function;
@@ -1505,7 +1505,7 @@ class Arr
      * @param mixed[] ...$args
      * @return mixed[]
      */
-    public static function intersectPairsWith(array $array, ?callable $function = null, ?callable $keysFunction = null, array ...$args): array
+    public static function intersectPairsWith(array $array, ?callable $function, ?callable $keysFunction, array ...$args): array
     {
         if ($function && $keysFunction) {
             $args[] = $function;

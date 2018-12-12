@@ -40,14 +40,11 @@ class Document extends \DOMDocument
         if (substr($document, 0, 1) === '@') {
             /// from file
             throw new NotImplementedException('File ');
-
         } else {
             if (preg_match('/<!DOCTYPE\\s+HTML/i', $document)) {
                 $this->loadHtml($document);
-
             } elseif (preg_match('/\\s*<\\?xml/i', $document)) {
                 $this->loadXml($document);
-
             } else {
                 $this->loadHtml($document);
             }

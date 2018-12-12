@@ -254,9 +254,8 @@ class EmailMessage
         }
 
         $name = Inflector::dasherize(Inflector::underscore($name));
-        $val = $this->headers[$name] ?? $this->headers['x-' . $name] ?? null;
 
-        return $val;
+        return $this->headers[$name] ?? $this->headers['x-' . $name] ?? null;
     }
 
     // internals -------------------------------------------------------------------------------------------------------
@@ -265,13 +264,10 @@ class EmailMessage
     {
         if (strtolower($encoding) === 'base64') {
             return base64_decode($data);
-
         } elseif (strtolower($encoding) === 'quoted-printable') {
             return quoted_printable_decode($data);
-
         } elseif (!$encoding) {
             return $data;
-
         } else {
             throw new EmailParsingException('Unknown transfer encoding.');
         }
@@ -291,10 +287,8 @@ class EmailMessage
 
             if (in_array($name, ['date', 'resent-date', 'delivery-date', 'expires'], true)) {
                 $value = new DateTime($value);
-
             } elseif (in_array($name, ['from', 'to', 'cc', 'bcc', 'reply-to', 'return-path', 'sender'], true)) {
                 $value = $this->parseAddressHeader($value);
-
             } elseif (strpos($value, '=?') !== false) {
                 $value = $this->decodeHeader($value);
             }
@@ -330,10 +324,8 @@ class EmailMessage
 
             if (strtolower($encoding) === 'b') {
                 $message = base64_decode($message);
-
             } elseif (strtolower($encoding) === 'q') {
                 $message = quoted_printable_decode($message);
-
             } else {
                 throw new EmailParsingException(sprintf('Unknown header encoding \'%s\'.', $encoding));
             }
@@ -402,7 +394,6 @@ class EmailMessage
 
         if ($this->data) {
             return $this->decode($this->getPartBody($part), $encoding);
-
         } else {
             $start = (int) $part['starting-pos-body'];
             $length = (int) $part['ending-pos-body'] - $start;
@@ -410,7 +401,6 @@ class EmailMessage
 
             if ($length < self::$bigFileThreshold) {
                 return $this->decode($this->file->read($length), $encoding);
-
             } else {
                 $temporaryFile = File::createTemporaryFile();
 

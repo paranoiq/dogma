@@ -54,7 +54,7 @@ class HttpResponse
      */
     public function __construct(
         HttpResponseStatus $status,
-        ?string $body = null,
+        ?string $body,
         array $rawHeaders,
         array $info,
         $context,
