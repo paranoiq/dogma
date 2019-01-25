@@ -58,7 +58,7 @@ class NightIntervalSet implements DateOrTimeIntervalSet, Pokeable
         $intervals = [];
         $start = $previous = reset($dates);
         foreach ($dates as $date) {
-            if ($date->getDayNumber() > $previous->getDayNumber() + 1) {
+            if ($date->getJulianDay() > $previous->getJulianDay() + 1) {
                 $intervals[] = new NightInterval($start, $previous->addDay());
                 $start = $date;
             }

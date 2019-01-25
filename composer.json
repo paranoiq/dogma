@@ -14,6 +14,7 @@
         "php-64bit": "^7.1.0",
         "ext-dom": "*",
         "ext-intl": "*",
+        "ext-calendar":"*",
         "nette/http": "~2.4",
         "nette/reflection": "~2.4",
         "nette/utils": "~2.4",

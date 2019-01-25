@@ -55,10 +55,10 @@ Assert::equal($date->toDateTime(), new DateTime('2000-01-02 00:00:00'));
 // toDateTimeInterval()
 Assert::equal($date->toDateTimeInterval(), new DateTimeInterval(new DateTime('2000-01-02 00:00:00'), new DateTime('2000-01-03 00:00:00'), false, true));
 
-// getDayNumber()
-Assert::same($date->getDayNumber(), 730120);
-Assert::same((new Date(Date::MIN))->getDayNumber(), Date::MIN_DAY_NUMBER);
-Assert::same((new Date(Date::MAX))->getDayNumber(), Date::MAX_DAY_NUMBER);
+// getJulianDay()
+Assert::same($date->getJulianDay(), 2451546);
+Assert::same((new Date(Date::MIN))->getJulianDay(), Date::MIN_DAY_NUMBER);
+Assert::same((new Date(Date::MAX))->getJulianDay(), Date::MAX_DAY_NUMBER);
 
 // getStart()
 Assert::equal($date->getStart($utcTimeZone), new DateTime('2000-01-02 00:00:00.000000', $utcTimeZone));

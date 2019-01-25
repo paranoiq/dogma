@@ -51,7 +51,7 @@ class DateIntervalSet implements DateOrTimeIntervalSet, Pokeable
         $intervals = [];
         $start = $previous = reset($dates);
         foreach ($dates as $date) {
-            if ($date->getDayNumber() > $previous->getDayNumber() + 1) {
+            if ($date->getJulianDay() > $previous->getJulianDay() + 1) {
                 $intervals[] = new DateInterval($start, $previous);
                 $start = $date;
             }

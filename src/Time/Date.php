@@ -24,7 +24,10 @@ use Dogma\Time\Provider\TimeProvider;
 use Dogma\Time\Span\DateSpan;
 use Dogma\Type;
 use function explode;
+use function gregoriantojd;
+use function intval;
 use function is_int;
+use function jdtogregorian;
 use function sprintf;
 
 /**
@@ -38,31 +41,31 @@ class Date implements DateOrDateTime, Pokeable
     public const MIN = '0001-01-01';
     public const MAX = '9999-12-31';
 
-    public const MIN_DAY_NUMBER = 0;
-    public const MAX_DAY_NUMBER = 3652058;
+    public const MIN_DAY_NUMBER = 1721426;
+    public const MAX_DAY_NUMBER = 5373484;
 
     public const DEFAULT_FORMAT = 'Y-m-d';
 
     /** @var int */
-    private $dayNumber;
+    private $julianDay;
 
     /** @var \DateTimeImmutable|null */
     private $dateTime;
 
     /**
-     * @param int|string $dayNumberOrDateString
+     * @param int|string $julianDayOrDateString
      */
-    public function __construct($dayNumberOrDateString = 'today')
+    public function __construct($julianDayOrDateString = 'today')
     {
-        if (is_int($dayNumberOrDateString)) {
-            Check::range($dayNumberOrDateString, self::MIN_DAY_NUMBER, self::MAX_DAY_NUMBER);
-            $this->dayNumber = $dayNumberOrDateString;
+        if (is_int($julianDayOrDateString)) {
+            Check::range($julianDayOrDateString, self::MIN_DAY_NUMBER, self::MAX_DAY_NUMBER);
+            $this->julianDay = $julianDayOrDateString;
         } else {
             try {
-                $this->dateTime = (new \DateTimeImmutable($dayNumberOrDateString))->setTime(0, 0, 0);
-                $this->dayNumber = self::calculateDayNumber($this->dateTime);
+                $this->dateTime = (new \DateTimeImmutable($julianDayOrDateString))->setTime(0, 0, 0);
+                $this->julianDay = self::calculateDayNumber($this->dateTime);
             } catch (\Throwable $e) {
-                throw new InvalidDateTimeException($dayNumberOrDateString, $e);
+                throw new InvalidDateTimeException($julianDayOrDateString, $e);
             }
         }
     }
@@ -97,9 +100,9 @@ class Date implements DateOrDateTime, Pokeable
         return static::createFromDateTimeInterface($dateTime);
     }
 
-    public static function createFromDayNumber(int $dayNumber): self
+    public static function createFromJulianDay(int $julianDay): self
     {
-        return new static($dayNumber);
+        return new static($julianDay);
     }
 
     public static function createFromFormat(string $format, string $timeString): self
@@ -131,22 +134,22 @@ class Date implements DateOrDateTime, Pokeable
 
     public function addDay(): self
     {
-        return new static($this->dayNumber + 1);
+        return new static($this->julianDay + 1);
     }
 
     public function addDays(int $days): self
     {
-        return new static($this->dayNumber + $days);
+        return new static($this->julianDay + $days);
     }
 
     public function subtractDay(): self
     {
-        return new static($this->dayNumber - 1);
+        return new static($this->julianDay - 1);
     }
 
     public function subtractDays(int $days): self
     {
-        return new static($this->dayNumber - $days);
+        return new static($this->julianDay - $days);
     }
 
     // queries ---------------------------------------------------------------------------------------------------------
@@ -170,22 +173,21 @@ class Date implements DateOrDateTime, Pokeable
         return new DateTimeInterval($this->getStart($timeZone), $this->addDay()->getStart(), false, true);
     }
 
-    public function getDayNumber(): int
+    public function getJulianDay(): int
     {
-        return $this->dayNumber;
+        return $this->julianDay;
     }
 
     /**
-     * Returns number of day since 0001-01-01 (day 0)
+     * Returns Julian day number (count of days since January 1st, 4713 B.C.)
      * @param \DateTimeInterface $dateTime
      * @return int
      */
     public static function calculateDayNumber(\DateTimeInterface $dateTime): int
     {
-        $start = new \DateTimeImmutable(self::MIN . ' 00:00:00');
-        $diff = $dateTime->diff($start, true);
+        [$y, $m, $d] = explode('-', $dateTime->format(self::DEFAULT_FORMAT));
 
-        return $diff->days;
+        return gregoriantojd(intval($m), intval($d), intval($y));
     }
 
     /**
@@ -225,7 +227,7 @@ class Date implements DateOrDateTime, Pokeable
     {
         Check::instance($other, self::class);
 
-        return $this->dayNumber <=> $other->dayNumber;
+        return $this->julianDay <=> $other->julianDay;
     }
 
     /**
@@ -236,46 +238,46 @@ class Date implements DateOrDateTime, Pokeable
     {
         Check::instance($other, self::class);
 
-        return $this->dayNumber === $other->dayNumber;
+        return $this->julianDay === $other->julianDay;
     }
 
     public function isBefore(Date $date): bool
     {
-        return $this->dayNumber < $date->dayNumber;
+        return $this->julianDay < $date->julianDay;
     }
 
     public function isAfter(Date $date): bool
     {
-        return $this->dayNumber > $date->dayNumber;
+        return $this->julianDay > $date->julianDay;
     }
 
     public function isSameOrBefore(Date $date): bool
     {
-        return $this->dayNumber <= $date->dayNumber;
+        return $this->julianDay <= $date->julianDay;
     }
 
     public function isSameOrAfter(Date $date): bool
     {
-        return $this->dayNumber >= $date->dayNumber;
+        return $this->julianDay >= $date->julianDay;
     }
 
     public function isBetween(Date $sinceDate, Date $untilDate): bool
     {
-        return $this->dayNumber >= $sinceDate->dayNumber && $this->dayNumber <= $untilDate->dayNumber;
+        return $this->julianDay >= $sinceDate->julianDay && $this->julianDay <= $untilDate->julianDay;
     }
 
     public function isFuture(?TimeProvider $timeProvider = null): bool
     {
         $today = $timeProvider !== null ? $timeProvider->getDate() : new Date();
 
-        return $this->dayNumber > $today->dayNumber;
+        return $this->julianDay > $today->julianDay;
     }
 
     public function isPast(?TimeProvider $timeProvider = null): bool
     {
         $today = $timeProvider !== null ? $timeProvider->getDate() : new Date();
 
-        return $this->dayNumber < $today->dayNumber;
+        return $this->julianDay < $today->julianDay;
     }
 
     /**
@@ -290,12 +292,12 @@ class Date implements DateOrDateTime, Pokeable
             $day = DayOfWeek::get($day);
         }
 
-        return (($this->dayNumber % 7) + 1) === $day->getValue();
+        return (($this->julianDay % 7) + 1) === $day->getValue();
     }
 
     public function isWeekend(): bool
     {
-        return (($this->dayNumber % 7) + 1) > DayOfWeek::FRIDAY;
+        return (($this->julianDay % 7) + 1) > DayOfWeek::FRIDAY;
     }
 
     /**
@@ -318,7 +320,9 @@ class Date implements DateOrDateTime, Pokeable
     private function getDateTime(): \DateTimeImmutable
     {
         if ($this->dateTime === null) {
-            $this->dateTime = new \DateTimeImmutable(self::MIN . ' +' . $this->dayNumber . ' days');
+            [$m, $d, $y] = explode('/', jdtogregorian($this->julianDay));
+
+            $this->dateTime = new \DateTimeImmutable($y . '-' . $m . '-' . $d . ' 00:00:00');
         }
 
         return $this->dateTime;
@@ -346,12 +350,12 @@ class Date implements DateOrDateTime, Pokeable
 
     public function getDayOfWeek(): int
     {
-        return ($this->dayNumber % 7) + 1;
+        return ($this->julianDay % 7) + 1;
     }
 
     public function getDayOfWeekEnum(): DayOfWeek
     {
-        return DayOfWeek::get(($this->dayNumber % 7) + 1);
+        return DayOfWeek::get(($this->julianDay % 7) + 1);
     }
 
     public function fillValues(DateTimeValues $values): void
@@ -374,14 +378,14 @@ class Date implements DateOrDateTime, Pokeable
     public static function min(self ...$items): self
     {
         return Arr::minBy($items, function (self $date) {
-            return $date->dayNumber;
+            return $date->julianDay;
         });
     }
 
     public static function max(self ...$items): self
     {
         return Arr::maxBy($items, function (self $date) {
-            return $date->dayNumber;
+            return $date->julianDay;
         });
     }
 
@@ -393,7 +397,7 @@ class Date implements DateOrDateTime, Pokeable
     public static function sort(array $items, int $flags = Order::ASCENDING): array
     {
         return Arr::sortWith($items, function (Date $a, Date $b) {
-            return $a->dayNumber <=> $b->dayNumber;
+            return $a->julianDay <=> $b->julianDay;
         }, $flags);
     }
 

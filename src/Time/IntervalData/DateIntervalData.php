@@ -49,7 +49,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
      */
     public function __construct(Date $start, Date $end, $data)
     {
-        if ($start->getDayNumber() > $end->getDayNumber()) {
+        if ($start->getJulianDay() > $end->getJulianDay()) {
             throw new InvalidIntervalStartEndOrderException($start, $end);
         }
 
@@ -127,12 +127,12 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
 
     public function getLengthInDays(): int
     {
-        return $this->isEmpty() ? 0 : $this->end->getDayNumber() - $this->start->getDayNumber();
+        return $this->isEmpty() ? 0 : $this->end->getJulianDay() - $this->start->getJulianDay();
     }
 
     public function getDayCount(): int
     {
-        return $this->isEmpty() ? 0 : $this->end->getDayNumber() - $this->start->getDayNumber() + 1;
+        return $this->isEmpty() ? 0 : $this->end->getJulianDay() - $this->start->getJulianDay() + 1;
     }
 
     public function toDateInterval(): DateInterval
@@ -145,7 +145,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
      */
     public function toDateDataArray(): array
     {
-        if ($this->start->getDayNumber() > $this->end->getDayNumber()) {
+        if ($this->start->getJulianDay() > $this->end->getJulianDay()) {
             return [];
         }
 
@@ -179,7 +179,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
 
     public function isEmpty(): bool
     {
-        return $this->start->getDayNumber() > $this->end->getDayNumber();
+        return $this->start->getJulianDay() > $this->end->getJulianDay();
     }
 
     /**
@@ -316,7 +316,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
     public static function sort(array $intervals): array
     {
         usort($intervals, function (DateIntervalData $a, DateIntervalData $b) {
-            return $a->start->getDayNumber() <=> $b->start->getDayNumber() ?: $a->end->getDayNumber() <=> $b->end->getDayNumber();
+            return $a->start->getJulianDay() <=> $b->start->getJulianDay() ?: $a->end->getJulianDay() <=> $b->end->getJulianDay();
         });
 
         return $intervals;
@@ -329,7 +329,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
     public static function sortByStart(array $intervals): array
     {
         usort($intervals, function (DateIntervalData $a, DateIntervalData $b) {
-            return $a->start->getDayNumber() <=> $b->start->getDayNumber();
+            return $a->start->getJulianDay() <=> $b->start->getJulianDay();
         });
 
         return $intervals;

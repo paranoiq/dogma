@@ -58,7 +58,7 @@ class NightInterval implements DateOrTimeInterval, Pokeable
 
     public function __construct(Date $start, Date $end)
     {
-        if ($start->getDayNumber() > $end->getDayNumber()) {
+        if ($start->getJulianDay() > $end->getJulianDay()) {
             throw new InvalidIntervalStartEndOrderException($start, $end);
         }
 
@@ -87,7 +87,7 @@ class NightInterval implements DateOrTimeInterval, Pokeable
         if ($openEnd) {
             $end = $end->subtractDay();
         }
-        if ($start->getDayNumber() > $end->getDayNumber()) {
+        if ($start->getJulianDay() > $end->getJulianDay()) {
             return self::empty();
         }
 
@@ -161,7 +161,7 @@ class NightInterval implements DateOrTimeInterval, Pokeable
 
     public function getLengthInDays(): int
     {
-        return $this->isEmpty() ? 0 : $this->end->getDayNumber() - $this->start->getDayNumber();
+        return $this->isEmpty() ? 0 : $this->end->getJulianDay() - $this->start->getJulianDay();
     }
 
     public function getNightsCount(): int
@@ -188,7 +188,7 @@ class NightInterval implements DateOrTimeInterval, Pokeable
 
     public function toDayNumberIntInterval(): IntInterval
     {
-        return new IntInterval($this->start->getDayNumber(), $this->end->getDayNumber());
+        return new IntInterval($this->start->getJulianDay(), $this->end->getJulianDay());
     }
 
     /**
@@ -220,7 +220,7 @@ class NightInterval implements DateOrTimeInterval, Pokeable
 
     public function isEmpty(): bool
     {
-        return $this->start->getDayNumber() > $this->end->getDayNumber();
+        return $this->start->getJulianDay() > $this->end->getJulianDay();
     }
 
     /**
@@ -291,14 +291,14 @@ class NightInterval implements DateOrTimeInterval, Pokeable
             return new NightIntervalSet([]);
         }
 
-        $partSize = ($this->end->getDayNumber() - $this->start->getDayNumber()) / $parts;
+        $partSize = ($this->end->getJulianDay() - $this->start->getJulianDay()) / $parts;
         $intervalStarts = [];
         for ($n = 1; $n < $parts; $n++) {
-            $intervalStarts[] = (int) round($this->start->getDayNumber() + $partSize * $n);
+            $intervalStarts[] = (int) round($this->start->getJulianDay() + $partSize * $n);
         }
         $intervalStarts = array_unique($intervalStarts);
-        $intervalStarts = Arr::map($intervalStarts, function (int $dayNumber) {
-            return Date::createFromDayNumber($dayNumber);
+        $intervalStarts = Arr::map($intervalStarts, function (int $julianDay) {
+            return Date::createFromJulianDay($julianDay);
         });
 
         return $this->splitBy($intervalStarts);
@@ -337,11 +337,11 @@ class NightInterval implements DateOrTimeInterval, Pokeable
         $end = Date::MIN_DAY_NUMBER;
         /** @var self $item */
         foreach ($items as $item) {
-            $startValue = $item->start->getDayNumber();
+            $startValue = $item->start->getJulianDay();
             if ($startValue < $start) {
                 $start = $startValue;
             }
-            $endValue = $item->end->getDayNumber();
+            $endValue = $item->end->getJulianDay();
             if ($endValue > $end) {
                 $end = $endValue;
             }
@@ -552,7 +552,7 @@ class NightInterval implements DateOrTimeInterval, Pokeable
     public static function sort(array $intervals): array
     {
         usort($intervals, function (NightInterval $a, NightInterval $b) {
-            return $a->start->getDayNumber() <=> $b->start->getDayNumber() ?: $a->end->getDayNumber() <=> $b->end->getDayNumber();
+            return $a->start->getJulianDay() <=> $b->start->getJulianDay() ?: $a->end->getJulianDay() <=> $b->end->getJulianDay();
         });
 
         return $intervals;
@@ -565,7 +565,7 @@ class NightInterval implements DateOrTimeInterval, Pokeable
     public static function sortByStart(array $intervals): array
     {
         usort($intervals, function (NightInterval $a, NightInterval $b) {
-            return $a->start->getDayNumber() <=> $b->start->getDayNumber();
+            return $a->start->getJulianDay() <=> $b->start->getJulianDay();
         });
 
         return $intervals;
