@@ -10,6 +10,7 @@
 namespace Dogma\System;
 
 use Dogma\StaticClassMixin;
+use const DIRECTORY_SEPARATOR;
 use const PHP_OS;
 use function strstr;
 use function strtolower;
@@ -20,7 +21,7 @@ class Environment
 
     public static function isWindows(): bool
     {
-        return strstr(strtolower(PHP_OS), 'win') !== false;
+        return DIRECTORY_SEPARATOR === '\\' && strstr(strtolower(PHP_OS), 'win') !== false;
     }
 
 }
