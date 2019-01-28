@@ -13,8 +13,13 @@ use Dogma\Language\Collator;
 use Dogma\Language\Locale\Locale;
 use Dogma\Language\Transliterator;
 use Dogma\Language\UnicodeCharacterCategory;
+use Nette\Utils\Strings;
+use const MB_CASE_TITLE;
 use function is_string;
+use function mb_convert_case;
 use function mb_strlen;
+use function mb_strtolower;
+use function mb_strtoupper;
 use function mb_substr;
 use function min;
 use function range;
@@ -22,14 +27,16 @@ use function str_replace;
 use function strcasecmp;
 use function strcmp;
 use function strlen;
+use function strncmp;
 use function strpos;
 use function substr;
 
 /**
  * UTF-8 strings manipulation
  */
-class Str extends \Nette\Utils\Strings
+class Str
 {
+    use StaticClassMixin;
 
     /**
      * Test equality with another string
@@ -159,7 +166,7 @@ class Str extends \Nette\Utils\Strings
 
                 if ($char1 === $char2) {
                     $cost = 0;
-                } elseif ($replacementCaseCost !== null && self::lower($char1) === self::lower($char2)) {
+                } elseif ($replacementCaseCost !== null && Strings::lower($char1) === Strings::lower($char2)) {
                     $cost = $replacementCaseCost;
                 } elseif ($replacementAccentCost !== null && self::removeDiacritics($char1) === self::removeDiacritics($char2)) {
                     $cost = $replacementAccentCost;
@@ -207,6 +214,175 @@ class Str extends \Nette\Utils\Strings
         }
 
         return $transliterator->transliterate($string);
+    }
+
+    // proxy -----------------------------------------------------------------------------------------------------------
+
+    public static function checkEncoding(string $string): bool
+    {
+        return $string === self::fixEncoding($string);
+    }
+
+    public static function fixEncoding(string $string): string
+    {
+        return Strings::fixEncoding($string);
+    }
+
+    public static function chr(int $code): string
+    {
+        return Strings::chr($code);
+    }
+
+    public static function startsWith(string $string, string $find): bool
+    {
+        return strncmp($string, $find, strlen($find)) === 0;
+    }
+
+    public static function endsWith(string $string, string $find): bool
+    {
+        return strlen($find) === 0 || substr($string, -strlen($find)) === $find;
+    }
+
+    public static function contains(string $string, string $find): bool
+    {
+        return strpos($string, $find) !== false;
+    }
+
+    public static function substring(string $string, int $start, ?int $length = null): string
+    {
+        return Strings::substring($string, $start, $length);
+    }
+
+    public static function normalize(string $string): string
+    {
+        return Strings::normalize($string);
+    }
+
+    public static function normalizeNewLines(string $string): string
+    {
+        return str_replace(["\r\n", "\r"], "\n", $string);
+    }
+
+    public static function toAscii(string $string): string
+    {
+        return Strings::toAscii($string);
+    }
+
+    public static function webalize(string $string, ?string $chars = null, bool $lower = true): string
+    {
+        return Strings::webalize($string, $chars, $lower);
+    }
+
+    public static function truncate(string $string, int $maxLength, string $append = "\u{2026}"): string
+    {
+        return Strings::truncate($string, $maxLength, $append);
+    }
+
+    public static function indent(string $string, int $level = 1, string $chars = "\t"): string
+    {
+        return Strings::indent($string, $level, $chars);
+    }
+
+    public static function lower(string $string): string
+    {
+        return mb_strtolower($string, 'UTF-8');
+    }
+
+    public static function firstLower(string $string): string
+    {
+        return self::lower(self::substring($string, 0, 1)) . self::substring($string, 1);
+    }
+
+    public static function upper(string $string): string
+    {
+        return mb_strtoupper($string, 'UTF-8');
+    }
+
+    public static function firstUpper(string $string): string
+    {
+        return self::upper(self::substring($string, 0, 1)) . self::substring($string, 1);
+    }
+
+    public static function capitalize(string $string): string
+    {
+        return mb_convert_case($string, MB_CASE_TITLE, 'UTF-8');
+    }
+
+    public static function before(string $string, string $find, int $nth = 1): ?string
+    {
+        return Strings::before($string, $find, $nth);
+    }
+
+    public static function after(string $string, string $find, int $nth = 1): ?string
+    {
+        return Strings::after($string, $find, $nth);
+    }
+
+    public static function length(string $string): int
+    {
+        return Strings::length($string);
+    }
+
+    public static function trim(string $string, string $chars = Strings::TRIM_CHARACTERS): string
+    {
+        return Strings::trim($string, $chars);
+    }
+
+    public static function padRight(string $string, int $length, string $pad = ' '): string
+    {
+        return Strings::padRight($string, $length, $pad);
+    }
+
+    public static function padLeft(string $string, int $length, string $pad = ' '): string
+    {
+        return Strings::padLeft($string, $length, $pad);
+    }
+
+    /**
+     * @param string $string
+     * @param string $pattern
+     * @param int $flags
+     * @return string[]
+     */
+    public static function split(string $string, string $pattern, int $flags = 0): array
+    {
+        return Strings::split($string, $pattern, $flags);
+    }
+
+    /**
+     * @param string $string
+     * @param string $pattern
+     * @param int $flags
+     * @param int $offset
+     * @return string[]|null
+     */
+    public static function match(string $string, string $pattern, int $flags = 0, int $offset = 0): ?array
+    {
+        return Strings::match($string, $pattern, $flags, $offset);
+    }
+
+    /**
+     * @param string $string
+     * @param string $pattern
+     * @param int $flags
+     * @param int $offset
+     * @return string[]
+     */
+    public static function matchAll(string $string, string $pattern, int $flags = 0, int $offset = 0): array
+    {
+        return Strings::matchAll($string, $pattern, $flags, $offset);
+    }
+
+    /**
+     * @param string $string
+     * @param string|string[] $pattern
+     * @param string|callable|null $replacement
+     * @param int $limit
+     * @return string
+     */
+    public static function replace(string $string, $pattern, $replacement = null, int $limit = -1): string
+    {
+        return Strings::replace($string, $pattern, $replacement, $limit);
     }
 
 }

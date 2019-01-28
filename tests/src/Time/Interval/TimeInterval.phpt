@@ -24,12 +24,12 @@ $empty = TimeInterval::empty();
 $all = TimeInterval::all();
 
 $t = function (int $hour): Time {
-    return new Time(Str::padLeft($hour, 2, '0') . ':00:00.000000');
+    return new Time(Str::padLeft(strval($hour), 2, '0') . ':00:00.000000');
 };
 $i = function (int $start, int $end, bool $openStart = false, bool $openEnd = true): TimeInterval {
     return new TimeInterval(
-        new Time(Str::padLeft($start, 2, '0') . ':00:00.000000'),
-        new Time(Str::padLeft($end, 2, '0') . ':00:00.000000'),
+        new Time(Str::padLeft(strval($start), 2, '0') . ':00:00.000000'),
+        new Time(Str::padLeft(strval($end), 2, '0') . ':00:00.000000'),
         $openStart,
         $openEnd
     );

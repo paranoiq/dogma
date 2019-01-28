@@ -32,6 +32,7 @@ wildcard
 
 # tech
 armscii
+ascii
 bsd
 csp
 csrf
@@ -107,6 +108,7 @@ timestamps
 timezones
 typehint
 wakeup
+webalize
 
 # en
 authenticator
