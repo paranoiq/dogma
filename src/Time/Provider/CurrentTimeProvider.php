@@ -30,10 +30,13 @@ class CurrentTimeProvider implements TimeProvider
         return $this->getDateTime()->getDate();
     }
 
-    public function getDateTime(): DateTime
+    public function getDateTime(?\DateTimeZone $timeZone = null): DateTime
     {
         $currentTime = new DateTime();
 
+        if ($timeZone !== null) {
+            return $currentTime->setTimezone($timeZone);
+        }
         if ($this->timeZone !== null) {
             return $currentTime->setTimezone($this->timeZone);
         }

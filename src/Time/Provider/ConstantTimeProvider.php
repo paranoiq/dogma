@@ -41,8 +41,12 @@ class ConstantTimeProvider implements TimeProvider
         return $this->dateTime->getDate();
     }
 
-    public function getDateTime(): DateTime
+    public function getDateTime(?\DateTimeZone $timeZone = null): DateTime
     {
+        if ($timeZone !== null) {
+            return $this->dateTime->setTimezone($timeZone);
+        }
+
         return $this->dateTime;
     }
 

@@ -17,7 +17,7 @@ interface TimeProvider
 
     public function getDate(): Date;
 
-    public function getDateTime(): DateTime;
+    public function getDateTime(?\DateTimeZone $timeZone = null): DateTime;
 
     public function getTimeZone(): \DateTimeZone;
 
