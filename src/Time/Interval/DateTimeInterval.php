@@ -23,6 +23,7 @@ use Dogma\Time\Date;
 use Dogma\Time\DateTime;
 use Dogma\Time\DateTimeUnit;
 use Dogma\Time\InvalidIntervalStartEndOrderException;
+use Dogma\Time\Provider\TimeProvider;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Time;
 use Dogma\Time\TimeCalc;
@@ -119,6 +120,20 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
             $openStart,
             $openEnd
         );
+    }
+
+    public static function future(?\DateTimeZone $timeZone = null, ?TimeProvider $timeProvider = null): self
+    {
+        $now = $timeProvider !== null ? $timeProvider->getDateTime($timeZone) : new DateTime('now', $timeZone);
+
+        return new static($now, new DateTime(self::MAX, $timeZone), true, false);
+    }
+
+    public static function past(?\DateTimeZone $timeZone = null, ?TimeProvider $timeProvider = null): self
+    {
+        $now = $timeProvider !== null ? $timeProvider->getDateTime($timeZone) : new DateTime('now', $timeZone);
+
+        return new static(new DateTime(self::MIN, $timeZone), $now, false, true);
     }
 
     public static function closed(DateTime $start, DateTime $end): self

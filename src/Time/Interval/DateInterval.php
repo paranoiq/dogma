@@ -21,6 +21,7 @@ use Dogma\Time\Date;
 use Dogma\Time\DateTimeUnit;
 use Dogma\Time\InvalidDateTimeUnitException;
 use Dogma\Time\InvalidIntervalStartEndOrderException;
+use Dogma\Time\Provider\TimeProvider;
 use Dogma\Time\Span\DateSpan;
 use Dogma\Time\Span\DateTimeSpan;
 use function array_fill;
@@ -89,6 +90,20 @@ class DateInterval implements DateOrTimeInterval, Pokeable
         }
 
         return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue() . ' -1 day'));
+    }
+
+    public static function future(?TimeProvider $timeProvider = null): self
+    {
+        $tomorrow = $timeProvider !== null ? $timeProvider->getDate()->addDay() : new Date('tomorrow');
+
+        return new static($tomorrow, new Date(self::MAX));
+    }
+
+    public static function past(?TimeProvider $timeProvider = null): self
+    {
+        $yesterday = $timeProvider !== null ? $timeProvider->getDate()->subtractDay() : new Date('yesterday');
+
+        return new static(new Date(self::MIN), $yesterday);
     }
 
     public static function empty(): self
