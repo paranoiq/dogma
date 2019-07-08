@@ -28,6 +28,7 @@ use function is_int;
 use function is_string;
 use function number_format;
 use function sprintf;
+use function strval;
 
 /**
  * Immutable date and time class.
@@ -207,10 +208,10 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
     public function addUnit(DateTimeUnit $unit, int $amount = 1): self
     {
         if ($unit->equals(DateTimeUnit::QUARTER)) {
-            $unit = DateTimeUnit::get(DateTimeUnit::MONTH);
+            $unit = DateTimeUnit::month();
             $amount *= 3;
         } elseif ($unit->equals(DateTimeUnit::MILISECOND)) {
-            $unit = DateTimeUnit::get(DateTimeUnit::MICROSECOND);
+            $unit = DateTimeUnit::microsecond();
             $amount *= 1000;
         }
 
@@ -220,10 +221,10 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
     public function subtractUnit(DateTimeUnit $unit, int $amount = 1): self
     {
         if ($unit->equals(DateTimeUnit::QUARTER)) {
-            $unit = DateTimeUnit::get(DateTimeUnit::MONTH);
+            $unit = DateTimeUnit::month();
             $amount *= 3;
         } elseif ($unit->equals(DateTimeUnit::MILISECOND)) {
-            $unit = DateTimeUnit::get(DateTimeUnit::MICROSECOND);
+            $unit = DateTimeUnit::microsecond();
             $amount *= 1000;
         }
 
@@ -247,7 +248,7 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
             $parts = explode(':', $time);
             $time = $parts[0];
             $minutes = $parts[1] ?? null;
-            $seconds = (string) $parts[2] ?? '';
+            $seconds = strval($parts[2] ?? '');
             if (Str::contains($seconds, '.')) {
                 [$seconds, $microseconds] = explode('.', $seconds);
                 $microseconds = (int) (('0.' . $microseconds) * 1000000);
