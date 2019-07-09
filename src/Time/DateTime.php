@@ -578,6 +578,16 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
         return (int) $this->format('u');
     }
 
+    public function hasSeconds(): bool
+    {
+        return ($this->getMicroTimestamp() % 60000000) !== 0;
+    }
+
+    public function hasMicroseconds(): bool
+    {
+        return ($this->getMicroTimestamp() % 1000000) !== 0;
+    }
+
     public function fillValues(DateTimeValues $values): void
     {
         $results = explode('|', $this->format('Y|L|z|m|d|N|W|o|H|i|s|v|u|p|P'));

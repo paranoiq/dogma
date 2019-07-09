@@ -354,6 +354,16 @@ class Time implements DateTimeOrTime, Pokeable
         return $this->microseconds % 1000000;
     }
 
+    public function hasSeconds(): bool
+    {
+        return ($this->microseconds % 60000000) !== 0;
+    }
+
+    public function hasMicroseconds(): bool
+    {
+        return ($this->microseconds % 1000000) !== 0;
+    }
+
     public function fillValues(DateTimeValues $values): void
     {
         $results = explode('|', $this->format('H|i|s|v|u'));
