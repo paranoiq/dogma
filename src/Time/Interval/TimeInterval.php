@@ -376,7 +376,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
             if ($item->isEmpty()) {
                 continue;
             }
-            if ($item->start < $start) {
+            if ($item->start->getMicroTime() < $start->getMicroTime()) {
                 $start = $item->start;
                 $startExclusive = $item->openStart;
             } elseif ($startExclusive && !$item->openStart && $item->start->equals($start)) {
@@ -402,7 +402,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
         $result = array_shift($items);
         /** @var \Dogma\Time\Interval\TimeInterval $item */
         foreach ($items as $item) {
-            if ($result->start < $item->start || ($result->start->equals($item->start) && $result->openStart && !$item->openStart)) {
+            if ($result->start->getMicroTime() < $item->start->getMicroTime() || ($result->start->equals($item->start) && $result->openStart && !$item->openStart)) {
                 if ($result->end->getMicroTime() < $item->start->getMicroTime() || ($result->end->getMicroTime() === $item->start->getMicroTime() && ($result->openEnd || $item->openStart))) {
                     return self::empty();
                 }

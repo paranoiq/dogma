@@ -55,10 +55,10 @@ Assert::same($denormalizedTime->normalize()->getMicroTime(), $microSeconds);
 Assert::same($time->denormalize()->getMicroTime(), $denormalizedMicroSeconds);
 Assert::same($denormalizedTime->denormalize()->getMicroTime(), $denormalizedMicroSeconds);
 
-// modify
+// modify()
 Assert::same($time->modify('+1 hour')->getMicroTime(), $microSeconds + 3600 * 1000000);
 Assert::same($denormalizedTime->modify('+1 hour')->getMicroTime(), $denormalizedMicroSeconds + 3600 * 1000000);
-/// overflows
+// todo: overflows
 
 // getMicroTime()
 Assert::same($time->getMicroTime(), $microSeconds);
@@ -83,7 +83,7 @@ Assert::same($denormalizedTime->getMicroseconds(), 6);
 $before = new Time('02:00:00');
 $after = new Time('04:00:00');
 
-// isEquals()
+// equals()
 Assert::false($time->equals(new Time(0)));
 Assert::true($time->equals(new Time($timeString)));
 
