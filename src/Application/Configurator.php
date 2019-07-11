@@ -294,4 +294,21 @@ final class Configurator extends \stdClass
         }
     }
 
+    public function __isset(string $name): bool
+    {
+        if (isset($this->profiles['@' . $name])) {
+            return true;
+        }
+        if (!array_key_exists($name, $this->values)) {
+            trigger_error(sprintf('Value "%s" not found.', $name));
+            return false;
+        }
+        if (isset($this->values[$name])) {
+            return true;
+        } elseif (isset($this->defaults[$name])) {
+            return true;
+        }
+        return false;
+    }
+
 }
