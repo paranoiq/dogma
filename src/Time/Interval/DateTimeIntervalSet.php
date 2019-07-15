@@ -13,6 +13,7 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Compare;
 use Dogma\Equalable;
+use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
@@ -20,6 +21,7 @@ use function array_merge;
 use function array_shift;
 use function count;
 use function implode;
+use function is_array;
 use function reset;
 
 class DateTimeIntervalSet implements DateOrTimeIntervalSet
@@ -327,7 +329,16 @@ class DateTimeIntervalSet implements DateOrTimeIntervalSet
     {
         $results = [];
         foreach ($this->intervals as $interval) {
-            $results[] = $mapper($interval);
+            $result = $mapper($interval);
+            if ($result instanceof DateTimeInterval) {
+                $results[] = $result;
+            } elseif (is_array($result)) {
+                $results = array_merge($results, $result);
+            } elseif ($result instanceof self) {
+                $results = array_merge($results, $result->getIntervals());
+            } else {
+                throw new ShouldNotHappenException('Expected DateTimeInterval or DateTimeIntervalSet or array of DateTimeIntervals.');
+            }
         }
 
         return new static($results);
@@ -338,8 +349,16 @@ class DateTimeIntervalSet implements DateOrTimeIntervalSet
         $results = [];
         foreach ($this->intervals as $interval) {
             $result = $mapper($interval);
-            if ($result !== null) {
+            if ($result instanceof DateTimeInterval) {
                 $results[] = $result;
+            } elseif (is_array($result)) {
+                $results = array_merge($results, $result);
+            } elseif ($result instanceof self) {
+                $results = array_merge($results, $result->getIntervals());
+            } elseif ($result === null) {
+                continue;
+            } else {
+                throw new ShouldNotHappenException('Expected DateTimeInterval or DateTimeIntervalSet or array of DateTimeIntervals.');
             }
         }
 

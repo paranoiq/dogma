@@ -70,6 +70,15 @@ Assert::equal($ds($di(1, 10))->subtract($s($i(3, 4), $i(7, 8))), $ds($di(1, 2), 
 Assert::equal($ds($di(1, 5), $di(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $ds($di(4, 5), $di(10, 12), $di(14, 15)));
 
 // map()
+Assert::equal($set->map(function (DateIntervalData $interval) {
+    return $interval;
+}), $set);
+Assert::equal($set->map(function (DateIntervalData $interval) use ($i) {
+    return $interval->subtract($i(3, 3));
+}), $ds($di(1, 2), $di(4, 5)));
+Assert::equal($set->map(function (DateIntervalData $interval) use ($i) {
+    return $interval->subtract($i(3, 3))->getIntervals();
+}), $ds($di(1, 2), $di(4, 5)));
 
 // collect()
 

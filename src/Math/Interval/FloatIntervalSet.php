@@ -12,11 +12,13 @@ namespace Dogma\Math\Interval;
 use Dogma\Check;
 use Dogma\Compare;
 use Dogma\Equalable;
+use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use function array_merge;
 use function array_shift;
 use function count;
 use function end;
+use function is_array;
 
 class FloatIntervalSet implements IntervalSet
 {
@@ -228,7 +230,16 @@ class FloatIntervalSet implements IntervalSet
     {
         $results = [];
         foreach ($this->intervals as $interval) {
-            $results[] = $mapper($interval);
+            $result = $mapper($interval);
+            if ($result instanceof FloatInterval) {
+                $results[] = $result;
+            } elseif (is_array($result)) {
+                $results = array_merge($results, $result);
+            } elseif ($result instanceof self) {
+                $results = array_merge($results, $result->getIntervals());
+            } else {
+                throw new ShouldNotHappenException('Expected FloatInterval or FloatIntervalSet or array of FloatIntervals.');
+            }
         }
 
         return new static($results);
@@ -239,8 +250,16 @@ class FloatIntervalSet implements IntervalSet
         $results = [];
         foreach ($this->intervals as $interval) {
             $result = $mapper($interval);
-            if ($result !== null) {
+            if ($result instanceof FloatInterval) {
                 $results[] = $result;
+            } elseif (is_array($result)) {
+                $results = array_merge($results, $result);
+            } elseif ($result instanceof self) {
+                $results = array_merge($results, $result->getIntervals());
+            } elseif ($result === null) {
+                continue;
+            } else {
+                throw new ShouldNotHappenException('Expected FloatInterval or FloatIntervalSet or array of FloatIntervals.');
             }
         }
 

@@ -13,11 +13,13 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntervalSet;
+use Dogma\ShouldNotHappenException;
 use Dogma\Time\DayOfYear;
 use function array_merge;
 use function array_shift;
 use function count;
 use function implode;
+use function is_array;
 use function reset;
 
 class DayOfYearIntervalSet implements IntervalSet
@@ -190,7 +192,16 @@ class DayOfYearIntervalSet implements IntervalSet
     {
         $results = [];
         foreach ($this->intervals as $interval) {
-            $results[] = $mapper($interval);
+            $result = $mapper($interval);
+            if ($result instanceof DayOfYearInterval) {
+                $results[] = $result;
+            } elseif (is_array($result)) {
+                $results = array_merge($results, $result);
+            } elseif ($result instanceof self) {
+                $results = array_merge($results, $result->getIntervals());
+            } else {
+                throw new ShouldNotHappenException('Expected DayOfYearInterval or DayOfYearIntervalSet or array of DayOfYearIntervals.');
+            }
         }
 
         return new static($results);
@@ -201,8 +212,16 @@ class DayOfYearIntervalSet implements IntervalSet
         $results = [];
         foreach ($this->intervals as $interval) {
             $result = $mapper($interval);
-            if ($result !== null) {
+            if ($result instanceof DayOfYearInterval) {
                 $results[] = $result;
+            } elseif (is_array($result)) {
+                $results = array_merge($results, $result);
+            } elseif ($result instanceof self) {
+                $results = array_merge($results, $result->getIntervals());
+            } elseif ($result === null) {
+                continue;
+            } else {
+                throw new ShouldNotHappenException('Expected DayOfYearInterval or DayOfYearIntervalSet or array of DayOfYearIntervals.');
             }
         }
 

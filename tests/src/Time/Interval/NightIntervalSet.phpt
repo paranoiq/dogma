@@ -64,6 +64,17 @@ Assert::equal($s($i(1, 11))->subtract($s($i(3, 5), $i(7, 9))), $s($i(1, 3), $i(5
 // intersect()
 Assert::equal($s($i(1, 5), $i(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $s($i(4, 5), $i(10, 12), $i(14, 15)));
 
+// map()
+Assert::equal($set->map(function (NightInterval $interval) {
+    return $interval;
+}), $set);
+Assert::equal($set->map(function (NightInterval $interval) {
+    return $interval->split(2);
+}), $s($i(1, 4), $i(4, 6)));
+Assert::equal($set->map(function (NightInterval $interval) {
+    return $interval->split(2)->getIntervals();
+}), $s($i(1, 4), $i(4, 6)));
+
 $set = $s($emptyInterval, $i(1, 2), $i(1, 3), $i(1, 4));
 
 // filterByLength()

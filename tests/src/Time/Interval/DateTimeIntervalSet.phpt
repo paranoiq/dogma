@@ -163,6 +163,17 @@ Assert::equal($s($i(1, 10))->subtract($s($i(3, 4), $i(7, 8))), $s($i(1, 3), $i(4
 // intersect()
 Assert::equal($s($i(1, 5), $i(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $s($i(4, 5), $i(10, 12), $i(14, 15)));
 
+// map()
+Assert::equal($set->map(function (DateTimeInterval $interval) {
+    return $interval;
+}), $set);
+Assert::equal($set->map(function (DateTimeInterval $interval) {
+    return $interval->split(2);
+}), $s($i(1, 3), $i(3, 5)));
+Assert::equal($set->map(function (DateTimeInterval $interval) {
+    return $interval->split(2)->getIntervals();
+}), $s($i(1, 3), $i(3, 5)));
+
 $set = $s(DateTimeInterval::empty(), $i(1, 1), $i(1, 2), $i(1, 3));
 
 // filterByLength()

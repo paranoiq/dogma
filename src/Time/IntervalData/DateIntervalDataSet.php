@@ -13,6 +13,7 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Equalable;
 use Dogma\Pokeable;
+use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\Interval\DateInterval;
@@ -21,6 +22,7 @@ use function array_map;
 use function array_merge;
 use function array_shift;
 use function count;
+use function is_array;
 use function max;
 use function min;
 
@@ -218,7 +220,16 @@ class DateIntervalDataSet implements Equalable, Pokeable
     {
         $results = [];
         foreach ($this->intervals as $interval) {
-            $results[] = $mapper($interval);
+            $result = $mapper($interval);
+            if ($result instanceof DateIntervalData) {
+                $results[] = $result;
+            } elseif (is_array($result)) {
+                $results = array_merge($results, $result);
+            } elseif ($result instanceof self) {
+                $results = array_merge($results, $result->getIntervals());
+            } else {
+                throw new ShouldNotHappenException('Expected DateIntervalData or DateIntervalDataSet or array of DateIntervalData.');
+            }
         }
 
         return new static($results);
@@ -229,8 +240,16 @@ class DateIntervalDataSet implements Equalable, Pokeable
         $results = [];
         foreach ($this->intervals as $interval) {
             $result = $mapper($interval);
-            if ($result !== null) {
+            if ($result instanceof DateIntervalData) {
                 $results[] = $result;
+            } elseif (is_array($result)) {
+                $results = array_merge($results, $result);
+            } elseif ($result instanceof self) {
+                $results = array_merge($results, $result->getIntervals());
+            } elseif ($result === null) {
+                continue;
+            } else {
+                throw new ShouldNotHappenException('Expected DateIntervalData or DateIntervalDataSet or array of DateIntervalData.');
             }
         }
 
