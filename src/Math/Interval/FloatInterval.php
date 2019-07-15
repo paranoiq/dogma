@@ -216,7 +216,7 @@ class FloatInterval implements OpenClosedInterval
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    public function split(int $parts, int $splitMode = self::SPLIT_CLOSED): FloatIntervalSet
+    public function split(int $parts, int $splitMode = self::SPLIT_OPEN_ENDS): FloatIntervalSet
     {
         Check::min($parts, 1);
 
@@ -239,7 +239,7 @@ class FloatInterval implements OpenClosedInterval
      * @param int $splitMode
      * @return \Dogma\Math\Interval\FloatIntervalSet
      */
-    public function splitBy(array $intervalStarts, int $splitMode = self::SPLIT_CLOSED): FloatIntervalSet
+    public function splitBy(array $intervalStarts, int $splitMode = self::SPLIT_OPEN_ENDS): FloatIntervalSet
     {
         $intervalStarts = Arr::sort($intervalStarts);
         $results = [$this];

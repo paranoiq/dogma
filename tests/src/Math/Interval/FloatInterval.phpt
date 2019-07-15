@@ -131,7 +131,7 @@ Assert::false($open->touches($r(5, 10, true, false), true));
 
 // split()
 Assert::equal($closed->split(1), $s($closed));
-Assert::equal($closed->split(2), $s($r(1, 3), $r(3, 5)));
+Assert::equal($closed->split(2, FloatInterval::SPLIT_CLOSED), $s($r(1, 3), $r(3, 5)));
 Assert::equal(
     $closed->split(2, FloatInterval::SPLIT_OPEN_STARTS),
     $s($r(1, 3), $r(3, 5, true))
@@ -141,7 +141,7 @@ Assert::equal(
     $s($r(1, 3, false, true), $r(3, 5))
 );
 Assert::equal(
-    $closed->split(4),
+    $closed->split(4, FloatInterval::SPLIT_CLOSED),
     $s($r(1, 2), $r(2, 3), $r(3, 4), $r(4, 5))
 );
 Assert::equal(
@@ -156,11 +156,11 @@ Assert::equal($empty->split(5), $s($empty));
 
 // splitBy()
 Assert::equal(
-    $closed->splitBy([-10, 2, 4, 10]),
+    $closed->splitBy([-10, 2, 4, 10], FloatInterval::SPLIT_CLOSED),
     $s($r(1, 2), $r(2, 4), $r(4, 5))
 );
 Assert::equal(
-    $open->splitBy([-10, 2, 4, 10]),
+    $open->splitBy([-10, 2, 4, 10], FloatInterval::SPLIT_CLOSED),
     $s($r(1, 2, true), $r(2, 4), $r(4, 5, false, true))
 );
 Assert::equal(

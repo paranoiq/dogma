@@ -302,7 +302,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    public function split(int $parts, int $splitMode = self::SPLIT_CLOSED): TimeIntervalSet
+    public function split(int $parts, int $splitMode = self::SPLIT_OPEN_ENDS): TimeIntervalSet
     {
         if ($this->isEmpty()) {
             return new TimeIntervalSet([]);
@@ -327,7 +327,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
      * @param int $splitMode
      * @return \Dogma\Time\Interval\TimeIntervalSet
      */
-    public function splitBy(array $intervalStarts, int $splitMode = self::SPLIT_CLOSED): TimeIntervalSet
+    public function splitBy(array $intervalStarts, int $splitMode = self::SPLIT_OPEN_ENDS): TimeIntervalSet
     {
         if ($this->isEmpty()) {
             return new TimeIntervalSet([]);
