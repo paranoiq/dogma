@@ -42,6 +42,16 @@ Assert::exception(function (): void {
     DateTime::createFromFormat('Y-m-d', '12:00:00');
 }, InvalidDateTimeException::class);
 
+// createFromAnyFormat()
+$dateTimeStringOffset = '2000-01-02 03:04:05.000006+02:00';
+$dateTimeStringOffset2 = '2000-01-02 03:04:05+02:00';
+Assert::type(DateTime::createFromAnyFormat(DateTime::SAFE_FORMATS, $dateTimeStringOffset), DateTime::class);
+Assert::same(DateTime::createFromAnyFormat(DateTime::SAFE_FORMATS, $dateTimeStringOffset)->format('Y-m-d H:i:s.uP'), $dateTimeStringOffset);
+Assert::equal(DateTime::createFromAnyFormat(DateTime::SAFE_FORMATS, $dateTimeStringOffset)->format('Y-m-d H:i:sP'), $dateTimeStringOffset2);
+Assert::exception(function (): void {
+    DateTime::createFromAnyFormat(DateTime::SAFE_FORMATS, '2000-01-02 12:00:00');
+}, InvalidDateTimeException::class);
+
 // createFromTimestamp()
 Assert::type(DateTime::createFromTimestamp($timestamp), DateTime::class);
 Assert::same(DateTime::createFromTimestamp($timestamp, $utcTimeZone)->format(), '2000-01-02 02:04:05.000000');

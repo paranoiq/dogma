@@ -51,6 +51,18 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
     public const DEFAULT_FORMAT = 'Y-m-d H:i:s.u';
     public const FORMAT_EMAIL_HTTP = DATE_RFC2822;
 
+    // ISO-like formats with timezone offset and with or without microseconds
+    public const SAFE_FORMATS = [
+        'Y-m-d H:i:sP',
+        'Y-m-d H:i:sO',
+        'Y-m-d H:i:s.uP',
+        'Y-m-d H:i:s.uO',
+        'Y-m-d\\TH:i:sP',
+        'Y-m-d\\TH:i:sO',
+        'Y-m-d\\TH:i:s.uP',
+        'Y-m-d\\TH:i:s.uO',
+    ];
+
     /** @var int */
     private $microTimestamp;
 
@@ -63,7 +75,7 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
      */
     public static function createFromFormat($format, $timeString, $timeZone = null): self
     {
-        // due to invalid typehint in parent class...
+        // due to invalid type hint in parent class...
         Check::nullableObject($timeZone, \DateTimeZone::class);
 
         // due to invalid optional arguments handling...
@@ -77,6 +89,27 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
         }
 
         return new static($dateTime->format(self::DEFAULT_FORMAT), $timeZone ?? $dateTime->getTimezone());
+    }
+
+    /**
+     * @param string[] $formats
+     * @param string $timeString
+     * @param \DateTimeZone|null $timeZone
+     * @return \Dogma\Time\DateTime
+     */
+    public static function createFromAnyFormat(array $formats, string $timeString, ?\DateTimeZone $timeZone = null): self
+    {
+        Check::count($formats, 1);
+
+        foreach ($formats as $format) {
+            try {
+                return self::createFromFormat($format, $timeString, $timeZone);
+            } catch (InvalidDateTimeException $e) {
+                continue;
+            }
+        }
+
+        throw $e;
     }
 
     public static function createFromTimestamp(int $timestamp, ?\DateTimeZone $timeZone = null): self
