@@ -10,6 +10,7 @@
 namespace Dogma\Time\Interval;
 
 use Dogma\Arr;
+use Dogma\ArrayIterator;
 use Dogma\Check;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntervalSet;
@@ -51,6 +52,11 @@ class DayOfYearIntervalSet implements IntervalSet
     public function getIntervals(): array
     {
         return $this->intervals;
+    }
+
+    public function getIterator(): \Iterator
+    {
+        return new ArrayIterator($this->intervals);
     }
 
     public function isEmpty(): bool

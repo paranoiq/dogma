@@ -9,6 +9,7 @@
 
 namespace Dogma\Math\Interval;
 
+use Dogma\ArrayIterator;
 use Dogma\Check;
 use Dogma\Compare;
 use Dogma\Equalable;
@@ -47,6 +48,11 @@ class IntIntervalSet implements IntervalSet
     public function getIntervals(): array
     {
         return $this->intervals;
+    }
+
+    public function getIterator(): \Iterator
+    {
+        return new ArrayIterator($this->intervals);
     }
 
     public function isEmpty(): bool

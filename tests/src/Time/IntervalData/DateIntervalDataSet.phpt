@@ -43,6 +43,9 @@ Assert::equal($emptyInterval->toDateArray(), []);
 Assert::equal($interval->toDateDataArray(), [[$d(1), $data], [$d(2), $data], [$d(3), $data], [$d(4), $data], [$d(5), $data]]);
 Assert::equal($ds($di(1, 2), $di(4, 5))->toDateDataArray(), [[$d(1), $data], [$d(2), $data], [$d(4), $data], [$d(5), $data]]);
 
+// getIntervals() & getIterator()
+Assert::same($set->getIntervals(), iterator_to_array($set->getIterator()));
+
 // isEmpty()
 Assert::true((new DateIntervalSet([]))->isEmpty());
 Assert::true((new DateIntervalSet([$emptyInterval]))->isEmpty());

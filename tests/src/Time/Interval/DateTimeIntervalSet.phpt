@@ -130,6 +130,9 @@ Assert::equal(DateTimeIntervalSet::createFromDateIntervalSetAndWeekDayHoursSet(
     DateTimeInterval::createFromString('2000-01-09 12:00 - 2000-01-09 13:00'),
 ]));
 
+// getIntervals() & getIterator()
+Assert::same($set->getIntervals(), iterator_to_array($set->getIterator()));
+
 // isEmpty()
 Assert::true((new DateTimeIntervalSet([]))->isEmpty());
 Assert::true((new DateTimeIntervalSet([$emptyInterval]))->isEmpty());

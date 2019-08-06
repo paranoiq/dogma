@@ -20,6 +20,9 @@ $s = function (FloatInterval ...$items) {
     return new FloatIntervalSet($items);
 };
 
+// getIntervals() & getIterator()
+Assert::same($set->getIntervals(), iterator_to_array($set->getIterator()));
+
 // isEmpty()
 Assert::true((new FloatIntervalSet([]))->isEmpty());
 Assert::true((new FloatIntervalSet([$emptyInterval]))->isEmpty());

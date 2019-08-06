@@ -28,6 +28,9 @@ $emptyInterval = DayOfYearInterval::empty();
 
 $set = new DayOfYearIntervalSet([$interval]);
 
+// getIntervals() & getIterator()
+Assert::same($set->getIntervals(), iterator_to_array($set->getIterator()));
+
 // isEmpty()
 Assert::true((new DayOfYearIntervalSet([]))->isEmpty());
 Assert::true((new DayOfYearIntervalSet([$emptyInterval]))->isEmpty());

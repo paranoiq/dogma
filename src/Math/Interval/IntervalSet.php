@@ -11,7 +11,7 @@ namespace Dogma\Math\Interval;
 
 use Dogma\Equalable;
 
-interface IntervalSet /*<T>*/ extends Equalable
+interface IntervalSet /*<T>*/ extends Equalable, \IteratorAggregate
 {
 
     /**

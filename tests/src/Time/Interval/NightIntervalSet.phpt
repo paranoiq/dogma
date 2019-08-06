@@ -34,6 +34,9 @@ Assert::equal($emptyInterval->toDateArray(), []);
 Assert::equal($interval->toDateArray(), [$d(1), $d(2), $d(3), $d(4), $d(5)]);
 Assert::equal($s($i(1, 3), $i(4, 6))->toDateArray(), [$d(1), $d(2), $d(4), $d(5)]);
 
+// getIntervals() & getIterator()
+Assert::same($set->getIntervals(), iterator_to_array($set->getIterator()));
+
 // isEmpty()
 Assert::true((new NightIntervalSet([]))->isEmpty());
 Assert::true((new NightIntervalSet([$emptyInterval]))->isEmpty());
