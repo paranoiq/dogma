@@ -198,7 +198,7 @@ class DayOfYearIntervalSet implements IntervalSet
         foreach ($this->intervals as $result) {
             foreach ($intervals as $interval) {
                 if ($result->intersects($interval)) {
-                    $results[] = $result->intersect($interval);
+                    $results = array_merge($results, $result->intersect($interval)->getIntervals());
                 }
             }
         }

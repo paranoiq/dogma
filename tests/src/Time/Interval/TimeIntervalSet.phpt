@@ -13,14 +13,14 @@ require_once __DIR__ . '/../../bootstrap.php';
 $t = static function (int $hours): Time {
     return Time::createFromComponents($hours);
 };
-$i = static function (int $start, int $end, bool $openStart = false, bool $openEnd = true) use ($t): TimeInterval {
-    return new TimeInterval($t($start), $t($end), $openStart, $openEnd);
+$i = static function (int $start, int $end) use ($t): TimeInterval {
+    return new TimeInterval($t($start), $t($end));
 };
 $s = static function (TimeInterval ...$items): TimeIntervalSet {
     return new TimeIntervalSet($items);
 };
 
-$interval = new TimeInterval($t(1), $t(5), false, true);
+$interval = new TimeInterval($t(1), $t(5));
 $emptyInterval = TimeInterval::empty();
 
 $set = new TimeIntervalSet([$interval]);
@@ -62,10 +62,10 @@ Assert::equal($set->map(static function (TimeInterval $interval) {
     return $interval;
 }), $set);
 Assert::equal($set->map(static function (TimeInterval $interval) {
-    return $interval->split(2, TimeInterval::SPLIT_OPEN_ENDS);
+    return $interval->split(2);
 }), $s($i(1, 3), $i(3, 5)));
 Assert::equal($set->map(static function (TimeInterval $interval) {
-    return $interval->split(2, TimeInterval::SPLIT_OPEN_ENDS)->getIntervals();
+    return $interval->split(2)->getIntervals();
 }), $s($i(1, 3), $i(3, 5)));
 
 $set = $s(TimeInterval::empty(), $i(1, 1), $i(1, 2), $i(1, 3));

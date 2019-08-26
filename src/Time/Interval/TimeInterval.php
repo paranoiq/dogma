@@ -14,7 +14,7 @@ use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntervalParser;
-use Dogma\Math\Interval\OpenClosedInterval;
+use Dogma\Math\Interval\ModuloInterval;
 use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateTimeUnit;
@@ -25,10 +25,13 @@ use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Span\TimeSpan;
 use Dogma\Time\Time;
 use function array_fill;
+use function array_map;
 use function array_shift;
 use function array_unique;
 use function array_values;
 use function count;
+use function max;
+use function min;
 use function round;
 use function usort;
 
@@ -40,7 +43,7 @@ use function usort;
  *
  * Span between start and end of interval cannot be more than 24 hours.
  */
-class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
+class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 {
     use StrictBehaviorMixin;
 
@@ -55,13 +58,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
     /** @var Time */
     private $end;
 
-    /** @var bool */
-    private $openStart = false;
-
-    /** @var bool */
-    private $openEnd = false;
-
-    public function __construct(Time $start, Time $end, bool $openStart = false, bool $openEnd = true)
+    public function __construct(Time $start, Time $end)
     {
         $startTime = $start->getMicroTime();
         $endTime = $end->getMicroTime();
@@ -86,21 +83,19 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
 
         $this->start = $start;
         $this->end = $end;
-        $this->openStart = $openStart;
-        $this->openEnd = $openEnd;
     }
 
     public static function createFromString(string $string): self
     {
-        [$start, $end, $openStart, $openEnd] = IntervalParser::parseString($string);
+        [$start, $end] = IntervalParser::parseString($string);
 
         $start = new Time($start);
         $end = new Time($end);
 
-        return new static($start, $end, $openStart ?? false, $openEnd ?? true);
+        return new static($start, $end);
     }
 
-    public static function createFromStartAndLength(Time $start, DateTimeUnit $unit, int $amount, bool $openStart = false, bool $openEnd = true): self
+    public static function createFromStartAndLength(Time $start, DateTimeUnit $unit, int $amount): self
     {
         if (!$unit->isTime()) {
             throw new InvalidDateTimeUnitException($unit);
@@ -110,37 +105,48 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
             $amount *= 1000;
         }
 
-        return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue()), $openStart, $openEnd);
+        return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue()));
     }
 
     public static function closed(Time $start, Time $end): self
     {
-        return new static($start, $end, false, false);
-    }
-
-    public static function open(Time $start, Time $end): self
-    {
-        return new static($start, $end, true, true);
-    }
-
-    public static function openStart(Time $start, Time $end): self
-    {
-        return new static($start, $end, true, false);
-    }
-
-    public static function openEnd(Time $start, Time $end): self
-    {
-        return new static($start, $end, false, true);
+        return new static($start, $end);
     }
 
     public static function empty(): self
     {
-        return new static(new Time(self::MIN), new Time(self::MIN), true, true);
+        return new static(new Time(self::MIN), new Time(self::MIN));
     }
 
     public static function all(): self
     {
-        return new static(new Time(self::MIN), new Time(self::MAX), false, false);
+        return new static(new Time(self::MIN), new Time(self::MAX));
+    }
+
+    public function normalize(): self
+    {
+        if ($this->start->isNormalized()) {
+            $self = new static($this->start, $this->end);
+            $self->start = $this->start->normalize();
+            $self->end = $this->end->normalize();
+
+            return $self;
+        } else {
+            return $this;
+        }
+    }
+
+    public function denormalize(): self
+    {
+        if ($this->end->isNormalized()) {
+            $self = new static($this->start, $this->end);
+            $self->start = $this->start->denormalize();
+            $self->end = $this->end->denormalize();
+
+            return $self;
+        } else {
+            return $this;
+        }
     }
 
     public function poke(): void
@@ -153,17 +159,17 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
 
     public function shift(string $value): self
     {
-        return new static($this->start->modify($value), $this->end->modify($value), $this->openStart, $this->openEnd);
+        return new static($this->start->modify($value), $this->end->modify($value));
     }
 
-    public function setStart(Time $start, ?bool $open = null): self
+    public function setStart(Time $start): self
     {
-        return new static($start, $this->end, $open ?? $this->openStart, $this->openEnd);
+        return new static($start, $this->end);
     }
 
-    public function setEnd(Time $end, ?bool $open = null): self
+    public function setEnd(Time $end): self
     {
-        return new static($this->start, $end, $this->openStart, $open ?? $this->openEnd);
+        return new static($this->start, $end);
     }
 
     // queries ---------------------------------------------------------------------------------------------------------
@@ -210,20 +216,9 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
         return [$this->start, $this->end];
     }
 
-    public function hasOpenStart(): bool
-    {
-        return $this->openStart;
-    }
-
-    public function hasOpenEnd(): bool
-    {
-        return $this->openEnd;
-    }
-
     public function isEmpty(): bool
     {
-        return ($this->openStart === true || $this->openEnd === true)
-            && $this->start->getMicroTime() === $this->end->getMicroTime();
+        return $this->start->getMicroTime() === $this->end->getMicroTime();
     }
 
     public function isOverMidnight(): bool
@@ -240,9 +235,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
         Check::instance($other, self::class);
 
         return $this->start->equals($other->start)
-            && $this->end->getMicroTime() === $other->end->getMicroTime() // cannot use Time::equals() because of 00:00 vs 24:00
-            && $this->openStart === $other->openStart
-            && $this->openEnd === $other->openEnd;
+            && $this->end->getMicroTime() === $other->end->getMicroTime(); // cannot use Time::equals() because of 00:00 vs 24:00
     }
 
     /**
@@ -254,8 +247,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
         Check::instance($other, self::class);
 
         return $this->start->compare($other->start)
-            ?: $this->end->getMicroTime() <=> $other->end->getMicroTime() // cannot use Time::compare() because of 00:00 vs 24:00
-            ?: $this->openEnd <=> $other->openEnd;
+            ?: $this->end->getMicroTime() <=> $other->end->getMicroTime(); // cannot use Time::compare() because of 00:00 vs 24:00
     }
 
     public function containsValue(Time $value): bool
@@ -265,8 +257,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
         $startTime = $this->getStart()->getMicroTime();
         $endTime = $this->getEnd()->getMicroTime();
 
-        return (($this->openStart ? $time > $startTime : $time >= $startTime) && ($this->openEnd ? $time < $endTime : $time <= $endTime))
-            || (($this->openStart ? $time2 > $startTime : $time2 >= $startTime) && ($this->openEnd ? $time2 < $endTime : $time2 <= $endTime));
+        return ($time >= $startTime && $time < $endTime) || ($time2 >= $startTime && $time2 < $endTime);
     }
 
     /**
@@ -284,8 +275,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
         $thisStart = $this->getStart()->getMicroTime();
         $thisEnd = $this->getEnd()->getMicroTime();
 
-        return (($this->openStart && !$interval->openStart) ? $intervalStart > $thisStart : $intervalStart >= $thisStart)
-            && (($this->openEnd && !$interval->openEnd) ? $intervalEnd < $thisEnd : $intervalEnd <= $thisEnd);
+        return $intervalStart >= $thisStart && $intervalEnd <= $thisEnd;
     }
 
     public function intersects(self $interval): bool
@@ -299,18 +289,17 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
 
     /**
      * @param TimeInterval $interval
-     * @param bool $exclusive
      * @return bool
      */
-    public function touches(self $interval, bool $exclusive = false): bool
+    public function touches(self $interval): bool
     {
-        return ($this->start->getMicroTime() === $interval->end->getMicroTime() && ($exclusive ? ($this->openStart xor $interval->openEnd) : true))
-            || ($this->end->getMicroTime() === $interval->start->getMicroTime() && ($exclusive ? ($this->openEnd xor $interval->openStart) : true));
+        return ($this->start->getMicroTime() === $interval->end->getMicroTime())
+            || ($this->end->getMicroTime() === $interval->start->getMicroTime());
     }
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    public function split(int $parts, int $splitMode = self::SPLIT_OPEN_ENDS): TimeIntervalSet
+    public function split(int $parts): TimeIntervalSet
     {
         if ($this->isEmpty()) {
             return new TimeIntervalSet([]);
@@ -327,15 +316,14 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
             return new Time($timestamp);
         });
 
-        return $this->splitBy($intervalStarts, $splitMode);
+        return $this->splitBy($intervalStarts);
     }
 
     /**
      * @param Time[] $intervalStarts
-     * @param int $splitMode
      * @return TimeIntervalSet
      */
-    public function splitBy(array $intervalStarts, int $splitMode = self::SPLIT_OPEN_ENDS): TimeIntervalSet
+    public function splitBy(array $intervalStarts): TimeIntervalSet
     {
         if ($this->isEmpty()) {
             return new TimeIntervalSet([]);
@@ -347,8 +335,8 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
         foreach ($intervalStarts as $intervalStart) {
             $interval = $results[$i];
             if ($interval->containsValue($intervalStart)) {
-                $results[$i] = new static($interval->start, $intervalStart, $interval->openStart, $splitMode === self::SPLIT_OPEN_ENDS ? self::OPEN : self::CLOSED);
-                $results[] = new static($intervalStart, $interval->end, $splitMode === self::SPLIT_OPEN_STARTS ? self::OPEN : self::CLOSED, $interval->openEnd);
+                $results[$i] = new static($interval->start, $intervalStart);
+                $results[] = new static($intervalStart, $interval->end);
                 $i++;
             }
         }
@@ -359,15 +347,15 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
     /**
      * @return self[]
      */
-    public function splitByMidnight(): array /// mode
+    public function splitByMidnight(): array
     {
         if (!$this->isOverMidnight()) {
             return [$this, self::empty()];
         }
 
         return [
-            new self($this->start, new Time(Time::MAX_MICROSECONDS), $this->openStart, false),
-            new self(new Time(Time::MIN_MICROSECONDS), $this->end, false, $this->openEnd),
+            new self($this->start, new Time(Time::MAX_MICROSECONDS)),
+            new self(new Time(Time::MIN_MICROSECONDS), $this->end),
         ];
     }
 
@@ -376,51 +364,51 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
         $items[] = $this;
         $start = new Time(self::MAX);
         $end = new Time(self::MIN);
-        $startExclusive = true;
-        $endExclusive = true;
         foreach ($items as $item) {
             if ($item->isEmpty()) {
                 continue;
             }
             if ($item->start->getMicroTime() < $start->getMicroTime()) {
                 $start = $item->start;
-                $startExclusive = $item->openStart;
-            } elseif ($startExclusive && !$item->openStart && $item->start->equals($start)) {
-                $startExclusive = false;
             }
             if ($item->end->getMicroTime() > $end->getMicroTime()) {
                 $end = $item->end;
-                $endExclusive = $item->openEnd;
-            } elseif ($endExclusive && !$item->openEnd && $item->end->getMicroTime() === $end->getMicroTime()) {
-                $endExclusive = false;
             }
         }
 
-        return new static($start, $end, $startExclusive, $endExclusive);
+        return new static($start, $end);
     }
 
-    public function intersect(self ...$items): self
+    public function intersect(self ...$items): TimeIntervalSet
     {
         $items[] = $this;
-        $items = self::sortByStart($items);
+        $items = array_map(static function (self $interval): array {
+            if ($interval->isOverMidnight()) {
+                $a = $interval->getStart()->getMicroTime();
+                $b = Microseconds::DAY;
+                $c = Microseconds::DAY;
+                $d = $interval->getEnd()->getMicroTime();
+            } else {
+                $a = $interval->getStart()->getMicroTime();
+                $b = $interval->getEnd()->getMicroTime();
+                $c = $a + Microseconds::DAY;
+                $d = $b + Microseconds::DAY;
+            }
+            return [$a, $b, $c, $d];
+        }, $items);
 
-        $result = array_shift($items);
-        foreach ($items as $item) {
-            if ($result->start->getMicroTime() < $item->start->getMicroTime() || ($result->start->equals($item->start) && $result->openStart && !$item->openStart)) {
-                if ($result->end->getMicroTime() < $item->start->getMicroTime() || ($result->end->getMicroTime() === $item->start->getMicroTime() && ($result->openEnd || $item->openStart))) {
-                    return self::empty();
-                }
-                $result = new static($item->start, $result->end, $item->openStart, $result->openEnd);
-            }
-            if ($result->end->getMicroTime() > $item->end->getMicroTime() || ($result->end->getMicroTime() === $item->end->getMicroTime() && !$result->openEnd && $item->openEnd)) {
-                if ($result->start->getMicroTime() > $item->end->getMicroTime() || ($result->start->getMicroTime() === $item->end->getMicroTime() && ($result->openStart || $item->openEnd))) {
-                    return self::empty();
-                }
-                $result = new static($result->start, $item->end, $result->openStart, $item->openEnd);
-            }
+        [$a, $b, $c, $d] = array_shift($items);
+        foreach ($items as [$e, $f, $g, $h]) {
+            $a = max($a, $e);
+            $b = min($b, $f);
+            $c = max($c, $g);
+            $d = min($d, $h);
         }
 
-        return $result;
+        $result1 = $a <= $b ? new static(new Time($a), new Time($b)) : static::empty();
+        $result2 = $c <= $d ? new static(new Time($c), new Time($d)) : static::empty();
+
+        return (new TimeIntervalSet([$result1, $result2]))->normalize();
     }
 
     public function union(self ...$items): TimeIntervalSet
@@ -475,30 +463,30 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
                 $intervalStartTime = $interval->getStart()->getMicroTime();
                 $intervalEndTime = $interval->getEnd()->getMicroTime();
 
-                $startLower = $intervalStartTime < $itemStartTime || ($intervalStartTime === $itemStartTime && !$interval->openStart && $item->openStart);
-                $endHigher = $intervalEndTime > $itemEndTime || ($intervalEndTime === $itemEndTime && $interval->openEnd && !$item->openEnd);
+                $startLower = $intervalStartTime < $itemStartTime;
+                $endHigher = $intervalEndTime > $itemEndTime;
                 if ($startLower && $endHigher) {
                     // r1****i1----i2****r2
                     unset($results[$r]);
-                    $results[] = new static($interval->start, $item->start, $interval->openStart, !$item->openStart);
-                    $results[] = new static($item->end, $interval->end, !$item->openEnd, $interval->openEnd);
+                    $results[] = new static($interval->start, $item->start);
+                    $results[] = new static($item->end, $interval->end);
                 } elseif ($startLower) {
-                    if ($intervalEndTime < $itemStartTime || ($intervalEndTime === $itemStartTime && $interval->openEnd && !$item->openStart)) {
+                    if ($intervalEndTime < $itemStartTime) {
                         // r1****r2    i1----i2
                         continue;
                     } else {
                         // r1****i1----r2----i2
                         unset($results[$r]);
-                        $results[] = new static($interval->start, $item->start, $interval->openStart, !$item->openStart);
+                        $results[] = new static($interval->start, $item->start);
                     }
                 } elseif ($endHigher) {
-                    if ($intervalStartTime > $itemEndTime || ($intervalStartTime === $itemEndTime && $interval->openStart && !$item->openEnd)) {
+                    if ($intervalStartTime > $itemEndTime) {
                         // i1----i2    r1****r2
                         continue;
                     } else {
                         // i1----r1----i2****r2
                         unset($results[$r]);
-                        $results[] = new static($item->end, $interval->end, !$item->openEnd, $interval->openEnd);
+                        $results[] = new static($item->end, $interval->end);
                     }
                 } else {
                     // i1----r1----r2----i2
@@ -566,69 +554,64 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
                 }
                 $bStartTime = $b->getStart()->getMicroTime();
                 $bEndTime = $b->getEnd()->getMicroTime();
-                if ($aEndTime < $bStartTime || ($aEndTime === $bStartTime && ($a->openEnd || $b->openStart))
-                    || $aStartTime > $bEndTime || ($aStartTime === $bEndTime && ($a->openStart || $b->openEnd))) {
+                if ($aEndTime <= $bStartTime || $aStartTime >= $bEndTime) {
                     // a1----a1    b1----b1
                     continue;
-                } elseif ($aStartTime === $bStartTime && $a->openStart === $b->openStart) {
-                    if ($aEndTime === $bEndTime && $a->openEnd === $b->openEnd) {
-                        // a1=b1----a2=b2
-                        continue;
-                    } elseif ($aEndTime > $bEndTime || ($aEndTime === $bEndTime && $a->openEnd === false)) {
+                } elseif ($aStartTime === $bStartTime) {
+                    if ($aEndTime > $bEndTime) {
                         // a1=b1----b2----a2
                         $items[$i] = $b;
-                        $items[] = new static($b->end, $a->end, !$b->openEnd, $a->openEnd);
+                        $items[] = new static($b->end, $a->end);
                         $starts[count($items) - 1] = $i + 1;
                         $a = $b;
                         $aStartTime = $a->getStart()->getMicroTime();
                         $aEndTime = $a->getEnd()->getMicroTime();
                     } else {
+                        // a1=b1----a2=b2
                         // a1=b1----a2----b2
                         continue;
                     }
-                } elseif ($aStartTime < $bStartTime || ($aStartTime === $bStartTime && $a->openStart === false)) {
-                    if ($aEndTime === $bEndTime && $a->openEnd === $b->openEnd) {
+                } elseif ($aStartTime < $bStartTime) {
+                    if ($aEndTime === $bEndTime) {
                         // a1----b1----a2=b2
                         $items[$i] = $b;
-                        $items[] = new static($a->start, $b->start, $a->openStart, !$b->openStart);
+                        $items[] = new static($a->start, $b->start);
                         $starts[count($items) - 1] = $i + 1;
                         $a = $b;
                         $aStartTime = $a->getStart()->getMicroTime();
                         $aEndTime = $a->getEnd()->getMicroTime();
-                    } elseif ($aEndTime > $bEndTime || ($aEndTime === $bEndTime && $a->openEnd === false)) {
+                    } elseif ($aEndTime > $bEndTime) {
                         // a1----b1----b2----a2
                         $items[$i] = $b;
-                        $items[] = new static($a->start, $b->start, $a->openStart, !$b->openStart);
+                        $items[] = new static($a->start, $b->start);
                         $starts[count($items) - 1] = $i + 1;
-                        $items[] = new static($b->end, $a->end, !$b->openEnd, $a->openEnd);
+                        $items[] = new static($b->end, $a->end);
                         $starts[count($items) - 1] = $i + 1;
                         $a = $b;
                         $aStartTime = $a->getStart()->getMicroTime();
                         $aEndTime = $a->getEnd()->getMicroTime();
                     } else {
                         // a1----b1----a2----b2
-                        $new = new static($b->start, $a->end, $b->openStart, $a->openEnd);
+                        $new = new static($b->start, $a->end);
                         $items[$i] = $new;
-                        $items[] = new static($a->start, $b->start, $a->openStart, !$b->openStart);
+                        $items[] = new static($a->start, $b->start);
                         $starts[count($items) - 1] = $i + 1;
                         $a = $new;
                         $aStartTime = $a->getStart()->getMicroTime();
                         $aEndTime = $a->getEnd()->getMicroTime();
                     }
                 } else {
-                    if ($aEndTime === $bEndTime && $a->openEnd === $b->openEnd) {
-                        // b1----a1----a2=b2
-                        continue;
-                    } elseif ($aEndTime > $bEndTime || ($aEndTime === $bEndTime && $a->openEnd === false)) {
+                    if ($aEndTime > $bEndTime) {
                         // b1----a1----b2----a2
-                        $new = new static($a->start, $b->end, $a->openStart, $b->openEnd);
+                        $new = new static($a->start, $b->end);
                         $items[$i] = $new;
-                        $items[] = new static($b->end, $a->end, !$b->openEnd, $a->openEnd);
+                        $items[] = new static($b->end, $a->end);
                         $starts[count($items) - 1] = $i + 1;
                         $a = $new;
                         $aStartTime = $a->getStart()->getMicroTime();
                         $aEndTime = $a->getEnd()->getMicroTime();
                     } else {
+                        // b1----a1----a2=b2
                         // b1----a1----a2----b2
                         continue;
                     }

@@ -9,14 +9,25 @@
 
 namespace Dogma\Time\Interval;
 
-use Dogma\Math\Interval\Interval;
+use Dogma\Time\DateOrTime;
 use Dogma\Time\Span\DateTimeSpan;
 
-interface DateOrTimeInterval /*<T>*/ extends Interval /*<T>*/
+interface DateOrTimeInterval
 {
+
+    /**
+     * @return DateOrTime|mixed
+     */
+    public function getStart(); // : DateOrTime
+
+    /**
+     * @return DateOrTime|mixed
+     */
+    public function getEnd(); // : DateOrTime
 
     public function getSpan(): DateTimeSpan;
 
-    //public function splitByUnit(DateTimeUnit $unit): DateOrTimeIntervalSet<T>
+    // todo: not implemented in DateInterval and TimeInterval
+    //public function splitByUnit(DateTimeUnit $unit): DateOrTimeIntervalSet
 
 }

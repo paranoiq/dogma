@@ -15,6 +15,7 @@ use Dogma\ArrayIterator;
 use Dogma\Check;
 use Dogma\Compare;
 use Dogma\Equalable;
+use Dogma\Math\Interval\IntervalSet;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
@@ -27,7 +28,7 @@ use function implode;
 use function is_array;
 use function reset;
 
-class DateTimeIntervalSet implements DateOrTimeIntervalSet
+class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 {
     use StrictBehaviorMixin;
 

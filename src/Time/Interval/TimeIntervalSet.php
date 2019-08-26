@@ -14,6 +14,7 @@ use Dogma\ArrayIterator;
 use Dogma\Check;
 use Dogma\Compare;
 use Dogma\Equalable;
+use Dogma\Math\Interval\ModuloIntervalSet;
 use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
@@ -26,7 +27,7 @@ use function implode;
 use function is_array;
 use function reset;
 
-class TimeIntervalSet implements DateOrTimeIntervalSet, Pokeable
+class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokeable
 {
     use StrictBehaviorMixin;
 
@@ -211,7 +212,7 @@ class TimeIntervalSet implements DateOrTimeIntervalSet, Pokeable
         foreach ($this->intervals as $result) {
             foreach ($intervals as $interval) {
                 if ($result->intersects($interval)) {
-                    $results[] = $result->intersect($interval);
+                    $results = array_merge($results, $result->intersect($interval)->getIntervals());
                 }
             }
         }

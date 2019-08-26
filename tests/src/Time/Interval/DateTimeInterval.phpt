@@ -30,12 +30,10 @@ $all = DateTimeInterval::all();
 $d = static function (int $day): DateTime {
     return new DateTime('2000-01-' . $day . ' 00:00:00');
 };
-$i = static function (int $start, int $end, bool $openStart = false, bool $openEnd = true): DateTimeInterval {
+$i = static function (int $start, int $end): DateTimeInterval {
     return new DateTimeInterval(
         new DateTime('2000-01-' . $start . ' 00:00:00.000000'),
         new DateTime('2000-01-' . $end . ' 00:00:00.000000'),
-        $openStart,
-        $openEnd
     );
 };
 $s = static function (DateTimeInterval ...$items): DateTimeIntervalSet {
@@ -52,10 +50,6 @@ Assert::equal(DateTimeInterval::createFromString('2000-01-10 00:00,2000-01-20 00
 Assert::equal(DateTimeInterval::createFromString('2000-01-10 00:00|2000-01-20 00:00'), $interval);
 Assert::equal(DateTimeInterval::createFromString('2000-01-10 00:00/2000-01-20 00:00'), $interval);
 Assert::equal(DateTimeInterval::createFromString('2000-01-10 00:00 - 2000-01-20 00:00'), $interval);
-Assert::equal(DateTimeInterval::createFromString('[2000-01-10 00:00,2000-01-20 00:00]'), new DateTimeInterval($startTime, $endTime, false, false));
-Assert::equal(DateTimeInterval::createFromString('[2000-01-10 00:00,2000-01-20 00:00)'), $interval);
-Assert::equal(DateTimeInterval::createFromString('(2000-01-10 00:00,2000-01-20 00:00)'), new DateTimeInterval($startTime, $endTime, true, true));
-Assert::equal(DateTimeInterval::createFromString('(2000-01-10 00:00,2000-01-20 00:00]'), new DateTimeInterval($startTime, $endTime, true, false));
 Assert::exception(static function (): void {
     DateTimeInterval::createFromString('foo|bar|baz');
 }, InvalidIntervalStringFormatException::class);
@@ -166,19 +160,18 @@ Assert::false($interval->touches($i(21, 25)));
 Assert::false($interval->touches($empty));
 
 // split()
-$splitMode = DateTimeInterval::SPLIT_OPEN_ENDS;
-Assert::equal($interval->split(1, $splitMode), $s($interval));
-Assert::equal($interval->split(2, $splitMode), $s($i(10, 15), $i(15, 20)));
-Assert::equal($interval->split(3, $splitMode), $s(
-    DateTimeInterval::openEnd(new DateTime('2000-01-10 00:00:00'), new DateTime('2000-01-13 08:00:00')),
-    DateTimeInterval::openEnd(new DateTime('2000-01-13 08:00:00'), new DateTime('2000-01-16 16:00:00')),
-    DateTimeInterval::openEnd(new DateTime('2000-01-16 16:00:00'), new DateTime('2000-01-20 00:00:00'))
+Assert::equal($interval->split(1), $s($interval));
+Assert::equal($interval->split(2), $s($i(10, 15), $i(15, 20)));
+Assert::equal($interval->split(3), $s(
+    new DateTimeInterval(new DateTime('2000-01-10 00:00:00'), new DateTime('2000-01-13 08:00:00')),
+    new DateTimeInterval(new DateTime('2000-01-13 08:00:00'), new DateTime('2000-01-16 16:00:00')),
+    new DateTimeInterval(new DateTime('2000-01-16 16:00:00'), new DateTime('2000-01-20 00:00:00'))
 ));
-Assert::equal($empty->split(5, $splitMode), $s());
+Assert::equal($empty->split(5), $s());
 
 // splitBy()
-Assert::equal($interval->splitBy([$d(5), $d(15), $d(25)], $splitMode), $s($i(10, 15), $i(15, 20)));
-Assert::equal($empty->splitBy([$d(5)], $splitMode), $s());
+Assert::equal($interval->splitBy([$d(5), $d(15), $d(25)]), $s($i(10, 15), $i(15, 20)));
+Assert::equal($empty->splitBy([$d(5)]), $s());
 
 // envelope()
 Assert::equal($interval->envelope($i(5, 15)), $i(5, 20));
@@ -210,7 +203,7 @@ Assert::equal($interval->difference($i(5, 15)), $s($i(5, 10), $i(15, 20)));
 Assert::equal($interval->difference($i(5, 15), $i(15, 30)), $s($i(5, 10), $i(20, 30)));
 Assert::equal($interval->difference($i(25, 30)), $s($interval, $i(25, 30)));
 Assert::equal($interval->difference($all), $s(
-    new DateTimeInterval(new DateTime(DateTime::MIN), $d(10), false, true),
+    new DateTimeInterval(new DateTime(DateTime::MIN), $d(10)),
     new DateTimeInterval($d(20), new DateTime(DateTime::MAX))
 ));
 Assert::equal($interval->difference($empty), $s($interval));
@@ -227,7 +220,7 @@ Assert::equal($empty->subtract($empty), $s());
 
 // invert()
 Assert::equal($interval->invert(), $s(
-    new DateTimeInterval(new DateTime(DateTime::MIN), $d(10), false, true),
+    new DateTimeInterval(new DateTime(DateTime::MIN), $d(10)),
     new DateTimeInterval($d(20), new DateTime(DateTime::MAX))
 ));
 Assert::equal($empty->invert(), $s($all));
@@ -241,15 +234,14 @@ Assert::equal(DateTimeInterval::countOverlaps($interval, $i(5, 15)), [
     [$i(15, 20), 1],
 ]);
 Assert::equal(DateTimeInterval::countOverlaps(
-    $i(5, 15, false, false),
-    $i(10, 20, false, false),
-    $i(15, 25, false, false)
+    $i(5, 15),
+    $i(10, 20),
+    $i(15, 25)
 ), [
-    [$i(5, 10, false, true), 1],
-    [$i(10, 15, false, true), 2],
-    [$i(15, 15, false, false), 3],
-    [$i(15, 20, true, false), 2],
-    [$i(20, 25, true, false), 1],
+    [$i(5, 10), 1],
+    [$i(10, 15), 2],
+    [$i(15, 20), 2],
+    [$i(20, 25), 1],
 ]);
 
 // explodeOverlaps()
@@ -260,18 +252,16 @@ Assert::equal($s(...DateTimeInterval::explodeOverlaps($interval, $i(5, 15))), $s
     $i(10, 15),
     $i(15, 20)
 ));
+
 Assert::equal($s(...DateTimeInterval::explodeOverlaps(
-    $i(5, 15, false, false),
-    $i(10, 20, false, false),
-    $i(15, 25, false, false)
+    $i(5, 15),
+    $i(10, 20),
+    $i(15, 25)
 )), $s(
-    $i(5, 10, false, true),
-    $i(10, 15, false, true),
-    $i(10, 15, false, true),
-    $i(15, 15, false, false),
-    $i(15, 15, false, false),
-    $i(15, 15, false, false),
-    $i(15, 20, true, false),
-    $i(15, 20, true, false),
-    $i(20, 25, true, false)
+    $i(5, 10),
+    $i(10, 15),
+    $i(10, 15),
+    $i(15, 20),
+    $i(15, 20),
+    $i(20, 25)
 ));

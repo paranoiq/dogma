@@ -26,8 +26,8 @@ $d = static function (int $day): DayOfYear {
 };
 $i = static function (int $start, int $end): DayOfYearInterval {
     return new DayOfYearInterval(
-        new DayOfYear('01-' . Str::padLeft(strval($start), 2, '0')),
-        new DayOfYear('01-' . Str::padLeft(strval($end), 2, '0'))
+        new DayOfYear($start),
+        new DayOfYear($end)
     );
 };
 $s = static function (DayOfYearInterval ...$items): DayOfYearIntervalSet {
@@ -147,33 +147,40 @@ Assert::equal($empty->splitBy([$d(5)]), $s());
 
 // envelope()
 Assert::equal($interval->envelope($i(5, 15)), $i(5, 20));
-Assert::equal($interval->envelope($i(15, 25)), $i(10, 25));
+Assert::equal($interval->envelope($i(15, 368)), $i(10, 368));
 Assert::equal($interval->envelope($i(1, 5)), $i(1, 20));
-Assert::equal($interval->envelope($i(21, 25)), $i(10, 25));
-Assert::equal($interval->envelope($i(4, 5), $i(21, 25)), $i(4, 25));
+Assert::equal($interval->envelope($i(21, 368)), $i(10, 368));
+Assert::equal($interval->envelope($i(4, 5), $i(21, 368)), $i(4, 368));
 Assert::equal($interval->envelope($empty), $interval);
 
 // intersect()
-Assert::equal($interval->intersect($i(1, 15)), $i(10, 15));
-Assert::equal($interval->intersect($i(15, 25)), $i(15, 20));
-Assert::equal($interval->intersect($i(1, 18), $i(14, 25)), $i(14, 18));
-Assert::equal($interval->intersect($i(1, 5)), $empty);
-Assert::equal($interval->intersect($i(1, 5), $i(5, 15)), $empty);
-Assert::equal($interval->intersect($empty), $empty);
+Assert::equal($interval->intersect($i(1, 15)), $s($i(10, 15)));
+Assert::equal($interval->intersect($i(15, 375)), $s($i(15, 20)));
+Assert::equal($interval->intersect($i(1, 18), $i(14, 375)), $s($i(14, 18)));
+Assert::equal($interval->intersect($i(1, 5)), new DayOfYearIntervalSet([]));
+Assert::equal($interval->intersect($i(1, 5), $i(5, 15)), new DayOfYearIntervalSet([]));
+Assert::equal($interval->intersect($empty), new DayOfYearIntervalSet([]));
+
+// intersecting denormalized and normalized intervals
+$interval1 = DayOfYearInterval::createFromString('11-16 - 03-31');
+$interval2 = DayOfYearInterval::createFromString('03-25 - 09-30');
+Assert::true($interval1->intersects($interval2));
+Assert::equal($interval1->intersect($interval2)->format(), '03-25 - 03-31');
+Assert::equal($interval2->intersect($interval1)->format(), '03-25 - 03-31');
 
 // union()
 Assert::equal($interval->union($i(1, 15)), $s($i(1, 20)));
-Assert::equal($interval->union($i(15, 25)), $s($i(10, 25)));
-Assert::equal($interval->union($i(4, 15), $i(15, 25)), $s($i(4, 25)));
-Assert::equal($interval->union($i(25, 26)), $s($interval, $i(25, 26)));
+Assert::equal($interval->union($i(15, 368)), $s($i(10, 368)));
+Assert::equal($interval->union($i(4, 15), $i(15, 368)), $s($i(4, 368)));
+Assert::equal($interval->union($i(368, 369)), $s($i(368, 369), $interval));
 Assert::equal($interval->union($all), $s($all));
 Assert::equal($interval->union($empty), $s($interval));
 
 // difference()
-Assert::equal($interval->difference($i(15, 25)), $s($i(10, 14), $i(21, 25)));
+Assert::equal($interval->difference($i(15, 368)), $s($i(10, 14), $i(21, 368)));
 Assert::equal($interval->difference($i(5, 15)), $s($i(5, 9), $i(16, 20)));
-Assert::equal($interval->difference($i(5, 15), $i(15, 25)), $s($i(5, 9), $i(21, 25)));
-Assert::equal($interval->difference($i(22, 25)), $s($interval, $i(22, 25)));
+Assert::equal($interval->difference($i(5, 15), $i(15, 368)), $s($i(5, 9), $i(21, 368)));
+Assert::equal($interval->difference($i(22, 368)), $s($interval, $i(22, 368)));
 Assert::equal($interval->difference($all), $s(
     new DayOfYearInterval(new DayOfYear(DayOfYear::MIN), $d(9)),
     new DayOfYearInterval($d(21), new DayOfYear(DayOfYear::MAX))
@@ -182,9 +189,9 @@ Assert::equal($interval->difference($empty), $s($interval));
 
 // subtract()
 Assert::equal($interval->subtract($i(5, 15)), $s($i(15, 20)));
-Assert::equal($interval->subtract($i(15, 25)), $s($i(10, 15)));
+Assert::equal($interval->subtract($i(15, 368)), $s($i(10, 15)));
 Assert::equal($interval->subtract($i(13, 17)), $s($i(10, 13), $i(17, 20)));
-Assert::equal($interval->subtract($i(5, 10), $i(20, 25)), $s($i(10, 20)));
+Assert::equal($interval->subtract($i(5, 10), $i(20, 368)), $s($i(10, 20)));
 Assert::equal($interval->subtract($empty), $s($interval));
 Assert::equal($interval->subtract($all), $s());
 Assert::equal($all->subtract($empty), $s($all));
@@ -213,13 +220,13 @@ Assert::equal(DayOfYearInterval::countOverlaps($interval, $i(5, 15)), [
 Assert::equal(DayOfYearInterval::countOverlaps(
     $i(5, 15),
     $i(10, 20),
-    $i(15, 25)
+    $i(15, 368)
 ), [
     [$i(5, 9), 1],
     [$i(10, 14), 2],
     [$i(15, 15), 3],
     [$i(16, 20), 2],
-    [$i(21, 25), 1],
+    [$i(21, 368), 1],
 ]);
 
 // explodeOverlaps()
@@ -239,7 +246,7 @@ Assert::equal($s(...DayOfYearInterval::explodeOverlaps($interval, $i(5, 15))), $
 Assert::equal($s(...DayOfYearInterval::explodeOverlaps(
     $i(5, 15),
     $i(10, 20),
-    $i(15, 25)
+    $i(15, 368)
 )), $s(
     $i(5, 9),
     $i(10, 14),
@@ -249,5 +256,5 @@ Assert::equal($s(...DayOfYearInterval::explodeOverlaps(
     $i(15, 15),
     $i(16, 20),
     $i(16, 20),
-    $i(21, 25)
+    $i(21, 368)
 ));

@@ -14,6 +14,7 @@ use Dogma\ArrayIterator;
 use Dogma\Check;
 use Dogma\Compare;
 use Dogma\Equalable;
+use Dogma\Math\Interval\IntervalSet;
 use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
@@ -28,7 +29,7 @@ use function is_array;
 use function reset;
 use function sort;
 
-class DateIntervalSet implements DateOrTimeIntervalSet, Pokeable
+class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 {
     use StrictBehaviorMixin;
 

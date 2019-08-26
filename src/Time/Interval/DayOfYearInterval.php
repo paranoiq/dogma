@@ -13,25 +13,28 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
-use Dogma\Math\Interval\Interval;
 use Dogma\Math\Interval\IntervalParser;
+use Dogma\Math\Interval\ModuloInterval;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateTimeUnit;
 use Dogma\Time\DayOfYear;
 use Dogma\Time\InvalidDateTimeUnitException;
 use Dogma\Time\InvalidDayOfYearIntervalException;
 use function array_fill;
+use function array_map;
 use function array_shift;
 use function array_unique;
 use function array_values;
 use function count;
+use function max;
+use function min;
 use function round;
 use function usort;
 
 /**
  * Interval between two dates represented as DayOfYear. Does not include information about year.
  */
-class DayOfYearInterval implements Interval
+class DayOfYearInterval implements ModuloInterval
 {
     use StrictBehaviorMixin;
 
@@ -104,6 +107,32 @@ class DayOfYearInterval implements Interval
     public static function all(): self
     {
         return new static(new DayOfYear(self::MIN), new DayOfYear(self::MAX));
+    }
+
+    public function normalize(): self
+    {
+        if ($this->start->isNormalized()) {
+            $self = new static($this->start, $this->end);
+            $self->start = $this->start->normalize();
+            $self->end = $this->end->normalize();
+
+            return $self;
+        } else {
+            return $this;
+        }
+    }
+
+    public function denormalize(): self
+    {
+        if ($this->end->isNormalized()) {
+            $self = new static($this->start, $this->end);
+            $self->start = $this->start->denormalize();
+            $self->end = $this->end->denormalize();
+
+            return $self;
+        } else {
+            return $this;
+        }
     }
 
     // modifications ---------------------------------------------------------------------------------------------------
@@ -320,28 +349,36 @@ class DayOfYearInterval implements Interval
         return new static($start, $end);
     }
 
-    public function intersect(self ...$items): self
+    public function intersect(self ...$items): DayOfYearIntervalSet
     {
         $items[] = $this;
-        $items = self::sortByStart($items);
+        $items = array_map(static function (self $interval): array {
+            if ($interval->isOverEndOfYear()) {
+                $a = $interval->getStart()->getNumber();
+                $b = 366;
+                $c = 367;
+                $d = $interval->getEnd()->getNumber();
+            } else {
+                $a = $interval->getStart()->getNumber();
+                $b = $interval->getEnd()->getNumber();
+                $c = $a + 366;
+                $d = $b + 366;
+            }
+            return [$a, $b, $c, $d];
+        }, $items);
 
-        $result = array_shift($items);
-        foreach ($items as $item) {
-            if ($result->start->getNumber() < $item->start->getNumber()) {
-                if ($result->end->getNumber() < $item->start->getNumber()) {
-                    return self::empty();
-                }
-                $result = new static($item->start, $result->end);
-            }
-            if ($result->end->getNumber() > $item->end->getNumber()) {
-                if ($result->start->getNumber() > $item->end->getNumber()) {
-                    return self::empty();
-                }
-                $result = new static($result->start, $item->end);
-            }
+        [$a, $b, $c, $d] = array_shift($items);
+        foreach ($items as [$e, $f, $g, $h]) {
+            $a = max($a, $e);
+            $b = min($b, $f);
+            $c = max($c, $g);
+            $d = min($d, $h);
         }
 
-        return $result;
+        $result1 = $a <= $b ? new static(new DayOfYear($a), new DayOfYear($b)) : static::empty();
+        $result2 = $c <= $d ? new static(new DayOfYear($c), new DayOfYear($d)) : static::empty();
+
+        return (new DayOfYearIntervalSet([$result1, $result2]))->normalize();
     }
 
     public function union(self ...$items): DayOfYearIntervalSet

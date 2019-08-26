@@ -15,6 +15,7 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
+use Dogma\Math\Interval\Interval;
 use Dogma\Math\Interval\IntervalParser;
 use Dogma\Math\Interval\IntInterval;
 use Dogma\Pokeable;
@@ -37,7 +38,7 @@ use function usort;
 /**
  * Interval of dates. Based on IntInterval.
  */
-class DateInterval implements DateOrTimeInterval, Pokeable
+class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 {
     use StrictBehaviorMixin;
 

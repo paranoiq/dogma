@@ -133,6 +133,11 @@ class DayOfYear implements Equalable, Comparable
         }
     }
 
+    public function isNormalized(): bool
+    {
+        return $this->number <= self::MAX_NUMBER;
+    }
+
     // modifications ---------------------------------------------------------------------------------------------------
 
     public function modify(string $modify): self

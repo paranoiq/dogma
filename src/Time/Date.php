@@ -173,7 +173,7 @@ class Date implements DateOrDateTime, Pokeable
 
     public function toDateTimeInterval(?DateTimeZone $timeZone = null): DateTimeInterval
     {
-        return new DateTimeInterval($this->getStart($timeZone), $this->addDay()->getStart(), false, true);
+        return new DateTimeInterval($this->getStart($timeZone), $this->addDay()->getStart());
     }
 
     public function getJulianDay(): int

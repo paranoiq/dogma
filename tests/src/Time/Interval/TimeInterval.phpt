@@ -27,12 +27,10 @@ $all = TimeInterval::all();
 $t = static function (int $hour): Time {
     return new Time(Str::padLeft(strval($hour), 2, '0') . ':00:00.000000');
 };
-$i = static function (int $start, int $end, bool $openStart = false, bool $openEnd = true): TimeInterval {
+$i = static function (int $start, int $end): TimeInterval {
     return new TimeInterval(
         new Time(Str::padLeft(strval($start), 2, '0') . ':00:00.000000'),
         new Time(Str::padLeft(strval($end), 2, '0') . ':00:00.000000'),
-        $openStart,
-        $openEnd
     );
 };
 $s = static function (TimeInterval ...$items): TimeIntervalSet {
@@ -44,10 +42,6 @@ Assert::equal(TimeInterval::createFromString('10:00,20:00'), $interval);
 Assert::equal(TimeInterval::createFromString('10:00|20:00'), $interval);
 Assert::equal(TimeInterval::createFromString('10:00/20:00'), $interval);
 Assert::equal(TimeInterval::createFromString('10:00 - 20:00'), $interval);
-Assert::equal(TimeInterval::createFromString('[10:00,20:00]'), new TimeInterval($startTime, $endTime, false, false));
-Assert::equal(TimeInterval::createFromString('[10:00,20:00)'), $interval);
-Assert::equal(TimeInterval::createFromString('(10:00,20:00)'), new TimeInterval($startTime, $endTime, true, true));
-Assert::equal(TimeInterval::createFromString('(10:00,20:00]'), new TimeInterval($startTime, $endTime, true, false));
 Assert::equal(TimeInterval::createFromString('00:00 - 00:00'), new TimeInterval($t(0), $t(0)));
 Assert::equal(TimeInterval::createFromString('00:00 - 00:00')->getLengthInMicroseconds(), 0);
 Assert::equal(TimeInterval::createFromString('00:00 - 24:00'), new TimeInterval($t(0), $t(24)));
@@ -142,19 +136,18 @@ Assert::false($interval->touches($i(21, 23)));
 Assert::false($interval->touches($empty));
 
 // split()
-$splitMode = TimeInterval::SPLIT_OPEN_ENDS;
-Assert::equal($interval->split(1, $splitMode), $s($interval));
-Assert::equal($interval->split(2, $splitMode), $s($i(10, 15), $i(15, 20)));
-Assert::equal($interval->split(3, $splitMode), $s(
-    TimeInterval::openEnd(new Time('10:00:00'), new Time('13:20:00')),
-    TimeInterval::openEnd(new Time('13:20:00'), new Time('16:40:00')),
-    TimeInterval::openEnd(new Time('16:40:00'), new Time('20:00:00'))
+Assert::equal($interval->split(1), $s($interval));
+Assert::equal($interval->split(2), $s($i(10, 15), $i(15, 20)));
+Assert::equal($interval->split(3), $s(
+    new TimeInterval(new Time('10:00:00'), new Time('13:20:00')),
+    new TimeInterval(new Time('13:20:00'), new Time('16:40:00')),
+    new TimeInterval(new Time('16:40:00'), new Time('20:00:00'))
 ));
-Assert::equal($empty->split(5, $splitMode), $s());
+Assert::equal($empty->split(5), $s());
 
 // splitBy()
-Assert::equal($interval->splitBy([$t(5), $t(15), $t(25)], $splitMode), $s($i(10, 15), $i(15, 20)));
-Assert::equal($empty->splitBy([$t(5)], $splitMode), $s());
+Assert::equal($interval->splitBy([$t(5), $t(15), $t(25)]), $s($i(10, 15), $i(15, 20)));
+Assert::equal($empty->splitBy([$t(5)]), $s());
 
 // envelope()
 Assert::equal($interval->envelope($i(5, 15)), $i(5, 20));
@@ -165,12 +158,19 @@ Assert::equal($interval->envelope($i(4, 5), $i(21, 25)), $i(4, 25));
 Assert::equal($interval->envelope($empty), $interval);
 
 // intersect()
-Assert::equal($interval->intersect($i(1, 15)), $i(10, 15));
-Assert::equal($interval->intersect($i(15, 25)), $i(15, 20));
-Assert::equal($interval->intersect($i(1, 18), $i(14, 25)), $i(14, 18));
-Assert::equal($interval->intersect($i(1, 5)), $empty);
-Assert::equal($interval->intersect($i(1, 5), $i(5, 15)), $empty);
-Assert::equal($interval->intersect($empty), $empty);
+Assert::equal($interval->intersect($i(1, 15)), $s($i(10, 15)));
+Assert::equal($interval->intersect($i(15, 25)), $s($i(15, 20)));
+Assert::equal($interval->intersect($i(1, 18), $i(14, 25)), $s($i(14, 18)));
+Assert::equal($interval->intersect($i(1, 5)), new TimeIntervalSet([]));
+Assert::equal($interval->intersect($i(1, 5), $i(5, 15)), new TimeIntervalSet([]));
+Assert::equal($interval->intersect($empty), new TimeIntervalSet([]));
+
+// intersecting denormalized and normalized intervals
+$interval1 = TimeInterval::createFromString('11:16 - 03:31');
+$interval2 = TimeInterval::createFromString('03:25 - 09:30');
+Assert::true($interval1->intersects($interval2));
+Assert::equal($interval1->intersect($interval2)->format('h:i| - h:i'), '03:25 - 03:31');
+Assert::equal($interval2->intersect($interval1)->format('h:i| - h:i'), '03:25 - 03:31');
 
 // union()
 Assert::equal($interval->union($i(1, 15)), $s($i(1, 20)));
@@ -186,8 +186,8 @@ Assert::equal($interval->difference($i(5, 15)), $s($i(5, 10), $i(15, 20)));
 Assert::equal($interval->difference($i(5, 15), $i(15, 25)), $s($i(5, 10), $i(20, 25)));
 Assert::equal($interval->difference($i(22, 25)), $s($interval, $i(22, 25)));
 Assert::equal($interval->difference($all), $s(
-    new TimeInterval(new Time(Time::MIN), $t(10), false, true),
-    new TimeInterval($t(20), new Time(Time::MAX), false, false)
+    new TimeInterval(new Time(Time::MIN), $t(10)),
+    new TimeInterval($t(20), new Time(Time::MAX))
 ));
 Assert::equal($interval->difference($empty), $s($interval));
 
@@ -203,8 +203,8 @@ Assert::equal($empty->subtract($empty), $s());
 
 // invert()
 Assert::equal($interval->invert(), $s(
-    new TimeInterval(new Time(Time::MIN), $t(10), false, true),
-    new TimeInterval($t(20), new Time(Time::MAX), false, false)
+    new TimeInterval(new Time(Time::MIN), $t(10)),
+    new TimeInterval($t(20), new Time(Time::MAX))
 ));
 Assert::equal($empty->invert(), $s($all));
 Assert::equal($all->invert(), $s($empty));
@@ -217,15 +217,14 @@ Assert::equal(TimeInterval::countOverlaps($interval, $i(5, 15)), [
     [$i(15, 20), 1],
 ]);
 Assert::equal(TimeInterval::countOverlaps(
-    $i(5, 15, false, false),
-    $i(10, 20, false, false),
-    $i(15, 25, false, false)
+    $i(5, 15),
+    $i(10, 20),
+    $i(15, 25)
 ), [
-    [$i(5, 10, false, true), 1],
-    [$i(10, 15, false, true), 2],
-    [$i(15, 15, false, false), 3],
-    [$i(15, 20, true, false), 2],
-    [$i(20, 25, true, false), 1],
+    [$i(5, 10), 1],
+    [$i(10, 15), 2],
+    [$i(15, 20), 2],
+    [$i(20, 25), 1],
 ]);
 
 // explodeOverlaps()
@@ -237,17 +236,14 @@ Assert::equal($s(...TimeInterval::explodeOverlaps($interval, $i(5, 15))), $s(
     $i(15, 20)
 ));
 Assert::equal($s(...TimeInterval::explodeOverlaps(
-    $i(5, 15, false, false),
-    $i(10, 20, false, false),
-    $i(15, 25, false, false)
+    $i(5, 15),
+    $i(10, 20),
+    $i(15, 25)
 )), $s(
-    $i(5, 10, false, true),
-    $i(10, 15, false, true),
-    $i(10, 15, false, true),
-    $i(15, 15, false, false),
-    $i(15, 15, false, false),
-    $i(15, 15, false, false),
-    $i(15, 20, true, false),
-    $i(15, 20, true, false),
-    $i(20, 25, true, false)
+    $i(5, 10),
+    $i(10, 15),
+    $i(10, 15),
+    $i(15, 20),
+    $i(15, 20),
+    $i(20, 25)
 ));

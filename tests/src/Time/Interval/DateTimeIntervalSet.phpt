@@ -21,14 +21,14 @@ require_once __DIR__ . '/../../bootstrap.php';
 $dt = static function (int $day): DateTime {
     return DateTime::createFromComponents(2000, 1, $day);
 };
-$i = static function (int $start, int $end, bool $openStart = false, bool $openEnd = true) use ($dt): DateTimeInterval {
-    return new DateTimeInterval($dt($start), $dt($end), $openStart, $openEnd);
+$i = static function (int $start, int $end) use ($dt): DateTimeInterval {
+    return new DateTimeInterval($dt($start), $dt($end));
 };
 $s = static function (DateTimeInterval ...$items): DateTimeIntervalSet {
     return new DateTimeIntervalSet($items);
 };
 
-$interval = new DateTimeInterval($dt(1), $dt(5), false, true);
+$interval = new DateTimeInterval($dt(1), $dt(5));
 $emptyInterval = DateTimeInterval::empty();
 
 $set = new DateTimeIntervalSet([$interval]);

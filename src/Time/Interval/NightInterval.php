@@ -15,6 +15,7 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
+use Dogma\Math\Interval\Interval;
 use Dogma\Math\Interval\IntervalParser;
 use Dogma\Math\Interval\IntInterval;
 use Dogma\Pokeable;
@@ -44,7 +45,7 @@ use function usort;
  * This class exist to emphasize the difference between "list of days" (DateInterval) and "time to stay" (NightInterval) types
  * while keeping the internals human friendly and thus preventing off-by-one errors.
  */
-class NightInterval implements DateOrTimeInterval, Pokeable
+class NightInterval implements Interval, DateOrTimeInterval, Pokeable
 {
     use StrictBehaviorMixin;
 

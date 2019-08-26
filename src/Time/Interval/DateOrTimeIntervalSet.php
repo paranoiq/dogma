@@ -9,9 +9,7 @@
 
 namespace Dogma\Time\Interval;
 
-use Dogma\Math\Interval\IntervalSet;
-
-interface DateOrTimeIntervalSet /*<T>*/ extends IntervalSet /*<T>*/
+interface DateOrTimeIntervalSet
 {
 
 }

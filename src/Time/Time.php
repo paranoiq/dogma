@@ -37,7 +37,7 @@ use function round;
  * Time of day without a date and timezone.
  *
  * Times like 27:00:00 (up to 48 hours) can be created.
- * TimeInterval will automatically normalize end of interval after midnight to value higher than 24:00:00.
+ * TimeInterval will automatically (de)normalize end of interval after midnight to value higher than 24:00:00.
  * When compared 27:00:00 will be equal to 03:00:00 (modulo arithmetic).
  * When formatted 27:00:00 will result in "03:00:00".
  */
@@ -151,6 +151,11 @@ class Time implements DateTimeOrTime, Pokeable
         } else {
             return new static($this->microseconds + Microseconds::DAY);
         }
+    }
+
+    public function isNormalized(): bool
+    {
+        return $this->microseconds <= self::MAX_MICROSECONDS;
     }
 
     public function poke(): void

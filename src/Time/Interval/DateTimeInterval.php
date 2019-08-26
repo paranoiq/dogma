@@ -16,8 +16,8 @@ use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\Math\IntCalc;
+use Dogma\Math\Interval\Interval;
 use Dogma\Math\Interval\IntervalParser;
-use Dogma\Math\Interval\OpenClosedInterval;
 use Dogma\NotImplementedException;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
@@ -39,9 +39,9 @@ use function round;
 use function usort;
 
 /**
- * Interval of times including date. Based on FloatInterval.
+ * Interval of times including date.
  */
-class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
+class DateTimeInterval implements Interval, DateOrTimeInterval
 {
     use StrictBehaviorMixin;
 
@@ -56,13 +56,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
     /** @var DateTime */
     private $end;
 
-    /** @var bool */
-    private $openStart;
-
-    /** @var bool */
-    private $openEnd;
-
-    public function __construct(DateTime $start, DateTime $end, bool $openStart = false, bool $openEnd = true)
+    public function __construct(DateTime $start, DateTime $end)
     {
         if ($start > $end) {
             throw new InvalidIntervalStartEndOrderException($start, $end);
@@ -70,28 +64,25 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
 
         $this->start = $start;
         $this->end = $end;
-        $this->openStart = $openStart;
-        $this->openEnd = $openEnd;
 
-        if ($start->equals($end) && ($openStart || $openEnd)) {
+        if ($start->equals($end)) {
             // default createEmpty()
             $this->start = new DateTime(self::MAX);
             $this->end = new DateTime(self::MIN);
-            $this->openStart = $this->openEnd = false;
         }
     }
 
     public static function createFromString(string $string): self
     {
-        [$start, $end, $openStart, $openEnd] = IntervalParser::parseString($string);
+        [$start, $end] = IntervalParser::parseString($string);
 
         $start = new DateTime($start);
         $end = new DateTime($end);
 
-        return new static($start, $end, $openStart ?? false, $openEnd ?? true);
+        return new static($start, $end);
     }
 
-    public static function createFromStartAndLength(DateTime $start, DateTimeUnit $unit, int $amount, bool $openStart = false, bool $openEnd = true): self
+    public static function createFromStartAndLength(DateTime $start, DateTimeUnit $unit, int $amount): self
     {
         if ($unit === DateTimeUnit::quarter()) {
             $unit = DateTimeUnit::month();
@@ -101,7 +92,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
             $amount *= 1000;
         }
 
-        return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue()), $openStart, $openEnd);
+        return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue()));
     }
 
     public static function createFromDateAndTimeInterval(Date $date, TimeInterval $timeInterval, ?DateTimeZone $timeZone = null): self
@@ -109,18 +100,14 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         return new static(
             DateTime::createFromDateAndTime($date, $timeInterval->getStart(), $timeZone),
             DateTime::createFromDateAndTime($date, $timeInterval->getEnd(), $timeZone),
-            $timeInterval->hasOpenStart(),
-            $timeInterval->hasOpenEnd()
         );
     }
 
-    public static function createFromDateIntervalAndTime(DateInterval $dateInterval, Time $time, ?DateTimeZone $timeZone = null, bool $openStart = false, bool $openEnd = true): self
+    public static function createFromDateIntervalAndTime(DateInterval $dateInterval, Time $time, ?DateTimeZone $timeZone = null): self
     {
         return new static(
             DateTime::createFromDateAndTime($dateInterval->getStart(), $time, $timeZone),
             DateTime::createFromDateAndTime($dateInterval->getEnd(), $time, $timeZone),
-            $openStart,
-            $openEnd
         );
     }
 
@@ -128,34 +115,14 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
     {
         $now = $timeProvider !== null ? $timeProvider->getDateTime($timeZone) : new DateTime('now', $timeZone);
 
-        return new static($now, new DateTime(self::MAX, $timeZone), true, false);
+        return new static($now, new DateTime(self::MAX, $timeZone));
     }
 
     public static function past(?DateTimeZone $timeZone = null, ?TimeProvider $timeProvider = null): self
     {
         $now = $timeProvider !== null ? $timeProvider->getDateTime($timeZone) : new DateTime('now', $timeZone);
 
-        return new static(new DateTime(self::MIN, $timeZone), $now, false, true);
-    }
-
-    public static function closed(DateTime $start, DateTime $end): self
-    {
-        return new static($start, $end, false, false);
-    }
-
-    public static function open(DateTime $start, DateTime $end): self
-    {
-        return new static($start, $end, true, true);
-    }
-
-    public static function openStart(DateTime $start, DateTime $end): self
-    {
-        return new static($start, $end, true);
-    }
-
-    public static function openEnd(DateTime $start, DateTime $end): self
-    {
-        return new static($start, $end, false, true);
+        return new static(new DateTime(self::MIN, $timeZone), $now);
     }
 
     public static function empty(): self
@@ -176,17 +143,17 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
 
     public function shift(string $value): self
     {
-        return new static($this->start->modify($value), $this->end->modify($value), $this->openStart, $this->openEnd);
+        return new static($this->start->modify($value), $this->end->modify($value));
     }
 
-    public function setStart(DateTime $start, ?bool $open = null): self
+    public function setStart(DateTime $start): self
     {
-        return new static($start, $this->end, $open ?? $this->openStart, $this->openEnd);
+        return new static($start, $this->end);
     }
 
-    public function setEnd(DateTime $end, ?bool $open = null): self
+    public function setEnd(DateTime $end): self
     {
-        return new static($this->start, $end, $this->openStart, $open ?? $this->openEnd);
+        return new static($this->start, $end);
     }
 
     // queries ---------------------------------------------------------------------------------------------------------
@@ -202,10 +169,10 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
             return DateInterval::empty();
         }
 
-        $start = $this->openStart && $this->start->getTime()->getMicroTime() === Time::MAX_MICROSECONDS
+        $start = $this->start->getTime()->getMicroTime() === Time::MAX_MICROSECONDS
             ? $this->start->getDate()->addDay()
             : $this->start->getDate();
-        $end = $this->openEnd && $this->end->getTime()->getMicroTime() === Time::MIN_MICROSECONDS
+        $end = $this->end->getTime()->getMicroTime() === Time::MIN_MICROSECONDS
             ? $this->end->getDate()->subtractDay()
             : $this->end->getDate();
 
@@ -244,20 +211,9 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         return [$this->start, $this->end];
     }
 
-    public function hasOpenStart(): bool
-    {
-        return $this->openStart;
-    }
-
-    public function hasOpenEnd(): bool
-    {
-        return $this->openEnd;
-    }
-
     public function isEmpty(): bool
     {
-        return $this->start > $this->end
-            || ($this->start->equals($this->end) && $this->openStart && $this->openEnd);
+        return $this->start > $this->end;
     }
 
     /**
@@ -268,10 +224,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
     {
         Check::instance($other, self::class);
 
-        return ($this->start->equals($other->start)
-            && $this->end->equals($other->end)
-            && $this->openStart === $other->openStart
-            && $this->openEnd === $other->openEnd)
+        return ($this->start->equals($other->start) && $this->end->equals($other->end))
             || ($this->isEmpty() && $other->isEmpty());
     }
 
@@ -288,8 +241,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
 
     public function containsValue(DateTime $value): bool
     {
-        return ($this->openStart ? $value > $this->start : $value >= $this->start)
-            && ($this->openEnd ? $value < $this->end : $value <= $this->end);
+        return $value >= $this->start && $value < $this->end;
     }
 
     public function containsDateTime(DateTimeInterface $value): bool
@@ -302,8 +254,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         if ($this->isEmpty() || $interval->isEmpty()) {
             return false;
         }
-        return (($this->openStart && !$interval->openStart) ? $interval->start > $this->start : $interval->start >= $this->start)
-            && (($this->openEnd && !$interval->openEnd) ? $interval->end < $this->end : $interval->end <= $this->end);
+        return $interval->start >= $this->start && $interval->end <= $this->end;
     }
 
     public function intersects(self $interval): bool
@@ -317,18 +268,17 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
 
     /**
      * @param DateTimeInterval $interval
-     * @param bool $exclusive
      * @return bool
      */
-    public function touches(self $interval, bool $exclusive = false): bool
+    public function touches(self $interval): bool
     {
-        return ($this->start->getMicroTimestamp() === $interval->end->getMicroTimestamp() && ($exclusive ? ($this->openStart xor $interval->openEnd) : true))
-            || ($this->end->getMicroTimestamp() === $interval->start->getMicroTimestamp() && ($exclusive ? ($this->openEnd xor $interval->openStart) : true));
+        return ($this->start->getMicroTimestamp() === $interval->end->getMicroTimestamp())
+            || ($this->end->getMicroTimestamp() === $interval->start->getMicroTimestamp());
     }
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    public function split(int $parts, int $splitMode = self::SPLIT_OPEN_ENDS): DateTimeIntervalSet
+    public function split(int $parts): DateTimeIntervalSet
     {
         Check::min($parts, 1);
 
@@ -347,15 +297,14 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
             return DateTime::createFromMicroTimestamp($timestamp, $this->getStart()->getTimezone());
         });
 
-        return $this->splitBy($intervalStarts, $splitMode);
+        return $this->splitBy($intervalStarts);
     }
 
     /**
      * @param DateTime[] $intervalStarts
-     * @param int $splitMode
      * @return DateTimeIntervalSet
      */
-    public function splitBy(array $intervalStarts, int $splitMode = self::SPLIT_OPEN_ENDS): DateTimeIntervalSet
+    public function splitBy(array $intervalStarts): DateTimeIntervalSet
     {
         if ($this->isEmpty()) {
             return new DateTimeIntervalSet([]);
@@ -367,8 +316,8 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         foreach ($intervalStarts as $intervalStart) {
             $interval = $results[$i];
             if ($interval->containsValue($intervalStart)) {
-                $results[$i] = new static($interval->start, $intervalStart, $interval->openStart, $splitMode === self::SPLIT_OPEN_ENDS ? self::OPEN : self::CLOSED);
-                $results[] = new static($intervalStart, $interval->end, $splitMode === self::SPLIT_OPEN_STARTS ? self::OPEN : self::CLOSED, $interval->openEnd);
+                $results[$i] = new static($interval->start, $intervalStart);
+                $results[] = new static($intervalStart, $interval->end);
                 $i++;
             }
         }
@@ -381,10 +330,9 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
      *
      * @param DateTimeUnit $unit
      * @param int $amount
-     * @param int $splitMode
      * @return DateTimeIntervalSet
      */
-    public function splitByUnit(DateTimeUnit $unit, int $amount = 1, int $splitMode = self::SPLIT_OPEN_ENDS): DateTimeIntervalSet
+    public function splitByUnit(DateTimeUnit $unit, int $amount = 1): DateTimeIntervalSet
     {
         Check::positive($amount);
 
@@ -395,7 +343,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
             $start = $start->addUnit($unit, $amount);
         }
 
-        return $this->splitBy($intervalStarts, $splitMode);
+        return $this->splitBy($intervalStarts);
     }
 
     /**
@@ -410,10 +358,9 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
      * @param DateTimeUnit $unit
      * @param int $amount
      * @param DateTime|null $reference
-     * @param int $splitMode
      * @return DateTimeIntervalSet
      */
-    public function splitByUnitAligned(DateTimeUnit $unit, int $amount = 1, ?DateTime $reference = null, int $splitMode = self::SPLIT_OPEN_ENDS): DateTimeIntervalSet
+    public function splitByUnitAligned(DateTimeUnit $unit, int $amount = 1, ?DateTime $reference = null): DateTimeIntervalSet
     {
         Check::positive($amount);
 
@@ -428,7 +375,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
             $start = $start->addUnit($unit, $amount);
         }
 
-        return $this->splitBy($intervalStarts, $splitMode);
+        return $this->splitBy($intervalStarts);
     }
 
     private function createReference(DateTimeUnit $unit, int $amount): DateTime
@@ -521,24 +468,16 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         $items[] = $this;
         $start = new DateTime(self::MAX);
         $end = new DateTime(self::MIN);
-        $startExclusive = true;
-        $endExclusive = true;
         foreach ($items as $item) {
             if ($item->start < $start) {
                 $start = $item->start;
-                $startExclusive = $item->openStart;
-            } elseif ($startExclusive && !$item->openStart && $item->start->equals($start)) {
-                $startExclusive = false;
             }
             if ($item->end > $end) {
                 $end = $item->end;
-                $endExclusive = $item->openEnd;
-            } elseif ($endExclusive && !$item->openEnd && $item->end->equals($end)) {
-                $endExclusive = false;
             }
         }
 
-        return new static($start, $end, $startExclusive, $endExclusive);
+        return new static($start, $end);
     }
 
     public function intersect(self ...$items): self
@@ -548,17 +487,17 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
 
         $result = array_shift($items);
         foreach ($items as $item) {
-            if ($result->start < $item->start || ($result->start->equals($item->start) && $result->openStart && !$item->openStart)) {
-                if ($result->end < $item->start || ($result->end->equals($item->start) && ($result->openEnd || $item->openStart))) {
+            if ($result->start < $item->start) {
+                if ($result->end < $item->start) {
                     return self::empty();
                 }
-                $result = new static($item->start, $result->end, $item->openStart, $result->openEnd);
+                $result = new static($item->start, $result->end);
             }
-            if ($result->end > $item->end || ($result->end->equals($item->end) && !$result->openEnd && $item->openEnd)) {
-                if ($result->start > $item->end || ($result->start->equals($item->end) && ($result->openStart || $item->openEnd))) {
+            if ($result->end > $item->end) {
+                if ($result->start > $item->end) {
                     return self::empty();
                 }
-                $result = new static($result->start, $item->end, $result->openStart, $item->openEnd);
+                $result = new static($result->start, $item->end);
             }
         }
 
@@ -612,30 +551,30 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
                 continue;
             }
             foreach ($results as $r => $interval) {
-                $startLower = $interval->start < $item->start || ($interval->start->equals($item->start) && !$interval->openStart && $item->openStart);
-                $endHigher = $interval->end > $item->end || ($interval->end->equals($item->end) && $interval->openEnd && !$item->openEnd);
+                $startLower = $interval->start < $item->start;
+                $endHigher = $interval->end > $item->end;
                 if ($startLower && $endHigher) {
                     // r1****i1----i2****r2
                     unset($results[$r]);
-                    $results[] = new static($interval->start, $item->start, $interval->openStart, !$item->openStart);
-                    $results[] = new static($item->end, $interval->end, !$item->openEnd, $interval->openEnd);
+                    $results[] = new static($interval->start, $item->start);
+                    $results[] = new static($item->end, $interval->end);
                 } elseif ($startLower) {
-                    if ($interval->end < $item->start || ($interval->end->equals($item->start) && $interval->openEnd && !$item->openStart)) {
+                    if ($interval->end < $item->start) {
                         // r1****r2    i1----i2
                         continue;
                     } else {
                         // r1****i1----r2----i2
                         unset($results[$r]);
-                        $results[] = new static($interval->start, $item->start, $interval->openStart, !$item->openStart);
+                        $results[] = new static($interval->start, $item->start);
                     }
                 } elseif ($endHigher) {
-                    if ($interval->start > $item->end || ($interval->start->equals($item->end) && $interval->openStart && !$item->openEnd)) {
+                    if ($interval->start > $item->end) {
                         // i1----i2    r1****r2
                         continue;
                     } else {
                         // i1----r1----i2****r2
                         unset($results[$r]);
-                        $results[] = new static($item->end, $interval->end, !$item->openEnd, $interval->openEnd);
+                        $results[] = new static($item->end, $interval->end);
                     }
                 } else {
                     // i1----r1----r2----i2
@@ -698,60 +637,56 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
                 } elseif ($j < $starts[$i]) {
                     // already checked
                     continue;
-                } elseif ($a->end < $b->start || ($a->end->equals($b->start) && ($a->openEnd || $b->openStart))
-                    || $a->start > $b->end || ($a->start->equals($b->end) && ($a->openStart || $b->openEnd))) {
+                } elseif ($a->end <= $b->start || $a->start >= $b->end) {
                     // a1----a1    b1----b1
                     continue;
-                } elseif ($a->start->equals($b->start) && $a->openStart === $b->openStart) {
-                    if ($a->end->equals($b->end) && $a->openEnd === $b->openEnd) {
-                        // a1=b1----a2=b2
-                        continue;
-                    } elseif ($a->end > $b->end || ($a->end->equals($b->end) && $a->openEnd === false)) {
+                } elseif ($a->start->equals($b->start)) {
+                    if ($a->end->isAfter($b->end)) {
                         // a1=b1----b2----a2
                         $items[$i] = $b;
-                        $items[] = new static($b->end, $a->end, !$b->openEnd, $a->openEnd);
+                        $items[] = new static($b->end, $a->end);
                         $starts[count($items) - 1] = $i + 1;
                         $a = $b;
                     } else {
+                        // a1=b1----a2=b2
                         // a1=b1----a2----b2
                         continue;
                     }
-                } elseif ($a->start < $b->start || ($a->start->equals($b->start) && $a->openStart === false)) {
-                    if ($a->end->equals($b->end) && $a->openEnd === $b->openEnd) {
+                } elseif ($a->start < $b->start) {
+                    if ($a->end->equals($b->end)) {
                         // a1----b1----a2=b2
                         $items[$i] = $b;
-                        $items[] = new static($a->start, $b->start, $a->openStart, !$b->openStart);
+                        $items[] = new static($a->start, $b->start);
                         $starts[count($items) - 1] = $i + 1;
                         $a = $b;
-                    } elseif ($a->end > $b->end || ($a->end->equals($b->end) && $a->openEnd === false)) {
+                    } elseif ($a->end->isAfter($b->end)) {
                         // a1----b1----b2----a2
                         $items[$i] = $b;
-                        $items[] = new static($a->start, $b->start, $a->openStart, !$b->openStart);
+                        $items[] = new static($a->start, $b->start);
                         $starts[count($items) - 1] = $i + 1;
-                        $items[] = new static($b->end, $a->end, !$b->openEnd, $a->openEnd);
+                        $items[] = new static($b->end, $a->end);
                         $starts[count($items) - 1] = $i + 1;
                         $a = $b;
                     } else {
                         // a1----b1----a2----b2
-                        $new = new static($b->start, $a->end, $b->openStart, $a->openEnd);
+                        $new = new static($b->start, $a->end);
                         $items[$i] = $new;
-                        $items[] = new static($a->start, $b->start, $a->openStart, !$b->openStart);
+                        $items[] = new static($a->start, $b->start);
                         $starts[count($items) - 1] = $i + 1;
                         $a = $new;
                     }
                 } else {
-                    if ($a->end->equals($b->end) && $a->openEnd === $b->openEnd) {
-                        // b1----a1----a2=b2
-                        continue;
-                    } elseif ($a->end > $b->end || ($a->end->equals($b->end) && $a->openEnd === false)) {
+                    if ($a->end->isAfter($b->end)) {
                         // b1----a1----b2----a2
-                        $new = new static($a->start, $b->end, $a->openStart, $b->openEnd);
+                        $new = new static($a->start, $b->end);
                         $items[$i] = $new;
-                        $items[] = new static($b->end, $a->end, !$b->openEnd, $a->openEnd);
+                        $items[] = new static($b->end, $a->end);
                         $starts[count($items) - 1] = $i + 1;
                         $a = $new;
                     } else {
                         // b1----a1----a2----b2
+                        // b1----a1----a2=b2
+                        // b1----b2=a1---a2
                         continue;
                     }
                 }
