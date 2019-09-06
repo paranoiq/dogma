@@ -20,11 +20,6 @@ parameters:
         - '~^Method Dogma\\IteratorHelper::iterableToIterator\(\) should return Iterator but returns Traversable~'
 
         # deprecated things, won't fix
-        -
-            message: "~.*~"
-            path: "../../src/Email/EmailMessage.php"
-
-        # solved in v0.2
         - '~method Dogma\\Database\\SimplePdo~'
 
     excludes_analyse:
