@@ -9,6 +9,7 @@
 
 namespace Dogma;
 
+use Throwable;
 use function sprintf;
 
 class InvalidValueException extends Exception
@@ -20,9 +21,9 @@ class InvalidValueException extends Exception
     /**
      * @param mixed $value
      * @param mixed $type
-     * @param \Throwable|null $previous
+     * @param Throwable|null $previous
      */
-    public function __construct($value, $type, ?\Throwable $previous = null)
+    public function __construct($value, $type, ?Throwable $previous = null)
     {
         parent::__construct(
             sprintf('Value %s is not a valid value of %s.', ExceptionValueFormatter::format($value), ExceptionTypeFormatter::format($type)),

@@ -16,6 +16,7 @@ use Dogma\Equalable;
 use Dogma\Math\Interval\IntervalSet;
 use Dogma\ShouldNotHappenException;
 use Dogma\Time\DayOfYear;
+use Iterator;
 use function array_merge;
 use function array_shift;
 use function count;
@@ -26,35 +27,35 @@ use function reset;
 class DayOfYearIntervalSet implements IntervalSet
 {
 
-    /** @var \Dogma\Time\Interval\DayOfYearInterval[] */
+    /** @var DayOfYearInterval[] */
     private $intervals;
 
     /**
-     * @param \Dogma\Time\Interval\DayOfYearInterval[] $intervals
+     * @param DayOfYearInterval[] $intervals
      */
     public function __construct(array $intervals)
     {
-        $this->intervals = Arr::values(Arr::filter($intervals, function (DayOfYearInterval $interval): bool {
+        $this->intervals = Arr::values(Arr::filter($intervals, static function (DayOfYearInterval $interval): bool {
             return !$interval->isEmpty();
         }));
     }
 
     public function format(string $format = DayOfYearInterval::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
     {
-        return implode(', ', Arr::map($this->intervals, function (DayOfYearInterval $interval) use ($format, $formatter): string {
+        return implode(', ', Arr::map($this->intervals, static function (DayOfYearInterval $interval) use ($format, $formatter): string {
             return $interval->format($format, $formatter);
         }));
     }
 
     /**
-     * @return \Dogma\Time\Interval\DayOfYearInterval[]
+     * @return DayOfYearInterval[]
      */
     public function getIntervals(): array
     {
         return $this->intervals;
     }
 
-    public function getIterator(): \Iterator
+    public function getIterator(): Iterator
     {
         return new ArrayIterator($this->intervals);
     }
@@ -141,7 +142,7 @@ class DayOfYearIntervalSet implements IntervalSet
      */
     public function add(self $set): self
     {
-        return self::addIntervals(...$set->intervals);
+        return $this->addIntervals(...$set->intervals);
     }
 
     public function addIntervals(DayOfYearInterval ...$intervals): self
@@ -156,7 +157,7 @@ class DayOfYearIntervalSet implements IntervalSet
      */
     public function subtract(self $set): self
     {
-        return self::subtractIntervals(...$set->intervals);
+        return $this->subtractIntervals(...$set->intervals);
     }
 
     public function subtractIntervals(DayOfYearInterval ...$intervals): self
@@ -188,7 +189,7 @@ class DayOfYearIntervalSet implements IntervalSet
      */
     public function intersect(self $set): self
     {
-        return self::intersectIntervals(...$set->intervals);
+        return $this->intersectIntervals(...$set->intervals);
     }
 
     public function intersectIntervals(DayOfYearInterval ...$intervals): self

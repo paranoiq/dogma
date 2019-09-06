@@ -40,10 +40,10 @@ class DayOfYearInterval implements Interval
 
     public const DEFAULT_FORMAT = 'm-d| - m-d';
 
-    /** @var \Dogma\Time\DayOfYear */
+    /** @var DayOfYear */
     private $start;
 
-    /** @var \Dogma\Time\DayOfYear */
+    /** @var DayOfYear */
     private $end;
 
     public function __construct(DayOfYear $start, DayOfYear $end)
@@ -150,7 +150,7 @@ class DayOfYearInterval implements Interval
     }
 
     /**
-     * @return \Dogma\Time\DayOfYear[]
+     * @return DayOfYear[]
      */
     public function getStartEnd(): array
     {
@@ -202,7 +202,7 @@ class DayOfYearInterval implements Interval
     }
 
     /**
-     * @param \Dogma\Time\Interval\DayOfYearInterval $interval
+     * @param DayOfYearInterval $interval
      * @return bool
      */
     public function contains(self $interval): bool
@@ -229,7 +229,7 @@ class DayOfYearInterval implements Interval
     }
 
     /**
-     * @param \Dogma\Time\Interval\DayOfYearInterval $interval
+     * @param DayOfYearInterval $interval
      * @return bool
      */
     public function touches(self $interval): bool
@@ -252,7 +252,7 @@ class DayOfYearInterval implements Interval
             $intervalStarts[] = round(($this->start->getNumber() + $partSize * $n) % (DayOfYear::MAX_NUMBER + 1));
         }
         $intervalStarts = array_unique($intervalStarts);
-        $intervalStarts = Arr::map($intervalStarts, function (int $number) {
+        $intervalStarts = Arr::map($intervalStarts, static function (int $number): DayOfYear {
             return new DayOfYear($number);
         });
 
@@ -260,8 +260,8 @@ class DayOfYearInterval implements Interval
     }
 
     /**
-     * @param \Dogma\Time\DayOfYear[] $intervalStarts
-     * @return \Dogma\Time\Interval\DayOfYearIntervalSet
+     * @param DayOfYear[] $intervalStarts
+     * @return DayOfYearIntervalSet
      */
     public function splitBy(array $intervalStarts): DayOfYearIntervalSet
     {
@@ -272,9 +272,8 @@ class DayOfYearInterval implements Interval
         $intervalStarts = Arr::sort($intervalStarts);
         $results = [$this];
         $i = 0;
-        /** @var \Dogma\Time\DayOfYear $intervalStart */
+        /** @var DayOfYear $intervalStart */
         foreach ($intervalStarts as $intervalStart) {
-            /** @var \Dogma\Time\Interval\DayOfYearInterval $interval */
             $interval = $results[$i];
             if ($interval->containsValue($intervalStart)) {
                 $results[$i] = new static($interval->start, $intervalStart);
@@ -306,7 +305,6 @@ class DayOfYearInterval implements Interval
         $items[] = $this;
         $start = new DayOfYear(self::MAX);
         $end = new DayOfYear(self::MIN);
-        /** @var \Dogma\Time\Interval\DayOfYearInterval $item */
         foreach ($items as $item) {
             if ($item->isEmpty()) {
                 continue;
@@ -327,9 +325,7 @@ class DayOfYearInterval implements Interval
         $items[] = $this;
         $items = self::sortByStart($items);
 
-        /** @var \Dogma\Time\Interval\DayOfYearInterval $result */
         $result = array_shift($items);
-        /** @var \Dogma\Time\Interval\DayOfYearInterval $item */
         foreach ($items as $item) {
             if ($result->start->getNumber() < $item->start->getNumber()) {
                 if ($result->end->getNumber() < $item->start->getNumber()) {
@@ -355,7 +351,6 @@ class DayOfYearInterval implements Interval
 
         $current = array_shift($items);
         $results = [$current];
-        /** @var \Dogma\Time\Interval\DayOfYearInterval $item */
         foreach ($items as $item) {
             if ($item->isEmpty()) {
                 continue;
@@ -391,14 +386,12 @@ class DayOfYearInterval implements Interval
     {
         $results = [$this];
 
-        /** @var \Dogma\Time\Interval\DayOfYearInterval $item */
         foreach ($items as $item) {
             if ($item->isEmpty()) {
                 continue;
             }
             $itemStartTime = $item->getStart()->getNumber();
             $itemEndTime = $item->getEnd()->getNumber();
-            /** @var \Dogma\Time\Interval\DayOfYearInterval $interval */
             foreach ($results as $r => $interval) {
                 $intervalStartTime = $interval->getStart()->getNumber();
                 $intervalEndTime = $interval->getEnd()->getNumber();
@@ -446,15 +439,14 @@ class DayOfYearInterval implements Interval
     // static ----------------------------------------------------------------------------------------------------------
 
     /**
-     * @param \Dogma\Time\Interval\DayOfYearInterval ...$items
-     * @return \Dogma\Time\Interval\DayOfYearInterval[][]|int[][] ($interval, $count)
+     * @param DayOfYearInterval ...$items
+     * @return DayOfYearInterval[][]|int[][] ($interval, $count)
      */
     public static function countOverlaps(self ...$items): array
     {
         $overlaps = self::explodeOverlaps(...$items);
 
         $results = [];
-        /** @var \Dogma\Time\Interval\DayOfYearInterval $overlap */
         foreach ($overlaps as $overlap) {
             $ident = $overlap->format();
             if (isset($results[$ident])) {
@@ -468,8 +460,8 @@ class DayOfYearInterval implements Interval
     }
 
     /**
-     * @param \Dogma\Time\Interval\DayOfYearInterval ...$items
-     * @return \Dogma\Time\Interval\DayOfYearInterval[]
+     * @param DayOfYearInterval ...$items
+     * @return DayOfYearInterval[]
      */
     public static function explodeOverlaps(self ...$items): array
     {
@@ -485,7 +477,6 @@ class DayOfYearInterval implements Interval
             }
             $aStart = $a->start->getNumber();
             $aEnd = $a->end->getNumber();
-            /** @var \Dogma\Time\Interval\DayOfYearInterval $b */
             foreach ($items as $j => $b) {
                 $bStart = $b->start->getNumber();
                 $bEnd = $b->end->getNumber();
@@ -570,7 +561,7 @@ class DayOfYearInterval implements Interval
      */
     public static function sort(array $intervals): array
     {
-        usort($intervals, function (DayOfYearInterval $a, DayOfYearInterval $b) {
+        usort($intervals, static function (DayOfYearInterval $a, DayOfYearInterval $b) {
             return $a->start->getNumber() <=> $b->start->getNumber() ?: $a->end->getNumber() <=> $b->end->getNumber();
         });
 
@@ -583,7 +574,7 @@ class DayOfYearInterval implements Interval
      */
     public static function sortByStart(array $intervals): array
     {
-        usort($intervals, function (DayOfYearInterval $a, DayOfYearInterval $b) {
+        usort($intervals, static function (DayOfYearInterval $a, DayOfYearInterval $b) {
             return $a->start->getNumber() <=> $b->start->getNumber();
         });
 

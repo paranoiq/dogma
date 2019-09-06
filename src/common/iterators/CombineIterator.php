@@ -9,17 +9,19 @@
 
 namespace Dogma;
 
+use Iterator;
+
 /**
  * Combines values from two given iterators as keys and values. Iterators should return same number of items.
  */
-class CombineIterator implements \Iterator
+class CombineIterator implements Iterator
 {
     use StrictBehaviorMixin;
 
-    /** @var \Iterator */
+    /** @var Iterator */
     private $keys;
 
-    /** @var \Iterator */
+    /** @var Iterator */
     private $values;
 
     /**

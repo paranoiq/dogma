@@ -9,6 +9,7 @@
 
 namespace Dogma;
 
+use Iterator;
 use function current;
 use function key;
 use function next;
@@ -17,7 +18,7 @@ use function reset;
 /**
  * Minimal interface replacement of \ArrayIterator
  */
-class ArrayIterator implements \Iterator
+class ArrayIterator implements Iterator
 {
     use StrictBehaviorMixin;
 

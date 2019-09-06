@@ -2,16 +2,17 @@
 
 namespace Dogma\Time\Span;
 
+use DateInterval;
 use Dogma\Comparable;
 use Dogma\Equalable;
 
 interface DateOrTimeSpan extends Equalable, Comparable
 {
 
-    public function toNative(): \DateInterval;
+    public function toNative(): DateInterval;
 
     /**
-     * @return \DateInterval[]
+     * @return DateInterval[]
      */
     public function toPositiveAndNegative(): array;
 

@@ -16,7 +16,7 @@ abstract class IntEnum
 {
     use EnumMixin;
 
-    /** @var \Dogma\Enum\IntEnum[][] ($class => ($value => $enum)) */
+    /** @var static[][] ($class => ($value => $enum)) */
     private static $instances = [];
 
     /** @var mixed[][] ($class => ($constName => $value)) */

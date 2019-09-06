@@ -17,7 +17,7 @@ Debugger::enable(Debugger::DEVELOPMENT, __DIR__);
 
 header('Content-Type: text/html; charset=utf-8');
 
-echo '<!DOCTYPE HTML><html><head><title>Dogma\\Http</title></head><body>';
+echo '<!DOCTYPE HTML><html lang="en"><head><title>Dogma\\Http</title></head><body>';
 
 
 $manager = new HttpChannelManager();

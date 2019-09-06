@@ -15,6 +15,7 @@ use Dogma\InvalidValueException;
 use Dogma\NonCloneableMixin;
 use Dogma\NonSerializableMixin;
 use Dogma\StrictBehaviorMixin;
+use ReflectionClass;
 use function count;
 use function end;
 use function explode;
@@ -61,7 +62,8 @@ trait EnumMixin
     }
 
     /**
-     * @param int|string|\Dogma\Enum\Enum $value
+     * @param int|string|IntEnum|StringEnum $value
+     * @return bool
      */
     final public function equals($value): bool
     {
@@ -87,7 +89,7 @@ trait EnumMixin
         if (count(self::$availableValues[$class]) !== count(self::$instances[$class])) {
             foreach (self::$availableValues[$class] as $identifier => $value) {
                 if (!isset(self::$instances[$class][$identifier])) {
-                    self::$instances[$class][$identifier] = new static($identifier, self::$availableValues[$class][$identifier]);
+                    self::$instances[$class][$identifier] = new static($identifier);
                 }
             }
         }
@@ -95,9 +97,9 @@ trait EnumMixin
         return self::$instances[$class];
     }
 
-    final private static function init(string $class): void
+    private static function init(string $class): void
     {
-        $ref = new \ReflectionClass($class);
+        $ref = new ReflectionClass($class);
         self::$availableValues[$class] = $ref->getConstants();
         self::$instances[$class] = [];
     }

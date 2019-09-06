@@ -2,13 +2,15 @@
 
 namespace Dogma\Tests\Type;
 
+use DateTime;
+use DateTimeImmutable;
 use Dogma\Tester\Assert;
 use Dogma\Type;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-$datetime = Type::get(\DateTime::class);
-$datetimeNullable = Type::get(\DateTime::class, Type::NULLABLE);
+$datetime = Type::get(DateTime::class);
+$datetimeNullable = Type::get(DateTime::class, Type::NULLABLE);
 
 // getId()
 Assert::same($datetime->getId(), 'DateTime');
@@ -19,7 +21,7 @@ Assert::same(Type::fromId('DateTime'), $datetime);
 Assert::same(Type::fromId('DateTime?'), $datetimeNullable);
 
 // getName()
-Assert::same($datetime->getName(), \DateTime::class);
+Assert::same($datetime->getName(), DateTime::class);
 
 // isNullable()
 Assert::false($datetime->isNullable());
@@ -86,12 +88,12 @@ Assert::false($datetime->isCallable());
 Assert::false($datetime->isResource());
 
 // is()
-Assert::true($datetime->is(\DateTime::class));
-Assert::false($datetime->is(\DateTimeImmutable::class));
+Assert::true($datetime->is(DateTime::class));
+Assert::false($datetime->is(DateTimeImmutable::class));
 
 // isImplementing()
-Assert::true($datetime->isImplementing(\DateTime::class));
-Assert::false($datetime->isImplementing(\DateTimeImmutable::class));
+Assert::true($datetime->isImplementing(DateTime::class));
+Assert::false($datetime->isImplementing(DateTimeImmutable::class));
 
 // getBaseType()
 Assert::same($datetime->getBaseType(), $datetime);
@@ -106,4 +108,4 @@ Assert::same($datetime->getTypeWithoutParams(), $datetime);
 Assert::same($datetimeNullable->getTypeWithoutParams(), $datetimeNullable);
 
 // getInstance()
-Assert::equal($datetime->getInstance('2016-01-01 00:00:00'), new \DateTime('2016-01-01 00:00:00'));
+Assert::equal($datetime->getInstance('2016-01-01 00:00:00'), new DateTime('2016-01-01 00:00:00'));

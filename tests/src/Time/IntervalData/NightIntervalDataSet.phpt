@@ -15,22 +15,22 @@ require_once __DIR__ . '/../../bootstrap.php';
 $data = new Vector3i(1, 2, 3);
 $data2 = new Vector3i(2, 4, 6);
 
-$d = function (int $day): Date {
+$d = static function (int $day): Date {
     return Date::createFromComponents(2000, 1, $day);
 };
-$i = function (int $start, int $end) use ($d): NightInterval {
+$i = static function (int $start, int $end) use ($d): NightInterval {
     return new NightInterval($d($start), $d($end));
 };
-$di = function (int $start, int $end) use ($d, $data): NightIntervalData {
+$di = static function (int $start, int $end) use ($d, $data): NightIntervalData {
     return new NightIntervalData($d($start), $d($end), $data);
 };
-$di2 = function (int $start, int $end) use ($d, $data2): NightIntervalData {
+$di2 = static function (int $start, int $end) use ($d, $data2): NightIntervalData {
     return new NightIntervalData($d($start), $d($end), $data2);
 };
-$s = function (NightInterval ...$items): NightIntervalSet {
+$s = static function (NightInterval ...$items): NightIntervalSet {
     return new NightIntervalSet($items);
 };
-$ds = function (NightIntervalData ...$items): NightIntervalDataSet {
+$ds = static function (NightIntervalData ...$items): NightIntervalDataSet {
     return new NightIntervalDataSet($items);
 };
 
@@ -70,13 +70,13 @@ Assert::equal($ds($di(1, 11))->subtract($s($i(3, 5), $i(7, 9))), $ds($di(1, 3), 
 Assert::equal($ds($di(1, 5), $di(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $ds($di(4, 5), $di(10, 12), $di(14, 15)));
 
 // map()
-Assert::equal($set->map(function (NightIntervalData $interval) {
+Assert::equal($set->map(static function (NightIntervalData $interval) {
     return $interval;
 }), $set);
-Assert::equal($set->map(function (NightIntervalData $interval) use ($i) {
+Assert::equal($set->map(static function (NightIntervalData $interval) use ($i) {
     return $interval->subtract($i(3, 4));
 }), $ds($di(1, 3), $di(4, 5)));
-Assert::equal($set->map(function (NightIntervalData $interval) use ($i) {
+Assert::equal($set->map(static function (NightIntervalData $interval) use ($i) {
     return $interval->subtract($i(3, 4))->getIntervals();
 }), $ds($di(1, 3), $di(4, 5)));
 
@@ -85,7 +85,7 @@ Assert::equal($set->map(function (NightIntervalData $interval) use ($i) {
 // collectData()
 
 // modifyData()
-$reducer = function (Vector3i $state, Vector3i $change): Vector3i {
+$reducer = static function (Vector3i $state, Vector3i $change): Vector3i {
     return $state->add($change);
 };
 Assert::equal($ds($di(10, 16))->modifyData($ds($di(20, 26)), $reducer), $ds($di(10, 16))); // no match

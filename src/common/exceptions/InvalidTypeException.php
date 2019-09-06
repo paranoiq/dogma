@@ -9,6 +9,7 @@
 
 namespace Dogma;
 
+use Throwable;
 use function sprintf;
 
 class InvalidTypeException extends Exception
@@ -16,10 +17,10 @@ class InvalidTypeException extends Exception
 
     /**
      * @param string|string[] $expectedType
-     * @param string|object $actualType
-     * @param \Throwable|null $previous
+     * @param string|object|resource $actualType
+     * @param Throwable|null $previous
      */
-    public function __construct($expectedType, $actualType, ?\Throwable $previous = null)
+    public function __construct($expectedType, $actualType, ?Throwable $previous = null)
     {
         parent::__construct(
             sprintf('Expected a value of type %s. %s given.', ExceptionTypeFormatter::format($expectedType), ExceptionTypeFormatter::format($actualType)),

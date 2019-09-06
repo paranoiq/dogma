@@ -9,11 +9,14 @@
 
 namespace Dogma;
 
-class Exception extends \Exception
+use Exception as PhpException;
+use Throwable;
+
+class Exception extends PhpException
 {
     use StrictBehaviorMixin;
 
-    public function __construct(string $message, ?\Throwable $previous = null)
+    public function __construct(string $message, ?Throwable $previous = null)
     {
         parent::__construct($message, 0, $previous);
     }

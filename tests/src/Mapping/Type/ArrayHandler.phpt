@@ -11,6 +11,7 @@ use Dogma\Mapping\Type\ArrayHandler;
 use Dogma\Mapping\Type\ScalarsHandler;
 use Dogma\Tester\Assert;
 use Dogma\Type;
+use SplFixedArray;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -26,11 +27,11 @@ $intArrayType = Type::arrayOf(Type::INT);
 // acceptType()
 Assert::true($handler->acceptsType($arrayType));
 Assert::true($handler->acceptsType($intArrayType));
-Assert::false($handler->acceptsType(Type::get(\SplFixedArray::class)));
+Assert::false($handler->acceptsType(Type::get(SplFixedArray::class)));
 
 // getParameters()
 Assert::same($handler->getParameters($arrayType), null);
-// intentionaly does not return item type. items type must be mapped by ArrayHandler, since MappingBuilder
+// intentionally does not return item type. items type must be mapped by ArrayHandler, since MappingBuilder
 // can only handle non-iterable structures
 Assert::same($handler->getParameters($intArrayType), null);
 

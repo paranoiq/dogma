@@ -115,7 +115,7 @@ class IntInterval implements Interval
     }
 
     /**
-     * @param \Dogma\Math\Interval\IntInterval $other
+     * @param IntInterval $other
      * @return bool
      */
     public function equals(Equalable $other): bool
@@ -126,7 +126,7 @@ class IntInterval implements Interval
     }
 
     /**
-     * @param \Dogma\Math\Interval\IntInterval $other
+     * @param IntInterval $other
      * @return int
      */
     public function compare(Comparable $other): int
@@ -182,7 +182,7 @@ class IntInterval implements Interval
 
     /**
      * @param int[] $intervalStarts
-     * @return \Dogma\Math\Interval\IntIntervalSet
+     * @return IntIntervalSet
      */
     public function splitBy(array $intervalStarts): IntIntervalSet
     {
@@ -228,7 +228,6 @@ class IntInterval implements Interval
         $items = self::sortByStart($items);
 
         $result = array_shift($items);
-        /** @var \Dogma\Math\Interval\IntInterval $item */
         foreach ($items as $item) {
             if ($result->end >= $item->start) {
                 $result = new static(max($result->start, $item->start), min($result->end, $item->end));
@@ -250,7 +249,6 @@ class IntInterval implements Interval
 
         $current = array_shift($items);
         $results = [$current];
-        /** @var \Dogma\Math\Interval\IntInterval $item */
         foreach ($items as $item) {
             if ($item->isEmpty()) {
                 continue;
@@ -296,7 +294,6 @@ class IntInterval implements Interval
             if ($item->isEmpty()) {
                 continue;
             }
-            /** @var \Dogma\Math\Interval\IntInterval $interval */
             foreach ($intervals as $r => $interval) {
                 unset($intervals[$r]);
                 if ($interval->start < $item->start && $interval->end > $item->end) {
@@ -322,15 +319,14 @@ class IntInterval implements Interval
     // static ----------------------------------------------------------------------------------------------------------
 
     /**
-     * @param \Dogma\Math\Interval\IntInterval ...$items
-     * @return \Dogma\Math\Interval\IntInterval[][]|int[][] ($ident => ($interval, $count))
+     * @param IntInterval ...$items
+     * @return IntInterval[][]|int[][] ($ident => ($interval, $count))
      */
     public static function countOverlaps(self ...$items): array
     {
         $overlaps = self::explodeOverlaps(...$items);
 
         $results = [];
-        /** @var \Dogma\Math\Interval\IntInterval $overlap */
         foreach ($overlaps as $overlap) {
             $ident = $overlap->format();
             if (isset($results[$ident])) {
@@ -345,8 +341,8 @@ class IntInterval implements Interval
 
     /**
      * O(n log n)
-     * @param \Dogma\Math\Interval\IntInterval ...$items
-     * @return \Dogma\Math\Interval\IntInterval[]
+     * @param IntInterval ...$items
+     * @return IntInterval[]
      */
     public static function explodeOverlaps(self ...$items): array
     {
@@ -362,7 +358,6 @@ class IntInterval implements Interval
                 $i++;
                 continue;
             }
-            /** @var \Dogma\Math\Interval\IntInterval $b */
             foreach ($items as $j => $b) {
                 if ($i === $j) {
                     // same item
@@ -435,7 +430,7 @@ class IntInterval implements Interval
      */
     public static function sort(array $intervals): array
     {
-        usort($intervals, function (IntInterval $a, IntInterval $b) {
+        usort($intervals, static function (IntInterval $a, IntInterval $b) {
             return $a->start <=> $b->start ?: $a->end <=> $b->end;
         });
 
@@ -448,7 +443,7 @@ class IntInterval implements Interval
      */
     public static function sortByStart(array $intervals): array
     {
-        usort($intervals, function (IntInterval $a, IntInterval $b) {
+        usort($intervals, static function (IntInterval $a, IntInterval $b) {
             return $a->start <=> $b->start;
         });
 

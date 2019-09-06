@@ -9,11 +9,15 @@
 
 namespace Dogma\Time\Format;
 
+use DateTimeInterface;
+use Dogma\Time\Date;
+use Dogma\Time\Time;
+
 interface DateTimeFormatter
 {
 
     /**
-     * @param \DateTimeInterface|\Dogma\Time\Date|\Dogma\Time\Time $dateTime
+     * @param DateTimeInterface|Date|Time $dateTime
      * @param string|null $format
      * @return string
      */

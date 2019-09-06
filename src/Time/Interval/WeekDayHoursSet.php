@@ -21,11 +21,11 @@ class WeekDayHoursSet implements Pokeable
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Time\Interval\WeekDayHours[] */
+    /** @var WeekDayHours[] */
     private $weekDayHours = [];
 
     /**
-     * @param \Dogma\Time\Interval\WeekDayHours[] $weekDayHoursList
+     * @param WeekDayHours[] $weekDayHoursList
      */
     public function __construct(array $weekDayHoursList)
     {
@@ -39,7 +39,11 @@ class WeekDayHoursSet implements Pokeable
         ksort($this->weekDayHours);
     }
 
-    public function createFromDaysOfWeekAndOpeningTime(DaysOfWeek $days, TimeInterval $opening, ?TimeInterval $break = null): self
+    public function createFromDaysOfWeekAndOpeningTime(
+        DaysOfWeek $days,
+        TimeInterval $opening,
+        ?TimeInterval $break = null
+    ): self
     {
         $dayItems = [];
         foreach (DayOfWeek::getInstances() as $day) {
@@ -71,7 +75,7 @@ class WeekDayHoursSet implements Pokeable
     }
 
     /**
-     * @return \Dogma\Time\Interval\WeekDayHours[]
+     * @return WeekDayHours[]
      */
     public function getWeekDayHours(): array
     {

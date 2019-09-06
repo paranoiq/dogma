@@ -15,22 +15,22 @@ require_once __DIR__ . '/../../bootstrap.php';
 $data = new Vector3i(1, 2, 3);
 $data2 = new Vector3i(2, 4, 6);
 
-$d = function (int $day): Date {
+$d = static function (int $day): Date {
     return Date::createFromComponents(2000, 1, $day);
 };
-$i = function (int $start, int $end) use ($d): DateInterval {
+$i = static function (int $start, int $end) use ($d): DateInterval {
     return new DateInterval($d($start), $d($end));
 };
-$di = function (int $start, int $end) use ($d, $data): DateIntervalData {
+$di = static function (int $start, int $end) use ($d, $data): DateIntervalData {
     return new DateIntervalData($d($start), $d($end), $data);
 };
-$di2 = function (int $start, int $end) use ($d, $data2): DateIntervalData {
+$di2 = static function (int $start, int $end) use ($d, $data2): DateIntervalData {
     return new DateIntervalData($d($start), $d($end), $data2);
 };
-$s = function (DateInterval ...$items): DateIntervalSet {
+$s = static function (DateInterval ...$items): DateIntervalSet {
     return new DateIntervalSet($items);
 };
-$ds = function (DateIntervalData ...$items): DateIntervalDataSet {
+$ds = static function (DateIntervalData ...$items): DateIntervalDataSet {
     return new DateIntervalDataSet($items);
 };
 
@@ -73,13 +73,13 @@ Assert::equal($ds($di(1, 10))->subtract($s($i(3, 4), $i(7, 8))), $ds($di(1, 2), 
 Assert::equal($ds($di(1, 5), $di(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $ds($di(4, 5), $di(10, 12), $di(14, 15)));
 
 // map()
-Assert::equal($set->map(function (DateIntervalData $interval) {
+Assert::equal($set->map(static function (DateIntervalData $interval) {
     return $interval;
 }), $set);
-Assert::equal($set->map(function (DateIntervalData $interval) use ($i) {
+Assert::equal($set->map(static function (DateIntervalData $interval) use ($i) {
     return $interval->subtract($i(3, 3));
 }), $ds($di(1, 2), $di(4, 5)));
-Assert::equal($set->map(function (DateIntervalData $interval) use ($i) {
+Assert::equal($set->map(static function (DateIntervalData $interval) use ($i) {
     return $interval->subtract($i(3, 3))->getIntervals();
 }), $ds($di(1, 2), $di(4, 5)));
 
@@ -88,7 +88,7 @@ Assert::equal($set->map(function (DateIntervalData $interval) use ($i) {
 // collectData()
 
 // modifyData()
-$reducer = function (Vector3i $state, Vector3i $change): Vector3i {
+$reducer = static function (Vector3i $state, Vector3i $change): Vector3i {
     return $state->add($change);
 };
 Assert::equal($ds($di(10, 15))->modifyData($ds($di(20, 25)), $reducer), $ds($di(10, 15))); // no match

@@ -9,22 +9,27 @@
 
 namespace Dogma\Dom;
 
+use Countable;
 use Dogma\StrictBehaviorMixin;
+use DOMElement;
+use DOMNode;
+use DOMNodeList;
+use Iterator;
 
-class NodeList implements \Countable, \Iterator
+class NodeList implements Countable, Iterator
 {
     use StrictBehaviorMixin;
 
-    /** @var \DOMNodeList */
+    /** @var DOMNodeList */
     private $nodeList;
 
-    /** @var \Dogma\Dom\QueryEngine */
+    /** @var QueryEngine */
     private $engine;
 
     /** @var int */
     private $offset = 0;
 
-    public function __construct(\DOMNodeList $nodeList, QueryEngine $engine)
+    public function __construct(DOMNodeList $nodeList, QueryEngine $engine)
     {
         $this->nodeList = $nodeList;
         $this->engine = $engine;
@@ -32,7 +37,7 @@ class NodeList implements \Countable, \Iterator
 
     /**
      * @param int $offset
-     * @return \Dogma\Dom\Element|\DOMNode
+     * @return Element|DOMNode
      */
     public function item(int $offset)
     {
@@ -50,7 +55,7 @@ class NodeList implements \Countable, \Iterator
     }
 
     /**
-     * @return \Dogma\Dom\Element|\DOMNode
+     * @return Element|DOMNode
      */
     public function current()
     {
@@ -79,12 +84,12 @@ class NodeList implements \Countable, \Iterator
     }
 
     /**
-     * @param \DOMNode $node
-     * @return \Dogma\Dom\Element|\DOMNode
+     * @param DOMNode $node
+     * @return Element|DOMNode
      */
-    private function wrap(\DOMNode $node)
+    private function wrap(DOMNode $node)
     {
-        if ($node instanceof \DOMElement) {
+        if ($node instanceof DOMElement) {
             return new Element($node, $this->engine);
         } else {
             return $node;

@@ -18,6 +18,7 @@ use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
+use Iterator;
 use function array_map;
 use function array_merge;
 use function array_shift;
@@ -31,29 +32,29 @@ class NightIntervalSet implements DateOrTimeIntervalSet, Pokeable
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Time\Interval\NightInterval[] */
+    /** @var NightInterval[] */
     private $intervals;
 
     /**
-     * @param \Dogma\Time\Interval\NightInterval[] $intervals
+     * @param NightInterval[] $intervals
      */
     public function __construct(array $intervals)
     {
-        $this->intervals = Arr::values(Arr::filter($intervals, function (NightInterval $interval): bool {
+        $this->intervals = Arr::values(Arr::filter($intervals, static function (NightInterval $interval): bool {
             return !$interval->isEmpty();
         }));
     }
 
     public static function createFromDateIntervalSet(DateIntervalSet $set): self
     {
-        return new static(Arr::map($set->getIntervals(), function (DateInterval $interval): NightInterval {
+        return new static(Arr::map($set->getIntervals(), static function (DateInterval $interval): NightInterval {
             return NightInterval::createFromDateInterval($interval);
         }));
     }
 
     /**
-     * @param \Dogma\Time\Date[] $dates
-     * @return \Dogma\Time\Interval\NightIntervalSet
+     * @param Date[] $dates
+     * @return NightIntervalSet
      */
     public static function createFromDateArray(array $dates): self
     {
@@ -83,37 +84,37 @@ class NightIntervalSet implements DateOrTimeIntervalSet, Pokeable
 
     public function toDateIntervalSet(): DateIntervalSet
     {
-        return new DateIntervalSet(Arr::map($this->intervals, function (NightInterval $interval): DateInterval {
+        return new DateIntervalSet(Arr::map($this->intervals, static function (NightInterval $interval): DateInterval {
             return $interval->toDateInterval();
         }));
     }
 
     /**
-     * @return \Dogma\Time\Date[]
+     * @return Date[]
      */
     public function toDateArray(): array
     {
-        return array_merge(...array_map(function (NightInterval $interval) {
+        return array_merge(...array_map(static function (NightInterval $interval) {
             return $interval->toDateArray();
         }, $this->intervals));
     }
 
     public function format(string $format = NightInterval::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
     {
-        return implode(', ', Arr::map($this->intervals, function (NightInterval $interval) use ($format, $formatter): string {
+        return implode(', ', Arr::map($this->intervals, static function (NightInterval $interval) use ($format, $formatter): string {
             return $interval->format($format, $formatter);
         }));
     }
 
     /**
-     * @return \Dogma\Time\Interval\NightInterval[]
+     * @return NightInterval[]
      */
     public function getIntervals(): array
     {
         return $this->intervals;
     }
 
-    public function getIterator(): \Iterator
+    public function getIterator(): Iterator
     {
         return new ArrayIterator($this->intervals);
     }
@@ -200,7 +201,7 @@ class NightIntervalSet implements DateOrTimeIntervalSet, Pokeable
      */
     public function add(self $set): self
     {
-        return self::addIntervals(...$set->intervals);
+        return $this->addIntervals(...$set->intervals);
     }
 
     public function addIntervals(NightInterval ...$intervals): self
@@ -215,7 +216,7 @@ class NightIntervalSet implements DateOrTimeIntervalSet, Pokeable
      */
     public function subtract(self $set): self
     {
-        return self::subtractIntervals(...$set->intervals);
+        return $this->subtractIntervals(...$set->intervals);
     }
 
     public function subtractIntervals(NightInterval ...$intervals): self
@@ -247,7 +248,7 @@ class NightIntervalSet implements DateOrTimeIntervalSet, Pokeable
      */
     public function intersect(self $set): self
     {
-        return self::intersectIntervals(...$set->intervals);
+        return $this->intersectIntervals(...$set->intervals);
     }
 
     public function intersectIntervals(NightInterval ...$intervals): self

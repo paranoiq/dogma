@@ -14,16 +14,16 @@ use Dogma\Io\File;
 class HttpFileResponse extends HttpResponse
 {
 
-    /** @var \Dogma\Io\File */
+    /** @var File */
     private $file;
 
     /**
-     * @param \Dogma\Http\HttpResponseStatus $status
-     * @param \Dogma\Io\File $file
+     * @param HttpResponseStatus $status
+     * @param File $file
      * @param string[] $rawHeaders
      * @param string[] $info
      * @param mixed $context
-     * @param \Dogma\Http\HttpHeaderParser $headerParser
+     * @param HttpHeaderParser $headerParser
      */
     public function __construct(HttpResponseStatus $status, File $file, array $rawHeaders, array $info, $context, ?HttpHeaderParser $headerParser = null)
     {

@@ -10,8 +10,9 @@
 namespace Dogma\Application;
 
 use Dogma\StrictBehaviorMixin;
+use stdClass;
 
-final class ConfigurationProfile extends \stdClass
+final class ConfigurationProfile extends stdClass
 {
     use StrictBehaviorMixin;
 
@@ -32,11 +33,7 @@ final class ConfigurationProfile extends \stdClass
      */
     public function __get(string $name)
     {
-        if (isset($this->values[$name])) {
-            return $this->values[$name];
-        } else {
-            return null;
-        }
+        return $this->values[$name] ?? null;
     }
 
 }

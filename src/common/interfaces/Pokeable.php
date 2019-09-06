@@ -20,7 +20,7 @@ interface Pokeable
 {
 
     /**
-     * Fill internal caches of and object prior to being dumped.
+     * Fill internal caches of an object prior to being dumped.
      */
     public function poke(): void;
 

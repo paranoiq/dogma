@@ -9,12 +9,14 @@
 
 namespace Dogma\Time;
 
+use DateTimeInterface;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeFormatter;
+use Throwable;
 use function explode;
 use function implode;
 use function intval;
@@ -31,7 +33,7 @@ class YearMonth implements Comparable, Equalable
     private $value;
 
     /**
-     * @param string|\Dogma\Time\Date|\DateTimeInterface|null $value
+     * @param string|Date|DateTimeInterface|null $value
      */
     final public function __construct($value = null)
     {
@@ -40,7 +42,7 @@ class YearMonth implements Comparable, Equalable
             return;
         }
 
-        if ($value instanceof Date || $value instanceof \DateTimeInterface) {
+        if ($value instanceof Date || $value instanceof DateTimeInterface) {
             $this->value = $value->format(self::DEFAULT_FORMAT);
             return;
         }
@@ -50,7 +52,7 @@ class YearMonth implements Comparable, Equalable
                 ? DateTime::createFromFormat('Y-m-d', $value . '-01')
                 : new DateTime($value);
             $this->value = $dateTime->format(self::DEFAULT_FORMAT);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw new InvalidDateTimeException($value, $e);
         }
     }

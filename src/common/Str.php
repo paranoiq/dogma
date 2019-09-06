@@ -9,6 +9,7 @@
 
 namespace Dogma;
 
+use Collator as PhpCollator;
 use Dogma\Language\Collator;
 use Dogma\Language\Locale\Locale;
 use Dogma\Language\Transliterator;
@@ -39,10 +40,9 @@ class Str
     use StaticClassMixin;
 
     /**
-     * Test equality with another string
      * @param string $first
      * @param string $second
-     * @param string|\Collator|\Dogma\Language\Locale\Locale $collation
+     * @param int|string|Collator|Locale $collation
      * @return bool
      */
     public static function equals(string $first, string $second, $collation = CaseComparison::CASE_SENSITIVE): bool
@@ -51,14 +51,12 @@ class Str
     }
 
     /**
-     * Compare to another string
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      * @param string $first
      * @param string $second
-     * @param string|\Collator|\Dogma\Language\Locale\Locale $collation
+     * @param int|string|Collator|Locale $collation
      * @return int
      */
-    public static function compare($first, $second, $collation = CaseComparison::CASE_SENSITIVE): int
+    public static function compare(string $first, string $second, $collation = CaseComparison::CASE_SENSITIVE): int
     {
         if ($collation === CaseComparison::CASE_SENSITIVE) {
             return strcmp($first, $second);
@@ -66,9 +64,10 @@ class Str
             return strcasecmp($first, $second);
         } elseif (is_string($collation) || $collation instanceof Locale) {
             $collation = new Collator($collation);
-        } elseif (!$collation instanceof \Collator) {
-            throw new InvalidValueException($collation, [Type::STRING, \Collator::class, Locale::class]);
+        } elseif (!$collation instanceof PhpCollator) {
+            throw new InvalidValueException($collation, [Type::STRING, PhpCollator::class, Locale::class]);
         }
+
         return $collation->compare($first, $second);
     }
 
@@ -80,14 +79,11 @@ class Str
     public static function between(string $string, string $from, string $to): ?string
     {
         $after = self::after($string, $from);
-        if ($after === false) {
+        if ($after === null) {
             return null;
         }
-        $before = self::before($after, $to);
-        if ($after === false) {
-            return null;
-        }
-        return $before;
+
+        return self::before($after, $to);
     }
 
     public static function toFirst(string $string, string $search): string
@@ -253,7 +249,7 @@ class Str
 
     public static function endsWith(string $string, string $find): bool
     {
-        return strlen($find) === 0 || substr($string, -strlen($find)) === $find;
+        return $find === '' || substr($string, -strlen($find)) === $find;
     }
 
     public static function contains(string $string, string $find): bool

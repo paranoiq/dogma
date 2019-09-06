@@ -9,12 +9,14 @@
 
 namespace Dogma\Time\Interval;
 
+use DateTimeInterface;
+use DateTimeZone;
 use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
-use Dogma\Math\Interval\IntInterval;
 use Dogma\Math\Interval\IntervalParser;
+use Dogma\Math\Interval\IntInterval;
 use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
@@ -51,10 +53,10 @@ class NightInterval implements DateOrTimeInterval, Pokeable
 
     public const DEFAULT_FORMAT = 'Y-m-d| - Y-m-d';
 
-    /** @var \Dogma\Time\Date */
+    /** @var Date */
     private $start;
 
-    /** @var \Dogma\Time\Date */
+    /** @var Date */
     private $end;
 
     public function __construct(Date $start, Date $end)
@@ -193,7 +195,7 @@ class NightInterval implements DateOrTimeInterval, Pokeable
         return new DateInterval($this->start, $this->end->subtractDay());
     }
 
-    public function toDateTimeInterval(Time $startTime, Time $endTime, ?\DateTimeZone $timeZone = null): DateTimeInterval
+    public function toDateTimeInterval(Time $startTime, Time $endTime, ?DateTimeZone $timeZone = null): DateTimeInterval
     {
         return new DateTimeInterval(
             $this->start->getStart($timeZone)->setTime($startTime),
@@ -207,7 +209,7 @@ class NightInterval implements DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @return \Dogma\Time\Date[]
+     * @return Date[]
      */
     public function toDateArray(): array
     {
@@ -234,7 +236,7 @@ class NightInterval implements DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @return \Dogma\Time\Date[]
+     * @return Date[]
      */
     public function getStartEnd(): array
     {
@@ -269,7 +271,7 @@ class NightInterval implements DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param \Dogma\Time\Date|\DateTimeInterface $date
+     * @param Date|DateTimeInterface $date
      * @return bool
      */
     public function containsValue($date): bool
@@ -295,10 +297,6 @@ class NightInterval implements DateOrTimeInterval, Pokeable
         return $this->start->isBefore($interval->end) && $this->end->isAfter($interval->start);
     }
 
-    /**
-     * @param \Dogma\Time\Interval\NightInterval $interval
-     * @return bool
-     */
     public function touches(self $interval): bool
     {
         return $this->start->equals($interval->end) || $this->end->equals($interval->start);
@@ -320,7 +318,7 @@ class NightInterval implements DateOrTimeInterval, Pokeable
             $intervalStarts[] = (int) round($this->start->getJulianDay() + $partSize * $n);
         }
         $intervalStarts = array_unique($intervalStarts);
-        $intervalStarts = Arr::map($intervalStarts, function (int $julianDay) {
+        $intervalStarts = Arr::map($intervalStarts, static function (int $julianDay): Date {
             return Date::createFromJulianDay($julianDay);
         });
 
@@ -328,8 +326,8 @@ class NightInterval implements DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param \Dogma\Time\Date[] $intervalStarts
-     * @return \Dogma\Time\Interval\NightIntervalSet
+     * @param Date[] $intervalStarts
+     * @return NightIntervalSet
      */
     public function splitBy(array $intervalStarts): NightIntervalSet
     {
@@ -340,7 +338,7 @@ class NightInterval implements DateOrTimeInterval, Pokeable
         $intervalStarts = Arr::sort($intervalStarts);
         $results = [$this];
         $i = 0;
-        /** @var \Dogma\Time\Date $intervalStart */
+        /** @var Date $intervalStart */
         foreach ($intervalStarts as $intervalStart) {
             $interval = $results[$i];
             if ($interval->containsValue($intervalStart) && $interval->containsValue($intervalStart->subtractDay())) {
@@ -358,7 +356,6 @@ class NightInterval implements DateOrTimeInterval, Pokeable
         $items[] = $this;
         $start = Date::MAX_DAY_NUMBER;
         $end = Date::MIN_DAY_NUMBER;
-        /** @var self $item */
         foreach ($items as $item) {
             $startValue = $item->start->getJulianDay();
             if ($startValue < $start) {
@@ -379,7 +376,6 @@ class NightInterval implements DateOrTimeInterval, Pokeable
         $items = self::sort($items);
 
         $result = array_shift($items);
-        /** @var \Dogma\Time\Interval\NightInterval $item */
         foreach ($items as $item) {
             if ($result->end->isAfter($item->start)) {
                 $result = new static(Date::max($result->start, $item->start), Date::min($result->end, $item->end));
@@ -398,7 +394,6 @@ class NightInterval implements DateOrTimeInterval, Pokeable
 
         $current = array_shift($items);
         $results = [$current];
-        /** @var self $item */
         foreach ($items as $item) {
             if ($item->isEmpty()) {
                 continue;
@@ -434,12 +429,10 @@ class NightInterval implements DateOrTimeInterval, Pokeable
     {
         $intervals = [$this];
 
-        /** @var self $item */
         foreach ($items as $item) {
             if ($item->isEmpty()) {
                 continue;
             }
-            /** @var \Dogma\Time\Interval\NightInterval $interval */
             foreach ($intervals as $i => $interval) {
                 unset($intervals[$i]);
                 if ($interval->start->isBefore($item->start) && $interval->end->isAfter($item->end)) {
@@ -464,15 +457,14 @@ class NightInterval implements DateOrTimeInterval, Pokeable
     // static ----------------------------------------------------------------------------------------------------------
 
     /**
-     * @param \Dogma\Time\Interval\NightInterval[] ...$items
-     * @return \Dogma\Time\Interval\NightInterval[][]|int[][] ($interval, $count)
+     * @param self ...$items
+     * @return NightInterval[][]|int[][] ($interval, $count)
      */
     public static function countOverlaps(self ...$items): array
     {
         $overlaps = self::explodeOverlaps(...$items);
 
         $results = [];
-        /** @var \Dogma\Time\Interval\NightInterval $overlap */
         foreach ($overlaps as $overlap) {
             $ident = $overlap->toDayNumberIntInterval()->format();
             if (isset($results[$ident])) {
@@ -486,8 +478,8 @@ class NightInterval implements DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param \Dogma\Time\Interval\NightInterval ...$items
-     * @return \Dogma\Time\Interval\NightInterval[]
+     * @param self ...$items
+     * @return NightInterval[]
      */
     public static function explodeOverlaps(self ...$items): array
     {
@@ -501,7 +493,6 @@ class NightInterval implements DateOrTimeInterval, Pokeable
                 $i++;
                 continue;
             }
-            /** @var \Dogma\Time\Interval\NightInterval $b */
             foreach ($items as $j => $b) {
                 if ($i === $j) {
                     // same item
@@ -574,7 +565,7 @@ class NightInterval implements DateOrTimeInterval, Pokeable
      */
     public static function sort(array $intervals): array
     {
-        usort($intervals, function (NightInterval $a, NightInterval $b) {
+        usort($intervals, static function (NightInterval $a, NightInterval $b): int {
             return $a->start->getJulianDay() <=> $b->start->getJulianDay() ?: $a->end->getJulianDay() <=> $b->end->getJulianDay();
         });
 
@@ -587,7 +578,7 @@ class NightInterval implements DateOrTimeInterval, Pokeable
      */
     public static function sortByStart(array $intervals): array
     {
-        usort($intervals, function (NightInterval $a, NightInterval $b) {
+        usort($intervals, static function (NightInterval $a, NightInterval $b): int {
             return $a->start->getJulianDay() <=> $b->start->getJulianDay();
         });
 

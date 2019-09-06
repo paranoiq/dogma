@@ -14,7 +14,7 @@ class TestClass
 
 }
 
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     $x = new TestClass();
     $y = clone($x);
 }, NonCloneableObjectException::class);

@@ -19,7 +19,6 @@ use Dogma\ResourceType;
 use Dogma\StrictBehaviorMixin;
 use const LOCK_UN;
 use function basename;
-use function call_user_func;
 use function chmod;
 use function dirname;
 use function error_clear_last;
@@ -72,11 +71,11 @@ class File implements Path
     /** @var resource|null */
     protected $handle;
 
-    /** @var \Dogma\Io\FileMetaData|null */
+    /** @var FileMetaData|null */
     private $metaData;
 
     /**
-     * @param string|resource|\Dogma\Io\FilePath|\Dogma\Io\Filesystem\FileInfo $file
+     * @param string|resource|FilePath|FileInfo $file
      * @param string $mode
      * @param resource|null $streamContext
      */
@@ -234,7 +233,7 @@ class File implements Path
     {
         $this->checkOpened();
 
-        if (empty($length)) {
+        if ($length === null) {
             $length = self::$defaultChunkSize;
         }
 
@@ -254,7 +253,7 @@ class File implements Path
 
     /**
      * Copy range of data to another File or callback. Returns actual length of copied data.
-     * @param \Dogma\Io\File|callable $destination
+     * @param File|callable $destination
      * @param int|null $start
      * @param int $length
      * @param int|null $chunkSize
@@ -262,10 +261,10 @@ class File implements Path
      */
     public function copyData($destination, ?int $start = null, int $length = 0, ?int $chunkSize = null): int
     {
-        if (empty($chunkSize)) {
+        if ($chunkSize === null) {
             $chunkSize = self::$defaultChunkSize;
         }
-        if (!empty($start)) {
+        if ($start !== null) {
             $this->setPosition($start);
         }
 
@@ -275,11 +274,11 @@ class File implements Path
             $buff = $this->read($chunk);
             $done += strlen($buff);
 
-            if ($destination instanceof File) {
+            if ($destination instanceof self) {
                 $destination->write($buff);
 
             } elseif (is_callable($destination)) {
-                call_user_func($destination, $buff);
+                $destination($buff);
 
             } else {
                 throw new InvalidArgumentException('Destination must be File or callable!');

@@ -9,6 +9,8 @@
 
 namespace Dogma;
 
+use Iterator;
+use IteratorAggregate;
 use function is_array;
 
 class IteratorHelper
@@ -17,17 +19,17 @@ class IteratorHelper
 
     /**
      * @param iterable|mixed[] $iterable
-     * @return \Iterator
+     * @return Iterator
      */
-    public static function iterableToIterator(iterable $iterable): \Iterator
+    public static function iterableToIterator(iterable $iterable): Iterator
     {
         if (is_array($iterable)) {
             return new ArrayIterator($iterable);
-        } elseif ($iterable instanceof \Iterator) {
+        } elseif ($iterable instanceof Iterator) {
             return $iterable;
         }
 
-        while ($iterable instanceof \IteratorAggregate) {
+        while ($iterable instanceof IteratorAggregate) {
             $iterable = $iterable->getIterator();
         }
 

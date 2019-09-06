@@ -2,6 +2,7 @@
 
 namespace Dogma\Tests\ImmutableArray;
 
+use ArrayIterator;
 use Dogma\ImmutableArray;
 use Dogma\Tester\Assert;
 
@@ -17,7 +18,7 @@ Assert::same($empty->append(5, 6)->toArray(), [5, 6]);
 // appendAll()
 Assert::same($array->appendAll([5, 6])->toArray(), [1, 2, 3, 4, 5, 6]);
 Assert::same($array->appendAll(new ImmutableArray([5, 6]))->toArray(), [1, 2, 3, 4, 5, 6]);
-Assert::same($array->appendAll(new \ArrayIterator([5, 6]))->toArray(), [1, 2, 3, 4, 5, 6]);
+Assert::same($array->appendAll(new ArrayIterator([5, 6]))->toArray(), [1, 2, 3, 4, 5, 6]);
 Assert::same($empty->appendAll([5, 6])->toArray(), [5, 6]);
 
 // prepend()
@@ -27,7 +28,7 @@ Assert::same($empty->prepend(5, 6)->toArray(), [5, 6]);
 // prependAll()
 Assert::same($array->prependAll([5, 6])->toArray(), [5, 6, 1, 2, 3, 4]);
 Assert::same($array->prependAll(new ImmutableArray([5, 6]))->toArray(), [5, 6, 1, 2, 3, 4]);
-Assert::same($array->prependAll(new \ArrayIterator([5, 6]))->toArray(), [5, 6, 1, 2, 3, 4]);
+Assert::same($array->prependAll(new ArrayIterator([5, 6]))->toArray(), [5, 6, 1, 2, 3, 4]);
 Assert::same($empty->prependAll([5, 6])->toArray(), [5, 6]);
 
 // replace()
@@ -37,7 +38,7 @@ Assert::same($empty->replace(0, 10)->toArray(), [10]);
 // replaceAll()
 Assert::same($array->replaceAll([0 => 10, 1 => 20])->toArray(), [10, 20, 3, 4]);
 Assert::same($array->replaceAll(new ImmutableArray([0 => 10, 1 => 20]))->toArray(), [10, 20, 3, 4]);
-Assert::same($array->replaceAll(new \ArrayIterator([0 => 10, 1 => 20]))->toArray(), [10, 20, 3, 4]);
+Assert::same($array->replaceAll(new ArrayIterator([0 => 10, 1 => 20]))->toArray(), [10, 20, 3, 4]);
 Assert::same($empty->replaceAll([0 => 10, 1 => 20])->toArray(), [10, 20]);
 
 // hole()

@@ -18,19 +18,19 @@ class TypeMetaData
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Type */
+    /** @var Type */
     private $type;
 
-    /** @var \Dogma\Type[] (string $name => $type) */
+    /** @var Type[] (string $name => $type) */
     private $fields;
 
-    /** @var \Dogma\Mapping\Type\TypeHandler */
+    /** @var TypeHandler */
     private $handler;
 
     /**
-     * @param \Dogma\Type $type
-     * @param \Dogma\Type[] $fields ($name => $type)
-     * @param \Dogma\Mapping\Type\TypeHandler $handler
+     * @param Type $type
+     * @param Type[] $fields ($name => $type)
+     * @param TypeHandler $handler
      */
     public function __construct(Type $type, array $fields, TypeHandler $handler)
     {
@@ -47,7 +47,7 @@ class TypeMetaData
     }
 
     /**
-     * @return \Dogma\Type[] (string $name => $type)
+     * @return Type[] (string $name => $type)
      */
     public function getFields(): array
     {

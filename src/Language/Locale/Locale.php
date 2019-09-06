@@ -19,6 +19,7 @@ use Dogma\Money\Currency;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
+use Locale as PhpLocale;
 use function array_filter;
 use function array_values;
 use function implode;
@@ -52,13 +53,13 @@ class Locale
 
     public static function get(string $value): self
     {
-        $value = \Locale::canonicalize($value);
+        $value = PhpLocale::canonicalize($value);
 
         if (isset(self::$instances[$value])) {
             return self::$instances[$value];
         } else {
-            $components = \Locale::parseLocale($value);
-            $keywords = \Locale::getKeywords($value);
+            $components = PhpLocale::parseLocale($value);
+            $keywords = PhpLocale::getKeywords($value);
             if ($keywords) {
                 $components['keywords'] = $keywords;
             }
@@ -70,13 +71,13 @@ class Locale
 
     public static function getDefault(): self
     {
-        return self::get(\Locale::getDefault());
+        return self::get(PhpLocale::getDefault());
     }
 
     /**
-     * @param \Dogma\Language\Language $language
-     * @param \Dogma\Country\Country|null $country
-     * @param \Dogma\Language\Script|null $script
+     * @param Language $language
+     * @param Country|null $country
+     * @param Script|null $script
      * @param string[] $variants
      * @param string[] $private
      * @param string[] $keywords
@@ -103,13 +104,13 @@ class Locale
             $components['private' . $n] = $value;
         }
 
-        $value = \Locale::composeLocale(array_filter($components));
+        $value = PhpLocale::composeLocale(array_filter($components));
         if ($keywords) {
-            $value .= '@' . implode(';', Arr::mapPairs($keywords, function (string $key, string $value) {
+            $value .= '@' . implode(';', Arr::mapPairs($keywords, static function (string $key, string $value) {
                 return $key . '=' . $value;
             }));
         }
-        $value = \Locale::canonicalize($value);
+        $value = PhpLocale::canonicalize($value);
 
         if (isset(self::$instances[$value])) {
             return self::$instances[$value];
@@ -127,7 +128,7 @@ class Locale
     }
 
     /**
-     * @param string|\Dogma\Language\Locale\Locale $locale
+     * @param string|Locale $locale
      * @return bool
      */
     public function matches($locale): bool
@@ -138,12 +139,12 @@ class Locale
             $locale = self::get($locale);
         }
 
-        return \Locale::filterMatches($this->value, $locale->getValue(), false);
+        return PhpLocale::filterMatches($this->value, $locale->getValue(), false);
     }
 
     /**
-     * @param \Dogma\Language\Locale\Locale[]|string[] $locales
-     * @param \Dogma\Language\Locale\Locale|string $default
+     * @param Locale[]|string[] $locales
+     * @param Locale|string $default
      * @return self|null
      */
     public function findBestMatch(array $locales, $default = null): ?self
@@ -158,17 +159,17 @@ class Locale
             $default = self::get($default);
         }
 
+        /** @var Locale|string $locale */
         foreach ($locales as $i => $locale) {
             Check::types($locale, [Type::STRING, self::class]);
             if (is_string($locale)) {
-                $locales[$i] = \Locale::canonicalize($locale);
+                $locales[$i] = PhpLocale::canonicalize($locale);
             } else {
-                /** @var \Dogma\Language\Locale\Locale $locale */
                 $locale[$i] = $locale->getValue();
             }
         }
 
-        $match = \Locale::lookup($locales, $this->value, false, $default->getValue());
+        $match = PhpLocale::lookup($locales, $this->value, false, $default->getValue());
 
         return $match ? self::get($match) : null;
     }
@@ -207,7 +208,7 @@ class Locale
      */
     public function getVariants(): array
     {
-        return \Locale::getAllVariants($this->value);
+        return PhpLocale::getAllVariants($this->value);
     }
 
     public function getVariant(int $n): ?string
@@ -291,15 +292,16 @@ class Locale
     }
 
     /**
-     * @return string[]
+     * @return LocaleCollationOption[]
      */
     public function getCollationOptions(): array
     {
+        /** @var LocaleCollationOption[] $options */
         $options = [];
+        /** @var LocaleCollationOption $class */
         foreach (LocaleKeyword::getCollationOptions() as $keyword => $class) {
             $value = $this->getKeyword($keyword);
             if ($value !== null) {
-                /** @var \Dogma\Language\Locale\LocaleCollationOption $class */
                 $options[$keyword] = $class::get($value);
             }
         }

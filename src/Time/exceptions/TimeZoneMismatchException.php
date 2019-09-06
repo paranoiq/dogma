@@ -9,12 +9,14 @@
 
 namespace Dogma\Time;
 
+use DateTimeZone;
+use Throwable;
 use function sprintf;
 
 class TimeZoneMismatchException extends TimeException
 {
 
-    public function __construct(\DateTimeZone $first, \DateTimeZone $second, ?\Throwable $previous = null)
+    public function __construct(DateTimeZone $first, DateTimeZone $second, ?Throwable $previous = null)
     {
         $message = sprintf(
             'DateTimes must have matching time zones. Time zones "%s" and "%s" given.',

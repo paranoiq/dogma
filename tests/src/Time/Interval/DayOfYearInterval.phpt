@@ -10,6 +10,7 @@ use Dogma\Time\DayOfYear;
 use Dogma\Time\Interval\DayOfYearInterval;
 use Dogma\Time\Interval\DayOfYearIntervalSet;
 use Dogma\Time\InvalidDateTimeUnitException;
+use function strval;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -20,16 +21,16 @@ $interval = new DayOfYearInterval($startDay, $endDay);
 $empty = DayOfYearInterval::empty();
 $all = DayOfYearInterval::all();
 
-$d = function (int $day): DayOfYear {
+$d = static function (int $day): DayOfYear {
     return new DayOfYear('01-' . Str::padLeft(strval($day), 2, '0'));
 };
-$i = function (int $start, int $end): DayOfYearInterval {
+$i = static function (int $start, int $end): DayOfYearInterval {
     return new DayOfYearInterval(
         new DayOfYear('01-' . Str::padLeft(strval($start), 2, '0')),
-        new DayOfYear('01-' . Str::padLeft(strval($end), 2, '0')),
+        new DayOfYear('01-' . Str::padLeft(strval($end), 2, '0'))
     );
 };
-$s = function (DayOfYearInterval ...$items): DayOfYearIntervalSet {
+$s = static function (DayOfYearInterval ...$items): DayOfYearIntervalSet {
     return new DayOfYearIntervalSet($items);
 };
 
@@ -38,10 +39,10 @@ Assert::equal(DayOfYearInterval::createFromString('01-10,01-20'), $interval);
 Assert::equal(DayOfYearInterval::createFromString('01-10|01-20'), $interval);
 Assert::equal(DayOfYearInterval::createFromString('01-10/01-20'), $interval);
 Assert::equal(DayOfYearInterval::createFromString('01-10 - 01-20'), $interval);
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     DayOfYearInterval::createFromString('foo|bar|baz');
 }, InvalidIntervalStringFormatException::class);
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     DayOfYearInterval::createFromString('foo');
 }, InvalidIntervalStringFormatException::class);
 
@@ -50,10 +51,10 @@ Assert::equal(DayOfYearInterval::createFromStartAndLength($startDay, DateTimeUni
 Assert::equal(DayOfYearInterval::createFromStartAndLength($startDay, DateTimeUnit::month(), 2), new DayOfYearInterval($startDay, new DayOfYear('03-10')));
 Assert::equal(DayOfYearInterval::createFromStartAndLength($startDay, DateTimeUnit::week(), 2), new DayOfYearInterval($startDay, new DayOfYear('01-24')));
 Assert::equal(DayOfYearInterval::createFromStartAndLength($startDay, DateTimeUnit::day(), 2), new DayOfYearInterval($startDay, new DayOfYear('01-12')));
-Assert::exception(function () use ($startDay): void {
+Assert::exception(static function () use ($startDay): void {
     DayOfYearInterval::createFromStartAndLength($startDay, DateTimeUnit::hour(), 2);
 }, InvalidDateTimeUnitException::class);
-Assert::exception(function () use ($startDay): void {
+Assert::exception(static function () use ($startDay): void {
     DayOfYearInterval::createFromStartAndLength($startDay, DateTimeUnit::year(), 2);
 }, InvalidDateTimeUnitException::class);
 
@@ -114,11 +115,11 @@ Assert::false($interval->intersects($empty));
 
 $i1 = new DayOfYearInterval(
     DayOfYear::createFromMonthAndDay(12, 31),
-    DayOfYear::createFromMonthAndDay(1, 1),
+    DayOfYear::createFromMonthAndDay(1, 1)
 );
 $i2 = new DayOfYearInterval(
     DayOfYear::createFromMonthAndDay(12, 31),
-    DayOfYear::createFromMonthAndDay(1, 3),
+    DayOfYear::createFromMonthAndDay(1, 3)
 );
 Assert::true($i1->intersects($i2));
 
@@ -136,7 +137,7 @@ Assert::equal($interval->split(2), $s($i(10, 15), $i(16, 20)));
 Assert::equal($interval->split(3), $s(
     new DayOfYearInterval(new DayOfYear('01-10'), new DayOfYear('01-13')),
     new DayOfYearInterval(new DayOfYear('01-14'), new DayOfYear('01-16')),
-    new DayOfYearInterval(new DayOfYear('01-17'), new DayOfYear('01-20')),
+    new DayOfYearInterval(new DayOfYear('01-17'), new DayOfYear('01-20'))
 ));
 Assert::equal($empty->split(5), $s());
 
@@ -175,7 +176,7 @@ Assert::equal($interval->difference($i(5, 15), $i(15, 25)), $s($i(5, 9), $i(21, 
 Assert::equal($interval->difference($i(22, 25)), $s($interval, $i(22, 25)));
 Assert::equal($interval->difference($all), $s(
     new DayOfYearInterval(new DayOfYear(DayOfYear::MIN), $d(9)),
-    new DayOfYearInterval($d(21), new DayOfYear(DayOfYear::MAX)),
+    new DayOfYearInterval($d(21), new DayOfYear(DayOfYear::MAX))
 ));
 Assert::equal($interval->difference($empty), $s($interval));
 
@@ -192,7 +193,7 @@ Assert::equal($empty->subtract($empty), $s());
 // invert()
 Assert::equal($interval->invert(), $s(
     new DayOfYearInterval(new DayOfYear(DayOfYear::MIN), $d(10)),
-    new DayOfYearInterval($d(20), new DayOfYear(DayOfYear::MAX)),
+    new DayOfYearInterval($d(20), new DayOfYear(DayOfYear::MAX))
 ));
 Assert::equal($empty->invert(), $s($all));
 Assert::equal($all->invert(), $s($empty));
@@ -212,7 +213,7 @@ Assert::equal(DayOfYearInterval::countOverlaps($interval, $i(5, 15)), [
 Assert::equal(DayOfYearInterval::countOverlaps(
     $i(5, 15),
     $i(10, 20),
-    $i(15, 25),
+    $i(15, 25)
 ), [
     [$i(5, 9), 1],
     [$i(10, 14), 2],
@@ -233,12 +234,12 @@ Assert::equal($s(...DayOfYearInterval::explodeOverlaps($interval, $i(5, 15))), $
     $i(5, 9),
     $i(10, 15),
     $i(10, 15),
-    $i(16, 20),
+    $i(16, 20)
 ));
 Assert::equal($s(...DayOfYearInterval::explodeOverlaps(
     $i(5, 15),
     $i(10, 20),
-    $i(15, 25),
+    $i(15, 25)
 )), $s(
     $i(5, 9),
     $i(10, 14),
@@ -248,5 +249,5 @@ Assert::equal($s(...DayOfYearInterval::explodeOverlaps(
     $i(15, 15),
     $i(16, 20),
     $i(16, 20),
-    $i(21, 25),
+    $i(21, 25)
 ));

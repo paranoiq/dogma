@@ -11,7 +11,7 @@ namespace Dogma\Email;
 
 use Dogma\Io\File;
 use Dogma\Language\Inflector;
-use Dogma\PowersOfTwo;
+use Dogma\Math\PowersOfTwo;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateTime;
@@ -42,7 +42,7 @@ use function substr;
  * Use -> to read message headers.
  *
  * @property-read string $subject
- * @property-read \DateTime $date
+ * @property-read DateTime $date
  *
  * @property-read string $from
  * @property-read string $to
@@ -68,7 +68,7 @@ class EmailMessage
     /** @var string[] */
     private $headers;
 
-    /** @var \Dogma\Io\File */
+    /** @var File */
     private $file;
 
     /** @var string */
@@ -78,7 +78,7 @@ class EmailMessage
     private $addressFactory;
 
     /**
-     * @param string|\Dogma\Io\File $message
+     * @param string|File $message
      */
     public function __construct($message)
     {
@@ -105,7 +105,6 @@ class EmailMessage
             throw new EmailParsingException('Cannot parse email structure.');
         }
 
-        $this->parts = [];
         foreach ($structure as $partId) {
             ///
             $partHandler = mailparse_msg_get_part($handler, $partId);
@@ -216,7 +215,7 @@ class EmailMessage
      * Returns attachments. May be filtered by mime type.
      * @param string|string[] $contentType
      * @param bool $inlined
-     * @return \Dogma\Email\EmailAttachment[]
+     * @return EmailAttachment[]
      */
     public function getAttachments($contentType = null, bool $inlined = true): array
     {
@@ -245,7 +244,7 @@ class EmailMessage
 
     /**
      * @param string $name
-     * @return string|\DateTime
+     * @return string|DateTime
      */
     public function &__get(string $name)
     {
@@ -298,7 +297,7 @@ class EmailMessage
     /**
      * Parse addresses from mail header (from, to, cc, bcc, reply-to, return-path, delivered-to, sender…)
      * @param string $header
-     * @return \Dogma\Email\EmailAddress[]
+     * @return EmailAddress[]
      */
     private function parseAddressHeader(string $header): array
     {
@@ -386,7 +385,7 @@ class EmailMessage
     /**
      * Get attachment data as string or temporary File object.
      * @param string[] $part
-     * @return string|\Dogma\Io\File
+     * @return string|File
      */
     private function getAttachmentData(array $part)
     {

@@ -9,12 +9,13 @@
 
 namespace Dogma\Time;
 
+use Throwable;
 use function sprintf;
 
 class InvalidTimeIntervalException extends TimeException
 {
 
-    public function __construct(Time $start, Time $end, ?\Throwable $previous = null)
+    public function __construct(Time $start, Time $end, ?Throwable $previous = null)
     {
         parent::__construct(sprintf(
             'Difference between two time values in a time interval must be less than or exactly 24 hours. Values %s (start) and %s (end) given.',

@@ -89,7 +89,7 @@ class ModuloCalc
         self::checkValues($allowedValues, $modulus);
 
         sort($allowedValues);
-        if (in_array(0, $allowedValues)) {
+        if (in_array(0, $allowedValues, true)) {
             $allowedValues[] = $modulus;
         }
 

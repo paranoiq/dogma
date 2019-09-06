@@ -15,10 +15,10 @@ class TestClass
 
 }
 
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     $x = new TestClass();
 }, StaticClassException::class);
 
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     TestClass::method();
 }, UndefinedMethodException::class);

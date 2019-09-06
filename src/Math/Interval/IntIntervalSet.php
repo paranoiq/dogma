@@ -15,6 +15,7 @@ use Dogma\Compare;
 use Dogma\Equalable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
+use Iterator;
 use function array_merge;
 use function array_shift;
 use function count;
@@ -25,11 +26,11 @@ class IntIntervalSet implements IntervalSet
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Math\Interval\IntInterval[] */
+    /** @var IntInterval[] */
     private $intervals = [];
 
     /**
-     * @param \Dogma\Math\Interval\IntInterval[] $intervals
+     * @param IntInterval[] $intervals
      */
     public function __construct(array $intervals)
     {
@@ -43,14 +44,14 @@ class IntIntervalSet implements IntervalSet
     }
 
     /**
-     * @return \Dogma\Math\Interval\IntInterval[]
+     * @return IntInterval[]
      */
     public function getIntervals(): array
     {
         return $this->intervals;
     }
 
-    public function getIterator(): \Iterator
+    public function getIterator(): Iterator
     {
         return new ArrayIterator($this->intervals);
     }
@@ -137,7 +138,7 @@ class IntIntervalSet implements IntervalSet
      */
     public function add(self $set): self
     {
-        return self::addIntervals(...$set->intervals);
+        return $this->addIntervals(...$set->intervals);
     }
 
     public function addIntervals(IntInterval ...$intervals): self
@@ -152,7 +153,7 @@ class IntIntervalSet implements IntervalSet
      */
     public function subtract(self $set): self
     {
-        return self::subtractIntervals(...$set->intervals);
+        return $this->subtractIntervals(...$set->intervals);
     }
 
     public function subtractIntervals(IntInterval ...$intervals): self
@@ -184,7 +185,7 @@ class IntIntervalSet implements IntervalSet
      */
     public function intersect(self $set): self
     {
-        return self::intersectIntervals(...$set->intervals);
+        return $this->intersectIntervals(...$set->intervals);
     }
 
     public function intersectIntervals(IntInterval ...$intervals): self

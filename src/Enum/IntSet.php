@@ -18,7 +18,7 @@ abstract class IntSet
 {
     use SetMixin;
 
-    /** @var \Dogma\Enum\IntSet[][] ($class => ($value => $enum)) */
+    /** @var IntSet[][] ($class => ($value => $enum)) */
     private static $instances = [];
 
     /** @var mixed[][] ($class => ($constName => $value)) */
@@ -28,7 +28,7 @@ abstract class IntSet
     private $value;
 
     /** @var int[] */
-    private $values = [];
+    private $values;
 
     /**
      * @param int $value
@@ -65,7 +65,7 @@ abstract class IntSet
                 }
                 $values[] = $val;
             }
-            $val = $val << 1;
+            $val <<= 1;
         }
 
         if (!isset(self::$instances[$class][$value])) {
@@ -132,7 +132,7 @@ abstract class IntSet
         foreach ($addValues as $val) {
             self::check($val);
 
-            if (!in_array($val, $values)) {
+            if (!in_array($val, $values, true)) {
                 $values[] = $val;
             }
         }
@@ -150,23 +150,19 @@ abstract class IntSet
         foreach ($removeValues as $val) {
             self::check($val);
 
-            $key = array_search($val, $values);
+            $key = array_search($val, $values, true);
             unset($values[$key]);
         }
 
         return static::get(...$values);
     }
 
-    /**
-     * @param int ...$containsValues
-     * @return bool
-     */
     public function contains(int ...$containsValues): bool
     {
         foreach ($containsValues as $val) {
             self::check($val);
 
-            if (!in_array($val, $this->values)) {
+            if (!in_array($val, $this->values, true)) {
                 return false;
             }
         }
@@ -174,16 +170,12 @@ abstract class IntSet
         return true;
     }
 
-    /**
-     * @param int ...$containsValues
-     * @return bool
-     */
     public function containsAny(int ...$containsValues): bool
     {
         foreach ($containsValues as $val) {
             self::check($val);
 
-            if (in_array($val, $this->values)) {
+            if (in_array($val, $this->values, true)) {
                 return true;
             }
         }

@@ -49,10 +49,10 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
 
     public const DEFAULT_FORMAT = 'H:i:s.u| - H:i:s.u';
 
-    /** @var \Dogma\Time\Time */
+    /** @var Time */
     private $start;
 
-    /** @var \Dogma\Time\Time */
+    /** @var Time */
     private $end;
 
     /** @var bool */
@@ -203,7 +203,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
     }
 
     /**
-     * @return \Dogma\Time\Time[]
+     * @return Time[]
      */
     public function getStartEnd(): array
     {
@@ -270,7 +270,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
     }
 
     /**
-     * @param \Dogma\Time\Interval\TimeInterval $interval
+     * @param TimeInterval $interval
      * @return bool
      */
     public function contains(self $interval): bool
@@ -298,7 +298,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
     }
 
     /**
-     * @param \Dogma\Time\Interval\TimeInterval $interval
+     * @param TimeInterval $interval
      * @param bool $exclusive
      * @return bool
      */
@@ -323,7 +323,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
             $intervalStarts[] = round(($this->start->getMicroTime() + $partSize * $n) % (Time::MAX_MICROSECONDS + 1), 6);
         }
         $intervalStarts = array_unique($intervalStarts);
-        $intervalStarts = Arr::map($intervalStarts, function (int $timestamp) {
+        $intervalStarts = Arr::map($intervalStarts, static function (int $timestamp): Time {
             return new Time($timestamp);
         });
 
@@ -331,9 +331,9 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
     }
 
     /**
-     * @param \Dogma\Time\Time[] $intervalStarts
+     * @param Time[] $intervalStarts
      * @param int $splitMode
-     * @return \Dogma\Time\Interval\TimeIntervalSet
+     * @return TimeIntervalSet
      */
     public function splitBy(array $intervalStarts, int $splitMode = self::SPLIT_OPEN_ENDS): TimeIntervalSet
     {
@@ -345,7 +345,6 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
         $results = [$this];
         $i = 0;
         foreach ($intervalStarts as $intervalStart) {
-            /** @var \Dogma\Time\Interval\TimeInterval $interval */
             $interval = $results[$i];
             if ($interval->containsValue($intervalStart)) {
                 $results[$i] = new static($interval->start, $intervalStart, $interval->openStart, $splitMode === self::SPLIT_OPEN_ENDS ? self::OPEN : self::CLOSED);
@@ -379,7 +378,6 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
         $end = new Time(self::MIN);
         $startExclusive = true;
         $endExclusive = true;
-        /** @var \Dogma\Time\Interval\TimeInterval $item */
         foreach ($items as $item) {
             if ($item->isEmpty()) {
                 continue;
@@ -406,9 +404,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
         $items[] = $this;
         $items = self::sortByStart($items);
 
-        /** @var \Dogma\Time\Interval\TimeInterval $result */
         $result = array_shift($items);
-        /** @var \Dogma\Time\Interval\TimeInterval $item */
         foreach ($items as $item) {
             if ($result->start->getMicroTime() < $item->start->getMicroTime() || ($result->start->equals($item->start) && $result->openStart && !$item->openStart)) {
                 if ($result->end->getMicroTime() < $item->start->getMicroTime() || ($result->end->getMicroTime() === $item->start->getMicroTime() && ($result->openEnd || $item->openStart))) {
@@ -434,7 +430,6 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
 
         $current = array_shift($items);
         $results = [$current];
-        /** @var \Dogma\Time\Interval\TimeInterval $item */
         foreach ($items as $item) {
             if ($item->isEmpty()) {
                 continue;
@@ -470,14 +465,12 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
     {
         $results = [$this];
 
-        /** @var \Dogma\Time\Interval\TimeInterval $item */
         foreach ($items as $item) {
             if ($item->isEmpty()) {
                 continue;
             }
             $itemStartTime = $item->getStart()->getMicroTime();
             $itemEndTime = $item->getEnd()->getMicroTime();
-            /** @var \Dogma\Time\Interval\TimeInterval $interval */
             foreach ($results as $r => $interval) {
                 $intervalStartTime = $interval->getStart()->getMicroTime();
                 $intervalEndTime = $interval->getEnd()->getMicroTime();
@@ -525,15 +518,14 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
     // static ----------------------------------------------------------------------------------------------------------
 
     /**
-     * @param \Dogma\Time\Interval\TimeInterval ...$items
-     * @return \Dogma\Time\Interval\TimeInterval[][]|int[][] ($interval, $count)
+     * @param TimeInterval ...$items
+     * @return TimeInterval[][]|int[][] ($interval, $count)
      */
     public static function countOverlaps(self ...$items): array
     {
         $overlaps = self::explodeOverlaps(...$items);
 
         $results = [];
-        /** @var \Dogma\Time\Interval\TimeInterval $overlap */
         foreach ($overlaps as $overlap) {
             $ident = $overlap->format();
             if (isset($results[$ident])) {
@@ -547,8 +539,8 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
     }
 
     /**
-     * @param \Dogma\Time\Interval\TimeInterval ...$items
-     * @return \Dogma\Time\Interval\TimeInterval[]
+     * @param TimeInterval ...$items
+     * @return TimeInterval[]
      */
     public static function explodeOverlaps(self ...$items): array
     {
@@ -564,7 +556,6 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
             }
             $aStartTime = $a->getStart()->getMicroTime();
             $aEndTime = $a->getEnd()->getMicroTime();
-            /** @var \Dogma\Time\Interval\TimeInterval $b */
             foreach ($items as $j => $b) {
                 if ($i === $j) {
                     // same item
@@ -655,7 +646,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
      */
     public static function sort(array $intervals): array
     {
-        usort($intervals, function (TimeInterval $a, TimeInterval $b) {
+        usort($intervals, static function (TimeInterval $a, TimeInterval $b) {
             return $a->start->getMicroTime() <=> $b->start->getMicroTime() ?: $a->end->getMicroTime() <=> $b->end->getMicroTime();
         });
 
@@ -668,7 +659,7 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
      */
     public static function sortByStart(array $intervals): array
     {
-        usort($intervals, function (TimeInterval $a, TimeInterval $b) {
+        usort($intervals, static function (TimeInterval $a, TimeInterval $b) {
             return $a->start->getMicroTime() <=> $b->start->getMicroTime();
         });
 

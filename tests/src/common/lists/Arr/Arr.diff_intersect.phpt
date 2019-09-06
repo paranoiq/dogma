@@ -13,7 +13,7 @@ $diff2 = [3 => 4, 5];
 $int1 = [1 => 2, 3, 4, 5];
 $int2 = [2 => 3, 4, 5, 6];
 
-$f = function (int $a, int $b): int {
+$f = static function (int $a, int $b): int {
     return $a > $b ? 1 : ($a < $b ? -1 : 0);
 };
 

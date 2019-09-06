@@ -13,13 +13,14 @@ use Dogma\Io\File;
 use Dogma\Io\FileMode;
 use Dogma\Io\Path;
 use Dogma\StrictBehaviorMixin;
+use SplFileInfo;
 use function basename;
 use function str_replace;
 
 /**
  * File Info
  */
-class FileInfo extends \SplFileInfo implements Path
+class FileInfo extends SplFileInfo implements Path
 {
     use StrictBehaviorMixin;
 
@@ -67,24 +68,11 @@ class FileInfo extends \SplFileInfo implements Path
     /**
      * @param string $mode
      * @param resource|null $streamContext
-     * @return \Dogma\Io\File
+     * @return File
      */
     public function open(string $mode = FileMode::OPEN_READ, $streamContext = null): File
     {
         return new File($this->getRealPath(), $mode, $streamContext);
-    }
-
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param string $mode
-     * @param string|null $includePath
-     * @param resource|null $streamContext
-     * @return \Dogma\Io\File
-     */
-    public function openFile($mode = FileMode::OPEN_READ, $includePath = null, $streamContext = null): File
-    {
-        /// include path!
-        return $this->open($mode, $streamContext);
     }
 
     /**

@@ -13,19 +13,21 @@ use Dogma\ArrayIterator;
 use Dogma\IteratorHelper;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
+use Iterator;
+use IteratorAggregate;
 use function is_array;
 
-class MappingIterator implements \Iterator
+class MappingIterator implements Iterator
 {
     use StrictBehaviorMixin;
 
-    /** @var \Iterator */
+    /** @var Iterator */
     private $source;
 
-    /** @var \Dogma\Type */
+    /** @var Type */
     private $type;
 
-    /** @var \Dogma\Mapping\Mapper */
+    /** @var Mapper */
     private $mapper;
 
     /** @var bool */
@@ -36,17 +38,17 @@ class MappingIterator implements \Iterator
 
     /**
      * @param iterable|mixed[] $source
-     * @param \Dogma\Type $type
-     * @param \Dogma\Mapping\Mapper $mapper
+     * @param Type $type
+     * @param Mapper $mapper
      * @param bool $reverse
      */
     public function __construct(iterable $source, Type $type, Mapper $mapper, bool $reverse = false)
     {
         if (is_array($source)) {
             $this->source = new ArrayIterator($source);
-        } elseif ($source instanceof \IteratorAggregate) {
+        } elseif ($source instanceof IteratorAggregate) {
             $this->source = IteratorHelper::iterableToIterator($source);
-        } elseif ($source instanceof \Iterator) {
+        } elseif ($source instanceof Iterator) {
             $this->source = $source;
         }
 

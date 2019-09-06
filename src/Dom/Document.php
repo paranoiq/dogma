@@ -10,17 +10,19 @@
 namespace Dogma\Dom;
 
 use Dogma\NotImplementedException;
+use DOMDocument;
+use DOMElement;
+use DOMNode;
 use function libxml_clear_errors;
 use function libxml_get_last_error;
 use function libxml_use_internal_errors;
 use function preg_match;
-use function substr;
 use function trim;
 
-class Document extends \DOMDocument
+class Document extends DOMDocument
 {
 
-    /** @var \Dogma\Dom\QueryEngine */
+    /** @var QueryEngine */
     private $engine;
 
     /**
@@ -37,7 +39,7 @@ class Document extends \DOMDocument
             return;
         }
 
-        if (substr($document, 0, 1) === '@') {
+        if ($document[0] === '@') {
             /// from file
             throw new NotImplementedException('File ');
         } else {
@@ -64,11 +66,12 @@ class Document extends \DOMDocument
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $source
      * @param int|null $options
+     * @return true
      */
-    public function loadXml($source, $options = null): void
+    public function loadXml($source, $options = null): bool
     {
         libxml_use_internal_errors(true);
         libxml_clear_errors();
@@ -76,14 +79,17 @@ class Document extends \DOMDocument
             $error = libxml_get_last_error();
             throw new DomException('Cannot load HTML document: ' . trim($error->message) . ' on line #' . $error->line, $error->code);
         }
+
+        return true;
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $source
      * @param int|null $options
+     * @return true
      */
-    public function loadHtml($source, $options = null): void
+    public function loadHtml($source, $options = null): bool
     {
         $previousState = libxml_use_internal_errors(true);
         libxml_clear_errors();
@@ -93,14 +99,17 @@ class Document extends \DOMDocument
             throw new DomException('Cannot load HTML document: ' . trim($error->message) . ' on line #' . $error->line, $error->code);
         }
         libxml_use_internal_errors($previousState);
+
+        return true;
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $fileName
      * @param int|null $options
+     * @return true
      */
-    public function loadHtmlFile($fileName, $options = null): void
+    public function loadHtmlFile($fileName, $options = null): bool
     {
         libxml_use_internal_errors(true);
         libxml_clear_errors();
@@ -108,12 +117,14 @@ class Document extends \DOMDocument
             $error = libxml_get_last_error();
             throw new DomException('Cannot load HTML document: ' . trim($error->message) . ' on line #' . $error->line, $error->code);
         }
+
+        return true;
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $id
-     * @return \Dogma\Dom\Element|\DOMNode|null
+     * @return Element|DOMNode|null
      */
     public function getElementById($id)
     {
@@ -129,7 +140,7 @@ class Document extends \DOMDocument
 
     /**
      * @param string $xpath
-     * @return \Dogma\Dom\Element|\DOMNode
+     * @return Element|DOMNode
      */
     public function findOne(string $xpath)
     {
@@ -160,12 +171,12 @@ class Document extends \DOMDocument
     }
 
     /**
-     * @param \DOMNode $node
-     * @return \Dogma\Dom\Element|\DOMNode
+     * @param DOMNode $node
+     * @return Element|DOMNode
      */
-    private function wrap(\DOMNode $node)
+    private function wrap(DOMNode $node)
     {
-        if ($node instanceof \DOMElement) {
+        if ($node instanceof DOMElement) {
             return new Element($node, $this->engine);
         } else {
             return $node;

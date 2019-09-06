@@ -9,6 +9,8 @@
 
 namespace Dogma\Time\Interval;
 
+use DateTimeInterface;
+use DateTimeZone;
 use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
@@ -48,10 +50,10 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
 
     public const DEFAULT_FORMAT = 'Y-m-d H:i:s| - Y-m-d H:i:s';
 
-    /** @var \Dogma\Time\DateTime */
+    /** @var DateTime */
     private $start;
 
-    /** @var \Dogma\Time\DateTime */
+    /** @var DateTime */
     private $end;
 
     /** @var bool */
@@ -102,7 +104,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue()), $openStart, $openEnd);
     }
 
-    public static function createFromDateAndTimeInterval(Date $date, TimeInterval $timeInterval, ?\DateTimeZone $timeZone = null): self
+    public static function createFromDateAndTimeInterval(Date $date, TimeInterval $timeInterval, ?DateTimeZone $timeZone = null): self
     {
         return new static(
             DateTime::createFromDateAndTime($date, $timeInterval->getStart(), $timeZone),
@@ -112,7 +114,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         );
     }
 
-    public static function createFromDateIntervalAndTime(DateInterval $dateInterval, Time $time, ?\DateTimeZone $timeZone = null, bool $openStart = false, bool $openEnd = true): self
+    public static function createFromDateIntervalAndTime(DateInterval $dateInterval, Time $time, ?DateTimeZone $timeZone = null, bool $openStart = false, bool $openEnd = true): self
     {
         return new static(
             DateTime::createFromDateAndTime($dateInterval->getStart(), $time, $timeZone),
@@ -122,14 +124,14 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         );
     }
 
-    public static function future(?\DateTimeZone $timeZone = null, ?TimeProvider $timeProvider = null): self
+    public static function future(?DateTimeZone $timeZone = null, ?TimeProvider $timeProvider = null): self
     {
         $now = $timeProvider !== null ? $timeProvider->getDateTime($timeZone) : new DateTime('now', $timeZone);
 
         return new static($now, new DateTime(self::MAX, $timeZone), true, false);
     }
 
-    public static function past(?\DateTimeZone $timeZone = null, ?TimeProvider $timeProvider = null): self
+    public static function past(?DateTimeZone $timeZone = null, ?TimeProvider $timeProvider = null): self
     {
         $now = $timeProvider !== null ? $timeProvider->getDateTime($timeZone) : new DateTime('now', $timeZone);
 
@@ -235,7 +237,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
     }
 
     /**
-     * @return \Dogma\Time\DateTime[]
+     * @return DateTime[]
      */
     public function getStartEnd(): array
     {
@@ -290,7 +292,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
             && ($this->openEnd ? $value < $this->end : $value <= $this->end);
     }
 
-    public function containsDateTime(\DateTimeInterface $value): bool
+    public function containsDateTime(DateTimeInterface $value): bool
     {
         return $this->containsValue(DateTime::createFromDateTimeInterface($value));
     }
@@ -314,7 +316,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
     }
 
     /**
-     * @param \Dogma\Time\Interval\DateTimeInterval $interval
+     * @param DateTimeInterval $interval
      * @param bool $exclusive
      * @return bool
      */
@@ -349,9 +351,9 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
     }
 
     /**
-     * @param \Dogma\Time\DateTime[] $intervalStarts
+     * @param DateTime[] $intervalStarts
      * @param int $splitMode
-     * @return \Dogma\Time\Interval\DateTimeIntervalSet
+     * @return DateTimeIntervalSet
      */
     public function splitBy(array $intervalStarts, int $splitMode = self::SPLIT_OPEN_ENDS): DateTimeIntervalSet
     {
@@ -363,7 +365,6 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         $results = [$this];
         $i = 0;
         foreach ($intervalStarts as $intervalStart) {
-            /** @var \Dogma\Time\Interval\DateTimeInterval $interval */
             $interval = $results[$i];
             if ($interval->containsValue($intervalStart)) {
                 $results[$i] = new static($interval->start, $intervalStart, $interval->openStart, $splitMode === self::SPLIT_OPEN_ENDS ? self::OPEN : self::CLOSED);
@@ -378,10 +379,10 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
     /**
      * Splits interval into smaller by increments of given unit from the beginning of interval.
      *
-     * @param \Dogma\Time\DateTimeUnit $unit
+     * @param DateTimeUnit $unit
      * @param int $amount
      * @param int $splitMode
-     * @return \Dogma\Time\Interval\DateTimeIntervalSet
+     * @return DateTimeIntervalSet
      */
     public function splitByUnit(DateTimeUnit $unit, int $amount = 1, int $splitMode = self::SPLIT_OPEN_ENDS): DateTimeIntervalSet
     {
@@ -406,11 +407,11 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
      * *) in context of a superior unit - number of month in year, iso number of week in year, number of day in month...
      *  eg. for 5 months beginning of May or October will be used as base.
      *
-     * @param \Dogma\Time\DateTimeUnit $unit
+     * @param DateTimeUnit $unit
      * @param int $amount
-     * @param \Dogma\Time\DateTime|null $reference
+     * @param DateTime|null $reference
      * @param int $splitMode
-     * @return \Dogma\Time\Interval\DateTimeIntervalSet
+     * @return DateTimeIntervalSet
      */
     public function splitByUnitAligned(DateTimeUnit $unit, int $amount = 1, ?DateTime $reference = null, int $splitMode = self::SPLIT_OPEN_ENDS): DateTimeIntervalSet
     {
@@ -478,7 +479,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
                 if ($amount > 1) {
                     $hours = range(0, 23, $amount);
                 }
-                /** @var \Dogma\Time\DateTime $reference */
+                /** @var DateTime $reference */
                 $reference = TimeCalc::roundDownTo($this->start, $unit, $hours);
 
                 return $reference;
@@ -488,7 +489,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
                 if ($amount > 1) {
                     $units = range(0, 59, $amount);
                 }
-                /** @var \Dogma\Time\DateTime $reference */
+                /** @var DateTime $reference */
                 $reference = TimeCalc::roundDownTo($this->start, $unit, $units);
 
                 return $reference;
@@ -497,7 +498,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
                 if ($amount > 1) {
                     $miliseconds = range(0, 999, $amount);
                 }
-                /** @var \Dogma\Time\DateTime $reference */
+                /** @var DateTime $reference */
                 $reference = TimeCalc::roundDownTo($this->start, $unit, $miliseconds);
 
                 return $reference;
@@ -506,7 +507,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
                 if ($amount > 1) {
                     $microseconds = range(0, 999999, $amount);
                 }
-                /** @var \Dogma\Time\DateTime $reference */
+                /** @var DateTime $reference */
                 $reference = TimeCalc::roundDownTo($this->start, $unit, $microseconds);
 
                 return $reference;
@@ -522,7 +523,6 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         $end = new DateTime(self::MIN);
         $startExclusive = true;
         $endExclusive = true;
-        /** @var \Dogma\Time\Interval\DateTimeInterval $item */
         foreach ($items as $item) {
             if ($item->start < $start) {
                 $start = $item->start;
@@ -547,7 +547,6 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         $items = self::sortByStart($items);
 
         $result = array_shift($items);
-        /** @var \Dogma\Time\Interval\DateTimeInterval $item */
         foreach ($items as $item) {
             if ($result->start < $item->start || ($result->start->equals($item->start) && $result->openStart && !$item->openStart)) {
                 if ($result->end < $item->start || ($result->end->equals($item->start) && ($result->openEnd || $item->openStart))) {
@@ -573,7 +572,6 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
 
         $current = array_shift($items);
         $results = [$current];
-        /** @var \Dogma\Time\Interval\DateTimeInterval $item */
         foreach ($items as $item) {
             if ($item->isEmpty()) {
                 continue;
@@ -613,7 +611,6 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
             if ($item->isEmpty()) {
                 continue;
             }
-            /** @var \Dogma\Time\Interval\DateTimeInterval $interval */
             foreach ($results as $r => $interval) {
                 $startLower = $interval->start < $item->start || ($interval->start->equals($item->start) && !$interval->openStart && $item->openStart);
                 $endHigher = $interval->end > $item->end || ($interval->end->equals($item->end) && $interval->openEnd && !$item->openEnd);
@@ -658,15 +655,14 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
     // static ----------------------------------------------------------------------------------------------------------
 
     /**
-     * @param \Dogma\Time\Interval\DateTimeInterval ...$items
-     * @return \Dogma\Time\Interval\DateTimeInterval[][]|int[][] ($interval, $count)
+     * @param DateTimeInterval ...$items
+     * @return DateTimeInterval[][]|int[][] ($interval, $count)
      */
     public static function countOverlaps(self ...$items): array
     {
         $overlaps = self::explodeOverlaps(...$items);
 
         $results = [];
-        /** @var \Dogma\Time\Interval\DateTimeInterval $overlap */
         foreach ($overlaps as $overlap) {
             $ident = $overlap->format();
             if (isset($results[$ident])) {
@@ -680,8 +676,8 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
     }
 
     /**
-     * @param \Dogma\Time\Interval\DateTimeInterval ...$items
-     * @return \Dogma\Time\Interval\DateTimeInterval[]
+     * @param DateTimeInterval ...$items
+     * @return DateTimeInterval[]
      */
     public static function explodeOverlaps(self ...$items): array
     {
@@ -695,7 +691,6 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
                 $i++;
                 continue;
             }
-            /** @var \Dogma\Time\Interval\DateTimeInterval $b */
             foreach ($items as $j => $b) {
                 if ($i === $j) {
                     // same item
@@ -773,7 +768,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
      */
     public static function sort(array $intervals): array
     {
-        usort($intervals, function (DateTimeInterval $a, DateTimeInterval $b) {
+        usort($intervals, static function (DateTimeInterval $a, DateTimeInterval $b) {
             return $a->start->getMicroTimestamp() <=> $b->start->getMicroTimestamp()
                 ?: $a->end->getMicroTimestamp() <=> $b->end->getMicroTimestamp();
         });
@@ -787,7 +782,7 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
      */
     public static function sortByStart(array $intervals): array
     {
-        usort($intervals, function (DateTimeInterval $a, DateTimeInterval $b) {
+        usort($intervals, static function (DateTimeInterval $a, DateTimeInterval $b) {
             return $a->start->getMicroTimestamp() <=> $b->start->getMicroTimestamp();
         });
 

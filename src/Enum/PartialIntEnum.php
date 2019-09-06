@@ -11,6 +11,7 @@ namespace Dogma\Enum;
 
 use Dogma\Arr;
 use Dogma\InvalidRegularExpressionException;
+use Dogma\LogicException;
 use function preg_match;
 use function sprintf;
 
@@ -25,7 +26,7 @@ abstract class PartialIntEnum extends IntEnum
     public static function validateValue(int &$value): bool
     {
         $regexp = '/^' . static::getValueRegexp() . '?$/';
-        $result = preg_match($regexp, $value);
+        $result = preg_match($regexp, (string) $value);
         if ($result === false) {
             throw new InvalidRegularExpressionException($regexp);
         }
@@ -34,7 +35,7 @@ abstract class PartialIntEnum extends IntEnum
 
     public static function getValueRegexp(): string
     {
-        throw new \LogicException(sprintf('Validation rule cannot be created automatically for class %s. Reimplement the validateValue() or getValueRegexp() method.', static::class));
+        throw new LogicException(sprintf('Validation rule cannot be created automatically for class %s. Reimplement the validateValue() or getValueRegexp() method.', static::class));
     }
 
 }

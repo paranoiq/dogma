@@ -137,11 +137,8 @@ class HttpHeader extends PartialStringEnum
     {
         $name = strtolower($name);
 
-        if (isset(self::$exceptions[$name])) {
-            return self::$exceptions[$name];
-        }
-
-        return implode('-', array_map('ucfirst', explode('-', $name)));
+        return self::$exceptions[$name]
+            ?? implode('-', array_map('ucfirst', explode('-', $name)));
     }
 
     public static function validateValue(string &$value): bool

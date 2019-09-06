@@ -2,9 +2,11 @@
 
 namespace Dogma\Tests\Type;
 
+use DateTime;
 use Dogma\BitSize;
 use Dogma\Tester\Assert;
 use Dogma\Type;
+use Error;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -93,10 +95,10 @@ Assert::false($float->isResource());
 
 // is()
 Assert::true($float->is(Type::FLOAT));
-Assert::false($float->is(\DateTime::class));
+Assert::false($float->is(DateTime::class));
 
 // isImplementing()
-Assert::false($float->isImplementing(\DateTime::class));
+Assert::false($float->isImplementing(DateTime::class));
 
 // getBaseType()
 Assert::same($floatNullable->getBaseType(), $float);
@@ -111,6 +113,6 @@ Assert::same($floatNullable->getTypeWithoutParams(), $floatNullable);
 Assert::same($single->getTypeWithoutParams(), $float);
 
 // getInstance()
-Assert::exception(function () use ($float): void {
+Assert::exception(static function () use ($float): void {
     $float->getInstance();
-}, \Error::class);
+}, Error::class);

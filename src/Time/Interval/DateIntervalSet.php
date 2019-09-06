@@ -18,6 +18,7 @@ use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
+use Iterator;
 use function array_map;
 use function array_merge;
 use function array_shift;
@@ -31,22 +32,22 @@ class DateIntervalSet implements DateOrTimeIntervalSet, Pokeable
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Time\Interval\DateInterval[] */
+    /** @var DateInterval[] */
     private $intervals;
 
     /**
-     * @param \Dogma\Time\Interval\DateInterval[] $intervals
+     * @param DateInterval[] $intervals
      */
     public function __construct(array $intervals)
     {
-        $this->intervals = Arr::values(Arr::filter($intervals, function (DateInterval $interval): bool {
+        $this->intervals = Arr::values(Arr::filter($intervals, static function (DateInterval $interval): bool {
             return !$interval->isEmpty();
         }));
     }
 
     /**
-     * @param \Dogma\Time\Date[] $dates
-     * @return \Dogma\Time\Interval\DateIntervalSet
+     * @param Date[] $dates
+     * @return DateIntervalSet
      */
     public static function createFromDateArray(array $dates): self
     {
@@ -75,33 +76,36 @@ class DateIntervalSet implements DateOrTimeIntervalSet, Pokeable
     }
 
     /**
-     * @return \Dogma\Time\Date[]
+     * @return Date[]
      */
     public function toDateArray(): array
     {
         $intervals = $this->normalize()->getIntervals();
 
-        return array_merge(...array_map(function (DateInterval $interval) {
+        return array_merge(...array_map(static function (DateInterval $interval): array {
             return $interval->toDateArray();
         }, $intervals));
     }
 
-    public function format(string $format = DateInterval::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
+    public function format(
+        string $format = DateInterval::DEFAULT_FORMAT,
+        ?DateTimeIntervalFormatter $formatter = null
+    ): string
     {
-        return implode(', ', Arr::map($this->intervals, function (DateInterval $dateInterval) use ($format, $formatter): string {
+        return implode(', ', Arr::map($this->intervals, static function (DateInterval $dateInterval) use ($format, $formatter): string {
             return $dateInterval->format($format, $formatter);
         }));
     }
 
     /**
-     * @return \Dogma\Time\Interval\DateInterval[]
+     * @return DateInterval[]
      */
     public function getIntervals(): array
     {
         return $this->intervals;
     }
 
-    public function getIterator(): \Iterator
+    public function getIterator(): Iterator
     {
         return new ArrayIterator($this->intervals);
     }
@@ -188,7 +192,7 @@ class DateIntervalSet implements DateOrTimeIntervalSet, Pokeable
      */
     public function add(self $set): self
     {
-        return self::addIntervals(...$set->intervals);
+        return $this->addIntervals(...$set->intervals);
     }
 
     public function addIntervals(DateInterval ...$intervals): self
@@ -203,7 +207,7 @@ class DateIntervalSet implements DateOrTimeIntervalSet, Pokeable
      */
     public function subtract(self $set): self
     {
-        return self::subtractIntervals(...$set->intervals);
+        return $this->subtractIntervals(...$set->intervals);
     }
 
     public function subtractIntervals(DateInterval ...$intervals): self
@@ -235,7 +239,7 @@ class DateIntervalSet implements DateOrTimeIntervalSet, Pokeable
      */
     public function intersect(self $set): self
     {
-        return self::intersectIntervals(...$set->intervals);
+        return $this->intersectIntervals(...$set->intervals);
     }
 
     public function intersectIntervals(DateInterval ...$intervals): self

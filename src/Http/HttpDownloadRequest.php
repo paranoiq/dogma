@@ -19,11 +19,11 @@ use const CURLOPT_FILE;
 class HttpDownloadRequest extends HttpRequest
 {
 
-    /** @var \Dogma\Io\File */
+    /** @var File */
     private $file;
 
     /**
-     * @return \Dogma\Http\HttpFileResponse
+     * @return HttpFileResponse
      */
     public function execute(): HttpResponse
     {
@@ -49,7 +49,7 @@ class HttpDownloadRequest extends HttpRequest
      * @internal
      * @param string|bool $response
      * @param int $error
-     * @return \Dogma\Http\HttpFileResponse
+     * @return HttpFileResponse
      */
     public function createResponse($response, int $error): HttpResponse
     {

@@ -41,10 +41,10 @@ class FloatInterval implements OpenClosedInterval
     private $end;
 
     /** @var bool */
-    private $openStart = false;
+    private $openStart;
 
     /** @var bool */
-    private $openEnd = false;
+    private $openEnd;
 
     public function __construct(float $start, float $end, bool $openStart = false, bool $openEnd = false)
     {
@@ -169,7 +169,7 @@ class FloatInterval implements OpenClosedInterval
     }
 
     /**
-     * @param \Dogma\Math\Interval\FloatInterval $other
+     * @param FloatInterval $other
      * @return bool
      */
     public function equals(Equalable $other): bool
@@ -184,7 +184,7 @@ class FloatInterval implements OpenClosedInterval
     }
 
     /**
-     * @param \Dogma\Math\Interval\FloatInterval $other
+     * @param FloatInterval $other
      * @return int
      */
     public function compare(Comparable $other): int
@@ -245,7 +245,7 @@ class FloatInterval implements OpenClosedInterval
     /**
      * @param float[] $intervalStarts
      * @param int $splitMode
-     * @return \Dogma\Math\Interval\FloatIntervalSet
+     * @return FloatIntervalSet
      */
     public function splitBy(array $intervalStarts, int $splitMode = self::SPLIT_OPEN_ENDS): FloatIntervalSet
     {
@@ -253,7 +253,6 @@ class FloatInterval implements OpenClosedInterval
         $results = [$this];
         $i = 0;
         foreach ($intervalStarts as $intervalStart) {
-            /** @var \Dogma\Math\Interval\FloatInterval $interval */
             $interval = $results[$i];
             if ($interval->containsValue($intervalStart)) {
                 $results[$i] = new static($interval->start, $intervalStart, $interval->openStart, $splitMode === self::SPLIT_OPEN_ENDS ? self::OPEN : self::CLOSED);
@@ -299,7 +298,6 @@ class FloatInterval implements OpenClosedInterval
         $items = self::sortByStart($items);
 
         $result = array_shift($items);
-        /** @var \Dogma\Math\Interval\FloatInterval $item */
         foreach ($items as $item) {
             if ($result->start < $item->start || ($result->start === $item->start && $result->openStart && !$item->openStart)) {
                 if ($result->end < $item->start || ($result->end === $item->start && ($result->openEnd || $item->openStart))) {
@@ -327,7 +325,6 @@ class FloatInterval implements OpenClosedInterval
 
         $current = array_shift($items);
         $results = [$current];
-        /** @var \Dogma\Math\Interval\FloatInterval $item */
         foreach ($items as $item) {
             if ($item->isEmpty()) {
                 continue;
@@ -373,7 +370,6 @@ class FloatInterval implements OpenClosedInterval
             if ($item->isEmpty()) {
                 continue;
             }
-            /** @var \Dogma\Math\Interval\FloatInterval $interval */
             foreach ($results as $r => $interval) {
                 $startLower = $interval->start < $item->start || ($interval->start === $item->start && !$interval->openStart && $item->openStart);
                 $endHigher = $interval->end > $item->end || ($interval->end === $item->end && $interval->openEnd && !$item->openEnd);
@@ -419,15 +415,14 @@ class FloatInterval implements OpenClosedInterval
     // static ----------------------------------------------------------------------------------------------------------
 
     /**
-     * @param \Dogma\Math\Interval\FloatInterval ...$items
-     * @return \Dogma\Math\Interval\FloatInterval[][]|int[][] ($ident => ($interval, $count))
+     * @param FloatInterval ...$items
+     * @return FloatInterval[][]|int[][] ($ident => ($interval, $count))
      */
     public static function countOverlaps(self ...$items): array
     {
         $overlaps = self::explodeOverlaps(...$items);
 
         $results = [];
-        /** @var \Dogma\Math\Interval\FloatInterval $overlap */
         foreach ($overlaps as $overlap) {
             $ident = $overlap->format();
             if (isset($results[$ident])) {
@@ -442,8 +437,8 @@ class FloatInterval implements OpenClosedInterval
 
     /**
      * O(n log n)
-     * @param \Dogma\Math\Interval\FloatInterval ...$items
-     * @return \Dogma\Math\Interval\FloatInterval[]
+     * @param FloatInterval ...$items
+     * @return FloatInterval[]
      */
     public static function explodeOverlaps(self ...$items): array
     {
@@ -459,7 +454,6 @@ class FloatInterval implements OpenClosedInterval
                 $i++;
                 continue;
             }
-            /** @var \Dogma\Math\Interval\FloatInterval $b */
             foreach ($items as $j => $b) {
                 if ($i === $j) {
                     // same item
@@ -537,7 +531,7 @@ class FloatInterval implements OpenClosedInterval
      */
     public static function sort(array $intervals): array
     {
-        usort($intervals, function (FloatInterval $a, FloatInterval $b) {
+        usort($intervals, static function (FloatInterval $a, FloatInterval $b) {
             return $a->start <=> $b->start ?: $a->openStart <=> $b->openStart
                 ?: $a->end <=> $b->end ?: $a->openEnd <=> $b->openEnd;
         });
@@ -551,7 +545,7 @@ class FloatInterval implements OpenClosedInterval
      */
     public static function sortByStart(array $intervals): array
     {
-        usort($intervals, function (FloatInterval $a, FloatInterval $b) {
+        usort($intervals, static function (FloatInterval $a, FloatInterval $b) {
             return $a->start <=> $b->start ?: $b->openStart <=> $a->openStart;
         });
 

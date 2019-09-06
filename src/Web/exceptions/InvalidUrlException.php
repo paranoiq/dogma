@@ -11,12 +11,13 @@ namespace Dogma\Web;
 
 use Dogma\Exception;
 use Dogma\InvalidValueException;
+use Throwable;
 use function sprintf;
 
 class InvalidUrlException extends InvalidValueException
 {
 
-    public function __construct(string $value, ?\Throwable $previous = null)
+    public function __construct(string $value, ?Throwable $previous = null)
     {
         Exception::__construct(sprintf('Invalid URL format: \'%s\'', $value), $previous);
     }

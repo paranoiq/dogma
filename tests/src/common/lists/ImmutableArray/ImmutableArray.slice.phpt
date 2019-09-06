@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $array = new ImmutableArray([1, 2, 3, 4]);
 $empty = new ImmutableArray([]);
 
-$f = function ($v): bool {
+$f = static function ($v): bool {
     return $v < 3;
 };
 
@@ -43,7 +43,7 @@ Assert::same($array->tails()->toArrayRecursive(), [[1, 2, 3, 4], [1 => 2, 3, 4],
 Assert::same($empty->tails()->toArrayRecursive(), [[]]);
 
 // headTail()
-/** @var \Dogma\ImmutableArray $tail */
+/** @var ImmutableArray $tail */
 [$head, $tail] = $array->headTail();
 Assert::same($head, 1);
 Assert::same($tail->toArray(), [1 => 2, 3, 4]);
@@ -52,7 +52,7 @@ Assert::null($head);
 Assert::same($tail->toArray(), []);
 
 // initLast()
-/** @var \Dogma\ImmutableArray $init */
+/** @var ImmutableArray $init */
 [$init, $last] = $array->initLast();
 Assert::same($init->toArray(), [1, 2, 3]);
 Assert::same($last, 4);
@@ -93,8 +93,6 @@ Assert::same($array->padTo(7, 6)->toArray(), [1, 2, 3, 4, 6, 6, 6]);
 Assert::same($empty->padTo(3, 6)->toArray(), [6, 6, 6]);
 
 // span()
-/** @var \Dogma\ImmutableArray $l */
-/** @var \Dogma\ImmutableArray $r */
 [$l, $r] = $array->span($f);
 Assert::same($l->toArray(), [1, 2]);
 Assert::same($r->toArray(), [2 => 3, 4]);

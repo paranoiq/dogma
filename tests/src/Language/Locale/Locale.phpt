@@ -15,12 +15,13 @@ use Dogma\Language\Locale\LocaleNumbers;
 use Dogma\Language\Script;
 use Dogma\Money\Currency;
 use Dogma\Tester\Assert;
+use Tester\Environment;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
 if (PHP_VERSION_ID > 70011) {
     // broken Locale::canonicalize and Locale::parseLocale
-    \Tester\Environment::skip();
+    Environment::skip();
     exit;
 }
 

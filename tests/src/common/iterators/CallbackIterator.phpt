@@ -8,7 +8,7 @@ use Dogma\Tester\Assert;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-$power = function ($x) {
+$power = static function ($x) {
     return $x * $x;
 };
 

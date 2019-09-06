@@ -24,14 +24,14 @@ class EmailAttachment
     /** @var string */
     private $data;
 
-    /** @var \Dogma\Io\File|null */
+    /** @var File|null */
     private $file;
 
     /** @var string[] */
     private $headers;
 
     /**
-     * @param \Dogma\Io\File|string $data
+     * @param File|string $data
      * @param string[] $headers
      */
     public function __construct($data, array $headers = [])

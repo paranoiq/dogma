@@ -9,6 +9,11 @@
 
 namespace Dogma\Time;
 
+use DateInterval;
+use DateTime as PhpDateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
+use DateTimeZone;
 use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
@@ -20,6 +25,7 @@ use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeFormatter;
 use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Span\TimeSpan;
+use Throwable;
 use function explode;
 use function floor;
 use function is_int;
@@ -51,7 +57,7 @@ class Time implements DateTimeOrTime, Pokeable
     /** @var int|string */
     private $microseconds;
 
-    /** @var \DateTimeImmutable|null */
+    /** @var DateTimeImmutable|null */
     private $dateTime;
 
     /**
@@ -76,8 +82,8 @@ class Time implements DateTimeOrTime, Pokeable
             $this->microseconds = $total;
         } else {
             try {
-                $dateTime = new \DateTime($microsecondsOrTimeString);
-            } catch (\Throwable $e) {
+                $dateTime = new PhpDateTime($microsecondsOrTimeString);
+            } catch (Throwable $e) {
                 throw new InvalidDateTimeException($microsecondsOrTimeString, $e);
             }
 
@@ -105,7 +111,7 @@ class Time implements DateTimeOrTime, Pokeable
         return new static(($hours * 3600 + $minutes * 60 + $seconds) * 1000000 + $microseconds);
     }
 
-    public static function createFromDateTimeInterface(\DateTimeInterface $dateTime): Time
+    public static function createFromDateTimeInterface(DateTimeInterface $dateTime): Time
     {
         if ($dateTime instanceof DateTime) {
             return $dateTime->getTime();
@@ -116,7 +122,7 @@ class Time implements DateTimeOrTime, Pokeable
 
     public static function createFromFormat(string $format, string $timeString): self
     {
-        $dateTime = \DateTime::createFromFormat($format, $timeString);
+        $dateTime = PhpDateTime::createFromFormat($format, $timeString);
         if ($dateTime === false) {
             throw new InvalidDateTimeException('xxx');
         }
@@ -174,9 +180,9 @@ class Time implements DateTimeOrTime, Pokeable
     /**
      * Round to closest value from given list of values for given unit
      * (eg. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
-     * @param \Dogma\Time\DateTimeUnit $unit
+     * @param DateTimeUnit $unit
      * @param int[]|null $allowedValues
-     * @return \Dogma\Time\Time
+     * @return Time
      */
     public function roundTo(DateTimeUnit $unit, ?array $allowedValues = null): self
     {
@@ -189,9 +195,9 @@ class Time implements DateTimeOrTime, Pokeable
     /**
      * Round to firs upper value from given list of values for given unit
      * (eg. 15:32:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
-     * @param \Dogma\Time\DateTimeUnit $unit
+     * @param DateTimeUnit $unit
      * @param int[]|null $allowedValues
-     * @return \Dogma\Time\Time
+     * @return Time
      */
     public function roundUpTo(DateTimeUnit $unit, ?array $allowedValues = null): self
     {
@@ -204,9 +210,9 @@ class Time implements DateTimeOrTime, Pokeable
     /**
      * Round to firs lower value from given list of values for given unit
      * (eg. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:30:00)
-     * @param \Dogma\Time\DateTimeUnit $unit
+     * @param DateTimeUnit $unit
      * @param int[]|null $allowedValues
-     * @return \Dogma\Time\Time
+     * @return Time
      */
     public function roundDownTo(DateTimeUnit $unit, ?array $allowedValues = null): self
     {
@@ -227,7 +233,7 @@ class Time implements DateTimeOrTime, Pokeable
         }
     }
 
-    public function toDateTime(?Date $date = null, ?\DateTimeZone $timeZone = null): DateTime
+    public function toDateTime(?Date $date = null, ?DateTimeZone $timeZone = null): DateTime
     {
         return DateTime::createFromDateAndTime($date ?? new Date(), $this, $timeZone);
     }
@@ -295,33 +301,33 @@ class Time implements DateTimeOrTime, Pokeable
     }
 
     /**
-     * @param \DateTimeInterface|\Dogma\Time\Time $time
+     * @param DateTimeInterface|Time $time
      * @param bool $absolute
-     * @return \DateInterval
+     * @return DateInterval
      */
-    public function diff($time, bool $absolute = false): \DateInterval
+    public function diff($time, bool $absolute = false): DateInterval
     {
-        Check::types($time, [\DateTimeInterface::class, self::class]);
+        Check::types($time, [DateTimeInterface::class, self::class]);
 
-        return (new \DateTimeImmutable($this->format()))->diff(new \DateTimeImmutable($time->format(self::DEFAULT_FORMAT)), $absolute);
+        return (new DateTimeImmutable($this->format()))->diff(new DateTimeImmutable($time->format(self::DEFAULT_FORMAT)), $absolute);
     }
 
     public function difference(Time $other, bool $absolute = false): TimeSpan
     {
-        $interval = self::diff($other, $absolute);
+        $interval = $this->diff($other, $absolute);
 
         return TimeSpan::createFromDateInterval($interval);
     }
 
     // getters ---------------------------------------------------------------------------------------------------------
 
-    private function getDateTime(): \DateTimeImmutable
+    private function getDateTime(): DateTimeImmutable
     {
         if ($this->dateTime === null) {
             $total = $this->microseconds % Microseconds::DAY;
             $seconds = (int) floor($total / 1000000);
             $microseconds = $total - ($seconds * 1000000);
-            $this->dateTime = new \DateTimeImmutable(DateTime::MIN . ' +' . $seconds . ' seconds +' . $microseconds . ' microseconds');
+            $this->dateTime = new DateTimeImmutable(DateTime::MIN . ' +' . $seconds . ' seconds +' . $microseconds . ' microseconds');
         }
 
         return $this->dateTime;
@@ -382,26 +388,26 @@ class Time implements DateTimeOrTime, Pokeable
 
     public static function min(self ...$items): self
     {
-        return Arr::minBy($items, function (self $time) {
+        return Arr::minBy($items, static function (self $time): int {
             return $time->microseconds;
         });
     }
 
     public static function max(self ...$items): self
     {
-        return Arr::maxBy($items, function (self $time) {
+        return Arr::maxBy($items, static function (self $time): int {
             return $time->microseconds;
         });
     }
 
     /**
-     * @param \Dogma\Time\Time[] $items
+     * @param Time[] $items
      * @param int $flags
-     * @return \Dogma\Time\Time[]
+     * @return Time[]
      */
     public static function sort(array $items, int $flags = Order::ASCENDING): array
     {
-        return Arr::sortWith($items, function (Time $a, Time $b) {
+        return Arr::sortWith($items, static function (Time $a, Time $b): int {
             return $a->microseconds <=> $b->microseconds;
         }, $flags);
     }

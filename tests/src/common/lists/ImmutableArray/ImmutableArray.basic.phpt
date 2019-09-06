@@ -2,10 +2,14 @@
 
 namespace Dogma\Tests\ImmutableArray;
 
+use ArrayAccess;
+use BadMethodCallException;
+use Countable;
 use Dogma\ArrayIterator;
 use Dogma\ImmutableArray;
 use Dogma\ReverseArrayIterator;
 use Dogma\Tester\Assert;
+use IteratorAggregate;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
@@ -32,31 +36,31 @@ Assert::same(ImmutableArray::range(3, 7, 2)->toArray(), [3, 5, 7]);
 Assert::same(ImmutableArray::range(3, 6, 2)->toArray(), [3, 5]);
 
 // Countable
-Assert::type(new ImmutableArray([]), \Countable::class);
+Assert::type(new ImmutableArray([]), Countable::class);
 Assert::same(count(new ImmutableArray([1, 2, 3])), 3);
 
 // IteratorAggregate
-Assert::type(new ImmutableArray([]), \IteratorAggregate::class);
+Assert::type(new ImmutableArray([]), IteratorAggregate::class);
 Assert::type((new ImmutableArray([]))->getIterator(), ArrayIterator::class);
 
 // ArrayAccess
-Assert::type(new ImmutableArray([]), \ArrayAccess::class);
+Assert::type(new ImmutableArray([]), ArrayAccess::class);
 
 Assert::true($array->offsetExists(0));
 Assert::false($array->offsetExists(3));
 
 Assert::same($array->offsetGet(0), 1);
-Assert::error(function () use ($array): void {
+Assert::error(static function () use ($array): void {
     $array->offsetGet(3);
 }, E_NOTICE, 'Undefined offset: 3');
 
-Assert::exception(function () use ($array): void {
+Assert::exception(static function () use ($array): void {
     $array->offsetSet(3, 4);
-}, \BadMethodCallException::class);
+}, BadMethodCallException::class);
 
-Assert::exception(function () use ($array): void {
+Assert::exception(static function () use ($array): void {
     $array->offsetUnset(0);
-}, \BadMethodCallException::class);
+}, BadMethodCallException::class);
 
 // getReverseIterator()
 Assert::type((new ImmutableArray([]))->getReverseIterator(), ReverseArrayIterator::class);
@@ -78,7 +82,7 @@ Assert::contains($array->values()->toArray(), $array->randomValue());
 
 // doForEach()
 $x = 0;
-$array->doForEach(function (int $v) use (&$x): void {
+$array->doForEach(static function (int $v) use (&$x): void {
     $x += $v;
 });
 Assert::same($x, 6);

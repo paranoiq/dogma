@@ -20,7 +20,7 @@ use ReflectionClass;
 abstract class ConstructorHandler implements TypeHandler
 {
 
-    /** @var \Dogma\Reflection\MethodTypeParser */
+    /** @var MethodTypeParser */
     private $parser;
 
     public function __construct(MethodTypeParser $parser)
@@ -29,8 +29,8 @@ abstract class ConstructorHandler implements TypeHandler
     }
 
     /**
-     * @param \Dogma\Type $type
-     * @return \Dogma\Type[]
+     * @param Type $type
+     * @return Type[]
      */
     public function getParameters(Type $type): array
     {
@@ -41,11 +41,11 @@ abstract class ConstructorHandler implements TypeHandler
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param \Dogma\Type $type
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param Type $type
      * @param mixed[] $parameters
-     * @param \Dogma\Mapping\Mapper $mapper
-     * @return object
+     * @param Mapper $mapper
+     * @return Exportable
      */
     public function createInstance(Type $type, $parameters, Mapper $mapper): object
     {

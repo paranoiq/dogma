@@ -13,6 +13,7 @@ class Char
 {
     use StaticClassMixin;
 
+    // phpcs:disable Squiz.WhiteSpace.OperatorSpacing.SpacingBefore
     public const NUL = "\x00"; // null
     public const SOH = "\x01"; // start of header
     public const STX = "\x02"; // start of text

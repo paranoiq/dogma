@@ -2,6 +2,8 @@
 
 namespace Dogma\Tests\Time\Interval;
 
+use DateTime as PhpDateTime;
+use DateTimeImmutable;
 use Dogma\Math\Interval\InvalidIntervalStringFormatException;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
@@ -25,10 +27,10 @@ $interval = new DateTimeInterval($startTime, $endTime);
 $empty = DateTimeInterval::empty();
 $all = DateTimeInterval::all();
 
-$d = function (int $day): DateTime {
+$d = static function (int $day): DateTime {
     return new DateTime('2000-01-' . $day . ' 00:00:00');
 };
-$i = function (int $start, int $end, bool $openStart = false, bool $openEnd = true): DateTimeInterval {
+$i = static function (int $start, int $end, bool $openStart = false, bool $openEnd = true): DateTimeInterval {
     return new DateTimeInterval(
         new DateTime('2000-01-' . $start . ' 00:00:00.000000'),
         new DateTime('2000-01-' . $end . ' 00:00:00.000000'),
@@ -36,12 +38,12 @@ $i = function (int $start, int $end, bool $openStart = false, bool $openEnd = tr
         $openEnd
     );
 };
-$s = function (DateTimeInterval ...$items): DateTimeIntervalSet {
+$s = static function (DateTimeInterval ...$items): DateTimeIntervalSet {
     return new DateTimeIntervalSet($items);
 };
 
 // __construct()
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     new DateTimeInterval(new DateTime('today'), new DateTime('yesterday'));
 }, InvalidIntervalStartEndOrderException::class);
 
@@ -54,10 +56,10 @@ Assert::equal(DateTimeInterval::createFromString('[2000-01-10 00:00,2000-01-20 0
 Assert::equal(DateTimeInterval::createFromString('[2000-01-10 00:00,2000-01-20 00:00)'), $interval);
 Assert::equal(DateTimeInterval::createFromString('(2000-01-10 00:00,2000-01-20 00:00)'), new DateTimeInterval($startTime, $endTime, true, true));
 Assert::equal(DateTimeInterval::createFromString('(2000-01-10 00:00,2000-01-20 00:00]'), new DateTimeInterval($startTime, $endTime, true, false));
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     DateTimeInterval::createFromString('foo|bar|baz');
 }, InvalidIntervalStringFormatException::class);
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     DateTimeInterval::createFromString('foo');
 }, InvalidIntervalStringFormatException::class);
 
@@ -87,7 +89,7 @@ Assert::equal(DateTimeInterval::createFromDateIntervalAndTime(
 
 // format()
 Assert::same($interval->format('d|-d'), '10-20');
-Assert::exception(function () use ($interval): void {
+Assert::exception(static function () use ($interval): void {
     $interval->format('d|-d|-d');
 }, InvalidFormattingStringException::class);
 
@@ -135,8 +137,8 @@ Assert::false($interval->containsValue($d(5)));
 Assert::false($interval->containsValue($d(20)));
 
 // containsDateTime()
-Assert::true($interval->containsDateTime(new \DateTime('2000-01-15')));
-Assert::true($interval->containsDateTime(new \DateTimeImmutable('2000-01-15')));
+Assert::true($interval->containsDateTime(new PhpDateTime('2000-01-15')));
+Assert::true($interval->containsDateTime(new DateTimeImmutable('2000-01-15')));
 
 // contains()
 Assert::true($interval->contains($i(10, 20)));

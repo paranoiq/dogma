@@ -17,10 +17,10 @@ class WeekDayHours implements Pokeable
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Time\DayOfWeek */
+    /** @var DayOfWeek */
     private $day;
 
-    /** @var \Dogma\Time\Interval\TimeIntervalSet */
+    /** @var TimeIntervalSet */
     private $hours;
 
     public function __construct(DayOfWeek $day, TimeIntervalSet $hours)
@@ -50,7 +50,7 @@ class WeekDayHours implements Pokeable
     }
 
     /**
-     * @return \Dogma\Time\Interval\TimeInterval[]
+     * @return TimeInterval[]
      */
     public function getTimeIntervals(): array
     {

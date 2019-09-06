@@ -10,15 +10,18 @@
 namespace Dogma\Dom\Html;
 
 use Dogma\Dom\Element;
+use Dogma\Dom\NodeList;
+use Dogma\InvalidArgumentException;
 use Dogma\StrictBehaviorMixin;
+use Iterator;
 use function count;
 use function sprintf;
 
-class HtmlTableIterator implements \Iterator
+class HtmlTableIterator implements Iterator
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Dom\Element */
+    /** @var Element */
     private $table;
 
     /** @var string */
@@ -30,7 +33,7 @@ class HtmlTableIterator implements \Iterator
     /** @var string[] */
     private $head;
 
-    /** @var \Dogma\Dom\NodeList */
+    /** @var NodeList */
     private $rows;
 
     /** @var int */
@@ -43,7 +46,7 @@ class HtmlTableIterator implements \Iterator
     )
     {
         if ($table->nodeName !== 'table') {
-            throw new \InvalidArgumentException(sprintf('Element must be a table. %s given!', $table->nodeName));
+            throw new InvalidArgumentException(sprintf('Element must be a table. %s given!', $table->nodeName));
         }
 
         $this->table = $table;
@@ -91,7 +94,7 @@ class HtmlTableIterator implements \Iterator
     }
 
     /**
-     * @param \Dogma\Dom\Element $row
+     * @param Element $row
      * @return string[]
      */
     private function formatRow(Element $row): array

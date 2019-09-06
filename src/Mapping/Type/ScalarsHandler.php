@@ -23,8 +23,8 @@ class ScalarsHandler implements TypeHandler
     }
 
     /**
-     * @param \Dogma\Type $type
-     * @return \Dogma\Type[]|null
+     * @param Type $type
+     * @return Type[]|null
      */
     public function getParameters(Type $type): ?array
     {
@@ -32,9 +32,9 @@ class ScalarsHandler implements TypeHandler
     }
 
     /**
-     * @param \Dogma\Type $type
+     * @param Type $type
      * @param mixed $value
-     * @param \Dogma\Mapping\Mapper $mapper
+     * @param Mapper $mapper
      * @return mixed
      */
     public function createInstance(Type $type, $value, Mapper $mapper)
@@ -71,9 +71,9 @@ class ScalarsHandler implements TypeHandler
     }
 
     /**
-     * @param \Dogma\Type $type
+     * @param Type $type
      * @param mixed $instance
-     * @param \Dogma\Mapping\Mapper $mapper
+     * @param Mapper $mapper
      * @return mixed
      */
     public function exportInstance(Type $type, $instance, Mapper $mapper)

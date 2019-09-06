@@ -3,6 +3,7 @@
 namespace Dogma\Tests\ImmutableArray;
 
 use Dogma\Arr;
+use Dogma\ImmutableArray;
 use Dogma\Tester\Assert;
 
 require_once __DIR__ . '/../../../bootstrap.php';
@@ -10,7 +11,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $array = [1, 2, 3, 4];
 $empty = [];
 
-$f = function ($v): bool {
+$f = static function ($v): bool {
     return $v < 3;
 };
 
@@ -43,7 +44,7 @@ Assert::same(Arr::tails($array), [[1, 2, 3, 4], [1 => 2, 3, 4], [2 => 3, 4], [3 
 Assert::same(Arr::tails($empty), [[]]);
 
 // headTail()
-/** @var \Dogma\ImmutableArray $tail */
+/** @var ImmutableArray $tail */
 [$head, $tail] = Arr::headTail($array);
 Assert::same($head, 1);
 Assert::same($tail, [1 => 2, 3, 4]);
@@ -52,7 +53,7 @@ Assert::null($head);
 Assert::same($tail, []);
 
 // initLast()
-/** @var \Dogma\ImmutableArray $init */
+/** @var ImmutableArray $init */
 [$init, $last] = Arr::initLast($array);
 Assert::same($init, [1, 2, 3]);
 Assert::same($last, 4);

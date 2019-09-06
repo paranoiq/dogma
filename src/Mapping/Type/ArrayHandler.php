@@ -27,8 +27,8 @@ class ArrayHandler implements TypeHandler
     }
 
     /**
-     * @param \Dogma\Type $type
-     * @return \Dogma\Type[]|null
+     * @param Type $type
+     * @return Type[]|null
      */
     public function getParameters(Type $type): ?array
     {
@@ -36,15 +36,15 @@ class ArrayHandler implements TypeHandler
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param \Dogma\Type $type
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param Type $type
      * @param mixed[] $items
-     * @param \Dogma\Mapping\Mapper $mapper
+     * @param Mapper $mapper
      * @return mixed[]
      */
     public function createInstance(Type $type, $items, Mapper $mapper): array
     {
-        /** @var \Dogma\Type $itemType */
+        /** @var Type $itemType */
         $itemType = $type->getItemType();
         if ($itemType !== null && $itemType->getName() !== Type::MIXED) {
             $array = [];
@@ -58,10 +58,10 @@ class ArrayHandler implements TypeHandler
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param \Dogma\Type $type
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param Type $type
      * @param mixed[] $instance
-     * @param \Dogma\Mapping\Mapper $mapper
+     * @param Mapper $mapper
      * @return mixed[]
      */
     public function exportInstance(Type $type, $instance, Mapper $mapper): array

@@ -6,6 +6,7 @@ directories:
 	- //
 
 dictionariesByFileName:
+    *spell-checker.neon: skip
     *Country.php: skip
     *ContentType.php: skip
     *Currency.php: skip
@@ -35,3 +36,6 @@ checkLocalIgnores: true
 
 dictionaryFilesToCheck:
     - custom.dic
+
+localIgnores:
+    *DateTimeUnit.php: Ať běží rychle nic neptá než bude duše má chvíli mrtvá

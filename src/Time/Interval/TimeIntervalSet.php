@@ -18,6 +18,7 @@ use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Time;
+use Iterator;
 use function array_merge;
 use function array_shift;
 use function count;
@@ -29,15 +30,15 @@ class TimeIntervalSet implements DateOrTimeIntervalSet, Pokeable
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Time\Interval\TimeInterval[] */
+    /** @var TimeInterval[] */
     private $intervals;
 
     /**
-     * @param \Dogma\Time\Interval\TimeInterval[] $intervals
+     * @param TimeInterval[] $intervals
      */
     public function __construct(array $intervals)
     {
-        $this->intervals = Arr::values(Arr::filter($intervals, function (TimeInterval $interval): bool {
+        $this->intervals = Arr::values(Arr::filter($intervals, static function (TimeInterval $interval): bool {
             return !$interval->isEmpty();
         }));
     }
@@ -49,22 +50,25 @@ class TimeIntervalSet implements DateOrTimeIntervalSet, Pokeable
         }
     }
 
-    public function format(string $format = TimeInterval::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
+    public function format(
+        string $format = TimeInterval::DEFAULT_FORMAT,
+        ?DateTimeIntervalFormatter $formatter = null
+    ): string
     {
-        return implode(', ', Arr::map($this->intervals, function (TimeInterval $timeInterval) use ($format, $formatter): string {
+        return implode(', ', Arr::map($this->intervals, static function (TimeInterval $timeInterval) use ($format, $formatter): string {
             return $timeInterval->format($format, $formatter);
         }));
     }
 
     /**
-     * @return \Dogma\Time\Interval\TimeInterval[]
+     * @return TimeInterval[]
      */
     public function getIntervals(): array
     {
         return $this->intervals;
     }
 
-    public function getIterator(): \Iterator
+    public function getIterator(): Iterator
     {
         return new ArrayIterator($this->intervals);
     }
@@ -151,7 +155,7 @@ class TimeIntervalSet implements DateOrTimeIntervalSet, Pokeable
      */
     public function add(self $set): self
     {
-        return self::addIntervals(...$set->intervals);
+        return $this->addIntervals(...$set->intervals);
     }
 
     public function addIntervals(TimeInterval ...$intervals): self
@@ -166,7 +170,7 @@ class TimeIntervalSet implements DateOrTimeIntervalSet, Pokeable
      */
     public function subtract(self $set): self
     {
-        return self::subtractIntervals(...$set->intervals);
+        return $this->subtractIntervals(...$set->intervals);
     }
 
     public function subtractIntervals(TimeInterval ...$intervals): self
@@ -198,7 +202,7 @@ class TimeIntervalSet implements DateOrTimeIntervalSet, Pokeable
      */
     public function intersect(self $set): self
     {
-        return self::intersectIntervals(...$set->intervals);
+        return $this->intersectIntervals(...$set->intervals);
     }
 
     public function intersectIntervals(TimeInterval ...$intervals): self

@@ -24,8 +24,8 @@ class TupleHandler implements TypeHandler
     }
 
     /**
-     * @param \Dogma\Type $type
-     * @return \Dogma\Type[]
+     * @param Type $type
+     * @return Type[]
      */
     public function getParameters(Type $type): array
     {
@@ -33,11 +33,11 @@ class TupleHandler implements TypeHandler
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param \Dogma\Type $type
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param Type $type
      * @param mixed[] $items
-     * @param \Dogma\Mapping\Mapper $mapper
-     * @return \Dogma\Tuple
+     * @param Mapper $mapper
+     * @return Tuple
      */
     public function createInstance(Type $type, $items, Mapper $mapper): Tuple
     {
@@ -45,10 +45,10 @@ class TupleHandler implements TypeHandler
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param \Dogma\Type $type
-     * @param \Dogma\Tuple $instance
-     * @param \Dogma\Mapping\Mapper $mapper
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param Type $type
+     * @param Tuple $instance
+     * @param Mapper $mapper
      * @return mixed[]
      */
     public function exportInstance(Type $type, $instance, Mapper $mapper): array

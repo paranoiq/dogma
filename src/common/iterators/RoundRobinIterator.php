@@ -9,17 +9,18 @@
 
 namespace Dogma;
 
+use Iterator;
 use function array_values;
 use function count;
 
 /**
  * Cycles through given iterators. Iterators should return same number of items.
  */
-class RoundRobinIterator implements \Iterator
+class RoundRobinIterator implements Iterator
 {
     use StrictBehaviorMixin;
 
-    /** @var \Iterator[] */
+    /** @var Iterator[] */
     private $iterators;
 
     /** @var int */
@@ -50,7 +51,7 @@ class RoundRobinIterator implements \Iterator
      */
     public static function uneven(iterable ...$iterables): self
     {
-        $self = new self(...$iterables);
+        $self = new static(...$iterables);
         $self->allowUneven = true;
 
         return $self;

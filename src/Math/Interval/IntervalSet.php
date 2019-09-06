@@ -10,12 +10,13 @@
 namespace Dogma\Math\Interval;
 
 use Dogma\Equalable;
+use IteratorAggregate;
 
-interface IntervalSet /*<T>*/ extends Equalable, \IteratorAggregate
+interface IntervalSet /*<T>*/ extends Equalable, IteratorAggregate
 {
 
     /**
-     * @return \Dogma\Math\Interval\Interval[]
+     * @return Interval[]
      */
     public function getIntervals(): array;
 
@@ -24,7 +25,7 @@ interface IntervalSet /*<T>*/ extends Equalable, \IteratorAggregate
     //public function containsValue(T $value): bool;
 
     /**
-     * @return mixed|\Dogma\Math\Interval\Interval
+     * @return mixed|Interval
      */
     public function envelope();//: Interval<T>;
 

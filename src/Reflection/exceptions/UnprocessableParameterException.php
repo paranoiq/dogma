@@ -10,17 +10,14 @@
 namespace Dogma\Reflection;
 
 use Dogma\Exception;
+use ReflectionMethod;
+use Throwable;
 use function sprintf;
 
 class UnprocessableParameterException extends Exception implements ReflectionException
 {
 
-    /**
-     * @param string $method
-     * @param string $message
-     * @param \Throwable $previous
-     */
-    public function __construct(\ReflectionMethod $method, string $message, ?\Throwable $previous = null)
+    public function __construct(ReflectionMethod $method, string $message, ?Throwable $previous = null)
     {
         parent::__construct(sprintf(
             'Unprocessable parameter on %s::%s: %s',

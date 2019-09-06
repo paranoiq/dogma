@@ -10,8 +10,9 @@
 namespace Dogma\Io\Filesystem;
 
 use FilesystemIterator;
+use UnexpectedValueException;
 
-class DirectoryIterator extends \FilesystemIterator
+class DirectoryIterator extends FilesystemIterator
 {
 
     /** @var int|null */
@@ -19,30 +20,30 @@ class DirectoryIterator extends \FilesystemIterator
 
     public function __construct(string $path, ?int $flags = null)
     {
-        if (isset($flags)) {
+        if ($flags === null) {
             $flags = FilesystemIterator::KEY_AS_PATHNAME | FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::SKIP_DOTS;
         }
 
         $this->flags = $flags;
         try {
-            if ($flags & FilesystemIterator::CURRENT_AS_FILEINFO) {
+            if (!($flags & FilesystemIterator::CURRENT_AS_PATHNAME) && !($flags & FilesystemIterator::CURRENT_AS_SELF)) {
                 parent::__construct($path, $flags | FilesystemIterator::CURRENT_AS_PATHNAME);
             } else {
                 parent::__construct($path, $flags);
             }
-        } catch (\UnexpectedValueException $e) {
+        } catch (UnexpectedValueException $e) {
             throw new DirectoryException($e->getMessage(), $e);
         }
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param int|null $flags
      */
     public function setFlags($flags = null): void
     {
         $this->flags = $flags;
-        if ($flags & FilesystemIterator::CURRENT_AS_FILEINFO) {
+        if (!($flags & FilesystemIterator::CURRENT_AS_PATHNAME) && !($flags & FilesystemIterator::CURRENT_AS_SELF)) {
             parent::setFlags($flags | FilesystemIterator::CURRENT_AS_PATHNAME);
         } else {
             parent::setFlags($flags);
@@ -50,11 +51,11 @@ class DirectoryIterator extends \FilesystemIterator
     }
 
     /**
-     * @return \Dogma\Io\Filesystem\FileInfo|mixed
+     * @return FileInfo|mixed
      */
     public function current()
     {
-        if ($this->flags & FilesystemIterator::CURRENT_AS_FILEINFO) {
+        if (!($this->flags & FilesystemIterator::CURRENT_AS_PATHNAME) && !($this->flags & FilesystemIterator::CURRENT_AS_SELF)) {
             return new FileInfo(parent::current());
         }
         return parent::current();

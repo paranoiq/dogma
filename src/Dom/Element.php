@@ -10,6 +10,8 @@
 namespace Dogma\Dom;
 
 use Dogma\StrictBehaviorMixin;
+use DOMElement;
+use DOMNode;
 use function array_shift;
 use function call_user_func;
 use function func_get_args;
@@ -21,13 +23,13 @@ class Element
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Dom\QueryEngine */
+    /** @var QueryEngine */
     private $engine;
 
-    /** @var \DOMElement */
+    /** @var DOMElement */
     private $element;
 
-    public function __construct(\DOMElement $element, QueryEngine $engine)
+    public function __construct(DOMElement $element, QueryEngine $engine)
     {
         $this->element = $element;
         $this->engine = $engine;
@@ -40,7 +42,7 @@ class Element
 
     /**
      * @param string $xpath
-     * @return \Dogma\Dom\Element|\DOMNode|null
+     * @return Element|DOMNode|null
      */
     public function findOne(string $xpath)
     {
@@ -65,7 +67,7 @@ class Element
         return $this->engine->extract($target, $this->element);
     }
 
-    public function getElement(): \DOMElement
+    public function getElement(): DOMElement
     {
         return $this->element;
     }

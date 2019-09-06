@@ -21,8 +21,8 @@ class TypeTypeHandler implements TypeHandler
     }
 
     /**
-     * @param \Dogma\Type $type
-     * @return \Dogma\Type[]|null
+     * @param Type $type
+     * @return Type[]|null
      */
     public function getParameters(Type $type): ?array
     {
@@ -30,11 +30,11 @@ class TypeTypeHandler implements TypeHandler
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param \Dogma\Type $type
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param Type $type
      * @param string $typeId
-     * @param \Dogma\Mapping\Mapper $mapper
-     * @return \Dogma\Type
+     * @param Mapper $mapper
+     * @return Type
      */
     public function createInstance(Type $type, $typeId, Mapper $mapper): Type
     {
@@ -42,10 +42,10 @@ class TypeTypeHandler implements TypeHandler
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param \Dogma\Type $type
-     * @param \Dogma\Type $typeInstance
-     * @param \Dogma\Mapping\Mapper $mapper
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param Type $type
+     * @param Type $typeInstance
+     * @param Mapper $mapper
      * @return string
      */
     public function exportInstance(Type $type, $typeInstance, Mapper $mapper): string

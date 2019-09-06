@@ -9,12 +9,13 @@
 
 namespace Dogma;
 
+use Throwable;
 use function sprintf;
 
 class InvalidTypeDefinitionException extends Exception
 {
 
-    public function __construct(string $definition, ?\Throwable $previous = null)
+    public function __construct(string $definition, ?Throwable $previous = null)
     {
         $example = '\\Tuple<int(64,unsigned),float,\DateTime?>';
         parent::__construct(sprintf(

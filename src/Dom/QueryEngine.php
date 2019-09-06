@@ -14,6 +14,16 @@ use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
 use Dogma\Time\InvalidDateTimeException;
+use DOMAttr;
+use DOMCdataSection;
+use DOMComment;
+use DOMDocument;
+use DOMElement;
+use DOMNode;
+use DOMNodeList;
+use DOMProcessingInstruction;
+use DOMText;
+use DOMXPath;
 use function count;
 use function in_array;
 use function is_array;
@@ -31,7 +41,7 @@ class QueryEngine
 {
     use StrictBehaviorMixin;
 
-    /** @var \DOMXPath */
+    /** @var DOMXPath */
     private $xpath;
 
     /** @var string[] (string $pattern => string $replacement) */
@@ -40,12 +50,12 @@ class QueryEngine
         '/\\[([0-9]+)..([0-9]+)\\]/' => '[position() >= $1 and position() <= $2]', // [m..n]
         '/\\[..([0-9]+)\\]/' => '[position() <= $1]', // [..n]
         '/\\[([0-9]+)..\\]/' => '[position() >= $1]', // [n..]
-        '/\\[-([0-9]+)\\]/'  => '[position() = last() + 1 - $1]', // nth from end: [-n]
+        '/\\[-([0-9]+)\\]/' => '[position() = last() + 1 - $1]', // nth from end: [-n]
         '/\\[:first\\]/' => '[1]', // [:first]
-        '/\\[:last\\]/'  => '[last()]', // [:last]
-        '/\\[:even\\]/'  => '[position() mod 2]', // [:even]
-        '/\\[:odd\\]/'   => '[not(position() mod 2)]', // [:odd]
-        '/\\[:only\\]/'  => '[position() = 1 and position() = last()]', // [:only]
+        '/\\[:last\\]/' => '[last()]', // [:last]
+        '/\\[:even\\]/' => '[position() mod 2]', // [:even]
+        '/\\[:odd\\]/' => '[not(position() mod 2)]', // [:odd]
+        '/\\[:only\\]/' => '[position() = 1 and position() = last()]', // [:only]
 
         // class: [.foo]
         '/\\[\\.([A-Za-z0-9_-]+)\\]/' => '[contains(concat(" ", normalize-space(@class), " "), " $1 ")]',
@@ -79,27 +89,27 @@ class QueryEngine
 
         // axes 'next' and 'previous'
         '#/previous::([A-Za-z0-9_-]+)#' => '/preceding-sibling::$1[last()]',
-        '#/next::([A-Za-z0-9_-]+)#'     => '/following-sibling::$1[1]',
+        '#/next::([A-Za-z0-9_-]+)#' => '/following-sibling::$1[1]',
 
         // table shortcuts
         '/:headrow/' => "tr[name(..) = 'thead' or (name(..) = 'table' and not(../thead) and position() = 1)]",
         '/:bodyrow/' => "tr[name(..) = 'tbody' or (name(..) = 'table' and not(../tbody) and (../thead or position() != 1))]",
         '/:footrow/' => "tr[name(..) = 'tfoot' or (name(..) = 'table' and not(../tfoot) and position() = last()]",
-        '/:cell/'    => "*[name() = 'td' or name() = 'th']",
+        '/:cell/' => "*[name() = 'td' or name() = 'th']",
 
         // function shortcuts
-        '/int\\(/'      => 'number(.//',
-        '/float\\(/'    => 'number(.//',
-        '/bool\\(/'     => 'php:functionString("Dogma\\Dom\\QueryEngine::bool", .//',
-        '/date\\(/'     => 'php:functionString("Dogma\\Dom\\QueryEngine::date", .//',
+        '/int\\(/' => 'number(.//',
+        '/float\\(/' => 'number(.//',
+        '/bool\\(/' => 'php:functionString("Dogma\\Dom\\QueryEngine::bool", .//',
+        '/date\\(/' => 'php:functionString("Dogma\\Dom\\QueryEngine::date", .//',
         '/datetime\\(/' => 'php:functionString("Dogma\\Dom\\QueryEngine::datetime", .//',
-        '/match\\(/'    => 'php:functionString("Dogma\\Dom\\QueryEngine::match", .//',
-        '/replace\\(/'  => 'php:functionString("Dogma\\Dom\\QueryEngine::replace", .//',
+        '/match\\(/' => 'php:functionString("Dogma\\Dom\\QueryEngine::match", .//',
+        '/replace\\(/' => 'php:functionString("Dogma\\Dom\\QueryEngine::replace", .//',
 
         // jQuery-like shortcuts
         /*
         '/:input/' => "*[name() = 'input' or name() = 'textarea' or name() = 'select' or name() = 'button']",
-        '/:file/'  => "input[@type = 'file']",
+        '/:file/' => "input[@type = 'file']",
         '/:button/' => "*[name() = 'button' or (name() = 'input' and @type = 'button')]",
         '/:submit/' => "input[@type = 'submit']",
         '/:reset/' => "input[@type = 'reset']",
@@ -111,7 +121,7 @@ class QueryEngine
         '/:password/' => "input[@type = 'password']",
 
         '/:header/' => "*[name() = 'h1' or name() = 'h2' or name() = 'h3' or name() = 'h4' or name() = 'h5' or name() = 'h6']",
-        '/:link/'   => "a[@href]",
+        '/:link/' => "a[@href]",
         '/:anchor/' => "*[@id or (name() = 'a' and @name)]",
         */
     ];
@@ -167,9 +177,9 @@ class QueryEngine
         'Dogma\\Dom\\QueryEngine::bool',
     ];
 
-    public function __construct(\DOMDocument $dom)
+    public function __construct(DOMDocument $dom)
     {
-        $this->xpath = new \DOMXPath($dom);
+        $this->xpath = new DOMXPath($dom);
 
         $this->xpath->registerNamespace('php', 'http://php.net/xpath');
         $this->xpath->registerPhpFunctions($this->userFunctions);
@@ -203,17 +213,17 @@ class QueryEngine
     /**
      * Find nodes
      * @param string $query
-     * @param \Dogma\Dom\Element|\DOMNode|null $context
-     * @return \Dogma\Dom\NodeList
+     * @param Element|DOMNode|null $context
+     * @return NodeList
      */
     public function find(string $query, $context = null): NodeList
     {
         $path = $this->translateQuery($query, (bool) $context);
         if ($context) {
-            /** @var \DOMNodeList|false $list */
+            /** @var DOMNodeList|false $list */
             $list = $this->xpath->query($path, $context);
         } else {
-            /** @var \DOMNodeList|false $list */
+            /** @var DOMNodeList|false $list */
             $list = $this->xpath->query($path);
         }
         if ($list === false) {
@@ -226,17 +236,17 @@ class QueryEngine
     /**
      * Find one node
      * @param string $query
-     * @param \Dogma\Dom\Element|\DOMNode|null $context
-     * @return \DOMNode|\Dogma\Dom\Element|null
+     * @param Element|DOMNode|null $context
+     * @return DOMNode|Element|null
      */
     public function findOne(string $query, $context = null)
     {
         $path = $this->translateQuery($query, (bool) $context);
         if ($context) {
-            /** @var \DOMNodeList|false $list */
+            /** @var DOMNodeList|false $list */
             $list = $this->xpath->query($path, $context);
         } else {
-            /** @var \DOMNodeList|false $list */
+            /** @var DOMNodeList|false $list */
             $list = $this->xpath->query($path);
         }
         if ($list === false) {
@@ -253,8 +263,8 @@ class QueryEngine
     /**
      * Evaluate a query
      * @param string $query
-     * @param \Dogma\Dom\Element|\DOMNode|null $context
-     * @return string|int|float
+     * @param Element|DOMNode|null $context
+     * @return string|int|float|bool|Date|DateTime|null
      */
     public function evaluate(string $query, $context = null)
     {
@@ -280,7 +290,7 @@ class QueryEngine
             }
 
             return (int) $value;
-        } elseif (substr($query, 0, 5) === 'bool(' && isset($value)) {
+        } elseif ($value !== null && substr($query, 0, 5) === 'bool(') {
             if ($value === '') {
                 return null;
             }
@@ -293,8 +303,8 @@ class QueryEngine
 
     /**
      * Extract values from paths defined by one or more queries
-     * @param string|string[] $queries
-     * @param \Dogma\Dom\Element|\DOMNode|null $context
+     * @param string|string[]|string[][] $queries
+     * @param Element|DOMNode|null $context
      * @return string|string[]
      */
     public function extract($queries, $context = null)
@@ -318,8 +328,8 @@ class QueryEngine
 
     /**
      * @param string $query
-     * @param \Dogma\Dom\Element|\DOMNode $context
-     * @return string|int|float|\DateTime|null
+     * @param Element|DOMNode $context
+     * @return string|int|float|Date|DateTime|null
      */
     private function extractPath(string $query, $context)
     {
@@ -329,15 +339,15 @@ class QueryEngine
             $node = $this->findOne($query, $context);
         }
 
-        if (is_scalar($node) || $node instanceof \DateTime) {
+        if (is_scalar($node) || $node instanceof Date || $node instanceof DateTime) {
             return $node;
         } elseif (!$node) {
             return null;
-        } elseif ($node instanceof \DOMAttr) {
+        } elseif ($node instanceof DOMAttr) {
             return $node->value;
-        } elseif ($node instanceof \DOMText) {
+        } elseif ($node instanceof DOMText) {
             return $node->wholeText;
-        } elseif ($node instanceof \DOMCdataSection || $node instanceof \DOMComment || $node instanceof \DOMProcessingInstruction) {
+        } elseif ($node instanceof DOMCdataSection || $node instanceof DOMComment || $node instanceof DOMProcessingInstruction) {
             return $node->data;
         } else {
             return $node->textContent;
@@ -371,13 +381,13 @@ class QueryEngine
         $query = Str::replace(
             $query,
             '/(?<![A-Za-z0-9_-])([A-Za-z0-9_-]+)\\(/',
-            function ($match) use ($nativeFunctions, $userFunctions) {
-                if (in_array($match[1], $nativeFunctions)) {
+            static function ($match) use ($nativeFunctions, $userFunctions) {
+                if (in_array($match[1], $nativeFunctions, true)) {
                     return $match[1] . '(';
-                } elseif (in_array($match[1], $userFunctions)) {
+                } elseif (in_array($match[1], $userFunctions, true)) {
                     return sprintf('php:functionString(\'%s\', ', $match[1]);
                 } else {
-                    throw new \DOMException(sprintf('XPath compilation failure: Functions \'%s\' is not enabled.', $match[1]));
+                    throw new DomException(sprintf('XPath compilation failure: Functions \'%s\' is not enabled.', $match[1]));
                 }
             }
         );
@@ -387,12 +397,12 @@ class QueryEngine
 
     /**
      * Wrap element in DomElement object
-     * @param \DOMNode $node
-     * @return \Dogma\Dom\Element|\DOMNode
+     * @param DOMNode $node
+     * @return Element|DOMNode
      */
-    private function wrap(\DOMNode $node)
+    private function wrap(DOMNode $node)
     {
-        if ($node instanceof \DOMElement) {
+        if ($node instanceof DOMElement) {
             return new Element($node, $this);
         } else {
             return $node;

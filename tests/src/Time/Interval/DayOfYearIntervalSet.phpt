@@ -7,19 +7,20 @@ use Dogma\Tester\Assert;
 use Dogma\Time\DayOfYear;
 use Dogma\Time\Interval\DayOfYearInterval;
 use Dogma\Time\Interval\DayOfYearIntervalSet;
+use function strval;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-$d = function (int $day): DayOfYear {
+$d = static function (int $day): DayOfYear {
     return new DayOfYear('01-' . Str::padLeft(strval($day), 2, '0'));
 };
-$i = function (int $start, int $end): DayOfYearInterval {
+$i = static function (int $start, int $end): DayOfYearInterval {
     return new DayOfYearInterval(
         new DayOfYear('01-' . Str::padLeft(strval($start), 2, '0')),
-        new DayOfYear('01-' . Str::padLeft(strval($end), 2, '0')),
+        new DayOfYear('01-' . Str::padLeft(strval($end), 2, '0'))
     );
 };
-$s = function (DayOfYearInterval ...$items): DayOfYearIntervalSet {
+$s = static function (DayOfYearInterval ...$items): DayOfYearIntervalSet {
     return new DayOfYearIntervalSet($items);
 };
 
@@ -60,12 +61,12 @@ Assert::equal($s($i(1, 10))->subtract($s($i(3, 4), $i(7, 8))), $s($i(1, 3), $i(4
 Assert::equal($s($i(1, 5), $i(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $s($i(4, 5), $i(10, 12), $i(14, 15)));
 
 // map()
-Assert::equal($set->map(function (DayOfYearInterval $interval) {
+Assert::equal($set->map(static function (DayOfYearInterval $interval) {
     return $interval;
 }), $set);
-Assert::equal($set->map(function (DayOfYearInterval $interval) {
+Assert::equal($set->map(static function (DayOfYearInterval $interval) {
     return $interval->split(2);
 }), $s($i(1, 3), $i(4, 5)));
-Assert::equal($set->map(function (DayOfYearInterval $interval) {
+Assert::equal($set->map(static function (DayOfYearInterval $interval) {
     return $interval->split(2)->getIntervals();
 }), $s($i(1, 3), $i(4, 5)));

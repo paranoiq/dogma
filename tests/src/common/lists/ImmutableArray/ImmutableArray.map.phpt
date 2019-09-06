@@ -11,12 +11,12 @@ $array = new ImmutableArray([1, 2, 3, 4]);
 $arr2 = new ImmutableArray([[1, 2], [3, 4]]);
 $empty = new ImmutableArray([]);
 
-$f = function (int $v): int {
+$f = static function (int $v): int {
     return $v % 2;
 };
 
 // flatMap()
-Assert::same($arr2->flatMap(function (array $v): array {
+Assert::same($arr2->flatMap(static function (array $v): array {
     return array_reverse($v);
 })->toArray(), [2, 1, 4, 3]);
 Assert::same($empty->flatMap($f)->toArray(), []);
@@ -34,13 +34,13 @@ Assert::same($array->map($f)->toArray(), [1, 0, 1, 0]);
 Assert::same($empty->map($f)->toArray(), []);
 
 // mapPairs()
-Assert::same($array->mapPairs(function (int $k, int $v): int {
+Assert::same($array->mapPairs(static function (int $k, int $v): int {
     return $k + $v;
 })->toArray(), [1, 3, 5, 7]);
 Assert::same($empty->mapPairs($f)->toArray(), []);
 
 // remap()
-Assert::same($array->remap(function (int $k, int $v): array {
+Assert::same($array->remap(static function (int $k, int $v): array {
     return [$v => $k];
 })->toArray(), [1 => 0, 1, 2, 3]);
 Assert::same($empty->remap($f)->toArray(), []);

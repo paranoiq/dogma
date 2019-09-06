@@ -2,6 +2,7 @@
 
 namespace Dogma\Tests\Time\Interval;
 
+use DateTimeImmutable;
 use Dogma\Math\Vector\Vector3i;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
@@ -23,21 +24,21 @@ $emptyInterval = DateInterval::empty();
 $allData = DateIntervalData::all($data);
 $allInterval = DateInterval::all();
 
-$d = function (int $day): Date {
+$d = static function (int $day): Date {
     return new Date('2000-01-' . $day);
 };
-$i = function (int $start, int $end): DateInterval {
+$i = static function (int $start, int $end): DateInterval {
     return new DateInterval(new Date('2000-01-' . $start), new Date('2000-01-' . $end));
 };
-$di = function (int $start, int $end) use ($data): DateIntervalData {
+$di = static function (int $start, int $end) use ($data): DateIntervalData {
     return new DateIntervalData(new Date('2000-01-' . $start), new Date('2000-01-' . $end), $data);
 };
-$s = function (DateIntervalData ...$items): DateIntervalDataSet {
+$s = static function (DateIntervalData ...$items): DateIntervalDataSet {
     return new DateIntervalDataSet($items);
 };
 
 // __construct()
-Assert::exception(function () use ($data): void {
+Assert::exception(static function () use ($data): void {
     new DateIntervalData(new Date('today'), new Date('yesterday'), $data);
 }, InvalidIntervalStartEndOrderException::class);
 
@@ -96,7 +97,7 @@ Assert::true($interval->containsValue($d(15)));
 Assert::true($interval->containsValue($d(20)));
 Assert::false($interval->containsValue($d(5)));
 Assert::false($interval->containsValue($d(25)));
-Assert::true($interval->containsValue(new \DateTimeImmutable('2000-01-15')));
+Assert::true($interval->containsValue(new DateTimeImmutable('2000-01-15')));
 
 // contains()
 Assert::true($interval->contains($i(10, 20)));

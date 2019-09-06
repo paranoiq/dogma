@@ -12,7 +12,7 @@ $empty = [];
 
 // count()
 Assert::same(Arr::count($array), 4);
-Assert::same(Arr::count($array, function (int $v): bool {
+Assert::same(Arr::count($array, static function (int $v): bool {
     return $v > 1;
 }), 3);
 Assert::same(Arr::count($empty), 0);
@@ -34,12 +34,12 @@ Assert::same(Arr::min($array), 1);
 Assert::null(Arr::min($empty));
 
 // maxBy()
-Assert::same(Arr::maxBy($array, function ($v): float {
+Assert::same(Arr::maxBy($array, static function ($v): float {
     return 1 / $v;
 }), 1);
 
 // minBy()
-Assert::same(Arr::minBy($array, function (int $v): float {
+Assert::same(Arr::minBy($array, static function (int $v): float {
     return 1 / $v;
 }), 3);
 

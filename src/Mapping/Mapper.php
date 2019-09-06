@@ -11,12 +11,13 @@ namespace Dogma\Mapping;
 
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
+use Traversable;
 
 class Mapper
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Mapping\MappingContainer */
+    /** @var MappingContainer */
     private $mappings;
 
     public function __construct(MappingContainer $mappings)
@@ -25,7 +26,7 @@ class Mapper
     }
 
     /**
-     * @param \Dogma\Type $type
+     * @param Type $type
      * @param mixed[] $data
      * @return mixed
      */
@@ -35,7 +36,7 @@ class Mapper
     }
 
     /**
-     * @param \Dogma\Type $type
+     * @param Type $type
      * @param mixed $data
      * @return mixed[]
      */
@@ -45,24 +46,24 @@ class Mapper
     }
 
     /**
-     * @param \Dogma\Type $type
+     * @param Type $type
      * @param iterable|mixed[] $data
-     * @return \Traversable|mixed[]
+     * @return Traversable|mixed[]
      */
-    public function mapMany(Type $type, iterable $data): \Traversable
+    public function mapMany(Type $type, iterable $data): Traversable
     {
         $iterator = new MappingIterator($data, $type->getItemType(), $this);
 
-        /** @var \Traversable $result */
+        /** @var Traversable $result */
         $result = $type->getInstance($iterator);
 
         return $result;
     }
 
     /**
-     * @param \Dogma\Type $type
+     * @param Type $type
      * @param iterable|mixed[] $data
-     * @return \Dogma\Mapping\MappingIterator
+     * @return MappingIterator
      */
     public function reverseMapMany(Type $type, iterable $data): MappingIterator
     {

@@ -9,6 +9,7 @@
 
 namespace Dogma\Time\Provider;
 
+use DateTimeZone;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
@@ -17,13 +18,13 @@ class ConstantTimeProvider implements TimeProvider
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Time\DateTime */
+    /** @var DateTime */
     private $dateTime;
 
-    /** @var \DateTimeZone */
+    /** @var DateTimeZone */
     private $timeZone;
 
-    public function __construct(?DateTime $dateTime = null, ?\DateTimeZone $timeZone = null)
+    public function __construct(?DateTime $dateTime = null, ?DateTimeZone $timeZone = null)
     {
         if ($dateTime === null) {
             $dateTime = new DateTime();
@@ -41,7 +42,7 @@ class ConstantTimeProvider implements TimeProvider
         return $this->dateTime->getDate();
     }
 
-    public function getDateTime(?\DateTimeZone $timeZone = null): DateTime
+    public function getDateTime(?DateTimeZone $timeZone = null): DateTime
     {
         if ($timeZone !== null) {
             return $this->dateTime->setTimezone($timeZone);
@@ -50,7 +51,7 @@ class ConstantTimeProvider implements TimeProvider
         return $this->dateTime;
     }
 
-    public function getTimeZone(): \DateTimeZone
+    public function getTimeZone(): DateTimeZone
     {
         return $this->timeZone;
     }

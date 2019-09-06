@@ -179,7 +179,7 @@ class Month extends IntEnum
 
     public function getDays(bool $leapYear): int
     {
-        return self::getDays($leapYear)[$this->getValue()];
+        return self::getLengths($leapYear)[$this->getValue()];
     }
 
 }

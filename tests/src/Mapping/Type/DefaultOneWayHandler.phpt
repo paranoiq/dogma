@@ -3,6 +3,7 @@
 namespace Dogma\Tests\Mapping\Type;
 
 use DateTime;
+use DateTimeZone;
 use Dogma\Mapping\Mapper;
 use Dogma\Mapping\StaticMappingContainer;
 use Dogma\Mapping\Type\DefaultOneWayHandler;
@@ -32,12 +33,12 @@ Assert::equal($handler->getParameters($dateTimeType), [
 // createInstance()
 $dateInstance = $handler->createInstance($dateTimeType, [
     'time' => '2001-02-03 04:05:06',
-    'timezone' => new \DateTimeZone('+01:00'),
+    'timezone' => new DateTimeZone('+01:00'),
 ], $mapper);
 Assert::type($dateInstance, DateTime::class);
 Assert::same($dateInstance->format('Y-m-d H:i:s'), '2001-02-03 04:05:06');
 
 // exportInstance()
-Assert::throws(function () use ($handler, $mapper, $dateTimeType): void {
+Assert::throws(static function () use ($handler, $mapper, $dateTimeType): void {
     $handler->exportInstance($dateTimeType, new DateTime(), $mapper);
 }, OneWayHandlerException::class);

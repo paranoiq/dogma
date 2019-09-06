@@ -17,31 +17,31 @@ $denormalizedTime = new Time('27:04:05.000006');
 $denormalizedMicroSeconds = 97445000006;
 
 // __construct()
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     new Time(-200);
 }, ValueOutOfRangeException::class);
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     new Time('asdf');
 }, InvalidDateTimeException::class);
 
 Assert::same((new Time($timeString))->format(), $timeString);
 
 // createFromComponents()
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     Time::createFromComponents(-1, 0, 0);
 }, ValueOutOfRangeException::class);
 Assert::type(Time::createFromComponents(3, 4, 5, 6), Time::class);
 Assert::same(Time::createFromComponents(3, 4, 5, 6)->format(), $timeString);
 
 // createFromSeconds()
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     Time::createFromSeconds(-1);
 }, ValueOutOfRangeException::class);
 Assert::type(Time::createFromSeconds((int) ($microSeconds / 1000000)), Time::class);
 Assert::same(Time::createFromSeconds((int) ($microSeconds / 1000000))->format(), '03:04:05.000000');
 
 // createFromFormat()
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     Time::createFromFormat(Time::DEFAULT_FORMAT, 'asdf');
 }, InvalidDateTimeException::class);
 Assert::type(Time::createFromFormat(Time::DEFAULT_FORMAT, $timeString), Time::class);

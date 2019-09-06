@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $array = new ImmutableArray([1, 2, 3, 4]);
 $empty = new ImmutableArray([]);
 
-$f = function (int $v): int {
+$f = static function (int $v): int {
     return $v % 2;
 };
 
@@ -31,8 +31,8 @@ Assert::same($array->filterNot($f)->toArray(), [1 => 2, 3 => 4]);
 Assert::same($empty->filterNot($f)->toArray(), []);
 
 // partition()
-/** @var \Dogma\ImmutableArray $a */
-/** @var \Dogma\ImmutableArray $b */
+/** @var ImmutableArray $a */
+/** @var ImmutableArray $b */
 [$a, $b] = $array->partition($f);
 Assert::same($a->toArray(), [1, 2 => 3]);
 Assert::same($b->toArray(), [1 => 2, 3 => 4]);

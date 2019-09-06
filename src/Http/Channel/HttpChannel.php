@@ -33,10 +33,10 @@ class HttpChannel
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Http\Channel\HttpChannelManager */
+    /** @var HttpChannelManager */
     private $manager;
 
-    /** @var \Dogma\Http\HttpRequest */
+    /** @var HttpRequest */
     private $requestPrototype;
 
     /** @var int */
@@ -63,7 +63,7 @@ class HttpChannel
     /** @var string[]|string[][] (int|string $name => $data) */
     private $running = [];
 
-    /** @var \Dogma\Http\HttpResponse[] */
+    /** @var HttpResponse[] */
     private $finished = [];
 
     /** @var mixed[] (int|string $name => $context) */
@@ -100,7 +100,7 @@ class HttpChannel
 
     /**
      * Set callback handler for every response (even an error)
-     * @param callable $responseHandler (\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
+     * @param callable $responseHandler (Response $response, Channel $channel, string $name)
      */
     public function setResponseHandler(callable $responseHandler): void
     {
@@ -109,7 +109,7 @@ class HttpChannel
 
     /**
      * Set separate callback handler for redirects. ResponseHandler will no longer handle these.
-     * @param callable $redirectHandler (\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
+     * @param callable $redirectHandler (Response $response, Channel $channel, string $name)
      */
     public function setRedirectHandler(callable $redirectHandler): void
     {
@@ -118,7 +118,7 @@ class HttpChannel
 
     /**
      * Set separate callback handler for errors. ResponseHandler will no longer handle these.
-     * @param callable $errorHandler (\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
+     * @param callable $errorHandler (Response $response, Channel $channel, string $name)
      */
     public function setErrorHandler(callable $errorHandler): void
     {
@@ -151,7 +151,7 @@ class HttpChannel
      * Run a new job immediately and wait for the response.
      * @param string|string[] $data
      * @param mixed $context
-     * @return \Dogma\Http\HttpResponse|null
+     * @return HttpResponse|null
      */
     public function fetchJob($data, $context = null): ?HttpResponse
     {
@@ -174,7 +174,7 @@ class HttpChannel
 
     /**
      * Add new job to channel queue.
-     * @param string|string[] $data
+     * @param string|string[]|mixed $data
      * @param mixed $context
      * @param string|int $name
      * @param bool $forceStart
@@ -197,7 +197,7 @@ class HttpChannel
             throw new HttpChannelException('Illegal job name. Job name can be only a string or an integer.');
         }
 
-        if (isset($context)) {
+        if ($context !== null) {
             $this->contexts[$name] = $context;
         }
 
@@ -288,7 +288,7 @@ class HttpChannel
      * @internal
      * @param string|int|int $name
      * @param mixed[] $multiInfo
-     * @param \Dogma\Http\HttpRequest $request
+     * @param HttpRequest $request
      */
     public function jobFinished($name, array $multiInfo, HttpRequest $request): void
     {
@@ -314,7 +314,7 @@ class HttpChannel
 
     /**
      * @param string|int|null $name
-     * @return \Dogma\Http\HttpResponse|null
+     * @return HttpResponse|null
      */
     public function fetch($name = null): ?HttpResponse
     {
@@ -347,9 +347,9 @@ class HttpChannel
 
     /**
      * @param string|int $name
-     * @return \Dogma\Http\HttpResponse|null
+     * @return HttpResponse
      */
-    private function fetchByName($name): ?HttpResponse
+    private function fetchByName($name): HttpResponse
     {
         if (!isset($this->queue[$name]) && !isset($this->running[$name]) && !isset($this->finished[$name])) {
             throw new HttpChannelException(sprintf('Job named \'%s\' was not found.', $name));

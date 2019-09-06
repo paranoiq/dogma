@@ -2,6 +2,7 @@
 
 namespace Dogma\Tests\Time\Interval;
 
+use DateTimeImmutable;
 use Dogma\Math\Interval\InvalidIntervalStringFormatException;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
@@ -22,18 +23,18 @@ $interval = new DateInterval($startDate, $endDate);
 $empty = DateInterval::empty();
 $all = DateInterval::all();
 
-$d = function (int $day): Date {
+$d = static function (int $day): Date {
     return new Date('2000-01-' . $day);
 };
-$i = function (int $start, int $end): DateInterval {
+$i = static function (int $start, int $end): DateInterval {
     return new DateInterval(new Date('2000-01-' . $start), new Date('2000-01-' . $end));
 };
-$s = function (DateInterval ...$items): DateIntervalSet {
+$s = static function (DateInterval ...$items): DateIntervalSet {
     return new DateIntervalSet($items);
 };
 
 // __construct()
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     new DateInterval(new Date('today'), new Date('yesterday'));
 }, InvalidIntervalStartEndOrderException::class);
 
@@ -46,10 +47,10 @@ Assert::equal(DateInterval::createFromString('[2000-01-10,2000-01-20]'), $interv
 Assert::equal(DateInterval::createFromString('[2000-01-10,2000-01-21)'), $interval);
 Assert::equal(DateInterval::createFromString('(2000-01-09,2000-01-21)'), $interval);
 Assert::equal(DateInterval::createFromString('(2000-01-09,2000-01-20]'), $interval);
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     DateInterval::createFromString('foo|bar|baz');
 }, InvalidIntervalStringFormatException::class);
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     DateInterval::createFromString('foo');
 }, InvalidIntervalStringFormatException::class);
 
@@ -59,7 +60,7 @@ Assert::equal(DateInterval::createFromStartAndLength($startDate, DateTimeUnit::q
 Assert::equal(DateInterval::createFromStartAndLength($startDate, DateTimeUnit::month(), 2), new DateInterval($startDate, new Date('2000-03-09')));
 Assert::equal(DateInterval::createFromStartAndLength($startDate, DateTimeUnit::week(), 2), new DateInterval($startDate, new Date('2000-01-23')));
 Assert::equal(DateInterval::createFromStartAndLength($startDate, DateTimeUnit::day(), 2), new DateInterval($startDate, new Date('2000-01-11')));
-Assert::exception(function () use ($startDate): void {
+Assert::exception(static function () use ($startDate): void {
     DateInterval::createFromStartAndLength($startDate, DateTimeUnit::hour(), 2);
 }, InvalidDateTimeUnitException::class);
 
@@ -120,7 +121,7 @@ Assert::true($interval->containsValue($d(15)));
 Assert::true($interval->containsValue($d(20)));
 Assert::false($interval->containsValue($d(5)));
 Assert::false($interval->containsValue($d(25)));
-Assert::true($interval->containsValue(new \DateTimeImmutable('2000-01-15')));
+Assert::true($interval->containsValue(new DateTimeImmutable('2000-01-15')));
 
 // contains()
 Assert::true($interval->contains($i(10, 20)));

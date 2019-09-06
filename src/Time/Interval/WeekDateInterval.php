@@ -9,13 +9,14 @@
 
 namespace Dogma\Time\Interval;
 
+use DateTimeInterface;
 use Dogma\Time\Date;
 use Dogma\Time\DayOfWeek;
 use Dogma\Time\InvalidWeekDateIntervalException;
 
 /**
  * DateInterval aligned to a single week boundaries.
- * Week always starts with monday and ends with sunday.
+ * Week always starts with monday and ends with sunday (because i live in a civilized country ^_^).
  * WeekInterval cannot be empty.
  */
 class WeekDateInterval extends DateInterval
@@ -37,7 +38,7 @@ class WeekDateInterval extends DateInterval
         return self::createFromIsoYearAndWeek((int) $date->format('o'), (int) $date->format('W'));
     }
 
-    public static function createFromDateTimeInterface(\DateTimeInterface $dateTime): self
+    public static function createFromDateTimeInterface(DateTimeInterface $dateTime): self
     {
         return self::createFromIsoYearAndWeek((int) $dateTime->format('o'), (int) $dateTime->format('W'));
     }
@@ -51,7 +52,7 @@ class WeekDateInterval extends DateInterval
     }
 
     /**
-     * @param \Dogma\Time\Interval\DateInterval $interval
+     * @param DateInterval $interval
      * @return self[]
      */
     public static function createOverlappingIntervals(DateInterval $interval): array
@@ -72,12 +73,12 @@ class WeekDateInterval extends DateInterval
 
     public function next(): self
     {
-        return self::shift('+ 1 week');
+        return $this->shift('+ 1 week');
     }
 
     public function previous(): self
     {
-        return self::shift('- 1 week');
+        return $this->shift('- 1 week');
     }
 
     public function getIsoYear(): int

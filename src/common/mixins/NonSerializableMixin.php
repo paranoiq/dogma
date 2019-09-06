@@ -9,23 +9,30 @@
 
 namespace Dogma;
 
+use const PHP_VERSION;
+
 trait NonSerializableMixin
 {
 
     /**
      * To avoid serializing a non serializable object
+     * @return mixed[]
      * @deprecated
-     * @throws \Dogma\NonSerializableObjectException
+     * @throws NonSerializableObjectException
      */
-    final public function __sleep(): void
+    final public function __sleep(): array
     {
-        throw new NonSerializableObjectException(static::class);
+        if (PHP_VERSION !== '') {
+            throw new NonSerializableObjectException(static::class);
+        }
+
+        return [];
     }
 
     /**
      * To avoid serializing a non serializable object
      * @deprecated
-     * @throws \Dogma\NonSerializableObjectException
+     * @throws NonSerializableObjectException
      */
     final public function __wakeup(): void
     {

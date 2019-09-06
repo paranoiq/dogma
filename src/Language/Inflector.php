@@ -17,6 +17,7 @@ use function in_array;
 use function lcfirst;
 use function preg_match;
 use function preg_replace;
+use function str_replace;
 use function strtolower;
 use function strval;
 use function ucfirst;
@@ -169,7 +170,7 @@ class Inflector
         }
 
         if (self::isIrregular($word)) {
-            return in_array($lower, array_values(self::$irregular));
+            return in_array($lower, array_values(self::$irregular), true);
         }
 
         foreach (self::$plurals as $rule => $replacement) {
@@ -241,7 +242,7 @@ class Inflector
      */
     public static function dasherize(string $word): string
     {
-        return preg_replace('/_/', '-', strval($word));
+        return str_replace('_', '-', strval($word));
     }
 
     /**

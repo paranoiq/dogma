@@ -15,6 +15,7 @@ use Dogma\InvalidValueException;
 use Dogma\NonCloneableMixin;
 use Dogma\NonSerializableMixin;
 use Dogma\StrictBehaviorMixin;
+use ReflectionClass;
 use function count;
 use function end;
 use function explode;
@@ -69,7 +70,8 @@ trait SetMixin
     }
 
     /**
-     * @param int|string|\Dogma\Enum\Enum $value
+     * @param int|string|Enum $value
+     * @return bool
      */
     final public function equals($value): bool
     {
@@ -103,9 +105,9 @@ trait SetMixin
         return self::$instances[$class];
     }
 
-    final private static function init(string $class): void
+    private static function init(string $class): void
     {
-        $ref = new \ReflectionClass($class);
+        $ref = new ReflectionClass($class);
         self::$availableValues[$class] = $ref->getConstants();
         self::$instances[$class] = [];
     }

@@ -6,6 +6,7 @@ use Dogma\BitSize;
 use Dogma\Sign;
 use Dogma\Tester\Assert;
 use Dogma\Type;
+use SplFixedArray;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -22,7 +23,7 @@ $expected = Type::tupleOf(
         Type::arrayOf(Type::INT),
         Type::INT
     ),
-    Type::collectionOf(\SplFixedArray::class, Type::INT)
+    Type::collectionOf(SplFixedArray::class, Type::INT)
 );
 Assert::same($type, $expected);
 Assert::same($expected->getId(), $id);
@@ -39,7 +40,7 @@ $expected = Type::tupleOf(
         Type::INT,
         Type::NULLABLE
     ),
-    Type::collectionOf(\SplFixedArray::class, Type::INT),
+    Type::collectionOf(SplFixedArray::class, Type::INT),
     Type::NULLABLE
 );
 Assert::same($type, $expected);
@@ -57,7 +58,7 @@ $expected = Type::tupleOf(
         Type::INT,
         Type::NULLABLE
     ),
-    Type::collectionOf(\SplFixedArray::class, Type::INT),
+    Type::collectionOf(SplFixedArray::class, Type::INT),
     Type::NULLABLE
 );
 Assert::same($type, $expected);

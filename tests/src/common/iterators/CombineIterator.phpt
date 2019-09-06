@@ -16,7 +16,7 @@ foreach (new CombineIterator($keys, $values) as $k => $v) {
 }
 Assert::same($result, [4 => 1, 5 => 2, 6 => 3]);
 
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     $values = [1, 2, 3];
     $keys = [4, 5];
     $result = [];
@@ -25,7 +25,7 @@ Assert::exception(function (): void {
     }
 }, UnevenIteratorSourcesException::class);
 
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     $values = [1, 2];
     $keys = [4, 5, 6];
     $result = [];
@@ -34,7 +34,7 @@ Assert::exception(function (): void {
     }
 }, UnevenIteratorSourcesException::class);
 
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     $values = [1, 2, 3];
     $keys = [];
     $result = [];
@@ -43,7 +43,7 @@ Assert::exception(function (): void {
     }
 }, UnevenIteratorSourcesException::class);
 
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     $values = [];
     $keys = [4, 5, 6];
     $result = [];

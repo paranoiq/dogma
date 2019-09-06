@@ -12,7 +12,7 @@ namespace Dogma\Math\Interval;
 use Dogma\StaticClassMixin;
 use function count;
 use function explode;
-use function substr;
+use function strlen;
 use function trim;
 
 class IntervalParser
@@ -32,12 +32,12 @@ class IntervalParser
      */
     public static function parseString(string $string): array
     {
-        $openStart = substr($string, 0, 1) === self::OPEN_START
+        $openStart = $string[0] === self::OPEN_START
             ? true
-            : (substr($string, 0, 1) === self::CLOSED_START ? false : null);
-        $openEnd = substr($string, -1, 1) === self::OPEN_END
+            : ($string[0] === self::CLOSED_START ? false : null);
+        $openEnd = $string[strlen($string) - 1] === self::OPEN_END
             ? true
-            : (substr($string, -1, 1) === self::CLOSED_END ? false : null);
+            : ($string[strlen($string) - 1] === self::CLOSED_END ? false : null);
 
         $trimmed = trim($string, '[]()');
         foreach (self::SEPARATORS as $separator) {

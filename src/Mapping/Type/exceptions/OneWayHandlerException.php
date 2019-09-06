@@ -10,6 +10,7 @@
 namespace Dogma\Mapping\Type;
 
 use Dogma\Exception;
+use Throwable;
 use function get_class;
 use function sprintf;
 
@@ -19,20 +20,21 @@ class OneWayHandlerException extends Exception implements MappingTypeException
     /** @var mixed */
     private $instance;
 
-    /** @var \Dogma\Mapping\Type\TypeHandler */
+    /** @var TypeHandler */
     private $handler;
 
     /**
      * @param mixed $instance
-     * @param \Dogma\Mapping\Type\TypeHandler $handler
-     * @param \Throwable|null $previous
+     * @param TypeHandler $handler
+     * @param Throwable|null $previous
      */
-    public function __construct($instance, TypeHandler $handler, ?\Throwable $previous = null)
+    public function __construct($instance, TypeHandler $handler, ?Throwable $previous = null)
     {
         parent::__construct(
             sprintf('Cannot export an instance of %s using one way type handler %s.', get_class($instance), get_class($handler)),
             $previous
         );
+
         $this->instance = $instance;
         $this->handler = $handler;
     }

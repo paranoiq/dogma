@@ -9,6 +9,11 @@
 
 namespace Dogma;
 
+use ArrayAccess;
+use Countable;
+use Iterator;
+use IteratorAggregate;
+use Traversable;
 use function array_chunk;
 use function array_column;
 use function array_combine;
@@ -51,6 +56,7 @@ use function arsort;
 use function asort;
 use function count;
 use function end;
+use function in_array;
 use function is_array;
 use function iterator_to_array;
 use function krsort;
@@ -63,7 +69,7 @@ use function shuffle;
 use function uasort;
 use function uksort;
 
-class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
+class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 {
     use StrictBehaviorMixin;
     use ImmutableArrayAccessMixin;
@@ -123,7 +129,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
             return $that;
         } elseif ($that instanceof self) {
             return $that->toArray();
-        } elseif ($that instanceof \Traversable) {
+        } elseif ($that instanceof Traversable) {
             return iterator_to_array($that);
         } else {
             throw new InvalidTypeException(Type::PHP_ARRAY, $that);
@@ -229,7 +235,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
      */
     public function contains($value): bool
     {
-        return array_search($value, $this->toArray(), Type::STRICT) !== false;
+        return in_array($value, $this->toArray(), Type::STRICT);
     }
 
     /**
@@ -517,7 +523,6 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
      */
     public function indexOfSlice(iterable $array, int $from = 0): ?int
     {
-        /** @var self $that */
         $that = $this->drop($from);
         while ($that->isNotEmpty()) {
             if ($that->startsWith($array)) {
@@ -555,7 +560,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
      */
     public function hasSameElements(iterable $array): bool
     {
-        return $this->corresponds($array, function ($a, $b) {
+        return $this->corresponds($array, static function ($a, $b) {
             return $a === $b;
         });
     }
@@ -567,7 +572,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
      */
     public function startsWith(iterable $slice, int $from = 0): bool
     {
-        /** @var \Iterator $iterator */
+        /** @var Iterator $iterator */
         $iterator = $this->drop($from)->getIterator();
         $iterator->rewind();
         foreach ($slice as $value) {
@@ -790,7 +795,6 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
 
     public function chunks(int $size): self
     {
-        /** @var self $res */
         $res = new static(array_chunk($this->toArray(), $size, self::PRESERVE_KEYS));
 
         return $res->map(static function ($array) {
@@ -893,7 +897,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         if ($this->items === []) {
             return $this;
         }
-        $positions = $positions % count($this->items);
+        $positions %= count($this->items);
 
         return new static(array_merge(array_slice($this->items, $positions), array_slice($this->items, 0, $positions)));
     }
@@ -903,7 +907,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         if ($this->items === []) {
             return $this;
         }
-        $positions = $positions % count($this->items);
+        $positions %= count($this->items);
 
         return new static(array_merge(array_slice($this->items, -$positions), array_slice($this->items, 0, -$positions)));
     }
@@ -938,7 +942,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
 
     public function filterNot(callable $function): self
     {
-        return $this->filter(function ($value) use ($function) {
+        return $this->filter(static function ($value) use ($function) {
             return !$function($value);
         });
     }
@@ -996,7 +1000,6 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
             $groupKey = $function($value);
             $res[$groupKey][$key] = $value;
         }
-        /** @var self $r */
         $r = new static($res);
 
         return $r->map(static function ($array) {
@@ -1011,7 +1014,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
 
     public function mapPairs(callable $function): self
     {
-        return $this->remap(function ($key, $value) use ($function) {
+        return $this->remap(static function ($key, $value) use ($function) {
             return [$key => $function($key, $value)];
         });
     }
@@ -1155,7 +1158,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * @param iterable|mixed[] $values
-     * @return self
+     * @return static
      */
     public function appendAll(iterable $values): self
     {
@@ -1178,7 +1181,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * @param iterable|mixed[] $values
-     * @return self
+     * @return static
      */
     public function prependAll(iterable $values): self
     {

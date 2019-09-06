@@ -19,37 +19,39 @@ use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\Interval\DateInterval;
 use Dogma\Time\Interval\DateIntervalSet;
+use Iterator;
+use IteratorAggregate;
 use function array_map;
 use function array_merge;
 use function array_shift;
 use function count;
 use function is_array;
 
-class DateIntervalDataSet implements Equalable, Pokeable, \IteratorAggregate
+class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Time\IntervalData\DateIntervalData[] */
+    /** @var DateIntervalData[] */
     private $intervals;
 
     /**
-     * @param \Dogma\Time\IntervalData\DateIntervalData[] $intervals
+     * @param DateIntervalData[] $intervals
      */
     public function __construct(array $intervals)
     {
-        $this->intervals = Arr::values(Arr::filter($intervals, function (DateIntervalData $interval): bool {
+        $this->intervals = Arr::values(Arr::filter($intervals, static function (DateIntervalData $interval): bool {
             return !$interval->isEmpty();
         }));
     }
 
     /**
-     * @param \Dogma\Time\Interval\DateIntervalSet $set
+     * @param DateIntervalSet $set
      * @param mixed|null $data
-     * @return \Dogma\Time\IntervalData\DateIntervalDataSet
+     * @return DateIntervalDataSet
      */
     public static function createFromDateIntervalSet(DateIntervalSet $set, $data): self
     {
-        $intervals = array_map(function (DateInterval $interval) use ($data) {
+        $intervals = array_map(static function (DateInterval $interval) use ($data) {
             return DateIntervalData::createFromDateInterval($interval, $data);
         }, $set->getIntervals());
 
@@ -66,7 +68,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, \IteratorAggregate
     public function toDateIntervalSet(): DateIntervalSet
     {
         $intervals = [];
-        /** @var \Dogma\Time\IntervalData\DateIntervalData $interval */
+        /** @var DateIntervalData $interval */
         foreach ($this->intervals as $interval) {
             $intervals[] = $interval->toDateInterval();
         }
@@ -75,26 +77,26 @@ class DateIntervalDataSet implements Equalable, Pokeable, \IteratorAggregate
     }
 
     /**
-     * @return \Dogma\Time\Date[][]|mixed[][] array of pairs: (Date $date, Equalable $data)
+     * @return Date[][]|mixed[][] array of pairs: (Date $date, Equalable $data)
      */
     public function toDateDataArray(): array
     {
         $intervals = $this->normalize()->getIntervals();
 
-        return array_merge(...array_map(function (DateIntervalData $interval) {
+        return array_merge(...array_map(static function (DateIntervalData $interval) {
             return $interval->toDateDataArray();
         }, $intervals));
     }
 
     /**
-     * @return \Dogma\Time\IntervalData\DateIntervalData[]
+     * @return DateIntervalData[]
      */
     public function getIntervals(): array
     {
         return $this->intervals;
     }
 
-    public function getIterator(): \Iterator
+    public function getIterator(): Iterator
     {
         return new ArrayIterator($this->intervals);
     }
@@ -177,7 +179,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, \IteratorAggregate
 
     /**
      * Remove another set of intervals from this one.
-     * @param \Dogma\Time\Interval\DateIntervalSet $set
+     * @param DateIntervalSet $set
      * @return self
      */
     public function subtract(DateIntervalSet $set): self
@@ -189,7 +191,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, \IteratorAggregate
     {
         $sources = $this->intervals;
         $results = [];
-        /** @var \Dogma\Time\IntervalData\DateIntervalData $result */
+        /** @var DateIntervalData $result */
         while ($result = array_shift($sources)) {
             foreach ($intervals as $interval) {
                 $result = $result->subtract($interval);
@@ -210,7 +212,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, \IteratorAggregate
 
     /**
      * Intersect with another set of intervals.
-     * @param \Dogma\Time\Interval\DateIntervalSet $set
+     * @param DateIntervalSet $set
      * @return self
      */
     public function intersect(DateIntervalSet $set): self
@@ -294,9 +296,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, \IteratorAggregate
     public function modifyData(self $other, callable $reducer): self
     {
         $results = $this->getIntervals();
-        /** @var \Dogma\Time\IntervalData\DateIntervalData $interval */
         foreach ($other->getIntervals() as $interval) {
-            /** @var \Dogma\Time\IntervalData\DateIntervalData $result */
             foreach ($results as $i => $result) {
                 if (!$result->intersects($interval)) {
                     continue;

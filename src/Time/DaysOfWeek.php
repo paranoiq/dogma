@@ -51,7 +51,7 @@ class DaysOfWeek extends IntSet
     }
 
     /**
-     * @return \Dogma\Time\DayOfWeek[]
+     * @return DayOfWeek[]
      */
     public function toDays(): array
     {
@@ -78,8 +78,8 @@ class DaysOfWeek extends IntSet
     }
 
     /**
-     * @param \Dogma\Time\DateOrDateTime[] $days
-     * @return \Dogma\Time\DateOrDateTime[]
+     * @param DateOrDateTime[] $days
+     * @return DateOrDateTime[]
      */
     public function filterDays(array $days): array
     {

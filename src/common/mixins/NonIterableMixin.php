@@ -9,8 +9,10 @@
 
 namespace Dogma;
 
+use Iterator;
+
 /**
- * @deprecated PHPStan reports invalid usage of iteration. Use it instead
+ * @deprecated PHPStan reports invalid usage of iteration. Use it instead. Will be removed
  */
 trait NonIterableMixin
 {
@@ -18,9 +20,9 @@ trait NonIterableMixin
     /**
      * To avoid iterating through an object by accident
      * @deprecated
-     * @throws \Dogma\NonIterableObjectException
+     * @throws NonIterableObjectException
      */
-    public function getIterator(): void
+    public function getIterator(): Iterator
     {
         throw new NonIterableObjectException(static::class);
     }

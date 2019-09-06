@@ -49,7 +49,7 @@ $stringInstance = $handler->createInstance($stringType, 123, $mapper);
 Assert::same($stringInstance, '123');
 
 // exportInstance()
-// expected behavior - does not map back since the original type is unknown. propper reverse mapping must be
+// expected behavior - does not map back since the original type is unknown. proper reverse mapping must be
 // implemented either by a specialised handler (eg. MysqlScalarsHandler) or at an another layer (connection adapter)
 Assert::same($handler->exportInstance($boolType, $boolInstance, $mapper), true);
 Assert::same($handler->exportInstance($intType, $intInstance, $mapper), 123);

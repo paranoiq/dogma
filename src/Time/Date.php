@@ -9,6 +9,11 @@
 
 namespace Dogma\Time;
 
+use DateInterval;
+use DateTime as PhpDateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
+use DateTimeZone;
 use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
@@ -22,6 +27,7 @@ use Dogma\Time\Interval\DateTimeInterval;
 use Dogma\Time\Provider\TimeProvider;
 use Dogma\Time\Span\DateSpan;
 use Dogma\Type;
+use Throwable;
 use function explode;
 use function gregoriantojd;
 use function intval;
@@ -47,7 +53,7 @@ class Date implements DateOrDateTime, Pokeable
     /** @var int */
     private $julianDay;
 
-    /** @var \DateTimeImmutable|null */
+    /** @var DateTimeImmutable|null */
     private $dateTime;
 
     /**
@@ -60,15 +66,15 @@ class Date implements DateOrDateTime, Pokeable
             $this->julianDay = $julianDayOrDateString;
         } else {
             try {
-                $this->dateTime = (new \DateTimeImmutable($julianDayOrDateString))->setTime(0, 0, 0);
+                $this->dateTime = (new DateTimeImmutable($julianDayOrDateString))->setTime(0, 0, 0);
                 $this->julianDay = self::calculateDayNumber($this->dateTime);
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 throw new InvalidDateTimeException($julianDayOrDateString, $e);
             }
         }
     }
 
-    public static function createFromDateTimeInterface(\DateTimeInterface $dateTime): Date
+    public static function createFromDateTimeInterface(DateTimeInterface $dateTime): Date
     {
         if ($dateTime instanceof DateTime) {
             return $dateTime->getDate();
@@ -92,7 +98,7 @@ class Date implements DateOrDateTime, Pokeable
         Check::range($week, 1, 53);
         Check::range($dayOfWeek, 1, 7);
 
-        $dateTime = new \DateTime('today 00:00:00');
+        $dateTime = new PhpDateTime('today 00:00:00');
         $dateTime->setISODate($year, $week, $dayOfWeek);
 
         return static::createFromDateTimeInterface($dateTime);
@@ -105,7 +111,7 @@ class Date implements DateOrDateTime, Pokeable
 
     public static function createFromFormat(string $format, string $timeString): self
     {
-        $dateTime = \DateTime::createFromFormat($format, $timeString);
+        $dateTime = PhpDateTime::createFromFormat($format, $timeString);
         if ($dateTime === false) {
             throw new InvalidDateTimeException('xxx');
         }
@@ -161,12 +167,12 @@ class Date implements DateOrDateTime, Pokeable
         }
     }
 
-    public function toDateTime(?\DateTimeZone $timeZone = null): DateTime
+    public function toDateTime(?DateTimeZone $timeZone = null): DateTime
     {
         return DateTime::createFromDateAndTime($this, new Time(0), $timeZone);
     }
 
-    public function toDateTimeInterval(?\DateTimeZone $timeZone = null): DateTimeInterval
+    public function toDateTimeInterval(?DateTimeZone $timeZone = null): DateTimeInterval
     {
         return new DateTimeInterval($this->getStart($timeZone), $this->addDay()->getStart(), false, true);
     }
@@ -178,10 +184,10 @@ class Date implements DateOrDateTime, Pokeable
 
     /**
      * Returns Julian day number (count of days since January 1st, 4713 B.C.)
-     * @param \DateTimeInterface $dateTime
+     * @param DateTimeInterface $dateTime
      * @return int
      */
-    public static function calculateDayNumber(\DateTimeInterface $dateTime): int
+    public static function calculateDayNumber(DateTimeInterface $dateTime): int
     {
         [$y, $m, $d] = explode('-', $dateTime->format(self::DEFAULT_FORMAT));
 
@@ -189,30 +195,30 @@ class Date implements DateOrDateTime, Pokeable
     }
 
     /**
-     * @param \DateTimeInterface|\Dogma\Time\Date $date
+     * @param DateTimeInterface|Date $date
      * @param bool $absolute
-     * @return \DateInterval
+     * @return DateInterval
      */
-    public function diff($date, bool $absolute = false): \DateInterval
+    public function diff($date, bool $absolute = false): DateInterval
     {
-        Check::types($date, [\DateTimeInterface::class, self::class]);
+        Check::types($date, [DateTimeInterface::class, self::class]);
 
-        return (new \DateTimeImmutable($this->format()))->diff(new \DateTimeImmutable($date->format(self::DEFAULT_FORMAT)), $absolute);
+        return (new DateTimeImmutable($this->format()))->diff(new DateTimeImmutable($date->format(self::DEFAULT_FORMAT)), $absolute);
     }
 
     public function difference(Date $other, bool $absolute = false): DateSpan
     {
-        $interval = self::diff($other, $absolute);
+        $interval = $this->diff($other, $absolute);
 
         return DateSpan::createFromDateInterval($interval);
     }
 
-    public function getStart(?\DateTimeZone $timeZone = null): DateTime
+    public function getStart(?DateTimeZone $timeZone = null): DateTime
     {
         return (new DateTime($this->format(), $timeZone))->setTime(0, 0, 0);
     }
 
-    public function getEnd(?\DateTimeZone $timeZone = null): DateTime
+    public function getEnd(?DateTimeZone $timeZone = null): DateTime
     {
         return (new DateTime($this->format(), $timeZone))->setTime(23, 59, 59, 999999);
     }
@@ -279,7 +285,7 @@ class Date implements DateOrDateTime, Pokeable
     }
 
     /**
-     * @param int|\Dogma\Time\DayOfWeek $day
+     * @param int|DayOfWeek $day
      * @return bool
      */
     public function isDayOfWeek($day): bool
@@ -299,7 +305,7 @@ class Date implements DateOrDateTime, Pokeable
     }
 
     /**
-     * @param int|\Dogma\Time\Month $month
+     * @param int|Month $month
      * @return bool
      */
     public function isMonth($month): bool
@@ -315,12 +321,12 @@ class Date implements DateOrDateTime, Pokeable
 
     // getters ---------------------------------------------------------------------------------------------------------
 
-    private function getDateTime(): \DateTimeImmutable
+    private function getDateTime(): DateTimeImmutable
     {
         if ($this->dateTime === null) {
             [$m, $d, $y] = explode('/', jdtogregorian($this->julianDay));
 
-            $this->dateTime = new \DateTimeImmutable($y . '-' . $m . '-' . $d . ' 00:00:00');
+            $this->dateTime = new DateTimeImmutable($y . '-' . $m . '-' . $d . ' 00:00:00');
         }
 
         return $this->dateTime;
@@ -375,26 +381,26 @@ class Date implements DateOrDateTime, Pokeable
 
     public static function min(self ...$items): self
     {
-        return Arr::minBy($items, function (self $date) {
+        return Arr::minBy($items, static function (self $date): int {
             return $date->julianDay;
         });
     }
 
     public static function max(self ...$items): self
     {
-        return Arr::maxBy($items, function (self $date) {
+        return Arr::maxBy($items, static function (self $date): int {
             return $date->julianDay;
         });
     }
 
     /**
-     * @param \Dogma\Time\Date[] $items
+     * @param Date[] $items
      * @param int $flags
-     * @return \Dogma\Time\Date[]
+     * @return Date[]
      */
     public static function sort(array $items, int $flags = Order::ASCENDING): array
     {
-        return Arr::sortWith($items, function (Date $a, Date $b) {
+        return Arr::sortWith($items, static function (Date $a, Date $b): int {
             return $a->julianDay <=> $b->julianDay;
         }, $flags);
     }

@@ -13,6 +13,7 @@ namespace Dogma;
 
 use Dogma\Language\Encoding;
 use Dogma\Language\Locale\Locale;
+use Throwable;
 use function array_pop;
 use function count;
 use function end;
@@ -64,7 +65,7 @@ class Type
     public const NULLABLE = true;
     public const NOT_NULLABLE = false;
 
-    /** @var \Dogma\Type[] (string $id => $type) */
+    /** @var Type[] (string $id => $type) */
     private static $instances = [];
 
     /** @var string */
@@ -73,11 +74,11 @@ class Type
     /** @var string */
     private $type;
 
-    /** @var \Dogma\Type|\Dogma\Type[]|null */
+    /** @var Type|Type[]|null */
     private $itemType;
 
     /** @var bool */
-    private $nullable = false;
+    private $nullable;
 
     /** @var int|int[]|null */
     private $size;
@@ -85,21 +86,21 @@ class Type
     /** @var string|null */
     private $specific;
 
-    /** @var \Dogma\Language\Encoding|null */
+    /** @var Encoding|null */
     private $encoding;
 
-    /** @var \Dogma\Language\Locale\Locale|null */
+    /** @var Locale|null */
     private $locale;
 
     /**
      * @param string $id
      * @param string $type
      * @param bool $nullable
-     * @param \Dogma\Type|\Dogma\Type[]|null $itemType
+     * @param Type|Type[]|null $itemType
      * @param int|int[]|null $size
      * @param string|null $specific
-     * @param \Dogma\Language\Encoding $encoding
-     * @param \Dogma\Language\Locale\Locale $locale
+     * @param Encoding $encoding
+     * @param Locale $locale
      */
     final private function __construct(
         string $id,
@@ -122,15 +123,23 @@ class Type
     }
 
     /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $type
      * @param int|int[]|null $size [optional]
      * @param string|null $specific [optional]
-     * @param \Dogma\Language\Encoding|null $encoding [optional]
-     * @param \Dogma\Language\Locale\Locale|null $locale [optional]
+     * @param Encoding|null $encoding [optional]
+     * @param Locale|null $locale [optional]
      * @param bool $nullable [optional]
      * @return self
      */
-    public static function get(string $type, $size = null, $specific = null, $encoding = null, $locale = null, ?bool $nullable = null): self
+    public static function get(
+        string $type,
+        $size = null,
+        $specific = null,
+        $encoding = null,
+        $locale = null,
+        ?bool $nullable = null
+    ): self
     {
         $args = func_get_args();
         $size = $specific = $encoding = $locale = $nullable = null;
@@ -229,7 +238,7 @@ class Type
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param int|null $size
      * @param string|null $sign
      * @param bool|null $nullable
@@ -241,7 +250,7 @@ class Type
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param int|null $size
      * @param bool|null $nullable
      * @return self
@@ -252,7 +261,7 @@ class Type
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param int|null $size
      * @param bool|null $nullable
      * @return self
@@ -263,11 +272,11 @@ class Type
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param int|null $size
      * @param string|null $fixed
-     * @param \Dogma\Language\Encoding|null $encoding
-     * @param \Dogma\Language\Locale\Locale|null $locale
+     * @param Encoding|null $encoding
+     * @param Locale|null $locale
      * @param bool|null $nullable
      * @return self
      */
@@ -282,7 +291,7 @@ class Type
     }
 
     /**
-     * @param \Dogma\ResourceType|string|null $resourceType
+     * @param ResourceType|string|null $resourceType
      * @param bool $nullable
      * @return self
      */
@@ -426,8 +435,8 @@ class Type
         }
 
         $itemTypes = [];
-        foreach ($itemIds as $id) {
-            $itemTypes[] = self::fromId($id);
+        foreach ($itemIds as $itemId) {
+            $itemTypes[] = self::fromId($itemId);
         }
 
         if ($baseId === Tuple::class) {
@@ -536,7 +545,7 @@ class Type
 
     public function isScalar(): bool
     {
-        return in_array($this->type, self::listScalarTypes());
+        return in_array($this->type, self::listScalarTypes(), true);
     }
 
     public function isArray(): bool
@@ -556,7 +565,7 @@ class Type
 
     public function isClass(): bool
     {
-        return !in_array($this->type, self::listTypes());
+        return !in_array($this->type, self::listTypes(), true);
     }
 
     public function isCallable(): bool
@@ -699,7 +708,7 @@ class Type
         try {
             self::fromId($type);
             return true;
-        } catch (\Throwable $t) {
+        } catch (Throwable $t) {
             return false;
         }
     }

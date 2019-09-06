@@ -45,24 +45,24 @@ Assert::same(Arr::lastIndexOf($array, 2), 3);
 Assert::same(Arr::lastIndexOf($array, 2, 2), 1);
 
 // indexWhere()
-Assert::null(Arr::indexWhere($array, function (): bool {
+Assert::null(Arr::indexWhere($array, static function (): bool {
     return false;
 }));
-Assert::same(Arr::indexWhere($array, function (int $v): bool {
+Assert::same(Arr::indexWhere($array, static function (int $v): bool {
     return $v === 2;
 }), 1);
-Assert::same(Arr::indexWhere($array, function (int $v): bool {
+Assert::same(Arr::indexWhere($array, static function (int $v): bool {
     return $v === 2;
 }, 2), 3);
 
 // lastIndexWhere()
-Assert::null(Arr::lastIndexWhere($array, function (): bool {
+Assert::null(Arr::lastIndexWhere($array, static function (): bool {
     return false;
 }));
-Assert::same(Arr::lastIndexWhere($array, function (int $v): bool {
+Assert::same(Arr::lastIndexWhere($array, static function (int $v): bool {
     return $v === 2;
 }), 3);
-Assert::same(Arr::lastIndexWhere($array, function (int $v): bool {
+Assert::same(Arr::lastIndexWhere($array, static function (int $v): bool {
     return $v === 2;
 }, 2), 1);
 
@@ -79,35 +79,35 @@ Assert::false(Arr::containsAllKeys($array, [2, 7]));
 Assert::true(Arr::containsAllKeys($array, [0, 1]));
 
 // exists()
-Assert::false(Arr::exists($array, function (int $v): bool {
+Assert::false(Arr::exists($array, static function (int $v): bool {
     return $v > 5;
 }));
-Assert::true(Arr::exists($array, function (int $v): bool {
+Assert::true(Arr::exists($array, static function (int $v): bool {
     return $v > 1;
 }));
 
 // forAll()
-Assert::false(Arr::forAll($array, function (int $v): bool {
+Assert::false(Arr::forAll($array, static function (int $v): bool {
     return $v > 1;
 }));
-Assert::true(Arr::forAll($array, function (int $v): bool {
+Assert::true(Arr::forAll($array, static function (int $v): bool {
     return $v < 5;
 }));
 
 // find()
-Assert::null(Arr::find($array, function (int $v): bool {
+Assert::null(Arr::find($array, static function (int $v): bool {
     return $v * $v === 25;
 }));
-Assert::same(Arr::find($array, function (int $v): bool {
+Assert::same(Arr::find($array, static function (int $v): bool {
     return $v * $v === 4;
 }), 2);
 
 // prefixLength()
-Assert::same(Arr::prefixLength([2, 2, 2, 1], function (int $v): bool {
+Assert::same(Arr::prefixLength([2, 2, 2, 1], static function (int $v): bool {
     return $v === 2;
 }), 3);
 
 // segmentLength()
-Assert::same(Arr::segmentLength([2, 2, 2, 1], function (int $v): bool {
+Assert::same(Arr::segmentLength([2, 2, 2, 1], static function (int $v): bool {
     return $v === 2;
 }, 1), 2);

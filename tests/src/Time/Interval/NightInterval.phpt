@@ -2,6 +2,7 @@
 
 namespace Dogma\Tests\Time\Interval;
 
+use DateTimeImmutable;
 use Dogma\Math\Interval\InvalidIntervalStringFormatException;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
@@ -24,18 +25,18 @@ $interval = new NightInterval($startDate, $endDate);
 $empty = NightInterval::empty();
 $all = NightInterval::all();
 
-$d = function (int $day): Date {
+$d = static function (int $day): Date {
     return new Date('2000-01-' . $day);
 };
-$i = function (int $start, int $end): NightInterval {
+$i = static function (int $start, int $end): NightInterval {
     return new NightInterval(new Date('2000-01-' . $start), new Date('2000-01-' . $end));
 };
-$s = function (NightInterval ...$items): NightIntervalSet {
+$s = static function (NightInterval ...$items): NightIntervalSet {
     return new NightIntervalSet($items);
 };
 
 // __construct()
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     new NightInterval(new Date('today'), new Date('yesterday'));
 }, InvalidIntervalStartEndOrderException::class);
 
@@ -51,10 +52,10 @@ Assert::equal(NightInterval::createFromString('[2000-01-10,2000-01-21]'), $inter
 Assert::equal(NightInterval::createFromString('[2000-01-10,2000-01-22)'), $interval);
 Assert::equal(NightInterval::createFromString('(2000-01-09,2000-01-22)'), $interval);
 Assert::equal(NightInterval::createFromString('(2000-01-09,2000-01-21]'), $interval);
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     NightInterval::createFromString('foo|bar|baz');
 }, InvalidIntervalStringFormatException::class);
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     NightInterval::createFromString('foo');
 }, InvalidIntervalStringFormatException::class);
 
@@ -64,7 +65,7 @@ Assert::equal(NightInterval::createFromStartAndLength($startDate, DateTimeUnit::
 Assert::equal(NightInterval::createFromStartAndLength($startDate, DateTimeUnit::month(), 2), new NightInterval($startDate, new Date('2000-03-09')));
 Assert::equal(NightInterval::createFromStartAndLength($startDate, DateTimeUnit::week(), 2), new NightInterval($startDate, new Date('2000-01-23')));
 Assert::equal(NightInterval::createFromStartAndLength($startDate, DateTimeUnit::day(), 2), new NightInterval($startDate, new Date('2000-01-11')));
-Assert::exception(function () use ($startDate): void {
+Assert::exception(static function () use ($startDate): void {
     NightInterval::createFromStartAndLength($startDate, DateTimeUnit::hour(), 2);
 }, InvalidDateTimeUnitException::class);
 
@@ -130,7 +131,7 @@ Assert::true($interval->containsValue($d(20)));
 Assert::false($interval->containsValue($d(21)));
 Assert::false($interval->containsValue($d(5)));
 Assert::false($interval->containsValue($d(25)));
-Assert::true($interval->containsValue(new \DateTimeImmutable('2000-01-15')));
+Assert::true($interval->containsValue(new DateTimeImmutable('2000-01-15')));
 
 // contains()
 Assert::true($interval->contains($i(10, 21)));

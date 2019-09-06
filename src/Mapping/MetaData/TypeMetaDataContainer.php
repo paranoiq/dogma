@@ -19,14 +19,14 @@ class TypeMetaDataContainer
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Mapping\Type\TypeHandler[] */
+    /** @var TypeHandler[] */
     private $handlers;
 
-    /** @var \Dogma\Mapping\MetaData\TypeMetaData[] (string $typeId => $typeMetaData) */
+    /** @var TypeMetaData[] (string $typeId => $typeMetaData) */
     private $types;
 
     /**
-     * @param \Dogma\Mapping\Type\TypeHandler[] $handlers
+     * @param TypeHandler[] $handlers
      */
     public function __construct(array $handlers)
     {

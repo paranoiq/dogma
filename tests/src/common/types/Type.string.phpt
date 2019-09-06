@@ -2,6 +2,7 @@
 
 namespace Dogma\Tests\Type;
 
+use DateTime;
 use Dogma\Country\Country;
 use Dogma\Language\Encoding;
 use Dogma\Language\Language;
@@ -9,6 +10,7 @@ use Dogma\Language\Locale\Locale;
 use Dogma\Length;
 use Dogma\Tester\Assert;
 use Dogma\Type;
+use Error;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -119,10 +121,10 @@ Assert::false($string->isResource());
 
 // is()
 Assert::true($string->is(Type::STRING));
-Assert::false($string->is(\DateTime::class));
+Assert::false($string->is(DateTime::class));
 
 // isImplementing()
-Assert::false($string->isImplementing(\DateTime::class));
+Assert::false($string->isImplementing(DateTime::class));
 
 // getBaseType()
 Assert::same($stringNullable->getBaseType(), $string);
@@ -137,6 +139,6 @@ Assert::same($stringNullable->getTypeWithoutParams(), $stringNullable);
 Assert::same($stringAllParams->getTypeWithoutParams(), $stringNullable);
 
 // getInstance()
-Assert::exception(function () use ($string): void {
+Assert::exception(static function () use ($string): void {
     $string->getInstance();
-}, \Error::class);
+}, Error::class);

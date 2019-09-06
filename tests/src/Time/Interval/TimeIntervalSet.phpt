@@ -10,13 +10,13 @@ use Dogma\Time\Time;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-$t = function (int $hours): Time {
+$t = static function (int $hours): Time {
     return Time::createFromComponents($hours);
 };
-$i = function (int $start, int $end, bool $openStart = false, bool $openEnd = true) use ($t): TimeInterval {
+$i = static function (int $start, int $end, bool $openStart = false, bool $openEnd = true) use ($t): TimeInterval {
     return new TimeInterval($t($start), $t($end), $openStart, $openEnd);
 };
-$s = function (TimeInterval ...$items): TimeIntervalSet {
+$s = static function (TimeInterval ...$items): TimeIntervalSet {
     return new TimeIntervalSet($items);
 };
 
@@ -58,13 +58,13 @@ Assert::equal($s($i(1, 10))->subtract($s($i(3, 4), $i(7, 8))), $s($i(1, 3), $i(4
 Assert::equal($s($i(1, 5), $i(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $s($i(4, 5), $i(10, 12), $i(14, 15)));
 
 // map()
-Assert::equal($set->map(function (TimeInterval $interval) {
+Assert::equal($set->map(static function (TimeInterval $interval) {
     return $interval;
 }), $set);
-Assert::equal($set->map(function (TimeInterval $interval) {
+Assert::equal($set->map(static function (TimeInterval $interval) {
     return $interval->split(2, TimeInterval::SPLIT_OPEN_ENDS);
 }), $s($i(1, 3), $i(3, 5)));
-Assert::equal($set->map(function (TimeInterval $interval) {
+Assert::equal($set->map(static function (TimeInterval $interval) {
     return $interval->split(2, TimeInterval::SPLIT_OPEN_ENDS)->getIntervals();
 }), $s($i(1, 3), $i(3, 5)));
 

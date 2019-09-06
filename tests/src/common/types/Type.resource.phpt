@@ -2,9 +2,11 @@
 
 namespace Dogma\Tests\Type;
 
+use DateTime;
 use Dogma\ResourceType;
 use Dogma\Tester\Assert;
 use Dogma\Type;
+use Error;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -94,10 +96,10 @@ Assert::true($resource->isResource());
 
 // is()
 Assert::true($resource->is(Type::RESOURCE));
-Assert::false($resource->is(\DateTime::class));
+Assert::false($resource->is(DateTime::class));
 
 // isImplementing()
-Assert::false($resource->isImplementing(\DateTime::class));
+Assert::false($resource->isImplementing(DateTime::class));
 
 // getBaseType()
 Assert::same($resourceNullable->getBaseType(), $resource);
@@ -112,6 +114,6 @@ Assert::same($resourceNullable->getTypeWithoutParams(), $resourceNullable);
 Assert::same($resourceAspell->getTypeWithoutParams(), $resource);
 
 // getInstance()
-Assert::exception(function () use ($resource): void {
+Assert::exception(static function () use ($resource): void {
     $resource->getInstance('abc');
-}, \Error::class);
+}, Error::class);

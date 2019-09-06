@@ -2,6 +2,7 @@
 
 namespace Dogma\Tests\Type;
 
+use DateTime;
 use Dogma\Tester\Assert;
 use Dogma\Tuple;
 use Dogma\Type;
@@ -88,11 +89,11 @@ Assert::false($tuple->isResource());
 
 // is()
 Assert::true($tuple->is(Tuple::class));
-Assert::false($tuple->is(\DateTime::class));
+Assert::false($tuple->is(DateTime::class));
 
 // isImplementing()
 Assert::true($tuple->isImplementing(Tuple::class));
-Assert::false($tuple->isImplementing(\DateTime::class));
+Assert::false($tuple->isImplementing(DateTime::class));
 
 // getBaseType()
 Assert::same($tuple->getBaseType(), Type::get(Tuple::class));

@@ -9,6 +9,7 @@
 
 namespace Dogma\Time\Format;
 
+use DateTimeZone;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateOrTime;
 
@@ -64,10 +65,10 @@ class DateTimeValues
     /** @var string */
     public $offset;
 
-    /** @var \DateTimeZone */
+    /** @var DateTimeZone */
     public $timezone;
 
-    /** @var \Dogma\Time\DateOrTime */
+    /** @var DateOrTime */
     public $dateTime;
 
     private function __construct(DateOrTime $dateTime)

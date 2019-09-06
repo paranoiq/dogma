@@ -34,7 +34,7 @@ class FloydWarshallPathFinder
     /** @var int */
     private $nodeCount;
 
-    /** @var string[] */
+    /** @var string[]|int[] */
     private $nodeNames;
 
     /** @var int[][] */

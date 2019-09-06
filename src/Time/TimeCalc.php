@@ -21,10 +21,10 @@ class TimeCalc
     /**
      * Round to closest value from given list of values for given unit
      * (eg. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
-     * @param \Dogma\Time\DateTimeOrTime $value
-     * @param \Dogma\Time\DateTimeUnit $unit
+     * @param DateTimeOrTime $value
+     * @param DateTimeUnit $unit
      * @param int[]|null $allowedValues
-     * @return \Dogma\Time\DateTimeOrTime
+     * @return DateTimeOrTime
      */
     public static function roundTo(DateTimeOrTime $value, DateTimeUnit $unit, ?array $allowedValues = null): DateTimeOrTime
     {
@@ -34,10 +34,10 @@ class TimeCalc
     /**
      * Round to first upper value from given list of values for given unit
      * (eg. 15:32:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
-     * @param \Dogma\Time\DateTimeOrTime $value
-     * @param \Dogma\Time\DateTimeUnit $unit
+     * @param DateTimeOrTime $value
+     * @param DateTimeUnit $unit
      * @param int[]|null $allowedValues
-     * @return \Dogma\Time\DateTimeOrTime
+     * @return DateTimeOrTime
      */
     public static function roundUpTo(DateTimeOrTime $value, DateTimeUnit $unit, ?array $allowedValues = null): DateTimeOrTime
     {
@@ -47,10 +47,10 @@ class TimeCalc
     /**
      * Round to first lower value from given list of values for given unit
      * (eg. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:30:00)
-     * @param \Dogma\Time\DateTimeOrTime $value
-     * @param \Dogma\Time\DateTimeUnit $unit
+     * @param DateTimeOrTime $value
+     * @param DateTimeUnit $unit
      * @param int[]|null $allowedValues
-     * @return \Dogma\Time\DateTimeOrTime
+     * @return DateTimeOrTime
      */
     public static function roundDownTo(DateTimeOrTime $value, DateTimeUnit $unit, ?array $allowedValues = null): DateTimeOrTime
     {
@@ -59,10 +59,10 @@ class TimeCalc
 
     /**
      * @param string $method
-     * @param \Dogma\Time\DateTimeOrTime $value
-     * @param \Dogma\Time\DateTimeUnit $unit
+     * @param DateTimeOrTime $value
+     * @param DateTimeUnit $unit
      * @param int[]|null $allowedValues
-     * @return \Dogma\Time\DateTimeOrTime
+     * @return DateTimeOrTime
      */
     private static function roundAny(string $method, DateTimeOrTime $value, DateTimeUnit $unit, ?array $allowedValues = null): DateTimeOrTime
     {

@@ -1,5 +1,7 @@
 <?php declare(strict_types = 1);
 
+// phpcs:disable SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable
+
 set_time_limit(0);
 
 $options = [
@@ -22,18 +24,18 @@ foreach ($options as $option => $type) {
         $mm = explode('-', strtoupper($_GET[$option]));
         if (count($mm) > 1) {
             $min = abs((int) $mm[0]);
-            if (strstr($mm[0], 'K') !== false) {
+            if (strpos($mm[0], 'K') !== false) {
                 $min *= 1000;
             }
-            if (strstr($mm[0], 'M') !== false) {
+            if (strpos($mm[0], 'M') !== false) {
                 $min *= 1000000;
             }
 
             $max = abs((int) $mm[1]);
-            if (strstr($mm[1], 'K') !== false) {
+            if (strpos($mm[1], 'K') !== false) {
                 $max *= 1000;
             }
-            if (strstr($mm[1], 'M') !== false) {
+            if (strpos($mm[1], 'M') !== false) {
                 $max *= 1000000;
             }
 
@@ -41,13 +43,13 @@ foreach ($options as $option => $type) {
                 [$min, $max] = [$max, $min];
             }
 
-            $request[$option] = rand($min, $max);
+            $request[$option] = random_int($min, $max);
         } else {
             $size = abs((int) $_GET[$option]);
-            if (strstr($_GET[$option], 'K') !== false) {
+            if (strpos($_GET[$option], 'K') !== false) {
                 $size *= 1000;
             }
-            if (strstr($_GET[$option], 'M') !== false) {
+            if (strpos($_GET[$option], 'M') !== false) {
                 $size *= 1000000;
             }
 
@@ -63,13 +65,13 @@ foreach ($options as $option => $type) {
             $rats = [];
             $sum = 0.0;
             foreach ($arr as $st) {
-                $ratio = 1 / pow(10, strlen(preg_replace('/[^-]/', '', $st)));
+                $ratio = 1 / (10 ** strlen(preg_replace('/[^-]/', '', $st)));
                 $status = (int) $st;
                 $rats[$status] = $ratio;
                 $sum += $ratio;
             }
 
-            $rand = rand(0, intval($sum * 1000000000)) / 1000000000;
+            $rand = random_int(0, intval($sum * 1000000000)) / 1000000000;
             $selected = 0;
             foreach ($rats as $status => $ratio) {
                 if ($rand < $ratio) {
@@ -127,7 +129,7 @@ if ($request['status'] !== 200) {
 
 
 echo "<!DOCTYPE HTML>\n";
-echo "<html>\n<head><title></title></head>\n<body><pre>\n";
+echo "<html lang='en'>\n<head><title></title></head>\n<body><pre>\n";
 echo "<h1>Testing response:</h1>\n";
 echo sprintf("Size: %s\n", number_format($request['size']));
 echo sprintf("Time: %s\n", $request['time']);
@@ -148,7 +150,7 @@ if ($request['time']) {
                 echo "\n";
             }
         }
-        echo $chars[rand(0, 90)];
+        echo $chars[random_int(0, 90)];
     }
 } else {
     for ($n = 0; $n < $request['size']; $n++) {
@@ -158,7 +160,7 @@ if ($request['time']) {
                 echo "\n";
             }
         }
-        echo $chars[rand(0, 90)];
+        echo $chars[random_int(0, 90)];
     }
 }
 

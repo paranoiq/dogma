@@ -13,9 +13,9 @@ use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 
 /**
- * Extracts raw data from instance via \Dogma\Exportable interface
+ * Extracts raw data from instance via Exportable interface
  */
-class ExportableHandler extends ConstructorHandler implements TypeHandler
+class ExportableHandler extends ConstructorHandler
 {
     use StrictBehaviorMixin;
     use ExportableHandlerMixin;

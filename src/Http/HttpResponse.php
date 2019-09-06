@@ -11,8 +11,13 @@ namespace Dogma\Http;
 
 use Dogma\Http\Curl\CurlHelper;
 use Dogma\Io\ContentType\ContentType;
+use Dogma\Language\Encoding;
+use Dogma\Language\Locale\Locale;
 use Dogma\StrictBehaviorMixin;
+use Dogma\Time\DateTime;
 use Dogma\Time\Provider\CurrentTimeProvider;
+use Dogma\Web\Host;
+use Dogma\Web\Url;
 use function is_int;
 use function sprintf;
 
@@ -23,7 +28,7 @@ class HttpResponse
     /** @var mixed[] */
     protected $info;
 
-    /** @var \Dogma\Http\HttpResponseStatus */
+    /** @var HttpResponseStatus */
     private $status;
 
     /** @var string[] */
@@ -41,16 +46,16 @@ class HttpResponse
     /** @var mixed */
     private $context;
 
-    /** @var \Dogma\Http\HttpHeaderParser */
+    /** @var HttpHeaderParser */
     private $headerParser;
 
     /**
-     * @param \Dogma\Http\HttpResponseStatus $status
+     * @param HttpResponseStatus $status
      * @param string|null $body
      * @param string[] $rawHeaders
      * @param string[] $info
      * @param mixed $context
-     * @param \Dogma\Http\HttpHeaderParser|null $headerParser
+     * @param HttpHeaderParser|null $headerParser
      */
     public function __construct(
         HttpResponseStatus $status,
@@ -99,18 +104,20 @@ class HttpResponse
         if ($this->headers === null) {
             $this->headers = $this->getHeaderParser()->parseHeaders($this->rawHeaders);
         }
+
         return $this->headers;
     }
 
     /**
      * @param string $name
-     * @return string|string[]|int|\Dogma\Time\DateTime|\Dogma\Web\Host|\Dogma\Web\Url|\Dogma\Io\ContentType\ContentType|\Dogma\Language\Encoding|\Dogma\Language\Locale\Locale
+     * @return string|string[]|int|DateTime|Host|Url|ContentType|Encoding|Locale|null
      */
     public function getHeader(string $name)
     {
         if ($this->headers === null) {
             $this->getHeaders();
         }
+
         return $this->headers[$name] ?? null;
     }
 
@@ -119,6 +126,7 @@ class HttpResponse
         if ($this->headerParser === null) {
             $this->headerParser = new HttpHeaderParser(new CurrentTimeProvider());
         }
+
         return $this->headerParser;
     }
 

@@ -1,21 +1,33 @@
 
 parameters:
     ignoreErrors:
-        # fix it!
-        - '~^Dogma\\.*Exception::__construct\(\) does not call parent constructor~' # skipping one ancestor
-
         # misleading
-        - '~^Parameter #1 $value of class Dogma\Math\Decimal\Decimal constructor expects string|int, int|string|Dogma\Math\Decimal\Decimal given.~' # if (!$x instanceof C)
-        - '~^Method Dogma\Mapping\Type\TupleHandler::getParameters() should return Dogma\Type[] but returns Dogma\Type[]|Dogma\Type|null.~' # guaranteed
         - '~^Method Dogma\\Http\\HttpDownloadRequest::execute\(\) should return Dogma\\Http\\HttpFileResponse but returns Dogma\\Http\\HttpResponse.~' # guaranteed
-
-        # missing dependencies
-        - '~^Function mailparse_.* not found~'
-        - '~^Used function mailparse_.* not found.~'
+        - '~^Method Dogma\\Enum\\(Int|String)Set::get\(\) should return static\(Dogma\\Enum\\(Int|String)Set\) but returns Dogma\\Enum\\(Int|String)Set.~' # bug?
+        - '~^Method Dogma\\Enum\\(Int|String)Set::getInstances\(\) should return array<static\(Dogma\\Enum\\(Int|String)Set\)> but returns array<Dogma\\Enum\\(Int|String)Set>.~' # bug?
+        - '~^Instanceof between Dogma\\Dom\\Element\|DOMNode and DOMCdataSection will always evaluate to false.~' # DOMCdataSection is a child of DOMNode
+        - '~Parameter .* of static method Dogma\\Type::get\(\) expects~' # parameters magic
+        - '~Variable \$result in PHPDoc tag @var does not exist~' # while ($result = array_shift($sources)) {
+        - '~Strict comparison using === between array<int, string> and array\(\) will always evaluate to false.~' # Cls
+        -
+            message: "~Result of && is always false.~" # ???
+            path: "../../src/common/Check.php"
 
         # interface
         - '~^PHPDoc tag @return with type Dogma\\Language\\Locale\\LocaleCollationOption is not subtype of native type Dogma\\Enum\\StringEnum~'
         - '~^Method Dogma\\IteratorHelper::iterableToIterator\(\) should return Iterator but returns Traversable~'
+
+        # deprecated things, won't fix
+        - '~The /e modifier is no longer supported~'
+        - '~Method Dogma\\Regexp::matchAll\(\) should return array<array<string>> but returns array<string>~'
+        -
+            message: "~.*~"
+            path: "../../src/Email/EmailMessage.php"
+
+        # solved in v0.2
+        - '~Unsafe usage of new static\(\)~'
+        - '~method Dogma\\Database\\SimplePdo~'
+        - '~Access to private property Dogma\\Enum\\IntEnum\|Dogma\\Enum\\StringEnum::\$value~'
 
     excludes_analyse:
         - */tests/*/data/*

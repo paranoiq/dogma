@@ -96,7 +96,7 @@ class AngleFormatter
         foreach (str_split($format) as $character) {
             if ($character === '%' && !$escaped) {
                 $escaped = true;
-            } elseif ($escaped === false && in_array($character, self::$specialCharacters)) {
+            } elseif ($escaped === false && in_array($character, self::$specialCharacters, true)) {
                 switch ($character) {
                     case self::DEGREES:
                         $result .= $this->formatNumber($degrees, $maxDecimals, $decimalPoint);

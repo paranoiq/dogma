@@ -46,13 +46,13 @@ class HttpChannelManager
     /** @var float sum of priorities of all channels */
     private $sumPriorities = 0.0;
 
-    /** @var \Dogma\Http\Channel\HttpChannel[] */
+    /** @var HttpChannel[] */
     private $channels = [];
 
     /** @var mixed[] ($resourceId => array($channelId, $jobName, $request)) */
     private $resources = [];
 
-    /** @var \Dogma\Http\HttpHeaderParser */
+    /** @var HttpHeaderParser */
     private $headerParser;
 
     public function __construct(?HttpHeaderParser $headerParser = null)
@@ -157,7 +157,7 @@ class HttpChannelManager
         while ($info = curl_multi_info_read($this->handler)) {
             $resourceId = (string) $info['handle'];
             [$channelId, $name, $request] = $this->resources[$resourceId];
-            $channel = & $this->channels[$channelId];
+            $channel = &$this->channels[$channelId];
 
             $error = curl_multi_remove_handle($this->handler, $info['handle']);
             if ($error) {
@@ -215,9 +215,9 @@ class HttpChannelManager
     /**
      * Save data for later use.
      * @param resource $resource
-     * @param \Dogma\Http\Channel\HttpChannel $channel
+     * @param HttpChannel $channel
      * @param string|int $name
-     * @param \Dogma\Http\HttpRequest $request
+     * @param HttpRequest $request
      */
     public function jobStarted($resource, HttpChannel $channel, $name, HttpRequest $request): void
     {

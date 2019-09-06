@@ -9,6 +9,7 @@
 
 namespace Dogma;
 
+use Traversable;
 use function array_chunk;
 use function array_column;
 use function array_combine;
@@ -31,7 +32,6 @@ use function array_map;
 use function array_merge;
 use function array_pad;
 use function array_product;
-use function array_push;
 use function array_rand;
 use function array_reduce;
 use function array_replace;
@@ -53,6 +53,7 @@ use function arsort;
 use function asort;
 use function count;
 use function end;
+use function in_array;
 use function is_array;
 use function iterator_to_array;
 use function krsort;
@@ -92,7 +93,7 @@ class Arr
             return $that;
         } elseif ($that instanceof ImmutableArray) {
             return $that->toArray();
-        } elseif ($that instanceof \Traversable) {
+        } elseif ($that instanceof Traversable) {
             return iterator_to_array($that);
         } else {
             throw new InvalidTypeException(Type::PHP_ARRAY, $that);
@@ -101,7 +102,7 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return \Dogma\ArrayIterator
+     * @return ArrayIterator
      */
     public static function iterate(array $array): ArrayIterator
     {
@@ -110,7 +111,7 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return \Dogma\ReverseArrayIterator
+     * @return ReverseArrayIterator
      */
     public static function backwards(array $array): ReverseArrayIterator
     {
@@ -235,7 +236,7 @@ class Arr
      */
     public static function contains(array $array, $value): bool
     {
-        return array_search($value, $array, Type::STRICT) !== false;
+        return in_array($value, $array, Type::STRICT);
     }
 
     /**
@@ -287,10 +288,10 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed $value
-     * @param int $end
+     * @param int|null $end
      * @return int|string|null
      */
-    public static function lastIndexOf(array $array, $value, $end = null)
+    public static function lastIndexOf(array $array, $value, ?int $end = null)
     {
         if ($end !== null) {
             return self::last(self::indexesOf(self::take($array, $end), $value));
@@ -616,7 +617,7 @@ class Arr
      */
     public static function hasSameElements(array $array, array $other): bool
     {
-        return self::corresponds($array, $other, function ($a, $b) {
+        return self::corresponds($array, $other, static function ($a, $b) {
             return $a === $b;
         });
     }
@@ -1030,7 +1031,7 @@ class Arr
         if ($array === []) {
             return $array;
         }
-        $positions = $positions % count($array);
+        $positions %= count($array);
 
         return array_merge(array_slice($array, $positions), array_slice($array, 0, $positions));
     }
@@ -1045,7 +1046,7 @@ class Arr
         if ($array === []) {
             return $array;
         }
-        $positions = $positions % count($array);
+        $positions %= count($array);
 
         return array_merge(array_slice($array, -$positions), array_slice($array, 0, -$positions));
     }
@@ -1100,7 +1101,7 @@ class Arr
      */
     public static function filterNot(array $array, callable $function): array
     {
-        return self::filter($array, function ($value) use ($function) {
+        return self::filter($array, static function ($value) use ($function) {
             return !$function($value);
         });
     }
@@ -1190,7 +1191,7 @@ class Arr
      */
     public static function mapPairs(array $array, callable $function): array
     {
-        return self::remap($array, function ($key, $value) use ($function) {
+        return self::remap($array, static function ($key, $value) use ($function) {
             return [$key => $function($key, $value)];
         });
     }
@@ -1515,7 +1516,7 @@ class Arr
      */
     public static function diffWith(array $array, callable $function, array ...$args): array
     {
-        array_push($args, $function);
+        $args[] = $function;
 
         return array_udiff($array, ...$args);
     }

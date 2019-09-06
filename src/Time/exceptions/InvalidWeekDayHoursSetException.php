@@ -9,12 +9,13 @@
 
 namespace Dogma\Time;
 
+use Throwable;
 use function sprintf;
 
 class InvalidWeekDayHoursSetException extends TimeException
 {
 
-    public function __construct(DayOfWeek $dayOfWeek, ?\Throwable $previous = null)
+    public function __construct(DayOfWeek $dayOfWeek, ?Throwable $previous = null)
     {
         parent::__construct(sprintf('Each day of week can be specified only once in WeekDayHoursSet. %s was specified twice', $dayOfWeek->getName()), $previous);
     }

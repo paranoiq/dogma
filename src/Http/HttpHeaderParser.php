@@ -50,7 +50,7 @@ class HttpHeaderParser
         HttpHeader::X_WAP_PROFILE => Url::class,
     ];
 
-    /** @var \Dogma\Time\Provider\TimeProvider */
+    /** @var TimeProvider */
     private $timeProvider;
 
     public function __construct(TimeProvider $timeProvider)
@@ -137,7 +137,7 @@ class HttpHeaderParser
     /**
      * @param string $value
      * @param string $type
-     * @return string|int|\Dogma\Time\DateTime|\Dogma\Web\Host|\Dogma\Web\Url|\Dogma\Io\ContentType\ContentType|\Dogma\Language\Encoding|\Dogma\Language\Locale\Locale
+     * @return string|int|DateTime|Host|Url|ContentType|Encoding|Locale
      */
     private function formatValue(string $value, string $type)
     {
@@ -150,7 +150,7 @@ class HttpHeaderParser
                     ->setTimezone($this->timeProvider->getTimeZone());
             case Host::class:
                 [$host, $port] = Str::splitByFirst($value, ':');
-                return new Host($host, $port);
+                return new Host($host, $port ? (int) $port : null);
             case Url::class:
                 return new Url($value);
             case ContentType::class:

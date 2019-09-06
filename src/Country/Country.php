@@ -1060,7 +1060,7 @@ class Country extends StringEnum
 
     public static function getByIdent(string $ident): self
     {
-        return self::get(array_search($ident, self::$idents));
+        return self::get(array_search($ident, self::$idents, true));
     }
 
     public static function validateValue(string &$value): bool

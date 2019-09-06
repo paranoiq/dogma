@@ -156,7 +156,7 @@ class DateTimeSpanFormatter
     /** @var string */
     private $decimalPoint;
 
-    /** @var \Dogma\Language\Localization\Translator|null */
+    /** @var Translator|null */
     private $translator;
 
     public function __construct(
@@ -256,13 +256,18 @@ class DateTimeSpanFormatter
      * Q    Pretty, single value                        "15 days", "2 weeks", "13 days"
      * q    Pretty, single value, units                 "15d", "2w", "13d"
      *
-     * @param \Dogma\Time\Span\DateTimeSpan $span
+     * @param DateTimeSpan $span
      * @param string|null $format
      * @param int|null $maxDecimals
      * @param string|null $decimalPoint
      * @return string
      */
-    public function format(DateTimeSpan $span, ?string $format = null, ?int $maxDecimals = null, ?string $decimalPoint = null): string
+    public function format(
+        DateTimeSpan $span,
+        ?string $format = null,
+        ?int $maxDecimals = null,
+        ?string $decimalPoint = null
+    ): string
     {
         $format = $format ?? $this->format;
         $maxDecimals = $maxDecimals ?? $this->maxDecimals;
@@ -276,10 +281,10 @@ class DateTimeSpanFormatter
         foreach ($characters as $i => $character) {
             if ($character === '%' && !$escaped) {
                 $escaped = true;
-            } elseif ($escaped === false && in_array($character, self::$specialCharacters)) {
+            } elseif ($escaped === false && in_array($character, self::$specialCharacters, true)) {
                 switch ($character) {
-                    // years -------------------------------------------------------------------------------------------
                     case self::YEARS:
+                        // years ---------------------------------------------------------------------------------------
                         $years = $span->getYears();
                         $group .= $years;
                         if ($years !== 0) {
@@ -299,8 +304,8 @@ class DateTimeSpanFormatter
                     case self::YEARS_UNIT:
                         $group .= $this->formatUnit(self::YEARS, $characters[$i + 1]);
                         break;
-                    // months ------------------------------------------------------------------------------------------
                     case self::MONTHS:
+                        // months --------------------------------------------------------------------------------------
                         $months = $span->getMonths();
                         $group .= $months;
                         if ($months !== 0) {
@@ -333,8 +338,8 @@ class DateTimeSpanFormatter
                     case self::MONTHS_UNIT:
                         $group .= $this->formatUnit(self::MONTHS, $characters[$i + 1]);
                         break;
-                    // weeks -------------------------------------------------------------------------------------------
                     case self::WEEKS:
+                        // weeks ---------------------------------------------------------------------------------------
                         $weeks = $span->getWeeks();
                         $group .= $weeks;
                         if ($weeks !== 0) {
@@ -375,8 +380,8 @@ class DateTimeSpanFormatter
                     case self::WEEKS_UNIT:
                         $group .= $this->formatUnit(self::WEEKS, $characters[$i + 1]);
                         break;
-                    // days --------------------------------------------------------------------------------------------
                     case self::DAYS:
+                        // days ----------------------------------------------------------------------------------------
                         $days = $hasWeeks ? ($span->getDays() - $span->getWeeks() * 7) : $span->getDays();
                         $group .= $days;
                         if ($days !== 0) {
@@ -413,8 +418,8 @@ class DateTimeSpanFormatter
                     case self::DAYS_UNIT:
                         $group .= $this->formatUnit(self::DAYS, $characters[$i + 1]);
                         break;
-                    // hours -------------------------------------------------------------------------------------------
                     case self::HOURS:
+                        // hours ---------------------------------------------------------------------------------------
                         $hours = $span->getHours();
                         $group .= $hours;
                         if ($hours !== 0) {
@@ -451,8 +456,8 @@ class DateTimeSpanFormatter
                     case self::HOURS_UNIT:
                         $group .= $this->formatUnit(self::HOURS, $characters[$i + 1]);
                         break;
-                    // minutes -----------------------------------------------------------------------------------------
                     case self::MINUTES:
+                        // minutes -------------------------------------------------------------------------------------
                         $minutes = $span->getMinutes();
                         $group .= $minutes;
                         if ($minutes !== 0) {
@@ -489,8 +494,8 @@ class DateTimeSpanFormatter
                     case self::MINUTES_UNIT:
                         $group .= $this->formatUnit(self::MINUTES, $characters[$i + 1]);
                         break;
-                    // seconds -----------------------------------------------------------------------------------------
                     case self::SECONDS:
+                        // seconds -------------------------------------------------------------------------------------
                         $seconds = $span->getSeconds();
                         $group .= $seconds;
                         if ($seconds !== 0) {
@@ -527,8 +532,8 @@ class DateTimeSpanFormatter
                     case self::SECONDS_UNIT:
                         $group .= $this->formatUnit(self::SECONDS, $characters[$i + 1]);
                         break;
-                    // microseconds ------------------------------------------------------------------------------------
                     case self::MILISECONDS:
+                        // miliseconds ---------------------------------------------------------------------------------
                         $microseconds = (int) ($span->getMicroseconds() / 1000);
                         $group .= $microseconds;
                         if ($microseconds !== 0) {
@@ -548,8 +553,8 @@ class DateTimeSpanFormatter
                     case self::MILISECONDS_UNIT:
                         $group .= $this->formatUnit(self::MILISECONDS, $characters[$i + 1]);
                         break;
-                    // microseconds ------------------------------------------------------------------------------------
                     case self::MICROSECONDS:
+                        // microseconds --------------------------------------------------------------------------------
                         $microseconds = $span->getMicroseconds();
                         $group .= $microseconds;
                         if ($microseconds !== 0) {
@@ -569,8 +574,8 @@ class DateTimeSpanFormatter
                     case self::MICROSECONDS_UNIT:
                         $group .= $this->formatUnit(self::MICROSECONDS, $characters[$i + 1]);
                         break;
-                    // groups ------------------------------------------------------------------------------------------
                     case Formatting::NO_ZEROS_GROUP_START:
+                        // groups --------------------------------------------------------------------------------------
                         $result .= $group;
                         $group = '';
                         $groupValid = false;

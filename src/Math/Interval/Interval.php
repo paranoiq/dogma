@@ -50,13 +50,13 @@ interface Interval /*<T>*/ extends Equalable, Comparable
 
     /**
      * @param int $parts
-     * @return mixed|\Dogma\Math\Interval\IntervalSet
+     * @return mixed|IntervalSet
      */
     public function split(int $parts);//: IntervalSet<T>;
 
     /**
-     * @param mixed[]|array<T> $intervalStarts
-     * @return mixed|\Dogma\Math\Interval\IntervalSet
+     * @param mixed[] $intervalStarts |array<T>
+     * @return mixed|IntervalSet
      */
     public function splitBy(array $intervalStarts);//: IntervalSet<T>;
 
@@ -84,22 +84,22 @@ interface Interval /*<T>*/ extends Equalable, Comparable
     //public function subtract(self ...$items): IntervalSet<T>;
 
     /**
-     * @return mixed|\Dogma\Math\Interval\IntervalSet
+     * @return mixed|IntervalSet
      */
     public function invert();//: IntervalSet<T>;
 
     // static ----------------------------------------------------------------------------------------------------------
 
     /**
-     * @param \Dogma\Math\Interval\Interval ...$items
-     * @return \Dogma\Math\Interval\Interval[][]|int[][] ($ident => ($interval, $count))
+     * @param Interval ...$items
+     * @return Interval[][]|int[][] ($ident => ($interval, $count))
      */
     //public static function countOverlaps(self ...$items): array;
 
     /**
      * O(n log n)
-     * @param \Dogma\Math\Interval\Interval ...$items
-     * @return \Dogma\Math\Interval\Interval[]
+     * @param Interval ...$items
+     * @return Interval[]
      */
     //public static function explodeOverlaps(self ...$items): array;
 

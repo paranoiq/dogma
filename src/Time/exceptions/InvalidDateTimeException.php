@@ -9,12 +9,13 @@
 
 namespace Dogma\Time;
 
+use Throwable;
 use function sprintf;
 
 class InvalidDateTimeException extends TimeException
 {
 
-    public function __construct(string $dateTimeString, ?\Throwable $previous = null)
+    public function __construct(string $dateTimeString, ?Throwable $previous = null)
     {
         parent::__construct(sprintf('Invalid date/time string: %s', $dateTimeString), $previous);
     }

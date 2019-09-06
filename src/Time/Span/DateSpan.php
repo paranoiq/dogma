@@ -2,6 +2,7 @@
 
 namespace Dogma\Time\Span;
 
+use DateInterval;
 use Dogma\Arr;
 use Dogma\Comparable;
 use Dogma\Equalable;
@@ -18,7 +19,7 @@ class DateSpan implements DateOrTimeSpan
 
     public const DEFAULT_FORMAT = 'y-m-d';
 
-    /** @var  int */
+    /** @var int */
     private $years;
 
     /** @var int */
@@ -37,7 +38,7 @@ class DateSpan implements DateOrTimeSpan
         $this->days = $days;
     }
 
-    public static function createFromDateInterval(\DateInterval $dateInterval): self
+    public static function createFromDateInterval(DateInterval $dateInterval): self
     {
         $self = new static(0);
         $self->years = $dateInterval->invert ? -$dateInterval->y : $dateInterval->y;
@@ -53,14 +54,14 @@ class DateSpan implements DateOrTimeSpan
 
     public static function createFromDateIntervalString(string $string): self
     {
-        $dateInterval = new \DateInterval($string);
+        $dateInterval = new DateInterval($string);
 
         return self::createFromDateInterval($dateInterval);
     }
 
     public static function createFromDateString(string $string): self
     {
-        $dateString = \DateInterval::createFromDateString($string);
+        $dateString = DateInterval::createFromDateString($string);
 
         return self::createFromDateInterval($dateString);
     }
@@ -72,13 +73,13 @@ class DateSpan implements DateOrTimeSpan
         return new DateTimeSpan($this->years, $this->months, $this->days);
     }
 
-    public function toNative(): \DateInterval
+    public function toNative(): DateInterval
     {
         return $this->toDateTimeSpan()->toNative();
     }
 
     /**
-     * @return \DateInterval[]
+     * @return DateInterval[]
      */
     public function toPositiveAndNegative(): array
     {
@@ -95,7 +96,7 @@ class DateSpan implements DateOrTimeSpan
     }
 
     /**
-     * @param \Dogma\Time\Span\DateSpan $other
+     * @param DateSpan $other
      * @return bool
      */
     public function equals(Equalable $other): bool
@@ -104,7 +105,7 @@ class DateSpan implements DateOrTimeSpan
     }
 
     /**
-     * @param \Dogma\Time\Span\DateSpan $other
+     * @param DateSpan $other
      * @return int
      */
     public function compare(Comparable $other): int
@@ -156,7 +157,7 @@ class DateSpan implements DateOrTimeSpan
 
     public function subtract(self ...$other): self
     {
-        return $this->add(...Arr::map($other, function (DateTimeSpan $span) {
+        return $this->add(...Arr::map($other, static function (DateTimeSpan $span): DateTimeSpan {
             return $span->invert();
         }));
     }
@@ -187,17 +188,17 @@ class DateSpan implements DateOrTimeSpan
 
         if ($days >= 30) {
             $months += (int) ($days / 30);
-            $days = $days % 30;
+            $days %= 30;
         } elseif ($days <= -30) {
             $months += (int) ($days / 30);
-            $days = $days % 30;
+            $days %= 30;
         }
         if ($months >= 12) {
             $years += (int) ($months / 12);
-            $months = $months % 12;
+            $months %= 12;
         } elseif ($months <= -12) {
             $years += (int) ($months / 12);
-            $months = $months % 12;
+            $months %= 12;
         }
 
         return new self($years, $months, $days);

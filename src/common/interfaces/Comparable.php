@@ -13,8 +13,8 @@ interface Comparable
 {
 
     /**
-     * @param \Dogma\Comparable $other
-     * @return int @see \Dogma\ComparisonResult
+     * @param Comparable $other
+     * @return int @see ComparisonResult
      */
     public function compare(Comparable $other): int;
 

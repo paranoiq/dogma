@@ -12,6 +12,10 @@ namespace Dogma\Time;
 use Dogma\Enum\StringEnum;
 use function in_array;
 
+/**
+ * Ať běží rychle a na nic se neptá
+ * než bude duše má za chvíli mrtvá
+ */
 class DateTimeUnit extends StringEnum
 {
 
@@ -125,12 +129,12 @@ class DateTimeUnit extends StringEnum
 
     public function isDate(): bool
     {
-        return in_array($this->getValue(), self::getDateUnits());
+        return in_array($this->getValue(), self::getDateUnits(), true);
     }
 
     public function isTime(): bool
     {
-        return in_array($this->getValue(), self::getTimeUnits());
+        return in_array($this->getValue(), self::getTimeUnits(), true);
     }
 
     /**

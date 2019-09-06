@@ -21,8 +21,8 @@ class InfiniteArrayIterator extends ArrayIterator
     {
         parent::next();
 
-        if (!self::valid() && count($this->array) > 0) {
-            self::rewind();
+        if (!$this->valid() && count($this->array) > 0) {
+            $this->rewind();
         }
     }
 

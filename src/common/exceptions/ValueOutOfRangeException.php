@@ -9,6 +9,7 @@
 
 namespace Dogma;
 
+use Throwable;
 use function sprintf;
 
 class ValueOutOfRangeException extends InvalidValueException
@@ -18,9 +19,9 @@ class ValueOutOfRangeException extends InvalidValueException
      * @param int|float $value
      * @param int|float|null $min
      * @param int|float|null $max
-     * @param \Throwable|null $previous
+     * @param Throwable|null $previous
      */
-    public function __construct($value, $min, $max, ?\Throwable $previous = null)
+    public function __construct($value, $min, $max, ?Throwable $previous = null)
     {
         if ($min === null) {
             Exception::__construct(

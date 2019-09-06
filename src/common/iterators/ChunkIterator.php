@@ -9,10 +9,12 @@
 
 namespace Dogma;
 
+use IteratorIterator;
+
 /**
  * Returns results from given iterator in chunks.
  */
-class ChunkIterator extends \IteratorIterator
+class ChunkIterator extends IteratorIterator
 {
     use StrictBehaviorMixin;
 

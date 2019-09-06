@@ -21,10 +21,10 @@ class ConventionMappingBuilder implements MappingBuilder
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Mapping\MetaData\TypeMetaDataContainer */
+    /** @var TypeMetaDataContainer */
     private $typeMetaData;
 
-    /** @var \Dogma\Mapping\Naming\NamingStrategy|null */
+    /** @var NamingStrategy|null */
     private $fieldNamingStrategy;
 
     /** @var string */
@@ -50,10 +50,10 @@ class ConventionMappingBuilder implements MappingBuilder
     }
 
     /**
-     * @param \Dogma\Type $type
+     * @param Type $type
      * @param string $path
      * @param string $destinationKey
-     * @param \Dogma\Mapping\MappingStep[] $steps
+     * @param MappingStep[] $steps
      */
     private function buildStep(Type $type, string $path, string $destinationKey, array &$steps): void
     {

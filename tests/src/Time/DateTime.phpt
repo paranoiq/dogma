@@ -2,6 +2,9 @@
 
 namespace Dogma\Tests\Time;
 
+use DateTime as PhpDateTime;
+use DateTimeImmutable;
+use DateTimeZone;
 use Dogma\InvalidValueException;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
@@ -18,9 +21,9 @@ require_once __DIR__ . '/../bootstrap.php';
 
 TimeZone::setDefault(TimeZone::get(TimeZone::EUROPE_PRAGUE));
 
-$utcTimeZone = new \DateTimeZone('UTC');
+$utcTimeZone = new DateTimeZone('UTC');
 $localTimeZone = TimeZone::getDefault();
-$localOffsetTimeZone = new \DateTimeZone('+01:00');
+$localOffsetTimeZone = new DateTimeZone('+01:00');
 
 $dateTimeString = '2000-01-02 03:04:05.000006';
 $dateTimeStringUtc = '2000-01-02 02:04:05.000006';
@@ -31,14 +34,14 @@ $date = new Date('2000-01-02');
 $time = new Time('03:04:05.000006');
 $dateTime = new DateTime($dateTimeString);
 $dateTimeByOffset = new DateTime($dateTimeString, $localOffsetTimeZone);
-$dateTimeNative = new \DateTime($dateTimeString);
-$dateTimeImmutable = new \DateTimeImmutable($dateTimeString);
+$dateTimeNative = new PhpDateTime($dateTimeString);
+$dateTimeImmutable = new DateTimeImmutable($dateTimeString);
 
 // createFromFormat()
 Assert::type(DateTime::createFromFormat(DateTime::DEFAULT_FORMAT, $dateTimeString), DateTime::class);
 Assert::same(DateTime::createFromFormat(DateTime::DEFAULT_FORMAT, $dateTimeString)->format(), $dateTimeString);
 Assert::equal(DateTime::createFromFormat(DateTime::DEFAULT_FORMAT, $dateTimeString, $utcTimeZone)->getTimezone(), $utcTimeZone);
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     DateTime::createFromFormat('Y-m-d', '12:00:00');
 }, InvalidDateTimeException::class);
 
@@ -48,7 +51,7 @@ $dateTimeStringOffset2 = '2000-01-02 03:04:05+02:00';
 Assert::type(DateTime::createFromAnyFormat(DateTime::SAFE_FORMATS, $dateTimeStringOffset), DateTime::class);
 Assert::same(DateTime::createFromAnyFormat(DateTime::SAFE_FORMATS, $dateTimeStringOffset)->format('Y-m-d H:i:s.uP'), $dateTimeStringOffset);
 Assert::equal(DateTime::createFromAnyFormat(DateTime::SAFE_FORMATS, $dateTimeStringOffset)->format('Y-m-d H:i:sP'), $dateTimeStringOffset2);
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     DateTime::createFromAnyFormat(DateTime::SAFE_FORMATS, '2000-01-02 12:00:00');
 }, InvalidDateTimeException::class);
 
@@ -285,7 +288,7 @@ Assert::true($monday->isDayOfWeek(1));
 Assert::true($monday->isDayOfWeek(DayOfWeek::monday()));
 Assert::false($monday->isDayOfWeek(7));
 Assert::false($monday->isDayOfWeek(DayOfWeek::sunday()));
-Assert::exception(function () use ($monday): void {
+Assert::exception(static function () use ($monday): void {
     $monday->isDayOfWeek(8);
 }, InvalidValueException::class);
 
@@ -303,7 +306,7 @@ Assert::true($monday->isMonth(11));
 Assert::true($monday->isMonth(Month::november()));
 Assert::false($monday->isMonth(12));
 Assert::false($monday->isMonth(Month::december()));
-Assert::exception(function () use ($monday): void {
+Assert::exception(static function () use ($monday): void {
     $monday->isMonth(13);
 }, InvalidValueException::class);
 

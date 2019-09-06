@@ -13,6 +13,7 @@ use Dogma\Time\Microseconds;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Span\TimeSpan;
 use Dogma\Time\Time;
+use function strval;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -23,10 +24,10 @@ $interval = new TimeInterval($startTime, $endTime);
 $empty = TimeInterval::empty();
 $all = TimeInterval::all();
 
-$t = function (int $hour): Time {
+$t = static function (int $hour): Time {
     return new Time(Str::padLeft(strval($hour), 2, '0') . ':00:00.000000');
 };
-$i = function (int $start, int $end, bool $openStart = false, bool $openEnd = true): TimeInterval {
+$i = static function (int $start, int $end, bool $openStart = false, bool $openEnd = true): TimeInterval {
     return new TimeInterval(
         new Time(Str::padLeft(strval($start), 2, '0') . ':00:00.000000'),
         new Time(Str::padLeft(strval($end), 2, '0') . ':00:00.000000'),
@@ -34,7 +35,7 @@ $i = function (int $start, int $end, bool $openStart = false, bool $openEnd = tr
         $openEnd
     );
 };
-$s = function (TimeInterval ...$items): TimeIntervalSet {
+$s = static function (TimeInterval ...$items): TimeIntervalSet {
     return new TimeIntervalSet($items);
 };
 
@@ -51,10 +52,10 @@ Assert::equal(TimeInterval::createFromString('00:00 - 00:00'), new TimeInterval(
 Assert::equal(TimeInterval::createFromString('00:00 - 00:00')->getLengthInMicroseconds(), 0);
 Assert::equal(TimeInterval::createFromString('00:00 - 24:00'), new TimeInterval($t(0), $t(24)));
 Assert::equal(TimeInterval::createFromString('00:00 - 24:00')->getLengthInMicroseconds(), Microseconds::DAY);
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     TimeInterval::createFromString('foo|bar|baz');
 }, InvalidIntervalStringFormatException::class);
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     TimeInterval::createFromString('foo');
 }, InvalidIntervalStringFormatException::class);
 
@@ -64,7 +65,7 @@ Assert::equal(TimeInterval::createFromStartAndLength($startTime, DateTimeUnit::m
 Assert::equal(TimeInterval::createFromStartAndLength($startTime, DateTimeUnit::second(), 2), new TimeInterval($startTime, new Time('10:00:02')));
 Assert::equal(TimeInterval::createFromStartAndLength($startTime, DateTimeUnit::milisecond(), 2), new TimeInterval($startTime, new Time('10:00:00.002')));
 Assert::equal(TimeInterval::createFromStartAndLength($startTime, DateTimeUnit::microsecond(), 2), new TimeInterval($startTime, new Time('10:00:00.000002')));
-Assert::exception(function () use ($startTime): void {
+Assert::exception(static function () use ($startTime): void {
     TimeInterval::createFromStartAndLength($startTime, DateTimeUnit::day(), 2);
 }, InvalidDateTimeUnitException::class);
 

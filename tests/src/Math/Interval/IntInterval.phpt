@@ -12,10 +12,10 @@ $interval = new IntInterval(1, 5);
 $empty = IntInterval::empty();
 $all = IntInterval::all();
 
-$r = function (int $start, int $end) {
+$r = static function (int $start, int $end) {
     return new IntInterval($start, $end);
 };
-$s = function (IntInterval ...$items) {
+$s = static function (IntInterval ...$items) {
     return new IntIntervalSet($items);
 };
 

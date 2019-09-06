@@ -1,5 +1,7 @@
 <?php declare(strict_types = 1);
 
+// phpcs:disable SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable
+
 use Tracy\Debugger;
 
 require_once __DIR__ . '/../../vendor/autoload.php';

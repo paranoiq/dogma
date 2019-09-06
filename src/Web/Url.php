@@ -10,19 +10,21 @@
 namespace Dogma\Web;
 
 use Dogma\StrictBehaviorMixin;
+use Nette\Http\Url as NetteUrl;
+use Nette\InvalidArgumentException as NetteInvalidArgumentException;
 
 class Url
 {
     use StrictBehaviorMixin;
 
-    /** @var \Nette\Http\Url */
+    /** @var NetteUrl */
     private $url;
 
     public function __construct(string $url)
     {
         try {
-            $this->url = new \Nette\Http\Url($url);
-        } catch (\Nette\InvalidArgumentException $e) {
+            $this->url = new NetteUrl($url);
+        } catch (NetteInvalidArgumentException $e) {
             throw new InvalidUrlException($url);
         }
     }
@@ -79,7 +81,7 @@ class Url
 
     public function getFragment(): string
     {
-        return $this->getFragment();
+        return $this->url->getFragment();
     }
 
 }

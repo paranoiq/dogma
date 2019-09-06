@@ -2,14 +2,21 @@
 
 namespace Dogma\Tests\Type;
 
+use Closure;
 use Dogma\Check;
 use Dogma\InvalidTypeException;
 use Dogma\InvalidValueException;
 use Dogma\Tester\Assert;
 use Dogma\Type;
 use Dogma\ValueOutOfRangeException;
-use Tracy\Debugger;
 use stdClass;
+use Tester\AssertException;
+use Throwable;
+use Tracy\Debugger;
+use function get_class;
+use function in_array;
+use function is_float;
+use function is_object;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -51,27 +58,27 @@ class TestClass2
 
 }
 
-$stdClassEmpty = function (): stdClass {
+$stdClassEmpty = static function (): stdClass {
     return new stdClass();
 };
-$stdClassInt = function (): stdClass {
+$stdClassInt = static function (): stdClass {
     $obj = new stdClass();
     $obj->a = 1;
     $obj->b = 2;
     $obj->c = 3;
     return $obj;
 };
-$classMapIntPublic = function (): TestClass1 {
+$classMapIntPublic = static function (): TestClass1 {
     return new TestClass1();
 };
-$classMapIntMixed = function (): TestClass2 {
+$classMapIntMixed = static function (): TestClass2 {
     return new TestClass2();
 };
-$resource = function () {
+$resource = static function () {
     return tmpfile();
 };
-$callable = function (): callable {
-    return function () {
+$callable = static function (): callable {
+    return static function () {
         return true;
     };
 };
@@ -138,7 +145,7 @@ $subjects = [
 $types = Type::listNativeTypes();
 foreach ($subjects as $name => $possibleTypes) {
     $subject = array_shift($possibleTypes);
-    if ($subject instanceof \Closure) {
+    if ($subject instanceof Closure) {
         $subject = $subject();
     }
     foreach ($types as $type) {
@@ -149,17 +156,17 @@ foreach ($subjects as $name => $possibleTypes) {
         }
         try {
             Check::type($copy, $type);
-            if (!in_array($type, $possibleTypes)) {
+            if (!in_array($type, $possibleTypes, true)) {
                 $before = trim(Debugger::dump($subject, true));
                 $after = trim(Debugger::dump($copy, true));
                 Assert::fail(sprintf('Subject %s `%s` should not be castable to type %s. Instead casted to value `%s`.', $name, $before, $type ?: 'null', $after));
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $class = get_class($e);
             $before = trim(Debugger::dump($subject, true));
-            if ($class === \Tester\AssertException::class) {
+            if ($class === AssertException::class) {
                 throw $e;
-            } elseif (in_array($type, $possibleTypes)) {
+            } elseif (in_array($type, $possibleTypes, true)) {
                 Assert::fail(sprintf('Subject %s `%s` should be casted to type %s. %s thrown instead.', $name, $before, $type, $class));
             } elseif ($class === InvalidTypeException::class
                 && !($type === Type::FLOAT && is_float($subject) && (is_nan($subject) || $subject === INF || $subject === -INF))) {

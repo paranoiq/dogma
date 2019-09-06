@@ -18,10 +18,10 @@ class MappingStep
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Type */
+    /** @var Type */
     private $type;
 
-    /** @var \Dogma\Mapping\Type\TypeHandler */
+    /** @var TypeHandler */
     private $handler;
 
     /** @var string[] */
@@ -34,8 +34,8 @@ class MappingStep
     private $destinationKey;
 
     /**
-     * @param \Dogma\Type $type
-     * @param \Dogma\Mapping\Type\TypeHandler $handler
+     * @param Type $type
+     * @param TypeHandler $handler
      * @param string[] $handlerKeys ($sourceKey => $handlerKey)
      * @param string $destinationKey
      */
@@ -52,7 +52,7 @@ class MappingStep
     /**
      * Does a forward transformation step on the data
      * @param mixed[] $data
-     * @param \Dogma\Mapping\Mapper $mapper
+     * @param Mapper $mapper
      */
     public function stepForward(array &$data, Mapper $mapper): void
     {
@@ -79,7 +79,7 @@ class MappingStep
     /**
      * Does a backward transformation step on the data
      * @param mixed[] $data
-     * @param \Dogma\Mapping\Mapper $mapper
+     * @param Mapper $mapper
      */
     public function stepBack(array &$data, Mapper $mapper): void
     {

@@ -9,6 +9,7 @@
 
 namespace Dogma\Time\Span;
 
+use DateInterval;
 use Dogma\Arr;
 use Dogma\Comparable;
 use Dogma\Equalable;
@@ -19,7 +20,7 @@ use function floor;
 use function round;
 
 /**
- * Replacement of \DateInterval
+ * Replacement of native DateInterval
  * - immutable!
  * - capable of holding mixed sign offsets (eg: "+1 year, -2 months")
  * - calculations and rounding
@@ -78,7 +79,7 @@ class DateTimeSpan implements DateOrTimeSpan
         $this->microseconds = $microseconds;
     }
 
-    public static function createFromDateInterval(\DateInterval $dateInterval): self
+    public static function createFromDateInterval(DateInterval $dateInterval): self
     {
         $self = new static(0);
         $self->years = $dateInterval->invert ? -$dateInterval->y : $dateInterval->y;
@@ -94,14 +95,14 @@ class DateTimeSpan implements DateOrTimeSpan
 
     public static function createFromDateIntervalString(string $string): self
     {
-        $dateInterval = new \DateInterval($string);
+        $dateInterval = new DateInterval($string);
 
         return self::createFromDateInterval($dateInterval);
     }
 
     public static function createFromDateString(string $string): self
     {
-        $dateInterval = \DateInterval::createFromDateString($string);
+        $dateInterval = DateInterval::createFromDateString($string);
 
         return self::createFromDateInterval($dateInterval);
     }
@@ -110,9 +111,9 @@ class DateTimeSpan implements DateOrTimeSpan
 
     /**
      * Subtracts positive and negative values if needed
-     * @return \DateInterval
+     * @return DateInterval
      */
-    public function toNative(): \DateInterval
+    public function toNative(): DateInterval
     {
         if ($this->isPositive() || $this->isNegative()) {
             return self::toNativeSimple($this);
@@ -174,9 +175,9 @@ class DateTimeSpan implements DateOrTimeSpan
         return self::toNativeSimple($span);
     }
 
-    private static function toNativeSimple(self $that): \DateInterval
+    private static function toNativeSimple(self $that): DateInterval
     {
-        $dateInterval = new \DateInterval('P0Y');
+        $dateInterval = new DateInterval('P0Y');
 
         if ($that->isNegative()) {
             $dateInterval->invert = 1;
@@ -195,12 +196,12 @@ class DateTimeSpan implements DateOrTimeSpan
 
     /**
      * Separates positive and negative values to two instances
-     * @return \DateInterval[]|int[] ($positive, $negative, $microseconds)
+     * @return DateInterval[]|int[] ($positive, $negative, $microseconds)
      */
     public function toPositiveAndNegative(): array
     {
-        $positive = new \DateInterval('P0Y');
-        $negative = new \DateInterval('P0Y');
+        $positive = new DateInterval('P0Y');
+        $negative = new DateInterval('P0Y');
         $negative->invert = 1;
 
         if ($this->years >= 0) {
@@ -263,7 +264,7 @@ class DateTimeSpan implements DateOrTimeSpan
     }
 
     /**
-     * @param \Dogma\Time\Span\DateTimeSpan $other
+     * @param DateTimeSpan $other
      * @return bool
      */
     public function equals(Equalable $other): bool
@@ -272,7 +273,7 @@ class DateTimeSpan implements DateOrTimeSpan
     }
 
     /**
-     * @param \Dogma\Time\Span\DateTimeSpan $other
+     * @param DateTimeSpan $other
      * @return int
      */
     public function compare(Comparable $other): int
@@ -344,7 +345,7 @@ class DateTimeSpan implements DateOrTimeSpan
 
     public function subtract(self ...$other): self
     {
-        return $this->add(...Arr::map($other, function (DateTimeSpan $span) {
+        return $this->add(...Arr::map($other, static function (DateTimeSpan $span): DateTimeSpan {
             return $span->invert();
         }));
     }
@@ -380,24 +381,24 @@ class DateTimeSpan implements DateOrTimeSpan
 
         if ($microseconds >= 1000000) {
             $seconds += (int) ($microseconds / 1000000);
-            $microseconds = $microseconds % 1000000;
+            $microseconds %= 1000000;
         } elseif ($microseconds <= -1000000) {
             $seconds += (int) ($microseconds / 1000000);
-            $microseconds = $microseconds % 1000000;
+            $microseconds %= 1000000;
         }
         if ($seconds >= 60) {
             $minutes += (int) ($seconds / 60);
-            $seconds = $seconds % 60;
+            $seconds %= 60;
         } elseif ($seconds <= -60) {
             $minutes += (int) ($seconds / 60);
-            $seconds = $seconds % 60;
+            $seconds %= 60;
         }
         if ($minutes >= 60) {
             $hours += (int) ($minutes / 60);
-            $minutes = $minutes % 60;
+            $minutes %= 60;
         } elseif ($minutes <= -60) {
             $hours += (int) ($minutes / 60);
-            $minutes = $minutes % 60;
+            $minutes %= 60;
         }
 
         if ($safeOnly) {
@@ -406,24 +407,24 @@ class DateTimeSpan implements DateOrTimeSpan
 
         if ($hours >= 24) {
             $days += (int) ($hours / 24);
-            $hours = $hours % 24;
+            $hours %= 24;
         } elseif ($hours <= -24) {
             $days += (int) ($hours / 24);
-            $hours = $hours % 24;
+            $hours %= 24;
         }
         if ($days >= 30) {
             $months += (int) ($days / 30);
-            $days = $days % 30;
+            $days %= 30;
         } elseif ($days <= -30) {
             $months += (int) ($days / 30);
-            $days = $days % 30;
+            $days %= 30;
         }
         if ($months >= 12) {
             $years += (int) ($months / 12);
-            $months = $months % 12;
+            $months %= 12;
         } elseif ($months <= -12) {
             $years += (int) ($months / 12);
-            $months = $months % 12;
+            $months %= 12;
         }
 
         return new self($years, $months, $days, $hours, $minutes, $seconds, $microseconds);

@@ -13,10 +13,10 @@ $open = FloatInterval::open(1.0, 5.0);
 $empty = FloatInterval::empty();
 $all = FloatInterval::all();
 
-$r = function (int $start, int $end, bool $openStart = false, bool $openEnd = false) {
+$r = static function (int $start, int $end, bool $openStart = false, bool $openEnd = false) {
     return new FloatInterval((float) $start, (float) $end, $openStart, $openEnd);
 };
-$s = function (FloatInterval ...$items) {
+$s = static function (FloatInterval ...$items) {
     return new FloatIntervalSet($items);
 };
 

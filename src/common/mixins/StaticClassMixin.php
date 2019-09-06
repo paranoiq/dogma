@@ -13,7 +13,7 @@ trait StaticClassMixin
 {
 
     /**
-     * @throws \Dogma\StaticClassException
+     * @throws StaticClassException
      */
     final public function __construct()
     {
@@ -25,7 +25,7 @@ trait StaticClassMixin
      * @deprecated
      * @param string $name
      * @param mixed $args
-     * @throws \Dogma\UndefinedMethodException
+     * @throws UndefinedMethodException
      */
     public static function __callStatic(string $name, $args): void
     {

@@ -11,6 +11,7 @@ namespace Dogma\Http;
 
 use Dogma\Http\Curl\CurlHelper;
 use Dogma\InvalidValueException;
+use Dogma\Io\FileMode;
 use Dogma\NonSerializableMixin;
 use Dogma\StrictBehaviorMixin;
 use const CURLAUTH_ANYSAFE;
@@ -38,11 +39,11 @@ use const CURLOPT_PROXYUSERPWD;
 use const CURLOPT_PUT;
 use const CURLOPT_REFERER;
 use const CURLOPT_RETURNTRANSFER;
+use const CURLOPT_SSL_VERIFYHOST;
+use const CURLOPT_SSL_VERIFYPEER;
 use const CURLOPT_SSLKEY;
 use const CURLOPT_SSLKEYPASSWD;
 use const CURLOPT_SSLKEYTYPE;
-use const CURLOPT_SSL_VERIFYHOST;
-use const CURLOPT_SSL_VERIFYPEER;
 use const CURLOPT_TIMEOUT;
 use const CURLOPT_TIMEOUT_MS;
 use const CURLOPT_URL;
@@ -106,7 +107,7 @@ class HttpRequest
     /** @var string */
     private $content;
 
-    /** @var \Dogma\Http\HttpHeaderParser|null */
+    /** @var HttpHeaderParser|null */
     protected $headerParser;
 
     /** @var mixed */
@@ -118,7 +119,7 @@ class HttpRequest
     public function __construct(?string $url = null, ?string $method = null)
     {
         error_clear_last();
-        /** @var resource|boolean $curl */
+        /** @var resource|bool $curl */
         $curl = curl_init();
         if ($curl === false) {
             throw new HttpRequestException(sprintf('Cannot initialize curl. Error: %s', error_get_last()['message']));
@@ -449,7 +450,7 @@ class HttpRequest
      * @internal
      * @param string|bool $response
      * @param int $error
-     * @return \Dogma\Http\HttpResponse
+     * @return HttpResponse
      */
     public function createResponse($response, int $error): HttpResponse
     {
@@ -477,7 +478,7 @@ class HttpRequest
     /**
      * @param int $error
      * @param mixed[] $info
-     * @return \Dogma\Http\HttpResponseStatus
+     * @return HttpResponseStatus
      */
     protected function getResponseStatus(int $error, array $info): HttpResponseStatus
     {
@@ -556,9 +557,9 @@ class HttpRequest
     {
         $this->setOption(CURLOPT_BINARYTRANSFER, true);
 
-        if (substr($this->content, 0, 1) === '@') {
+        if ($this->content[0] === '@') {
             $fileName = substr($this->content, 1);
-            $file = fopen($fileName, 'r');
+            $file = fopen($fileName, FileMode::OPEN_READ);
             if (!$file) {
                 throw new HttpRequestException(sprintf('Could not open file %s.', $fileName));
             }
@@ -614,7 +615,7 @@ class HttpRequest
             }
 
             if ($short) {
-                $this->url = preg_replace(sprintf('/(?<=\\W%s=)%(?=[^0-9A-Fa-f])/', $name), urlencode($this->variables[$name]), $this->url);
+                $this->url = preg_replace(sprintf('/(?<=\\W%s=)%%(?=[^0-9A-Fa-f])/', $name), urlencode($this->variables[$name]), $this->url);
             } else {
                 $this->url = preg_replace(sprintf('/\\{%%%s\\}/', $name), urlencode($this->variables[$name]), $this->url);
             }

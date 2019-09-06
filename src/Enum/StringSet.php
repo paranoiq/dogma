@@ -20,7 +20,7 @@ abstract class StringSet
 {
     use SetMixin;
 
-    /** @var \Dogma\Enum\StringSet[][] ($class => ($value => $enum)) */
+    /** @var StringSet[][] ($class => ($value => $enum)) */
     private static $instances = [];
 
     /** @var mixed[][] ($class => ($constName => $value)) */
@@ -30,7 +30,7 @@ abstract class StringSet
     private $value;
 
     /** @var string[] */
-    private $values = [];
+    private $values;
 
     /**
      * @param string $value
@@ -124,7 +124,7 @@ abstract class StringSet
         foreach ($addValues as $val) {
             self::check($val);
 
-            if (!in_array($val, $values)) {
+            if (!in_array($val, $values, true)) {
                 $values[] = $val;
             }
         }
@@ -142,23 +142,19 @@ abstract class StringSet
         foreach ($removeValues as $val) {
             self::check($val);
 
-            $key = array_search($val, $values);
+            $key = array_search($val, $values, true);
             unset($values[$key]);
         }
 
         return static::get(...$values);
     }
 
-    /**
-     * @param string ...$containsValues
-     * @return bool
-     */
     public function contains(string ...$containsValues): bool
     {
         foreach ($containsValues as $val) {
             self::check($val);
 
-            if (!in_array($val, $this->values)) {
+            if (!in_array($val, $this->values, true)) {
                 return false;
             }
         }
@@ -166,16 +162,12 @@ abstract class StringSet
         return true;
     }
 
-    /**
-     * @param string ...$containsValues
-     * @return bool
-     */
     public function containsAny(string ...$containsValues): bool
     {
         foreach ($containsValues as $val) {
             self::check($val);
 
-            if (in_array($val, $this->values)) {
+            if (in_array($val, $this->values, true)) {
                 return true;
             }
         }

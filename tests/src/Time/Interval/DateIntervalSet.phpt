@@ -9,13 +9,13 @@ use Dogma\Time\Interval\DateIntervalSet;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-$d = function (int $day): Date {
+$d = static function (int $day): Date {
     return Date::createFromComponents(2000, 1, $day);
 };
-$i = function (int $start, int $end) use ($d): DateInterval {
+$i = static function (int $start, int $end) use ($d): DateInterval {
     return new DateInterval($d($start), $d($end));
 };
-$s = function (DateInterval ...$items): DateIntervalSet {
+$s = static function (DateInterval ...$items): DateIntervalSet {
     return new DateIntervalSet($items);
 };
 
@@ -67,13 +67,13 @@ Assert::equal($s($i(1, 10))->subtract($s($i(3, 4), $i(7, 8))), $s($i(1, 2), $i(5
 Assert::equal($s($i(1, 5), $i(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $s($i(4, 5), $i(10, 12), $i(14, 15)));
 
 // map()
-Assert::equal($set->map(function (DateInterval $interval) {
+Assert::equal($set->map(static function (DateInterval $interval) {
     return $interval;
 }), $set);
-Assert::equal($set->map(function (DateInterval $interval) {
+Assert::equal($set->map(static function (DateInterval $interval) {
     return $interval->split(2);
 }), $s($i(1, 3), $i(4, 5)));
-Assert::equal($set->map(function (DateInterval $interval) {
+Assert::equal($set->map(static function (DateInterval $interval) {
     return $interval->split(2)->getIntervals();
 }), $s($i(1, 3), $i(4, 5)));
 

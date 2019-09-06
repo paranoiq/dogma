@@ -36,11 +36,16 @@ class TextFile extends File
      * @param string|resource $file
      * @param string $mode
      * @param resource|null $streamContext
-     * @param \Dogma\Language\Encoding $encoding
-     * @param \Dogma\Io\LineEndings $lineEndings
+     * @param Encoding $encoding
+     * @param LineEndings $lineEndings
      */
-    public function __construct($file, string $mode = FileMode::OPEN_READ, $streamContext = null, ?Encoding $encoding = null, ?LineEndings $lineEndings = null)
-    {
+    public function __construct(
+        $file,
+        string $mode = FileMode::OPEN_READ,
+        $streamContext = null,
+        ?Encoding $encoding = null,
+        ?LineEndings $lineEndings = null
+    ) {
         parent::__construct($file, $mode, $streamContext);
 
         if ($encoding !== null) {

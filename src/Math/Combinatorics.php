@@ -50,7 +50,7 @@ class Combinatorics
             $offset = 0;
             foreach ($lengths as $length) {
                 $substrings[] = substr($string, $offset, $length);
-                $offset = $offset + $length;
+                $offset += $length;
             }
             $variants[] = $substrings;
         }

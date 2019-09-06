@@ -11,7 +11,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $array = [1, 2, 3, 4];
 $empty = [];
 
-$f = function (int $a, int $b): int {
+$f = static function (int $a, int $b): int {
     return $a < $b ? 1 : ($a > $b ? -1 : 0);
 };
 

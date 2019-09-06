@@ -2,9 +2,12 @@
 
 namespace Dogma\Tests\Type;
 
+use DateTime as PhpDateTime;
 use Dogma\Collection;
 use Dogma\Tester\Assert;
+use Dogma\Time\DateTime;
 use Dogma\Type;
+use Error;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -14,8 +17,8 @@ $array = Type::get(Type::PHP_ARRAY);
 $arrayNullable = Type::get(Type::PHP_ARRAY, Type::NULLABLE);
 $arrayOfInt = Type::arrayOf($int);
 $arrayOfIntNullable = Type::arrayOf($int, Type::NULLABLE);
-$collection = Type::collectionOf(Collection::class, \DateTime::class);
-$collectionNullable = Type::collectionOf(Collection::class, \DateTime::class, Type::NULLABLE);
+$collection = Type::collectionOf(Collection::class, PhpDateTime::class);
+$collectionNullable = Type::collectionOf(Collection::class, PhpDateTime::class, Type::NULLABLE);
 
 
 // getId()
@@ -63,7 +66,7 @@ Assert::null($collection->getResourceType());
 // getItemType()
 Assert::same($array->getItemType(), Type::get(Type::MIXED));
 Assert::same($arrayOfInt->getItemType(), Type::int());
-Assert::same($collection->getItemType(), Type::get(\DateTime::class));
+Assert::same($collection->getItemType(), Type::get(PhpDateTime::class));
 
 // getSize()
 Assert::null($array->getSize());
@@ -129,12 +132,12 @@ Assert::false($collection->isResource());
 
 // is()
 Assert::true($array->is(Type::PHP_ARRAY));
-Assert::false($array->is(\DateTime::class));
+Assert::false($array->is(DateTime::class));
 Assert::true($collection->is(Collection::class));
-Assert::false($collection->is(\DateTime::class));
+Assert::false($collection->is(DateTime::class));
 
 // isImplementing()
-Assert::false($array->isImplementing(\DateTime::class));
+Assert::false($array->isImplementing(DateTime::class));
 Assert::false($array->isImplementing(Collection::class));
 Assert::true($collection->isImplementing(Collection::class));
 
@@ -156,7 +159,7 @@ Assert::same($collectionNullable->getTypeWithoutParams(), $collectionNullable);
 Assert::same($collection->getTypeWithoutParams(), $collection);
 
 // getInstance()
-Assert::exception(function () use ($array): void {
+Assert::exception(static function () use ($array): void {
     $array->getInstance('abc');
-}, \Error::class);
-Assert::equal($collection->getInstance(\DateTime::class), new Collection(\DateTime::class));
+}, Error::class);
+Assert::equal($collection->getInstance(PhpDateTime::class), new Collection(PhpDateTime::class));

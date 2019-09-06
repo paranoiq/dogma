@@ -23,7 +23,7 @@ Assert::same(Arr::range(5, 3), [5, 4, 3]);
 Assert::same(Arr::range(3, 7, 2), [3, 5, 7]);
 Assert::same(Arr::range(3, 6, 2), [3, 5]);
 
-// bakwards()
+// backwards()
 Assert::type(Arr::backwards($array), ReverseArrayIterator::class);
 
 // keys()
@@ -40,7 +40,7 @@ Assert::contains(Arr::values($array), Arr::randomValue($array));
 
 // doForEach()
 $x = 0;
-Arr::doForEach($array, function (int $v) use (&$x): void {
+Arr::doForEach($array, static function (int $v) use (&$x): void {
     $x += $v;
 });
 Assert::same($x, 6);

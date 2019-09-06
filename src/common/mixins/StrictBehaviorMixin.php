@@ -17,7 +17,7 @@ trait StrictBehaviorMixin
      * @deprecated
      * @param string $name
      * @param mixed $args
-     * @throws \Dogma\UndefinedMethodException
+     * @throws UndefinedMethodException
      */
     public function __call(string $name, $args): void
     {
@@ -29,7 +29,7 @@ trait StrictBehaviorMixin
      * @deprecated
      * @param string $name
      * @param mixed $args
-     * @throws \Dogma\UndefinedMethodException
+     * @throws UndefinedMethodException
      */
     public static function __callStatic(string $name, $args): void
     {
@@ -40,7 +40,7 @@ trait StrictBehaviorMixin
      * Access to undefined property
      * @deprecated
      * @param string $name
-     * @throws \Dogma\UndefinedPropertyException
+     * @throws UndefinedPropertyException
      */
     public function &__get(string $name): void
     {
@@ -52,7 +52,7 @@ trait StrictBehaviorMixin
      * @deprecated
      * @param string $name
      * @param mixed $value
-     * @throws \Dogma\UndefinedPropertyException
+     * @throws UndefinedPropertyException
      */
     public function __set(string $name, $value): void
     {
@@ -63,7 +63,7 @@ trait StrictBehaviorMixin
      * Isset undefined property
      * @deprecated
      * @param string $name
-     * @throws \Dogma\UndefinedPropertyException
+     * @throws UndefinedPropertyException
      */
     public function __isset(string $name): void
     {
@@ -74,7 +74,7 @@ trait StrictBehaviorMixin
      * Unset undefined property
      * @deprecated
      * @param string $name
-     * @throws \Dogma\UndefinedPropertyException
+     * @throws UndefinedPropertyException
      */
     public function __unset(string $name): void
     {

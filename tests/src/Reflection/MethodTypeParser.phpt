@@ -2,19 +2,22 @@
 
 namespace Dogma\Tests\Reflection;
 
+use DateTime;
 use Dogma\Reflection\InvalidMethodAnnotationException;
 use Dogma\Reflection\MethodTypeParser;
 use Dogma\Reflection\UnprocessableParameterException;
 use Dogma\Sign;
 use Dogma\Tester\Assert;
 use Dogma\Type;
+use ReflectionClass;
+use SplFixedArray;
 
 require_once __DIR__ . '/../bootstrap.php';
 require_once __DIR__ . '/data/MethodTypeParserTestClass.php';
 
 
 $parser = new MethodTypeParser();
-$class = new \ReflectionClass(MethodTypeParserTestClass::class);
+$class = new ReflectionClass(MethodTypeParserTestClass::class);
 $rawKeys = ['types', 'nullable', 'reference', 'variadic', 'optional'];
 
 Assert::same(
@@ -34,9 +37,9 @@ Assert::same(
     ['@return' => Type::int(64)]
 );
 
-$test = function ($methodName, $expectedRaw, $expectedType) use ($parser, $class, $rawKeys): void {
+$test = static function ($methodName, $expectedRaw, $expectedType) use ($parser, $class, $rawKeys): void {
     if (is_string($expectedRaw)) {
-        Assert::throws(function () use ($parser, $class, $methodName): void {
+        Assert::throws(static function () use ($parser, $class, $methodName): void {
             $parser->getTypesRaw($class->getMethod($methodName));
         }, $expectedRaw);
     } else {
@@ -47,7 +50,7 @@ $test = function ($methodName, $expectedRaw, $expectedType) use ($parser, $class
         Assert::same($params, $expectedRaw);
     }
     if (is_string($expectedType)) {
-        Assert::throws(function () use ($parser, $class, $methodName): void {
+        Assert::throws(static function () use ($parser, $class, $methodName): void {
             $parser->getTypes($class->getMethod($methodName));
         }, $expectedType);
     } else {
@@ -83,8 +86,8 @@ $test(
 );
 $test(
     'testClass',
-    ['one' => [[\DateTime::class]]],
-    ['one' => Type::get(\DateTime::class)]
+    ['one' => [[DateTime::class]]],
+    ['one' => Type::get(DateTime::class)]
 );
 $test(
     'testSelf',
@@ -198,8 +201,8 @@ $test(
 );
 $test(
     'testAnnotationClass',
-    ['one' => [[\DateTime::class]]],
-    ['one' => Type::get(\DateTime::class)]
+    ['one' => [[DateTime::class]]],
+    ['one' => Type::get(DateTime::class)]
 );
 $test(
     'testAnnotationSelf',
@@ -213,8 +216,8 @@ $test(
 );
 $test(
     'testTypehintAndAnnotationClass',
-    ['one' => [[\DateTime::class]]],
-    ['one' => Type::get(\DateTime::class)]
+    ['one' => [[DateTime::class]]],
+    ['one' => Type::get(DateTime::class)]
 );
 $test(
     'testAnnotationWithoutName',
@@ -228,7 +231,7 @@ $test(
 );
 $test(
     'testAnnotationDimensionMismatch',
-    ['one' => [[\DateTime::class, 'int[]']]],
+    ['one' => [[DateTime::class, 'int[]']]],
     InvalidMethodAnnotationException::class
 );
 $test(
@@ -248,11 +251,11 @@ $test(
 );
 $test(
     'testAnnotationCollectionOfType',
-    ['one' => [[\SplFixedArray::class, 'int[]']]],
-    ['one' => Type::collectionOf(\SplFixedArray::class, Type::INT)]
+    ['one' => [[SplFixedArray::class, 'int[]']]],
+    ['one' => Type::collectionOf(SplFixedArray::class, Type::INT)]
 );
 $test(
     'testAnnotationCollectionOfTypes',
-    ['one' => [[\SplFixedArray::class, 'int[]', 'string[]']]],
+    ['one' => [[SplFixedArray::class, 'int[]', 'string[]']]],
     InvalidMethodAnnotationException::class
 );

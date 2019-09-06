@@ -9,12 +9,13 @@
 
 namespace Dogma;
 
+use Throwable;
 use function sprintf;
 
 class UndefinedPropertyException extends Exception
 {
 
-    public function __construct(string $class, string $property, ?\Throwable $previous = null)
+    public function __construct(string $class, string $property, ?Throwable $previous = null)
     {
         parent::__construct(sprintf('Property %s::$%s is not defined or is not accessible', $class, $property), $previous);
     }

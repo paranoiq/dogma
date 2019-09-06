@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $array = new ImmutableArray([1, 2, 3, 4]);
 $empty = new ImmutableArray([]);
 
-$f = function (int $a, int $b): int {
+$f = static function (int $a, int $b): int {
     return $a + $b;
 };
 

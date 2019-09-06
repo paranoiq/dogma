@@ -8,6 +8,7 @@
  */
 
 // spell-check-ignore: CONV REQD MALFORMAT RECV CRL PASV RETR PRET CSEQ STOR ACCEPTTIMOUT EPSV recv
+// phpcs:disable Squiz.WhiteSpace.OperatorSpacing.SpacingBefore
 
 namespace Dogma\Http;
 
@@ -98,7 +99,6 @@ class HttpResponseStatus extends PartialIntEnum
     public const S510_NOT_EXTENDED = 510;
     public const S511_NETWORK_AUTHENTICATION_REQUIRED = 511;
 
-
     // system & CURL internals
     public const FAILED_INIT           = 2;  // Very early initialization code failed. This is likely to be an internal error or problem; or a resource problem where something fundamental could not get done at init time.
     public const NOT_BUILT_IN          = 4;  // (CURLE_URL_MALFORMAT_USER) A requested feature; protocol or option was not found built-in in this libcurl due to a build-time decision. This means that a feature or option was not enabled or explicitly disabled when libcurl was built and in order to get it to function you have to get a rebuilt libcurl.
@@ -159,9 +159,6 @@ class HttpResponseStatus extends PartialIntEnum
     public const SSL_SHUTDOWN_FAILED   = 80; // Failed to shut down the SSL connection.
     public const SSL_CRL_BAD_FILE      = 82; // Failed to load CRL file
     public const SSL_ISSUER_ERROR      = 83; // Issuer check failed
-
-
-    // following errors should not occur in HTTP transfer
 
     // FTP
     public const FTP_WEIRD_SERVER_REPLY = 8; // After connecting to a FTP server; libcurl expects to get a certain reply back. This error code implies that it got a strange or bad reply. The given remote server is probably not an OK FTP server.

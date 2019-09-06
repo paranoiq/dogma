@@ -10,8 +10,10 @@
 namespace Dogma\Io\Filesystem;
 
 use FilesystemIterator;
+use RecursiveDirectoryIterator as PhpRecursiveDirectoryIterator;
+use UnexpectedValueException;
 
-class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
+class RecursiveDirectoryIterator extends PhpRecursiveDirectoryIterator
 {
 
     /** @var int */
@@ -19,24 +21,24 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
 
     public function __construct(string $path, ?int $flags = null)
     {
-        if (isset($flags)) {
+        if ($flags === null) {
             $flags = FilesystemIterator::KEY_AS_PATHNAME | FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::SKIP_DOTS;
         }
 
         $this->flags = $flags;
         try {
-            if ($flags & FilesystemIterator::CURRENT_AS_FILEINFO) {
+            if (!($flags & FilesystemIterator::CURRENT_AS_PATHNAME) && !($flags & FilesystemIterator::CURRENT_AS_SELF)) {
                 parent::__construct($path, $flags | FilesystemIterator::CURRENT_AS_PATHNAME);
             } else {
                 parent::__construct($path, $flags);
             }
-        } catch (\UnexpectedValueException $e) {
+        } catch (UnexpectedValueException $e) {
             throw new DirectoryException($e->getMessage(), $e);
         }
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param int|null $flags
      */
     public function setFlags($flags = null): void
@@ -50,7 +52,7 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
     }
 
     /**
-     * @return \Dogma\Io\Filesystem\FileInfo|mixed
+     * @return FileInfo|mixed
      */
     public function current()
     {

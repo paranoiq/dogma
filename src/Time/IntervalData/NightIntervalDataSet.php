@@ -28,27 +28,27 @@ class NightIntervalDataSet implements Equalable, Pokeable
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Time\IntervalData\NightIntervalData[] */
+    /** @var NightIntervalData[] */
     private $intervals;
 
     /**
-     * @param \Dogma\Time\IntervalData\NightIntervalData[] $intervals
+     * @param NightIntervalData[] $intervals
      */
     public function __construct(array $intervals)
     {
-        $this->intervals = Arr::values(Arr::filter($intervals, function (NightIntervalData $interval): bool {
+        $this->intervals = Arr::values(Arr::filter($intervals, static function (NightIntervalData $interval): bool {
             return !$interval->isEmpty();
         }));
     }
 
     /**
-     * @param \Dogma\Time\Interval\NightIntervalSet $set
+     * @param NightIntervalSet $set
      * @param mixed|null $data
-     * @return \Dogma\Time\IntervalData\NightIntervalDataSet
+     * @return NightIntervalDataSet
      */
     public static function createFromNightIntervalSet(NightIntervalSet $set, $data): self
     {
-        $intervals = array_map(function (NightInterval $interval) use ($data) {
+        $intervals = array_map(static function (NightInterval $interval) use ($data) {
             return NightIntervalData::createFromNightInterval($interval, $data);
         }, $set->getIntervals());
 
@@ -65,7 +65,7 @@ class NightIntervalDataSet implements Equalable, Pokeable
     public function toNightIntervalSet(): NightIntervalSet
     {
         $intervals = [];
-        /** @var \Dogma\Time\IntervalData\NightIntervalData $interval */
+        /** @var NightIntervalData $interval */
         foreach ($this->intervals as $interval) {
             $intervals[] = $interval->toNightInterval();
         }
@@ -74,19 +74,19 @@ class NightIntervalDataSet implements Equalable, Pokeable
     }
 
     /**
-     * @return \Dogma\Time\Date[][]|mixed[][] array of pairs: (Date $date, Equalable $data)
+     * @return Date[][]|mixed[][] array of pairs: (Date $date, Equalable $data)
      */
     public function toDateDataArray(): array
     {
         $intervals = $this->normalize()->getIntervals();
 
-        return array_merge(...array_map(function (NightIntervalData $interval) {
+        return array_merge(...array_map(static function (NightIntervalData $interval) {
             return $interval->toDateDataArray();
         }, $intervals));
     }
 
     /**
-     * @return \Dogma\Time\IntervalData\NightIntervalData[]
+     * @return NightIntervalData[]
      */
     public function getIntervals(): array
     {
@@ -171,7 +171,7 @@ class NightIntervalDataSet implements Equalable, Pokeable
 
     /**
      * Remove another set of intervals from this one.
-     * @param \Dogma\Time\Interval\NightIntervalSet $set
+     * @param NightIntervalSet $set
      * @return self
      */
     public function subtract(NightIntervalSet $set): self
@@ -183,7 +183,7 @@ class NightIntervalDataSet implements Equalable, Pokeable
     {
         $sources = $this->intervals;
         $results = [];
-        /** @var \Dogma\Time\IntervalData\NightIntervalData $result */
+        /** @var NightIntervalData $result */
         while ($result = array_shift($sources)) {
             foreach ($intervals as $interval) {
                 $result = $result->subtract($interval);
@@ -204,7 +204,7 @@ class NightIntervalDataSet implements Equalable, Pokeable
 
     /**
      * Intersect with another set of intervals.
-     * @param \Dogma\Time\Interval\NightIntervalSet $set
+     * @param NightIntervalSet $set
      * @return self
      */
     public function intersect(NightIntervalSet $set): self
@@ -288,9 +288,7 @@ class NightIntervalDataSet implements Equalable, Pokeable
     public function modifyData(self $other, callable $reducer): self
     {
         $results = $this->getIntervals();
-        /** @var \Dogma\Time\IntervalData\NightIntervalData $interval */
         foreach ($other->getIntervals() as $interval) {
-            /** @var \Dogma\Time\IntervalData\NightIntervalData $result */
             foreach ($results as $i => $result) {
                 if (!$result->intersects($interval)) {
                     continue;

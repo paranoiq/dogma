@@ -12,6 +12,7 @@ namespace Dogma\Application;
 use Dogma\Application\Colors as C;
 use Dogma\StrictBehaviorMixin;
 use Nette\Neon\Neon;
+use stdClass;
 use function array_key_exists;
 use function array_map;
 use function array_merge;
@@ -30,7 +31,7 @@ use function sprintf;
 use function substr;
 use function trigger_error;
 
-final class Configurator extends \stdClass
+final class Configurator extends stdClass
 {
     use StrictBehaviorMixin;
 
@@ -146,17 +147,12 @@ final class Configurator extends \stdClass
             if (is_numeric($name)) {
                 continue;
             }
-            if (isset($values[$name])) {
-                $value = $values[$name];
-            } else {
-                $value = null;
-                if (isset($values[$shortcut])) {
-                    $value = $values[$shortcut];
-                }
-            }
+
+            $value = $values[$name] ?? $values[$shortcut] ?? null;
             if ($value === false) {
                 $value = true;
             }
+
             $value = $this->normalize($value, $type);
             $values[$name] = $value;
             unset($values[$shortcut]);
@@ -276,7 +272,7 @@ final class Configurator extends \stdClass
 
     /**
      * @param string $name
-     * @return \Dogma\Tools\ConfigurationProfile|mixed|null
+     * @return ConfigurationProfile|mixed|null
      */
     public function __get(string $name)
     {

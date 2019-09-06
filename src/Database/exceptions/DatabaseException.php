@@ -9,8 +9,10 @@
 
 namespace Dogma\Database;
 
+use Exception;
+
 /** Database error. */
-class DatabaseException extends \Exception
+class DatabaseException extends Exception
 {
 
 }

@@ -9,10 +9,13 @@
 
 namespace Dogma\Reflection;
 
+use Dogma\Arr;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 use ReflectionMethod;
+use ReflectionNamedType;
+use Traversable;
 use function array_keys;
 use function array_merge;
 use function array_search;
@@ -28,7 +31,7 @@ use function preg_match;
 use function preg_replace;
 use function rtrim;
 use function sprintf;
-use function strstr;
+use function strpos;
 use function strtolower;
 use function trim;
 
@@ -37,8 +40,8 @@ class MethodTypeParser
     use StrictBehaviorMixin;
 
     /**
-     * @param \ReflectionMethod $method
-     * @return \Dogma\Type[]
+     * @param ReflectionMethod $method
+     * @return Type[]
      */
     public function getTypes(ReflectionMethod $method): array
     {
@@ -53,8 +56,8 @@ class MethodTypeParser
     }
 
     /**
-     * @param \ReflectionMethod $method
-     * @return \Dogma\Type[]
+     * @param ReflectionMethod $method
+     * @return Type[]
      */
     public function getParameterTypes(ReflectionMethod $method): array
     {
@@ -73,8 +76,8 @@ class MethodTypeParser
 
     /**
      * @param mixed[] $options
-     * @param \ReflectionMethod $method
-     * @return \Dogma\Type
+     * @param ReflectionMethod $method
+     * @return Type
      */
     private function createType(array $options, ReflectionMethod $method): Type
     {
@@ -91,12 +94,12 @@ class MethodTypeParser
                 throw new UnprocessableParameterException($method, 'Multidimensional arrays are not supported.');
             } elseif ($count === 2) {
                 $itemTypes[] = $typeParts[0];
-            } elseif ($type === Type::PHP_ARRAY || is_subclass_of($type, \Traversable::class)) {
+            } elseif ($type === Type::PHP_ARRAY || is_subclass_of($type, Traversable::class)) {
                 $containerTypes[] = $type;
-            } elseif (strstr($type, '(')) {
+            } elseif (strpos($type, '(') !== false) {
                 $typeBase = explode('(', $type)[0];
-                if (in_array($typeBase, $otherTypes)) {
-                    unset($otherTypes[array_search($typeBase, $otherTypes)]);
+                if (in_array($typeBase, $otherTypes, true)) {
+                    unset($otherTypes[array_search($typeBase, $otherTypes, true)]);
                 }
                 $otherTypes[] = $type;
             } else {
@@ -131,7 +134,7 @@ class MethodTypeParser
     }
 
     /**
-     * @param \ReflectionMethod $method
+     * @param ReflectionMethod $method
      * @return mixed[] ($name => ($types, $nullable, $reference, $variadic, $optional))
      */
     public function getTypesRaw(ReflectionMethod $method): array
@@ -147,7 +150,7 @@ class MethodTypeParser
                 $types = [$paramRef->getClass()->getName()];
             } elseif ($paramRef->hasType()) {
                 $type = $paramRef->getType();
-                if ($type instanceof \ReflectionNamedType) {
+                if ($type instanceof ReflectionNamedType) {
                     $types = [$type->getName()];
                 } else {
                     throw new ShouldNotHappenException('Composite types in PHP already?');
@@ -195,7 +198,7 @@ class MethodTypeParser
 
     /**
      * @param string $docComment
-     * @param \ReflectionMethod $method
+     * @param ReflectionMethod $method
      * @return mixed[]
      */
     public function parseDocComment(string $docComment, ReflectionMethod $method): array
@@ -203,11 +206,12 @@ class MethodTypeParser
         $docComment = trim(trim(trim($docComment, '/'), '*'));
         $items = [];
         foreach (explode("\n", $docComment) as $row) {
-            if (strstr($row, '@param')) {
-                if (!preg_match('/@param\\s+(&|[.]{3})?\\s*((?:\\\\?[^\\s\\[\\]\\|]+(?:\\[\\])*\\|?)+)\s*(&|[.]{3})?(?:\\s*\\$([^\\s]+))?/u', $row, $matches)) {
+            if (strpos($row, '@param') !== false) {
+                if (!preg_match('/@param\\s+(&|[.]{3})?\\s*((?:\\\\?[^\\s\\[\\]|]+(?:\\[])*\\|?)+)\s*(&|[.]{3})?(?:\\s*\\$([^\\s]+))?/u', $row, $matches)) {
                     throw new InvalidMethodAnnotationException($method, 'invalid @param annotation format at: ' . $row);
                 }
-                @[, $mod1, $types, $mod2, $name] = $matches;
+                $matches = Arr::padTo($matches, 5, null);
+                [$x, $mod1, $types, $mod2, $name] = $matches;
                 $variadic = $mod1 === '...' || $mod2 === '...';
                 $types = explode('|', $types);
                 $nullable = false;
@@ -228,7 +232,7 @@ class MethodTypeParser
                     'variadic' => $variadic, // may be simulated by func_get_args()
                 ];
 
-            } elseif (strstr($row, '@return')) {
+            } elseif (strpos($row, '@return') !== false) {
                 if (!preg_match('/@return\\s+([^\\s]+)/u', $row, $matches)) {
                     throw new InvalidMethodAnnotationException($method, 'invalid @param annotation format at: ' . $row);
                 }

@@ -9,7 +9,6 @@
 
 namespace Dogma\Math;
 
-use Dogma\PowersOfTwo;
 use Dogma\StaticClassMixin;
 use function array_combine;
 use function array_merge;

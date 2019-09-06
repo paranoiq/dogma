@@ -18,17 +18,17 @@ class Mapping
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Type */
+    /** @var Type */
     private $type;
 
-    /** @var \Dogma\Mapping\MappingStep[] */
-    private $steps = [];
+    /** @var MappingStep[] */
+    private $steps;
 
-    /** @var \Dogma\Mapping\MappingStep[]|\Dogma\ReverseArrayIterator */
+    /** @var MappingStep[]|ReverseArrayIterator */
     private $reverseSteps;
 
     /**
-     * @param \Dogma\Type $type
+     * @param Type $type
      * @param mixed[] $steps
      */
     public function __construct(Type $type, array $steps)
@@ -45,7 +45,7 @@ class Mapping
     }
 
     /**
-     * @return \Dogma\Mapping\MappingStep[]
+     * @return MappingStep[]
      */
     public function getSteps(): array
     {
@@ -54,7 +54,7 @@ class Mapping
 
     /**
      * @param mixed[] $data
-     * @param \Dogma\Mapping\Mapper $mapper
+     * @param Mapper $mapper
      * @return mixed
      */
     public function mapForward(array $data, Mapper $mapper)
@@ -67,7 +67,7 @@ class Mapping
 
     /**
      * @param mixed $instance
-     * @param \Dogma\Mapping\Mapper $mapper
+     * @param Mapper $mapper
      * @return mixed[]
      */
     public function mapBack($instance, Mapper $mapper): array

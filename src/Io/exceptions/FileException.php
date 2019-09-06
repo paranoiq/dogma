@@ -9,6 +9,8 @@
 
 namespace Dogma\Io;
 
+use Throwable;
+
 class FileException extends IoException
 {
 
@@ -18,9 +20,9 @@ class FileException extends IoException
     /**
      * @param string $message
      * @param mixed[]|null $error
-     * @param \Throwable|null $previous
+     * @param Throwable|null $previous
      */
-    public function __construct(string $message, ?array $error = null, ?\Throwable $previous = null)
+    public function __construct(string $message, ?array $error = null, ?Throwable $previous = null)
     {
         parent::__construct($message, $previous);
 

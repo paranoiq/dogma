@@ -9,6 +9,7 @@
 
 namespace Dogma\Time\Interval;
 
+use DateTimeZone;
 use Dogma\Arr;
 use Dogma\ArrayIterator;
 use Dogma\Check;
@@ -18,6 +19,7 @@ use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
+use Iterator;
 use function array_merge;
 use function array_shift;
 use function count;
@@ -29,20 +31,24 @@ class DateTimeIntervalSet implements DateOrTimeIntervalSet
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Time\Interval\DateTimeInterval[] */
+    /** @var DateTimeInterval[] */
     private $intervals;
 
     /**
-     * @param \Dogma\Time\Interval\DateTimeInterval[] $intervals
+     * @param DateTimeInterval[] $intervals
      */
     public function __construct(array $intervals)
     {
-        $this->intervals = Arr::values(Arr::filter($intervals, function (DateTimeInterval $interval): bool {
+        $this->intervals = Arr::values(Arr::filter($intervals, static function (DateTimeInterval $interval): bool {
             return !$interval->isEmpty();
         }));
     }
 
-    public static function createFromDateAndTimeIntervalSet(Date $date, TimeIntervalSet $timeIntervalSet, ?\DateTimeZone $timeZone = null): self
+    public static function createFromDateAndTimeIntervalSet(
+        Date $date,
+        TimeIntervalSet $timeIntervalSet,
+        ?DateTimeZone $timeZone = null
+    ): self
     {
         $intervals = [];
         foreach ($timeIntervalSet->getIntervals() as $timeInterval) {
@@ -52,7 +58,11 @@ class DateTimeIntervalSet implements DateOrTimeIntervalSet
         return new static($intervals);
     }
 
-    public static function createFromDateIntervalAndTimeInterval(DateInterval $dateInterval, TimeInterval $timeInterval, ?\DateTimeZone $timeZone = null): self
+    public static function createFromDateIntervalAndTimeInterval(
+        DateInterval $dateInterval,
+        TimeInterval $timeInterval,
+        ?DateTimeZone $timeZone = null
+    ): self
     {
         $intervals = [];
         foreach ($dateInterval->toDateArray() as $date) {
@@ -62,7 +72,11 @@ class DateTimeIntervalSet implements DateOrTimeIntervalSet
         return new static($intervals);
     }
 
-    public static function createFromDateIntervalAndTimeIntervalSet(DateInterval $dateInterval, TimeIntervalSet $timeIntervalSet, ?\DateTimeZone $timeZone = null): self
+    public static function createFromDateIntervalAndTimeIntervalSet(
+        DateInterval $dateInterval,
+        TimeIntervalSet $timeIntervalSet,
+        ?DateTimeZone $timeZone = null
+    ): self
     {
         $intervals = [];
         foreach ($dateInterval->toDateArray() as $date) {
@@ -74,7 +88,11 @@ class DateTimeIntervalSet implements DateOrTimeIntervalSet
         return new static($intervals);
     }
 
-    public static function createFromDateIntervalSetAndTimeInterval(DateIntervalSet $dateIntervalSet, TimeInterval $timeInterval, ?\DateTimeZone $timeZone = null): self
+    public static function createFromDateIntervalSetAndTimeInterval(
+        DateIntervalSet $dateIntervalSet,
+        TimeInterval $timeInterval,
+        ?DateTimeZone $timeZone = null
+    ): self
     {
         $intervals = [];
         foreach ($dateIntervalSet->getIntervals() as $dateInterval) {
@@ -86,7 +104,11 @@ class DateTimeIntervalSet implements DateOrTimeIntervalSet
         return new static($intervals);
     }
 
-    public static function createFromDateIntervalSetAndTimeIntervalSet(DateIntervalSet $dateIntervalSet, TimeIntervalSet $timeIntervalSet, ?\DateTimeZone $timeZone = null): self
+    public static function createFromDateIntervalSetAndTimeIntervalSet(
+        DateIntervalSet $dateIntervalSet,
+        TimeIntervalSet $timeIntervalSet,
+        ?DateTimeZone $timeZone = null
+    ): self
     {
         $intervals = [];
         foreach ($dateIntervalSet->getIntervals() as $dateInterval) {
@@ -100,7 +122,11 @@ class DateTimeIntervalSet implements DateOrTimeIntervalSet
         return new static($intervals);
     }
 
-    public static function createFromDateIntervalAndWeekDayHoursSet(DateInterval $dateInterval, WeekDayHoursSet $weekDayHoursSet, ?\DateTimeZone $timeZone = null): self
+    public static function createFromDateIntervalAndWeekDayHoursSet(
+        DateInterval $dateInterval,
+        WeekDayHoursSet $weekDayHoursSet,
+        ?DateTimeZone $timeZone = null
+    ): self
     {
         $intervals = [];
         foreach ($dateInterval->toDateArray() as $date) {
@@ -116,7 +142,11 @@ class DateTimeIntervalSet implements DateOrTimeIntervalSet
         return new static($intervals);
     }
 
-    public static function createFromDateIntervalSetAndWeekDayHoursSet(DateIntervalSet $dateIntervalSet, WeekDayHoursSet $weekDayHoursSet, ?\DateTimeZone $timeZone = null): self
+    public static function createFromDateIntervalSetAndWeekDayHoursSet(
+        DateIntervalSet $dateIntervalSet,
+        WeekDayHoursSet $weekDayHoursSet,
+        ?DateTimeZone $timeZone = null
+    ): self
     {
         $intervals = [];
         foreach ($dateIntervalSet->getIntervals() as $dateInterval) {
@@ -134,22 +164,25 @@ class DateTimeIntervalSet implements DateOrTimeIntervalSet
         return new static($intervals);
     }
 
-    public function format(string $format = DateTimeInterval::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
+    public function format(
+        string $format = DateTimeInterval::DEFAULT_FORMAT,
+        ?DateTimeIntervalFormatter $formatter = null
+    ): string
     {
-        return implode(', ', Arr::map($this->intervals, function (DateTimeInterval $dateTimeInterval) use ($format, $formatter): string {
+        return implode(', ', Arr::map($this->intervals, static function (DateTimeInterval $dateTimeInterval) use ($format, $formatter): string {
             return $dateTimeInterval->format($format, $formatter);
         }));
     }
 
     /**
-     * @return \Dogma\Time\Interval\DateTimeInterval[]
+     * @return DateTimeInterval[]
      */
     public function getIntervals(): array
     {
         return $this->intervals;
     }
 
-    public function getIterator(): \Iterator
+    public function getIterator(): Iterator
     {
         return new ArrayIterator($this->intervals);
     }
@@ -236,7 +269,7 @@ class DateTimeIntervalSet implements DateOrTimeIntervalSet
      */
     public function add(self $set): self
     {
-        return self::addIntervals(...$set->intervals);
+        return $this->addIntervals(...$set->intervals);
     }
 
     public function addIntervals(DateTimeInterval ...$intervals): self
@@ -251,7 +284,7 @@ class DateTimeIntervalSet implements DateOrTimeIntervalSet
      */
     public function subtract(self $set): self
     {
-        return self::subtractIntervals(...$set->intervals);
+        return $this->subtractIntervals(...$set->intervals);
     }
 
     public function subtractIntervals(DateTimeInterval ...$intervals): self
@@ -283,7 +316,7 @@ class DateTimeIntervalSet implements DateOrTimeIntervalSet
      */
     public function intersect(self $set): self
     {
-        return self::intersectIntervals(...$set->intervals);
+        return $this->intersectIntervals(...$set->intervals);
     }
 
     public function intersectIntervals(DateTimeInterval ...$intervals): self

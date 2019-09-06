@@ -9,12 +9,13 @@
 
 namespace Dogma\Time;
 
+use Throwable;
 use function sprintf;
 
 class InvalidIntervalStartEndOrderException extends InvalidIntervalException
 {
 
-    public function __construct(DateOrTime $start, DateOrTime $end, ?\Throwable $previous = null)
+    public function __construct(DateOrTime $start, DateOrTime $end, ?Throwable $previous = null)
     {
         parent::__construct(
             sprintf('Start %s should be less than or equal to end %s.', $start->format(), $end->format()),

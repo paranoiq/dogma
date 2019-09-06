@@ -2,9 +2,11 @@
 
 namespace Dogma\Tests\Type;
 
+use DateTime;
 use Dogma\Sign;
 use Dogma\Tester\Assert;
 use Dogma\Type;
+use Error;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -113,10 +115,10 @@ Assert::false($int->isResource());
 
 // is()
 Assert::true($int->is(Type::INT));
-Assert::false($int->is(\DateTime::class));
+Assert::false($int->is(DateTime::class));
 
 // isImplementing()
-Assert::false($int->isImplementing(\DateTime::class));
+Assert::false($int->isImplementing(DateTime::class));
 
 // getBaseType()
 Assert::same($intNullable->getBaseType(), $int);
@@ -130,6 +132,6 @@ Assert::same($intNullable->getTypeWithoutParams(), $intNullable);
 Assert::same($intSizeUnsignedNullable->getTypeWithoutParams(), $intNullable);
 
 // getInstance()
-Assert::exception(function () use ($int): void {
+Assert::exception(static function () use ($int): void {
     $int->getInstance();
-}, \Error::class);
+}, Error::class);

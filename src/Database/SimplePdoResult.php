@@ -10,14 +10,18 @@
 namespace Dogma\Database;
 
 use Dogma\StrictBehaviorMixin;
+use Exception;
+use Iterator;
+use PDO;
+use PDOStatement;
 use function is_array;
 use function is_int;
 
-class SimplePdoResult implements \Iterator
+class SimplePdoResult implements Iterator
 {
     use StrictBehaviorMixin;
 
-    /** @var \PDOStatement */
+    /** @var PDOStatement */
     private $statement;
 
     /** @var int */
@@ -26,7 +30,7 @@ class SimplePdoResult implements \Iterator
     /** @var mixed[]|bool */
     private $current;
 
-    public function __construct(\PDOStatement $statement)
+    public function __construct(PDOStatement $statement)
     {
         $this->statement = $statement;
     }
@@ -45,7 +49,7 @@ class SimplePdoResult implements \Iterator
      * @param int $mode
      * @return mixed[]|bool
      */
-    public function fetch(int $mode = \PDO::FETCH_ASSOC)
+    public function fetch(int $mode = PDO::FETCH_ASSOC)
     {
         return $this->statement->fetch($mode);
     }
@@ -54,7 +58,7 @@ class SimplePdoResult implements \Iterator
      * @param int $mode
      * @return mixed[][]
      */
-    public function fetchAll(int $mode = \PDO::FETCH_ASSOC): array
+    public function fetchAll(int $mode = PDO::FETCH_ASSOC): array
     {
         $result = $this->statement->fetchAll($mode);
         $this->close();
@@ -69,9 +73,9 @@ class SimplePdoResult implements \Iterator
     public function fetchColumn($column = 0)
     {
         if (is_int($column)) {
-            return $this->statement->fetch(\PDO::FETCH_NUM)[$column] ?? false;
+            return $this->statement->fetch(PDO::FETCH_NUM)[$column] ?? false;
         } else {
-            return $this->statement->fetch(\PDO::FETCH_ASSOC)[$column] ?? false;
+            return $this->statement->fetch(PDO::FETCH_ASSOC)[$column] ?? false;
         }
     }
 
@@ -81,7 +85,7 @@ class SimplePdoResult implements \Iterator
      */
     public function fetchColumnAll($column): array
     {
-        $result = $this->statement->fetchAll(is_int($column) ? \PDO::FETCH_NUM : \PDO::FETCH_ASSOC);
+        $result = $this->statement->fetchAll(is_int($column) ? PDO::FETCH_NUM : PDO::FETCH_ASSOC);
         $rows = [];
         foreach ($result as $row) {
             $rows[] = $row[$column];
@@ -124,7 +128,7 @@ class SimplePdoResult implements \Iterator
         if (is_array($this->current)) {
             return $this->current;
         } else {
-            throw new \Exception();
+            throw new Exception();
         }
     }
 

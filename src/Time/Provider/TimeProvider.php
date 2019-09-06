@@ -9,6 +9,7 @@
 
 namespace Dogma\Time\Provider;
 
+use DateTimeZone;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
 
@@ -17,8 +18,8 @@ interface TimeProvider
 
     public function getDate(): Date;
 
-    public function getDateTime(?\DateTimeZone $timeZone = null): DateTime;
+    public function getDateTime(?DateTimeZone $timeZone = null): DateTime;
 
-    public function getTimeZone(): \DateTimeZone;
+    public function getTimeZone(): DateTimeZone;
 
 }

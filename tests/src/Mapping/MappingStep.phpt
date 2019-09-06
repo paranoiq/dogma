@@ -5,12 +5,14 @@ namespace Dogma\Tests\Mapping;
 use Dogma\Mapping\Mapper;
 use Dogma\Mapping\MappingStep;
 use Dogma\Mapping\StaticMappingContainer;
+use Dogma\Mapping\Type\Exportable;
 use Dogma\Mapping\Type\ExportableHandler;
 use Dogma\Mapping\Type\Time\DateTimeHandler;
 use Dogma\Reflection\MethodTypeParser;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
 use Dogma\Type;
+use function array_key_exists;
 
 require_once __DIR__ . '/../bootstrap.php';
 require_once __DIR__ . '/data/ExportableTestClass.php';
@@ -36,7 +38,7 @@ Assert::count($data, 2);
 Assert::false(array_key_exists('dateString', $data));
 Assert::true(array_key_exists('date', $data));
 Assert::true(array_key_exists('other', $data));
-/** @var \Dogma\Time\Date $date */
+/** @var Date $date */
 $date = $data['date'];
 Assert::type($date, Date::class);
 Assert::same($date->format(), '2001-02-03');
@@ -68,7 +70,7 @@ Assert::false(array_key_exists('exp.one', $data));
 Assert::false(array_key_exists('exp.two', $data));
 Assert::true(array_key_exists('exp', $data));
 Assert::true(array_key_exists('other', $data));
-/** @var \Dogma\Mapping\Type\Exportable $exp */
+/** @var Exportable $exp */
 $exp = $data['exp'];
 Assert::type($exp, ExportableTestClass::class);
 Assert::same($exp->export(), ['one' => 1, 'two' => 2.0]);

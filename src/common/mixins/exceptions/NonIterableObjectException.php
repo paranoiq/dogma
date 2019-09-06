@@ -9,12 +9,13 @@
 
 namespace Dogma;
 
+use Throwable;
 use function sprintf;
 
 final class NonIterableObjectException extends Exception
 {
 
-    public function __construct(string $class, ?\Throwable $previous = null)
+    public function __construct(string $class, ?Throwable $previous = null)
     {
         parent::__construct(sprintf('Iterating a non-iterable object of class %s.', $class), $previous);
     }

@@ -17,26 +17,26 @@ class TestClass
 
 $x = new TestClass();
 
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     TestClass::method();
 }, UndefinedMethodException::class);
 
-Assert::throws(function () use ($x): void {
+Assert::throws(static function () use ($x): void {
     $x->method();
 }, UndefinedMethodException::class);
 
-Assert::throws(function () use ($x): void {
+Assert::throws(static function () use ($x): void {
     $x->property;
 }, UndefinedPropertyException::class);
 
-Assert::throws(function () use ($x): void {
+Assert::throws(static function () use ($x): void {
     $x->property = 1;
 }, UndefinedPropertyException::class);
 
-Assert::throws(function () use ($x): void {
+Assert::throws(static function () use ($x): void {
     isset($x->property);
 }, UndefinedPropertyException::class);
 
-Assert::throws(function () use ($x): void {
+Assert::throws(static function () use ($x): void {
     unset($x->property);
 }, UndefinedPropertyException::class);

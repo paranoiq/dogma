@@ -24,7 +24,7 @@ class HttpMultiChannel
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Http\Channel\HttpChannel[] */
+    /** @var HttpChannel[] */
     private $channels;
 
     /** @var string[] */
@@ -36,7 +36,7 @@ class HttpMultiChannel
     /** @var string[][] (string $subJobName => (string $channelName => string $jobName)) */
     private $queue = [];
 
-    /** @var \Dogma\Http\HttpResponse[][] (string $jobName => (string $channelName => \Dogma\Http\Response $response)) */
+    /** @var HttpResponse[][] (string $jobName => (string $channelName => Response $response)) */
     private $finished = [];
 
     /** @var callable|null */
@@ -52,13 +52,12 @@ class HttpMultiChannel
     private $dispatcher;
 
     /**
-     * @param \Dogma\Http\Channel\HttpChannel[] $channels
+     * @param HttpChannel[] $channels
      */
     public function __construct(array $channels)
     {
         $this->channels = $channels;
 
-        /** @var \Dogma\Http\Channel\HttpChannel $channel */
         foreach ($channels as $channelName => $channel) {
             $this->channelIds[spl_object_hash($channel)] = $channelName;
             $channel->setResponseHandler(function (HttpResponse $response, HttpChannel $channel, string $subJobName): void {
@@ -89,7 +88,7 @@ class HttpMultiChannel
      */
     private function jobFinished($jobName): void
     {
-        /** @var \Dogma\Http\HttpResponse $response */
+        $error = $redirect = false;
         foreach ($this->finished[$jobName] as $response) {
             if ($response->getStatus()->isError()) {
                 $error = true;
@@ -99,11 +98,11 @@ class HttpMultiChannel
             }
         }
 
-        if ($this->errorHandler !== null && isset($error)) {
+        if ($this->errorHandler !== null && $error) {
             ($this->errorHandler)($this->finished[$jobName], $this);
             unset($this->finished[$jobName]);
 
-        } elseif ($this->redirectHandler !== null && isset($redirect)) {
+        } elseif ($this->redirectHandler !== null && $redirect) {
             ($this->redirectHandler)($this->finished[$jobName], $this);
             unset($this->finished[$jobName]);
 
@@ -114,7 +113,7 @@ class HttpMultiChannel
     }
 
     /**
-     * @return \Dogma\Http\Channel\HttpChannel[]
+     * @return HttpChannel[]
      */
     public function getChannels(): array
     {
@@ -123,7 +122,7 @@ class HttpMultiChannel
 
     /**
      * Set callback handler for every response (even an error)
-     * @param callable $responseHandler (\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
+     * @param callable $responseHandler (Response $response, HttpChannel $channel, string $name)
      */
     public function setResponseHandler(callable $responseHandler): void
     {
@@ -132,7 +131,7 @@ class HttpMultiChannel
 
     /**
      * Set separate callback handler for redirects. ResponseHandler will no longer handle these.
-     * @param callable $redirectHandler (\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
+     * @param callable $redirectHandler (Response $response, HttpChannel $channel, string $name)
      */
     public function setRedirectHandler(callable $redirectHandler): void
     {
@@ -141,7 +140,7 @@ class HttpMultiChannel
 
     /**
      * Set separate callback handler for errors. ResponseHandler will no longer handle these.
-     * @param callable $errorHandler (\Dogma\Http\Response $response, \Dogma\Http\Channel $channel, string $name)
+     * @param callable $errorHandler (Response $response, HttpChannel $channel, string $name)
      */
     public function setErrorHandler(callable $errorHandler): void
     {
@@ -149,7 +148,7 @@ class HttpMultiChannel
     }
 
     /**
-     * @param callable $function (mixed $data, \Dogma\Http\Channel[] $channels)
+     * @param callable $function (mixed $data, HttpChannel[] $channels)
      */
     public function setDispatchFunction(callable $function): void
     {
@@ -160,7 +159,7 @@ class HttpMultiChannel
      * Add new job to channel queue.
      * @param string|mixed[] $data
      * @param mixed $context
-     * @param string|int $name
+     * @param string|int|mixed $name
      * @return string|int
      */
     public function addJob($data, $context = null, $name = null)
@@ -203,7 +202,7 @@ class HttpMultiChannel
      * Run a new job and wait for the response.
      * @param string|mixed[] $data
      * @param mixed $context
-     * @return \Dogma\Http\HttpResponse[]|null
+     * @return HttpResponse[]|null
      */
     public function fetchJob($data, $context = null): ?array
     {
@@ -222,7 +221,7 @@ class HttpMultiChannel
 
     /**
      * @param string|int $name
-     * @return \Dogma\Http\HttpResponse[]|null
+     * @return HttpResponse[]|null
      */
     public function fetch($name = null): ?array
     {
@@ -237,22 +236,20 @@ class HttpMultiChannel
         $keys = array_keys($this->channels);
         do {
             $this->channels[$keys[0]]->read();
-            foreach ($this->finished as $name => $fin) {
+            foreach ($this->finished as $jobName => $fin) {
                 if (count($fin) === count($this->channels)) {
-                    unset($this->finished[$name]);
+                    unset($this->finished[$jobName]);
                     return $fin;
                 }
             }
         } while (true);
-
-        return null;
     }
 
     /**
      * @param string|int $name
-     * @return \Dogma\Http\HttpResponse[]|null
+     * @return HttpResponse[]
      */
-    private function fetchNamedJob($name): ?array
+    private function fetchNamedJob($name): array
     {
         if (!isset($this->queue[$name]) && !isset($this->finished[$name])) {
             throw new HttpChannelException(sprintf('Job named \'%s\' was not found.', $name));

@@ -9,12 +9,15 @@
 
 namespace Dogma;
 
+use ArrayAccess;
+use Countable;
+use IteratorAggregate;
 use function count;
 
 /**
  * Immutable list of fixed number of parameters
  */
-class Tuple implements \Countable, \IteratorAggregate, \ArrayAccess
+class Tuple implements Countable, IteratorAggregate, ArrayAccess
 {
     use StrictBehaviorMixin;
     use ImmutableArrayAccessMixin;

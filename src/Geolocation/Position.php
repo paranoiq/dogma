@@ -28,7 +28,7 @@ class Position
     public const PLANET_EARTH_RADIUS = 6371000.0;
 
     /** @var float [m] */
-    private $planetRadius = self::PLANET_EARTH_RADIUS;
+    private $planetRadius;
 
     /** @var float [degrees] */
     private $latitude;

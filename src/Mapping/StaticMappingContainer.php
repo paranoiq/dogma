@@ -16,11 +16,11 @@ class StaticMappingContainer implements MappingContainer
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Mapping\Mapping[] (string $typeId => $mapping) */
+    /** @var Mapping[] (string $typeId => $mapping) */
     private $mappings;
 
     /**
-     * @param \Dogma\Mapping\Mapping[] $mappings
+     * @param Mapping[] $mappings
      */
     public function __construct(array $mappings)
     {

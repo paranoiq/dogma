@@ -9,6 +9,7 @@
 
 namespace Dogma;
 
+use Throwable;
 use function sprintf;
 
 class ValueOutOfBoundsException extends ValueOutOfRangeException
@@ -16,10 +17,10 @@ class ValueOutOfBoundsException extends ValueOutOfRangeException
 
     /**
      * @param int|float|string $value
-     * @param string|\Dogma\Type $type
-     * @param \Throwable|null $previous
+     * @param string|Type $type
+     * @param Throwable|null $previous
      */
-    public function __construct($value, $type, ?\Throwable $previous = null)
+    public function __construct($value, $type, ?Throwable $previous = null)
     {
         Exception::__construct(
             sprintf('Value %s cannot fit to data type %s.', ExceptionValueFormatter::format($value), ExceptionTypeFormatter::format($type)),

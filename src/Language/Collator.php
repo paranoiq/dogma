@@ -9,22 +9,25 @@
 
 namespace Dogma\Language;
 
+use Collator as PhpCollator;
 use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Language\Locale\Locale;
+use Dogma\Language\Locale\LocaleCollationOption;
 use Dogma\Language\Locale\LocaleKeyword;
 use Dogma\NotImplementedException;
 use Dogma\Type;
+use Locale as PhpLocale;
 use function is_string;
 
-class Collator extends \Collator
+class Collator extends PhpCollator
 {
 
     /** @var bool */
     private $backwards = false;
 
     /**
-     * @param \Dogma\Language\Locale\Locale|string $locale
+     * @param Locale|string $locale
      */
     public function __construct($locale)
     {
@@ -53,7 +56,7 @@ class Collator extends \Collator
     }
 
     /**
-     * @param \Dogma\Language\Locale\Locale|string $locale
+     * @param Locale|string $locale
      * @return self
      */
     public static function create($locale): self
@@ -66,7 +69,7 @@ class Collator extends \Collator
      */
     public function configure(array $collationOptions = []): void
     {
-        /** @var \Dogma\Language\Locale\LocaleCollationOption $value */
+        /** @var LocaleCollationOption $value */
         foreach ($collationOptions as $keyword => $value) {
             switch ($keyword) {
                 case LocaleKeyword::COL_ALTERNATE:
@@ -97,13 +100,13 @@ class Collator extends \Collator
         }
     }
 
-    public function getLocaleObject(int $type = \Locale::ACTUAL_LOCALE): Locale
+    public function getLocaleObject(int $type = PhpLocale::ACTUAL_LOCALE): Locale
     {
         return Locale::get($this->getLocale($type));
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $str1
      * @param string $str2
      * @return int
@@ -118,41 +121,53 @@ class Collator extends \Collator
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param mixed[] $arr
      * @param int|null $sortFlag
+     * @return bool
      */
-    public function asort(array &$arr, $sortFlag = null): void
+    public function asort(array &$arr, $sortFlag = null): bool
     {
-        parent::asort($arr, $sortFlag);
+        $result = parent::asort($arr, $sortFlag);
+
         if ($this->backwards) {
             $arr = Arr::reverse($arr);
         }
+
+        return $result;
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param mixed[] $arr
      * @param int|null $sortFlag
+     * @return bool
      */
-    public function sort(array &$arr, $sortFlag = null): void
+    public function sort(array &$arr, $sortFlag = null): bool
     {
-        parent::sort($arr, $sortFlag);
+        $result = parent::sort($arr, $sortFlag);
+
         if ($this->backwards) {
             $arr = Arr::reverse($arr);
         }
+
+        return $result;
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param mixed[] $arr
+     * @return bool
      */
-    public function sortWithSortKeys(array &$arr): void
+    public function sortWithSortKeys(array &$arr): bool
     {
-        parent::sortWithSortKeys($arr);
+        $result = parent::sortWithSortKeys($arr);
+
         if ($this->backwards) {
             $arr = Arr::reverse($arr);
         }
+
+        return $result;
     }
 
     public function __invoke(string $str1, string $str2): int

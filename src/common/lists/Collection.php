@@ -36,7 +36,7 @@ class Collection extends ImmutableArray
     /**
      * Check if object is of accepted class.
      * @param object $object
-     * @throws \Dogma\InvalidTypeException
+     * @throws InvalidTypeException
      */
     private function checkAccepted(object $object): void
     {

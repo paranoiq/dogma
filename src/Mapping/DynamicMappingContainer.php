@@ -16,10 +16,10 @@ class DynamicMappingContainer implements MappingContainer
 {
     use StrictBehaviorMixin;
 
-    /** @var \Dogma\Mapping\MappingBuilder */
+    /** @var MappingBuilder */
     private $mappingBuilder;
 
-    /** @var \Dogma\Mapping\Mapping[] (string $typeId => $mapping) */
+    /** @var Mapping[] (string $typeId => $mapping) */
     private $mappings = [];
 
     public function __construct(MappingBuilder $mappingBuilder)

@@ -19,24 +19,24 @@ $denormalizedNumber = $number + 366;
 $denormalizedDay = new DayOfYear($denormalizedNumber);
 
 // __construct()
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     new DayOfYear(-200);
 }, ValueOutOfRangeException::class);
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     new DayOfYear(800);
 }, ValueOutOfRangeException::class);
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     new DayOfYear('asdf');
 }, InvalidDateTimeException::class);
 // todo: more strict
-//Assert::throws(function (): void {
+//Assert::throws(static function (): void {
 //    new DayOfYear('00-01');
 //}, InvalidDateTimeException::class);
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     new DayOfYear('01-32');
 }, InvalidDateTimeException::class);
 // todo: more strict
-//Assert::throws(function (): void {
+//Assert::throws(static function (): void {
 //    new DayOfYear('02-30');
 //}, InvalidDateTimeException::class);
 
@@ -44,16 +44,16 @@ Assert::throws(function (): void {
 Assert::same((new DayOfYear($dayString))->format(), $dayString);
 
 // createFromMonthAndDay()
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     DayOfYear::createFromMonthAndDay(-1, 1);
 }, ValueOutOfRangeException::class);
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     DayOfYear::createFromMonthAndDay(13, 1);
 }, ValueOutOfRangeException::class);
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     DayOfYear::createFromMonthAndDay(1, 0);
 }, ValueOutOfRangeException::class);
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     DayOfYear::createFromMonthAndDay(1, 32);
 }, ValueOutOfRangeException::class);
 Assert::type(DayOfYear::createFromMonthAndDay(2, 29), DayOfYear::class);

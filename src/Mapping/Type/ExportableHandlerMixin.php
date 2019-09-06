@@ -16,10 +16,10 @@ trait ExportableHandlerMixin
 {
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param \Dogma\Type $type
-     * @param \Dogma\Mapping\Type\Exportable $instance
-     * @param \Dogma\Mapping\Mapper $mapper
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param Type $type
+     * @param Exportable $instance
+     * @param Mapper $mapper
      * @return mixed[]
      */
     public function exportInstance(Type $type, $instance, Mapper $mapper): array

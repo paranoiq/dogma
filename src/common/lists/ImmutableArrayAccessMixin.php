@@ -9,6 +9,7 @@
 
 namespace Dogma;
 
+use BadMethodCallException;
 use function array_key_exists;
 
 trait ImmutableArrayAccessMixin
@@ -35,20 +36,20 @@ trait ImmutableArrayAccessMixin
     /**
      * @param mixed $key
      * @param mixed $value
-     * @throws \BadMethodCallException
+     * @throws BadMethodCallException
      */
     public function offsetSet($key, $value): void
     {
-        throw new \BadMethodCallException('Cannot modify an item of immutable list.');
+        throw new BadMethodCallException('Cannot modify an item of immutable list.');
     }
 
     /**
      * @param mixed $key
-     * @throws \BadMethodCallException
+     * @throws BadMethodCallException
      */
     public function offsetUnset($key): void
     {
-        throw new \BadMethodCallException('Cannot unset an item of immutable list.');
+        throw new BadMethodCallException('Cannot unset an item of immutable list.');
     }
 
 }

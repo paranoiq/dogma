@@ -10,11 +10,11 @@ use Dogma\Time\Interval\DateTimeIntervalSet;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-$i = function (string $i): DateTimeInterval {
+$i = static function (string $i): DateTimeInterval {
     return DateTimeInterval::createFromString($i);
 };
-$s = function (string ...$is): DateTimeIntervalSet {
-    return new DateTimeIntervalSet(array_map(function (string $interval) {
+$s = static function (string ...$is): DateTimeIntervalSet {
+    return new DateTimeIntervalSet(array_map(static function (string $interval) {
         return DateTimeInterval::createFromString($interval);
     }, $is));
 };
@@ -44,7 +44,7 @@ Assert::equal($i('2000-01-05 00:00 - 2000-05-05 00:00')->splitByUnitAligned(Date
     '2000-01-05 00:00 - 2000-04-01 00:00',
     '2000-04-01 00:00 - 2000-05-05 00:00'
 ));
-Assert::throws(function () use ($i): void {
+Assert::throws(static function () use ($i): void {
     $i('2000-01-05 00:00 - 2000-08-05 00:00')->splitByUnitAligned(DateTimeUnit::quarter(), 2);
 }, NotImplementedException::class);
 Assert::equal($i('2000-01-05 00:00 - 2000-05-05 00:00')->splitByUnit(DateTimeUnit::quarter()), $s(

@@ -10,11 +10,12 @@
 namespace Dogma\Dom;
 
 use Dogma\Exception;
+use Throwable;
 
 class DomException extends Exception
 {
 
-    public function __construct(string $message, int $code = 0, ?\Throwable $previous = null)
+    public function __construct(string $message, int $code = 0, ?Throwable $previous = null)
     {
         parent::__construct($message, $previous);
 

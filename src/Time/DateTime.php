@@ -9,20 +9,25 @@
 
 namespace Dogma\Time;
 
+use DateInterval;
+use DateTimeImmutable;
+use DateTimeInterface;
+use DateTimeZone;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
-use Dogma\Exception;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeFormatter;
 use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Provider\TimeProvider;
+use Dogma\Time\Span\DateOrTimeSpan;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Type;
 use const DATE_RFC2822;
 use function ceil;
 use function explode;
+use function floatval;
 use function floor;
 use function is_int;
 use function is_string;
@@ -37,7 +42,7 @@ use function strval;
  *
  * Comparisons and intervals are based on microseconds since unix epoch, giving a possible range of about ±280.000 years.
  */
-class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrTime, \DateTimeInterface
+class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTime
 {
     use StrictBehaviorMixin;
 
@@ -62,20 +67,20 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
         'Y-m-d\\TH:i:s.uO',
     ];
 
-    /** @var int */
+    /** @var int|null */
     private $microTimestamp;
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $format
      * @param string $timeString
-     * @param \DateTimeZone|null $timeZone
-     * @return \Dogma\Time\DateTime
+     * @param DateTimeZone|null $timeZone
+     * @return static
      */
-    public static function createFromFormat($format, $timeString, $timeZone = null): self
+    public static function createFromFormat($format, $timeString, ?DateTimeZone $timeZone = null): self
     {
         // due to invalid type hint in parent class...
-        Check::nullableObject($timeZone, \DateTimeZone::class);
+        Check::nullableObject($timeZone, DateTimeZone::class);
 
         // due to invalid optional arguments handling...
         if ($timeZone === null) {
@@ -93,15 +98,14 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
     /**
      * @param string[] $formats
      * @param string $timeString
-     * @param \DateTimeZone|null $timeZone
-     * @return \Dogma\Time\DateTime
+     * @param DateTimeZone|null $timeZone
+     * @return static
      */
-    public static function createFromAnyFormat(array $formats, string $timeString, ?\DateTimeZone $timeZone = null): self
+    public static function createFromAnyFormat(array $formats, string $timeString, ?DateTimeZone $timeZone = null): self
     {
         Check::count($formats, 1);
 
-        $e = new Exception('foo');
-
+        $e = null;
         foreach ($formats as $format) {
             try {
                 return self::createFromFormat($format, $timeString, $timeZone);
@@ -110,10 +114,12 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
             }
         }
 
-        throw $e;
+        if ($e !== null) {
+            throw $e;
+        }
     }
 
-    public static function createFromTimestamp(int $timestamp, ?\DateTimeZone $timeZone = null): self
+    public static function createFromTimestamp(int $timestamp, ?DateTimeZone $timeZone = null): self
     {
         $dateTime = static::createFromFormat('U', (string) $timestamp, TimeZone::getUtc());
         if ($timeZone === null) {
@@ -124,7 +130,7 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
         return $dateTime;
     }
 
-    public static function createFromFloatTimestamp(float $timestamp, ?\DateTimeZone $timeZone = null): self
+    public static function createFromFloatTimestamp(float $timestamp, ?DateTimeZone $timeZone = null): self
     {
         $formatted = number_format($timestamp, 6, '.', '');
 
@@ -137,7 +143,7 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
         return $dateTime;
     }
 
-    public static function createFromMicroTimestamp(int $microTimestamp, ?\DateTimeZone $timeZone = null): self
+    public static function createFromMicroTimestamp(int $microTimestamp, ?DateTimeZone $timeZone = null): self
     {
         $timestamp = (int) floor($microTimestamp / 1000000);
         $microseconds = $microTimestamp - $timestamp * 1000000;
@@ -159,7 +165,7 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
         int $minutes = 0,
         int $seconds = 0,
         int $microseconds = 0,
-        ?\DateTimeZone $timeZone = null
+        ?DateTimeZone $timeZone = null
     ): self
     {
         Check::range($year, 1, 9999);
@@ -173,7 +179,7 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
         return new static(sprintf('%d-%d-%d %d:%d:%d.%d', $year, $month, $day, $hours, $minutes, $seconds, $microseconds), $timeZone);
     }
 
-    public static function createFromDateTimeInterface(\DateTimeInterface $dateTime, ?\DateTimeZone $timeZone = null): self
+    public static function createFromDateTimeInterface(DateTimeInterface $dateTime, ?DateTimeZone $timeZone = null): self
     {
         if ($timeZone === null) {
             $timeZone = $dateTime->getTimezone();
@@ -184,7 +190,7 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
         return self::createFromTimestamp($timestamp, $timeZone)->modify('+' . $microseconds . ' microseconds');
     }
 
-    public static function createFromDateAndTime(Date $date, Time $time, ?\DateTimeZone $timeZone = null): self
+    public static function createFromDateAndTime(Date $date, Time $time, ?DateTimeZone $timeZone = null): self
     {
         // morning hours of next day
         if ($time->getMicroTime() > Time::MAX_MICROSECONDS) {
@@ -205,13 +211,13 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
     // modifications ---------------------------------------------------------------------------------------------------
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param \DateInterval|\Dogma\Time\Span\DateOrTimeSpan $interval
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param DateInterval|DateOrTimeSpan $interval
      * @return self
      */
     public function add($interval): self
     {
-        if ($interval instanceof \DateInterval) {
+        if ($interval instanceof DateInterval) {
             $that = parent::add($interval);
         } elseif (!$interval->isMixed()) {
             $interval = $interval->toNative();
@@ -225,8 +231,8 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param \DateInterval|\Dogma\Time\Span\DateOrTimeSpan $interval
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param DateInterval|DateOrTimeSpan $interval
      * @return self
      */
     public function sub($interval): self
@@ -266,8 +272,8 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param \Dogma\Time\Time|int|string $time
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param Time|int|string $time
      * @param int|null $minutes
      * @param int|null $seconds
      * @param int|null $microseconds
@@ -285,7 +291,7 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
             $seconds = strval($parts[2] ?? '');
             if (Str::contains($seconds, '.')) {
                 [$seconds, $microseconds] = explode('.', $seconds);
-                $microseconds = (int) (('0.' . $microseconds) * 1000000);
+                $microseconds = floatval('0.' . $microseconds) * 1000000;
             }
         }
 
@@ -295,9 +301,9 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
     /**
      * Round to closest value from given list of values for given unit
      * (eg. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
-     * @param \Dogma\Time\DateTimeUnit $unit
+     * @param DateTimeUnit $unit
      * @param int[]|null $allowedValues
-     * @return \Dogma\Time\DateTime
+     * @return DateTime
      */
     public function roundTo(DateTimeUnit $unit, ?array $allowedValues = null): self
     {
@@ -310,9 +316,9 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
     /**
      * Round to firs upper value from given list of values for given unit
      * (eg. 15:32:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
-     * @param \Dogma\Time\DateTimeUnit $unit
+     * @param DateTimeUnit $unit
      * @param int[]|null $allowedValues
-     * @return \Dogma\Time\DateTime
+     * @return DateTime
      */
     public function roundUpTo(DateTimeUnit $unit, ?array $allowedValues = null): self
     {
@@ -325,9 +331,9 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
     /**
      * Round to firs lower value from given list of values for given unit
      * (eg. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:30:00)
-     * @param \Dogma\Time\DateTimeUnit $unit
+     * @param DateTimeUnit $unit
      * @param int[]|null $allowedValues
-     * @return \Dogma\Time\DateTime
+     * @return DateTime
      */
     public function roundDownTo(DateTimeUnit $unit, ?array $allowedValues = null): self
     {
@@ -340,9 +346,9 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
     // queries ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $format
-     * @param \Dogma\Time\Format\DateTimeFormatter|null $formatter
+     * @param DateTimeFormatter|null $formatter
      * @return string
      */
     public function format($format = self::DEFAULT_FORMAT, ?DateTimeFormatter $formatter = null): string
@@ -354,9 +360,9 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
         }
     }
 
-    public function difference(\DateTimeInterface $other, bool $absolute = false): DateTimeSpan
+    public function difference(DateTimeInterface $other, bool $absolute = false): DateTimeSpan
     {
-        $interval = parent::diff($other, $absolute);
+        $interval = $this->diff($other, $absolute);
 
         return DateTimeSpan::createFromDateInterval($interval);
     }
@@ -383,7 +389,7 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
         return $this->getMicroTimestamp() === $other->getMicroTimestamp();
     }
 
-    public function equalsUpTo(\DateTimeInterface $other, DateTimeUnit $unit): bool
+    public function equalsUpTo(DateTimeInterface $other, DateTimeUnit $unit): bool
     {
         if ($unit->equals(DateTimeUnit::QUARTER)) {
             return $this->getYear() === (int) $other->format('Y')
@@ -394,27 +400,27 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
         return $this->format($format) === $other->format($format);
     }
 
-    public function timeZoneEquals(\DateTimeInterface $other): bool
+    public function timeZoneEquals(DateTimeInterface $other): bool
     {
         return $this->getTimezone()->getName() === $other->getTimezone()->getName();
     }
 
-    public function timeOffsetEquals(\DateTimeInterface $other): bool
+    public function timeOffsetEquals(DateTimeInterface $other): bool
     {
         return $this->getTimezone()->getOffset($this) === $other->getTimezone()->getOffset($other);
     }
 
-    public function isBefore(\DateTimeInterface $dateTime): bool
+    public function isBefore(DateTimeInterface $dateTime): bool
     {
         return $this < $dateTime;
     }
 
-    public function isAfter(\DateTimeInterface $dateTime): bool
+    public function isAfter(DateTimeInterface $dateTime): bool
     {
         return $this > $dateTime;
     }
 
-    public function isBetween(\DateTimeInterface $sinceTime, \DateTimeInterface $untilTime): bool
+    public function isBetween(DateTimeInterface $sinceTime, DateTimeInterface $untilTime): bool
     {
         return $this >= $sinceTime && $this <= $untilTime;
     }
@@ -435,47 +441,47 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
     }
 
     /**
-     * @param \DateTimeInterface|\Dogma\Time\Date $date
+     * @param DateTimeInterface|Date $date
      * @return bool
      */
     public function isSameDay($date): bool
     {
-        Check::types($date, [\DateTimeInterface::class, Date::class]);
+        Check::types($date, [DateTimeInterface::class, Date::class]);
 
         return $this->format(Date::DEFAULT_FORMAT) === $date->format(Date::DEFAULT_FORMAT);
     }
 
     /**
-     * @param \DateTimeInterface|\Dogma\Time\Date $date
+     * @param DateTimeInterface|Date $date
      * @return bool
      */
     public function isBeforeDay($date): bool
     {
-        Check::types($date, [\DateTimeInterface::class, Date::class]);
+        Check::types($date, [DateTimeInterface::class, Date::class]);
 
         return $this->format(Date::DEFAULT_FORMAT) < $date->format(Date::DEFAULT_FORMAT);
     }
 
     /**
-     * @param \DateTimeInterface|\Dogma\Time\Date $date
+     * @param DateTimeInterface|Date $date
      * @return bool
      */
     public function isAfterDay($date): bool
     {
-        Check::types($date, [\DateTimeInterface::class, Date::class]);
+        Check::types($date, [DateTimeInterface::class, Date::class]);
 
         return $this->format(Date::DEFAULT_FORMAT) > $date->format(Date::DEFAULT_FORMAT);
     }
 
     /**
-     * @param \DateTimeInterface|\Dogma\Time\Date $sinceDate
-     * @param \DateTimeInterface|\Dogma\Time\Date $untilDate
+     * @param DateTimeInterface|Date $sinceDate
+     * @param DateTimeInterface|Date $untilDate
      * @return bool
      */
     public function isBetweenDays($sinceDate, $untilDate): bool
     {
-        Check::types($sinceDate, [\DateTimeInterface::class, Date::class]);
-        Check::types($untilDate, [\DateTimeInterface::class, Date::class]);
+        Check::types($sinceDate, [DateTimeInterface::class, Date::class]);
+        Check::types($untilDate, [DateTimeInterface::class, Date::class]);
 
         $thisDate = $this->format(Date::DEFAULT_FORMAT);
 
@@ -505,7 +511,7 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
     }
 
     /**
-     * @param int|\Dogma\Time\DayOfWeek $day
+     * @param int|DayOfWeek $day
      * @return bool
      */
     public function isDayOfWeek($day): bool
@@ -525,7 +531,7 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
     }
 
     /**
-     * @param int|\Dogma\Time\Month $month
+     * @param int|Month $month
      * @return bool
      */
     public function isMonth($month): bool

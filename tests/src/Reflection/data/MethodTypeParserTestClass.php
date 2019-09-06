@@ -2,6 +2,8 @@
 
 namespace Dogma\Tests\Reflection;
 
+use DateTime;
+
 class MethodTypeParserTestClass
 {
 
@@ -32,7 +34,7 @@ class MethodTypeParserTestClass
         //
     }
 
-    public function testClass(\DateTime $one): void
+    public function testClass(DateTime $one): void
     {
         //
     }
@@ -329,7 +331,7 @@ class MethodTypeParserTestClass
      */
     public function testReturnTypehintAndAnnotation(): int
     {
-        //
+        return 1;
     }
 
     /**
@@ -337,7 +339,7 @@ class MethodTypeParserTestClass
      */
     public function testReturnTypehintAndAnnotationWithSize(): int
     {
-        //
+        return 1;
     }
 
     // phpcs:enable

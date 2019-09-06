@@ -21,7 +21,6 @@ use function ltrim;
 use function spl_autoload_register;
 use function sprintf;
 use function str_replace;
-use function strtr;
 use function substr;
 
 final class DogmaLoader
@@ -42,7 +41,7 @@ final class DogmaLoader
     public static function getInstance(): self
     {
         if (self::$instance === null) {
-            self::$instance = new self();
+            self::$instance = new static();
         }
         return self::$instance;
     }
@@ -64,7 +63,7 @@ final class DogmaLoader
             return;
         }
 
-        $file = dirname(__DIR__) . DIRECTORY_SEPARATOR . strtr(substr($class, 5), '\\', DIRECTORY_SEPARATOR) . '.php';
+        $file = dirname(__DIR__) . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, substr($class, 5)) . '.php';
         if (is_file($file)) {
             require $file;
             return;

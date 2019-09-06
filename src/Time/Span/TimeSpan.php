@@ -2,6 +2,7 @@
 
 namespace Dogma\Time\Span;
 
+use DateInterval;
 use Dogma\Arr;
 use Dogma\Comparable;
 use Dogma\Equalable;
@@ -41,7 +42,7 @@ class TimeSpan implements DateOrTimeSpan
         $this->microseconds = $microseconds;
     }
 
-    public static function createFromDateInterval(\DateInterval $dateInterval): self
+    public static function createFromDateInterval(DateInterval $dateInterval): self
     {
         $self = new static(0);
         $self->hours = $dateInterval->invert ? -$dateInterval->h : $dateInterval->h;
@@ -58,14 +59,14 @@ class TimeSpan implements DateOrTimeSpan
 
     public static function createFromDateIntervalString(string $string): self
     {
-        $dateInterval = new \DateInterval($string);
+        $dateInterval = new DateInterval($string);
 
         return self::createFromDateInterval($dateInterval);
     }
 
     public static function createFromDateString(string $string): self
     {
-        $dateInterval = \DateInterval::createFromDateString($string);
+        $dateInterval = DateInterval::createFromDateString($string);
 
         return self::createFromDateInterval($dateInterval);
     }
@@ -77,13 +78,13 @@ class TimeSpan implements DateOrTimeSpan
         return new DateTimeSpan(0, 0, 0, $this->hours, $this->minutes, $this->seconds, $this->microseconds);
     }
 
-    public function toNative(): \DateInterval
+    public function toNative(): DateInterval
     {
         return $this->toDateTimeSpan()->toNative();
     }
 
     /**
-     * @return \DateInterval[]
+     * @return DateInterval[]
      */
     public function toPositiveAndNegative(): array
     {
@@ -100,7 +101,7 @@ class TimeSpan implements DateOrTimeSpan
     }
 
     /**
-     * @param \Dogma\Time\Span\TimeSpan $other
+     * @param TimeSpan $other
      * @return bool
      */
     public function equals(Equalable $other): bool
@@ -109,7 +110,7 @@ class TimeSpan implements DateOrTimeSpan
     }
 
     /**
-     * @param \Dogma\Time\Span\TimeSpan $other
+     * @param TimeSpan $other
      * @return int
      */
     public function compare(Comparable $other): int
@@ -166,7 +167,7 @@ class TimeSpan implements DateOrTimeSpan
 
     public function subtract(self ...$other): self
     {
-        return $this->add(...Arr::map($other, function (DateTimeSpan $span) {
+        return $this->add(...Arr::map($other, static function (DateTimeSpan $span): DateTimeSpan {
             return $span->invert();
         }));
     }
@@ -198,24 +199,24 @@ class TimeSpan implements DateOrTimeSpan
 
         if ($microseconds >= 1000000) {
             $seconds += (int) ($microseconds / 1000000);
-            $microseconds = $microseconds % 1000000;
+            $microseconds %= 1000000;
         } elseif ($microseconds <= -1000000) {
             $seconds += (int) ($microseconds / 1000000);
-            $microseconds = $microseconds % 1000000;
+            $microseconds %= 1000000;
         }
         if ($seconds >= 60) {
             $minutes += (int) ($seconds / 60);
-            $seconds = $seconds % 60;
+            $seconds %= 60;
         } elseif ($seconds <= -60) {
             $minutes += (int) ($seconds / 60);
-            $seconds = $seconds % 60;
+            $seconds %= 60;
         }
         if ($minutes >= 60) {
             $hours += (int) ($minutes / 60);
-            $minutes = $minutes % 60;
+            $minutes %= 60;
         } elseif ($minutes <= -60) {
             $hours += (int) ($minutes / 60);
-            $minutes = $minutes % 60;
+            $minutes %= 60;
         }
 
         return new self($hours, $minutes, $seconds, $microseconds);

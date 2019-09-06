@@ -13,10 +13,10 @@ $emptyInterval = IntInterval::empty();
 
 $set = new IntIntervalSet([$interval]);
 
-$i = function (int $start, int $end) {
+$i = static function (int $start, int $end) {
     return new IntInterval($start, $end);
 };
-$s = function (IntInterval ...$items) {
+$s = static function (IntInterval ...$items) {
     return new IntIntervalSet($items);
 };
 
@@ -52,13 +52,13 @@ Assert::equal($s($i(1, 10))->subtract($s($i(3, 4), $i(7, 8))), $s($i(1, 2), $i(5
 Assert::equal($s($i(1, 5), $i(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $s($i(4, 5), $i(10, 12), $i(14, 15)));
 
 // map()
-Assert::equal($set->map(function (IntInterval $interval) {
+Assert::equal($set->map(static function (IntInterval $interval) {
     return $interval;
 }), $set);
-Assert::equal($set->map(function (IntInterval $interval) {
+Assert::equal($set->map(static function (IntInterval $interval) {
     return $interval->split(2);
 }), $s($i(1, 3), $i(4, 5)));
-Assert::equal($set->map(function (IntInterval $interval) {
+Assert::equal($set->map(static function (IntInterval $interval) {
     return $interval->split(2)->getIntervals();
 }), $s($i(1, 3), $i(4, 5)));
 

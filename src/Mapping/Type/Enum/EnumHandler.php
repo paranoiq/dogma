@@ -30,7 +30,7 @@ class EnumHandler implements TypeHandler
     }
 
     /**
-     * @param \Dogma\Type $type
+     * @param Type $type
      * @return string[]|null
      */
     public function getParameters(Type $type): ?array
@@ -39,10 +39,10 @@ class EnumHandler implements TypeHandler
     }
 
     /**
-     * @param \Dogma\Type $type
+     * @param Type $type
      * @param int|string $value
-     * @param \Dogma\Mapping\Mapper $mapper
-     * @return \Dogma\Enum\IntEnum|\Dogma\Enum\StringEnum
+     * @param Mapper $mapper
+     * @return IntEnum|StringEnum
      */
     public function createInstance(Type $type, $value, Mapper $mapper)
     {
@@ -50,10 +50,10 @@ class EnumHandler implements TypeHandler
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     * @param \Dogma\Type $type
-     * @param \Dogma\Enum\IntEnum|\Dogma\Enum\StringEnum $enum
-     * @param \Dogma\Mapping\Mapper $mapper
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param Type $type
+     * @param IntEnum|StringEnum $enum
+     * @param Mapper $mapper
      * @return int|string
      */
     public function exportInstance(Type $type, $enum, Mapper $mapper)

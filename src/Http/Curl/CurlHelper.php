@@ -65,7 +65,7 @@ class CurlHelper
         return 'UNKNOWN_ERROR';
     }
 
-    public static function getCurlOptionNumber(string $name): int
+    public static function getCurlOptionNumber(string $name): ?int
     {
         $name = strtoupper($name);
 

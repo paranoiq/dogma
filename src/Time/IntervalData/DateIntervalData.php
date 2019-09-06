@@ -9,6 +9,7 @@
 
 namespace Dogma\Time\IntervalData;
 
+use DateTimeInterface;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
@@ -33,18 +34,18 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
     public const MIN = Date::MIN;
     public const MAX = Date::MAX;
 
-    /** @var \Dogma\Time\Date */
+    /** @var Date */
     private $start;
 
-    /** @var \Dogma\Time\Date */
+    /** @var Date */
     private $end;
 
     /** @var mixed|null */
     private $data;
 
     /**
-     * @param \Dogma\Time\Date $start
-     * @param \Dogma\Time\Date $end
+     * @param Date $start
+     * @param Date $end
      * @param mixed|null $data
      */
     public function __construct(Date $start, Date $end, $data)
@@ -59,7 +60,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
     }
 
     /**
-     * @param \Dogma\Time\Interval\DateInterval $interval
+     * @param DateInterval $interval
      * @param mixed|null $data
      * @return self
      */
@@ -141,7 +142,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
     }
 
     /**
-     * @return \Dogma\Time\Date[]|mixed[] array of pairs (Date $date, mixed $data)
+     * @return Date[]|mixed[] array of pairs (Date $date, mixed $data)
      */
     public function toDateDataArray(): array
     {
@@ -170,7 +171,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
     }
 
     /**
-     * @return \Dogma\Time\Date[]
+     * @return Date[]
      */
     public function getStartEnd(): array
     {
@@ -227,7 +228,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
     }
 
     /**
-     * @param \Dogma\Time\Date|\DateTimeInterface $date
+     * @param Date|DateTimeInterface $date
      * @return bool
      */
     public function containsValue($date): bool
@@ -240,7 +241,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
     }
 
     /**
-     * @param \Dogma\Time\Interval\DateInterval|\Dogma\Time\IntervalData\DateIntervalData $interval
+     * @param DateInterval|DateIntervalData $interval
      * @return bool
      */
     public function contains($interval): bool
@@ -253,7 +254,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
     }
 
     /**
-     * @param \Dogma\Time\Interval\DateInterval|\Dogma\Time\IntervalData\DateIntervalData $interval
+     * @param DateInterval|DateIntervalData $interval
      * @return bool
      */
     public function intersects($interval): bool
@@ -262,7 +263,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
     }
 
     /**
-     * @param \Dogma\Time\Interval\DateInterval|\Dogma\Time\IntervalData\DateIntervalData $interval
+     * @param DateInterval|DateIntervalData $interval
      * @return bool
      */
     public function touches($interval): bool
@@ -293,12 +294,10 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
     {
         $intervals = [$this];
 
-        /** @var \Dogma\Time\Interval\DateInterval $item */
         foreach ($items as $item) {
             if ($item->isEmpty()) {
                 continue;
             }
-            /** @var self $interval */
             foreach ($intervals as $i => $interval) {
                 unset($intervals[$i]);
                 if ($interval->start->isBefore($item->getStart()) && $interval->end->isAfter($item->getEnd())) {
@@ -323,7 +322,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
      */
     public static function sort(array $intervals): array
     {
-        usort($intervals, function (DateIntervalData $a, DateIntervalData $b) {
+        usort($intervals, static function (DateIntervalData $a, DateIntervalData $b) {
             return $a->start->getJulianDay() <=> $b->start->getJulianDay() ?: $a->end->getJulianDay() <=> $b->end->getJulianDay();
         });
 
@@ -336,7 +335,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
      */
     public static function sortByStart(array $intervals): array
     {
-        usort($intervals, function (DateIntervalData $a, DateIntervalData $b) {
+        usort($intervals, static function (DateIntervalData $a, DateIntervalData $b) {
             return $a->start->getJulianDay() <=> $b->start->getJulianDay();
         });
 

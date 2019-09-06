@@ -13,10 +13,10 @@ $emptyInterval = FloatInterval::empty();
 
 $set = new FloatIntervalSet([$interval]);
 
-$i = function (int $start, int $end, bool $openStart = false, bool $openEnd = false) {
+$i = static function (int $start, int $end, bool $openStart = false, bool $openEnd = false) {
     return new FloatInterval((float) $start, (float) $end, $openStart, $openEnd);
 };
-$s = function (FloatInterval ...$items) {
+$s = static function (FloatInterval ...$items) {
     return new FloatIntervalSet($items);
 };
 
@@ -52,13 +52,13 @@ Assert::equal($s($i(1, 10))->subtract($s($i(3, 4), $i(7, 8))), $s($i(1, 3, false
 Assert::equal($s($i(1, 5), $i(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $s($i(4, 5), $i(10, 12), $i(14, 15)));
 
 // map()
-Assert::equal($set->map(function (FloatInterval $interval) {
+Assert::equal($set->map(static function (FloatInterval $interval) {
     return $interval;
 }), $set);
-Assert::equal($set->map(function (FloatInterval $interval) {
+Assert::equal($set->map(static function (FloatInterval $interval) {
     return $interval->split(2, FloatInterval::SPLIT_CLOSED);
 }), $s($i(1, 3), $i(3, 5)));
-Assert::equal($set->map(function (FloatInterval $interval) {
+Assert::equal($set->map(static function (FloatInterval $interval) {
     return $interval->split(2, FloatInterval::SPLIT_CLOSED)->getIntervals();
 }), $s($i(1, 3), $i(3, 5)));
 

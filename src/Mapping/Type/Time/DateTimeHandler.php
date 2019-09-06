@@ -9,6 +9,7 @@
 
 namespace Dogma\Mapping\Type\Time;
 
+use DateTimeZone;
 use Dogma\Mapping\Mapper;
 use Dogma\Mapping\Type\TypeHandler;
 use Dogma\StrictBehaviorMixin;
@@ -33,14 +34,14 @@ class DateTimeHandler implements TypeHandler
     /** @var string */
     private $timeFormat;
 
-    /** @var \DateTimeZone|null */
+    /** @var DateTimeZone|null */
     private $timeZone;
 
     public function __construct(
         string $dateTimeFormat = 'Y-m-d H:i:s',
         string $dateFormat = 'Y-m-d',
         string $timeFormat = 'H:i:s',
-        ?\DateTimeZone $timeZone = null
+        ?DateTimeZone $timeZone = null
     )
     {
         $this->dateTimeFormat = $dateTimeFormat;
@@ -57,8 +58,8 @@ class DateTimeHandler implements TypeHandler
     }
 
     /**
-     * @param \Dogma\Type $type
-     * @return \Dogma\Type[]|null
+     * @param Type $type
+     * @return Type[]|null
      */
     public function getParameters(Type $type): ?array
     {
@@ -66,10 +67,10 @@ class DateTimeHandler implements TypeHandler
     }
 
     /**
-     * @param \Dogma\Type $type
+     * @param Type $type
      * @param mixed $value
-     * @param \Dogma\Mapping\Mapper $mapper
-     * @return \Dogma\Time\DateTime|\Dogma\Time\Date|\Dogma\Time\Time
+     * @param Mapper $mapper
+     * @return DateTime|Date|Time
      */
     public function createInstance(Type $type, $value, Mapper $mapper)
     {
@@ -83,9 +84,9 @@ class DateTimeHandler implements TypeHandler
     }
 
     /**
-     * @param \Dogma\Type $type
-     * @param \Dogma\Time\DateTime|\Dogma\Time\Date|\Dogma\Time\Time $instance
-     * @param \Dogma\Mapping\Mapper $mapper
+     * @param Type $type
+     * @param DateTime|Date|Time $instance
+     * @param Mapper $mapper
      * @return string
      */
     public function exportInstance(Type $type, $instance, Mapper $mapper): string

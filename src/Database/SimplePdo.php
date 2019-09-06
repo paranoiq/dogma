@@ -10,6 +10,8 @@
 namespace Dogma\Database;
 
 use Dogma\StrictBehaviorMixin;
+use PDO;
+use PDOException;
 use function array_shift;
 use function array_values;
 use function bin2hex;
@@ -30,7 +32,7 @@ use function substr;
  * - use ? for automatic value binding
  * - use % for automatic name binding with escaping
  */
-class SimplePdo extends \PDO
+class SimplePdo extends PDO
 {
     use StrictBehaviorMixin;
 
@@ -73,7 +75,7 @@ class SimplePdo extends \PDO
     /**
      * @param string $query
      * @param mixed ...$args
-     * @return \Dogma\Database\SimplePdoResult
+     * @return SimplePdoResult
      */
     public function query(string $query, ...$args): SimplePdoResult
     {
@@ -109,7 +111,7 @@ class SimplePdo extends \PDO
             } else {
                 $statement = parent::query($query);
             }
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             $code = $e->getCode();
             // change SQLSTATE to error code
             if (strlen($code) === 5 && preg_match('/\\s[0-9]{4}\\s/', $e->getMessage(), $m)) {
@@ -117,7 +119,7 @@ class SimplePdo extends \PDO
             } else {
                 $code = (int) $code;
             }
-            throw new \PDOException(
+            throw new PDOException(
                 str_replace(
                     'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near',
                     'SQL syntax error near',
@@ -145,6 +147,7 @@ class SimplePdo extends \PDO
     }
 
     /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param mixed $value
      * @param string|null $parameterType
      * @return string

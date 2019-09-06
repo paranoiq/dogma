@@ -9,12 +9,14 @@
 
 namespace Dogma;
 
+use ArrayAccess;
+use IteratorIterator;
 use function is_array;
 
 /**
  * Returns only selected keys from iterated arrays (eg. rows) as keys and values.
  */
-class FetchKeysIterator extends \IteratorIterator
+class FetchKeysIterator extends IteratorIterator
 {
     use StrictBehaviorMixin;
 
@@ -48,7 +50,7 @@ class FetchKeysIterator extends \IteratorIterator
             return parent::current();
         } else {
             $value = parent::current();
-            if (!is_array($value) && !$value instanceof \ArrayAccess) {
+            if (!is_array($value) && !$value instanceof ArrayAccess) {
                 throw new InvalidTypeException('array or ArrayAccess', $value);
             }
             return $value[$this->valuesKey];
@@ -64,7 +66,7 @@ class FetchKeysIterator extends \IteratorIterator
             return parent::key();
         } else {
             $value = parent::current();
-            if (!is_array($value) && !$value instanceof \ArrayAccess) {
+            if (!is_array($value) && !$value instanceof ArrayAccess) {
                 throw new InvalidTypeException('array or ArrayAccess', $value);
             }
             return $value[$this->keysKey];

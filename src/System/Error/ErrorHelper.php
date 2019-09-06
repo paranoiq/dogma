@@ -9,6 +9,7 @@
 
 namespace Dogma\System\Error;
 
+use Throwable;
 use const PHP_OS;
 use function is_int;
 use function strpos;
@@ -26,7 +27,7 @@ class ErrorHelper
      * Get error object for given error number.
      * @param int $errno
      * @param int|string $system
-     * @return \Dogma\System\Error\SystemError|null
+     * @return SystemError|null
      */
     public static function getError(int $errno, $system = self::LOCAL): ?SystemError
     {
@@ -46,7 +47,7 @@ class ErrorHelper
                 case self::WINDOWS:
                     return WindowsError::get($errno);
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return null;
         }
 

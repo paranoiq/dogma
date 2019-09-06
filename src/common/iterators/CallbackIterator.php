@@ -9,12 +9,13 @@
 
 namespace Dogma;
 
+use IteratorIterator;
 use function call_user_func;
 
 /**
  * Calls given callback on each value or key and returns result.
  */
-class CallbackIterator extends \IteratorIterator
+class CallbackIterator extends IteratorIterator
 {
     use StrictBehaviorMixin;
 

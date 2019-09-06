@@ -290,26 +290,26 @@ class DayOfYear implements Equalable, Comparable
 
     public static function min(self ...$items): self
     {
-        return Arr::minBy($items, function (self $time) {
+        return Arr::minBy($items, static function (self $time): int {
             return $time->number;
         });
     }
 
     public static function max(self ...$items): self
     {
-        return Arr::maxBy($items, function (self $time) {
+        return Arr::maxBy($items, static function (self $time): int {
             return $time->number;
         });
     }
 
     /**
-     * @param \Dogma\Time\DayOfYear[] $items
+     * @param DayOfYear[] $items
      * @param int $flags
-     * @return \Dogma\Time\DayOfYear[]
+     * @return DayOfYear[]
      */
     public static function sort(array $items, int $flags = Order::ASCENDING): array
     {
-        return Arr::sortWith($items, function (self $a, self $b) {
+        return Arr::sortWith($items, static function (self $a, self $b): int {
             return $a->number <=> $b->number;
         }, $flags);
     }

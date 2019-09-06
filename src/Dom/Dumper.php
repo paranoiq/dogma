@@ -11,6 +11,12 @@ namespace Dogma\Dom;
 
 use Dogma\NotImplementedException;
 use Dogma\StaticClassMixin;
+use DOMCdataSection;
+use DOMComment;
+use DOMDocument;
+use DOMElement;
+use DOMNode;
+use DOMText;
 use function count;
 use function htmlspecialchars;
 use function preg_replace;
@@ -22,7 +28,7 @@ class Dumper
     use StaticClassMixin;
 
     /**
-     * @param \Dogma\Dom\Element|\Dogma\Dom\NodeList|\DOMNode $node
+     * @param Element|NodeList|DOMNode $node
      * @param int $maxDepth
      * @param int $depth
      * @param bool $onlyChild
@@ -36,28 +42,28 @@ class Dumper
             echo '<pre><code>';
         }
 
-        if ($node instanceof Element || $node instanceof \DOMElement) {
+        if ($node instanceof Element || $node instanceof DOMElement) {
             self::dumpElement($node, $maxDepth, $depth, $onlyChild);
 
-        } elseif ($node instanceof \DOMDocument) {
+        } elseif ($node instanceof DOMDocument) {
             if ($depth === 0) {
                 echo "<b>Document:</b>\n";
             }
             self::dump($node->documentElement, $maxDepth);
 
-        } elseif ($node instanceof \DOMCdataSection) {
+        } elseif ($node instanceof DOMCdataSection) {
             if ($depth === 0) {
                 echo "<b>CdataSection:</b>\n";
             }
             echo '<i style="color: purple">', htmlspecialchars(trim($node->data)), '</i>';
 
-        } elseif ($node instanceof \DOMComment) {
+        } elseif ($node instanceof DOMComment) {
             if ($depth === 0) {
                 echo "<b>Comment:</b>\n";
             }
             echo '<i style="color: gray">&lt;!-- ', trim($node->data), " --&gt;</i>\n";
 
-        } elseif ($node instanceof \DOMText) {
+        } elseif ($node instanceof DOMText) {
             if ($depth === 0) {
                 echo "<b>Text:</b>\n";
             }
@@ -67,7 +73,7 @@ class Dumper
         } elseif ($node instanceof NodeList) {
             echo '<b>NodeList (', count($node), ")</b>\n";
             foreach ($node as $item) {
-                echo '<hr style="border: 1px silver solid; border-width: 1px 0px 0px 0px">';
+                echo '<hr style="border: silver solid; border-width: 1px 0 0 0">';
                 echo '    ';
                 self::dump($item, $maxDepth, $depth + 1, true);
             }
@@ -82,7 +88,7 @@ class Dumper
     }
 
     /**
-     * @param \Dogma\Dom\Element|\DOMNode $node
+     * @param Element|DOMNode $node
      * @param int $maxDepth
      * @param int $depth
      * @param bool $onlyChild
@@ -95,10 +101,10 @@ class Dumper
         if (!$onlyChild) {
             echo str_repeat('    ', $depth);
         }
-        echo '<b>&lt;</b><b style="color:red">', $node->nodeName, '</b>';
+        echo '<b>&lt;</b><b style="color: red">', $node->nodeName, '</b>';
 
         foreach ($node->attributes as $attribute) {
-            echo ' <span style="color: green">', $attribute->name, '</span>=<span style="color:blue">"', $attribute->value, '"</span>';
+            echo ' <span style="color: green">', $attribute->name, '</span>=<span style="color: blue">"', $attribute->value, '"</span>';
         }
 
         echo '<b>&gt;</b>';

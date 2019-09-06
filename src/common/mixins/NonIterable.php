@@ -9,10 +9,12 @@
 
 namespace Dogma;
 
+use IteratorAggregate;
+
 /**
- * @deprecated PHPStan reports invalid usage of iteration. Use it instead
+ * @deprecated PHPStan reports invalid usage of iteration. Use it instead. Will be removed
  */
-interface NonIterable extends \IteratorAggregate
+interface NonIterable extends IteratorAggregate
 {
 
 }

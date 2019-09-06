@@ -14,12 +14,12 @@ class TestClass
 
 }
 
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     $x = new TestClass();
     $y = serialize($x);
 }, NonSerializableObjectException::class);
 
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     $y = 'O:42:"Dogma\Tests\NonSerializableMixin\TestClass":0:{}';
     $x = unserialize($y);
 }, NonSerializableObjectException::class);

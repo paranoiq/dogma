@@ -2,6 +2,9 @@
 
 namespace Dogma\Tests\Time;
 
+use DateTime as PhpDateTime;
+use DateTimeImmutable;
+use DateTimeZone;
 use Dogma\InvalidValueException;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
@@ -15,13 +18,13 @@ require_once __DIR__ . '/../bootstrap.php';
 
 $dateString = '2000-01-02';
 $date = new Date($dateString);
-$dateTime = new \DateTime($dateString);
-$dateTimeImmutable = new \DateTimeImmutable($dateString);
+$dateTime = new PhpDateTime($dateString);
+$dateTimeImmutable = new DateTimeImmutable($dateString);
 $timestamp = 946782245;
-$utcTimeZone = new \DateTimeZone('UTC');
+$utcTimeZone = new DateTimeZone('UTC');
 
 // __construct()
-Assert::throws(function (): void {
+Assert::throws(static function (): void {
     new Date('asdf');
 }, InvalidDateTimeException::class);
 Assert::type(new Date(), Date::class);
@@ -42,7 +45,7 @@ Assert::same(Date::createFromComponents(2001, 2, 3)->format('Y-m-d'), '2001-02-0
 // createFromFormat()
 Assert::type(Date::createFromFormat(Date::DEFAULT_FORMAT, $dateString), Date::class);
 Assert::same(Date::createFromFormat(Date::DEFAULT_FORMAT, $dateString)->format(), $dateString);
-Assert::exception(function (): void {
+Assert::exception(static function (): void {
     Date::createFromFormat('Y-m-d', '12:00:00');
 }, InvalidDateTimeException::class);
 
@@ -53,7 +56,7 @@ Assert::same($date->format('j.n.Y'), date('j.n.Y', $timestamp));
 Assert::equal($date->toDateTime(), new DateTime('2000-01-02 00:00:00'));
 
 // toDateTimeInterval()
-Assert::equal($date->toDateTimeInterval(), new DateTimeInterval(new DateTime('2000-01-02 00:00:00'), new DateTime('2000-01-03 00:00:00'), false, true));
+Assert::equal($date->toDateTimeInterval(), new DateTimeInterval(new DateTime('2000-01-02 00:00:00'), new DateTime('2000-01-03 00:00:00')));
 
 // getJulianDay()
 Assert::same($date->getJulianDay(), 2451546);
@@ -147,7 +150,7 @@ Assert::true($monday->isDayOfWeek(1));
 Assert::true($monday->isDayOfWeek(DayOfWeek::monday()));
 Assert::false($monday->isDayOfWeek(7));
 Assert::false($monday->isDayOfWeek(DayOfWeek::sunday()));
-Assert::exception(function () use ($monday): void {
+Assert::exception(static function () use ($monday): void {
     $monday->isDayOfWeek(8);
 }, InvalidValueException::class);
 
@@ -165,6 +168,6 @@ Assert::true($monday->isMonth(11));
 Assert::true($monday->isMonth(Month::november()));
 Assert::false($monday->isMonth(12));
 Assert::false($monday->isMonth(Month::december()));
-Assert::exception(function () use ($monday): void {
+Assert::exception(static function () use ($monday): void {
     $monday->isMonth(13);
 }, InvalidValueException::class);

@@ -86,9 +86,9 @@ class Vector3
         $size = abs(sqrt($x * $x + $y * $y + $z * $z));
 
         if (!FloatCalc::equals($size, 1.0)) {
-            $x = $x / $size;
-            $y = $y / $size;
-            $z = $z / $size;
+            $x /= $size;
+            $y /= $size;
+            $z /= $size;
         }
 
         return [$x, $y, $z];

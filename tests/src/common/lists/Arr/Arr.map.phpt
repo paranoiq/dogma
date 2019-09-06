@@ -11,12 +11,12 @@ $array = [1, 2, 3, 4];
 $arr2 = [[1, 2], [3, 4]];
 $empty = [];
 
-$f = function (int $v): int {
+$f = static function (int $v): int {
     return $v % 2;
 };
 
 // flatMap()
-Assert::same(Arr::flatMap($arr2, function (array $v): array {
+Assert::same(Arr::flatMap($arr2, static function (array $v): array {
     return array_reverse($v);
 }), [2, 1, 4, 3]);
 Assert::same(Arr::flatMap($empty, $f), []);
@@ -34,13 +34,13 @@ Assert::same(Arr::map($array, $f), [1, 0, 1, 0]);
 Assert::same(Arr::map($empty, $f), []);
 
 // mapPairs()
-Assert::same(Arr::mapPairs($array, function (int $k, int $v): int {
+Assert::same(Arr::mapPairs($array, static function (int $k, int $v): int {
     return $k + $v;
 }), [1, 3, 5, 7]);
 Assert::same(Arr::mapPairs($empty, $f), []);
 
 // remap()
-Assert::same(Arr::remap($array, function (int $k, int $v): array {
+Assert::same(Arr::remap($array, static function (int $k, int $v): array {
     return [$v => $k];
 }), [1 => 0, 1, 2, 3]);
 Assert::same(Arr::remap($empty, $f), []);

@@ -56,7 +56,7 @@ class PositionFormatter
         self::ALTITUDE_AB,
     ];
 
-    /** @var \Dogma\Math\Angle\AngleFormatter */
+    /** @var AngleFormatter */
     private $angleFormatter;
 
     /** @var string */
@@ -71,10 +71,11 @@ class PositionFormatter
     public function format(
         Position $position,
         ?string $format = null,
-        ?string $angleFormatter = null
+        ?AngleFormatter $angleFormatter = null
     ): string
     {
         $format = $format ?? $this->format;
+        /** @var AngleFormatter $angleFormatter */
         $angleFormatter = $angleFormatter ?? $this->angleFormatter;
 
         $result = '';
@@ -82,7 +83,7 @@ class PositionFormatter
         foreach (str_split($format) as $character) {
             if ($character === '%' && !$escaped) {
                 $escaped = true;
-            } elseif ($escaped === false && in_array($character, self::$specialCharacters)) {
+            } elseif ($escaped === false && in_array($character, self::$specialCharacters, true)) {
                 switch ($character) {
                     case self::LATITUDE:
                         $result .= $angleFormatter->format(abs($position->getLatitude()));
@@ -109,8 +110,6 @@ class PositionFormatter
                         $result .= $position->getLongitude() < 0.0 ? 'W' : 'E';
                         break;
                     case self::ALTITUDE:
-                        $result .= '0';
-                        break;
                     case self::ALTITUDE_SIGNED:
                         $result .= '0';
                         break;

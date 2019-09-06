@@ -2,8 +2,10 @@
 
 namespace Dogma\Tests\Type;
 
+use DateTime;
 use Dogma\Tester\Assert;
 use Dogma\Type;
+use Error;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -87,10 +89,10 @@ Assert::false($bool->isResource());
 
 // is()
 Assert::true($bool->is(Type::BOOL));
-Assert::false($bool->is(\DateTime::class));
+Assert::false($bool->is(DateTime::class));
 
 // isImplementing()
-Assert::false($bool->isImplementing(\DateTime::class));
+Assert::false($bool->isImplementing(DateTime::class));
 
 // getBaseType()
 Assert::same($boolNullable->getBaseType(), $bool);
@@ -102,6 +104,6 @@ Assert::same($boolNullable->getNonNullableType(), $bool);
 Assert::same($boolNullable->getTypeWithoutParams(), $boolNullable);
 
 // getInstance()
-Assert::exception(function () use ($bool): void {
+Assert::exception(static function () use ($bool): void {
     $bool->getInstance();
-}, \Error::class);
+}, Error::class);

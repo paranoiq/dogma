@@ -7,9 +7,12 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
+// phpcs:disable SlevomatCodingStandard.Classes.ParentCallSpacing.IncorrectLinesCountAfterControlStructure
+
 namespace Dogma\Language;
 
 use Dogma\StrictBehaviorMixin;
+use Transliterator as PhpTransliterator;
 use function array_map;
 use function explode;
 use function implode;
@@ -20,7 +23,7 @@ use function sprintf;
 /**
  * @see http://userguide.icu-project.org/transforms/general
  */
-class Transliterator extends \Transliterator
+class Transliterator extends PhpTransliterator
 {
     use StrictBehaviorMixin;
 
@@ -197,16 +200,16 @@ class Transliterator extends \Transliterator
     public const FULLWIDTH_TO_HALFWIDTH = 'Fullwidth-Halfwidth';
     public const HALFWIDTH_TO_FULLWIDTH = 'Halfwidth-Fullwidth';
 
-    /** @var \Transliterator[] */
+    /** @var PhpTransliterator[] */
     private static $instances = [];
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $id
      * @param int|null $direction
-     * @return \Transliterator
+     * @return PhpTransliterator
      */
-    public static function create($id, $direction = null): \Transliterator
+    public static function create($id, $direction = null): PhpTransliterator
     {
         if (isset(self::$instances[$id])) {
             return self::$instances[$id];
@@ -222,14 +225,17 @@ class Transliterator extends \Transliterator
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $rules
      * @param int|null $direction
-     * @return \Transliterator
+     * @return PhpTransliterator
      */
-    public static function createFromRules($rules, $direction = null): \Transliterator
+    public static function createFromRules($rules, $direction = null): PhpTransliterator
     {
-        $transliterator = $direction !== null ? parent::createFromRules($rules, $direction) : parent::create($rules);
+        $transliterator = $direction !== null
+            ? parent::createFromRules($rules, $direction)
+            : parent::create($rules);
+
         if ($transliterator === null) {
             throw new TransliteratorException(intl_get_error_message());
         }
@@ -248,13 +254,13 @@ class Transliterator extends \Transliterator
      * ]
      * ```
      *
-     * @param string[]|string[][] $rules
+     * @param string[]|string[][]|string[][][] $rules
      * @param int|null $direction
-     * @return \Transliterator
+     * @return PhpTransliterator
      */
-    public static function createFromIds(array $rules, ?int $direction = null): ?\Transliterator
+    public static function createFromIds(array $rules, ?int $direction = null): PhpTransliterator
     {
-        $rules = array_map(function ($rule): string {
+        $rules = array_map(static function ($rule): string {
             return is_array($rule)
                 ? (is_array($rule[1])
                     ? '[[:' . implode(':][:', $rule[1]) . ':]] ' . $rule[0]
@@ -265,7 +271,7 @@ class Transliterator extends \Transliterator
         return self::create(implode(';', $rules), $direction);
     }
 
-    public static function createFromScripts(Script $fromScript, Script $toScript): ?\Transliterator
+    public static function createFromScripts(Script $fromScript, Script $toScript): PhpTransliterator
     {
         $from = explode(' ', $fromScript->getName())[0];
         $to = explode(' ', $toScript->getName())[0];

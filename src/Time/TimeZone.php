@@ -9,6 +9,7 @@
 
 namespace Dogma\Time;
 
+use DateTimeZone;
 use Dogma\Enum\PartialStringEnum;
 use Dogma\InvalidValueException;
 use function date_default_timezone_get;
@@ -633,12 +634,12 @@ class TimeZone extends PartialStringEnum
 
     // DateTimeZone ----------------------------------------------------------------------------------------------------
 
-    public function getDateTimeZone(): \DateTimeZone
+    public function getDateTimeZone(): DateTimeZone
     {
-        return new \DateTimeZone($this->getValue());
+        return new DateTimeZone($this->getValue());
     }
 
-    private static function createDateTimeZone(string $name): \DateTimeZone
+    private static function createDateTimeZone(string $name): DateTimeZone
     {
         try {
             $timeZone = self::get($name);
@@ -649,7 +650,7 @@ class TimeZone extends PartialStringEnum
         return $timeZone->getDateTimeZone();
     }
 
-    public static function getUtc(): \DateTimeZone
+    public static function getUtc(): DateTimeZone
     {
         static $utcTimeZone;
 
@@ -660,7 +661,7 @@ class TimeZone extends PartialStringEnum
         return $utcTimeZone;
     }
 
-    public static function getDefault(): \DateTimeZone
+    public static function getDefault(): DateTimeZone
     {
         return self::createDateTimeZone(date_default_timezone_get());
     }

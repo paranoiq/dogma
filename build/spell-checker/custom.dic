@@ -6,14 +6,16 @@ binlog
 CP
 dst
 EOL
+eml
 mailparse
 msg
 multipart
 pthreads
 redir
 struct
-UDF
+tablespace
 uint
+UDF
 Vector3i
 XA
 µs
@@ -51,7 +53,6 @@ ascii
 bsd
 csp
 csrf
-eml
 euc
 fsync
 hiragana
@@ -103,6 +104,7 @@ footrow
 getters
 hashmap
 headrow
+inflector
 inits
 instanceof
 inv
@@ -119,7 +121,6 @@ radians
 referer
 runned
 subtype
-tablespace
 timestamps
 timezones
 typehint
@@ -135,9 +136,8 @@ denormalize
 denormalized
 endian
 ignorable
-inflector
-inlined
 iterable
+inlined
 login
 multithreaded
 nullable

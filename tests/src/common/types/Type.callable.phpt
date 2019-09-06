@@ -2,8 +2,10 @@
 
 namespace Dogma\Tests\Type;
 
+use DateTime;
 use Dogma\Tester\Assert;
 use Dogma\Type;
+use Error;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -87,10 +89,10 @@ Assert::false($callable->isResource());
 
 // is()
 Assert::true($callable->is(Type::PHP_CALLABLE));
-Assert::false($callable->is(\DateTime::class));
+Assert::false($callable->is(DateTime::class));
 
 // isImplementing()
-Assert::false($callable->isImplementing(\DateTime::class));
+Assert::false($callable->isImplementing(DateTime::class));
 
 // getBaseType()
 Assert::same($callable->getBaseType(), $callable);
@@ -105,6 +107,6 @@ Assert::same($callable->getTypeWithoutParams(), $callable);
 Assert::same($callableNullable->getTypeWithoutParams(), $callableNullable);
 
 // getInstance()
-Assert::exception(function () use ($callable): void {
+Assert::exception(static function () use ($callable): void {
     $callable->getInstance();
-}, \Error::class);
+}, Error::class);
