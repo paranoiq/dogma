@@ -20,7 +20,6 @@ parameters:
         - '~^Method Dogma\\IteratorHelper::iterableToIterator\(\) should return Iterator but returns Traversable~'
 
         # deprecated things, won't fix
-        - '~The /e modifier is no longer supported~'
         -
             message: "~.*~"
             path: "../../src/Email/EmailMessage.php"
