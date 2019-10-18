@@ -68,13 +68,13 @@ class DayOfWeek extends IntEnum
     public static function getNames(): array
     {
         return [
-            'monday',
-            'tuesday',
-            'wednesday',
-            'thursday',
-            'friday',
-            'saturday',
-            'sunday',
+            self::MONDAY => 'monday',
+            self::TUESDAY => 'tuesday',
+            self::WEDNESDAY => 'wednesday',
+            self::THURSDAY => 'thursday',
+            self::FRIDAY => 'friday',
+            self::SATURDAY => 'saturday',
+            self::SUNDAY => 'sunday',
         ];
     }
 
@@ -84,13 +84,13 @@ class DayOfWeek extends IntEnum
     public static function getShortcuts(): array
     {
         return [
-            'mon',
-            'tue',
-            'wed',
-            'thu',
-            'fri',
-            'sat',
-            'sun',
+            self::MONDAY => 'mon',
+            self::TUESDAY => 'tue',
+            self::WEDNESDAY => 'wed',
+            self::THURSDAY => 'thu',
+            self::FRIDAY => 'fri',
+            self::SATURDAY => 'sat',
+            self::SUNDAY => 'sun',
         ];
     }
 
