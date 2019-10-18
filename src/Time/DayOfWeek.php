@@ -96,12 +96,12 @@ class DayOfWeek extends IntEnum
 
     public function getName(): string
     {
-        return self::getNames()[$this->getValue()];
+        return self::getNames()[$this->getValue() - 1];
     }
 
     public function getShortcut(): string
     {
-        return self::getShortcuts()[$this->getValue()];
+        return self::getShortcuts()[$this->getValue() - 1];
     }
 
     public function isWeekend(): bool
