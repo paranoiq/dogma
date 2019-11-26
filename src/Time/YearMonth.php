@@ -17,6 +17,7 @@ use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeFormatter;
 use function explode;
 use function implode;
+use function substr;
 
 class YearMonth implements Comparable, Equalable
 {
@@ -79,6 +80,16 @@ class YearMonth implements Comparable, Equalable
         Check::instance($other, self::class);
 
         return $this->value === $other->value;
+    }
+
+    public function isBefore(self $other): bool
+    {
+        return $this->value < $other->value;
+    }
+
+    public function isAfter(self $other): bool
+    {
+        return $this->value > $other->value;
     }
 
     public function getYear(): int
