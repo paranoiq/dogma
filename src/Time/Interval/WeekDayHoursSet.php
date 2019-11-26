@@ -12,6 +12,7 @@ namespace Dogma\Time\Interval;
 use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DayOfWeek;
+use Dogma\Time\DaysOfWeek;
 use Dogma\Time\InvalidWeekDayHoursSetException;
 use function ksort;
 
@@ -35,6 +36,18 @@ class WeekDayHoursSet implements Pokeable
             $this->weekDayHours[$day] = $weekDayHours;
         }
         ksort($this->weekDayHours);
+    }
+
+    public function createFromDaysOfWeekAndOpeningTime(DaysOfWeek $days, TimeInterval $opening, ?TimeInterval $break = null): self
+    {
+        $dayItems = [];
+        foreach (DayOfWeek::getInstances() as $day) {
+            if ($days->containsDay($day)) {
+                $dayItems[] = WeekDayHours::createFromOpeningTime($day, $opening, $break);
+            }
+        }
+
+        return new static($dayItems);
     }
 
     public function poke(): void
