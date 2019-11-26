@@ -35,9 +35,19 @@ class DaysOfWeek extends IntSet
         return self::get($values);
     }
 
-    public static function createAllDays(): self
+    public static function allDays(): self
     {
         return self::get(127);
+    }
+
+    public static function workDays(): self
+    {
+        return self::get(self::SATURDAY - 1);
+    }
+
+    public static function weekend(): self
+    {
+        return self::get(self::SATURDAY | self::SUNDAY);
     }
 
     /**
