@@ -11,6 +11,7 @@ namespace Dogma\Reflection;
 
 use Dogma\NonIterable;
 use Dogma\NonIterableMixin;
+use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 use ReflectionMethod;
@@ -148,7 +149,12 @@ class MethodTypeParser implements NonIterable
             } elseif ($paramRef->getClass()) {
                 $types = [$paramRef->getClass()->getName()];
             } elseif ($paramRef->hasType()) {
-                $types = [(string) $paramRef->getType()];
+                $type = $paramRef->getType();
+                if ($type instanceof \ReflectionNamedType) {
+                    $types = [$type->getName()];
+                } else {
+                    throw new ShouldNotHappenException('Composite types in PHP already?');
+                }
             } else {
                 $types = [];
             }
