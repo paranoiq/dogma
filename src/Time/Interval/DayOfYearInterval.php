@@ -51,7 +51,7 @@ class DayOfYearInterval implements Interval
         $startNumber = $start->getNumber();
         $endNumber = $end->getNumber();
 
-        if ($startNumber >= DayOfYear::MAX_NUMBER) {
+        if ($startNumber > DayOfYear::MAX_NUMBER) {
             $startNumber %= DayOfYear::MAX_NUMBER;
             $start = $start->normalize();
         }

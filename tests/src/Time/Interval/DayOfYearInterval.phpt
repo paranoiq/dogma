@@ -111,6 +111,17 @@ Assert::true($interval->intersects($i(15, 23)));
 Assert::false($interval->intersects($i(1, 5)));
 Assert::false($interval->intersects($empty));
 
+
+$i1 = new DayOfYearInterval(
+    DayOfYear::createFromMonthAndDay(12, 31),
+    DayOfYear::createFromMonthAndDay(1, 1),
+);
+$i2 = new DayOfYearInterval(
+    DayOfYear::createFromMonthAndDay(12, 31),
+    DayOfYear::createFromMonthAndDay(1, 3),
+);
+Assert::true($i1->intersects($i2));
+
 // touches()
 Assert::true($interval->touches($i(1, 9)));
 Assert::true($interval->touches($i(21, 23)));
