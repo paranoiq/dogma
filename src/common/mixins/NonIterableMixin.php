@@ -9,6 +9,9 @@
 
 namespace Dogma;
 
+/**
+ * @deprecated PHPStan reports invalid usage of iteration. Use it instead
+ */
 trait NonIterableMixin
 {
 

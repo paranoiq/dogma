@@ -11,11 +11,10 @@ namespace Dogma\Time;
 
 use Dogma\Comparable;
 use Dogma\Equalable;
-use Dogma\NonIterable;
 use Dogma\Time\Format\DateTimeFormatter;
 use Dogma\Time\Format\DateTimeValues;
 
-interface DateOrTime extends NonIterable, Equalable, Comparable
+interface DateOrTime extends Equalable, Comparable
 {
 
     public function format(string $format = '', ?DateTimeFormatter $formatter = null): string;

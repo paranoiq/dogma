@@ -1084,7 +1084,7 @@ final class Check
     {
         return is_array($value)
             || $value instanceof \stdClass
-            || ($value instanceof \Traversable && !$value instanceof NonIterable);
+            || ($value instanceof \Traversable);
     }
 
     /**

@@ -13,7 +13,6 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
-use Dogma\NonIterableMixin;
 use Dogma\Order;
 use Dogma\Pokeable;
 use Dogma\Str;
@@ -39,7 +38,6 @@ use function round;
 class Time implements DateTimeOrTime, Pokeable
 {
     use StrictBehaviorMixin;
-    use NonIterableMixin;
 
     public const MIN = '00:00:00.000000';
     public const MAX = '23:59:59.999999';

@@ -11,9 +11,8 @@ namespace Dogma\Enum;
 
 use Dogma\Arr;
 use Dogma\InvalidValueException;
-use Dogma\NonIterable;
 
-abstract class StringEnum implements NonIterable
+abstract class StringEnum
 {
     use EnumMixin;
 

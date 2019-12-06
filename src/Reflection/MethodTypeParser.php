@@ -9,8 +9,6 @@
 
 namespace Dogma\Reflection;
 
-use Dogma\NonIterable;
-use Dogma\NonIterableMixin;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
@@ -34,10 +32,9 @@ use function strstr;
 use function strtolower;
 use function trim;
 
-class MethodTypeParser implements NonIterable
+class MethodTypeParser
 {
     use StrictBehaviorMixin;
-    use NonIterableMixin;
 
     /**
      * @param \ReflectionMethod $method

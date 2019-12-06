@@ -15,8 +15,6 @@ use Dogma\Check;
 use Dogma\Mapping\Type\Exportable;
 use Dogma\Math\Constant;
 use Dogma\Math\Vector\Vector3;
-use Dogma\NonIterable;
-use Dogma\NonIterableMixin;
 use Dogma\StrictBehaviorMixin;
 use function deg2rad;
 use function rad2deg;
@@ -24,10 +22,9 @@ use function rad2deg;
 /**
  * http://www.movable-type.co.uk/scripts/latlong.html
  */
-class Position implements NonIterable, Exportable
+class Position
 {
     use StrictBehaviorMixin;
-    use NonIterableMixin;
 
     public const PLANET_EARTH_RADIUS = 6371000.0;
 

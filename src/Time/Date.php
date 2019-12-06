@@ -13,7 +13,6 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
-use Dogma\NonIterableMixin;
 use Dogma\Order;
 use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
@@ -36,7 +35,6 @@ use function sprintf;
 class Date implements DateOrDateTime, Pokeable
 {
     use StrictBehaviorMixin;
-    use NonIterableMixin;
 
     public const MIN = '0001-01-01';
     public const MAX = '9999-12-31';

@@ -13,7 +13,6 @@ use Dogma\Arr;
 use Dogma\InvalidTypeException;
 use Dogma\InvalidValueException;
 use Dogma\NonCloneableMixin;
-use Dogma\NonIterableMixin;
 use Dogma\NonSerializableMixin;
 use Dogma\StrictBehaviorMixin;
 use function count;
@@ -27,7 +26,6 @@ use function sprintf;
 trait EnumMixin
 {
     use StrictBehaviorMixin;
-    use NonIterableMixin;
     use NonCloneableMixin;
     use NonSerializableMixin;
 

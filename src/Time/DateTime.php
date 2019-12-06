@@ -12,7 +12,6 @@ namespace Dogma\Time;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
-use Dogma\NonIterableMixin;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeFormatter;
@@ -40,7 +39,6 @@ use function strval;
 class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrTime, \DateTimeInterface
 {
     use StrictBehaviorMixin;
-    use NonIterableMixin;
 
     public const MIN = '0001-01-01 00:00:00.000000';
     public const MAX = '9999-12-31 23:59:59.999999';
