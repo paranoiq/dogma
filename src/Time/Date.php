@@ -62,7 +62,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
     /**
      * @param int|string $julianDayOrDateString
      */
-    public function __construct($julianDayOrDateString = 'today')
+    final public function __construct($julianDayOrDateString = 'today')
     {
         if (is_int($julianDayOrDateString)) {
             Check::range($julianDayOrDateString, self::MIN_DAY_NUMBER, self::MAX_DAY_NUMBER);

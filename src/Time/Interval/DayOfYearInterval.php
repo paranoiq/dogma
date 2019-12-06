@@ -50,7 +50,7 @@ class DayOfYearInterval implements ModuloInterval
     /** @var DayOfYear */
     private $end;
 
-    public function __construct(DayOfYear $start, DayOfYear $end)
+    final public function __construct(DayOfYear $start, DayOfYear $end)
     {
         $startNumber = $start->getNumber();
         $endNumber = $end->getNumber();

@@ -39,7 +39,7 @@ class Position
     /** @var float[] */
     private $normalVector;
 
-    public function __construct(float $latitude, float $longitude, float $planetRadius = self::PLANET_EARTH_RADIUS)
+    final public function __construct(float $latitude, float $longitude, float $planetRadius = self::PLANET_EARTH_RADIUS)
     {
         Check::range($latitude, -90.0, 90.0);
         Check::range($longitude, -180.0, 180.0);

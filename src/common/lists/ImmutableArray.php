@@ -83,7 +83,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     /**
      * @param mixed[] $items
      */
-    public function __construct(array $items)
+    final public function __construct(array $items)
     {
         $this->items = $items;
     }

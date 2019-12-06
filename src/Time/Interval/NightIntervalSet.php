@@ -41,7 +41,7 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
     /**
      * @param NightInterval[] $intervals
      */
-    public function __construct(array $intervals)
+    final public function __construct(array $intervals)
     {
         $this->intervals = Arr::values(Arr::filter($intervals, static function (NightInterval $interval): bool {
             return !$interval->isEmpty();

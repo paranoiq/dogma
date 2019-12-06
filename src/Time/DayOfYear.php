@@ -59,7 +59,7 @@ class DayOfYear implements Equalable, Comparable, Dumpable
      *
      * @param int|string $dateOrDayNumber
      */
-    public function __construct($dateOrDayNumber)
+    final public function __construct($dateOrDayNumber)
     {
         if (is_string($dateOrDayNumber)) {
             $date = new Date('2000-' . $dateOrDayNumber);

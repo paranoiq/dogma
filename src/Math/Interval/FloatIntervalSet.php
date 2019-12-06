@@ -34,7 +34,7 @@ class FloatIntervalSet implements IntervalSet
     /**
      * @param FloatInterval[] $intervals
      */
-    public function __construct(array $intervals)
+    final public function __construct(array $intervals)
     {
         Check::itemsOfType($intervals, FloatInterval::class);
 

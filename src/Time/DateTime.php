@@ -73,6 +73,11 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     /** @var int|null */
     private $microTimestamp;
 
+    final public function __construct(string $time = 'now', ?DateTimeZone $timezone = null)
+    {
+        parent::__construct($time, $timezone);
+    }
+
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $format

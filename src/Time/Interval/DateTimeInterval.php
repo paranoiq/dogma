@@ -59,7 +59,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     /** @var DateTime */
     private $end;
 
-    public function __construct(DateTime $start, DateTime $end)
+    final public function __construct(DateTime $start, DateTime $end)
     {
         if ($start > $end) {
             throw new InvalidIntervalStartEndOrderException($start, $end);

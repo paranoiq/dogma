@@ -26,7 +26,7 @@ class Vector3i implements Equalable
     /** @var int */
     private $z;
 
-    public function __construct(int $x, int $y, int $z)
+    final public function __construct(int $x, int $y, int $z)
     {
         $this->x = $x;
         $this->y = $y;

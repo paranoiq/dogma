@@ -40,7 +40,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
     /**
      * @param DateTimeInterval[] $intervals
      */
-    public function __construct(array $intervals)
+    final public function __construct(array $intervals)
     {
         $this->intervals = Arr::values(Arr::filter($intervals, static function (DateTimeInterval $interval): bool {
             return !$interval->isEmpty();

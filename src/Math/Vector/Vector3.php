@@ -32,7 +32,7 @@ class Vector3
     /** @var float */
     private $z;
 
-    public function __construct(float $x, float $y, float $z)
+    final public function __construct(float $x, float $y, float $z)
     {
         $this->x = $x;
         $this->y = $y;

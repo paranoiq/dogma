@@ -42,7 +42,7 @@ class IntInterval implements Interval
     /** @var int */
     private $end;
 
-    public function __construct(int $start, int $end)
+    final public function __construct(int $start, int $end)
     {
         Check::min($end, $start);
 

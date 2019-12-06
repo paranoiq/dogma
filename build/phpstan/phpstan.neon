@@ -27,7 +27,6 @@ parameters:
             path: "../../src/Email/EmailMessage.php"
 
         # solved in v0.2
-        - '~Unsafe usage of new static\(\)~'
         - '~method Dogma\\Database\\SimplePdo~'
 
     excludes_analyse:

@@ -38,22 +38,25 @@ class TextFile extends File
      * @param resource|null $streamContext
      * @param Encoding $encoding
      * @param LineEndings $lineEndings
+     * @return self
      */
-    public function __construct(
+    public static function create(
         $file,
         string $mode = FileMode::OPEN_READ,
         $streamContext = null,
         ?Encoding $encoding = null,
         ?LineEndings $lineEndings = null
-    ) {
-        parent::__construct($file, $mode, $streamContext);
+    ): self {
+        $self = new static($file, $mode, $streamContext);
 
         if ($encoding !== null) {
-            $this->setEncoding($encoding);
+            $self->setEncoding($encoding);
         }
         if ($lineEndings !== null) {
-            $this->setLineEndings($lineEndings);
+            $self->setLineEndings($lineEndings);
         }
+
+        return $self;
     }
 
     public function setEncoding(Encoding $encoding): void

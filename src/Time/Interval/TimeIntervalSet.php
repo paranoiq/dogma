@@ -39,7 +39,7 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
     /**
      * @param TimeInterval[] $intervals
      */
-    public function __construct(array $intervals)
+    final public function __construct(array $intervals)
     {
         $this->intervals = Arr::values(Arr::filter($intervals, static function (TimeInterval $interval): bool {
             return !$interval->isEmpty();

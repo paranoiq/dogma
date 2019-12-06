@@ -37,7 +37,7 @@ class DayOfYearIntervalSet implements IntervalSet
     /**
      * @param DayOfYearInterval[] $intervals
      */
-    public function __construct(array $intervals)
+    final public function __construct(array $intervals)
     {
         $this->intervals = Arr::values(Arr::filter($intervals, static function (DayOfYearInterval $interval): bool {
             return !$interval->isEmpty();

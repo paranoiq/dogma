@@ -42,7 +42,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, Dumpable
     /**
      * @param NightIntervalData[] $intervals
      */
-    public function __construct(array $intervals)
+    final public function __construct(array $intervals)
     {
         $this->intervals = Arr::values(Arr::filter($intervals, static function (NightIntervalData $interval): bool {
             return !$interval->isEmpty();

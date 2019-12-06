@@ -35,7 +35,7 @@ class RoundRobinIterator implements Iterator
     /**
      * @param iterable|mixed[] ...$iterables
      */
-    public function __construct(iterable ...$iterables)
+    final public function __construct(iterable ...$iterables)
     {
         $this->iterators = [];
         foreach ($iterables as $iterable) {

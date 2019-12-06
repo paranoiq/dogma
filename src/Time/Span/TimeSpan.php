@@ -30,7 +30,7 @@ class TimeSpan implements DateOrTimeSpan
     /** @var int */
     private $microseconds;
 
-    public function __construct(
+    final public function __construct(
         int $hours,
         int $minutes = 0,
         int $seconds = 0,

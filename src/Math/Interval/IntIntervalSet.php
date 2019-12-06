@@ -34,7 +34,7 @@ class IntIntervalSet implements IntervalSet
     /**
      * @param IntInterval[] $intervals
      */
-    public function __construct(array $intervals)
+    final public function __construct(array $intervals)
     {
         Check::itemsOfType($intervals, IntInterval::class);
 

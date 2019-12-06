@@ -78,7 +78,7 @@ class File implements Path
      * @param string $mode
      * @param resource|null $streamContext
      */
-    public function __construct($file, string $mode = FileMode::OPEN_READ, $streamContext = null)
+    final public function __construct($file, string $mode = FileMode::OPEN_READ, $streamContext = null)
     {
         if (is_resource($file) && get_resource_type($file) === ResourceType::STREAM) {
             $this->handle = $file;

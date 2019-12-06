@@ -33,7 +33,7 @@ class WeekDayHoursSet implements Pokeable, Dumpable
     /**
      * @param WeekDayHours[] $weekDayHoursList
      */
-    public function __construct(array $weekDayHoursList)
+    final public function __construct(array $weekDayHoursList)
     {
         foreach ($weekDayHoursList as $weekDayHours) {
             $day = $weekDayHours->getDay()->getValue();

@@ -49,7 +49,7 @@ class FloatInterval implements OpenClosedInterval
     /** @var bool */
     private $openEnd;
 
-    public function __construct(float $start, float $end, bool $openStart = false, bool $openEnd = false)
+    final public function __construct(float $start, float $end, bool $openStart = false, bool $openEnd = false)
     {
         if (is_nan($start)) {
             throw new InvalidValueException($start, Type::FLOAT);

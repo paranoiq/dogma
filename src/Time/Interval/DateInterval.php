@@ -56,14 +56,19 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     /** @var Date */
     private $end;
 
-    public function __construct(Date $start, Date $end)
+    final public function __construct(Date $start, Date $end)
+    {
+        static::validate($start, $end);
+
+        $this->start = $start;
+        $this->end = $end;
+    }
+
+    public static function validate(Date $start, Date $end): void
     {
         if ($start->getJulianDay() > $end->getJulianDay()) {
             throw new InvalidIntervalStartEndOrderException($start, $end);
         }
-
-        $this->start = $start;
-        $this->end = $end;
     }
 
     public static function createFromString(string $string): self

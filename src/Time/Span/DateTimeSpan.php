@@ -61,7 +61,7 @@ class DateTimeSpan implements DateOrTimeSpan
     /** @var int */
     private $microseconds;
 
-    public function __construct(
+    final public function __construct(
         int $years,
         int $months = 0,
         int $days = 0,

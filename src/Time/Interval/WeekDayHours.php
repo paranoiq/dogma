@@ -27,7 +27,7 @@ class WeekDayHours implements Pokeable, Dumpable
     /** @var TimeIntervalSet */
     private $hours;
 
-    public function __construct(DayOfWeek $day, TimeIntervalSet $hours)
+    final public function __construct(DayOfWeek $day, TimeIntervalSet $hours)
     {
         $this->day = $day;
         $this->hours = $hours;

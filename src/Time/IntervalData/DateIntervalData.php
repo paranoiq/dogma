@@ -56,7 +56,7 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
      * @param Date $end
      * @param mixed|null $data
      */
-    public function __construct(Date $start, Date $end, $data)
+    final public function __construct(Date $start, Date $end, $data)
     {
         if ($start->getJulianDay() > $end->getJulianDay()) {
             throw new InvalidIntervalStartEndOrderException($start, $end);

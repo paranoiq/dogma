@@ -22,15 +22,20 @@ use Dogma\Time\InvalidWeekDateIntervalException;
 class WeekDateInterval extends DateInterval
 {
 
-    public function __construct(Date $start, Date $end)
+    public static function validate(Date $start, Date $end): void
     {
+        parent::validate($start, $end);
+
         if ($start->getDayOfWeek() !== DayOfWeek::MONDAY) {
             throw new InvalidWeekDateIntervalException($start, $end);
         } elseif ($start->difference($end)->getDaysTotal() !== 6) {
             throw new InvalidWeekDateIntervalException($start, $end);
         }
+    }
 
-        parent::__construct($start, $end);
+    public static function create(Date $start, Date $end): self
+    {
+        return new static($start, $end);
     }
 
     public static function createFromDate(Date $date): self

@@ -59,7 +59,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
     /** @var Time */
     private $end;
 
-    public function __construct(Time $start, Time $end)
+    final public function __construct(Time $start, Time $end)
     {
         $startTime = $start->getMicroTime();
         $endTime = $end->getMicroTime();

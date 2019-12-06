@@ -67,7 +67,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
     /**
      * @param int|string $microsecondsOrTimeString
      */
-    public function __construct($microsecondsOrTimeString)
+    final public function __construct($microsecondsOrTimeString)
     {
         if (is_int($microsecondsOrTimeString)) {
             Check::range($microsecondsOrTimeString, self::MIN_MICROSECONDS, self::MAX_DENORMALIZED);

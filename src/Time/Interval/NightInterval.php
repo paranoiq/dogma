@@ -63,7 +63,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
     /** @var Date */
     private $end;
 
-    public function __construct(Date $start, Date $end)
+    final public function __construct(Date $start, Date $end)
     {
         if ($start->getJulianDay() > $end->getJulianDay()) {
             throw new InvalidIntervalStartEndOrderException($start, $end);

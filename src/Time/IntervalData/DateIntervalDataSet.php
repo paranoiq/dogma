@@ -45,7 +45,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, Dumpable, IteratorAggr
     /**
      * @param DateIntervalData[] $intervals
      */
-    public function __construct(array $intervals)
+    final public function __construct(array $intervals)
     {
         $this->intervals = Arr::values(Arr::filter($intervals, static function (DateIntervalData $interval): bool {
             return !$interval->isEmpty();

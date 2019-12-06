@@ -41,7 +41,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
     /**
      * @param DateInterval[] $intervals
      */
-    public function __construct(array $intervals)
+    final public function __construct(array $intervals)
     {
         $this->intervals = Arr::values(Arr::filter($intervals, static function (DateInterval $interval): bool {
             return !$interval->isEmpty();
