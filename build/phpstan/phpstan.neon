@@ -13,6 +13,9 @@ parameters:
         -
             message: "~Result of && is always false.~" # ???
             path: "../../src/common/Check.php"
+        -
+            message: "~Strict comparison using === between string and false will always evaluate to false~"
+            path: "../../src/common/Str.php"
 
         # interface
         - '~^PHPDoc tag @return with type Dogma\\Language\\Locale\\LocaleCollationOption is not subtype of native type Dogma\\Enum\\StringEnum~'

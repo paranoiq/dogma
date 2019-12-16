@@ -11,18 +11,26 @@ namespace Dogma;
 
 use Collator as PhpCollator;
 use Dogma\Language\Collator;
+use Dogma\Language\Encoding;
 use Dogma\Language\Locale\Locale;
 use Dogma\Language\Transliterator;
 use Dogma\Language\UnicodeCharacterCategory;
+use Error;
 use Nette\Utils\Strings;
 use const MB_CASE_TITLE;
+use function error_clear_last;
+use function error_get_last;
+use function function_exists;
+use function iconv;
 use function is_string;
 use function mb_convert_case;
+use function mb_convert_encoding;
 use function mb_strlen;
 use function mb_strtolower;
 use function mb_strtoupper;
 use function mb_substr;
 use function min;
+use function preg_replace;
 use function range;
 use function str_replace;
 use function strcasecmp;
@@ -30,7 +38,10 @@ use function strcmp;
 use function strlen;
 use function strncmp;
 use function strpos;
+use function strtolower;
 use function substr;
+use function utf8_decode;
+use function utf8_encode;
 
 /**
  * UTF-8 strings manipulation
@@ -223,6 +234,60 @@ class Str
         }
 
         return $transliterator->transliterate($string);
+    }
+
+    public static function underscore(string $string): string
+    {
+        return strtolower(preg_replace(
+            '/([A-Z]+)([A-Z])/',
+            '\1_\2',
+            preg_replace('/([a-z\d])([A-Z])/', '\1_\2', $string)
+        ));
+    }
+
+    public static function convertEncoding(string $string, string $from, string $to): string
+    {
+        if (function_exists('mb_convert_encoding')) {
+            try {
+                error_clear_last();
+                $result = mb_convert_encoding($string, $to, $from);
+                if (error_get_last() !== null) {
+                    throw new ErrorException('Cannot convert encoding', error_get_last());
+                }
+                return $result;
+            } catch (Error $e) {
+                throw new ErrorException('Cannot convert encoding', null, $e);
+            }
+        } elseif (function_exists('iconv')) {
+            try {
+                error_clear_last();
+                $result = iconv($from, $to, $string);
+                if ($result === false) {
+                    throw new ErrorException('Cannot convert encoding', error_get_last());
+                }
+                return $result;
+            } catch (Error $e) {
+                throw new ErrorException('Cannot convert encoding', null, $e);
+            }
+        } elseif (function_exists('recode_string')) {
+            $request = $from . '..' . $to;
+            try {
+                error_clear_last();
+                $result = recode_string($request, $string);
+                if ($result === false) {
+                    throw new ErrorException('Cannot convert encoding', error_get_last());
+                }
+                return $result;
+            } catch (Error $e) {
+                throw new ErrorException('Cannot convert encoding', null, $e);
+            }
+        } elseif ($from === Encoding::ISO_8859_1 && $to === Encoding::UTF_8 && function_exists('utf8_encode')) {
+            return utf8_encode($string);
+        } elseif ($from === Encoding::UTF_8 && $to === Encoding::ISO_8859_1 && function_exists('utf8_decode')) {
+            return utf8_decode($string);
+        } else {
+            throw new ShouldNotHappenException('No extension for converting encodings installed.');
+        }
     }
 
     // proxy -----------------------------------------------------------------------------------------------------------

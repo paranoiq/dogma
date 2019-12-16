@@ -10,12 +10,12 @@
 namespace Dogma\Io;
 
 use Dogma\Language\Encoding;
+use Dogma\Str;
 use function error_clear_last;
 use function error_get_last;
 use function fgetcsv;
 use function fgets;
 use function fputcsv;
-use function iconv;
 
 /**
  * Text file reader/writer
@@ -151,26 +151,12 @@ class TextFile extends File
 
     private function encode(string $string): string
     {
-        error_clear_last();
-        $result = iconv($this->encoding, $this->internalEncoding, $string);
-
-        if ($result === false) {
-            throw new FileException('Cannot convert file encoding.', error_get_last());
-        }
-
-        return $result;
+        return Str::convertEncoding($string, $this->encoding, $this->internalEncoding);
     }
 
     private function decode(string $string): string
     {
-        error_clear_last();
-        $result = iconv($this->internalEncoding, $this->encoding, $string);
-
-        if ($result === false) {
-            throw new FileException('Cannot convert file encoding.', error_get_last());
-        }
-
-        return $result;
+        return Str::convertEncoding($string, $this->internalEncoding, $this->encoding);
     }
 
 }

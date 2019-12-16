@@ -12,8 +12,6 @@
     ],
     "require": {
         "php-64bit": "^7.2.0",
-        "ext-dom": "*",
-        "ext-intl": "*",
         "ext-calendar":"*",
         "nette/http": "~2.4|~3.0",
         "nette/utils": "~2.4|~3.0",
@@ -21,6 +19,15 @@
     },
     "require-dev": {
         "dogma/dogma-dev": "0.1.14"
+    },
+    "suggest": {
+        "ext-dom": "for Dom",
+        "ext-iconv": "for Str",
+        "ext-intl": "for Str and Language",
+        "ext-mbstring": "for Str",
+        "symfony/polyfill-intl-icu": "for Str and Language",
+        "symfony/polyfill-intl-normalizer": "for Str",
+        "symfony/polyfill-mbstring": "for Str"
     },
     "autoload": {
         "classmap": ["src", "tests"]
