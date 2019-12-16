@@ -86,6 +86,17 @@ class IntIntervalSet implements IntervalSet
         return false;
     }
 
+    public function containsInterval(IntInterval $interval): bool
+    {
+        foreach ($this->intervals as $int) {
+            if ($int->contains($interval)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function envelope(): IntInterval
     {
         if ($this->intervals === []) {

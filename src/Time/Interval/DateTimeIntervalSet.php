@@ -185,6 +185,17 @@ class DateTimeIntervalSet implements DateOrTimeIntervalSet
         return false;
     }
 
+    public function containsInterval(DateTimeInterval $interval): bool
+    {
+        foreach ($this->intervals as $int) {
+            if ($int->contains($interval)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function envelope(): DateTimeInterval
     {
         if ($this->intervals === []) {

@@ -100,6 +100,17 @@ class TimeIntervalSet implements DateOrTimeIntervalSet, Pokeable
         return false;
     }
 
+    public function containsInterval(TimeInterval $interval): bool
+    {
+        foreach ($this->intervals as $int) {
+            if ($int->contains($interval)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function envelope(): TimeInterval
     {
         if ($this->intervals === []) {

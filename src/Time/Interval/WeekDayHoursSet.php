@@ -11,6 +11,7 @@ namespace Dogma\Time\Interval;
 
 use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
+use Dogma\Time\DateTime;
 use Dogma\Time\DayOfWeek;
 use Dogma\Time\DaysOfWeek;
 use Dogma\Time\InvalidWeekDayHoursSetException;
@@ -55,6 +56,18 @@ class WeekDayHoursSet implements Pokeable
         foreach ($this->weekDayHours as $hours) {
             $hours->poke();
         }
+    }
+
+    public function containsValue(DateTime $dateTime): bool
+    {
+        $date = $dateTime->getDate();
+
+        return DateTimeIntervalSet::createFromDateIntervalAndWeekDayHoursSet(new DateInterval($date, $date), $this)->containsValue($dateTime);
+    }
+
+    public function containsInterval(DateTimeInterval $interval): bool
+    {
+        return DateTimeIntervalSet::createFromDateIntervalAndWeekDayHoursSet($interval->toDateInterval(), $this)->containsInterval($interval);
     }
 
     /**

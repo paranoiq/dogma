@@ -86,6 +86,17 @@ class FloatIntervalSet implements IntervalSet
         return false;
     }
 
+    public function containsInterval(FloatInterval $interval): bool
+    {
+        foreach ($this->intervals as $int) {
+            if ($int->contains($interval)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function envelope(): FloatInterval
     {
         if ($this->intervals === []) {
