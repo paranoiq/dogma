@@ -77,6 +77,19 @@ class Str
         return (strlen($string) - strlen(str_replace($substring, '', $string))) / strlen($substring);
     }
 
+    public static function between(string $string, string $from, string $to): ?string
+    {
+        $after = self::after($string, $from);
+        if ($after === false) {
+            return null;
+        }
+        $before = self::before($after, $to);
+        if ($after === false) {
+            return null;
+        }
+        return $before;
+    }
+
     public static function toFirst(string $string, string $search): string
     {
         $pos = strpos($string, $search);
