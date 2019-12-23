@@ -18,6 +18,21 @@ Vector3i
 XA
 µs
 
+# ascii
+NUL
+SOH
+STX
+ETX
+EOT
+ENQ
+ACK
+LF
+CRLF
+DLE
+NAK
+ESC
+FS
+
 # curl
 certinfo
 curle
@@ -76,6 +91,7 @@ tribonacci
 lucas
 
 # ~en
+biatch
 bodyrow
 checkbox
 crypto
@@ -117,6 +133,7 @@ combinatorics
 denormalization
 denormalize
 denormalized
+endian
 ignorable
 inflector
 inlined
@@ -133,6 +150,7 @@ responder
 retransmit
 runtime
 seekable
+splitter
 substring
 substrings
 tuple
