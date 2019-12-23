@@ -7,36 +7,40 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Math;
+namespace Dogma\Math\Sequence;
 
+use Dogma\Math\PowersOfTwo;
 use Dogma\StaticClassMixin;
 use function array_combine;
 use function array_merge;
+use function array_search;
 use function array_slice;
 use function count;
 use function min;
 use function next;
 use function range;
-use function round;
 
-class Sequence
+/**
+ * A000040
+ */
+class Prime implements Sequence
 {
     use StaticClassMixin;
 
     private const MAX_SIEVE_SIZE = PowersOfTwo::_4M;
 
-    /**@var int[] */
-    private static $primes = [
-        // phpcs:disable Squiz.Arrays.ArrayDeclaration.ValueNoNewline
-        2, 3, 5, 7,
-        11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97,
-        101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211,
-        223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347,
-        349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467,
-        479, 487, 491, 499, 503, 509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607, 613, 617,
-        619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701, 709, 719, 727, 733, 739, 743, 751, 757, 761,
-        769, 773, 787, 797, 809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911, 919,
-        929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997,
+    // phpcs:disable Squiz.Arrays.ArrayDeclaration.ValueNoNewline
+
+    /** @var int[] */
+    private static $cache = [
+        1 => 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97,
+        101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199,
+        211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331,
+        337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457,
+        461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599,
+        601, 607, 613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701, 709, 719, 727, 733,
+        739, 743, 751, 757, 761, 769, 773, 787, 797, 809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877,
+        881, 883, 887, 907, 911, 919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997,
         1009, 1013, 1019, 1021, 1031, 1033, 1039, 1049, 1051, 1061, 1063, 1069, 1087, 1091, 1093, 1097, 1103, 1109,
         1117, 1123, 1129, 1151, 1153, 1163, 1171, 1181, 1187, 1193, 1201, 1213, 1217, 1223, 1229, 1231, 1237, 1249,
         1259, 1277, 1279, 1283, 1289, 1291, 1297, 1301, 1303, 1307, 1319, 1321, 1327, 1361, 1367, 1373, 1381, 1399,
@@ -85,62 +89,46 @@ class Sequence
         7717, 7723, 7727, 7741, 7753, 7757, 7759, 7789, 7793, 7817, 7823, 7829, 7841, 7853, 7867, 7873, 7877, 7879,
         7883, 7901, 7907, 7919, 7927, 7933, 7937, 7949, 7951, 7963, 7993, 8009, 8011, 8017, 8039, 8053, 8059, 8069,
         8081, 8087, 8089, 8093, 8101, 8111, 8117, 8123, 8147, 8161, 8167, 8171, 8179, 8191,
-        // phpcs:enable Squiz.Arrays.ArrayDeclaration.ValueNoNewline
     ];
 
     /** @var int */
     private static $lastSieved = 8192;
 
-    public static function lucas(int $n): int
-    {
-        if ($n === 0) {
-            return 2;
-        }
-        if ($n === 1) {
-            return 1;
-        }
-
-        return (int) round(Constant::PHI ** $n);
-    }
-
-    public static function fibonacci(int $n): int
-    {
-        return (int) round(Constant::PHI ** $n * Constant::INV_SQRT_5);
-    }
-
-    public static function tribonacci(int $n): int
-    {
-        static $a = 1 / (4 * Constant::TRIBONACCI - Constant::TRIBONACCI ** 2 - 1);
-
-        return (int) round(Constant::TRIBONACCI ** $n * $a);
-    }
-
     /**
      * Returns nth prime (n starts from 0)
-     * @param int $n
+     * @param int $position
      * @return int
      */
-    public static function prime(int $n): int
+    public static function getNth(int $position): int
     {
-        while (count(self::$primes) < $n) {
+        while (count(self::$cache) < $position) {
             self::sieve();
         }
 
-        return self::$primes[$n];
+        return self::$cache[$position];
+    }
+
+    public static function getPosition(int $number): ?int
+    {
+        while ($number > self::$lastSieved) {
+            self::sieve();
+        }
+
+        return array_search($number, self::$cache) ?: null;
     }
 
     /**
-     * Returns first n primes
+     * Returns firs n primes
      * @param int $count
      * @return int[]
      */
-    public static function primes(int $count): array
+    public static function getUntilPosition(int $count): array
     {
-        while (count(self::$primes) < $count) {
+        while (count(self::$cache) < $count) {
             self::sieve();
         }
 
-        return array_slice(self::$primes, 0, $count);
+        return array_slice(self::$cache, 0, $count);
     }
 
     /**
@@ -148,7 +136,7 @@ class Sequence
      * @param int $max
      * @return int[]
      */
-    public static function primesUntil(int $max): array
+    public static function getUntil(int $max): array
     {
         if ($max < 2) {
             return [];
@@ -158,12 +146,12 @@ class Sequence
             self::sieve();
         }
 
-        $maxIndex = count(self::$primes) - 1;
-        while (self::$primes[$maxIndex] > $max) {
+        $maxIndex = count(self::$cache) - 1;
+        while (self::$cache[$maxIndex] > $max) {
             $maxIndex--;
         }
 
-        return array_slice(self::$primes, 0, $maxIndex + 1);
+        return array_slice(self::$cache, 0, $maxIndex + 1);
     }
 
     /**
@@ -172,10 +160,10 @@ class Sequence
      * @param int $max
      * @return int[]
      */
-    public static function primesBetween(int $min, int $max): array
+    public static function getBetween(int $min, int $max): array
     {
-        $low = self::primesUntil($min);
-        $high = self::primesUntil($max);
+        $low = self::getUntil($min);
+        $high = self::getUntil($max);
 
         return array_slice($high, count($low));
     }
@@ -191,7 +179,7 @@ class Sequence
         $numbers = array_combine($numbers, $numbers);
 
         // filter primes from previous segments
-        foreach (self::$primes as $prime) {
+        foreach (self::$cache as $prime) {
             if ($prime === 2) {
                 continue;
             }
@@ -209,7 +197,7 @@ class Sequence
             $number = next($numbers);
         }
 
-        self::$primes = array_merge(self::$primes, $numbers);
+        self::$cache = array_merge(self::$cache, $numbers);
         self::$lastSieved = $max;
     }
 

@@ -9,10 +9,15 @@
 
 namespace Dogma\Math;
 
+use Dogma\Check;
+use Dogma\Math\Sequence\Prime;
 use Dogma\StaticClassMixin;
 use function abs;
+use function array_product;
 use function ceil;
 use function floor;
+use function min;
+use function range;
 
 class IntCalc
 {
@@ -38,6 +43,81 @@ class IntCalc
         $multiple = abs($multiple);
 
         return (int) (ceil($number / $multiple) * $multiple);
+    }
+
+    /**
+     * Maps number from range 0.0 - 1.0 to integers 0 to $max with same probability for each integer
+     *
+     * @param float $number (range 0..1)
+     * @param int $max
+     * @return int
+     */
+    public static function mapTo(float $number, int $max): int
+    {
+        return (int) min(floor($number * ($max + 1)), $max);
+    }
+
+    /**
+     * @param int $n
+     * @return int|float
+     */
+    public static function factorial(int $n)
+    {
+        return array_product(range(2, $n));
+    }
+
+    /**
+     * @param int $number
+     * @return int[]
+     */
+    public static function factorize(int $number): array
+    {
+        Check::range($number, 1);
+        if ($number === 1) {
+            return [1];
+        }
+
+        $possibleFactors = Prime::getUntil($number);
+
+        $factors = [];
+        foreach ($possibleFactors as $factor) {
+            while (($number % $factor) === 0) {
+                $factors[] = $factor;
+                $number /= $factor;
+            }
+        }
+
+        return $factors;
+    }
+
+    public static function greatestCommonDivider(int $a, int $b): int
+    {
+        $next = $a % $b;
+
+        return $next === 0 ? $b : self::greatestCommonDivider($b, $next);
+    }
+
+    public static function leastCommonMultiple(int $a, int $b): int
+    {
+        return $a * ($b / self::greatestCommonDivider($a, $b));
+    }
+
+    public static function binomialCoefficient(int $n, int $k): int
+    {
+        $result = 1;
+
+        // since C(n, k) = C(n, n-k)
+        if ($k > $n - $k) {
+            $k = $n - $k;
+        }
+
+        // calculate value of [n*(n-1)*---*(n-k+1)] / [k*(k-1)*---*1]
+        for ($i = 0; $i < $k; ++$i) {
+            $result *= ($n - $i);
+            $result /= ($i + 1);
+        }
+
+        return $result;
     }
 
 }
