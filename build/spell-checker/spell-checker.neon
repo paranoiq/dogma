@@ -24,6 +24,8 @@ dictionariesByFileName:
     *Transliterator.php: skip
     *UriScheme.php: skip
     *WindowsError.php: skip
+    *StateCa.php: skip
+    *StateUs.php: skip
 
 dictionariesByFileExtension:
     neon: en php custom
