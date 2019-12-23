@@ -964,10 +964,23 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         if ($this->isEmpty()) {
             return new static($arr);
         }
-        array_unshift($arr, null);
-        $arr = array_map(...$arr);
+        $arr = array_map(null, ...$arr);
         foreach ($arr as $key => $value) {
             $arr[$key] = (array) $value;
+        }
+        return new static($arr);
+    }
+
+    public function transposeSafe(): self
+    {
+        if ($this->isEmpty()) {
+            return new static([]);
+        }
+        $arr = [];
+        foreach ($this->items as $i => $items) {
+            foreach ($items as $j => $item) {
+                $arr[$j][$i] = $item;
+            }
         }
         return new static($arr);
     }
