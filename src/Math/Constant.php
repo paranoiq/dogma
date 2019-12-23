@@ -44,6 +44,7 @@ class Constant
     public const PHI = self::FIBONACCI;
     public const FIBONACCI = 1.61803398874989484820458683436563811;
     public const TRIBONACCI = 1.83928675521416113255185256465328660;
+    public const PLASTIC = 1.324717957244746025960908854;
 
     public const LOG_2_E = M_LOG2E; // log₂(e)
     public const LOG_10_E = M_LOG10E; // log₁₀(e)
