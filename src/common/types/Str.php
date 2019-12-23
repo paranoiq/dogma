@@ -45,7 +45,7 @@ class Str
      * @param string|\Collator|\Dogma\Language\Locale\Locale $collation
      * @return bool
      */
-    public function equals(string $first, string $second, $collation = CaseComparison::CASE_SENSITIVE): bool
+    public static function equals(string $first, string $second, $collation = CaseComparison::CASE_SENSITIVE): bool
     {
         return self::compare($first, $second, $collation) === 0;
     }
@@ -72,7 +72,7 @@ class Str
         return $collation->compare($first, $second);
     }
 
-    public function substringCount(string $string, string $substring): int
+    public static function substringCount(string $string, string $substring): int
     {
         return (strlen($string) - strlen(str_replace($substring, '', $string))) / strlen($substring);
     }
@@ -166,7 +166,7 @@ class Str
 
                 if ($char1 === $char2) {
                     $cost = 0;
-                } elseif ($replacementCaseCost !== null && Strings::lower($char1) === Strings::lower($char2)) {
+                } elseif ($replacementCaseCost !== null && self::lower($char1) === self::lower($char2)) {
                     $cost = $replacementCaseCost;
                 } elseif ($replacementAccentCost !== null && self::removeDiacritics($char1) === self::removeDiacritics($char2)) {
                     $cost = $replacementAccentCost;
