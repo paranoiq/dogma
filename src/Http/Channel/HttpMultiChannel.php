@@ -18,7 +18,6 @@ use function is_int;
 use function is_string;
 use function range;
 use function spl_object_hash;
-use function sprintf;
 
 class HttpMultiChannel
 {
@@ -252,7 +251,7 @@ class HttpMultiChannel
     private function fetchNamedJob($name): array
     {
         if (!isset($this->queue[$name]) && !isset($this->finished[$name])) {
-            throw new HttpChannelException(sprintf('Job named \'%s\' was not found.', $name));
+            throw new HttpChannelException("Job named '$name' was not found.");
         }
 
         if (isset($this->finished[$name]) && count($this->finished[$name]) === count($this->channels)) {

@@ -10,14 +10,13 @@
 namespace Dogma;
 
 use Throwable;
-use function sprintf;
 
 final class NonCloneableObjectException extends Exception
 {
 
     public function __construct(string $class, ?Throwable $previous = null)
     {
-        parent::__construct(sprintf('Cloning a non-cloneable object of class %s.', $class), $previous);
+        parent::__construct("Cloning a non-cloneable object of class $class.", $previous);
     }
 
 }

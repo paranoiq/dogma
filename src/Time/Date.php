@@ -33,7 +33,6 @@ use function gregoriantojd;
 use function intval;
 use function is_int;
 use function jdtogregorian;
-use function sprintf;
 
 /**
  * Date class.
@@ -89,7 +88,7 @@ class Date implements DateOrDateTime, Pokeable
         Check::range($month, 1, 12);
         Check::range($day, 1, 31);
 
-        return new static(sprintf('%d-%d-%d 00:00:00', $year, $month, $day));
+        return new static("$year-$month-$day 00:00:00");
     }
 
     public static function createFromIsoYearAndWeek(int $year, int $week, int $dayOfWeek): self

@@ -30,7 +30,6 @@ use function ltrim;
 use function preg_match;
 use function preg_replace;
 use function rtrim;
-use function sprintf;
 use function strpos;
 use function strtolower;
 use function trim;
@@ -271,7 +270,7 @@ class MethodTypeParser
             if ($typeString[0] !== '\\') {
                 throw new InvalidMethodAnnotationException($method, 'Always use fully qualified names in type annotations.');
             } elseif (!class_exists($type->getName())) {
-                throw new InvalidMethodAnnotationException($method, sprintf('Unknown class %s. Make sure that you use fully qualified class names.', $typeString));
+                throw new InvalidMethodAnnotationException($method, "Unknown class $typeString. Make sure that you use fully qualified class names.");
             }
         } else {
             if ($typeString[0] === '\\') {

@@ -10,14 +10,13 @@
 namespace Dogma\Time;
 
 use Throwable;
-use function sprintf;
 
 class InvalidTimeSpanException extends TimeException
 {
 
     public function __construct(string $intervalString, ?Throwable $previous = null)
     {
-        parent::__construct(sprintf('Invalid date/time interval: %s', $intervalString), $previous);
+        parent::__construct("Invalid date/time interval: $intervalString", $previous);
     }
 
 }

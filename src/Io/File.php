@@ -41,7 +41,6 @@ use function is_resource;
 use function is_string;
 use function min;
 use function rename;
-use function sprintf;
 use function str_replace;
 use function stream_get_meta_data;
 use function strlen;
@@ -126,7 +125,7 @@ class File implements Path
         if ($maxSize === null) {
             return new static('php://memory', FileMode::CREATE_OR_TRUNCATE_READ_WRITE);
         } else {
-            return new static(sprintf('php://temp/maxmemory:%d', $maxSize), FileMode::CREATE_OR_TRUNCATE_READ_WRITE);
+            return new static("php://temp/maxmemory:$maxSize", FileMode::CREATE_OR_TRUNCATE_READ_WRITE);
         }
     }
 
@@ -167,10 +166,10 @@ class File implements Path
     {
         $destination = dirname($path);
         if (!is_dir($destination)) {
-            throw new FileException(sprintf('Directory %s is not writable.', $destination));
+            throw new FileException("Directory $destination is not writable.");
         }
         if (!rename($this->getPath(), $destination)) {
-            throw new FileException(sprintf('Cannot move file \'%s\' to \'%s\'.', $this->getPath(), $path));
+            throw new FileException("Cannot move file '{$this->getPath()}' to '$path'.");
         }
         chmod($destination, 0666);
 
@@ -193,7 +192,7 @@ class File implements Path
             $handle = fopen($this->path, $this->mode, false);
         }
         if ($handle === false) {
-            throw new FileException(sprintf('Cannot open file in mode \'%s\'.', $this->mode), error_get_last());
+            throw new FileException("Cannot open file in mode '$this->mode'.", error_get_last());
         }
         $this->handle = $handle;
     }

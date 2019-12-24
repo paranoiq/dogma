@@ -12,7 +12,6 @@ namespace Dogma\Mapping\Type;
 use Dogma\Exception;
 use Throwable;
 use function get_class;
-use function sprintf;
 
 class OneWayHandlerException extends Exception implements MappingTypeException
 {
@@ -30,10 +29,10 @@ class OneWayHandlerException extends Exception implements MappingTypeException
      */
     public function __construct($instance, TypeHandler $handler, ?Throwable $previous = null)
     {
-        parent::__construct(
-            sprintf('Cannot export an instance of %s using one way type handler %s.', get_class($instance), get_class($handler)),
-            $previous
-        );
+        $class = get_class($instance);
+        $handlerClass = get_class($handler);
+
+        parent::__construct("Cannot export an instance of $class using one way type handler $handlerClass.", $previous);
 
         $this->instance = $instance;
         $this->handler = $handler;

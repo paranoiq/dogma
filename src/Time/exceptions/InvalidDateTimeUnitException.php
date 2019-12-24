@@ -10,7 +10,6 @@
 namespace Dogma\Time;
 
 use Throwable;
-use function sprintf;
 
 class InvalidDateTimeUnitException extends TimeException
 {
@@ -19,7 +18,7 @@ class InvalidDateTimeUnitException extends TimeException
     {
         $expected = $unit->isTime() ? 'Date' : 'Time';
 
-        parent::__construct(sprintf('%s unit expected, but "%s" given.', $expected, $unit->getValue()), $previous);
+        parent::__construct("$expected unit expected, but '{$unit->getValue()}' given.", $previous);
     }
 
 }

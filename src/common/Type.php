@@ -28,7 +28,6 @@ use function is_string;
 use function is_subclass_of;
 use function preg_match;
 use function preg_split;
-use function sprintf;
 use function str_replace;
 use function strlen;
 
@@ -170,11 +169,8 @@ class Type
                 case $arg === null:
                     continue 2;
                 default:
-                    throw new InvalidArgumentException(sprintf(
-                        'Unexpected or duplicate argument %s at position %d.',
-                        ExceptionValueFormatter::format($arg),
-                        $i
-                    ));
+                    $value = ExceptionValueFormatter::format($arg);
+                    throw new InvalidArgumentException("Unexpected or duplicate argument $value at position $i.");
             }
         }
 
@@ -229,7 +225,7 @@ class Type
         if ($type === self::RESOURCE && ResourceType::isValid($specific)) {
             return;
         }
-        throw new InvalidTypeException($type, sprintf('%s(%s)', $type, $specific));
+        throw new InvalidTypeException($type, "$type($specific)");
     }
 
     public static function bool(bool $nullable = false): self

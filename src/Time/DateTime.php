@@ -32,7 +32,6 @@ use function floor;
 use function is_int;
 use function is_string;
 use function number_format;
-use function sprintf;
 use function strval;
 
 /**
@@ -176,7 +175,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         Check::range($seconds, 0, 59);
         Check::range($microseconds, 0, 999999);
 
-        return new static(sprintf('%d-%d-%d %d:%d:%d.%d', $year, $month, $day, $hours, $minutes, $seconds, $microseconds), $timeZone);
+        return new static("$year-$month-$day $hours:$minutes:$seconds.$microseconds", $timeZone);
     }
 
     public static function createFromDateTimeInterface(DateTimeInterface $dateTime, ?DateTimeZone $timeZone = null): self

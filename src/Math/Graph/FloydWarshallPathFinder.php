@@ -15,7 +15,6 @@ use function array_keys;
 use function array_reverse;
 use function count;
 use function range;
-use function sprintf;
 
 /**
  * Floyd-Warshall algorithm for finding all shortest paths in oriented weighted graph.
@@ -221,7 +220,7 @@ class FloydWarshallPathFinder
         for ($i = 0; $i < $this->nodeCount; $i++) {
             $rt .= '<tr>';
             if (!empty($this->nodeNames)) {
-                $rt .= sprintf('<td>%s[%s]</td>', $this->nodeNames[$i], $i) . "\n";
+                $rt .= "<td>{$this->nodeNames[$i]}[$i]</td>\n";
             }
             for ($j = 0; $j < $this->nodeCount; $j++) {
                 $rt .= '<td>' . $this->predecessors[$i][$j] . "</td>\n";

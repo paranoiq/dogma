@@ -19,7 +19,6 @@ use Dogma\Time\Provider\CurrentTimeProvider;
 use Dogma\Web\Host;
 use Dogma\Web\Url;
 use function is_int;
-use function sprintf;
 
 class HttpResponse
 {
@@ -165,7 +164,7 @@ class HttpResponse
             $id = $name;
             $name = CurlHelper::getCurlInfoName($id);
             if ($name === null) {
-                throw new HttpResponseException(sprintf('Unknown CURL info \'%s\'!', $id));
+                throw new HttpResponseException("Unknown CURL info '$id'!");
             }
         }
 

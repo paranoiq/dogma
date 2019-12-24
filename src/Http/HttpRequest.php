@@ -68,7 +68,6 @@ use function is_int;
 use function is_string;
 use function preg_match_all;
 use function preg_replace;
-use function sprintf;
 use function strlen;
 use function strtolower;
 use function substr;
@@ -122,7 +121,9 @@ class HttpRequest
         /** @var resource|bool $curl */
         $curl = curl_init();
         if ($curl === false) {
-            throw new HttpRequestException(sprintf('Cannot initialize curl. Error: %s', error_get_last()['message']));
+            $message = error_get_last()['message'];
+
+            throw new HttpRequestException("Cannot initialize curl. Error: $message");
         }
         $this->curl = $curl;
 
@@ -262,7 +263,7 @@ class HttpRequest
                 $this->setOption(CURLOPT_CUSTOMREQUEST, $this->method);
                 break;
             default:
-                throw new HttpRequestException(sprintf('Unknown method \'%s\'!', $this->method));
+                throw new HttpRequestException("Unknown method '$this->method'!");
         }
     }
 
@@ -275,7 +276,7 @@ class HttpRequest
         if (is_string($name)) {
             $number = CurlHelper::getCurlOptionNumber($name);
             if ($number === null) {
-                throw new HttpRequestException(sprintf('Unknown CURL option \'%s\'!', $name));
+                throw new HttpRequestException("Unknown CURL option '$name'!");
             }
         } elseif (!is_int($name)) {
             throw new HttpRequestException('Option name must be a string or a CURLOPT_* constant!');
@@ -492,7 +493,7 @@ class HttpRequest
             }
         }
         if ($status->isFatalError()) {
-            throw new HttpRequestException(sprintf('Fatal error occurred during request execution: %s', $status->getConstantName()), $status->getValue());
+            throw new HttpRequestException("Fatal error occurred during request execution: {$status->getConstantName()}", $status->getValue());
         }
 
         return $status;
@@ -516,7 +517,7 @@ class HttpRequest
     {
         $cookie = '';
         foreach ($this->cookies as $name => $value) {
-            $cookie .= sprintf('; %s=%s', $name, $value);
+            $cookie .= "; $name=$value";
         }
 
         $this->setOption(CURLOPT_COOKIE, substr($cookie, 2));
@@ -561,7 +562,7 @@ class HttpRequest
             $fileName = substr($this->content, 1);
             $file = fopen($fileName, FileMode::OPEN_READ);
             if (!$file) {
-                throw new HttpRequestException(sprintf('Could not open file %s.', $fileName));
+                throw new HttpRequestException("Could not open file $fileName.");
             }
 
             $this->setOption(CURLOPT_INFILE, $file);
@@ -576,7 +577,7 @@ class HttpRequest
     {
         foreach ($this->variables as $name => $value) {
             if ($value === null) {
-                throw new HttpRequestException(sprintf('POST parameter \'%s\' must be filled.', $name));
+                throw new HttpRequestException("POST parameter '$name' must be filled.");
             }
         }
         $this->setOption(CURLOPT_POSTFIELDS, $this->variables);
@@ -611,13 +612,14 @@ class HttpRequest
     {
         foreach ($vars as $name => $short) {
             if (!isset($this->variables[$name])) {
-                throw new HttpRequestException(sprintf('URL variable \'%s\' is missing in request data.', $name));
+                throw new HttpRequestException("URL variable '$name' is missing in request data.");
             }
 
+            $value = urlencode($this->variables[$name]);
             if ($short) {
-                $this->url = preg_replace(sprintf('/(?<=\\W%s=)%%(?=[^0-9A-Fa-f])/', $name), urlencode($this->variables[$name]), $this->url);
+                $this->url = preg_replace("/(?<=\\W$name=)%%(?=[^0-9A-Fa-f])/", $value, $this->url);
             } else {
-                $this->url = preg_replace(sprintf('/\\{%%%s\\}/', $name), urlencode($this->variables[$name]), $this->url);
+                $this->url = preg_replace("/{%%$name}/", $value, $this->url);
             }
 
             unset($this->variables[$name]);

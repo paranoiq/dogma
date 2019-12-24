@@ -13,7 +13,6 @@ use Dogma\Arr;
 use Dogma\InvalidRegularExpressionException;
 use Dogma\LogicException;
 use function preg_match;
-use function sprintf;
 
 abstract class PartialIntEnum extends IntEnum
 {
@@ -35,7 +34,11 @@ abstract class PartialIntEnum extends IntEnum
 
     public static function getValueRegexp(): string
     {
-        throw new LogicException(sprintf('Validation rule cannot be created automatically for class %s. Reimplement the validateValue() or getValueRegexp() method.', static::class));
+        $class = static::class;
+
+        throw new LogicException(
+            "Validation rule cannot be created automatically for class $class. Reimplement the validateValue() or getValueRegexp() method."
+        );
     }
 
 }

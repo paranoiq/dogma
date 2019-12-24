@@ -12,7 +12,6 @@ namespace Dogma\Mapping;
 use Dogma\Exception;
 use Dogma\Type;
 use Throwable;
-use function sprintf;
 
 class MappingNotFoundException extends Exception implements MappingException
 {
@@ -22,7 +21,7 @@ class MappingNotFoundException extends Exception implements MappingException
 
     public function __construct(Type $size, ?Throwable $previous = null)
     {
-        parent::__construct(sprintf('Mapping for type %s was not found.', $size->getId()), $previous);
+        parent::__construct("Mapping for type {$size->getId()} was not found.", $previous);
 
         $this->type = $size;
     }

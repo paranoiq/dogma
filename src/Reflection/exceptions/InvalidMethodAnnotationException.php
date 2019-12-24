@@ -12,19 +12,15 @@ namespace Dogma\Reflection;
 use Dogma\Exception;
 use ReflectionMethod;
 use Throwable;
-use function sprintf;
 
 class InvalidMethodAnnotationException extends Exception implements ReflectionException
 {
 
     public function __construct(ReflectionMethod $method, string $message, ?Throwable $previous = null)
     {
-        parent::__construct(sprintf(
-            'Invalid method annotation on %s::%s: %s',
-            $method->getDeclaringClass()->getName(),
-            $method->getName(),
-            $message
-        ), $previous);
+        $class = $method->getDeclaringClass()->getName();
+
+        parent::__construct("Invalid method annotation on $class::{$method->getName()}: $message", $previous);
     }
 
 }

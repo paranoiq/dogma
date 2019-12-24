@@ -10,14 +10,13 @@
 namespace Dogma;
 
 use Throwable;
-use function sprintf;
 
 class StaticClassException extends Exception
 {
 
     public function __construct(string $class, ?Throwable $previous = null)
     {
-        parent::__construct(sprintf('Cannot instantiate a static class %s.', $class), $previous);
+        parent::__construct("Cannot instantiate a static class $class.", $previous);
     }
 
 }

@@ -27,7 +27,6 @@ use function is_file;
 use function is_numeric;
 use function is_string;
 use function parse_ini_file;
-use function sprintf;
 use function substr;
 use function trigger_error;
 
@@ -90,7 +89,7 @@ final class Configurator extends stdClass
             $row .= $short ? C::white('  -' . $short) : '    ';
             $row .= C::white(' --' . $name);
             if ($type === self::FLAG_VALUE || $type === self::VALUE || $type === self::VALUES || $type === self::ENUM || $type === self::SET) {
-                $row .= C::gray($hint ? sprintf(' <%s>', $hint) : ' <value>');
+                $row .= C::gray($hint ? " <$hint>" : ' <value>');
             }
             $row = C::padString($row, self::HELP_COLUMN_WIDTH);
             $row .= ' ' . $info;
@@ -172,7 +171,7 @@ final class Configurator extends stdClass
                 exit(1);
             }
         } elseif ($filePath) {
-            echo C::white(sprintf("Configuration file %s not found.\n\n", $filePath), C::RED);
+            echo C::white("Configuration file $filePath not found.\n\n", C::RED);
             exit(1);
         } else {
             $config = [];
@@ -195,7 +194,7 @@ final class Configurator extends stdClass
         if ($this->values['use']) {
             foreach ($this->values['use'] as $use) {
                 if (!isset($config[$use])) {
-                    die(sprintf('Configuration profile %s not found.', $use));
+                    die("Configuration profile $use not found.");
                 }
                 $this->loadValues($config[$use], true);
             }
@@ -280,7 +279,7 @@ final class Configurator extends stdClass
             return new ConfigurationProfile($this->profiles['@' . $name]);
         }
         if (!array_key_exists($name, $this->values)) {
-            trigger_error(sprintf('Value "%s" not found.', $name));
+            trigger_error("Value '$name' not found.");
             return null;
         }
         if (!isset($this->values[$name]) && isset($this->defaults[$name])) {
@@ -296,7 +295,7 @@ final class Configurator extends stdClass
             return true;
         }
         if (!array_key_exists($name, $this->values)) {
-            trigger_error(sprintf('Value "%s" not found.', $name));
+            trigger_error("Value '$name' not found.");
             return false;
         }
         if (isset($this->values[$name])) {

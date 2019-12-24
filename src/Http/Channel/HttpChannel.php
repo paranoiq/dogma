@@ -23,7 +23,6 @@ use function is_array;
 use function is_int;
 use function is_string;
 use function range;
-use function sprintf;
 use function time;
 
 /**
@@ -273,7 +272,9 @@ class HttpChannel
         $handler = $request->getHandler();
         $error = curl_multi_add_handle($this->manager->getHandler(), $handler);
         if ($error !== 0) {
-            throw new HttpChannelException(sprintf('CURL error when adding a job: %s', CurlHelper::getCurlMultiErrorName($error)), $error);
+            $name = CurlHelper::getCurlMultiErrorName($error);
+
+            throw new HttpChannelException("CURL error when adding a job: $name", $error);
         }
 
         $this->running[$name] = $this->queue[$name];
@@ -352,7 +353,7 @@ class HttpChannel
     private function fetchByName($name): HttpResponse
     {
         if (!isset($this->queue[$name]) && !isset($this->running[$name]) && !isset($this->finished[$name])) {
-            throw new HttpChannelException(sprintf('Job named \'%s\' was not found.', $name));
+            throw new HttpChannelException("Job named '$name' was not found.");
         }
 
         if (isset($this->finished[$name])) {

@@ -10,17 +10,15 @@
 namespace Dogma;
 
 use Throwable;
-use function sprintf;
 
 class InvalidEncodingException extends InvalidValueException
 {
 
     public function __construct(string $value, string $expectedEncoding, ?Throwable $previous = null)
     {
-        Exception::__construct(
-            sprintf('Value %s is not a valid %s string.', ExceptionValueFormatter::format($value), $expectedEncoding),
-            $previous
-        );
+        $formatted = ExceptionValueFormatter::format($value);
+
+        Exception::__construct("Value $formatted is not a valid $expectedEncoding string.", $previous);
     }
 
 }

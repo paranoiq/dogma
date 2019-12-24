@@ -159,7 +159,8 @@ foreach ($subjects as $name => $possibleTypes) {
             if (!in_array($type, $possibleTypes, true)) {
                 $before = trim(Debugger::dump($subject, true));
                 $after = trim(Debugger::dump($copy, true));
-                Assert::fail(sprintf('Subject %s `%s` should not be castable to type %s. Instead casted to value `%s`.', $name, $before, $type ?: 'null', $after));
+                $type = $type ?: 'null';
+                Assert::fail("Subject $name `$before` should not be castable to type $type. Instead casted to value `$after`.");
             }
         } catch (Throwable $e) {
             $class = get_class($e);
@@ -167,7 +168,7 @@ foreach ($subjects as $name => $possibleTypes) {
             if ($class === AssertException::class) {
                 throw $e;
             } elseif (in_array($type, $possibleTypes, true)) {
-                Assert::fail(sprintf('Subject %s `%s` should be casted to type %s. %s thrown instead.', $name, $before, $type, $class));
+                Assert::fail("Subject $name `$before` should be casted to type $type. $class thrown instead.");
             } elseif ($class === InvalidTypeException::class
                 && !($type === Type::FLOAT && is_float($subject) && (is_nan($subject) || $subject === INF || $subject === -INF))) {
                 continue;
@@ -178,9 +179,9 @@ foreach ($subjects as $name => $possibleTypes) {
                 && is_float($subject) && ($subject === INF || $subject === -INF)) {
                 continue;
             } elseif ($type === Type::FLOAT && is_float($subject) && (is_nan($subject) || $subject === INF || $subject === -INF)) {
-                Assert::fail(sprintf('Subject %s `%s` casted to %s should throw an InvalidValueException. %s thrown instead.', $name, $before, $type, $class));
+                Assert::fail("Subject $name `$before` casted to $type should throw an InvalidValueException. $class thrown instead.");
             } else {
-                Assert::fail(sprintf('Subject %s `%s` casted to %s should throw an InvalidTypeException. %s thrown instead.', $name, $before, $type, $class));
+                Assert::fail("Subject $name `$before` casted to $type should throw an InvalidTypeException. $class thrown instead.");
             }
         }
     }

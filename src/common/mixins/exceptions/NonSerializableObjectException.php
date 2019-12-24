@@ -10,14 +10,13 @@
 namespace Dogma;
 
 use Throwable;
-use function sprintf;
 
 final class NonSerializableObjectException extends Exception
 {
 
     public function __construct(string $class, ?Throwable $previous = null)
     {
-        parent::__construct(sprintf('Serializing a non-serializable object of class %s.', $class), $previous);
+        parent::__construct("Serializing a non-serializable object of class $class.", $previous);
     }
 
 }

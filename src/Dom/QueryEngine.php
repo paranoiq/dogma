@@ -19,6 +19,7 @@ use DOMCdataSection;
 use DOMComment;
 use DOMDocument;
 use DOMElement;
+use DOMException;
 use DOMNode;
 use DOMNodeList;
 use DOMProcessingInstruction;
@@ -30,7 +31,6 @@ use function is_array;
 use function is_numeric;
 use function is_scalar;
 use function is_string;
-use function sprintf;
 use function strtoupper;
 use function substr;
 
@@ -191,13 +191,13 @@ class QueryEngine
             $alias = $name;
         }
         if (in_array($alias, $this->nativeFunctions)) {
-            throw new QueryEngineException(sprintf('Function \'%s\' is already registered.', $alias));
+            throw new QueryEngineException("Function '$alias' is already registered.");
         }
 
         if ($expectNode) {
-            $this->translations['/' . $alias . '\\(/'] = sprintf('php:function(\'%s\', .//', $name);
+            $this->translations['/' . $alias . '\\(/'] = "php:function('$name', .//";
         } else {
-            $this->translations['/' . $alias . '\\(/'] = sprintf('php:functionString(\'%s\', .//', $name);
+            $this->translations['/' . $alias . '\\(/'] = "php:functionString('$name', .//";
         }
         $this->nativeFunctions[] = $alias;
         $this->userFunctions[] = $name;
@@ -227,7 +227,7 @@ class QueryEngine
             $list = $this->xpath->query($path);
         }
         if ($list === false) {
-            throw new QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
+            throw new QueryEngineException("Invalid XPath query: '$path', translated from: '$query'.");
         }
 
         return new NodeList($list, $this);
@@ -250,7 +250,7 @@ class QueryEngine
             $list = $this->xpath->query($path);
         }
         if ($list === false) {
-            throw new QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
+            throw new QueryEngineException("Invalid XPath query: '$path', translated from: '$query'.");
         }
 
         if (!count($list)) {
@@ -277,7 +277,7 @@ class QueryEngine
         }
 
         if ($value === false) {
-            throw new QueryEngineException(sprintf('Invalid XPath query: \'%s\', translated from: \'%s\'.', $path, $query));
+            throw new QueryEngineException("Invalid XPath query: '$path', translated from: '$query'.");
         }
 
         if (substr($query, 0, 5) === 'date(') {
@@ -385,9 +385,9 @@ class QueryEngine
                 if (in_array($match[1], $nativeFunctions, true)) {
                     return $match[1] . '(';
                 } elseif (in_array($match[1], $userFunctions, true)) {
-                    return sprintf('php:functionString(\'%s\', ', $match[1]);
+                    return "php:functionString('{$match[1]}', ";
                 } else {
-                    throw new DomException(sprintf('XPath compilation failure: Functions \'%s\' is not enabled.', $match[1]));
+                    throw new DOMException("XPath compilation failure: Functions '{$match[1]}' is not enabled.");
                 }
             }
         );
@@ -441,11 +441,7 @@ class QueryEngine
         try {
             $date = DateTime::createFromFormat($format, $string);
         } catch (InvalidDateTimeException $e) {
-            throw new QueryEngineException(
-                sprintf('Cannot create DateTime object from \'%s\' using format \'%s\'.', $string, $format),
-                0,
-                $e
-            );
+            throw new QueryEngineException("Cannot create DateTime object from '$string' using format '$format'.", 0, $e);
         }
 
         return $date->format('Y-m-d');
@@ -460,11 +456,7 @@ class QueryEngine
         try {
             $date = DateTime::createFromFormat($format, $string);
         } catch (InvalidDateTimeException $e) {
-            throw new QueryEngineException(
-                sprintf('Cannot create DateTime object from \'%s\' using format \'%s\'.', $string, $format),
-                0,
-                $e
-            );
+            throw new QueryEngineException("Cannot create DateTime object from '$string' using format '$format'.", 0, $e);
         }
 
         return $date->format('Y-m-d H:i:s');

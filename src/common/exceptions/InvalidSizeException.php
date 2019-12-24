@@ -12,7 +12,6 @@ namespace Dogma;
 use Throwable;
 use function implode;
 use function is_array;
-use function sprintf;
 
 class InvalidSizeException extends Exception
 {
@@ -25,14 +24,16 @@ class InvalidSizeException extends Exception
      */
     public function __construct($type, $actualSize, array $allowedSizes, ?Throwable $previous = null)
     {
+        $type = ExceptionTypeFormatter::format($type);
+
         if (!$allowedSizes) {
-            parent::__construct(sprintf('Size parameter is not allowed on type %s.', ExceptionTypeFormatter::format($type)), $previous);
+            parent::__construct("Size parameter is not allowed on type $type.", $previous);
         } else {
             $sizes = implode(', ', $allowedSizes);
             if (is_array($actualSize)) {
                 $actualSize = implode(',', $actualSize);
             }
-            parent::__construct(sprintf('Size %s is not valid for type %s. Allowed sizes: %s.', $actualSize, ExceptionTypeFormatter::format($type), $sizes), $previous);
+            parent::__construct("Size $actualSize is not valid for type $type. Allowed sizes: $sizes.", $previous);
         }
     }
 

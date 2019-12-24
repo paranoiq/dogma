@@ -10,7 +10,6 @@
 namespace Dogma;
 
 use Throwable;
-use function sprintf;
 
 class InvalidRegularExpressionException extends InvalidValueException
 {
@@ -21,10 +20,7 @@ class InvalidRegularExpressionException extends InvalidValueException
      */
     public function __construct($regexp, ?Throwable $previous = null)
     {
-        Exception::__construct(
-            sprintf('Value \'%s\' is not a valid regular expression.', $regexp),
-            $previous
-        );
+        Exception::__construct("Value '$regexp' is not a valid regular expression.", $previous);
     }
 
 }

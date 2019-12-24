@@ -11,14 +11,13 @@ namespace Dogma\Math\Interval;
 
 use Dogma\Exception;
 use Throwable;
-use function sprintf;
 
 class InvalidIntervalStringFormatException extends Exception
 {
 
     public function __construct(string $string, ?Throwable $previous = null)
     {
-        parent::__construct(sprintf('Cannot parse interval borders from string "%s".', $string), $previous);
+        parent::__construct("Cannot parse interval borders from string '$string'.", $previous);
     }
 
 }

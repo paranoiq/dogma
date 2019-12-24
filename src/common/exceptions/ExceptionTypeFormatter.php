@@ -18,7 +18,6 @@ use function is_array;
 use function is_object;
 use function is_resource;
 use function is_string;
-use function sprintf;
 
 class ExceptionTypeFormatter
 {
@@ -48,7 +47,7 @@ class ExceptionTypeFormatter
         } elseif (is_object($type)) {
             return get_class($type);
         } elseif (is_resource($type)) {
-            return sprintf('resource(%s)', get_resource_type($type));
+            return 'resource(' . get_resource_type($type) . ')';
         } elseif (is_string($type)) {
             return $type;
         } else {

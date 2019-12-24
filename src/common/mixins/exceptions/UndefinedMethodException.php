@@ -10,14 +10,13 @@
 namespace Dogma;
 
 use Throwable;
-use function sprintf;
 
 class UndefinedMethodException extends Exception
 {
 
     public function __construct(string $class, string $method, ?Throwable $previous = null)
     {
-        parent::__construct(sprintf('Method %s::%s() is not defined or is not accessible', $class, $method), $previous);
+        parent::__construct("Method $class::$method() is not defined or is not accessible", $previous);
     }
 
 }

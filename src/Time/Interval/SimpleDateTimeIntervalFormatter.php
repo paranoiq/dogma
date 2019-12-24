@@ -13,7 +13,6 @@ use Dogma\StrictBehaviorMixin;
 use Dogma\Time\InvalidFormattingStringException;
 use function count;
 use function explode;
-use function sprintf;
 
 /**
  * Uses standard PHP date() formatting and "|" separator for start and end part of formatting string.
@@ -27,7 +26,7 @@ class SimpleDateTimeIntervalFormatter implements DateTimeIntervalFormatter
         $parts = explode(self::START_END_SEPARATOR, $format);
         if (count($parts) !== 2) {
             throw new InvalidFormattingStringException(
-                sprintf('Format string "%s" should contain exactly one "|" separator, to distinguish format for start and end date/time.', $format)
+                "Format string '$format' should contain exactly one '|' separator, to distinguish format for start and end date/time."
             );
         }
         [$startFormat, $endFormat] = $parts;

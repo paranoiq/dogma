@@ -24,7 +24,6 @@ use function count;
 use function max;
 use function min;
 use function round;
-use function sprintf;
 use function usort;
 
 class IntInterval implements Interval
@@ -78,7 +77,7 @@ class IntInterval implements Interval
 
     public function format(): string
     {
-        return sprintf('[%d, %d]', $this->start, $this->end);
+        return "[$this->start, $this->end]";
     }
 
     public function getStart(): int

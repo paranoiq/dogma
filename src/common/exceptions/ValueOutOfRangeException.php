@@ -10,7 +10,6 @@
 namespace Dogma;
 
 use Throwable;
-use function sprintf;
 
 class ValueOutOfRangeException extends InvalidValueException
 {
@@ -23,21 +22,14 @@ class ValueOutOfRangeException extends InvalidValueException
      */
     public function __construct($value, $min, $max, ?Throwable $previous = null)
     {
+        $value = ExceptionValueFormatter::format($value);
+
         if ($min === null) {
-            Exception::__construct(
-                sprintf('Expected a value lower than %s. Value %s given.', $max, ExceptionValueFormatter::format($value)),
-                $previous
-            );
+            Exception::__construct("Expected a value lower than $max. Value $value given.", $previous);
         } elseif ($max === null) {
-            Exception::__construct(
-                sprintf('Expected a value higher than %s. Value %s given.', $min, ExceptionValueFormatter::format($value)),
-                $previous
-            );
+            Exception::__construct("Expected a value higher than $min. Value $value given.", $previous);
         } else {
-            Exception::__construct(
-                sprintf('Expected a value within the range of %s and %s. Value %s given.', $min, $max, ExceptionValueFormatter::format($value)),
-                $previous
-            );
+            Exception::__construct("Expected a value within the range of $min and $max. Value $value given.", $previous);
         }
     }
 

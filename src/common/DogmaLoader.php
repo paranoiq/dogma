@@ -19,7 +19,6 @@ use function is_dir;
 use function is_file;
 use function ltrim;
 use function spl_autoload_register;
-use function sprintf;
 use function str_replace;
 use function substr;
 
@@ -99,7 +98,7 @@ final class DogmaLoader
                 $parts = explode(DIRECTORY_SEPARATOR, str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path));
                 $file = array_pop($parts);
                 $class = substr($file, 0, -4);
-                $this->classMap[sprintf('Dogma\\%s', $class)] = $path;
+                $this->classMap['Dogma\\' . $class] = $path;
             }
         }
     }

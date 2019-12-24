@@ -18,7 +18,6 @@ use function explode;
 use function implode;
 use function intl_get_error_message;
 use function is_array;
-use function sprintf;
 
 /**
  * @see http://userguide.icu-project.org/transforms/general
@@ -276,7 +275,7 @@ class Transliterator extends PhpTransliterator
         $from = explode(' ', $fromScript->getName())[0];
         $to = explode(' ', $toScript->getName())[0];
 
-        return self::create(sprintf('%s-%s', $from, $to));
+        return self::create("$from-$to");
     }
 
 }

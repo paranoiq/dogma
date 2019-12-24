@@ -37,7 +37,6 @@ use function preg_match;
 use function range;
 use function rtrim;
 use function settype;
-use function sprintf;
 use function str_replace;
 use function strlen;
 use function strpos;
@@ -83,9 +82,9 @@ final class Check
                 break;
             case Type::BOOL:
                 if ($min !== null) {
-                    throw new InvalidArgumentException(sprintf('Parameter $min is not applicable with type %s.', $type));
+                    throw new InvalidArgumentException("Parameter \$min is not applicable with type $type.");
                 } elseif ($max !== null) {
-                    throw new InvalidArgumentException(sprintf('Parameter $max is not applicable with type %s.', $type));
+                    throw new InvalidArgumentException("Parameter \$max is not applicable with type $type.");
                 }
                 self::bool($value);
                 break;
@@ -103,31 +102,31 @@ final class Check
                 break;
             case Type::OBJECT:
                 if ($min !== null) {
-                    throw new InvalidArgumentException(sprintf('Parameter $min is not applicable with type %s.', $type));
+                    throw new InvalidArgumentException("Parameter \$min is not applicable with type $type.");
                 } elseif ($max !== null) {
-                    throw new InvalidArgumentException(sprintf('Parameter $max is not applicable with type %s.', $type));
+                    throw new InvalidArgumentException("Parameter \$max is not applicable with type $type.");
                 }
                 self::object($value);
                 break;
             case Type::RESOURCE:
                 if ($max !== null) {
-                    throw new InvalidArgumentException(sprintf('Parameter $max is not applicable with type %s.', $type));
+                    throw new InvalidArgumentException("Parameter \$max is not applicable with type $type.");
                 }
                 self::resource($value, $min);
                 break;
             case Type::PHP_CALLABLE:
                 if ($min !== null) {
-                    throw new InvalidArgumentException(sprintf('Parameter $min is not applicable with type %s.', $type));
+                    throw new InvalidArgumentException("Parameter \$min is not applicable with type $type.");
                 } elseif ($max !== null) {
-                    throw new InvalidArgumentException(sprintf('Parameter $max is not applicable with type %s.', $type));
+                    throw new InvalidArgumentException("Parameter \$max is not applicable with type $type.");
                 }
                 self::callable($value);
                 break;
             default:
                 if ($min !== null) {
-                    throw new InvalidArgumentException(sprintf('Parameter $min is not applicable with type %s.', $type));
+                    throw new InvalidArgumentException("Parameter \$min is not applicable with type $type.");
                 } elseif ($max !== null) {
-                    throw new InvalidArgumentException(sprintf('Parameter $max is not applicable with type %s.', $type));
+                    throw new InvalidArgumentException("Parameter \$max is not applicable with type $type.");
                 }
                 self::object($value, $type);
                 break;
@@ -770,10 +769,10 @@ final class Check
             $before = substr($before, 1);
         }
         if (strlen($after) > $afterDigits) {
-            throw new ValueOutOfBoundsException($value, sprintf('decimal(%d,%d)', $totalDigits, $afterDigits));
+            throw new ValueOutOfBoundsException($value, "decimal($totalDigits, $afterDigits)");
         }
         if (strlen($before) + strlen($after) > $totalDigits) {
-            throw new ValueOutOfBoundsException($value, sprintf('decimal(%d,%d)', $totalDigits, $afterDigits));
+            throw new ValueOutOfBoundsException($value, "decimal($totalDigits, $afterDigits)");
         }
     }
 
@@ -1027,7 +1026,7 @@ final class Check
             throw new InvalidTypeException(Type::RESOURCE, $value);
         }
         if ($type !== null && get_resource_type($value) !== $type) {
-            throw new InvalidTypeException(sprintf('%s (%s)', Type::RESOURCE, $type), $value);
+            throw new InvalidTypeException("resource($type)", $value);
         }
     }
 
@@ -1054,7 +1053,7 @@ final class Check
             throw new InvalidValueException($value, 'class name');
         }
         if ($parentClass !== null && !is_subclass_of($value, $parentClass)) {
-            throw new InvalidTypeException(sprintf('child class of %s', $parentClass), $value);
+            throw new InvalidTypeException("child class of $parentClass", $value);
         }
     }
 
@@ -1136,7 +1135,7 @@ final class Check
                 throw new ValueOutOfBoundsException($value, $type, $e);
             }
         } else {
-            throw new InvalidArgumentException(sprintf('Cannot check bounds of type %s.', $type->getId()));
+            throw new InvalidArgumentException("Cannot check bounds of type {$type->getId()}.");
         }
     }
 
@@ -1152,7 +1151,7 @@ final class Check
         try {
             self::range($value, ...IntBounds::getRange($size, $signed ? Sign::SIGNED : Sign::UNSIGNED));
         } catch (ValueOutOfRangeException $e) {
-            throw new ValueOutOfBoundsException($value, sprintf('%sint(%d)', $signed ? '' : 'u', $size), $e);
+            throw new ValueOutOfBoundsException($value, $signed ? "int($size)" : "uint($size)", $e);
         }
     }
 

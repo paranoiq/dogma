@@ -10,18 +10,16 @@
 namespace Dogma\Time;
 
 use Throwable;
-use function sprintf;
 
 class InvalidDayOfYearIntervalException extends TimeException
 {
 
     public function __construct(DayOfYear $start, DayOfYear $end, ?Throwable $previous = null)
     {
-        parent::__construct(sprintf(
-            'Difference between two dates in a season must be less than or exactly 366 days. Values %s (start) and %s (end) given.',
-            $start->format(),
-            $end->format()
-        ), $previous);
+        parent::__construct(
+            "Difference between two dates in a season must be less than or exactly 366 days. Values {$start->format()} (start) and {$end->format()} (end) given.",
+            $previous
+        );
     }
 
 }

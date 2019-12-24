@@ -14,7 +14,6 @@ use function get_class;
 use function gettype;
 use function interface_exists;
 use function is_object;
-use function sprintf;
 
 class InvalidInterfaceException extends InvalidTypeException
 {
@@ -36,9 +35,9 @@ class InvalidInterfaceException extends InvalidTypeException
             $class = false;
         }
         if ($class) {
-            Exception::__construct(sprintf('Expected an instance of %s. %s given.', $expectedInterface, $type), $previous);
+            Exception::__construct("Expected an instance of $expectedInterface. $type given.", $previous);
         } else {
-            Exception::__construct(sprintf('Expected an object implementing %s. %s given.', $expectedInterface, $type), $previous);
+            Exception::__construct("Expected an object implementing $expectedInterface. $type given.", $previous);
         }
     }
 

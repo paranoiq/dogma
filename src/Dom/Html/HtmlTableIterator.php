@@ -15,7 +15,6 @@ use Dogma\InvalidArgumentException;
 use Dogma\StrictBehaviorMixin;
 use Iterator;
 use function count;
-use function sprintf;
 
 class HtmlTableIterator implements Iterator
 {
@@ -46,7 +45,7 @@ class HtmlTableIterator implements Iterator
     )
     {
         if ($table->nodeName !== 'table') {
-            throw new InvalidArgumentException(sprintf('Element must be a table. %s given!', $table->nodeName));
+            throw new InvalidArgumentException("Element must be a table. {$table->nodeName} given!");
         }
 
         $this->table = $table;
