@@ -16,7 +16,6 @@
         "ext-intl": "*",
         "ext-calendar":"*",
         "nette/http": "~2.4|~3.0",
-        "nette/reflection": "~2.4",
         "nette/utils": "~2.4|~3.0",
         "tracy/tracy": "~2.4"
     },
