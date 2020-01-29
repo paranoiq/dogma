@@ -62,7 +62,31 @@ class YearMonth implements Comparable, Equalable
 
     public static function createFromComponents(int $year, int $month): self
     {
-        return new static($year . '-' . $month . '-01');
+        return new static($year . '-' . $month);
+    }
+
+    public function add(int $months, int $years = 0): self
+    {
+        $year = $this->getYear() + $years + intval($months / 12);
+        $month = $this->getMonth() + ($months % 12);
+        if ($month > 12) {
+            $month -= 12;
+            $year++;
+        }
+
+        return self::createFromComponents($year, $month);
+    }
+
+    public function subtract(int $months, int $years = 0): self
+    {
+        $year = $this->getYear() - $years - intval($months / 12);
+        $month = $this->getMonth() - ($months % 12);
+        if ($month < 1) {
+            $month += 12;
+            $year--;
+        }
+
+        return self::createFromComponents($year, $month);
     }
 
     /**
