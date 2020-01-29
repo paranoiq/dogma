@@ -29,17 +29,22 @@ class YearMonth implements Comparable, Equalable
     private $value;
 
     /**
-     * @param string|\Dogma\Time\Date|\DateTimeInterface $value
+     * @param string|\Dogma\Time\Date|\DateTimeInterface|null $value
      */
-    public function __construct($value)
+    final public function __construct($value = null)
     {
+        if ($value === null) {
+            $this->value = (new Date())->format(self::DEFAULT_FORMAT);
+            return;
+        }
+
         if ($value instanceof Date || $value instanceof \DateTimeInterface) {
             $this->value = $value->format(self::DEFAULT_FORMAT);
             return;
         }
 
         try {
-            $dateTime = new DateTime($value);
+            $dateTime = new DateTime($value . '-01');
             $this->value = $dateTime->format(self::DEFAULT_FORMAT);
         } catch (\Throwable $e) {
             throw new InvalidDateTimeException($value, $e);
