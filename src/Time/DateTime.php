@@ -12,6 +12,7 @@ namespace Dogma\Time;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
+use Dogma\Exception;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeFormatter;
@@ -98,6 +99,8 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
     public static function createFromAnyFormat(array $formats, string $timeString, ?\DateTimeZone $timeZone = null): self
     {
         Check::count($formats, 1);
+
+        $e = new Exception('foo');
 
         foreach ($formats as $format) {
             try {
