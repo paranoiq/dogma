@@ -44,7 +44,9 @@ class YearMonth implements Comparable, Equalable
         }
 
         try {
-            $dateTime = new DateTime($value . '-01');
+            $dateTime = preg_match('/\\d+-\\d+/', $value)
+                ? DateTime::createFromFormat('Y-m-d', $value . '-01')
+                : new DateTime($value);
             $this->value = $dateTime->format(self::DEFAULT_FORMAT);
         } catch (\Throwable $e) {
             throw new InvalidDateTimeException($value, $e);
