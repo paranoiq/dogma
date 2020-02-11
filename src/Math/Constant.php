@@ -36,6 +36,7 @@ class Constant
 
     public const E = M_E;
     public const PI = M_PI;
+    public const TAU = 2 * M_PI; // two times better biatch!
     public const EULER = M_EULER;
     public const GAMMA = M_EULER;
     public const OMEGA = 0.56714329040978387299996866221035554;
@@ -44,8 +45,8 @@ class Constant
     public const FIBONACCI = 1.61803398874989484820458683436563811;
     public const TRIBONACCI = 1.83928675521416113255185256465328660;
 
-    public const LOG_2_E = M_LOG2E; // log2(e)
-    public const LOG_10_E = M_LOG10E; // log10(e)
+    public const LOG_2_E = M_LOG2E; // log₂(e)
+    public const LOG_10_E = M_LOG10E; // log₁₀(e)
     public const LN_2 = M_LN2; // ln(2)
     public const LN_10 = M_LN10; // ln(10)
     public const LN_PI = M_LNPI; // ln(π)
