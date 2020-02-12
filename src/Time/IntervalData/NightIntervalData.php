@@ -15,7 +15,7 @@ use Dogma\Equalable;
 use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
-use Dogma\Time\Interval\DateInterval;
+use Dogma\Time\Interval\NightInterval;
 use Dogma\Time\InvalidIntervalStartEndOrderException;
 use Dogma\Time\Span\DateSpan;
 use Dogma\Time\Span\DateTimeSpan;
@@ -24,9 +24,9 @@ use function array_values;
 use function usort;
 
 /**
- * Interval of dates with data bound to it.
+ * Interval of nights with data bound to it.
  */
-class DateIntervalData implements Equalable, Comparable, Pokeable
+class NightIntervalData implements Equalable, Comparable, Pokeable
 {
     use StrictBehaviorMixin;
 
@@ -59,11 +59,11 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
     }
 
     /**
-     * @param \Dogma\Time\Interval\DateInterval $interval
+     * @param \Dogma\Time\Interval\NightInterval $interval
      * @param mixed|null $data
      * @return self
      */
-    public static function createFromDateInterval(DateInterval $interval, $data): self
+    public static function createFromNightInterval(NightInterval $interval, $data): self
     {
         return new static($interval->getStart(), $interval->getEnd(), $data);
     }
@@ -132,12 +132,12 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
 
     public function getDayCount(): int
     {
-        return $this->isEmpty() ? 0 : $this->end->getJulianDay() - $this->start->getJulianDay() + 1;
+        return $this->getLengthInDays();
     }
 
-    public function toDateInterval(): DateInterval
+    public function toNightInterval(): NightInterval
     {
-        return new DateInterval($this->start, $this->end);
+        return new NightInterval($this->start, $this->end);
     }
 
     /**
@@ -154,7 +154,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
         do {
             $dates[] = [$date, $this->data];
             $date = $date->addDay();
-        } while ($date->isSameOrBefore($this->end));
+        } while ($date->isBefore($this->end));
 
         return $dates;
     }
@@ -228,11 +228,11 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
             $date = Date::createFromDateTimeInterface($date);
         }
 
-        return $date->isBetween($this->start, $this->end);
+        return $date->isBetween($this->start, $this->end->subtractDay());
     }
 
     /**
-     * @param \Dogma\Time\Interval\DateInterval|\Dogma\Time\IntervalData\DateIntervalData $interval
+     * @param \Dogma\Time\Interval\NightInterval|\Dogma\Time\IntervalData\NightIntervalData $interval
      * @return bool
      */
     public function contains($interval): bool
@@ -245,34 +245,34 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
     }
 
     /**
-     * @param \Dogma\Time\Interval\DateInterval|\Dogma\Time\IntervalData\DateIntervalData $interval
+     * @param \Dogma\Time\Interval\NightInterval|\Dogma\Time\IntervalData\NightIntervalData $interval
      * @return bool
      */
     public function intersects($interval): bool
     {
-        return $this->start->isSameOrBefore($interval->getEnd()) && $this->end->isSameOrAfter($interval->getStart());
+        return $this->start->isBefore($interval->getEnd()) && $this->end->isAfter($interval->getStart());
     }
 
     /**
-     * @param \Dogma\Time\Interval\DateInterval|\Dogma\Time\IntervalData\DateIntervalData $interval
+     * @param \Dogma\Time\Interval\NightInterval|\Dogma\Time\IntervalData\NightIntervalData $interval
      * @return bool
      */
     public function touches($interval): bool
     {
-        return $this->start->equals($interval->getEnd()->addDay()) || $this->end->equals($interval->getStart()->subtractDay());
+        return $this->start->equals($interval->getEnd()) || $this->end->equals($interval->getStart());
     }
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    public function intersect(DateInterval ...$items): self
+    public function intersect(NightInterval ...$items): self
     {
-        $items[] = $this->toDateInterval();
-        $items = DateInterval::sort($items);
+        $items[] = $this->toNightInterval();
+        $items = NightInterval::sort($items);
 
         $result = array_shift($items);
         foreach ($items as $item) {
             if ($result->getEnd()->isSameOrAfter($item->getStart())) {
-                $result = new DateInterval(Date::max($result->getStart(), $item->getStart()), Date::min($result->getEnd(), $item->getEnd()));
+                $result = new NightInterval(Date::max($result->getStart(), $item->getStart()), Date::min($result->getEnd(), $item->getEnd()));
             } else {
                 return static::empty();
             }
@@ -281,11 +281,11 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
         return new static($result->getStart(), $result->getEnd(), $this->data);
     }
 
-    public function subtract(DateInterval ...$items): DateIntervalDataSet
+    public function subtract(NightInterval ...$items): NightIntervalDataSet
     {
         $intervals = [$this];
 
-        /** @var \Dogma\Time\Interval\DateInterval $item */
+        /** @var \Dogma\Time\Interval\NightInterval $item */
         foreach ($items as $item) {
             if ($item->isEmpty()) {
                 continue;
@@ -294,17 +294,17 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
             foreach ($intervals as $i => $interval) {
                 unset($intervals[$i]);
                 if ($interval->start->isBefore($item->getStart()) && $interval->end->isAfter($item->getEnd())) {
-                    $intervals[] = new static($interval->start, $item->getStart()->subtractDay(), $this->data);
-                    $intervals[] = new static($item->getEnd()->addDay(), $interval->end, $this->data);
+                    $intervals[] = new static($interval->start, $item->getStart(), $this->data);
+                    $intervals[] = new static($item->getEnd(), $interval->end, $this->data);
                 } elseif ($interval->start->isBefore($item->getStart())) {
-                    $intervals[] = new static($interval->start, Date::min($interval->end, $item->getStart()->subtractDay()), $this->data);
+                    $intervals[] = new static($interval->start, Date::min($interval->end, $item->getStart()), $this->data);
                 } elseif ($interval->end->isAfter($item->getEnd())) {
-                    $intervals[] = new static(Date::max($interval->start, $item->getEnd()->addDay()), $interval->end, $this->data);
+                    $intervals[] = new static(Date::max($interval->start, $item->getEnd()), $interval->end, $this->data);
                 }
             }
         }
 
-        return new DateIntervalDataSet(array_values($intervals));
+        return new NightIntervalDataSet(array_values($intervals));
     }
 
     // static ----------------------------------------------------------------------------------------------------------
@@ -315,7 +315,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
      */
     public static function sort(array $intervals): array
     {
-        usort($intervals, function (DateIntervalData $a, DateIntervalData $b) {
+        usort($intervals, function (NightIntervalData $a, NightIntervalData $b) {
             return $a->start->getJulianDay() <=> $b->start->getJulianDay() ?: $a->end->getJulianDay() <=> $b->end->getJulianDay();
         });
 
@@ -328,7 +328,7 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
      */
     public static function sortByStart(array $intervals): array
     {
-        usort($intervals, function (DateIntervalData $a, DateIntervalData $b) {
+        usort($intervals, function (NightIntervalData $a, NightIntervalData $b) {
             return $a->start->getJulianDay() <=> $b->start->getJulianDay();
         });
 
