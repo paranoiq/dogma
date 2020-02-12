@@ -62,6 +62,17 @@ class DateIntervalDataSet implements Equalable, Pokeable
         }
     }
 
+    public function toDateIntervalSet(): DateIntervalSet
+    {
+        $intervals = [];
+        /** @var \Dogma\Time\IntervalData\DateIntervalData $interval */
+        foreach ($this->intervals as $interval) {
+            $intervals[] = $interval->toDateInterval();
+        }
+
+        return new DateIntervalSet($intervals);
+    }
+
     /**
      * @return \Dogma\Time\Date[][]|mixed[][] array of pairs: (Date $date, Equalable $data)
      */

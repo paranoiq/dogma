@@ -62,6 +62,17 @@ class NightIntervalDataSet implements Equalable, Pokeable
         }
     }
 
+    public function toNightIntervalSet(): NightIntervalSet
+    {
+        $intervals = [];
+        /** @var \Dogma\Time\IntervalData\NightIntervalData $interval */
+        foreach ($this->intervals as $interval) {
+            $intervals[] = $interval->toDateInterval();
+        }
+
+        return new NightIntervalSet($intervals);
+    }
+
     /**
      * @return \Dogma\Time\Date[][]|mixed[][] array of pairs: (Date $date, Equalable $data)
      */
