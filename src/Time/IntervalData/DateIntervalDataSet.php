@@ -23,8 +23,6 @@ use function array_merge;
 use function array_shift;
 use function count;
 use function is_array;
-use function max;
-use function min;
 
 class DateIntervalDataSet implements Equalable, Pokeable
 {
@@ -134,8 +132,8 @@ class DateIntervalDataSet implements Equalable, Pokeable
             $second = $intervals[$n + 1];
             if ($first->dataEquals($second->getData()) && ($first->intersects($second) || $first->touches($second))) {
                 $intervals[$n + 1] = new DateIntervalData(
-                    min($first->getStart(), $second->getStart()),
-                    max($first->getEnd(), $second->getEnd()),
+                    Date::min($first->getStart(), $second->getStart()),
+                    Date::max($first->getEnd(), $second->getEnd()),
                     $first->getData()
                 );
                 unset($intervals[$n]);
