@@ -17,6 +17,8 @@ use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeFormatter;
 use function explode;
 use function implode;
+use function intval;
+use function preg_match;
 use function substr;
 
 class YearMonth implements Comparable, Equalable

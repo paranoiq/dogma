@@ -12,7 +12,6 @@
 namespace Dogma\Geolocation;
 
 use Dogma\Check;
-use Dogma\Mapping\Type\Exportable;
 use Dogma\Math\Constant;
 use Dogma\Math\Vector\Vector3;
 use Dogma\StrictBehaviorMixin;
