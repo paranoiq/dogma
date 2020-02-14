@@ -161,7 +161,7 @@ class DateIntervalDataSet implements Equalable, Pokeable
      */
     public function add(self $set): self
     {
-        return self::addIntervals(...$set->intervals);
+        return $this->addIntervals(...$set->intervals);
     }
 
     public function addIntervals(DateIntervalData ...$intervals): self
@@ -176,13 +176,14 @@ class DateIntervalDataSet implements Equalable, Pokeable
      */
     public function subtract(DateIntervalSet $set): self
     {
-        return self::subtractIntervals(...$set->getIntervals());
+        return $this->subtractIntervals(...$set->getIntervals());
     }
 
     public function subtractIntervals(DateInterval ...$intervals): self
     {
         $sources = $this->intervals;
         $results = [];
+        /** @var \Dogma\Time\IntervalData\DateIntervalData $result */
         while ($result = array_shift($sources)) {
             foreach ($intervals as $interval) {
                 $result = $result->subtract($interval);
@@ -208,7 +209,7 @@ class DateIntervalDataSet implements Equalable, Pokeable
      */
     public function intersect(DateIntervalSet $set): self
     {
-        return self::intersectIntervals(...$set->getIntervals());
+        return $this->intersectIntervals(...$set->getIntervals());
     }
 
     public function intersectIntervals(DateInterval ...$intervals): self

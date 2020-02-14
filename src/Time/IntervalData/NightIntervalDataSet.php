@@ -67,7 +67,7 @@ class NightIntervalDataSet implements Equalable, Pokeable
         $intervals = [];
         /** @var \Dogma\Time\IntervalData\NightIntervalData $interval */
         foreach ($this->intervals as $interval) {
-            $intervals[] = $interval->toDateInterval();
+            $intervals[] = $interval->toNightInterval();
         }
 
         return new NightIntervalSet($intervals);
@@ -183,6 +183,7 @@ class NightIntervalDataSet implements Equalable, Pokeable
     {
         $sources = $this->intervals;
         $results = [];
+        /** @var \Dogma\Time\IntervalData\NightIntervalData $result */
         while ($result = array_shift($sources)) {
             foreach ($intervals as $interval) {
                 $result = $result->subtract($interval);
