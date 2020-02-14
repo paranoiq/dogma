@@ -322,4 +322,26 @@ class DateIntervalDataSet implements Equalable, Pokeable
         return new static($results);
     }
 
+    /**
+     * Split interval set to more interval sets with different subsets of original data.
+     * @param callable $splitter Maps original data set to a group of data sets. Should return array with keys indicating the data set group.
+     * @return self[] $this
+     */
+    public function splitData(callable $splitter): array
+    {
+        $intervalGroups = [];
+        foreach ($this->intervals as $interval) {
+            foreach ($splitter($interval->getData()) as $key => $values) {
+                $intervalGroups[$key][] = new DateIntervalData($interval->getStart(), $interval->getEnd(), $values);
+            }
+        }
+
+        $intervalSets = [];
+        foreach ($intervalGroups as $intervals) {
+            $intervalSets[] = (new DateIntervalDataSet($intervals))->normalize();
+        }
+
+        return $intervalSets;
+    }
+
 }
