@@ -21,6 +21,12 @@ class HtmlTableIterator implements \Iterator
     /** @var \Dogma\Dom\Element */
     private $table;
 
+    /** @var string */
+    private $headRowSelector;
+
+    /** @var string */
+    private $bodyRowSelector;
+
     /** @var string[] */
     private $head;
 
@@ -30,13 +36,19 @@ class HtmlTableIterator implements \Iterator
     /** @var int */
     private $position;
 
-    public function __construct(Element $table)
+    public function __construct(
+        Element $table,
+        string $headRowSelector = ':headrow',
+        string $bodyRowSelector = ':bodyrow'
+    )
     {
         if ($table->nodeName !== 'table') {
             throw new \InvalidArgumentException(sprintf('Element must be a table. %s given!', $table->nodeName));
         }
 
         $this->table = $table;
+        $this->headRowSelector = $headRowSelector;
+        $this->bodyRowSelector = $bodyRowSelector;
     }
 
     public function rewind(): void
@@ -72,10 +84,10 @@ class HtmlTableIterator implements \Iterator
 
     private function processTable(): void
     {
-        foreach ($this->table->find(':headrow/:cell') as $cell) {
+        foreach ($this->table->find($this->headRowSelector . '/:cell') as $cell) {
             $this->head[] = $cell->textContent;
         }
-        $this->rows = $this->table->find(':bodyrow');
+        $this->rows = $this->table->find($this->bodyRowSelector);
     }
 
     /**
