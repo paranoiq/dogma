@@ -429,6 +429,11 @@ class DateTime extends \DateTimeImmutable implements DateOrDateTime, DateTimeOrT
         return $this < ($timeProvider !== null ? $timeProvider->getDateTime() : new self());
     }
 
+    public function isMidnight(): bool
+    {
+        return ($this->getMicroTimestamp() % Microseconds::DAY) === 0;
+    }
+
     /**
      * @param \DateTimeInterface|\Dogma\Time\Date $date
      * @return bool

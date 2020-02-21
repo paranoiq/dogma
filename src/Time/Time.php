@@ -289,6 +289,11 @@ class Time implements DateTimeOrTime, Pokeable
         }
     }
 
+    public function isMidnight(): bool
+    {
+        return $this->microseconds === 0 || $this->microseconds === Microseconds::DAY;
+    }
+
     /**
      * @param \DateTimeInterface|\Dogma\Time\Time $time
      * @param bool $absolute
