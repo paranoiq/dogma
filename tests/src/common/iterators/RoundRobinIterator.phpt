@@ -8,52 +8,64 @@ use Dogma\UnevenIteratorSourcesException;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-$first = [1, 2, 3];
-$second = [4, 5, 6];
-$third = [7, 8, 9];
 $result = [];
-foreach (new RoundRobinIterator($first, $second, $third) as $k => $v) {
+foreach (new RoundRobinIterator([1, 2, 3], [4, 5, 6], [7, 8, 9]) as $k => $v) {
     $result[$k] = $v;
 }
 Assert::same($result, [1, 4, 7, 2, 5, 8, 3, 6, 9]);
 
-Assert::exception(function (): void {
-    $first = [1, 2];
-    $second = [4, 5, 6];
-    $third = [7, 8, 9];
+Assert::exception(static function (): void {
     $result = [];
-    foreach (new RoundRobinIterator($first, $second, $third) as $k => $v) {
+    foreach (new RoundRobinIterator([1, 2], [4, 5, 6], [7, 8, 9]) as $k => $v) {
         $result[$k] = $v;
     }
 }, UnevenIteratorSourcesException::class);
 
-Assert::exception(function (): void {
-    $first = [1, 2, 3];
-    $second = [4, 5, 6];
-    $third = [7, 8];
+Assert::exception(static function (): void {
     $result = [];
-    foreach (new RoundRobinIterator($first, $second, $third) as $k => $v) {
+    foreach (new RoundRobinIterator([1, 2, 3], [4, 5, 6], [7, 8]) as $k => $v) {
         $result[$k] = $v;
     }
 }, UnevenIteratorSourcesException::class);
 
-Assert::exception(function (): void {
-    $first = [];
-    $second = [4, 5, 6];
-    $third = [7, 8, 9];
+Assert::exception(static function (): void {
     $result = [];
-    foreach (new RoundRobinIterator($first, $second, $third) as $k => $v) {
+    foreach (new RoundRobinIterator([], [4, 5, 6], [7, 8, 9]) as $k => $v) {
         $result[$k] = $v;
     }
 }, UnevenIteratorSourcesException::class);
 
-Assert::exception(function (): void {
-    $first = [1, 2, 3];
-    $second = [4, 5, 6];
-    $third = [];
+Assert::exception(static function (): void {
     $result = [];
-    foreach (new RoundRobinIterator($first, $second, $third) as $k => $v) {
+    foreach (new RoundRobinIterator([1, 2, 3], [4, 5, 6], []) as $k => $v) {
         $result[$k] = $v;
     }
+    // check that first iteration does not run at all
     Assert::same($result, []);
 }, UnevenIteratorSourcesException::class);
+
+
+$result = [];
+foreach (RoundRobinIterator::uneven([1, 2], [4, 5, 6], [7, 8, 9]) as $k => $v) {
+    $result[$k] = $v;
+}
+rd($result);
+Assert::same($result, [1, 4, 7, 2, 5, 8, 6, 9]);
+
+$result = [];
+foreach (RoundRobinIterator::uneven([1, 2, 3], [4, 5, 6], [7, 8]) as $k => $v) {
+    $result[$k] = $v;
+}
+Assert::same($result, [1, 4, 7, 2, 5, 8, 3, 6]);
+
+$result = [];
+foreach (RoundRobinIterator::uneven([], [4, 5, 6], [7, 8, 9]) as $k => $v) {
+    $result[$k] = $v;
+}
+Assert::same($result, [4, 7, 5, 8, 6, 9]);
+
+$result = [];
+foreach (RoundRobinIterator::uneven([1, 2, 3], [4, 5, 6], []) as $k => $v) {
+    $result[$k] = $v;
+}
+Assert::same($result, [1, 4, 2, 5, 3, 6]);

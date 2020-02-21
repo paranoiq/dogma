@@ -9,6 +9,7 @@
 
 namespace Dogma;
 
+use function array_values;
 use function count;
 
 /**
@@ -27,6 +28,9 @@ class RoundRobinIterator implements \Iterator
     /** @var int */
     private $key;
 
+    /** @var bool */
+    private $allowUneven = false;
+
     /**
      * @param iterable|mixed[] ...$iterables
      */
@@ -38,6 +42,18 @@ class RoundRobinIterator implements \Iterator
         }
         $this->current = 0;
         $this->key = 0;
+    }
+
+    /**
+     * @param iterable|mixed[] ...$iterables
+     * @return static
+     */
+    public static function uneven(iterable ...$iterables): self
+    {
+        $self = new self(...$iterables);
+        $self->allowUneven = true;
+
+        return $self;
     }
 
     public function rewind(): void
@@ -68,16 +84,20 @@ class RoundRobinIterator implements \Iterator
         if ($this->current === 0) {
             $valid = 0;
             $invalid = 0;
-            foreach ($this->iterators as $iterator) {
+            foreach ($this->iterators as $i => $iterator) {
                 if ($iterator->valid()) {
                     $valid++;
                 } else {
                     $invalid++;
+                    unset($this->iterators[$i]);
                 }
             }
             if ($valid === 0) {
                 return false;
             } elseif ($invalid === 0) {
+                return true;
+            } elseif ($this->allowUneven) {
+                $this->iterators = array_values($this->iterators);
                 return true;
             } else {
                 throw new UnevenIteratorSourcesException('Given iterators do not return same amount of items.');
