@@ -209,6 +209,26 @@ class Arr
 
     /**
      * @param mixed[] $array
+     * @param mixed[] $values
+     * @return bool
+     */
+    public static function containsAny(array $array, array $values): bool
+    {
+        return array_intersect($array, $values) !== [];
+    }
+
+    /**
+     * @param mixed[] $array
+     * @param mixed[] $values
+     * @return bool
+     */
+    public static function containsAll(array $array, array $values): bool
+    {
+        return count(array_unique(array_intersect($array, $values))) === count($values);
+    }
+
+    /**
+     * @param mixed[] $array
      * @param mixed $value
      * @param int $from
      * @return int|string|null
@@ -244,6 +264,7 @@ class Arr
         if ($end !== null) {
             return self::last(self::indexesOf(self::take($array, $end), $value));
         }
+
         return self::last(self::indexesOf($array, $value));
     }
 
@@ -260,6 +281,7 @@ class Arr
                 return $key;
             }
         }
+
         return null;
     }
 
@@ -286,6 +308,26 @@ class Arr
 
     /**
      * @param mixed[] $array
+     * @param mixed[] $keys
+     * @return bool
+     */
+    public static function containsAnyKey(array $array, array $keys): bool
+    {
+        return array_intersect(array_keys($array), $keys) !== [];
+    }
+
+    /**
+     * @param mixed[] $array
+     * @param mixed[] $keys
+     * @return bool
+     */
+    public static function containsAllKeys(array $array, array $keys): bool
+    {
+        return count(array_intersect(array_keys($array), $keys)) === count($keys);
+    }
+
+    /**
+     * @param mixed[] $array
      * @param callable $function
      * @return bool
      */
@@ -296,6 +338,7 @@ class Arr
                 return true;
             }
         }
+
         return false;
     }
 
@@ -311,6 +354,7 @@ class Arr
                 return false;
             }
         }
+
         return true;
     }
 
@@ -326,6 +370,7 @@ class Arr
                 return $value;
             }
         }
+
         return null;
     }
 
@@ -354,6 +399,7 @@ class Arr
             }
             $i++;
         }
+
         return $i;
     }
 
@@ -369,12 +415,14 @@ class Arr
         if ($function === null) {
             return count($array);
         }
+
         $count = 0;
         foreach ($array as $value) {
             if ($function($value)) {
                 $count++;
             }
         }
+
         return $count;
     }
 
@@ -406,6 +454,7 @@ class Arr
         if (empty($array)) {
             return null;
         }
+
         return max($array);
     }
 
@@ -418,6 +467,7 @@ class Arr
         if (empty($array)) {
             return null;
         }
+
         return min($array);
     }
 
@@ -432,7 +482,8 @@ class Arr
             return null;
         }
         $max = self::max(self::map($array, $function));
-        return self::find($array, function ($value) use ($max, $function) {
+
+        return self::find($array, static function ($value) use ($max, $function) {
             return $function($value) === $max;
         });
     }
@@ -448,7 +499,8 @@ class Arr
             return null;
         }
         $min = self::min(self::map($array, $function));
-        return self::find($array, function ($value) use ($min, $function) {
+
+        return self::find($array, static function ($value) use ($min, $function) {
             return $function($value) === $min;
         });
     }
@@ -522,6 +574,7 @@ class Arr
             }
             $iterator->next();
         }
+
         return true;
     }
 
@@ -554,6 +607,7 @@ class Arr
                 return false;
             }
         }
+
         return true;
     }
 
@@ -602,6 +656,7 @@ class Arr
         foreach (new ReverseArrayIterator($array) as $value) {
             $init = $function($value, $init);
         }
+
         return $init;
     }
 
@@ -625,6 +680,7 @@ class Arr
         if (empty($array)) {
             return null;
         }
+
         return self::foldLeft(self::tail($array), $function, self::head($array));
     }
 
@@ -638,6 +694,7 @@ class Arr
         if (empty($array)) {
             return null;
         }
+
         return self::foldRight(self::init($array), $function, self::last($array));
     }
 
@@ -654,6 +711,7 @@ class Arr
         foreach ($array as $value) {
             $res[] = $init = $function($init, $value);
         }
+
         return $res;
     }
 
@@ -671,6 +729,7 @@ class Arr
             $init = $function($value, $init);
             array_unshift($res, $init);
         }
+
         return $res;
     }
 
@@ -685,6 +744,7 @@ class Arr
         if (count($array) === 0) {
             return null;
         }
+
         return reset($array);
     }
 
@@ -698,6 +758,7 @@ class Arr
         if (count($array) === 0) {
             return null;
         }
+
         return reset($array);
     }
 
@@ -710,6 +771,7 @@ class Arr
         if (count($array) === 0) {
             return null;
         }
+
         return end($array);
     }
 
@@ -742,6 +804,7 @@ class Arr
         while (!empty($that)) {
             $res[] = $that = self::init($that);
         }
+
         return $res;
     }
 
@@ -756,6 +819,7 @@ class Arr
         while (!empty($that)) {
             $res[] = $that = self::tail($that);
         }
+
         return $res;
     }
 
@@ -850,6 +914,7 @@ class Arr
                 $res[$key] = $value;
             }
         }
+
         return $res;
     }
 
@@ -882,6 +947,7 @@ class Arr
                 $r[$key] = $value;
             }
         }
+
         return [$l, $r];
     }
 
@@ -919,6 +985,7 @@ class Arr
             }
             $res[$key] = $value;
         }
+
         return $res;
     }
 
@@ -991,6 +1058,7 @@ class Arr
                 $res[$key] = $value;
             }
         }
+
         return $res;
     }
 
@@ -1022,6 +1090,7 @@ class Arr
                 $b[$key] = $value;
             }
         }
+
         return [$a, $b];
     }
 
@@ -1053,6 +1122,7 @@ class Arr
                 $res[] = $values;
             }
         }
+
         return $res;
     }
 
@@ -1068,6 +1138,7 @@ class Arr
             $groupKey = $function($value);
             $res[$groupKey][$key] = $value;
         }
+
         return $res;
     }
 
@@ -1106,6 +1177,7 @@ class Arr
                 $res[$newKey] = $newValue;
             }
         }
+
         return $res;
     }
 
@@ -1127,10 +1199,13 @@ class Arr
         if (empty($array)) {
             return [];
         }
-        $array = array_map(null, ...$array);
+
+        array_unshift($array, null);
+        $array = array_map(...$array);
         foreach ($array as $key => $value) {
             $array[$key] = (array) $value;
         }
+
         return $array;
     }
 
@@ -1182,6 +1257,7 @@ class Arr
     {
         $arr = $array;
         shuffle($arr);
+
         return $arr;
     }
 
@@ -1198,6 +1274,7 @@ class Arr
         } else {
             asort($arr, $flags);
         }
+
         return $arr;
     }
 
@@ -1214,6 +1291,7 @@ class Arr
         } else {
             ksort($arr, $flags);
         }
+
         return $arr;
     }
 
@@ -1230,6 +1308,7 @@ class Arr
         if ($flags & Order::DESCENDING) {
             $arr = array_reverse($arr);
         }
+
         return $arr;
     }
 
@@ -1246,6 +1325,7 @@ class Arr
         if ($flags & Order::DESCENDING) {
             $arr = array_reverse($arr);
         }
+
         return $arr;
     }
 
@@ -1281,6 +1361,7 @@ class Arr
         foreach ($values as $value) {
             $array[] = $value;
         }
+
         return $array;
     }
 
@@ -1305,6 +1386,7 @@ class Arr
         foreach ($values as $value) {
             array_unshift($array, $value);
         }
+
         return $array;
     }
 
@@ -1338,6 +1420,7 @@ class Arr
     public static function remove(array $array, int $from, int $length = 0): array
     {
         array_splice($array, $from, $length);
+
         return $array;
     }
 
@@ -1354,6 +1437,7 @@ class Arr
             $length = count($patch);
         }
         array_splice($array, $from, $length, $patch);
+
         return $array;
     }
 
@@ -1366,6 +1450,7 @@ class Arr
     public static function insert(array $array, int $from, array $patch): array
     {
         array_splice($array, $from, 0, $patch);
+
         return $array;
     }
 
@@ -1423,6 +1508,7 @@ class Arr
     public static function diffKeysWith(array $array, callable $function, array ...$args): array
     {
         $args[] = $function;
+
         return array_diff_ukey($array, ...$args);
     }
 
@@ -1449,12 +1535,15 @@ class Arr
         if ($function && $keysFunction) {
             $args[] = $function;
             $args[] = $keysFunction;
+
             return array_udiff_uassoc($array, ...$args);
         } elseif ($function && !$keysFunction) {
             $args[] = $function;
+
             return array_udiff_assoc($array, ...$args);
         } elseif (!$function && $keysFunction) {
             $args[] = $keysFunction;
+
             return array_diff_uassoc($array, ...$args);
         } else {
             return array_diff_assoc($array, ...$args);
@@ -1480,6 +1569,7 @@ class Arr
     public static function intersectWith(array $array, callable $function, array ...$args): array
     {
         $args[] = $function;
+
         return array_uintersect($array, ...$args);
     }
 
@@ -1502,6 +1592,7 @@ class Arr
     public static function intersectKeysWith(array $array, callable $function, array ...$args): array
     {
         $args[] = $function;
+
         return array_intersect_ukey($array, ...$args);
     }
 
@@ -1527,12 +1618,15 @@ class Arr
         if ($function && $keysFunction) {
             $args[] = $function;
             $args[] = $keysFunction;
+
             return array_uintersect_uassoc($array, ...$args);
         } elseif ($function && !$keysFunction) {
             $args[] = $function;
+
             return array_uintersect_assoc($array, ...$args);
         } elseif (!$function && $keysFunction) {
             $args[] = $keysFunction;
+
             return array_intersect_uassoc($array, ...$args);
         } else {
             return array_intersect_assoc($array, ...$args);

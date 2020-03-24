@@ -180,6 +180,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         foreach ($res as $key => $value) {
             $res[$key] = ($value instanceof self ? $value->toArray() : $value);
         }
+
         return $res;
     }
 
@@ -228,6 +229,24 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
+     * @param mixed[] $values
+     * @return bool
+     */
+    public function containsAny(array $values): bool
+    {
+        return array_intersect($this->items, $values) !== [];
+    }
+
+    /**
+     * @param mixed[] $values
+     * @return bool
+     */
+    public function containsAll(array $values): bool
+    {
+        return count(array_unique(array_intersect($this->items, $values))) === count($values);
+    }
+
+    /**
      * @param mixed $value
      * @param int $from
      * @return mixed|null
@@ -237,10 +256,12 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         if ($from > 0) {
             return $this->drop($from)->indexOf($value);
         }
+
         $result = array_search($value, $this->toArray(), Type::STRICT);
         if ($result === false) {
             return null;
         }
+
         return $result;
     }
 
@@ -263,6 +284,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         if ($end !== null) {
             return $this->take($end)->indexesOf($value)->last();
         }
+
         return $this->indexesOf($value)->last();
     }
 
@@ -278,6 +300,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
                 return $key;
             }
         }
+
         return null;
     }
 
@@ -300,6 +323,24 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return $this->offsetExists($key);
     }
 
+    /**
+     * @param mixed[] $keys
+     * @return bool
+     */
+    public function containsAnyKey(array $keys): bool
+    {
+        return array_intersect(array_keys($this->items), $keys) !== [];
+    }
+
+    /**
+     * @param mixed[] $keys
+     * @return bool
+     */
+    public function containsAllKeys(array $keys): bool
+    {
+        return count(array_intersect(array_keys($this->items), $keys)) === count($keys);
+    }
+
     public function exists(callable $function): bool
     {
         foreach ($this as $value) {
@@ -307,6 +348,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
                 return true;
             }
         }
+
         return false;
     }
 
@@ -317,6 +359,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
                 return false;
             }
         }
+
         return true;
     }
 
@@ -331,6 +374,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
                 return $value;
             }
         }
+
         return null;
     }
 
@@ -349,6 +393,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
             }
             $i++;
         }
+
         return $i;
     }
 
@@ -365,6 +410,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
                 $count++;
             }
         }
+
         return $count;
     }
 
@@ -386,6 +432,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         if ($this->isEmpty()) {
             return null;
         }
+
         return max($this->toArray());
     }
 
@@ -410,7 +457,8 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
             return null;
         }
         $max = $this->map($function)->max();
-        return $this->find(function ($value) use ($max, $function) {
+
+        return $this->find(static function ($value) use ($max, $function) {
             return $function($value) === $max;
         });
     }
@@ -425,7 +473,8 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
             return null;
         }
         $min = $this->map($function)->min();
-        return $this->find(function ($value) use ($min, $function) {
+
+        return $this->find(static function ($value) use ($min, $function) {
             return $function($value) === $min;
         });
     }
@@ -492,6 +541,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
             }
             $iterator->next();
         }
+
         return !$iterator->valid();
     }
 
@@ -523,6 +573,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
                 return false;
             }
         }
+
         return true;
     }
 
@@ -569,6 +620,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         foreach ($this->getReverseIterator() as $value) {
             $init = $function($value, $init);
         }
+
         return $init;
     }
 
@@ -590,6 +642,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         if ($this->isEmpty()) {
             return null;
         }
+
         return $this->tail()->foldLeft($function, $this->head());
     }
 
@@ -602,6 +655,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         if ($this->isEmpty()) {
             return null;
         }
+
         return $this->init()->foldRight($function, $this->last());
     }
 
@@ -617,6 +671,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         foreach ($this as $value) {
             $res[] = $init = $function($init, $value);
         }
+
         return new static($res);
     }
 
@@ -633,6 +688,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
             $init = $function($value, $init);
             array_unshift($res, $init);
         }
+
         return new static($res);
     }
 
@@ -646,6 +702,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         if (count($this->items) === 0) {
             return null;
         }
+
         return reset($this->items);
     }
 
@@ -658,6 +715,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         if (count($this->items) === 0) {
             return null;
         }
+
         return reset($this->items);
     }
 
@@ -669,6 +727,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         if (count($this->items) === 0) {
             return null;
         }
+
         return end($this->items);
     }
 
@@ -689,6 +748,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         while ($that->isNotEmpty()) {
             $res[] = $that = $that->init();
         }
+
         return new static($res);
     }
 
@@ -699,6 +759,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         while ($that->isNotEmpty()) {
             $res[] = $that = $that->tail();
         }
+
         return new static($res);
     }
 
@@ -727,7 +788,8 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
     {
         /** @var self $res */
         $res = new static(array_chunk($this->toArray(), $size, self::PRESERVE_KEYS));
-        return $res->map(function ($array) {
+
+        return $res->map(static function ($array) {
             return new static($array);
         });
     }
@@ -738,6 +800,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         for ($i = 0; $i <= $this->count() - $size + $step - 1; $i += $step) {
             $res[] = $this->slice($i, $size);
         }
+
         return new static($res);
     }
 
@@ -763,6 +826,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
                 $res[$key] = $value;
             }
         }
+
         return new static($res);
     }
 
@@ -793,6 +857,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
                 $r[$key] = $value;
             }
         }
+
         return [new static($l), new static($r)];
     }
 
@@ -815,6 +880,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
             }
             $res[$key] = $value;
         }
+
         return new static($res);
     }
 
@@ -862,6 +928,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
                 $res[$key] = $value;
             }
         }
+
         return new static($res);
     }
 
@@ -887,6 +954,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
                 $b[$key] = $value;
             }
         }
+
         return [new static($a), new static($b)];
     }
 
@@ -913,6 +981,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
                 $res[] = $values;
             }
         }
+
         return new static($res);
     }
 
@@ -925,7 +994,8 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         }
         /** @var self $r */
         $r = new static($res);
-        return $r->map(function ($array) {
+
+        return $r->map(static function ($array) {
             return new static($array);
         });
     }
@@ -950,6 +1020,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
                 $res[$newKey] = $newValue;
             }
         }
+
         return new static($res);
     }
 
@@ -964,10 +1035,13 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         if ($this->isEmpty()) {
             return new static($arr);
         }
-        $arr = array_map(null, ...$arr);
+
+        array_unshift($arr, null);
+        $arr = array_map(...$arr);
         foreach ($arr as $key => $value) {
             $arr[$key] = (array) $value;
         }
+
         return new static($arr);
     }
 
@@ -1006,6 +1080,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
     {
         $arr = $this->toArray();
         shuffle($arr);
+
         return new static($arr);
     }
 
@@ -1017,6 +1092,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         } else {
             asort($arr, $flags);
         }
+
         return new static($arr);
     }
 
@@ -1028,6 +1104,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         } else {
             ksort($arr, $flags);
         }
+
         return new static($arr);
     }
 
@@ -1038,6 +1115,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         if ($flags & Order::DESCENDING) {
             $arr = array_reverse($arr);
         }
+
         return new static($arr);
     }
 
@@ -1048,6 +1126,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         if ($flags & Order::DESCENDING) {
             $arr = array_reverse($arr);
         }
+
         return new static($arr);
     }
 
@@ -1055,6 +1134,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
     {
         $arr = $this->toArray();
         $arr = array_unique($arr, $sortFlags);
+
         return new static($arr);
     }
 
@@ -1079,6 +1159,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         foreach ($values as $value) {
             $res[] = $value;
         }
+
         return new static($res);
     }
 
@@ -1103,6 +1184,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         foreach ($this as $value) {
             $values[] = $value;
         }
+
         return new static($values);
     }
 
@@ -1115,6 +1197,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
     {
         $arr = $this->toArray();
         $arr = array_replace($arr, [$find => $replace]);
+
         return new static($arr);
     }
 
@@ -1129,6 +1212,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         }
         $arr = $this->toArray();
         $arr = array_replace($arr, $replacements);
+
         return new static($arr);
     }
 
@@ -1141,6 +1225,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
     {
         $arr = $this->toArray();
         array_splice($arr, $from, $length);
+
         return new static($arr);
     }
 
@@ -1157,6 +1242,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
             $length = count($patch);
         }
         array_splice($arr, $from, $length, $patch);
+
         return new static($arr);
     }
 
@@ -1169,6 +1255,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
     {
         $arr = $this->toArray();
         array_splice($arr, $from, 0, $patch);
+
         return new static($arr);
     }
 
@@ -1182,6 +1269,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
             $that = self::convertToArray($that);
         }
         $self = $this->toArray();
+
         return new static(array_merge($self, $that));
     }
 
@@ -1291,6 +1379,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         } else {
             $arr = array_diff_assoc(...$args);
         }
+
         return new static($arr);
     }
 
@@ -1398,6 +1487,7 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         } else {
             $arr = array_intersect_assoc(...$args);
         }
+
         return new static($arr);
     }
 

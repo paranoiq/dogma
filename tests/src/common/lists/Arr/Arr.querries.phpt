@@ -22,6 +22,14 @@ Assert::false(Arr::isNotEmpty($empty));
 Assert::true(Arr::contains($array, 2));
 Assert::false(Arr::contains($array, 5));
 
+// containsAny()
+Assert::true(Arr::containsAny($array, [2, 7]));
+Assert::false(Arr::containsAny($array, [6, 7]));
+
+// containsAll()
+Assert::true(Arr::containsAll($array, [1, 2]));
+Assert::false(Arr::containsAll($array, [2, 7]));
+
 // indexOf()
 Assert::null(Arr::indexOf($array, 5));
 Assert::same(Arr::indexOf($array, 2), 1);
@@ -61,6 +69,14 @@ Assert::same(Arr::lastIndexWhere($array, function (int $v): bool {
 // containsKey()
 Assert::false(Arr::containsKey($array, 5));
 Assert::true(Arr::containsKey($array, 2));
+
+// containsAnyKey()
+Assert::false(Arr::containsAnyKey($array, [5, 6]));
+Assert::true(Arr::containsAnyKey($array, [5, 4]));
+
+// containsAllKeys()
+Assert::false(Arr::containsAllKeys($array, [2, 7]));
+Assert::true(Arr::containsAllKeys($array, [0, 1]));
 
 // exists()
 Assert::false(Arr::exists($array, function (int $v): bool {
