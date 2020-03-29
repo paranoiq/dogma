@@ -23,6 +23,24 @@ class IntCalc
 {
     use StaticClassMixin;
 
+    /**
+     * @param int $number
+     * @return int[]
+     */
+    public static function binaryComponents(int $number): array
+    {
+        $components = [];
+        $e = 0;
+        do {
+            $c = 1 << $e;
+            if (($number & $c) !== 0) {
+                $components[] = $c;
+            }
+        } while ($e++ < 64);
+
+        return $components;
+    }
+
     public static function roundTo(int $number, int $multiple): int
     {
         $up = self::roundUpTo($number, $multiple);

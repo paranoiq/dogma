@@ -9,39 +9,54 @@
 
 namespace Dogma\Enum;
 
-use Dogma\Arr;
 use Dogma\Cls;
 use Dogma\Dumpable;
-use Dogma\InvalidValueException;
+use Dogma\Equalable;
+use Dogma\Math\IntCalc;
 use Dogma\Obj;
+use Dogma\Type;
+use function array_diff;
+use function array_intersect;
+use function array_merge;
 use function array_search;
+use function array_sum;
+use function array_unique;
+use function count;
 use function implode;
 use function in_array;
+use function sort;
 use function sprintf;
 
-abstract class IntSet implements Dumpable
+/**
+ * Base class for sets of integer values
+ *
+ * @see about.md to find out how enum inheritance works.
+ */
+abstract class IntSet implements Set, Dumpable
 {
-    use SetMixin;
-
-    /** @var IntSet[][] ($class => ($value => $enum)) */
-    private static $instances = [];
+    use EnumSetMixin;
 
     /** @var mixed[][] ($class => ($constName => $value)) */
     private static $availableValues = [];
-
-    /** @var int */
-    private $value;
 
     /** @var int[] */
     private $values;
 
     /**
-     * @param int $value
      * @param int[] $values
      */
-    final private function __construct(int $value, array $values)
+    final private function __construct(array $values)
     {
-        $this->value = $value;
+        $class = static::class;
+        if (empty(self::$availableValues[$class])) {
+            self::init($class);
+        }
+
+        $values = array_unique($values);
+        sort($values);
+
+        self::checkValues($values);
+
         $this->values = $values;
     }
 
@@ -51,33 +66,22 @@ abstract class IntSet implements Dumpable
      */
     final public static function get(int ...$values): self
     {
-        $class = static::class;
-        if (empty(self::$availableValues[$class])) {
-            self::init($class);
-        }
-        $value = 0;
-        foreach ($values as $val) {
-            $value |= $val;
-        }
-        $values = [];
-        $n = 0;
-        $val = 1;
-        while ($n++ < 62) {
-            $found = $value & $val;
-            if ($found) {
-                if (!static::validateValue($val)) {
-                    throw new InvalidValueException($val, $class);
-                }
-                $values[] = $val;
-            }
-            $val <<= 1;
-        }
+        return new static($values);
+    }
 
-        if (!isset(self::$instances[$class][$value])) {
-            self::$instances[$class][$value] = new static($value, $values);
-        }
+    final public static function getByValue(int $value): self
+    {
+        return new static(IntCalc::binaryComponents($value));
+    }
 
-        return self::$instances[$class][$value];
+    public static function all(): self
+    {
+        return new static(self::getAllowedValues());
+    }
+
+    public function invert(): self
+    {
+        return new static(array_diff(self::getAllowedValues(), $this->values));
     }
 
     public function dump(): string
@@ -87,17 +91,25 @@ abstract class IntSet implements Dumpable
             $names[] = $value . ' ' . $name;
         }
 
-        return sprintf(
-            "%s(%s #%s)\n[\n    %s\n]",
-            Cls::short(static::class),
-            $this->value,
-            Obj::dumpHash($this),
-            implode("\n", $names)
-        );
+        return $this->values !== []
+            ? sprintf(
+                "%s(%s %s #%s)\n[\n    %s\n]",
+                Cls::short(static::class),
+                count($this->values),
+                $this->getValue(),
+                Obj::dumpHash($this),
+                implode("\n", $names)
+            )
+            : sprintf(
+                '%s(%s #%s)',
+                Cls::short(static::class),
+                count($this->values),
+                Obj::dumpHash($this)
+            );
     }
 
     /**
-     * Validates given value. Can also normalize the value, if needed.
+     * Validates a single value. Can also normalize the value, if needed.
      *
      * @param int $value
      * @return bool
@@ -109,20 +121,7 @@ abstract class IntSet implements Dumpable
             self::init($class);
         }
 
-        return Arr::contains(self::$availableValues[$class], $value);
-    }
-
-    final public function getValue(): int
-    {
-        return $this->value;
-    }
-
-    /**
-     * @return int[]
-     */
-    final public function getValues(): array
-    {
-        return $this->values;
+        return in_array($value, self::$availableValues[$class], true);
     }
 
     final public static function isValid(int $value): bool
@@ -143,22 +142,134 @@ abstract class IntSet implements Dumpable
         return self::$availableValues[$class];
     }
 
+    public function getValue(): int
+    {
+        return array_sum($this->values);
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getValues(): array
+    {
+        return $this->values;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getConstantNames(): array
+    {
+        $names = [];
+        foreach ($this->values as $value) {
+            $names[$value] = array_search($value, self::$availableValues[static::class], Type::STRICT);
+        }
+
+        return $names;
+    }
+
+    // comparing sets --------------------------------------------------------------------------------------------------
+
+    /**
+     * @param IntSet $other
+     * @return bool
+     */
+    final public function equals(Equalable $other): bool
+    {
+        $this->checkCompatibility($other);
+
+        return $this->values === $other->values;
+    }
+
+    public function contains(self $other): bool
+    {
+        $this->checkCompatibility($other);
+
+        return count(array_intersect($this->values, $other->values)) === count($other->values);
+    }
+
+    public function intersects(self $other): bool
+    {
+        $this->checkCompatibility($other);
+
+        return array_intersect($this->values, $other->values) !== [];
+    }
+
+    public function intersect(self $other): self
+    {
+        $this->checkCompatibility($other);
+
+        return new static(array_intersect($this->values, $other->values));
+    }
+
+    public function union(self $other): self
+    {
+        $this->checkCompatibility($other);
+
+        return new static(array_merge($this->values, $other->values));
+    }
+
+    public function subtract(self $other): self
+    {
+        $this->checkCompatibility($other);
+
+        return new static(array_diff($this->values, $other->values));
+    }
+
+    public function difference(self $other): self
+    {
+        $this->checkCompatibility($other);
+
+        return new static(array_merge(
+            array_intersect($this->invert()->values, $other->values),
+            array_intersect($this->values, $other->invert()->values)
+        ));
+    }
+
+    // comparing values ------------------------------------------------------------------------------------------------
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param int $value
+     * @return bool
+     */
+    public function equalsValue($value): bool
+    {
+        return $value === $this->getValue();
+    }
+
+    public function containsAll(int ...$values): bool
+    {
+        self::checkValues($values);
+
+        return count(array_intersect($this->values, $values)) === count($values);
+    }
+
+    public function containsAny(int ...$values): bool
+    {
+        self::checkValues($values);
+
+        return array_intersect($this->values, $values) !== [];
+    }
+
+    /**
+     * @param int ...$allowedValues
+     * @return static
+     */
+    public function filter(int ...$allowedValues): self
+    {
+        self::checkValues($allowedValues);
+
+        return new static(array_intersect($this->values, $allowedValues));
+    }
+
     /**
      * @param int ...$addValues
      * @return static
      */
     public function add(int ...$addValues): self
     {
-        $values = $this->getValues();
-        foreach ($addValues as $val) {
-            self::check($val);
-
-            if (!in_array($val, $values, true)) {
-                $values[] = $val;
-            }
-        }
-
-        return static::get(...$values);
+        return new static(array_merge($this->values, $addValues));
     }
 
     /**
@@ -167,41 +278,19 @@ abstract class IntSet implements Dumpable
      */
     public function remove(int ...$removeValues): self
     {
-        $values = $this->getValues();
-        foreach ($removeValues as $val) {
-            self::check($val);
+        self::checkValues($removeValues);
 
-            $key = array_search($val, $values, true);
-            unset($values[$key]);
-        }
-
-        return static::get(...$values);
+        return new static(array_diff($this->values, $removeValues));
     }
 
-    public function contains(int ...$containsValues): bool
+    public function xor(int ...$compareValues): self
     {
-        foreach ($containsValues as $val) {
-            self::check($val);
+        $invertedValues = array_diff(self::getAllowedValues(), $compareValues);
 
-            if (!in_array($val, $this->values, true)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public function containsAny(int ...$containsValues): bool
-    {
-        foreach ($containsValues as $val) {
-            self::check($val);
-
-            if (in_array($val, $this->values, true)) {
-                return true;
-            }
-        }
-
-        return false;
+        return new static(array_merge(
+            array_intersect($this->invert()->values, $compareValues),
+            array_intersect($this->values, $invertedValues)
+        ));
     }
 
 }

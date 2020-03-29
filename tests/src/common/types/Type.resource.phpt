@@ -44,7 +44,7 @@ Assert::false($resource->isFixed());
 
 // getResourceType()
 Assert::null($resource->getResourceType());
-Assert::same($resourceAspell->getResourceType(), $aspell);
+Assert::equal($resourceAspell->getResourceType(), $aspell);
 
 // getItemType()
 Assert::null($resource->getItemType());

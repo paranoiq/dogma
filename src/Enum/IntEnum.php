@@ -12,16 +12,20 @@ namespace Dogma\Enum;
 use Dogma\Arr;
 use Dogma\Cls;
 use Dogma\Dumpable;
+use Dogma\Equalable;
 use Dogma\InvalidValueException;
 use Dogma\Obj;
+use function in_array;
 use function sprintf;
 
-abstract class IntEnum implements Dumpable
+/**
+ * Base class for enums with integer values.
+ *
+ * @see about.md to find out how enum inheritance works.
+ */
+abstract class IntEnum implements Enum, Dumpable
 {
-    use EnumMixin;
-
-    /** @var static[][] ($class => ($value => $enum)) */
-    private static $instances = [];
+    use EnumSetMixin;
 
     /** @var mixed[][] ($class => ($constName => $value)) */
     private static $availableValues = [];
@@ -29,16 +33,7 @@ abstract class IntEnum implements Dumpable
     /** @var int */
     private $value;
 
-    final private function __construct(int $value)
-    {
-        $this->value = $value;
-    }
-
-    /**
-     * @param int $value
-     * @return static
-     */
-    final public static function get(int $value): self
+    final public function __construct(int $value)
     {
         $class = static::class;
         if (empty(self::$availableValues[$class])) {
@@ -49,11 +44,16 @@ abstract class IntEnum implements Dumpable
             throw new InvalidValueException($value, $class);
         }
 
-        if (!Arr::containsKey(self::$instances[$class], $value)) {
-            self::$instances[$class][$value] = new static($value);
-        }
+        $this->value = $value;
+    }
 
-        return self::$instances[$class][$value];
+    /**
+     * @param int $value
+     * @return static
+     */
+    final public static function get(int $value): self
+    {
+        return new static($value);
     }
 
     public function dump(): string
@@ -80,12 +80,17 @@ abstract class IntEnum implements Dumpable
             self::init($class);
         }
 
-        return Arr::contains(self::$availableValues[$class], $value);
+        return in_array($value, self::$availableValues[$class], true);
     }
 
     final public function getValue(): int
     {
         return $this->value;
+    }
+
+    final public function getConstantName(): string
+    {
+        return Arr::indexOf(self::$availableValues[static::class], $this->value);
     }
 
     final public static function isValid(int $value): bool
@@ -104,6 +109,27 @@ abstract class IntEnum implements Dumpable
         }
 
         return self::$availableValues[$class];
+    }
+
+    /**
+     * @param IntEnum $other
+     * @return bool
+     */
+    final public function equals(Equalable $other): bool
+    {
+        $this->checkCompatibility($other);
+
+        return $this->value === $other->value;
+    }
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param int $value
+     * @return bool
+     */
+    final public function equalsValue($value): bool
+    {
+        return $value === $this->value;
     }
 
 }

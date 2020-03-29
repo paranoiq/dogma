@@ -545,7 +545,7 @@ final class Tld extends PartialStringEnum
 
     public function isCountryTld(): bool
     {
-        return strlen($this->getValue()) === 2 || $this->equals(self::BZH);
+        return strlen($this->getValue()) === 2 || $this->equalsValue(self::BZH);
     }
 
     public function getCountry(): ?Country

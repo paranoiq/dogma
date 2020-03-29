@@ -11,13 +11,18 @@ namespace Dogma\Enum;
 
 use Dogma\Equalable;
 
-interface Enum extends Equalable
+interface Set extends Equalable
 {
 
     /**
      * @return string|int
      */
     public function getValue();
+
+    /**
+     * @return string[]|int[]
+     */
+    public function getValues(): array;
 
     /**
      * @param int|string $value

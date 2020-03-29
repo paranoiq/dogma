@@ -57,7 +57,7 @@ class DaysOfWeek extends IntSet
     {
         $days = [];
         foreach (DayOfWeek::getAllowedValues() as $value) {
-            if ($this->contains($value)) {
+            if ($this->containsAll($value)) {
                 $days[] = DayOfWeek::get($value);
             }
         }
@@ -67,14 +67,14 @@ class DaysOfWeek extends IntSet
 
     public function containsDay(DayOfWeek $day): bool
     {
-        return $this->contains(2 ** ($day->getValue() - 1));
+        return $this->containsAll(2 ** ($day->getValue() - 1));
     }
 
     public function matchesDay(DateOrDateTime $date): bool
     {
         $day = 2 ** (intval($date->format('N')) - 1);
 
-        return $this->contains($day);
+        return $this->containsAll($day);
     }
 
     /**

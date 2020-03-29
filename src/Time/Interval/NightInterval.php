@@ -106,7 +106,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         if (!$unit->isDate()) {
             throw new InvalidDateTimeUnitException($unit);
         }
-        if ($unit === DateTimeUnit::quarter()) {
+        if ($unit->equalsValue(DateTimeUnit::QUARTER)) {
             $unit = DateTimeUnit::month();
             $amount *= 3;
         }

@@ -262,10 +262,10 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     public function addUnit(DateTimeUnit $unit, int $amount = 1): self
     {
-        if ($unit->equals(DateTimeUnit::QUARTER)) {
+        if ($unit->equalsValue(DateTimeUnit::QUARTER)) {
             $unit = DateTimeUnit::month();
             $amount *= 3;
-        } elseif ($unit->equals(DateTimeUnit::MILISECOND)) {
+        } elseif ($unit->equalsValue(DateTimeUnit::MILISECOND)) {
             $unit = DateTimeUnit::microsecond();
             $amount *= 1000;
         }
@@ -275,10 +275,10 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     public function subtractUnit(DateTimeUnit $unit, int $amount = 1): self
     {
-        if ($unit->equals(DateTimeUnit::QUARTER)) {
+        if ($unit->equalsValue(DateTimeUnit::QUARTER)) {
             $unit = DateTimeUnit::month();
             $amount *= 3;
-        } elseif ($unit->equals(DateTimeUnit::MILISECOND)) {
+        } elseif ($unit->equalsValue(DateTimeUnit::MILISECOND)) {
             $unit = DateTimeUnit::microsecond();
             $amount *= 1000;
         }
@@ -406,7 +406,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     public function equalsUpTo(DateTimeInterface $other, DateTimeUnit $unit): bool
     {
-        if ($unit->equals(DateTimeUnit::QUARTER)) {
+        if ($unit->equalsValue(DateTimeUnit::QUARTER)) {
             return $this->getYear() === (int) $other->format('Y')
                 && (int) ceil($this->getMonth() / 3) === (int) ceil($other->format('m') / 3);
         }

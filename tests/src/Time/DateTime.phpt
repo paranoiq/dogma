@@ -278,10 +278,10 @@ $saturday = new Date('2016-11-05');
 $sunday = new Date('2016-11-06');
 
 // getDayOfWeekEnum()
-Assert::same($monday->getDayOfWeekEnum(), DayOfWeek::monday());
-Assert::same($friday->getDayOfWeekEnum(), DayOfWeek::friday());
-Assert::same($saturday->getDayOfWeekEnum(), DayOfWeek::saturday());
-Assert::same($sunday->getDayOfWeekEnum(), DayOfWeek::sunday());
+Assert::equal($monday->getDayOfWeekEnum(), DayOfWeek::monday());
+Assert::equal($friday->getDayOfWeekEnum(), DayOfWeek::friday());
+Assert::equal($saturday->getDayOfWeekEnum(), DayOfWeek::saturday());
+Assert::equal($sunday->getDayOfWeekEnum(), DayOfWeek::sunday());
 
 // isDayOfWeek()
 Assert::true($monday->isDayOfWeek(1));
@@ -299,7 +299,7 @@ Assert::true($saturday->isWeekend());
 Assert::true($sunday->isWeekend());
 
 // getMonthEnum()
-Assert::same($monday->getMonthEnum(), Month::november());
+Assert::equal($monday->getMonthEnum(), Month::november());
 
 // isMonth()
 Assert::true($monday->isMonth(11));

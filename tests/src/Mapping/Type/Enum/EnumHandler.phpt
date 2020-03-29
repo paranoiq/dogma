@@ -34,7 +34,7 @@ Assert::equal($handler->getParameters($enumType), null);
 
 // createInstance()
 $enumInstance = $handler->createInstance($enumType, 1, $mapper);
-Assert::same($enumInstance, TestEnum::get(TestEnum::ONE));
+Assert::equal($enumInstance, TestEnum::get(TestEnum::ONE));
 
 // exportInstance()
 Assert::same($handler->exportInstance($enumType, $enumInstance, $mapper), 1);

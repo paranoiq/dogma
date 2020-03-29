@@ -5,11 +5,21 @@ namespace Dogma\Tests\Enum;
 use Dogma\Enum\IntEnum;
 use Dogma\InvalidTypeException;
 use Dogma\Tester\Assert;
-use stdClass;
 
 require_once __DIR__ . '/../bootstrap.php';
 
-class TestEnum extends IntEnum
+// root
+class A extends IntEnum
+{
+
+    public const ONE = 1;
+    public const TWO = 2;
+    public const THREE = 3;
+    public const FOUR = 4;
+
+}
+
+class AB extends A
 {
 
     public const ONE = 1;
@@ -18,42 +28,106 @@ class TestEnum extends IntEnum
 
 }
 
-$one = TestEnum::get(TestEnum::ONE);
-$oneAgain = TestEnum::get(TestEnum::ONE);
-$two = TestEnum::get(TestEnum::TWO);
-$three = TestEnum::get(TestEnum::THREE);
+class ABC extends AB
+{
+
+    public const ONE = 1;
+    public const TWO = 2;
+
+}
+
+// negative
+class ABD extends AB
+{
+
+    /** @removed @deprecated */
+    public const THREE = 3;
+
+}
+
+// foreign
+class E extends IntEnum
+{
+
+    public const ONE = 1;
+    public const TWO = 2;
+
+}
+
+$aOne = A::get(1);
+$aOne2 = A::get(1);
+$aTwo = A::get(2);
+$aThree = A::get(3);
+$aFour = A::get(4);
+$abOne = AB::get(1);
+$abcOne = ABC::get(1);
+$abcTwo = ABC::get(2);
+$abdOne = ABD::get(1);
+$fOne = E::get(1);
 
 // get()
-Assert::type($one, TestEnum::class);
-Assert::same($one, $oneAgain);
+Assert::type($aOne, A::class);
+Assert::equal($aOne, $aOne2);
 
 // getValue()
-Assert::same($one->getValue(), 1);
+Assert::same($aOne->getValue(), 1);
 
 // getConstantName()
-Assert::same($one->getConstantName(), 'ONE');
+Assert::same($aOne->getConstantName(), 'ONE');
 
 // equals()
-Assert::exception(static function () use ($one): void {
-    $one->equals(new stdClass());
+Assert::exception(static function () use ($aOne, $fOne): void {
+    $aOne->equals($fOne);
 }, InvalidTypeException::class);
-Assert::false($one->equals($two));
-Assert::true($one->equals($oneAgain));
+Assert::false($aOne->equals($aTwo));
+Assert::true($aOne->equals($aOne2));
+Assert::true($aOne->equals($abOne));
+Assert::true($aOne->equals($abcOne));
+Assert::true($abOne->equals($abcOne));
+Assert::true($abOne->equals($abdOne));
+Assert::true($abcOne->equals($abdOne));
+
+// equalsValue()
+Assert::false($aOne->equalsValue(2));
+Assert::true($aOne->equalsValue(1));
 
 // isValid()
-Assert::false(TestEnum::isValid(4));
-Assert::true(TestEnum::isValid(1));
+Assert::false(A::isValid(5));
+Assert::true(A::isValid(1));
 
 // getAllowedValues()
-Assert::same(TestEnum::getAllowedValues(), [
+Assert::same(A::getAllowedValues(), [
+    'ONE' => 1,
+    'TWO' => 2,
+    'THREE' => 3,
+    'FOUR' => 4,
+]);
+
+Assert::same(AB::getAllowedValues(), [
     'ONE' => 1,
     'TWO' => 2,
     'THREE' => 3,
 ]);
 
+Assert::same(ABC::getAllowedValues(), [
+    'ONE' => 1,
+    'TWO' => 2,
+]);
+
+Assert::same(ABD::getAllowedValues(), [
+    'ONE' => 1,
+    'TWO' => 2,
+]);
+
 // getInstances()
-Assert::same(TestEnum::getInstances(), [
-    1 => $one,
-    2 => $two,
-    3 => $three,
+Assert::equal(A::getInstances(), [
+    'ONE' => $aOne,
+    'TWO' => $aTwo,
+    'THREE' => $aThree,
+    'FOUR' => $aFour,
+]);
+
+Assert::equal(ABC::getInstances(), [
+    'ONE' => $abcOne,
+    'TWO' => $abcTwo,
 ]);

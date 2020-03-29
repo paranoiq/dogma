@@ -9,9 +9,9 @@
 
 namespace Dogma\Enum;
 
-use Dogma\Arr;
 use Dogma\InvalidRegularExpressionException;
 use Dogma\LogicException;
+use function in_array;
 use function preg_match;
 
 abstract class PartialStringEnum extends StringEnum
@@ -19,7 +19,7 @@ abstract class PartialStringEnum extends StringEnum
 
     public static function isKnownValue(string $value): bool
     {
-        return Arr::contains(static::getAllowedValues(), $value);
+        return in_array($value, static::getAllowedValues(), true);
     }
 
     public static function validateValue(string &$value): bool

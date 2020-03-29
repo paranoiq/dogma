@@ -101,7 +101,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         if (!$unit->isTime()) {
             throw new InvalidDateTimeUnitException($unit);
         }
-        if ($unit === DateTimeUnit::milisecond()) {
+        if ($unit->equalsValue(DateTimeUnit::MILISECOND)) {
             $unit = DateTimeUnit::microsecond();
             $amount *= 1000;
         }

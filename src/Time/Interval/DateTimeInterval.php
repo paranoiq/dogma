@@ -87,10 +87,10 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     public static function createFromStartAndLength(DateTime $start, DateTimeUnit $unit, int $amount): self
     {
-        if ($unit === DateTimeUnit::quarter()) {
+        if ($unit->equalsValue(DateTimeUnit::QUARTER)) {
             $unit = DateTimeUnit::month();
             $amount *= 3;
-        } elseif ($unit === DateTimeUnit::milisecond()) {
+        } elseif ($unit->equalsValue(DateTimeUnit::MILISECOND)) {
             $unit = DateTimeUnit::microsecond();
             $amount *= 1000;
         }

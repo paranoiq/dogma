@@ -89,10 +89,10 @@ class DayOfYearInterval implements ModuloInterval
 
     public static function createFromStartAndLength(DayOfYear $start, DateTimeUnit $unit, int $amount): self
     {
-        if (!$unit->isDate() || $unit->equals(DateTimeUnit::year())) {
+        if (!$unit->isDate() || $unit->equalsValue(DateTimeUnit::YEAR)) {
             throw new InvalidDateTimeUnitException($unit);
         }
-        if ($unit === DateTimeUnit::quarter()) {
+        if ($unit->equalsValue(DateTimeUnit::QUARTER)) {
             $unit = DateTimeUnit::month();
             $amount *= 3;
         }
