@@ -18,14 +18,14 @@ class HttpFileResponse extends HttpResponse
     private $file;
 
     /**
-     * @param HttpResponseStatus $status
+     * @param HttpOrCurlStatus $status
      * @param File $file
      * @param string[] $rawHeaders
      * @param string[] $info
      * @param mixed $context
      * @param HttpHeaderParser $headerParser
      */
-    public function __construct(HttpResponseStatus $status, File $file, array $rawHeaders, array $info, $context, ?HttpHeaderParser $headerParser = null)
+    public function __construct(HttpOrCurlStatus $status, File $file, array $rawHeaders, array $info, $context, ?HttpHeaderParser $headerParser = null)
     {
         parent::__construct($status, null, $rawHeaders, $info, $context, $headerParser);
 

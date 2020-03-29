@@ -287,7 +287,7 @@ class HttpChannel
     /**
      * Called by HttpChannelManager.
      * @internal
-     * @param string|int|int $name
+     * @param string|int $name
      * @param mixed[] $multiInfo
      * @param HttpRequest $request
      */

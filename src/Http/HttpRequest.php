@@ -479,17 +479,17 @@ class HttpRequest
     /**
      * @param int $error
      * @param mixed[] $info
-     * @return HttpResponseStatus
+     * @return HttpOrCurlStatus
      */
-    protected function getResponseStatus(int $error, array $info): HttpResponseStatus
+    protected function getResponseStatus(int $error, array $info): HttpOrCurlStatus
     {
         if ($error !== 0) {
-            $status = HttpResponseStatus::get($error);
+            $status = HttpOrCurlStatus::get($error);
         } else {
             try {
-                $status = HttpResponseStatus::get($info['http_code']);
+                $status = HttpOrCurlStatus::get($info['http_code']);
             } catch (InvalidValueException $e) {
-                $status = HttpResponseStatus::get(HttpResponseStatus::UNKNOWN_RESPONSE_CODE);
+                $status = HttpOrCurlStatus::get(HttpOrCurlStatus::UNKNOWN_RESPONSE_CODE);
             }
         }
         if ($status->isFatalError()) {

@@ -27,7 +27,7 @@ class HttpResponse
     /** @var mixed[] */
     protected $info;
 
-    /** @var HttpResponseStatus */
+    /** @var HttpOrCurlStatus */
     private $status;
 
     /** @var string[] */
@@ -49,7 +49,7 @@ class HttpResponse
     private $headerParser;
 
     /**
-     * @param HttpResponseStatus $status
+     * @param HttpOrCurlStatus $status
      * @param string|null $body
      * @param string[] $rawHeaders
      * @param string[] $info
@@ -57,7 +57,7 @@ class HttpResponse
      * @param HttpHeaderParser|null $headerParser
      */
     public function __construct(
-        HttpResponseStatus $status,
+        HttpOrCurlStatus $status,
         ?string $body,
         array $rawHeaders,
         array $info,
@@ -85,7 +85,7 @@ class HttpResponse
         return $this->status->isOk();
     }
 
-    public function getStatus(): HttpResponseStatus
+    public function getStatus(): HttpOrCurlStatus
     {
         return $this->status;
     }
