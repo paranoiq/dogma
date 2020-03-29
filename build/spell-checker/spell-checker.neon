@@ -8,6 +8,8 @@ directories:
 dictionariesByFileName:
     *spell-checker.neon: skip
     *Country.php: skip
+    *CountryEu.php: skip
+    *CountryEurope.php: skip
     *ContentType.php: skip
     *Currency.php: skip
     *Language.php: skip
