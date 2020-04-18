@@ -9,9 +9,8 @@
 
 namespace Dogma;
 
-use const PHP_INT_MAX;
-use const PHP_INT_MIN;
 use const PHP_INT_SIZE;
+use function in_array;
 
 class BitSize
 {
@@ -60,7 +59,7 @@ class BitSize
     public static function checkIntSize(int $size): void
     {
         $sizes = self::getIntSizes();
-        if (!Arr::contains($sizes, $size)) {
+        if (!in_array($size, $sizes, true)) {
             throw new InvalidSizeException(Type::INT, $size, $sizes);
         }
     }
@@ -72,38 +71,9 @@ class BitSize
     public static function checkFloatSize(int $size): void
     {
         $sizes = self::getFloatSizes();
-        if (!Arr::contains($sizes, $size)) {
+        if (!in_array($size, $sizes, true)) {
             throw new InvalidSizeException(Type::FLOAT, $size, $sizes);
         }
-    }
-
-    /**
-     * @param int $size
-     * @param string $sign
-     * @return int[]
-     */
-    public static function getIntRange(int $size, string $sign = Sign::SIGNED): array
-    {
-        $bounds = [
-            Sign::UNSIGNED => [
-                self::BITS_8 => [0, 255],
-                self::BITS_16 => [0, 65535],
-                self::BITS_24 => [0, 16777215],
-                self::BITS_32 => [0, 4294967295],
-                self::BITS_48 => [0, 281474976710655],
-                self::BITS_64 => [0, PHP_INT_MAX], // this is actually 63 bits, since PHP int is always signed
-            ],
-            Sign::SIGNED => [
-                self::BITS_8 => [-128, 127],
-                self::BITS_16 => [-32768, 32767],
-                self::BITS_24 => [-8388608, 8388607],
-                self::BITS_32 => [-2147483648, 2147483647],
-                self::BITS_48 => [-140737488355328, 140737488355327],
-                self::BITS_64 => [PHP_INT_MIN, PHP_INT_MAX],
-            ],
-        ];
-
-        return $bounds[$sign][$size];
     }
 
 }

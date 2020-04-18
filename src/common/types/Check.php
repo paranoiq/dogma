@@ -299,7 +299,10 @@ final class Check
     public static function uint(&$value, ?int $max = null): void
     {
         self::int($value, null, $max);
-        self::intBounds($value, 64, false);
+
+        if ($value < 0) {
+            throw new ValueOutOfBoundsException($value, 'uint(64)');
+        }
     }
 
     /**
@@ -314,7 +317,10 @@ final class Check
             return;
         }
         self::int($value, null, $max);
-        self::intBounds($value, 64, false);
+
+        if ($value < 0) {
+            throw new ValueOutOfBoundsException($value, 'int(64)');
+        }
     }
 
     /**
@@ -328,7 +334,10 @@ final class Check
     public static function int8(&$value, ?int $min = null, ?int $max = null): void
     {
         self::int($value, $min, $max);
-        self::intBounds($value, 8);
+
+        if ($value < IntBounds::INT8_MIN || $value > IntBounds::INT8_MAX) {
+            throw new ValueOutOfBoundsException($value, 'int(8)');
+        }
     }
 
     /**
@@ -345,7 +354,10 @@ final class Check
             return;
         }
         self::int($value, $min, $max);
-        self::intBounds($value, 8);
+
+        if ($value < IntBounds::INT8_MIN || $value > IntBounds::INT8_MAX) {
+            throw new ValueOutOfBoundsException($value, 'int(8)');
+        }
     }
 
     /**
@@ -358,7 +370,10 @@ final class Check
     public static function uint8(&$value, ?int $max = null): void
     {
         self::int($value, null, $max);
-        self::intBounds($value, 8, false);
+
+        if ($value < 0 || $value > IntBounds::UINT8_MAX) {
+            throw new ValueOutOfBoundsException($value, 'uint(8)');
+        }
     }
 
     /**
@@ -374,7 +389,10 @@ final class Check
             return;
         }
         self::int($value, null, $max);
-        self::intBounds($value, 8, false);
+
+        if ($value < 0 || $value > IntBounds::UINT8_MAX) {
+            throw new ValueOutOfBoundsException($value, 'uint(8)');
+        }
     }
 
     /**
@@ -388,7 +406,10 @@ final class Check
     public static function int16(&$value, ?int $min = null, ?int $max = null): void
     {
         self::int($value, $min, $max);
-        self::intBounds($value, 16);
+
+        if ($value < IntBounds::INT16_MIN || $value > IntBounds::INT16_MAX) {
+            throw new ValueOutOfBoundsException($value, 'int(16)');
+        }
     }
 
     /**
@@ -405,7 +426,10 @@ final class Check
             return;
         }
         self::int($value, $min, $max);
-        self::intBounds($value, 16);
+
+        if ($value < IntBounds::INT16_MIN || $value > IntBounds::INT16_MAX) {
+            throw new ValueOutOfBoundsException($value, 'int(16)');
+        }
     }
 
     /**
@@ -418,7 +442,10 @@ final class Check
     public static function uint16(&$value, ?int $max = null): void
     {
         self::int($value, null, $max);
-        self::intBounds($value, 16, false);
+
+        if ($value < 0 || $value > IntBounds::UINT16_MAX) {
+            throw new ValueOutOfBoundsException($value, 'uint(16)');
+        }
     }
 
     /**
@@ -434,7 +461,10 @@ final class Check
             return;
         }
         self::int($value, null, $max);
-        self::intBounds($value, 16, false);
+
+        if ($value < 0 || $value > IntBounds::UINT16_MAX) {
+            throw new ValueOutOfBoundsException($value, 'uint(16)');
+        }
     }
 
     /**
@@ -448,7 +478,10 @@ final class Check
     public static function int24(&$value, ?int $min = null, ?int $max = null): void
     {
         self::int($value, $min, $max);
-        self::intBounds($value, 24);
+
+        if ($value < IntBounds::INT24_MIN || $value > IntBounds::INT24_MAX) {
+            throw new ValueOutOfBoundsException($value, 'int(24)');
+        }
     }
 
     /**
@@ -465,7 +498,10 @@ final class Check
             return;
         }
         self::int($value, $min, $max);
-        self::intBounds($value, 24);
+
+        if ($value < IntBounds::INT24_MIN || $value > IntBounds::INT24_MAX) {
+            throw new ValueOutOfBoundsException($value, 'int(24)');
+        }
     }
 
     /**
@@ -478,7 +514,10 @@ final class Check
     public static function uint24(&$value, ?int $max = null): void
     {
         self::int($value, null, $max);
-        self::intBounds($value, 24, false);
+
+        if ($value < 0 || $value > IntBounds::UINT24_MAX) {
+            throw new ValueOutOfBoundsException($value, 'uint(24)');
+        }
     }
 
     /**
@@ -494,7 +533,10 @@ final class Check
             return;
         }
         self::int($value, null, $max);
-        self::intBounds($value, 24, false);
+
+        if ($value < 0 || $value > IntBounds::UINT24_MAX) {
+            throw new ValueOutOfBoundsException($value, 'uint(24)');
+        }
     }
 
     /**
@@ -508,7 +550,10 @@ final class Check
     public static function int32(&$value, ?int $min = null, ?int $max = null): void
     {
         self::int($value, $min, $max);
-        self::intBounds($value, 32);
+
+        if ($value < IntBounds::INT32_MIN || $value > IntBounds::INT32_MAX) {
+            throw new ValueOutOfBoundsException($value, 'int(32)');
+        }
     }
 
     /**
@@ -525,7 +570,10 @@ final class Check
             return;
         }
         self::int($value, $min, $max);
-        self::intBounds($value, 32);
+
+        if ($value < IntBounds::INT32_MIN || $value > IntBounds::INT32_MAX) {
+            throw new ValueOutOfBoundsException($value, 'int(32)');
+        }
     }
 
     /**
@@ -538,7 +586,10 @@ final class Check
     public static function uint32(&$value, ?int $max = null): void
     {
         self::int($value, null, $max);
-        self::intBounds($value, 32, false);
+
+        if ($value < 0 || $value > IntBounds::UINT32_MAX) {
+            throw new ValueOutOfBoundsException($value, 'uint(32)');
+        }
     }
 
     /**
@@ -554,7 +605,82 @@ final class Check
             return;
         }
         self::int($value, null, $max);
-        self::intBounds($value, 32, false);
+
+        if ($value < 0 || $value > IntBounds::UINT32_MAX) {
+            throw new ValueOutOfBoundsException($value, 'uint(32)');
+        }
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $min
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function int48(&$value, ?int $min = null, ?int $max = null): void
+    {
+        self::int($value, $min, $max);
+
+        if ($value < IntBounds::INT48_MIN || $value > IntBounds::INT48_MAX) {
+            throw new ValueOutOfBoundsException($value, 'int(48)');
+        }
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $min
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function nullableInt48(&$value, ?int $min = null, ?int $max = null): void
+    {
+        if ($value === null) {
+            return;
+        }
+        self::int($value, $min, $max);
+
+        if ($value < IntBounds::INT48_MIN || $value > IntBounds::INT48_MAX) {
+            throw new ValueOutOfBoundsException($value, 'int(48)');
+        }
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function uint48(&$value, ?int $max = null): void
+    {
+        self::int($value, null, $max);
+
+        if ($value < 0 || $value > IntBounds::UINT48_MAX) {
+            throw new ValueOutOfBoundsException($value, 'uint(48)');
+        }
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $max
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     * @throws \Dogma\ValueOutOfBoundsException
+     */
+    public static function nullableUint48(&$value, ?int $max = null): void
+    {
+        if ($value === null) {
+            return;
+        }
+        self::int($value, null, $max);
+
+        if ($value < 0 || $value > IntBounds::UINT48_MAX) {
+            throw new ValueOutOfBoundsException($value, 'uint(48)');
+        }
     }
 
     // floats ----------------------------------------------------------------------------------------------------------
@@ -919,7 +1045,7 @@ final class Check
     {
         if ($type->isInt()) {
             try {
-                self::range($value, ...BitSize::getIntRange($type->getSize(), $type->isSigned() ? Sign::SIGNED : Sign::UNSIGNED));
+                self::range($value, ...IntBounds::getRange($type->getSize(), $type->isSigned() ? Sign::SIGNED : Sign::UNSIGNED));
             } catch (ValueOutOfRangeException $e) {
                 throw new ValueOutOfBoundsException($value, $type, $e);
             }
@@ -951,7 +1077,7 @@ final class Check
     public static function intBounds($value, int $size, bool $signed = true): void
     {
         try {
-            self::range($value, ...BitSize::getIntRange($size, $signed ? Sign::SIGNED : Sign::UNSIGNED));
+            self::range($value, ...IntBounds::getRange($size, $signed ? Sign::SIGNED : Sign::UNSIGNED));
         } catch (ValueOutOfRangeException $e) {
             throw new ValueOutOfBoundsException($value, sprintf('%sint(%d)', $signed ? '' : 'u', $size), $e);
         }
