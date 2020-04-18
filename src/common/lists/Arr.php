@@ -177,6 +177,36 @@ class Arr
         }
     }
 
+    /**
+     * Copy array to remove any existing references
+     * @param mixed[] $array
+     * @return mixed[]
+     */
+    public static function copy(array $array): array
+    {
+        $result = [];
+        foreach ($array as $key => $value) {
+            $result[$key] = $value;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Copy array to remove any existing references. Drop keys
+     * @param mixed[] $array
+     * @return mixed[]
+     */
+    public static function copyValues(array $array): array
+    {
+        $result = [];
+        foreach ($array as $value) {
+            $result[] = $value;
+        }
+
+        return $result;
+    }
+
     // queries ---------------------------------------------------------------------------------------------------------
 
     /**
