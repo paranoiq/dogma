@@ -829,6 +829,76 @@ final class Check
         self::string($value, $minLength, $maxLength);
     }
 
+    /**
+     * @param mixed $value
+     * @param int|null $minLength
+     * @param int|null $maxLength
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     */
+    public static function ascii(&$value, ?int $minLength = null, ?int $maxLength = null): void
+    {
+        self::string($value, $minLength, $maxLength);
+
+        if ($value !== Str::toAscii($value)) {
+            throw new InvalidEncodingException($value, 'ascii');
+        }
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $minLength
+     * @param int|null $maxLength
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     */
+    public static function nullableAscii(&$value, ?int $minLength = null, ?int $maxLength = null): void
+    {
+        if ($value === null) {
+            return;
+        }
+        self::string($value, $minLength, $maxLength);
+
+        if ($value !== Str::toAscii($value)) {
+            throw new InvalidEncodingException($value, 'ascii');
+        }
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $minLength
+     * @param int|null $maxLength
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     */
+    public static function utf8(&$value, ?int $minLength = null, ?int $maxLength = null): void
+    {
+        self::string($value, $minLength, $maxLength);
+
+        if (!Str::checkEncoding($value)) {
+            throw new InvalidEncodingException($value, 'utf-8');
+        }
+    }
+
+    /**
+     * @param mixed $value
+     * @param int|null $minLength
+     * @param int|null $maxLength
+     * @throws \Dogma\InvalidTypeException
+     * @throws \Dogma\ValueOutOfRangeException
+     */
+    public static function nullableUtf8(&$value, ?int $minLength = null, ?int $maxLength = null): void
+    {
+        if ($value === null) {
+            return;
+        }
+        self::string($value, $minLength, $maxLength);
+
+        if (!Str::checkEncoding($value)) {
+            throw new InvalidEncodingException($value, 'utf-8');
+        }
+    }
+
     // lists -----------------------------------------------------------------------------------------------------------
 
     /**
