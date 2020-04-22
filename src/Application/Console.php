@@ -10,7 +10,7 @@
 namespace Dogma\Application;
 
 use Dogma\StrictBehaviorMixin;
-use Dogma\System\Environment;
+use Dogma\System\Os;
 use function exec;
 use function explode;
 use function file_get_contents;
@@ -89,7 +89,7 @@ class Console
 
     public static function switchTerminalToUtf8(): void
     {
-        if (Environment::isWindows()) {
+        if (Os::isWindows()) {
             exec('chcp 65001');
         }
     }
@@ -102,7 +102,7 @@ class Console
             return $columns;
         }
 
-        if (Environment::isWindows()) {
+        if (Os::isWindows()) {
             exec('mode CON', $output);
             [, $columns] = explode(':', $output[4]);
             $columns = (int) trim($columns);

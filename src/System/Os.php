@@ -9,18 +9,25 @@
 
 namespace Dogma\System;
 
-use Dogma\StaticClassMixin;
+use Dogma\Enum\StringEnum;
+use const PHP_OS_FAMILY;
 
 /**
- * @deprecated will be removed. use Os instead
+ * PHP_OS_FAMILY values
  */
-class Environment
+class Os extends StringEnum
 {
-    use StaticClassMixin;
+
+    public const WINDOWS = 'Windows';
+    public const BSD = 'BSD';
+    public const DARWIN = 'Darwin';
+    public const SOLARIS = 'Solaris';
+    public const LINUX = 'Linux';
+    public const UNKNOWN = 'Unknown';
 
     public static function isWindows(): bool
     {
-        return Os::isWindows();
+        return PHP_OS_FAMILY === self::WINDOWS;
     }
 
 }

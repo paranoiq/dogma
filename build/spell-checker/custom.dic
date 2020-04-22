@@ -53,6 +53,7 @@ ascii
 bsd
 csp
 csrf
+darwin
 euc
 fsync
 hiragana
@@ -69,6 +70,7 @@ PEM
 rpc
 rtsp
 sjis
+solaris
 tcp
 tftp
 ucs
