@@ -2,6 +2,7 @@
 
 namespace Dogma\Tests\DogmaLoader;
 
+use Dogma\Comparable;
 use Dogma\DogmaLoader;
 use Dogma\Tester\Assert;
 use Dogma\Type;
@@ -15,7 +16,7 @@ Assert::same(
     $classMap[DogmaLoader::class],
     sprintf(
         '%s%ssrc%scommon%sDogmaLoader.php',
-        dirname(dirname(dirname(__DIR__))),
+        dirname(__DIR__, 3),
         DIRECTORY_SEPARATOR,
         DIRECTORY_SEPARATOR,
         DIRECTORY_SEPARATOR
@@ -25,8 +26,19 @@ Assert::same(
 Assert::same(
     $classMap[Type::class],
     sprintf(
-        '%s%ssrc%scommon%stypes%sType.php',
-        dirname(dirname(dirname(__DIR__))),
+        '%s%ssrc%scommon%sType.php',
+        dirname(__DIR__, 3),
+        DIRECTORY_SEPARATOR,
+        DIRECTORY_SEPARATOR,
+        DIRECTORY_SEPARATOR
+    )
+);
+
+Assert::same(
+    $classMap[Comparable::class],
+    sprintf(
+        '%s%ssrc%scommon%sinterfaces%sComparable.php',
+        dirname(__DIR__, 3),
         DIRECTORY_SEPARATOR,
         DIRECTORY_SEPARATOR,
         DIRECTORY_SEPARATOR,

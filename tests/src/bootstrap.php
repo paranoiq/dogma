@@ -11,6 +11,6 @@ if (!empty($_SERVER['argv'])) {
     header('Content-Type: text/plain');
 } elseif (PHP_SAPI !== 'cli') {
     // running from browser
-    Debugger::enable(Debugger::DEVELOPMENT, dirname(dirname(__DIR__)) . '/log/');
+    Debugger::enable(Debugger::DEVELOPMENT, dirname(__DIR__, 2) . '/log/');
     Debugger::$strictMode = true;
 }
