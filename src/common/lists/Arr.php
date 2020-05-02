@@ -167,6 +167,7 @@ class Arr
     }
 
     /**
+     * @deprecated will be removed. use Call::with() instead
      * @param mixed[] $array
      * @param callable $function
      */

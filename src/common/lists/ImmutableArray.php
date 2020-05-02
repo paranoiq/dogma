@@ -200,6 +200,10 @@ class ImmutableArray implements \Countable, \IteratorAggregate, \ArrayAccess
         return $this[$this->randomKey()];
     }
 
+    /**
+     * @deprecated will be removed. use Call::with() instead
+     * @param callable $function
+     */
     public function doForEach(callable $function): void
     {
         foreach ($this as $value) {
