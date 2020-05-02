@@ -170,6 +170,14 @@ class NightIntervalData implements Equalable, Comparable, Pokeable
     }
 
     /**
+     * @return \Dogma\Time\Date[]
+     */
+    public function getStartEnd(): array
+    {
+        return [$this->start, $this->end];
+    }
+
+    /**
      * @return mixed|null
      */
     public function getData()

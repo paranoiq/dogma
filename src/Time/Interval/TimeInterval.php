@@ -202,6 +202,14 @@ class TimeInterval implements DateOrTimeInterval, OpenClosedInterval, Pokeable
         return $this->end;
     }
 
+    /**
+     * @return \Dogma\Time\Time[]
+     */
+    public function getStartEnd(): array
+    {
+        return [$this->start, $this->end];
+    }
+
     public function hasOpenStart(): bool
     {
         return $this->openStart;

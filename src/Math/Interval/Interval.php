@@ -29,6 +29,11 @@ interface Interval /*<T>*/ extends Equalable, Comparable
      */
     public function getEnd(); //: T
 
+    /**
+     * @return mixed[]
+     */
+    public function getStartEnd(): array; //: array<T>
+
     public function isEmpty(): bool;
 
     //public function equals(self $interval): bool;

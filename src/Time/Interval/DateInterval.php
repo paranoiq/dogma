@@ -217,6 +217,14 @@ class DateInterval implements DateOrTimeInterval, Pokeable
         return $this->end;
     }
 
+    /**
+     * @return \Dogma\Time\Date[]
+     */
+    public function getStartEnd(): array
+    {
+        return [$this->start, $this->end];
+    }
+
     public function isEmpty(): bool
     {
         return $this->start->getJulianDay() > $this->end->getJulianDay();

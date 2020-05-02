@@ -91,6 +91,14 @@ class IntInterval implements Interval
         return $this->end;
     }
 
+    /**
+     * @return int[]
+     */
+    public function getStartEnd(): array
+    {
+        return [$this->start, $this->end];
+    }
+
     public function getLength(): int
     {
         return $this->start > $this->end ? 0 : $this->end - $this->start;

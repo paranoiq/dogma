@@ -149,6 +149,14 @@ class DayOfYearInterval implements Interval
         return $this->end;
     }
 
+    /**
+     * @return \Dogma\Time\DayOfYear[]
+     */
+    public function getStartEnd(): array
+    {
+        return [$this->start, $this->end];
+    }
+
     public function isEmpty(): bool
     {
         return $this->start->getNumber() > $this->end->getNumber();

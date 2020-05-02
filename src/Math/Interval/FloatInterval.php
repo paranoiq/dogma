@@ -140,6 +140,14 @@ class FloatInterval implements OpenClosedInterval
         return $this->end;
     }
 
+    /**
+     * @return float[]
+     */
+    public function getStartEnd(): array
+    {
+        return [$this->start, $this->end];
+    }
+
     public function getLength(): float
     {
         return $this->start > $this->end ? 0.0 : $this->end - $this->start;

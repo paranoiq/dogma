@@ -234,6 +234,14 @@ class DateTimeInterval implements DateOrTimeInterval, OpenClosedInterval
         return $this->end;
     }
 
+    /**
+     * @return \Dogma\Time\DateTime[]
+     */
+    public function getStartEnd(): array
+    {
+        return [$this->start, $this->end];
+    }
+
     public function hasOpenStart(): bool
     {
         return $this->openStart;
