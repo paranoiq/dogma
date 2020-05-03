@@ -23,22 +23,22 @@ final class Colors
     /** @var bool */
     public static $off = false;
 
-    public const WHITE = 'white';
-    public const LGRAY = 'lgray';
-    public const GRAY = 'gray';
-    public const BLACK = 'black';
-    public const RED = 'red';
-    public const LRED = 'lred';
-    public const GREEN = 'green';
-    public const LGREEN = 'lgreen';
-    public const BLUE = 'blue';
-    public const LBLUE = 'lblue';
-    public const CYAN = 'cyan';
-    public const LCYAN = 'lcyan';
-    public const PURPLE = 'purple';
-    public const LPURPLE = 'lpurple';
-    public const YELLOW = 'yellow';
-    public const LYELLOW = 'lyellow';
+    public const WHITE = 'white';   // W
+    public const LGRAY = 'lgray';   // w
+    public const GRAY = 'gray';     // K
+    public const BLACK = 'black';   // k
+    public const RED = 'red';       // r
+    public const LRED = 'lred';     // R
+    public const GREEN = 'green';   // g
+    public const LGREEN = 'lgreen'; // G
+    public const BLUE = 'blue';     // b
+    public const LBLUE = 'lblue';   // B
+    public const CYAN = 'cyan';     // c
+    public const LCYAN = 'lcyan';   // C
+    public const PURPLE = 'purple'; // p
+    public const LPURPLE = 'lpurple'; // P
+    public const YELLOW = 'yellow';   // y
+    public const LYELLOW = 'lyellow'; // Y
 
     /** @var string[] */
     private static $fg = [

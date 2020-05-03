@@ -24,11 +24,29 @@ class Console
     /** @var bool */
     public $debug;
 
+    /** @var Ansi */
+    private $driver;
+
+    public function __construct()
+    {
+        $this->driver = new Ansi();
+    }
+
+    public function writeRaw(string ...$params): self
+    {
+        foreach ($params as $param) {
+            echo $param;
+        }
+
+        return $this;
+    }
+
     public function write(string ...$params): self
     {
         foreach ($params as $param) {
             echo $param;
         }
+
         return $this;
     }
 
