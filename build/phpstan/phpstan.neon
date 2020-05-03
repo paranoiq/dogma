@@ -9,6 +9,7 @@ parameters:
         - '~Parameter .* of static method Dogma\\Type::get\(\) expects~' # parameters magic
         - '~Variable \$result in PHPDoc tag @var does not exist~' # while ($result = array_shift($sources)) {
         - '~Strict comparison using === between array<int, string> and array\(\) will always evaluate to false.~' # Cls
+        - '~Method Dogma\\Time\\DateTime::createFromAnyFormat\(\) should return static\(Dogma\\Time\\DateTime\) but return statement is missing.~' # WTF?!
         -
             message: "~Result of && is always false.~" # ???
             path: "../../src/common/Check.php"
