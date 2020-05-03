@@ -21,7 +21,6 @@ parameters:
 
         # deprecated things, won't fix
         - '~The /e modifier is no longer supported~'
-        - '~Method Dogma\\Regexp::matchAll\(\) should return array<array<string>> but returns array<string>~'
         -
             message: "~.*~"
             path: "../../src/Email/EmailMessage.php"
