@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "php-64bit": "^7.1.0",
+        "php-64bit": "^7.2.0",
         "ext-dom": "*",
         "ext-intl": "*",
         "ext-calendar":"*",
