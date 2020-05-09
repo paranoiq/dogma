@@ -11,8 +11,9 @@ namespace Dogma\Math\Interval;
 
 use Dogma\Comparable;
 use Dogma\Equalable;
+use Dogma\IntersectComparable;
 
-interface Interval /*<T>*/ extends Equalable, Comparable
+interface Interval /*<T>*/ extends Equalable, Comparable, IntersectComparable
 {
 
     // queries ---------------------------------------------------------------------------------------------------------

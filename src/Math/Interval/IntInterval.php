@@ -13,6 +13,7 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
+use Dogma\IntersectComparable;
 use Dogma\StrictBehaviorMixin;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
@@ -125,7 +126,7 @@ class IntInterval implements Interval
     }
 
     /**
-     * @param IntInterval $other
+     * @param self $other
      * @return int
      */
     public function compare(Comparable $other): int
@@ -133,6 +134,17 @@ class IntInterval implements Interval
         Check::instance($other, self::class);
 
         return $this->start <=> $other->start ?: $this->end <=> $other->end;
+    }
+
+    /**
+     * @param self $other
+     * @return int
+     */
+    public function compareIntersects(IntersectComparable $other): int
+    {
+        Check::instance($other, self::class);
+
+        return IntervalCalc::compareIntersects($this->start, $this->end, $other->start, $other->end);
     }
 
     public function containsValue(int $value): bool

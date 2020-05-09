@@ -15,7 +15,9 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
+use Dogma\IntersectComparable;
 use Dogma\Math\Interval\Interval;
+use Dogma\Math\Interval\IntervalCalc;
 use Dogma\Math\Interval\IntervalParser;
 use Dogma\Math\Interval\IntInterval;
 use Dogma\Pokeable;
@@ -253,6 +255,22 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         Check::instance($other, self::class);
 
         return $this->start->compare($other->start) ?: $this->end->compare($other->end);
+    }
+
+    /**
+     * @param self $other
+     * @return int
+     */
+    public function compareIntersects(IntersectComparable $other): int
+    {
+        Check::instance($other, self::class);
+
+        return IntervalCalc::compareIntersects(
+            $this->start->getJulianDay(),
+            $this->end->getJulianDay(),
+            $other->start->getJulianDay(),
+            $other->end->getJulianDay()
+        );
     }
 
     /**

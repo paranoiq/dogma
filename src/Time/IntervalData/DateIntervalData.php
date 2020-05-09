@@ -13,6 +13,8 @@ use DateTimeInterface;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
+use Dogma\IntersectComparable;
+use Dogma\Math\Interval\IntervalCalc;
 use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
@@ -27,7 +29,7 @@ use function usort;
 /**
  * Interval of dates with data bound to it.
  */
-class DateIntervalData implements Equalable, Comparable, Pokeable
+class DateIntervalData implements Equalable, Comparable, IntersectComparable, Pokeable
 {
     use StrictBehaviorMixin;
 
@@ -225,6 +227,22 @@ class DateIntervalData implements Equalable, Comparable, Pokeable
 
         return $this->start->compare($other->start)
             ?: $this->end->compare($other->end);
+    }
+
+    /**
+     * @param self $other
+     * @return int
+     */
+    public function compareIntersects(IntersectComparable $other): int
+    {
+        Check::instance($other, self::class);
+
+        return IntervalCalc::compareIntersects(
+            $this->start->getJulianDay(),
+            $this->end->getJulianDay(),
+            $other->start->getJulianDay(),
+            $other->end->getJulianDay()
+        );
     }
 
     /**

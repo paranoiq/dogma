@@ -2,6 +2,8 @@
 
 namespace Dogma\Tests\Math\Interval;
 
+use Dogma\Call;
+use Dogma\IntersectResult;
 use Dogma\Math\Interval\FloatInterval;
 use Dogma\Math\Interval\FloatIntervalSet;
 use Dogma\Tester\Assert;
@@ -70,6 +72,72 @@ Assert::false($open->equals($r(1, 5, true)));
 Assert::false($open->equals($r(1, 5, false, true)));
 
 Assert::true($empty->equals(new FloatInterval(1.0, 1.0, true, true)));
+
+// compareIntersects()
+Call::withArgs(static function (array $a, array $b, int $expected): void {
+    $a = new FloatInterval(...$a);
+    $b = new FloatInterval(...$b);
+    Assert::same($a->compareIntersects($b), $expected);
+}, [
+    [[1, 2, false, false], [3, 4, false, false], IntersectResult::BEFORE_START],
+
+    [[1, 2, false, true],  [2, 3, true,  false], IntersectResult::BEFORE_START],
+    [[1, 2, false, true],  [2, 3, false, false], IntersectResult::TOUCHES_START],
+    [[1, 2, false, false], [2, 3, true,  false], IntersectResult::TOUCHES_START],
+    [[1, 2, false, false], [2, 3, false, false], IntersectResult::INTERSECTS_START],
+
+    [[1, 3, false, false], [2, 4, false, false], IntersectResult::INTERSECTS_START],
+
+    [[1, 3, false, true],  [2, 3, false, false], IntersectResult::INTERSECTS_START],
+    [[1, 3, false, false], [2, 3, false, false], IntersectResult::EXTENDS_START],
+    [[1, 3, false, true],  [2, 3, false, true],  IntersectResult::EXTENDS_START],
+    [[1, 3, false, false], [2, 3, false, true],  IntersectResult::CONTAINS],
+
+    [[1, 4, false, false], [2, 3, false, false], IntersectResult::CONTAINS],
+
+    [[1, 2, false, false], [1, 3, true,  false], IntersectResult::INTERSECTS_START],
+    [[1, 2, false, false], [1, 3, false, false], IntersectResult::FITS_TO_START],
+    [[1, 2, true,  false], [1, 3, true,  false], IntersectResult::FITS_TO_START],
+    [[1, 2, true,  false], [1, 3, false, false], IntersectResult::IS_CONTAINED],
+
+    [[1, 2, false, true],  [1, 2, true,  false], IntersectResult::INTERSECTS_START],
+    [[1, 2, false, true],  [1, 2, true,  true],  IntersectResult::EXTENDS_START],
+    [[1, 2, false, false], [1, 2, true,  false], IntersectResult::EXTENDS_START],
+    [[1, 2, false, true],  [1, 2, false, false], IntersectResult::FITS_TO_START],
+    [[1, 2, true,  true],  [1, 2, true,  false], IntersectResult::FITS_TO_START],
+    [[1, 2, false, false], [1, 2, true,  true],  IntersectResult::CONTAINS],
+    [[1, 2, false, false], [1, 2, false, false], IntersectResult::SAME],
+    [[1, 2, true,  false], [1, 2, true,  false], IntersectResult::SAME],
+    [[1, 2, false, true],  [1, 2, false, true],  IntersectResult::SAME],
+    [[1, 2, true,  true],  [1, 2, true,  true],  IntersectResult::SAME],
+    [[1, 2, true,  true],  [1, 2, false, false], IntersectResult::IS_CONTAINED],
+    [[1, 2, true,  false], [1, 2, false, false], IntersectResult::FITS_TO_END],
+    [[1, 2, true,  true],  [1, 2, false, true],  IntersectResult::FITS_TO_END],
+    [[1, 2, false, false], [1, 2, false, true],  IntersectResult::EXTENDS_END],
+    [[1, 2, true,  false], [1, 2, true,  true],  IntersectResult::EXTENDS_END],
+    [[1, 2, true,  false], [1, 2, false, true],  IntersectResult::INTERSECTS_END],
+
+    [[2, 3, false, false], [1, 3, false, true],  IntersectResult::INTERSECTS_END],
+    [[2, 3, false, false], [1, 3, false, false], IntersectResult::FITS_TO_END],
+    [[2, 3, false, true],  [1, 3, false, true],  IntersectResult::FITS_TO_END],
+    [[2, 3, false, true],  [1, 3, false, false], IntersectResult::IS_CONTAINED],
+
+    [[2, 3, false, false], [1, 4, false, false], IntersectResult::IS_CONTAINED],
+
+    [[1, 3, false, false], [1, 2, true,  false], IntersectResult::CONTAINS],
+    [[1, 3, false, false], [1, 2, false, false], IntersectResult::EXTENDS_END],
+    [[1, 3, true,  false], [1, 2, true,  false], IntersectResult::EXTENDS_END],
+    [[1, 3, true,  false], [1, 2, false, false], IntersectResult::INTERSECTS_END],
+
+    [[2, 4, false, false], [1, 3, false, false], IntersectResult::INTERSECTS_END],
+
+    [[2, 3, false, false], [1, 2, false, false], IntersectResult::INTERSECTS_END],
+    [[2, 3, false, false], [1, 2, false, true],  IntersectResult::TOUCHES_END],
+    [[2, 3, true,  false], [1, 2, false, false], IntersectResult::TOUCHES_END],
+    [[2, 3, true,  false], [1, 2, false, true],  IntersectResult::AFTER_END],
+
+    [[3, 4, false, false], [1, 2, false, false], IntersectResult::AFTER_END],
+]);
 
 // containsValue()
 Assert::true($closed->containsValue(3.0));

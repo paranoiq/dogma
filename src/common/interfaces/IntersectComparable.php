@@ -9,13 +9,13 @@
 
 namespace Dogma;
 
-interface Comparable
+interface IntersectComparable
 {
 
     /**
      * @param self $other
-     * @return int @see ComparisonResult
+     * @return int @see IntersectResult
      */
-    public function compare(self $other): int;
+    public function compareIntersects(self $other): int;
 
 }

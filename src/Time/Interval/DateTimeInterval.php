@@ -15,8 +15,10 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
+use Dogma\IntersectComparable;
 use Dogma\Math\IntCalc;
 use Dogma\Math\Interval\Interval;
+use Dogma\Math\Interval\IntervalCalc;
 use Dogma\Math\Interval\IntervalParser;
 use Dogma\NotImplementedException;
 use Dogma\ShouldNotHappenException;
@@ -237,6 +239,22 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         Check::instance($other, self::class);
 
         return $this->start->compare($other->start) ?: $this->end->compare($other->end);
+    }
+
+    /**
+     * @param self $other
+     * @return int
+     */
+    public function compareIntersects(IntersectComparable $other): int
+    {
+        Check::instance($other, self::class);
+
+        return IntervalCalc::compareIntersects(
+            $this->start->getMicroTimestamp(),
+            $this->end->getMicroTimestamp(),
+            $other->start->getMicroTimestamp(),
+            $other->end->getMicroTimestamp()
+        );
     }
 
     public function containsValue(DateTime $value): bool

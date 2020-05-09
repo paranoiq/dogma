@@ -13,6 +13,8 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
+use Dogma\IntersectComparable;
+use Dogma\IntersectResult;
 use Dogma\InvalidValueException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
@@ -176,22 +178,64 @@ class FloatInterval implements OpenClosedInterval
     {
         Check::instance($other, self::class);
 
-        return ($this->start === $other->start
-            && $this->end === $other->end
-            && $this->openStart === $other->openStart
-            && $this->openEnd === $other->openEnd)
+        return ($this->start === $other->start && $this->openStart === $other->openStart
+            && $this->end === $other->end && $this->openEnd === $other->openEnd)
             || ($this->isEmpty() && $other->isEmpty());
     }
 
     /**
-     * @param FloatInterval $other
+     * @param self $other
      * @return int
      */
     public function compare(Comparable $other): int
     {
         Check::instance($other, self::class);
 
-        return $this->start <=> $other->start ?: $other->openStart <=> $this->openStart ?: $this->end <=> $other->end ?: $other->openEnd <=> $this->openEnd;
+        return $this->start <=> $other->start ?: $other->openStart <=> $this->openStart
+            ?: $this->end <=> $other->end ?: $other->openEnd <=> $this->openEnd;
+    }
+
+    /**
+     * @param self $other
+     * @return int
+     */
+    public function compareIntersects(IntersectComparable $other): int
+    {
+        Check::instance($other, self::class);
+
+        if ($this->start === $other->start && $this->openStart === $other->openStart) {
+            if ($this->end === $other->end && $this->openEnd === $other->openEnd) {
+                return IntersectResult::SAME;
+            } elseif ($this->end < $other->end || ($this->end === $other->end && $this->openEnd === true)) {
+                return IntersectResult::FITS_TO_START;
+            } else {
+                return IntersectResult::EXTENDS_END;
+            }
+        } elseif ($this->start < $other->start || ($this->start === $other->start && $this->openStart === false)) {
+            if ($this->end === $other->start && ($this->openEnd xor $other->openStart)) {
+                return IntersectResult::TOUCHES_START;
+            } elseif ($this->end < $other->start || ($this->end === $other->start && $this->openEnd === true)) {
+                return IntersectResult::BEFORE_START;
+            } elseif ($this->end === $other->end && $this->openEnd === $other->openEnd) {
+                return IntersectResult::EXTENDS_START;
+            } elseif ($this->end < $other->end || ($this->end === $other->end && $this->openEnd === true)) {
+                return IntersectResult::INTERSECTS_START;
+            } else {
+                return IntersectResult::CONTAINS;
+            }
+        } else {
+            if ($this->start === $other->end && ($this->openStart xor $other->openEnd)) {
+                return IntersectResult::TOUCHES_END;
+            } elseif ($this->start > $other->end || ($this->start === $other->end && $other->openEnd === true)) {
+                return IntersectResult::AFTER_END;
+            } elseif ($this->end === $other->end && $this->openEnd === $other->openEnd) {
+                return IntersectResult::FITS_TO_END;
+            } elseif ($this->end < $other->end || ($this->end === $other->end && $this->openEnd === true)) {
+                return IntersectResult::IS_CONTAINED;
+            } else {
+                return IntersectResult::INTERSECTS_END;
+            }
+        }
     }
 
     public function containsValue(float $value): bool
