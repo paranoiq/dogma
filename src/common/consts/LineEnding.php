@@ -17,4 +17,8 @@ class LineEnding
     public const CRLF = "\r\n";
     public const CR = "\r";
 
+    public const LINUX = self::LF;
+    public const WINDOWS = self::CRLF;
+    public const MAC = self::CR;
+
 }
