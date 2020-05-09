@@ -13,6 +13,9 @@ use Dogma\StrictBehaviorMixin;
 use function sprintf;
 use function strtolower;
 
+/**
+ * @deprecated will be removed
+ */
 class EmailAddress
 {
     use StrictBehaviorMixin;

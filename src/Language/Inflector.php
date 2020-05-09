@@ -22,6 +22,9 @@ use function strtolower;
 use function strval;
 use function ucfirst;
 
+/**
+ * @deprecated will be removed
+ */
 class Inflector
 {
     use StaticClassMixin;
@@ -261,6 +264,7 @@ class Inflector
      * Changes '::' to '/' to convert namespaces to paths.
      * @param string $word
      * @return string
+     * @deprecated use Str::underscore() instead
      */
     public static function underscore(string $word): string
     {

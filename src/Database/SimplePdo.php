@@ -31,6 +31,8 @@ use function substr;
  * Provides simple query argument binding:
  * - use ? for automatic value binding
  * - use % for automatic name binding with escaping
+ *
+ * @deprecated will be removed
  */
 class SimplePdo extends PDO
 {

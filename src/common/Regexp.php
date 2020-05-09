@@ -10,7 +10,7 @@
 namespace Dogma;
 
 /**
- * Regular expression object
+ * @deprecated will be removed
  */
 class Regexp
 {

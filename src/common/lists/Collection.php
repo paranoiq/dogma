@@ -11,6 +11,9 @@ namespace Dogma;
 
 use function get_class;
 
+/**
+ * @deprecated will be removed
+ */
 class Collection extends ImmutableArray
 {
 

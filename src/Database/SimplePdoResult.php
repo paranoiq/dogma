@@ -17,6 +17,9 @@ use PDOStatement;
 use function is_array;
 use function is_int;
 
+/**
+ * @deprecated will be removed
+ */
 class SimplePdoResult implements Iterator
 {
     use StrictBehaviorMixin;

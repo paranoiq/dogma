@@ -13,6 +13,9 @@ use Dogma\Io\File;
 use Dogma\StrictBehaviorMixin;
 use function strlen;
 
+/**
+ * @deprecated will be removed
+ */
 class EmailAttachment
 {
     use StrictBehaviorMixin;

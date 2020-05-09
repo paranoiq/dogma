@@ -11,6 +11,9 @@ namespace Dogma\Email;
 
 use Dogma\Exception;
 
+/**
+ * @deprecated will be removed
+ */
 class EmailParsingException extends Exception
 {
 

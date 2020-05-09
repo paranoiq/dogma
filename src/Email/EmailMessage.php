@@ -51,6 +51,7 @@ use function substr;
  *
  * @property-read string $messageId
  * @property-read string $inReplyTo
+ * @deprecated will be removed
  */
 class EmailMessage
 {
