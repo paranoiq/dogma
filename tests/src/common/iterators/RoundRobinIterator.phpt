@@ -49,7 +49,6 @@ $result = [];
 foreach (RoundRobinIterator::uneven([1, 2], [4, 5, 6], [7, 8, 9]) as $k => $v) {
     $result[$k] = $v;
 }
-rd($result);
 Assert::same($result, [1, 4, 7, 2, 5, 8, 6, 9]);
 
 $result = [];
