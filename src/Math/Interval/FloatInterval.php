@@ -190,7 +190,7 @@ class FloatInterval implements OpenClosedInterval
     {
         Check::instance($other, self::class);
 
-        return $this->start <=> $other->start ?: $other->openStart <=> $this->openStart
+        return $this->start <=> $other->start ?: $this->openStart <=> $other->openStart
             ?: $this->end <=> $other->end ?: $other->openEnd <=> $this->openEnd;
     }
 
