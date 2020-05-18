@@ -137,7 +137,8 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
      */
     public function normalize(): self
     {
-        $intervals = TimeInterval::sortByStart($this->intervals);
+        /** @var TimeInterval[] $intervals */
+        $intervals = Arr::sortComparable($this->intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
             if ($intervals[$n]->intersects($intervals[$n + 1]) || $intervals[$n]->touches($intervals[$n + 1])) {

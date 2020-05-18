@@ -136,7 +136,8 @@ class NightIntervalDataSet implements Equalable, Pokeable
      */
     public function normalize(): self
     {
-        $intervals = NightIntervalData::sortByStart($this->intervals);
+        /** @var NightIntervalData[] $intervals */
+        $intervals = Arr::sortComparableValues($this->intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
             $first = $intervals[$n];

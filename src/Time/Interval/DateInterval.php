@@ -35,7 +35,6 @@ use function array_unique;
 use function array_values;
 use function count;
 use function round;
-use function usort;
 
 /**
  * Interval of dates. Based on IntInterval.
@@ -380,7 +379,8 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     public function intersect(self ...$items): self
     {
         $items[] = $this;
-        $items = self::sort($items);
+        /** @var self[] $items */
+        $items = Arr::sortComparable($items);
 
         $result = array_shift($items);
         foreach ($items as $item) {
@@ -397,7 +397,8 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     public function union(self ...$items): DateIntervalSet
     {
         $items[] = $this;
-        $items = self::sortByStart($items);
+        /** @var self[] $items */
+        $items = Arr::sortComparable($items);
 
         $current = array_shift($items);
         $results = [$current];
@@ -490,7 +491,8 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
      */
     public static function explodeOverlaps(self ...$items): array
     {
-        $items = self::sort($items);
+        /** @var self[] $items */
+        $items = Arr::sortComparable($items);
         $starts = array_fill(0, count($items), 0);
         $i = 0;
         while (isset($items[$i])) {
@@ -563,33 +565,27 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
             $i++;
         }
 
-        return array_values(self::sort($items));
+        return array_values(Arr::sortComparable($items));
     }
 
     /**
      * @param self[] $intervals
      * @return self[]
+     * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array
     {
-        usort($intervals, static function (DateInterval $a, DateInterval $b) {
-            return $a->start->getJulianDay() <=> $b->start->getJulianDay() ?: $a->end->getJulianDay() <=> $b->end->getJulianDay();
-        });
-
-        return $intervals;
+        return Arr::sortComparable($intervals);
     }
 
     /**
      * @param self[] $intervals
      * @return self[]
+     * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array
     {
-        usort($intervals, static function (DateInterval $a, DateInterval $b) {
-            return $a->start->getJulianDay() <=> $b->start->getJulianDay();
-        });
-
-        return $intervals;
+        return Arr::sortComparable($intervals);
     }
 
 }

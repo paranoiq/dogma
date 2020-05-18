@@ -10,6 +10,7 @@
 namespace Dogma\Time\IntervalData;
 
 use DateTimeInterface;
+use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
@@ -24,7 +25,6 @@ use Dogma\Time\Span\DateSpan;
 use Dogma\Time\Span\DateTimeSpan;
 use function array_shift;
 use function array_values;
-use function usort;
 
 /**
  * Interval of nights with data bound to it.
@@ -294,7 +294,8 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     public function intersect(NightInterval ...$items): self
     {
         $items[] = $this->toNightInterval();
-        $items = NightInterval::sort($items);
+        /** @var self[] $items */
+        $items = Arr::sortComparable($items);
 
         $result = array_shift($items);
         foreach ($items as $item) {
@@ -337,27 +338,21 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     /**
      * @param self[] $intervals
      * @return self[]
+     * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array
     {
-        usort($intervals, static function (NightIntervalData $a, NightIntervalData $b) {
-            return $a->start->getJulianDay() <=> $b->start->getJulianDay() ?: $a->end->getJulianDay() <=> $b->end->getJulianDay();
-        });
-
-        return $intervals;
+        return Arr::sortComparable($intervals);
     }
 
     /**
      * @param self[] $intervals
      * @return self[]
+     * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array
     {
-        usort($intervals, static function (NightIntervalData $a, NightIntervalData $b) {
-            return $a->start->getJulianDay() <=> $b->start->getJulianDay();
-        });
-
-        return $intervals;
+        return Arr::sortComparable($intervals);
     }
 
 }

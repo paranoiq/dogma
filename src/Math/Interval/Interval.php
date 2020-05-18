@@ -107,12 +107,14 @@ interface Interval /*<T>*/ extends Equalable, Comparable, IntersectComparable
     /**
      * @param self[] $intervals
      * @return self[]
+     * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array;
 
     /**
      * @param self[] $intervals
      * @return self[]
+     * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array;
 

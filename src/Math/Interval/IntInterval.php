@@ -25,7 +25,6 @@ use function count;
 use function max;
 use function min;
 use function round;
-use function usort;
 
 class IntInterval implements Interval
 {
@@ -236,7 +235,8 @@ class IntInterval implements Interval
     public function intersect(self ...$items): self
     {
         $items[] = $this;
-        $items = self::sortByStart($items);
+        /** @var self[] $items */
+        $items = Arr::sortComparable($items);
 
         $result = array_shift($items);
         foreach ($items as $item) {
@@ -256,7 +256,8 @@ class IntInterval implements Interval
     public function union(self ...$items): IntIntervalSet
     {
         $items[] = $this;
-        $items = self::sortByStart($items);
+        /** @var self[] $items */
+        $items = Arr::sortComparable($items);
 
         $current = array_shift($items);
         $results = [$current];
@@ -352,14 +353,15 @@ class IntInterval implements Interval
 
     /**
      * O(n log n)
-     * @param IntInterval ...$items
-     * @return IntInterval[]
+     * @param self ...$items
+     * @return self[]
      */
     public static function explodeOverlaps(self ...$items): array
     {
         // 0-5 1-6 2-7 -->  0-0 1-1 1-1 2-5 2-5 2-5 6-6 6-6 7-7
 
-        $items = self::sort($items);
+        /** @var self[] $items */
+        $items = Arr::sortComparable($items);
         $starts = array_fill(0, count($items), 0);
         $i = 0;
         while (isset($items[$i])) {
@@ -432,33 +434,27 @@ class IntInterval implements Interval
             $i++;
         }
 
-        return array_values(self::sort($items));
+        return array_values(Arr::sortComparable($items));
     }
 
     /**
      * @param self[] $intervals
      * @return self[]
+     * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array
     {
-        usort($intervals, static function (IntInterval $a, IntInterval $b) {
-            return $a->start <=> $b->start ?: $a->end <=> $b->end;
-        });
-
-        return $intervals;
+        return Arr::sortComparable($intervals);
     }
 
     /**
      * @param self[] $intervals
      * @return self[]
+     * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array
     {
-        usort($intervals, static function (IntInterval $a, IntInterval $b) {
-            return $a->start <=> $b->start;
-        });
-
-        return $intervals;
+        return Arr::sortComparable($intervals);
     }
 
 }

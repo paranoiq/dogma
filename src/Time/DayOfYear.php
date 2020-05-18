@@ -311,12 +311,11 @@ class DayOfYear implements Equalable, Comparable
      * @param DayOfYear[] $items
      * @param int $flags
      * @return DayOfYear[]
+     * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $items, int $flags = Order::ASCENDING): array
     {
-        return Arr::sortWith($items, static function (self $a, self $b): int {
-            return $a->number <=> $b->number;
-        }, $flags);
+        return Arr::sortComparable($items, $flags);
     }
 
 }

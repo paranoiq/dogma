@@ -123,7 +123,8 @@ class DayOfYearIntervalSet implements IntervalSet
      */
     public function normalize(): self
     {
-        $intervals = DayOfYearInterval::sortByStart($this->intervals);
+        /** @var DayOfYearInterval[] $intervals */
+        $intervals = Arr::sortComparable($this->intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
             if ($intervals[$n]->intersects($intervals[$n + 1]) || $intervals[$n]->touches($intervals[$n + 1])) {

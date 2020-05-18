@@ -396,12 +396,11 @@ class Date implements DateOrDateTime, Pokeable
      * @param Date[] $items
      * @param int $flags
      * @return Date[]
+     * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $items, int $flags = Order::ASCENDING): array
     {
-        return Arr::sortWith($items, static function (Date $a, Date $b): int {
-            return $a->julianDay <=> $b->julianDay;
-        }, $flags);
+        return Arr::sortComparable($items, $flags);
     }
 
 }

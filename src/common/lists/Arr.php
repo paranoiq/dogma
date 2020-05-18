@@ -65,6 +65,7 @@ use function reset;
 use function shuffle;
 use function uasort;
 use function uksort;
+use function usort;
 
 class Arr
 {
@@ -1356,6 +1357,48 @@ class Arr
         uksort($arr, $function);
         if ($flags & Order::DESCENDING) {
             $arr = array_reverse($arr);
+        }
+
+        return $arr;
+    }
+
+    /**
+     * @param Comparable[] $array
+     * @param int $flags
+     * @return mixed[]
+     */
+    public static function sortComparable(array $array, int $flags = Sorting::REGULAR): array
+    {
+        $arr = $array;
+        if ($flags & Order::DESCENDING) {
+            uasort($arr, static function (Comparable $a, Comparable $b): int {
+                return $b->compare($a);
+            });
+        } else {
+            uasort($arr, static function (Comparable $a, Comparable $b): int {
+                return $a->compare($b);
+            });
+        }
+
+        return $arr;
+    }
+
+    /**
+     * @param Comparable[] $array
+     * @param int $flags
+     * @return mixed[]
+     */
+    public static function sortComparableValues(array $array, int $flags = Sorting::REGULAR): array
+    {
+        $arr = $array;
+        if ($flags & Order::DESCENDING) {
+            usort($arr, static function (Comparable $a, Comparable $b): int {
+                return $b->compare($a);
+            });
+        } else {
+            usort($arr, static function (Comparable $a, Comparable $b): int {
+                return $a->compare($b);
+            });
         }
 
         return $arr;

@@ -27,7 +27,6 @@ use function count;
 use function is_nan;
 use function number_format;
 use function sprintf;
-use function usort;
 
 class FloatInterval implements OpenClosedInterval
 {
@@ -339,7 +338,8 @@ class FloatInterval implements OpenClosedInterval
     public function intersect(self ...$items): self
     {
         $items[] = $this;
-        $items = self::sortByStart($items);
+        /** @var self[] $items */
+        $items = Arr::sortComparable($items);
 
         $result = array_shift($items);
         foreach ($items as $item) {
@@ -365,7 +365,8 @@ class FloatInterval implements OpenClosedInterval
     public function union(self ...$items): FloatIntervalSet
     {
         $items[] = $this;
-        $items = self::sortByStart($items);
+        /** @var self[] $items */
+        $items = Arr::sortComparable($items);
 
         $current = array_shift($items);
         $results = [$current];
@@ -488,7 +489,8 @@ class FloatInterval implements OpenClosedInterval
     {
         // 0-5 1-6 2-7 -->  0-1< 1-2< 1-2< 2-5 2-5 2-5 >5-6 >5-6 >6-7
 
-        $items = self::sort($items);
+        /** @var self[] $items */
+        $items = Arr::sortComparable($items);
         $starts = array_fill(0, count($items), 0);
         $i = 0;
         while (isset($items[$i])) {
@@ -566,34 +568,27 @@ class FloatInterval implements OpenClosedInterval
             $i++;
         }
 
-        return array_values(self::sort($items));
+        return array_values(Arr::sortComparable($items));
     }
 
     /**
      * @param self[] $intervals
      * @return self[]
+     * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array
     {
-        usort($intervals, static function (FloatInterval $a, FloatInterval $b) {
-            return $a->start <=> $b->start ?: $a->openStart <=> $b->openStart
-                ?: $a->end <=> $b->end ?: $a->openEnd <=> $b->openEnd;
-        });
-
-        return $intervals;
+        return Arr::sortComparable($intervals);
     }
 
     /**
      * @param self[] $intervals
      * @return self[]
+     * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array
     {
-        usort($intervals, static function (FloatInterval $a, FloatInterval $b) {
-            return $a->start <=> $b->start ?: $b->openStart <=> $a->openStart;
-        });
-
-        return $intervals;
+        return Arr::sortComparable($intervals);
     }
 
 }

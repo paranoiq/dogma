@@ -29,7 +29,6 @@ use function count;
 use function max;
 use function min;
 use function round;
-use function usort;
 
 /**
  * Interval between two dates represented as DayOfYear. Does not include information about year.
@@ -384,7 +383,8 @@ class DayOfYearInterval implements ModuloInterval
     public function union(self ...$items): DayOfYearIntervalSet
     {
         $items[] = $this;
-        $items = self::sortByStart($items);
+        /** @var self[] $items */
+        $items = Arr::sortComparable($items);
 
         $current = array_shift($items);
         $results = [$current];
@@ -502,7 +502,8 @@ class DayOfYearInterval implements ModuloInterval
      */
     public static function explodeOverlaps(self ...$items): array
     {
-        $items = self::sort($items);
+        /** @var self[] $items */
+        $items = Arr::sortComparable($items);
         $starts = array_fill(0, count($items), 0);
         $i = 0;
         while (isset($items[$i])) {
@@ -589,33 +590,27 @@ class DayOfYearInterval implements ModuloInterval
             $i++;
         }
 
-        return array_values(self::sort($items));
+        return array_values(Arr::sortComparable($items));
     }
 
     /**
      * @param self[] $intervals
      * @return self[]
+     * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array
     {
-        usort($intervals, static function (DayOfYearInterval $a, DayOfYearInterval $b) {
-            return $a->start->getNumber() <=> $b->start->getNumber() ?: $a->end->getNumber() <=> $b->end->getNumber();
-        });
-
-        return $intervals;
+        return Arr::sortComparable($intervals);
     }
 
     /**
      * @param self[] $intervals
      * @return self[]
+     * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array
     {
-        usort($intervals, static function (DayOfYearInterval $a, DayOfYearInterval $b) {
-            return $a->start->getNumber() <=> $b->start->getNumber();
-        });
-
-        return $intervals;
+        return Arr::sortComparable($intervals);
     }
 
 }

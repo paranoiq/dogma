@@ -409,12 +409,11 @@ class Time implements DateTimeOrTime, Pokeable
      * @param Time[] $items
      * @param int $flags
      * @return Time[]
+     * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $items, int $flags = Order::ASCENDING): array
     {
-        return Arr::sortWith($items, static function (Time $a, Time $b): int {
-            return $a->microseconds <=> $b->microseconds;
-        }, $flags);
+        return Arr::sortComparable($items, $flags);
     }
 
 }

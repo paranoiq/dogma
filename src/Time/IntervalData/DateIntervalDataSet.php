@@ -144,7 +144,8 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      */
     public function normalize(): self
     {
-        $intervals = DateIntervalData::sortByStart($this->intervals);
+        /** @var DateIntervalData[] $intervals */
+        $intervals = Arr::sortComparableValues($this->intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
             $first = $intervals[$n];
