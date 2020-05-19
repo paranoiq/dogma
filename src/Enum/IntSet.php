@@ -10,11 +10,16 @@
 namespace Dogma\Enum;
 
 use Dogma\Arr;
+use Dogma\Cls;
+use Dogma\Dumpable;
 use Dogma\InvalidValueException;
+use Dogma\Obj;
 use function array_search;
+use function implode;
 use function in_array;
+use function sprintf;
 
-abstract class IntSet
+abstract class IntSet implements Dumpable
 {
     use SetMixin;
 
@@ -73,6 +78,22 @@ abstract class IntSet
         }
 
         return self::$instances[$class][$value];
+    }
+
+    public function dump(): string
+    {
+        $names = [];
+        foreach ($this->getConstantNames() as $value => $name) {
+            $names[] = $value . ' ' . $name;
+        }
+
+        return sprintf(
+            "%s(%s #%s)\n[\n    %s\n]",
+            Cls::short(static::class),
+            $this->value,
+            Obj::dumpHash($this),
+            implode("\n", $names)
+        );
     }
 
     /**

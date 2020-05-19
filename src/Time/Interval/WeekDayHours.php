@@ -9,11 +9,15 @@
 
 namespace Dogma\Time\Interval;
 
+use Dogma\Cls;
+use Dogma\Dumpable;
+use Dogma\Obj;
 use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DayOfWeek;
+use function sprintf;
 
-class WeekDayHours implements Pokeable
+class WeekDayHours implements Pokeable, Dumpable
 {
     use StrictBehaviorMixin;
 
@@ -37,6 +41,17 @@ class WeekDayHours implements Pokeable
     public function poke(): void
     {
         $this->hours->poke();
+    }
+
+    public function dump(): string
+    {
+        return sprintf(
+            '%s(%s %s #%s)',
+            Cls::short(static::class),
+            $this->day->dump(),
+            $this->hours->dump(),
+            Obj::dumpHash($this)
+        );
     }
 
     public function getDay(): DayOfWeek

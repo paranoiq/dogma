@@ -10,10 +10,11 @@
 namespace Dogma\Math\Interval;
 
 use Dogma\Comparable;
+use Dogma\Dumpable;
 use Dogma\Equalable;
 use Dogma\IntersectComparable;
 
-interface Interval /*<T>*/ extends Equalable, Comparable, IntersectComparable
+interface Interval /*<T>*/ extends Equalable, Comparable, IntersectComparable, Dumpable
 {
 
     // queries ---------------------------------------------------------------------------------------------------------

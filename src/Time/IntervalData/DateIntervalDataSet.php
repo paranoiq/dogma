@@ -12,7 +12,10 @@ namespace Dogma\Time\IntervalData;
 use Dogma\Arr;
 use Dogma\ArrayIterator;
 use Dogma\Check;
+use Dogma\Cls;
+use Dogma\Dumpable;
 use Dogma\Equalable;
+use Dogma\Obj;
 use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
@@ -24,10 +27,13 @@ use IteratorAggregate;
 use function array_map;
 use function array_merge;
 use function array_shift;
+use function array_splice;
 use function count;
+use function implode;
 use function is_array;
+use function sprintf;
 
-class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
+class DateIntervalDataSet implements Equalable, Pokeable, Dumpable, IteratorAggregate
 {
     use StrictBehaviorMixin;
 
@@ -63,6 +69,28 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         foreach ($this->intervals as $interval) {
             $interval->poke();
         }
+    }
+
+    public function dump(): string
+    {
+        $intervals = [];
+        foreach ($this->intervals as $interval) {
+            $intervals[] = $interval->dump();
+        }
+
+        return $intervals !== []
+            ? sprintf(
+                "%s(%d #%s)\n[\n    %s\n]",
+                Cls::short(static::class),
+                count($intervals),
+                Obj::dumpHash($this),
+                implode("\n    ", $intervals)
+            )
+            : sprintf(
+                '%s(0 #%s)',
+                Cls::short(static::class),
+                Obj::dumpHash($this)
+            );
     }
 
     public function toDateIntervalSet(): DateIntervalSet

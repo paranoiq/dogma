@@ -15,6 +15,7 @@ use Dogma\Check;
 use Dogma\Compare;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntervalSet;
+use Dogma\Math\Interval\IntervalSetDumpMixin;
 use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
@@ -32,6 +33,7 @@ use function sort;
 class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 {
     use StrictBehaviorMixin;
+    use IntervalSetDumpMixin;
 
     /** @var DateInterval[] */
     private $intervals;

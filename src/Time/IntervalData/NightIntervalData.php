@@ -12,10 +12,13 @@ namespace Dogma\Time\IntervalData;
 use DateTimeInterface;
 use Dogma\Arr;
 use Dogma\Check;
+use Dogma\Cls;
 use Dogma\Comparable;
+use Dogma\Dumpable;
 use Dogma\Equalable;
 use Dogma\IntersectComparable;
 use Dogma\Math\Interval\IntervalCalc;
+use Dogma\Obj;
 use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
@@ -23,13 +26,16 @@ use Dogma\Time\Interval\NightInterval;
 use Dogma\Time\InvalidIntervalStartEndOrderException;
 use Dogma\Time\Span\DateSpan;
 use Dogma\Time\Span\DateTimeSpan;
+use Tracy\Debugger;
 use function array_shift;
 use function array_values;
+use function sprintf;
+use function trim;
 
 /**
  * Interval of nights with data bound to it.
  */
-class NightIntervalData implements Equalable, Comparable, IntersectComparable, Pokeable
+class NightIntervalData implements Equalable, Comparable, IntersectComparable, Pokeable, Dumpable
 {
     use StrictBehaviorMixin;
 
@@ -93,6 +99,18 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     {
         $this->start->format();
         $this->end->format();
+    }
+
+    public function dump(): string
+    {
+        return sprintf(
+            '%s(%s - %s %s #%s)',
+            Cls::short(static::class),
+            $this->start->dump(),
+            $this->end->dump(),
+            trim(Debugger::dump($this->data, true)),
+            Obj::dumpHash($this)
+        );
     }
 
     // modifications ---------------------------------------------------------------------------------------------------

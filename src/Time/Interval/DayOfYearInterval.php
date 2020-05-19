@@ -13,6 +13,7 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
+use Dogma\Math\Interval\IntervalDumpMixin;
 use Dogma\Math\Interval\IntervalParser;
 use Dogma\Math\Interval\ModuloInterval;
 use Dogma\StrictBehaviorMixin;
@@ -36,6 +37,7 @@ use function round;
 class DayOfYearInterval implements ModuloInterval
 {
     use StrictBehaviorMixin;
+    use IntervalDumpMixin;
 
     public const MIN = DayOfYear::MIN_NUMBER;
     public const MAX = DayOfYear::MAX_DENORMALIZED;

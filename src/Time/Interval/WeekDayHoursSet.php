@@ -9,15 +9,21 @@
 
 namespace Dogma\Time\Interval;
 
+use Dogma\Cls;
+use Dogma\Dumpable;
+use Dogma\Obj;
 use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateTime;
 use Dogma\Time\DayOfWeek;
 use Dogma\Time\DaysOfWeek;
 use Dogma\Time\InvalidWeekDayHoursSetException;
+use function count;
+use function implode;
 use function ksort;
+use function sprintf;
 
-class WeekDayHoursSet implements Pokeable
+class WeekDayHoursSet implements Pokeable, Dumpable
 {
     use StrictBehaviorMixin;
 
@@ -60,6 +66,28 @@ class WeekDayHoursSet implements Pokeable
         foreach ($this->weekDayHours as $hours) {
             $hours->poke();
         }
+    }
+
+    public function dump(): string
+    {
+        $hours = [];
+        foreach ($this->weekDayHours as $interval) {
+            $hours[] = $interval->dump();
+        }
+
+        return $hours !== []
+            ? sprintf(
+                "%s(%d #%s) [\n    %s\n]",
+                Cls::short(static::class),
+                count($hours),
+                Obj::dumpHash($this),
+                implode("\n    ", $hours)
+            )
+            : sprintf(
+                '%s(0 #%s)',
+                Cls::short(static::class),
+                Obj::dumpHash($this)
+            );
     }
 
     public function containsValue(DateTime $dateTime): bool

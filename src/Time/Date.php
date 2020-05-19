@@ -16,8 +16,11 @@ use DateTimeInterface;
 use DateTimeZone;
 use Dogma\Arr;
 use Dogma\Check;
+use Dogma\Cls;
 use Dogma\Comparable;
+use Dogma\Dumpable;
 use Dogma\Equalable;
+use Dogma\Obj;
 use Dogma\Order;
 use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
@@ -33,11 +36,12 @@ use function gregoriantojd;
 use function intval;
 use function is_int;
 use function jdtogregorian;
+use function sprintf;
 
 /**
  * Date class.
  */
-class Date implements DateOrDateTime, Pokeable
+class Date implements DateOrDateTime, Pokeable, Dumpable
 {
     use StrictBehaviorMixin;
 
@@ -121,6 +125,17 @@ class Date implements DateOrDateTime, Pokeable
     public function poke(): void
     {
         $this->getDateTime();
+    }
+
+    public function dump(): string
+    {
+        return sprintf(
+            '%s(%s %s #%s)',
+            Cls::short(static::class),
+            $this->format(),
+            $this->julianDay,
+            Obj::dumpHash($this)
+        );
     }
 
     final public function __clone()

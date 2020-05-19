@@ -10,9 +10,13 @@
 namespace Dogma\Enum;
 
 use Dogma\Arr;
+use Dogma\Cls;
+use Dogma\Dumpable;
 use Dogma\InvalidValueException;
+use Dogma\Obj;
+use function sprintf;
 
-abstract class StringEnum
+abstract class StringEnum implements Dumpable
 {
     use EnumMixin;
 
@@ -50,6 +54,17 @@ abstract class StringEnum
         }
 
         return self::$instances[$class][$value];
+    }
+
+    public function dump(): string
+    {
+        return sprintf(
+            '%s(%s %s #%s)',
+            Cls::short(static::class),
+            $this->value,
+            $this->getConstantName(),
+            Obj::dumpHash($this)
+        );
     }
 
     /**

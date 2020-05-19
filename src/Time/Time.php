@@ -16,8 +16,11 @@ use DateTimeInterface;
 use DateTimeZone;
 use Dogma\Arr;
 use Dogma\Check;
+use Dogma\Cls;
 use Dogma\Comparable;
+use Dogma\Dumpable;
 use Dogma\Equalable;
+use Dogma\Obj;
 use Dogma\Order;
 use Dogma\Pokeable;
 use Dogma\Str;
@@ -32,6 +35,7 @@ use function is_int;
 use function ltrim;
 use function preg_match;
 use function round;
+use function sprintf;
 
 /**
  * Time of day without a date and timezone.
@@ -41,7 +45,7 @@ use function round;
  * When compared 27:00:00 will be equal to 03:00:00 (modulo arithmetic).
  * When formatted 27:00:00 will result in "03:00:00".
  */
-class Time implements DateTimeOrTime, Pokeable
+class Time implements DateTimeOrTime, Pokeable, Dumpable
 {
     use StrictBehaviorMixin;
 
@@ -161,6 +165,17 @@ class Time implements DateTimeOrTime, Pokeable
     public function poke(): void
     {
         $this->getDateTime();
+    }
+
+    public function dump(): string
+    {
+        return sprintf(
+            '%s(%s %s #%s)',
+            Cls::short(static::class),
+            $this->format(),
+            $this->microseconds,
+            Obj::dumpHash($this)
+        );
     }
 
     final public function __clone()

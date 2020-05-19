@@ -13,6 +13,7 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
+use Dogma\Math\Interval\IntervalDumpMixin;
 use Dogma\Math\Interval\IntervalParser;
 use Dogma\Math\Interval\ModuloInterval;
 use Dogma\Pokeable;
@@ -45,6 +46,7 @@ use function round;
 class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 {
     use StrictBehaviorMixin;
+    use IntervalDumpMixin;
 
     public const MIN = Time::MIN;
     public const MAX = '47:59:59.999999';

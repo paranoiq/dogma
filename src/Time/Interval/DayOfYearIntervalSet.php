@@ -14,7 +14,9 @@ use Dogma\ArrayIterator;
 use Dogma\Check;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntervalSet;
+use Dogma\Math\Interval\IntervalSetDumpMixin;
 use Dogma\ShouldNotHappenException;
+use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DayOfYear;
 use Iterator;
 use function array_merge;
@@ -26,6 +28,8 @@ use function reset;
 
 class DayOfYearIntervalSet implements IntervalSet
 {
+    use StrictBehaviorMixin;
+    use IntervalSetDumpMixin;
 
     /** @var DayOfYearInterval[] */
     private $intervals;

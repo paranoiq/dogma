@@ -11,8 +11,11 @@ namespace Dogma\Time;
 
 use DateTimeInterface;
 use Dogma\Check;
+use Dogma\Cls;
 use Dogma\Comparable;
+use Dogma\Dumpable;
 use Dogma\Equalable;
+use Dogma\Obj;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeFormatter;
@@ -21,9 +24,10 @@ use function explode;
 use function implode;
 use function intval;
 use function preg_match;
+use function sprintf;
 use function substr;
 
-class YearMonth implements Comparable, Equalable
+class YearMonth implements Comparable, Equalable, Dumpable
 {
     use StrictBehaviorMixin;
 
@@ -69,6 +73,11 @@ class YearMonth implements Comparable, Equalable
     public static function createFromComponents(int $year, int $month): self
     {
         return new static($year . '-' . $month);
+    }
+
+    public function dump(): string
+    {
+        return sprintf('%s(%s #%s)', Cls::short(static::class), $this->format(), Obj::dumpHash($this));
     }
 
     public function add(int $months, int $years = 0): self

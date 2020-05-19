@@ -18,6 +18,7 @@ use Dogma\Equalable;
 use Dogma\IntersectComparable;
 use Dogma\Math\Interval\Interval;
 use Dogma\Math\Interval\IntervalCalc;
+use Dogma\Math\Interval\IntervalDumpMixin;
 use Dogma\Math\Interval\IntervalParser;
 use Dogma\Math\Interval\IntInterval;
 use Dogma\Pokeable;
@@ -49,6 +50,7 @@ use function round;
 class NightInterval implements Interval, DateOrTimeInterval, Pokeable
 {
     use StrictBehaviorMixin;
+    use IntervalDumpMixin;
 
     public const MIN = Date::MIN;
     public const MAX = Date::MAX;

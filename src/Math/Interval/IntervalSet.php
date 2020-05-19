@@ -9,10 +9,11 @@
 
 namespace Dogma\Math\Interval;
 
+use Dogma\Dumpable;
 use Dogma\Equalable;
 use IteratorAggregate;
 
-interface IntervalSet /*<T>*/ extends Equalable, IteratorAggregate
+interface IntervalSet /*<T>*/ extends Equalable, Dumpable, IteratorAggregate
 {
 
     /**

@@ -53,7 +53,7 @@ trait SetMixin
     {
         $names = [];
         foreach ($this->getValues() as $value) {
-            $names[] = Arr::indexOf(self::$availableValues[static::class], $value);
+            $names[$value] = Arr::indexOf(self::$availableValues[static::class], $value);
         }
 
         return $names;

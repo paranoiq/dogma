@@ -14,6 +14,7 @@ use Dogma\ArrayIterator;
 use Dogma\Check;
 use Dogma\Compare;
 use Dogma\Equalable;
+use Dogma\Math\Interval\IntervalSetDumpMixin;
 use Dogma\Math\Interval\ModuloIntervalSet;
 use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
@@ -30,6 +31,7 @@ use function reset;
 class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokeable
 {
     use StrictBehaviorMixin;
+    use IntervalSetDumpMixin;
 
     /** @var TimeInterval[] */
     private $intervals;

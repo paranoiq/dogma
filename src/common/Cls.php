@@ -17,12 +17,21 @@ use function array_slice;
 use function array_unshift;
 use function array_values;
 use function class_parents;
+use function end;
+use function explode;
 use function get_class;
 use function is_object;
 
 class Cls
 {
     use StaticClassMixin;
+
+    public static function short(string $class): string
+    {
+        $parts = explode('\\', $class);
+
+        return end($parts);
+    }
 
     /**
      * @param string|object $class

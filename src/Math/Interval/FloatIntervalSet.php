@@ -26,6 +26,7 @@ use function is_array;
 class FloatIntervalSet implements IntervalSet
 {
     use StrictBehaviorMixin;
+    use IntervalSetDumpMixin;
 
     /** @var FloatInterval[] */
     private $intervals = [];

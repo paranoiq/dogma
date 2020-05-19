@@ -14,8 +14,11 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Dogma\Check;
+use Dogma\Cls;
 use Dogma\Comparable;
+use Dogma\Dumpable;
 use Dogma\Equalable;
+use Dogma\Obj;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeFormatter;
@@ -32,6 +35,7 @@ use function floor;
 use function is_int;
 use function is_string;
 use function number_format;
+use function sprintf;
 use function strval;
 
 /**
@@ -41,7 +45,7 @@ use function strval;
  *
  * Comparisons and intervals are based on microseconds since unix epoch, giving a possible range of about ±280.000 years.
  */
-class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTime
+class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTime, Dumpable
 {
     use StrictBehaviorMixin;
 
@@ -197,6 +201,18 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         }
 
         return new static($date->format(Date::DEFAULT_FORMAT) . ' ' . $time->format(Time::DEFAULT_FORMAT), $timeZone);
+    }
+
+    public function dump(): string
+    {
+        return sprintf(
+            '%s(%s %s %s #%s)',
+            Cls::short(static::class),
+            $this->format(),
+            $this->getTimezone()->getName(),
+            $this->getMicroTimestamp(),
+            Obj::dumpHash($this)
+        );
     }
 
     /**
