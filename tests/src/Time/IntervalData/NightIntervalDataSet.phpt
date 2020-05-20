@@ -2,7 +2,7 @@
 
 namespace Dogma\Tests\Time\Interval;
 
-use Dogma\Math\Vector\Vector3i;
+use Dogma\Call;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
 use Dogma\Time\Interval\NightInterval;
@@ -12,44 +12,50 @@ use Dogma\Time\IntervalData\NightIntervalDataSet;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-$data = new Vector3i(1, 2, 3);
-$data2 = new Vector3i(2, 4, 6);
-
 $d = static function (int $day): Date {
     return Date::createFromComponents(2000, 1, $day);
 };
-$i = static function (int $start, int $end) use ($d): NightInterval {
-    return new NightInterval($d($start), $d($end));
+$i = static function (string $days) use ($d): NightInterval {
+    [$start, $end] = explode('-', $days);
+    return new NightInterval($d((int) $start), $d((int) $end));
 };
-$di = static function (int $start, int $end) use ($d, $data): NightIntervalData {
-    return new NightIntervalData($d($start), $d($end), $data);
+$s = static function (string $days) use ($i): NightIntervalSet {
+    $intervals = [];
+    foreach (explode(',', $days) as $startEnd) {
+        [$startEnd, $data] = explode('/', $startEnd . '/');
+        $intervals[] = $i($startEnd);
+    }
+    return new NightIntervalSet($intervals);
 };
-$di2 = static function (int $start, int $end) use ($d, $data2): NightIntervalData {
-    return new NightIntervalData($d($start), $d($end), $data2);
+$di = static function (string $days, $data = null) use ($d): NightIntervalData {
+    [$start, $end] = explode('-', $days);
+    return new NightIntervalData($d((int) $start), $d((int) $end), $data ?? 1);
 };
-$s = static function (NightInterval ...$items): NightIntervalSet {
-    return new NightIntervalSet($items);
-};
-$ds = static function (NightIntervalData ...$items): NightIntervalDataSet {
-    return new NightIntervalDataSet($items);
+$ds = static function (string $days) use ($di): NightIntervalDataSet {
+    $intervals = [];
+    foreach (explode(',', $days) as $startEnd) {
+        [$startEnd, $data] = explode('/', $startEnd . '/');
+        $intervals[] = $di($startEnd, $data ? (int) $data : 1);
+    }
+    return new NightIntervalDataSet($intervals);
 };
 
-$interval = new NightIntervalData($d(1), $d(5), $data);
+$interval = new NightIntervalData($d(1), $d(5), 1);
 $emptyInterval = NightInterval::empty();
 $set = new NightIntervalDataSet([$interval]);
 
 // toDateDataArray()
 Assert::equal($emptyInterval->toDateArray(), []);
-Assert::equal($interval->toDateDataArray(), [[$d(1), $data], [$d(2), $data], [$d(3), $data], [$d(4), $data]]);
-Assert::equal($ds($di(1, 3), $di(4, 6))->toDateDataArray(), [[$d(1), $data], [$d(2), $data], [$d(4), $data], [$d(5), $data]]);
+Assert::equal($interval->toDateDataArray(), [[$d(1), 1], [$d(2), 1], [$d(3), 1], [$d(4), 1]]);
+Assert::equal($ds('1-3, 4-6')->toDateDataArray(), [[$d(1), 1], [$d(2), 1], [$d(4), 1], [$d(5), 1]]);
 
 // isEmpty()
 Assert::true((new NightIntervalSet([]))->isEmpty());
 Assert::true((new NightIntervalSet([$emptyInterval]))->isEmpty());
 
 // equals()
-Assert::true($set->equals($ds($di(1, 5))));
-Assert::false($set->equals($ds($di(1, 6))));
+Assert::true($set->equals($ds('1-5')));
+Assert::false($set->equals($ds('1-6')));
 
 // containsValue()
 Assert::true($set->containsValue($d(1)));
@@ -57,50 +63,90 @@ Assert::true($set->containsValue($d(4)));
 Assert::false($set->containsValue($d(5)));
 
 // normalize()
-Assert::equal($ds($di(1, 4), $di(2, 5))->normalize(), $set);
-Assert::equal($ds($di(10, 14), $di(5, 10), $di(18, 22), $di(5, 7), $di(15, 20))->normalize(), $ds($di(5, 14), $di(15, 22)));
+Assert::equal($ds('1-4, 2-5')->normalize(), $set);
+Assert::equal($ds('10-14, 5-10, 18-22, 5-7, 15-20')->normalize(), $ds('5-14, 15-22'));
 
 // add()
-Assert::equal($ds($di(1, 2), $di(3, 4), $di(5, 6)), $ds($di(1, 2))->add($ds($di(3, 4), $di(5, 6))));
+Assert::equal($ds('1-2, 3-4, 5-6'), $ds('1-2')->add($ds('3-4, 5-6')));
 
 // subtract()
-Assert::equal($ds($di(1, 11))->subtract($s($i(3, 5), $i(7, 9))), $ds($di(1, 3), $di(5, 7), $di(9, 11)));
+Assert::equal($ds('1-11')->subtract($s('3-5, 7-9')), $ds('1-3, 5-7, 9-11'));
 
 // intersect()
-Assert::equal($ds($di(1, 5), $di(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $ds($di(4, 5), $di(10, 12), $di(14, 15)));
+Assert::equal($ds('1-5, 10-15')->intersect($s('4-12, 14-20')), $ds('4-5, 10-12, 14-15'));
 
 // map()
 Assert::equal($set->map(static function (NightIntervalData $interval) {
     return $interval;
 }), $set);
 Assert::equal($set->map(static function (NightIntervalData $interval) use ($i) {
-    return $interval->subtract($i(3, 4));
-}), $ds($di(1, 3), $di(4, 5)));
+    return $interval->subtract($i('3-4'));
+}), $ds('1-3, 4-5'));
 Assert::equal($set->map(static function (NightIntervalData $interval) use ($i) {
-    return $interval->subtract($i(3, 4))->getIntervals();
-}), $ds($di(1, 3), $di(4, 5)));
+    return $interval->subtract($i('3-4'))->getIntervals();
+}), $ds('1-3, 4-5'));
 
 // collect()
 
 // collectData()
 
-// modifyData()
-$reducer = static function (Vector3i $state, Vector3i $change): Vector3i {
-    return $state->add($change);
+$reducer = static function (int $state, int $change): int {
+    return $state + $change;
 };
-Assert::equal($ds($di(10, 16))->modifyData($ds($di(20, 26)), $reducer), $ds($di(10, 16))); // no match
-Assert::equal($ds($di(10, 16))->modifyData($ds($di(10, 16)), $reducer), $ds($di2(10, 16))); // same
-Assert::equal($ds($di(10, 16))->modifyData($ds($di(10, 13)), $reducer)->normalize(), $ds($di2(10, 13), $di(13, 16))); // same start
-Assert::equal($ds($di(10, 16))->modifyData($ds($di(13, 16)), $reducer)->normalize(), $ds($di(10, 13), $di2(13, 16))); // same end
-Assert::equal($ds($di(10, 16))->modifyData($ds($di(5, 13)), $reducer)->normalize(), $ds($di2(10, 13), $di(13, 16))); // overlaps start
-Assert::equal($ds($di(10, 16))->modifyData($ds($di(13, 21)), $reducer)->normalize(), $ds($di(10, 13), $di2(13, 16))); // overlaps end
-Assert::equal($ds($di(10, 16))->modifyData($ds($di(12, 14)), $reducer)->normalize(), $ds($di(10, 12), $di2(12, 14), $di(14, 16))); // in middle
-Assert::equal($ds($di(10, 16))->modifyData($ds($di(5, 21)), $reducer), $ds($di2(10, 16))); // overlaps whole
 
-Assert::equal($ds($di(10, 16), $di(20, 26))->modifyData($ds($di(10, 26)), $reducer)->normalize(), $ds($di2(10, 16), $di2(20, 26))); // envelope
-Assert::equal($ds($di(10, 16), $di(20, 26))->modifyData($ds($di(10, 23)), $reducer)->normalize(), $ds($di2(10, 16), $di2(20, 23), $di(23, 26))); // same start
-Assert::equal($ds($di(10, 16), $di(20, 26))->modifyData($ds($di(13, 26)), $reducer)->normalize(), $ds($di(10, 13), $di2(13, 16), $di2(20, 26))); // same end
-Assert::equal($ds($di(10, 16), $di(20, 26))->modifyData($ds($di(5, 23)), $reducer)->normalize(), $ds($di2(10, 16), $di2(20, 23), $di(23, 26))); // overlaps start
-Assert::equal($ds($di(10, 16), $di(20, 26))->modifyData($ds($di(13, 26)), $reducer)->normalize(), $ds($di(10, 13), $di2(13, 16), $di2(20, 26))); // overlaps end
-Assert::equal($ds($di(10, 16), $di(20, 26))->modifyData($ds($di(13, 23)), $reducer)->normalize(), $ds($di(10, 13), $di2(13, 16), $di2(20, 23), $di(23, 26))); // in middle
-Assert::equal($ds($di(10, 16), $di(20, 26))->modifyData($ds($di(5, 31)), $reducer)->normalize(), $ds($di2(10, 16), $di2(20, 26))); // overlaps whole
+// modifyData()
+Call::withArgs(static function ($orig, $input, $output, $i) use ($ds, $reducer): void {
+    $orig = $ds($orig);
+    $input = $ds($input);
+    $output = $ds($output);
+    Assert::equal($orig->modifyData($input, $reducer)->normalize(), $output, (string) $i);
+}, [
+    ['10-16', '20-26', '10-16'], // no match
+    ['10-16', '10-16', '10-16/2'], // same
+    ['10-16', '10-13', '10-13/2, 13-16'], // same start
+    ['10-16', '13-16', '10-13, 13-16/2'], // same end
+    ['10-16', ' 5-13', '10-13/2, 13-16'], // overlaps start
+    ['10-16', '13-21', '10-13, 13-16/2'], // overlaps end
+    ['10-16', '12-14', '10-12, 12-14/2, 14-16'], // in middle
+    ['10-16', ' 5-21', '10-16/2'], // overlaps whole
+
+    ['10-16, 20-26', '10-26', '10-16/2, 20-26/2'], // envelope
+    ['10-16, 20-26', '10-23', '10-16/2, 20-23/2, 23-26'], // same start
+    ['10-16, 20-26', '13-26', '10-13, 13-16/2, 20-26/2'], // same end
+    ['10-16, 20-26', ' 5-23', '10-16/2, 20-23/2, 23-26'], // overlaps start
+    ['10-16, 20-26', '13-26', '10-13, 13-16/2, 20-26/2'], // overlaps end
+    ['10-16, 20-26', '13-23', '10-13, 13-16/2, 20-23/2, 23-26'], // in middle
+    ['10-16, 20-26', ' 5-31', '10-16/2, 20-26/2'], // overlaps whole
+]);
+
+$mapper = static function ($data): array {
+    return $data[0]->getStartEnd();
+};
+$reducer = static function (int $state, $data): int {
+    return $state + $data[1];
+};
+
+// modifyDataByStream()
+Call::withArgs(static function ($orig, $input, $output, $i) use ($ds, $di, $mapper, $reducer): void {
+    $orig = $ds($orig);
+    $input = $di($input);
+    $output = $ds($output);
+    Assert::equal($orig->modifyDataByStream([[$input, 1]], $mapper, $reducer)->normalize(), $output, (string) $i);
+}, [
+    ['10-16', '20-26', '10-16'], // no match
+    ['10-16', '10-16', '10-16/2'], // same
+    ['10-16', '10-13', '10-13/2, 13-16'], // same start
+    ['10-16', '13-16', '10-13, 13-16/2'], // same end
+    ['10-16', ' 5-13', '10-13/2, 13-16'], // overlaps start
+    ['10-16', '13-21', '10-13, 13-16/2'], // overlaps end
+    ['10-16', '12-14', '10-12, 12-14/2, 14-16'], // in middle
+    ['10-16', ' 5-21', '10-16/2'], // overlaps whole
+
+    ['10-16, 20-26', '10-26', '10-16/2, 20-26/2'], // envelope
+    ['10-16, 20-26', '10-23', '10-16/2, 20-23/2, 23-26'], // same start
+    ['10-16, 20-26', '13-26', '10-13, 13-16/2, 20-26/2'], // same end
+    ['10-16, 20-26', ' 5-23', '10-16/2, 20-23/2, 23-26'], // overlaps start
+    ['10-16, 20-26', '13-26', '10-13, 13-16/2, 20-26/2'], // overlaps end
+    ['10-16, 20-26', '13-23', '10-13, 13-16/2, 20-23/2, 23-26'], // in middle
+    ['10-16, 20-26', ' 5-31', '10-16/2, 20-26/2'], // overlaps whole
+]);

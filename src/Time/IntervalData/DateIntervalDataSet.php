@@ -15,6 +15,8 @@ use Dogma\Check;
 use Dogma\Cls;
 use Dogma\Dumpable;
 use Dogma\Equalable;
+use Dogma\IntersectResult;
+use Dogma\Math\Interval\IntervalCalc;
 use Dogma\Obj;
 use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
@@ -303,6 +305,12 @@ class DateIntervalDataSet implements Equalable, Pokeable, Dumpable, IteratorAggr
         return new static($results);
     }
 
+    /**
+     * Maps data with mapper and collects intervals with non-null results.
+     *
+     * @param callable $mapper (mixed $data): mixed|null $data
+     * @return self
+     */
     public function collectData(callable $mapper): self
     {
         $results = [];
@@ -317,9 +325,12 @@ class DateIntervalDataSet implements Equalable, Pokeable, Dumpable, IteratorAggr
     }
 
     /**
-     * Apply other DateDataIntervalSet on this one with reduce function. Only modifies and splits intersecting intervals. Does not insert new ones.
+     * Apply another DateIntervalDataSet on this one with reduce function.
+     * Only modifies and splits intersecting intervals. Does not insert new ones nor remove things.
+     * Complexity O(m*n). For bigger sets use modifyDataByStream()
+     *
      * @param self $other
-     * @param callable $reducer
+     * @param callable $reducer (mixed $oldData, mixed $input): mixed $newData
      * @return self
      */
     public function modifyData(self $other, callable $reducer): self
@@ -358,9 +369,110 @@ class DateIntervalDataSet implements Equalable, Pokeable, Dumpable, IteratorAggr
     }
 
     /**
+     * Apply inputs (mappable to start and end dates) to this data set with reduce function.
+     * Only modifies and splits intersecting intervals. Does not insert new ones nor remove things.
+     * Both $this and inputs must be ordered to work properly, $this must be normalized.
+     * Complexity ~O(m+n), worst case O(m*n) if all inputs cover whole interval set.
+     *
+     * @param iterable|mixed[] $inputs
+     * @param callable $mapper (mixed $input): array{0: Date $start, 1: Date $end}
+     * @param callable $reducer (mixed $oldData, mixed $input): mixed $newData
+     * @return self
+     */
+    public function modifyDataByStream(iterable $inputs, callable $mapper, callable $reducer): self
+    {
+        $results = $this->getIntervals();
+        $resultsCount = count($results);
+        $startIndex = $currentIndex = 0;
+        foreach ($inputs as $input) {
+            $currentIndex = $startIndex;
+            /** @var Date $inputStart */
+            /** @var Date $inputEnd */
+            [$inputStart, $inputEnd] = $mapper($input);
+            while ($currentIndex < $resultsCount) {
+                $result = $results[$currentIndex];
+                [$resultStart, $resultEnd] = $result->getStartEnd();
+
+                $intersect = IntervalCalc::compareIntersects(
+                    $inputStart->getJulianDay(),
+                    $inputEnd->getJulianDay(),
+                    $resultStart->getJulianDay(),
+                    $resultEnd->getJulianDay()
+                );
+                switch ($intersect) {
+                    case IntersectResult::BEFORE_START:
+                    case IntersectResult::TOUCHES_START:
+                        // skip result for all following inputs
+                        $startIndex++;
+                        continue 2;
+                    case IntersectResult::AFTER_END:
+                    case IntersectResult::TOUCHES_END:
+                        // next result
+                        $currentIndex++;
+                        continue 2;
+                }
+
+                $oldData = $result->getData();
+                $newData = $reducer($oldData, $input);
+                if ($result->dataEquals($newData)) {
+                    $currentIndex++;
+                    continue;
+                }
+
+                switch ($intersect) {
+                    case IntersectResult::INTERSECTS_START:
+                    case IntersectResult::FITS_TO_START:
+                        array_splice($results, $currentIndex, 1, [
+                            new DateIntervalData($resultStart, $inputEnd, $newData),
+                            new DateIntervalData($inputEnd->addDay(), $resultEnd, $oldData),
+                        ]);
+                        $resultsCount++;
+                        continue 3; // next input
+                    case IntersectResult::FITS_TO_END:
+                        array_splice($results, $currentIndex, 1, [
+                            new DateIntervalData($resultStart, $inputStart->subtractDay(), $oldData),
+                            new DateIntervalData($inputStart, $resultEnd, $newData),
+                        ]);
+                        $resultsCount++;
+                        continue 3; // next input
+                    case IntersectResult::INTERSECTS_END:
+                        array_splice($results, $currentIndex, 1, [
+                            new DateIntervalData($resultStart, $inputStart->subtractDay(), $oldData),
+                            new DateIntervalData($inputStart, $resultEnd, $newData),
+                        ]);
+                        $resultsCount++;
+                        $currentIndex += 2;
+                        break;
+                    case IntersectResult::EXTENDS_START:
+                    case IntersectResult::SAME:
+                        $results[$currentIndex] = new DateIntervalData($resultStart, $resultEnd, $newData);
+                        continue 3; // next input
+                    case IntersectResult::EXTENDS_END:
+                    case IntersectResult::CONTAINS:
+                        $results[$currentIndex] = new DateIntervalData($resultStart, $resultEnd, $newData);
+                        $currentIndex++;
+                        break;
+                    case IntersectResult::IS_CONTAINED:
+                        array_splice($results, $currentIndex, 1, [
+                            new DateIntervalData($resultStart, $inputStart->subtractDay(), $oldData),
+                            new DateIntervalData($inputStart, $inputEnd, $newData),
+                            new DateIntervalData($inputEnd->addDay(), $resultEnd, $oldData),
+                        ]);
+                        $resultsCount += 2;
+                        continue 3; // next input
+                }
+            }
+        }
+
+        return new DateIntervalDataSet($results);
+    }
+
+    /**
      * Split interval set to more interval sets with different subsets of original data.
-     * @param callable $splitter Maps original data set to a group of data sets. Should return array with keys indicating the data set group.
-     * @return self[] $this
+     * Splitter maps original data to a group of data. Should return array with keys indicating the data set group.
+     *
+     * @param callable $splitter (mixed $data): array<int|string $group, mixed $data>
+     * @return self[]
      */
     public function splitData(callable $splitter): array
     {
