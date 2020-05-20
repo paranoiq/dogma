@@ -21,8 +21,8 @@ class Call
      */
     public static function with(callable $function, iterable $values): void
     {
-        foreach ($values as $value) {
-            $function($value);
+        foreach ($values as $i => $value) {
+            $function($value, $i);
         }
     }
 
@@ -34,7 +34,8 @@ class Call
      */
     public static function withArgs(callable $function, iterable $arguments): void
     {
-        foreach ($arguments as $args) {
+        foreach ($arguments as $i => $args) {
+            $args[] = $i;
             $function(...$args);
         }
     }
