@@ -51,6 +51,7 @@ wildcard
 armscii
 ascii
 bsd
+catalan
 csp
 csrf
 darwin
@@ -99,6 +100,7 @@ bodyrow
 checkbox
 crypto
 dasherize
+dumpable
 enquiry
 equalable
 filesystem
@@ -111,6 +113,7 @@ inits
 instanceof
 inv
 iterables
+mappable
 milisecond
 miliseconds
 mixin
