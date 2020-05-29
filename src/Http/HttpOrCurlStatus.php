@@ -81,7 +81,9 @@ class HttpOrCurlStatus extends PartialIntEnum
     public const S422_UNPROCESSABLE_ENTITY = 422;
     public const S423_LOCKED = 423;
     public const S424_FAILED_DEPENDENCY = 424;
+    /** @deprecated */
     public const S425_UNORDERED_COLLECTION = 425;
+    public const S425_TOO_EARLY = 425;
     public const S426_UPGRADE_REQUIRED = 426;
     public const S428_PRECONDITION_REQUIRED = 428;
     public const S429_TOO_MANY_REQUESTS = 429;
