@@ -69,16 +69,26 @@ abstract class IntSet implements Set, Dumpable
         return new static($values);
     }
 
+    /**
+     * @param int $value
+     * @return static
+     */
     final public static function getByValue(int $value): self
     {
         return new static(IntCalc::binaryComponents($value));
     }
 
+    /**
+     * @return static
+     */
     public static function all(): self
     {
         return new static(self::getAllowedValues());
     }
 
+    /**
+     * @return static
+     */
     public function invert(): self
     {
         return new static(array_diff(self::getAllowedValues(), $this->values));

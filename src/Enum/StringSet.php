@@ -68,16 +68,26 @@ abstract class StringSet implements Set, Dumpable
         return new static($values);
     }
 
+    /**
+     * @param string $value
+     * @return static
+     */
     final public static function getByValue(string $value): self
     {
         return new static(explode(',', $value));
     }
 
+    /**
+     * @return static
+     */
     public static function all(): self
     {
         return new static(self::getAllowedValues());
     }
 
+    /**
+     * @return static
+     */
     public function invert(): self
     {
         return new static(array_diff(self::getAllowedValues(), $this->values));
