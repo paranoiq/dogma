@@ -19,12 +19,13 @@ use function is_int;
 
 /**
  * @deprecated will be removed
+ * @implements Iterator<int, mixed[]>
  */
 class SimplePdoResult implements Iterator
 {
     use StrictBehaviorMixin;
 
-    /** @var PDOStatement */
+    /** @var PDOStatement<int, mixed[]> */
     private $statement;
 
     /** @var int */
@@ -33,6 +34,9 @@ class SimplePdoResult implements Iterator
     /** @var mixed[]|bool */
     private $current;
 
+    /**
+     * @param PDOStatement<int, mixed[]> $statement
+     */
     public function __construct(PDOStatement $statement)
     {
         $this->statement = $statement;

@@ -11,10 +11,10 @@ use Dogma\Tuple;
 use Dogma\Type;
 use Dogma\ValueOutOfRangeException;
 use Exception;
-use Iterator;
 use IteratorAggregate;
 use SplFixedArray;
 use stdClass;
+use Traversable;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -157,7 +157,10 @@ Assert::exception(static function () use ($short): void {
 class TestTraversable implements IteratorAggregate
 {
 
-    public function getIterator(): Iterator
+    /**
+     * @return Traversable<mixed>
+     */
+    public function getIterator(): Traversable
     {
         return new ArrayIterator([]);
     }

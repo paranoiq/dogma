@@ -9,6 +9,7 @@
 
 namespace Dogma\Time\Interval;
 
+use Dogma\ArrayIterator;
 use Dogma\Cls;
 use Dogma\Dumpable;
 use Dogma\Obj;
@@ -18,12 +19,17 @@ use Dogma\Time\DateTime;
 use Dogma\Time\DayOfWeek;
 use Dogma\Time\DaysOfWeek;
 use Dogma\Time\InvalidWeekDayHoursSetException;
+use IteratorAggregate;
+use Traversable;
 use function count;
 use function implode;
 use function ksort;
 use function sprintf;
 
-class WeekDayHoursSet implements Pokeable, Dumpable
+/**
+ * @implements IteratorAggregate<WeekDayHours>
+ */
+class WeekDayHoursSet implements Pokeable, Dumpable, IteratorAggregate
 {
     use StrictBehaviorMixin;
 
@@ -108,6 +114,14 @@ class WeekDayHoursSet implements Pokeable, Dumpable
     public function getWeekDayHours(): array
     {
         return $this->weekDayHours;
+    }
+
+    /**
+     * @return Traversable<WeekDayHours>
+     */
+    public function getIterator(): Traversable
+    {
+        return new ArrayIterator($this->weekDayHours);
     }
 
     public function getByDay(DayOfWeek $dayOfWeek): ?WeekDayHours

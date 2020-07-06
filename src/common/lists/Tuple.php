@@ -12,10 +12,14 @@ namespace Dogma;
 use ArrayAccess;
 use Countable;
 use IteratorAggregate;
+use Traversable;
 use function count;
 
 /**
  * Immutable list of fixed number of parameters
+ *
+ * @implements ArrayAccess<int, mixed>
+ * @implements IteratorAggregate<int, mixed>
  */
 class Tuple implements Countable, IteratorAggregate, ArrayAccess
 {
@@ -38,7 +42,10 @@ class Tuple implements Countable, IteratorAggregate, ArrayAccess
         return count($this->items);
     }
 
-    public function getIterator(): ArrayIterator
+    /**
+     * @return Traversable<mixed>
+     */
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->items);
     }

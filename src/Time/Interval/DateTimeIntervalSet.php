@@ -21,7 +21,7 @@ use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
-use Iterator;
+use Traversable;
 use function array_merge;
 use function array_shift;
 use function count;
@@ -29,6 +29,9 @@ use function implode;
 use function is_array;
 use function reset;
 
+/**
+ * @implements IntervalSet<DateTimeInterval>
+ */
 class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 {
     use StrictBehaviorMixin;
@@ -185,7 +188,10 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         return $this->intervals;
     }
 
-    public function getIterator(): Iterator
+    /**
+     * @return Traversable<DateTimeInterval>
+     */
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->intervals);
     }

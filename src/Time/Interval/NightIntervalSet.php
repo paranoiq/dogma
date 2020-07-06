@@ -20,7 +20,7 @@ use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
-use Iterator;
+use Traversable;
 use function array_map;
 use function array_merge;
 use function array_shift;
@@ -30,6 +30,9 @@ use function is_array;
 use function reset;
 use function sort;
 
+/**
+ * @implements IntervalSet<NightInterval>
+ */
 class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 {
     use StrictBehaviorMixin;
@@ -117,7 +120,10 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return $this->intervals;
     }
 
-    public function getIterator(): Iterator
+    /**
+     * @return Traversable<NightInterval>
+     */
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->intervals);
     }

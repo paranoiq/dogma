@@ -13,15 +13,17 @@ use Iterator;
 
 /**
  * Combines values from two given iterators as keys and values. Iterators should return same number of items.
+ *
+ * @implements Iterator<mixed, mixed>
  */
 class CombineIterator implements Iterator
 {
     use StrictBehaviorMixin;
 
-    /** @var Iterator */
+    /** @var Iterator<mixed, mixed> */
     private $keys;
 
-    /** @var Iterator */
+    /** @var Iterator<mixed, mixed> */
     private $values;
 
     /**

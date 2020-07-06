@@ -13,7 +13,11 @@ use Dogma\Dumpable;
 use Dogma\Equalable;
 use IteratorAggregate;
 
-interface IntervalSet /*<T>*/ extends Equalable, Dumpable, IteratorAggregate
+/**
+ * @template T
+ * @extends IteratorAggregate<int, T>
+ */
+interface IntervalSet extends Equalable, Dumpable, IteratorAggregate
 {
 
     /**

@@ -69,6 +69,10 @@ use function shuffle;
 use function uasort;
 use function uksort;
 
+/**
+ * @implements ArrayAccess<mixed, mixed>
+ * @implements IteratorAggregate<mixed, mixed>
+ */
 class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 {
     use StrictBehaviorMixin;
@@ -149,7 +153,10 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         return new static(range($start, $end, $step));
     }
 
-    public function getIterator(): ArrayIterator
+    /**
+     * @return Iterator<mixed>
+     */
+    public function getIterator(): Iterator
     {
         return new ArrayIterator($this->items);
     }
@@ -572,7 +579,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
      */
     public function startsWith(iterable $slice, int $from = 0): bool
     {
-        /** @var Iterator $iterator */
+        /** @var Iterator<mixed, mixed> $iterator */
         $iterator = $this->drop($from)->getIterator();
         $iterator->rewind();
         foreach ($slice as $value) {

@@ -19,7 +19,7 @@ class IteratorHelper
 
     /**
      * @param iterable|mixed[] $iterable
-     * @return Iterator
+     * @return Iterator<mixed, mixed>
      */
     public static function iterableToIterator(iterable $iterable): Iterator
     {

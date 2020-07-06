@@ -24,8 +24,8 @@ use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\Interval\DateInterval;
 use Dogma\Time\Interval\DateIntervalSet;
-use Iterator;
 use IteratorAggregate;
+use Traversable;
 use function array_map;
 use function array_merge;
 use function array_shift;
@@ -35,6 +35,9 @@ use function implode;
 use function is_array;
 use function sprintf;
 
+/**
+ * @implements IteratorAggregate<DateIntervalData>
+ */
 class DateIntervalDataSet implements Equalable, Pokeable, Dumpable, IteratorAggregate
 {
     use StrictBehaviorMixin;
@@ -126,7 +129,10 @@ class DateIntervalDataSet implements Equalable, Pokeable, Dumpable, IteratorAggr
         return $this->intervals;
     }
 
-    public function getIterator(): Iterator
+    /**
+     * @return Traversable<DateIntervalData>
+     */
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->intervals);
     }

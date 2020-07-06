@@ -16,6 +16,9 @@ use Dogma\StrictBehaviorMixin;
 use Iterator;
 use function count;
 
+/**
+ * @implements Iterator<int, mixed[]>
+ */
 class HtmlTableIterator implements Iterator
 {
     use StrictBehaviorMixin;

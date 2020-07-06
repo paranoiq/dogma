@@ -12,6 +12,7 @@ namespace Dogma\Database;
 use Dogma\StrictBehaviorMixin;
 use PDO;
 use PDOException;
+use PDOStatement;
 use function array_shift;
 use function array_values;
 use function bin2hex;
@@ -111,6 +112,7 @@ class SimplePdo extends PDO
                 }
                 $statement->execute();
             } else {
+                /** @var PDOStatement<int, mixed[]> $statement */
                 $statement = parent::query($query);
             }
         } catch (PDOException $e) {

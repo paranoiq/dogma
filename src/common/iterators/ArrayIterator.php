@@ -16,7 +16,9 @@ use function next;
 use function reset;
 
 /**
- * Minimal interface replacement of \ArrayIterator
+ * Minimal interface replacement of bloated native ArrayIterator
+ *
+ * @implements Iterator<mixed, mixed>
  */
 class ArrayIterator implements Iterator
 {

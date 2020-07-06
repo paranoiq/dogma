@@ -15,6 +15,8 @@ use function count;
 
 /**
  * Cycles through given iterators. Iterators should return same number of items.
+ *
+ * @implements Iterator<mixed, mixed>
  */
 class RoundRobinIterator implements Iterator
 {

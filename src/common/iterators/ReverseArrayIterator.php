@@ -17,6 +17,8 @@ use function prev;
 
 /**
  * For iterating and array in reverse order without making a reversed copy of the array.
+ *
+ * @implements Iterator<mixed, mixed>
  */
 class ReverseArrayIterator implements Iterator
 {

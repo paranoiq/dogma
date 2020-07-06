@@ -17,11 +17,14 @@ use Iterator;
 use IteratorAggregate;
 use function is_array;
 
+/**
+ * @implements Iterator<mixed, mixed>
+ */
 class MappingIterator implements Iterator
 {
     use StrictBehaviorMixin;
 
-    /** @var Iterator */
+    /** @var Iterator<mixed, mixed> */
     private $source;
 
     /** @var Type */

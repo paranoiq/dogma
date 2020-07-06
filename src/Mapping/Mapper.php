@@ -54,7 +54,7 @@ class Mapper
     {
         $iterator = new MappingIterator($data, $type->getItemType(), $this);
 
-        /** @var Traversable $result */
+        /** @var Traversable<mixed> $result */
         $result = $type->getInstance($iterator);
 
         return $result;

@@ -10,6 +10,7 @@
 namespace Dogma\Time\IntervalData;
 
 use Dogma\Arr;
+use Dogma\ArrayIterator;
 use Dogma\Check;
 use Dogma\Cls;
 use Dogma\Dumpable;
@@ -23,6 +24,8 @@ use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\Interval\NightInterval;
 use Dogma\Time\Interval\NightIntervalSet;
+use IteratorAggregate;
+use Traversable;
 use function array_map;
 use function array_merge;
 use function array_shift;
@@ -32,7 +35,10 @@ use function implode;
 use function is_array;
 use function sprintf;
 
-class NightIntervalDataSet implements Equalable, Pokeable, Dumpable
+/**
+ * @implements IteratorAggregate<NightIntervalData>
+ */
+class NightIntervalDataSet implements Equalable, Pokeable, Dumpable, IteratorAggregate
 {
     use StrictBehaviorMixin;
 
@@ -121,6 +127,14 @@ class NightIntervalDataSet implements Equalable, Pokeable, Dumpable
     public function getIntervals(): array
     {
         return $this->intervals;
+    }
+
+    /**
+     * @return Traversable<NightIntervalData>
+     */
+    public function getIterator(): Traversable
+    {
+        return new ArrayIterator($this->intervals);
     }
 
     public function isEmpty(): bool

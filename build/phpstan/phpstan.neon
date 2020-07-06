@@ -17,7 +17,6 @@ parameters:
 
         # interface
         - '~^PHPDoc tag @return with type Dogma\\Language\\Locale\\LocaleCollationOption is not subtype of native type Dogma\\Enum\\StringEnum~'
-        - '~^Method Dogma\\IteratorHelper::iterableToIterator\(\) should return Iterator but returns Traversable~'
 
         # deprecated things, won't fix
         - '~method Dogma\\Database\\SimplePdo~'

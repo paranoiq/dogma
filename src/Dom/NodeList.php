@@ -16,11 +16,14 @@ use DOMNode;
 use DOMNodeList;
 use Iterator;
 
+/**
+ * @implements Iterator<int, DOMNode>
+ */
 class NodeList implements Countable, Iterator
 {
     use StrictBehaviorMixin;
 
-    /** @var DOMNodeList */
+    /** @var DOMNodeList<DOMNode> */
     private $nodeList;
 
     /** @var QueryEngine */
@@ -29,6 +32,10 @@ class NodeList implements Countable, Iterator
     /** @var int */
     private $offset = 0;
 
+    /**
+     * @param DOMNodeList<DOMNode> $nodeList
+     * @param QueryEngine $engine
+     */
     public function __construct(DOMNodeList $nodeList, QueryEngine $engine)
     {
         $this->nodeList = $nodeList;

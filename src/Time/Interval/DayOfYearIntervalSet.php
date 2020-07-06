@@ -18,7 +18,7 @@ use Dogma\Math\Interval\IntervalSetDumpMixin;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DayOfYear;
-use Iterator;
+use Traversable;
 use function array_merge;
 use function array_shift;
 use function count;
@@ -26,6 +26,9 @@ use function implode;
 use function is_array;
 use function reset;
 
+/**
+ * @implements IntervalSet<DayOfYearInterval>
+ */
 class DayOfYearIntervalSet implements IntervalSet
 {
     use StrictBehaviorMixin;
@@ -59,7 +62,10 @@ class DayOfYearIntervalSet implements IntervalSet
         return $this->intervals;
     }
 
-    public function getIterator(): Iterator
+    /**
+     * @return Traversable<DayOfYearInterval>
+     */
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->intervals);
     }

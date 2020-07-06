@@ -16,13 +16,16 @@ use Dogma\Compare;
 use Dogma\Equalable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
-use Iterator;
+use Traversable;
 use function array_merge;
 use function array_shift;
 use function count;
 use function end;
 use function is_array;
 
+/**
+ * @implements IntervalSet<int>
+ */
 class IntIntervalSet implements IntervalSet
 {
     use StrictBehaviorMixin;
@@ -53,7 +56,10 @@ class IntIntervalSet implements IntervalSet
         return $this->intervals;
     }
 
-    public function getIterator(): Iterator
+    /**
+     * @return Traversable<int>
+     */
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->intervals);
     }

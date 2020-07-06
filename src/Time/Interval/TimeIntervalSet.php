@@ -20,7 +20,7 @@ use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Time;
-use Iterator;
+use Traversable;
 use function array_merge;
 use function array_shift;
 use function count;
@@ -28,6 +28,9 @@ use function implode;
 use function is_array;
 use function reset;
 
+/**
+ * @implements ModuloIntervalSet<TimeInterval>
+ */
 class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokeable
 {
     use StrictBehaviorMixin;
@@ -71,7 +74,10 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
         return $this->intervals;
     }
 
-    public function getIterator(): Iterator
+    /**
+     * @return Traversable<TimeInterval>
+     */
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->intervals);
     }

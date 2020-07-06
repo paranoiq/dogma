@@ -220,10 +220,10 @@ class QueryEngine
     {
         $path = $this->translateQuery($query, (bool) $context);
         if ($context) {
-            /** @var DOMNodeList|false $list */
+            /** @var DOMNodeList<DOMNode>|false $list */
             $list = $this->xpath->query($path, $context);
         } else {
-            /** @var DOMNodeList|false $list */
+            /** @var DOMNodeList<DOMNode>|false $list */
             $list = $this->xpath->query($path);
         }
         if ($list === false) {
@@ -243,10 +243,10 @@ class QueryEngine
     {
         $path = $this->translateQuery($query, (bool) $context);
         if ($context) {
-            /** @var DOMNodeList|false $list */
+            /** @var DOMNodeList<DOMNode>|false $list */
             $list = $this->xpath->query($path, $context);
         } else {
-            /** @var DOMNodeList|false $list */
+            /** @var DOMNodeList<DOMNode>|false $list */
             $list = $this->xpath->query($path);
         }
         if ($list === false) {
