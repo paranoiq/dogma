@@ -86,10 +86,10 @@ class Document extends DOMDocument
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $source
-     * @param int|null $options
+     * @param int $options
      * @return true
      */
-    public function loadHtml($source, $options = null): bool
+    public function loadHtml($source, $options = 0): bool
     {
         $previousState = libxml_use_internal_errors(true);
         libxml_clear_errors();
@@ -106,10 +106,10 @@ class Document extends DOMDocument
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $fileName
-     * @param int|null $options
+     * @param int $options
      * @return true
      */
-    public function loadHtmlFile($fileName, $options = null): bool
+    public function loadHtmlFile($fileName, $options = 0): bool
     {
         libxml_use_internal_errors(true);
         libxml_clear_errors();
