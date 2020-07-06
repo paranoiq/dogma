@@ -16,9 +16,9 @@ class Exception extends PhpException
 {
     use StrictBehaviorMixin;
 
-    public function __construct(string $message, ?Throwable $previous = null)
+    public function __construct(string $message, ?Throwable $previous = null, int $code = 0)
     {
-        parent::__construct($message, 0, $previous);
+        parent::__construct($message, $code, $previous);
     }
 
 }

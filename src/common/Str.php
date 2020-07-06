@@ -17,6 +17,15 @@ use Dogma\Language\Transliterator;
 use Dogma\Language\UnicodeCharacterCategory;
 use Error;
 use Nette\Utils\Strings;
+use function array_keys;
+use function array_values;
+use function is_array;
+use function is_callable;
+use function is_object;
+use function preg_last_error;
+use function preg_match;
+use function preg_match_all;
+use function preg_split;
 use const MB_CASE_TITLE;
 use function error_clear_last;
 use function error_get_last;
@@ -290,6 +299,112 @@ class Str
         }
     }
 
+    // faster but stupid replacement of Nette\Utils\Strings regexp methods with far worse error detection --------------
+
+    /**
+     * @param string $string
+     * @param string $pattern
+     * @param int $flags
+     * @return string[]
+     */
+    public static function split(string $string, string $pattern, int $flags = 0): array
+    {
+        $result = preg_split($pattern, $string, -1, $flags);
+        if ($result === false) {
+            $error = preg_last_error() ?: 0;
+
+            throw new RegexpException($error);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param string $string
+     * @param string $pattern
+     * @param int $flags
+     * @param int $offset
+     * @return string[]|null
+     */
+    public static function match(string $string, string $pattern, int $flags = 0, int $offset = 0): ?array
+    {
+        if ($offset > strlen($string)) {
+            return null;
+        }
+
+        $result = preg_match($pattern, $string, $matches, $flags, $offset);
+        if ($result === false) {
+            $error = preg_last_error() ?: 0;
+
+            throw new RegexpException($error);
+        } elseif ($result === 0) {
+            return null;
+        }
+
+        return $matches;
+    }
+
+    /**
+     * @param string $string
+     * @param string $pattern
+     * @param int $flags
+     * @param int $offset
+     * @return string[]
+     */
+    public static function matchAll(string $string, string $pattern, int $flags = 0, int $offset = 0): array
+    {
+        if ($offset > strlen($string)) {
+            return [];
+        }
+
+        $result = preg_match_all($pattern, $string, $matches, $flags, $offset);
+        if ($result === false) {
+            $error = preg_last_error() ?: 0;
+
+            throw new RegexpException($error);
+        } elseif ($result === 0) {
+            return [];
+        }
+
+        return $matches;
+    }
+
+    /**
+     * @param string $string
+     * @param string|string[] $pattern
+     * @param string|callable|null $replacement
+     * @param int $limit
+     * @return string
+     */
+    public static function replace(string $string, $pattern, $replacement = null, int $limit = -1): string
+    {
+        if (is_object($replacement) || is_array($replacement)) {
+            if (!is_callable($replacement, false, $name)) {
+                throw new InvalidArgumentException("Callback '$name' is not callable.");
+            }
+
+            $result = preg_replace_callback($pattern, $replacement, $string, $limit);
+        } else {
+            if ($replacement === null && is_array($pattern)) {
+                $replacement = array_values($pattern);
+                $pattern = array_keys($pattern);
+            } else {
+                /** @var string $replacement */
+                $replacement = $replacement;
+            }
+
+            $result = preg_replace($pattern, $replacement, $string, $limit);
+        }
+
+        if ($result === null) {
+            $error = preg_last_error() ?: 0;
+
+            throw new RegexpException($error);
+        }
+
+        return $result;
+    }
+
     // proxy -----------------------------------------------------------------------------------------------------------
 
     public static function checkEncoding(string $string): bool
@@ -410,53 +525,6 @@ class Str
     public static function padLeft(string $string, int $length, string $pad = ' '): string
     {
         return Strings::padLeft($string, $length, $pad);
-    }
-
-    /**
-     * @param string $string
-     * @param string $pattern
-     * @param int $flags
-     * @return string[]
-     */
-    public static function split(string $string, string $pattern, int $flags = 0): array
-    {
-        return Strings::split($string, $pattern, $flags);
-    }
-
-    /**
-     * @param string $string
-     * @param string $pattern
-     * @param int $flags
-     * @param int $offset
-     * @return string[]|null
-     */
-    public static function match(string $string, string $pattern, int $flags = 0, int $offset = 0): ?array
-    {
-        return Strings::match($string, $pattern, $flags, $offset);
-    }
-
-    /**
-     * @param string $string
-     * @param string $pattern
-     * @param int $flags
-     * @param int $offset
-     * @return string[]
-     */
-    public static function matchAll(string $string, string $pattern, int $flags = 0, int $offset = 0): array
-    {
-        return Strings::matchAll($string, $pattern, $flags, $offset);
-    }
-
-    /**
-     * @param string $string
-     * @param string|string[] $pattern
-     * @param string|callable|null $replacement
-     * @param int $limit
-     * @return string
-     */
-    public static function replace(string $string, $pattern, $replacement = null, int $limit = -1): string
-    {
-        return Strings::replace($string, $pattern, $replacement, $limit);
     }
 
 }
