@@ -15,11 +15,12 @@ class Microseconds
 {
     use StaticClassMixin;
 
-    public const MINUTE = Seconds::MINUTE * 1000000;
-    public const HOUR = Seconds::HOUR * 1000000;
-    public const DAY = Seconds::DAY * 1000000;
-    public const WEEK = Seconds::WEEK * 1000000;
-    public const COMMON_YEAR = Seconds::COMMON_YEAR * 1000000;
-    public const LEAP_YEAR = Seconds::LEAP_YEAR * 1000000;
+    public const SECOND = 1000000;
+    public const MINUTE = Seconds::MINUTE * self::SECOND;
+    public const HOUR = Seconds::HOUR * self::SECOND;
+    public const DAY = Seconds::DAY * self::SECOND;
+    public const WEEK = Seconds::WEEK * self::SECOND;
+    public const COMMON_YEAR = Seconds::COMMON_YEAR * self::SECOND;
+    public const LEAP_YEAR = Seconds::LEAP_YEAR * self::SECOND;
 
 }
