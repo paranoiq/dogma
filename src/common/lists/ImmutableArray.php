@@ -119,8 +119,12 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     {
         $keys = self::convertToArray($keys);
         $values = self::convertToArray($values);
+        $result = array_combine($keys, $values);
+        if ($result === false) {
+            throw new InvalidArgumentException('Count of keys and values must be the same.');
+        }
 
-        return new static(array_combine($keys, $values));
+        return new static($result);
     }
 
     /**

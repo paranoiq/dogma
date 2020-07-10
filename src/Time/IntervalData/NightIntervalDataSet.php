@@ -244,6 +244,9 @@ class NightIntervalDataSet implements Equalable, Pokeable, Dumpable, IteratorAgg
             }
         }
 
+        /** @var NightIntervalData[] $results */
+        $results = $results;
+
         return new static($results);
     }
 

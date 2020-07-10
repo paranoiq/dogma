@@ -196,7 +196,7 @@ class DateTimeSpan implements DateOrTimeSpan
 
     /**
      * Separates positive and negative values to two instances
-     * @return DateInterval[]|int[] ($positive, $negative, $microseconds)
+     * @return DateInterval[] ($positive, $negative)
      */
     public function toPositiveAndNegative(): array
     {

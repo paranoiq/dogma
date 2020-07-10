@@ -70,8 +70,12 @@ class ContentTypeDetector
             $this->initTypeHandler();
         }
 
+        error_clear_last();
         $path = $file instanceof Path ? $file->getPath() : $file;
         $type = finfo_file($this->typeHandler, $path);
+        if ($type === false) {
+            throw new ContentTypeDetectionException('Cannot read file info. ' . error_get_last()['message']);
+        }
 
         return ContentType::get($type);
     }
@@ -82,7 +86,11 @@ class ContentTypeDetector
             $this->initTypeHandler();
         }
 
+        error_clear_last();
         $type = finfo_buffer($this->typeHandler, $string);
+        if ($type === false) {
+            throw new ContentTypeDetectionException('Cannot read file info. ' . error_get_last()['message']);
+        }
 
         return ContentType::get($type);
     }
@@ -97,8 +105,12 @@ class ContentTypeDetector
             $this->initEncodingHandler();
         }
 
+        error_clear_last();
         $path = $file instanceof Path ? $file->getPath() : $file;
         $type = finfo_file($this->encodingHandler, $path);
+        if ($type === false) {
+            throw new ContentTypeDetectionException('Cannot read file info. ' . error_get_last()['message']);
+        }
 
         return Encoding::get($type);
     }
@@ -109,7 +121,11 @@ class ContentTypeDetector
             $this->initEncodingHandler();
         }
 
+        error_clear_last();
         $type = finfo_buffer($this->encodingHandler, $string);
+        if ($type === false) {
+            throw new ContentTypeDetectionException('Cannot read file info. ' . error_get_last()['message']);
+        }
 
         return Encoding::get($type);
     }

@@ -52,7 +52,9 @@ class Mapper
      */
     public function mapMany(Type $type, iterable $data): Traversable
     {
-        $iterator = new MappingIterator($data, $type->getItemType(), $this);
+        /** @var Type $itemType */
+        $itemType = $type->getItemType();
+        $iterator = new MappingIterator($data, $itemType, $this);
 
         /** @var Traversable<mixed> $result */
         $result = $type->getInstance($iterator);
@@ -67,7 +69,10 @@ class Mapper
      */
     public function reverseMapMany(Type $type, iterable $data): MappingIterator
     {
-        return new MappingIterator($data, $type->getItemType(), $this, true);
+        /** @var Type $itemType */
+        $itemType = $type->getItemType();
+
+        return new MappingIterator($data, $itemType, $this, true);
     }
 
 }

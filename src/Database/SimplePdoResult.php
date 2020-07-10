@@ -67,9 +67,11 @@ class SimplePdoResult implements Iterator
      */
     public function fetchAll(int $mode = PDO::FETCH_ASSOC): array
     {
+        /** @var mixed[][] $result */
         $result = $this->statement->fetchAll($mode);
         $this->close();
         unset($this->statement);
+
         return $result;
     }
 
@@ -92,11 +94,13 @@ class SimplePdoResult implements Iterator
      */
     public function fetchColumnAll($column): array
     {
+        /** @var mixed[][] $result */
         $result = $this->statement->fetchAll(is_int($column) ? PDO::FETCH_NUM : PDO::FETCH_ASSOC);
         $rows = [];
         foreach ($result as $row) {
             $rows[] = $row[$column];
         }
+
         return $rows;
     }
 

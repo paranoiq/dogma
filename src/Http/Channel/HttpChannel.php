@@ -428,7 +428,7 @@ class HttpChannel
             $this->paused = false;
         }
 
-        return $this->paused;
+        return (bool) $this->paused;
     }
 
     public function resume(): void

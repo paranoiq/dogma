@@ -9,6 +9,7 @@
 
 namespace Dogma\Enum;
 
+use _HumbugBox09702017065e\Roave\BetterReflection\Reflection\ReflectionConstant;
 use Dogma\Cls;
 use Dogma\InvalidTypeException;
 use Dogma\InvalidValueException;
@@ -74,6 +75,9 @@ trait EnumSetMixin
         return $instances;
     }
 
+    /**
+     * @param class-string $class
+     */
     final protected static function init(string $class): void
     {
         static $rootClasses = [
@@ -90,6 +94,7 @@ trait EnumSetMixin
         }
 
         $ref = new ReflectionClass($class);
+        /** @var ReflectionClass<Enum|Set> $parent */
         $parent = $ref->getParentClass();
         $parentClass = $parent->getName();
         $isDescendant = !in_array($parentClass, $rootClasses, true);
@@ -130,6 +135,7 @@ trait EnumSetMixin
                     sprintf('Enum constant %s::%s must have the same value as its definition in parent class %s.', $class, $constantName, $parentClass)
                 );
             }
+            /** @var ReflectionConstant $parentConstant */
             $parentConstant = $parent->getReflectionConstant($constantName);
             $removed = strpos($constant->getDocComment() ?: '', '@removed') !== false;
             $parentRemoved = strpos($parentConstant->getDocComment() ?: '', '@removed') !== false;

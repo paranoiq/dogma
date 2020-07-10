@@ -10,6 +10,7 @@
 namespace Dogma\System;
 
 use Dogma\StaticClassMixin;
+use Dogma\Str;
 use const INFO_GENERAL;
 use const PHP_INT_SIZE;
 use const PHP_SAPI;
@@ -17,7 +18,6 @@ use function extension_loaded;
 use function ob_get_clean;
 use function ob_start;
 use function phpinfo;
-use function preg_match;
 
 class Php
 {
@@ -54,8 +54,8 @@ class Php
         if ($threadSafe === null) {
             ob_start();
             phpinfo(INFO_GENERAL);
-            $info = ob_get_clean();
-            $threadSafe = (bool) preg_match('~Thread Safety\s*</td>\s*<td[^>]*>\s*enabled~', $info);
+            $info = (string) ob_get_clean();
+            $threadSafe = (bool) Str::match($info, '~Thread Safety\s*</td>\s*<td[^>]*>\s*enabled~');
         }
 
         return $threadSafe;

@@ -82,7 +82,7 @@ class HttpRequest
     use StrictBehaviorMixin;
     use NonSerializableMixin;
 
-    /** @var resource|bool (curl) */
+    /** @var resource (curl) */
     private $curl;
 
     /** @var callable|null */
@@ -118,7 +118,7 @@ class HttpRequest
     public function __construct(?string $url = null, ?string $method = null)
     {
         error_clear_last();
-        /** @var resource|bool $curl */
+        /** @var resource|false $curl */
         $curl = curl_init();
         if ($curl === false) {
             $message = error_get_last()['message'];
@@ -408,8 +408,12 @@ class HttpRequest
     {
         $this->init();
         $this->prepare();
+        /** @var string|false $response */
         $response = curl_exec($this->curl);
         $error = curl_errno($this->curl);
+        if ($response === false) {
+            $response = null;
+        }
 
         return $this->createResponse($response, $error);
     }
@@ -449,11 +453,11 @@ class HttpRequest
     /**
      * Called by RequestManager.
      * @internal
-     * @param string|bool $response
+     * @param string|null $response
      * @param int $error
      * @return HttpResponse
      */
-    public function createResponse($response, int $error): HttpResponse
+    public function createResponse(?string $response, int $error): HttpResponse
     {
         $info = $this->getInfo();
         $status = $this->getResponseStatus($error, $info);
@@ -628,9 +632,8 @@ class HttpRequest
 
     final public function __clone()
     {
-        if ($this->curl !== null) {
-            $this->curl = curl_copy_handle($this->curl);
-        }
+        $this->curl = curl_copy_handle($this->curl);
+
         // need to set the closure to $this again
         $this->setHeaderFunction();
     }

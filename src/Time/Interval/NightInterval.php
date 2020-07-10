@@ -480,7 +480,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
 
     /**
      * @param self ...$items
-     * @return NightInterval[][]|int[][] ($interval, $count)
+     * @return array<array{0: NightInterval, 1: int}> ($interval, $count)
      */
     public static function countOverlaps(self ...$items): array
     {

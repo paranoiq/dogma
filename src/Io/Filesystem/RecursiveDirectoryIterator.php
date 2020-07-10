@@ -57,7 +57,10 @@ class RecursiveDirectoryIterator extends PhpRecursiveDirectoryIterator
     public function current()
     {
         if ($this->flags & FilesystemIterator::CURRENT_AS_FILEINFO) {
-            return new FileInfo(parent::current());
+            /** @var string $path */
+            $path = parent::current();
+
+            return new FileInfo($path);
         }
         return parent::current();
     }

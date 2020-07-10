@@ -154,7 +154,10 @@ abstract class IntSet implements Set, Dumpable
 
     public function getValue(): int
     {
-        return array_sum($this->values);
+        /** @var int $result */
+        $result = array_sum($this->values);
+
+        return $result;
     }
 
     /**

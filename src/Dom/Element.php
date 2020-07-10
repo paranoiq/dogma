@@ -10,14 +10,36 @@
 namespace Dogma\Dom;
 
 use Dogma\StrictBehaviorMixin;
+use Dogma\Time\Date;
+use Dogma\Time\DateTime;
+use DOMDocument;
 use DOMElement;
+use DOMNamedNodeMap;
 use DOMNode;
+use DOMNodeList;
 use function array_shift;
 use function call_user_func;
 use function func_get_args;
 
 /**
  * @property-read string $nodeName
+ * @property-read string $nodeValue
+ * @property-read int $nodeType
+ * @property-read DOMNode|null $parentNode
+ * @property-read DOMNodeList $childNodes
+ * @property-read DOMElement|null $firstChild
+ * @property-read DOMElement|null $lastChild
+ * @property-read DOMElement|null $previousSibling
+ * @property-read DOMElement|null $nextSibling
+ * @property-read bool $schemaTypeInfo
+ * @property-read string $tagName
+ * @property-read DOMNamedNodeMap|null $attributes
+ * @property-read DOMDocument|null $ownerDocument
+ * @property-read string|null $namespaceUri
+ * @property-read string|null $prefix
+ * @property-read string $localName
+ * @property-read string|null $baseUri
+ * @property-read string $textContent
  */
 class Element
 {
@@ -51,7 +73,7 @@ class Element
 
     /**
      * @param string $xpath
-     * @return string|int|float
+     * @return string|int|float|bool|Date|DateTime|null
      */
     public function evaluate(string $xpath)
     {
@@ -60,7 +82,7 @@ class Element
 
     /**
      * @param string|string[] $target
-     * @return string|string[]
+     * @return int|float|bool|string|Date|DateTime|mixed[]|null
      */
     public function extract($target)
     {

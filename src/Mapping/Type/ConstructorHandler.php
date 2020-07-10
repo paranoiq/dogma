@@ -34,8 +34,10 @@ abstract class ConstructorHandler implements TypeHandler
      */
     public function getParameters(Type $type): array
     {
-        $class = new ReflectionClass($type->getName());
-        $constructor = $class->getConstructor();
+        /** @var class-string $class */
+        $class = $type->getName();
+        $ref = new ReflectionClass($class);
+        $constructor = $ref->getConstructor();
 
         return $this->parser->getParameterTypes($constructor);
     }
@@ -45,7 +47,7 @@ abstract class ConstructorHandler implements TypeHandler
      * @param Type $type
      * @param mixed[] $parameters
      * @param Mapper $mapper
-     * @return Exportable
+     * @return object
      */
     public function createInstance(Type $type, $parameters, Mapper $mapper): object
     {
@@ -54,6 +56,7 @@ abstract class ConstructorHandler implements TypeHandler
             // it is up to class constructor to check the types!
             $orderedParams[] = $parameters[$name];
         }
+
         return $type->getInstance(...$orderedParams);
     }
 

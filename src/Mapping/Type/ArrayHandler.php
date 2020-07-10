@@ -70,6 +70,7 @@ class ArrayHandler implements TypeHandler
         if (count($instance) < 1) {
             return $array;
         }
+        /** @var Type $itemType */
         $itemType = $type->getItemType();
         // terminate mapping on MIXED
         if ($itemType === Type::get(Type::MIXED)) {

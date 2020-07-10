@@ -202,6 +202,9 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
             }
         }
 
+        /** @var TimeInterval[] $results */
+        $results = $results;
+
         return new static($results);
     }
 

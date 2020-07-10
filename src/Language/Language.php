@@ -797,7 +797,10 @@ class Language extends StringEnum
 
     public static function getByIdent(string $ident): self
     {
-        return self::get(array_search($ident, self::$idents));
+        /** @var string $code */
+        $code = array_search($ident, self::$idents);
+
+        return self::get($code);
     }
 
     public static function validateValue(string &$value): bool

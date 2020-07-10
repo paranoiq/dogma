@@ -346,7 +346,7 @@ class IntInterval implements Interval
 
     /**
      * @param IntInterval ...$items
-     * @return IntInterval[][]|int[][] ($ident => ($interval, $count))
+     * @return array<array{0: IntInterval, 1: int}> ($ident => ($interval, $count))
      */
     public static function countOverlaps(self ...$items): array
     {

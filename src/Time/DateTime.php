@@ -257,7 +257,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
      */
     public function sub($interval): self
     {
-        if ($interval instanceof DateTimeSpan) {
+        if ($interval instanceof DateOrTimeSpan) {
             return $this->add($interval->invert());
         }
         $that = parent::sub($interval);

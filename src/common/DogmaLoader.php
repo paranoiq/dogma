@@ -91,7 +91,7 @@ final class DogmaLoader
 
     private function scan(string $dir): void
     {
-        foreach (glob($dir . '\\*') as $path) {
+        foreach (glob($dir . '\\*') ?: [] as $path) {
             if (is_dir($path)) {
                 $this->scan($path);
             } elseif (is_file($path)) {

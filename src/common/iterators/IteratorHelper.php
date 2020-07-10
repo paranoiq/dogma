@@ -33,6 +33,9 @@ class IteratorHelper
             $iterable = $iterable->getIterator();
         }
 
+        /** @var Iterator<mixed, mixed> $iterable */
+        $iterable = $iterable;
+
         return $iterable;
     }
 

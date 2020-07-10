@@ -56,7 +56,10 @@ class DirectoryIterator extends FilesystemIterator
     public function current()
     {
         if (!($this->flags & FilesystemIterator::CURRENT_AS_PATHNAME) && !($this->flags & FilesystemIterator::CURRENT_AS_SELF)) {
-            return new FileInfo(parent::current());
+            /** @var string $path */
+            $path = parent::current();
+
+            return new FileInfo($path);
         }
         return parent::current();
     }

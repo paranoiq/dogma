@@ -44,8 +44,10 @@ class Host
     public function getTld(): Tld
     {
         $parts = explode('.', $this->host);
+        /** @var string $tld */
+        $tld = end($parts);
 
-        return Tld::get(end($parts));
+        return Tld::get($tld);
     }
 
 }

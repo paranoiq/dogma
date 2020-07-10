@@ -616,7 +616,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     /**
      * @param DateTimeInterval ...$items
-     * @return DateTimeInterval[][]|int[][] ($interval, $count)
+     * @return array<array{0: DateTimeInterval, 1: int}> ($interval, $count)
      */
     public static function countOverlaps(self ...$items): array
     {

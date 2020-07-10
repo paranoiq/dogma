@@ -7,10 +7,11 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
+// phpcs:disable SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable
+
 namespace Dogma;
 
 use stdClass;
-use Traversable;
 use const INF;
 use function array_keys;
 use function class_exists;
@@ -25,6 +26,7 @@ use function is_array;
 use function is_callable;
 use function is_float;
 use function is_int;
+use function is_iterable;
 use function is_nan;
 use function is_numeric;
 use function is_object;
@@ -89,15 +91,28 @@ final class Check
                 self::bool($value);
                 break;
             case Type::INT:
+                /**
+                 * @var int|null $min
+                 * @var int|null $max
+                 */
                 self::int($value, $min, $max);
                 break;
             case Type::FLOAT:
+                /** @var float|null $min */
                 self::float($value, $min, $max);
                 break;
             case Type::STRING:
+                /**
+                 * @var int|null $min
+                 * @var int|null $max
+                 */
                 self::string($value, $min, $max);
                 break;
             case Type::PHP_ARRAY:
+                /**
+                 * @var int|null $min
+                 * @var int|null $max
+                 */
                 self::array($value, $min, $max);
                 break;
             case Type::OBJECT:
@@ -112,6 +127,7 @@ final class Check
                 if ($max !== null) {
                     throw new InvalidArgumentException("Parameter \$max is not applicable with type $type.");
                 }
+                /** @var string|null $min */
                 self::resource($value, $min);
                 break;
             case Type::PHP_CALLABLE:
@@ -132,6 +148,7 @@ final class Check
                 break;
         }
         if ($itemTypes !== null) {
+            /** @var string[] $itemTypes */
             self::itemsOfTypes($value, $itemTypes);
         }
     }
@@ -718,7 +735,7 @@ final class Check
         $actualType = gettype($value);
         $converted = (float) $value;
         if ($converted === INF || $converted === -INF) {
-            throw new ValueOutOfRangeException($value, -INF, INF);
+            throw new ValueOutOfRangeException($converted, -INF, INF);
         }
         $copy = $converted;
         settype($copy, $actualType);
@@ -1117,7 +1134,9 @@ final class Check
     {
         if ($type->isInt()) {
             try {
-                self::range($value, ...IntBounds::getRange($type->getSize(), $type->isSigned() ? Sign::SIGNED : Sign::UNSIGNED));
+                /** @var int $size */
+                $size = $type->getSize();
+                self::range($value, ...IntBounds::getRange($size, $type->isSigned() ? Sign::SIGNED : Sign::UNSIGNED));
             } catch (ValueOutOfRangeException $e) {
                 throw new ValueOutOfBoundsException($value, $type, $e);
             }
@@ -1129,8 +1148,10 @@ final class Check
             }
         } elseif ($type->isString()) {
             try {
-                /// todo: take into account string encoding?
-                self::range(Str::length($value), 0, $type->getSize());
+                // todo: take into account string encoding?
+                /** @var int $size */
+                $size = $type->getSize();
+                self::range(Str::length($value), 0, $size);
             } catch (ValueOutOfRangeException $e) {
                 throw new ValueOutOfBoundsException($value, $type, $e);
             }
@@ -1280,9 +1301,7 @@ final class Check
      */
     public static function isIterable($value): bool
     {
-        return is_array($value)
-            || $value instanceof stdClass
-            || ($value instanceof Traversable);
+        return is_iterable($value) || $value instanceof stdClass;
     }
 
     /**

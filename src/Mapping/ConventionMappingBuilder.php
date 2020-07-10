@@ -62,6 +62,7 @@ class ConventionMappingBuilder implements MappingBuilder
         $fields = $typeMetaData->getFields();
         $fieldPath = rtrim($path . $this->fieldSeparator . $type->getName());
         $handlerKeys = [];
+        /** @var string $fieldHandlerKey */
         foreach ($fields as $fieldHandlerKey => $fieldType) {
             $fieldDestinationKey = $destinationKey
                 ? ($fieldHandlerKey ? $destinationKey . $this->fieldSeparator . $fieldHandlerKey : $destinationKey)

@@ -219,7 +219,10 @@ class QueryEngine
     public function find(string $query, $context = null): NodeList
     {
         $path = $this->translateQuery($query, (bool) $context);
-        if ($context) {
+        if ($context !== null) {
+            if ($context instanceof Element) {
+                $context = $context->getElement();
+            }
             /** @var DOMNodeList<DOMNode>|false $list */
             $list = $this->xpath->query($path, $context);
         } else {
@@ -242,7 +245,10 @@ class QueryEngine
     public function findOne(string $query, $context = null)
     {
         $path = $this->translateQuery($query, (bool) $context);
-        if ($context) {
+        if ($context !== null) {
+            if ($context instanceof Element) {
+                $context = $context->getElement();
+            }
             /** @var DOMNodeList<DOMNode>|false $list */
             $list = $this->xpath->query($path, $context);
         } else {
@@ -270,7 +276,10 @@ class QueryEngine
     {
         $path = $this->translateQuery($query);
 
-        if ($context) {
+        if ($context !== null) {
+            if ($context instanceof Element) {
+                $context = $context->getElement();
+            }
             $value = $this->xpath->evaluate($path, $context);
         } else {
             $value = $this->xpath->evaluate($path);
@@ -305,7 +314,7 @@ class QueryEngine
      * Extract values from paths defined by one or more queries
      * @param string|string[]|string[][] $queries
      * @param Element|DOMNode|null $context
-     * @return string|string[]
+     * @return int|float|bool|string|Date|DateTime|mixed[]|null
      */
     public function extract($queries, $context = null)
     {
@@ -329,7 +338,7 @@ class QueryEngine
     /**
      * @param string $query
      * @param Element|DOMNode $context
-     * @return string|int|float|Date|DateTime|null
+     * @return int|float|bool|string|Date|DateTime|null
      */
     private function extractPath(string $query, $context)
     {

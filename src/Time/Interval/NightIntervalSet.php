@@ -64,6 +64,10 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
      */
     public static function createFromDateArray(array $dates): self
     {
+        if (count($dates) === 0) {
+            return new static([]);
+        }
+
         sort($dates);
         $intervals = [];
         $start = $previous = reset($dates);
@@ -247,6 +251,9 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
                 $results[] = $result;
             }
         }
+
+        /** @var NightInterval[] $results */
+        $results = $results;
 
         return new static($results);
     }

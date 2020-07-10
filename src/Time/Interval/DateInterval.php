@@ -473,7 +473,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     /**
      * @param self ...$items
-     * @return DateInterval[][]|int[][] ($interval, $count)
+     * @return array<array{0: DateInterval, 1: int}> ($interval, $count)
      */
     public static function countOverlaps(self ...$items): array
     {

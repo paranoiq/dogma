@@ -20,9 +20,12 @@ class ShortUnderscoreFieldNamingStrategy implements NamingStrategy
 
     public function translateName(string $localName, string $path, string $fieldSeparator): string
     {
+        /** @var string[] $parts */
         $parts = explode($fieldSeparator, $localName);
+        /** @var string $last */
+        $last = end($parts);
 
-        return Str::underscore(end($parts));
+        return Str::underscore($last);
     }
 
 }

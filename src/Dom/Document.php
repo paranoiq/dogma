@@ -10,6 +10,8 @@
 namespace Dogma\Dom;
 
 use Dogma\NotImplementedException;
+use Dogma\Time\Date;
+use Dogma\Time\DateTime;
 use DOMDocument;
 use DOMElement;
 use DOMNode;
@@ -73,12 +75,12 @@ class Document extends DOMDocument
      */
     public function loadXml($source, $options = null): bool
     {
-        libxml_use_internal_errors(true);
+        $previousState = libxml_use_internal_errors(true);
         libxml_clear_errors();
         if (!parent::loadXML($source, $options)) {
-            $error = libxml_get_last_error();
-            throw new DomException('Cannot load HTML document: ' . trim($error->message) . ' on line #' . $error->line, $error->code);
+            $this->error('Cannot load XML document', $previousState);
         }
+        libxml_use_internal_errors($previousState);
 
         return true;
     }
@@ -94,9 +96,7 @@ class Document extends DOMDocument
         $previousState = libxml_use_internal_errors(true);
         libxml_clear_errors();
         if (!parent::loadHTML($source, $options)) {
-            $error = libxml_get_last_error();
-            libxml_use_internal_errors($previousState);
-            throw new DomException('Cannot load HTML document: ' . trim($error->message) . ' on line #' . $error->line, $error->code);
+            $this->error('Cannot load XML document', $previousState);
         }
         libxml_use_internal_errors($previousState);
 
@@ -111,14 +111,25 @@ class Document extends DOMDocument
      */
     public function loadHtmlFile($fileName, $options = 0): bool
     {
-        libxml_use_internal_errors(true);
+        $previousState = libxml_use_internal_errors(true);
         libxml_clear_errors();
         if (!parent::loadHTMLFile($fileName)) {
-            $error = libxml_get_last_error();
-            throw new DomException('Cannot load HTML document: ' . trim($error->message) . ' on line #' . $error->line, $error->code);
+            $this->error('Cannot load XML document', $previousState);
         }
+        libxml_use_internal_errors($previousState);
 
         return true;
+    }
+
+    private function error(string $message, bool $previousState): void
+    {
+        $error = libxml_get_last_error();
+        libxml_use_internal_errors($previousState);
+        if ($error !== false) {
+            throw new DomException($message . ': ' . trim($error->message) . ' on line #' . $error->line, $error->code);
+        } else {
+            throw new DomException($message . ': unknown error', 0);
+        }
     }
 
     /**
@@ -149,7 +160,7 @@ class Document extends DOMDocument
 
     /**
      * @param string $xpath
-     * @return string|int|float
+     * @return int|float|bool|string|Date|DateTime|null
      */
     public function evaluate(string $xpath)
     {
@@ -158,7 +169,7 @@ class Document extends DOMDocument
 
     /**
      * @param string|string[] $target
-     * @return string|string[]
+     * @return int|float|bool|string|Date|DateTime|mixed[]|null
      */
     public function extract($target)
     {

@@ -8,6 +8,10 @@ parameters:
         - '~Variable \$result in PHPDoc tag @var does not exist~' # while ($result = array_shift($sources)) {
         - '~Strict comparison using === between array<int, string> and array\(\) will always evaluate to false.~' # Cls
         - '~Method Dogma\\Time\\DateTime::createFromAnyFormat\(\) should return static\(Dogma\\Time\\DateTime\) but return statement is missing.~' # WTF?!
+        - '~Parameter #1 \$function of function call_user_func expects callable\(\): mixed, array\(~'
+        -
+            message: '~Cannot cast .* to int~' # bullshit
+            path: "../../src/common/Check.php"
         -
             message: "~Result of && is always false.~" # ???
             path: "../../src/common/Check.php"
@@ -15,8 +19,15 @@ parameters:
             message: "~Strict comparison using === between string and false will always evaluate to false~"
             path: "../../src/common/Str.php"
 
+        # intended
+        - '~^Parameter #1 \$value of static method Dogma\\Enum\\(Int|String)(Enum|Set)::isValid\(\) expects (int|string), int\|string given~'
+        - '~^Method Dogma\\Io\\FileMetaData::get.*\(\) should return (int|string) but returns int\|string~'
+
         # interface
         - '~^PHPDoc tag @return with type Dogma\\Language\\Locale\\LocaleCollationOption is not subtype of native type Dogma\\Enum\\StringEnum~'
+
+        # the fuck i know
+        - '~^Binary operation "\." between string and array<string>\|string results in an error~'
 
         # deprecated things, won't fix
         - '~method Dogma\\Database\\SimplePdo~'

@@ -9,12 +9,13 @@
 
 namespace Dogma\Enum;
 
-use Dogma\Arr;
 use Dogma\Cls;
 use Dogma\Dumpable;
 use Dogma\Equalable;
 use Dogma\InvalidValueException;
 use Dogma\Obj;
+use Dogma\Type;
+use function array_search;
 use function in_array;
 use function sprintf;
 
@@ -90,7 +91,10 @@ abstract class StringEnum implements Enum, Dumpable
 
     final public function getConstantName(): string
     {
-        return Arr::indexOf(self::$availableValues[static::class], $this->value);
+        /** @var string $result */
+        $result = array_search($this->value, self::$availableValues[static::class], Type::STRICT);
+
+        return $result;
     }
 
     final public static function isValid(string $value): bool

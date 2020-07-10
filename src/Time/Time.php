@@ -58,7 +58,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
 
     public const DEFAULT_FORMAT = 'H:i:s.u';
 
-    /** @var int|string */
+    /** @var int */
     private $microseconds;
 
     /** @var DateTimeImmutable|null */

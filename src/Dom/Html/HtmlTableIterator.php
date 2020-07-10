@@ -84,7 +84,10 @@ class HtmlTableIterator implements Iterator
      */
     public function current(): array
     {
-        return $this->formatRow($this->rows->item($this->position));
+        /** @var Element $row */
+        $row = $this->rows->item($this->position);
+
+        return $this->formatRow($row);
     }
 
     private function processTable(): void

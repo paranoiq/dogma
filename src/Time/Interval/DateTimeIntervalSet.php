@@ -316,6 +316,9 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
             }
         }
 
+        /** @var DateTimeInterval[] $results */
+        $results = $results;
+
         return new static($results);
     }
 

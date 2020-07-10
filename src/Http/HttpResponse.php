@@ -135,6 +135,7 @@ class HttpResponse
     public function getCookies(): array
     {
         if ($this->cookies === null) {
+            /** @var string|null $cookies */
             $cookies = $this->getHeader(HttpHeader::COOKIE);
             if ($cookies === null) {
                 return [];
@@ -147,7 +148,10 @@ class HttpResponse
 
     public function getContentType(): ?ContentType
     {
-        return $this->getHeader(HttpHeader::CONTENT_TYPE);
+        /** @var ContentType|null $contentType */
+        $contentType = $this->getHeader(HttpHeader::CONTENT_TYPE);
+
+        return $contentType;
     }
 
     /**

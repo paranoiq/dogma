@@ -479,7 +479,7 @@ class DayOfYearInterval implements ModuloInterval
 
     /**
      * @param DayOfYearInterval ...$items
-     * @return DayOfYearInterval[][]|int[][] ($interval, $count)
+     * @return array<array{0: DayOfYearInterval, 1: int}> ($interval, $count)
      */
     public static function countOverlaps(self ...$items): array
     {

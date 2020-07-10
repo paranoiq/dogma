@@ -27,7 +27,6 @@ use function is_int;
 use function is_string;
 use function is_subclass_of;
 use function preg_match;
-use function preg_split;
 use function str_replace;
 use function strlen;
 
@@ -151,7 +150,9 @@ class Type
                     break;
                 case $size === null && (is_int($arg) || is_array($arg)):
                     $size = $arg;
-                    self::checkSize($type, $size);
+                    if (is_int($size)) {
+                        self::checkSize($type, $size);
+                    }
                     break;
                 case $specific === null && (is_string($arg) || $arg instanceof ResourceType):
                     $specific = $arg instanceof ResourceType ? $arg->getValue() : $arg;
@@ -330,13 +331,14 @@ class Type
     }
 
     /**
-     * @param string|self ...$itemTypes
+     * @param string|self|bool ...$itemTypes
      * @return self
      */
     public static function tupleOf(...$itemTypes): self
     {
         $nullable = false;
         if (is_bool(end($itemTypes))) {
+            /** @var bool $nullable */
             $nullable = array_pop($itemTypes);
         }
 
@@ -351,6 +353,9 @@ class Type
                 $itemIds[] = $type->getId();
             }
         }
+
+        /** @var self[] $itemTypes */
+        $itemTypes = $itemTypes;
 
         $id = Tuple::class . '<' . implode(',', $itemIds) . '>' . ($nullable ? '?' : '');
         if (empty(self::$instances[$id])) {
@@ -416,7 +421,7 @@ class Type
             return self::get($baseId, $size, $specific, $encoding, $locale, $nullable);
         }
 
-        $itemIds = preg_split('/(?<![0-9]),/', $itemIds);
+        $itemIds = Str::split($itemIds, '/(?<![0-9]),/');
         $last = 0;
         $counter = 0;
         foreach ($itemIds as $i => $type) {
@@ -457,6 +462,9 @@ class Type
         return $this->id;
     }
 
+    /**
+     * @return string|class-string
+     */
     public function getName(): string
     {
         return $this->type;
@@ -498,8 +506,10 @@ class Type
 
     /**
      * Returns bit-size for numeric types and length for string
+     *
+     * @return int|int[]|null
      */
-    public function getSize(): ?int
+    public function getSize()
     {
         return $this->size;
     }
@@ -602,9 +612,15 @@ class Type
                 return $this;
             case $this->isArray():
             case $this->isCollection():
-                return self::collectionOf($this->type, $this->itemType);
+                /** @var self $itemType */
+                $itemType = $this->itemType;
+
+                return self::collectionOf($this->type, $itemType);
             case $this->isTuple():
-                return self::tupleOf(...$this->itemType);
+                /** @var mixed[] $itemType */
+                $itemType = $this->itemType;
+
+                return self::tupleOf(...$itemType);
             default:
                 return self::get($this->type, $this->size, $this->specific, $this->encoding, $this->locale);
         }
@@ -618,10 +634,16 @@ class Type
         switch (true) {
             case $this->isArray():
             case $this->isCollection():
-                return self::collectionOf($this->type, $this->itemType->getTypeWithoutParams(), $this->nullable);
+                /** @var self $itemType */
+                $itemType = $this->itemType;
+
+                return self::collectionOf($this->type, $itemType->getTypeWithoutParams(), $this->nullable);
             case $this->isTuple():
+                /** @var self[] $itemType */
+                $itemType = $this->itemType;
+
                 $itemTypes = [];
-                foreach ($this->itemType as $itemType) {
+                foreach ($itemType as $itemType) {
                     $itemTypes[] = $itemType->getTypeWithoutParams();
                 }
                 if ($this->nullable) {

@@ -1,19 +1,14 @@
 
 # code
 args
-bcc
 binlog
 CP
 dst
-EOL
-eml
-mailparse
-msg
-multipart
 pthreads
 redir
 struct
 tablespace
+tld
 uint
 UDF
 Vector3i
@@ -50,7 +45,6 @@ wildcard
 # tech
 armscii
 ascii
-bsd
 catalan
 csp
 csrf
@@ -76,7 +70,6 @@ tcp
 tftp
 ucs
 uhc
-unicode
 unix
 uri
 wap
@@ -99,7 +92,6 @@ biatch
 bodyrow
 checkbox
 crypto
-dasherize
 dumpable
 enquiry
 enums
@@ -109,7 +101,6 @@ footrow
 getters
 hashmap
 headrow
-inflector
 inits
 instanceof
 inv
@@ -144,8 +135,6 @@ denormalize
 denormalized
 endian
 ignorable
-iterable
-inlined
 login
 multithreaded
 nullable
@@ -162,7 +151,6 @@ splitter
 substring
 substrings
 tuple
-ungreedy
 unhandled
 unprocessable
 variadic

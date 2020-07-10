@@ -114,7 +114,10 @@ class Prime implements Sequence
             self::sieve();
         }
 
-        return array_search($number, self::$cache) ?: null;
+        /** @var int|false $position */
+        $position = array_search($number, self::$cache);
+
+        return $position ?: null;
     }
 
     /**
@@ -176,6 +179,7 @@ class Prime implements Sequence
         $min = self::$lastSieved + 1;
         $max = min(self::$lastSieved * 2, self::$lastSieved + self::MAX_SIEVE_SIZE);
         $numbers = range($min, $max, 2);
+        /** @var int[] $numbers */
         $numbers = array_combine($numbers, $numbers);
 
         // filter primes from previous segments

@@ -75,7 +75,7 @@
         <exec executable="${path.phpstan.executable}" logoutput="true" passthru="true" checkreturn="true">
             <arg line="analyse"/>
             <arg line="-c ${path.phpstan.config}"/>
-            <arg line="-l 6"/>
+            <arg line="-l 7"/>
             <arg path="${path.src}"/>
             <arg path="${path.tests}"/>
         </exec>

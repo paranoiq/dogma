@@ -26,7 +26,7 @@ dictionariesByFileName:
     *WindowsError.php: skip
 
 dictionariesByFileExtension:
-    neon: en custom
+    neon: en php custom
     php: en php html iso custom
 
 dictionaryDirectories:

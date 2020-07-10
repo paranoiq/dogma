@@ -244,6 +244,9 @@ class DateIntervalDataSet implements Equalable, Pokeable, Dumpable, IteratorAggr
             }
         }
 
+        /** @var DateIntervalData[] $results */
+        $results = $results;
+
         return new static($results);
     }
 

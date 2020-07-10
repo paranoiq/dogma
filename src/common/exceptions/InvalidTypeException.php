@@ -16,7 +16,7 @@ class InvalidTypeException extends Exception
 
     /**
      * @param string|string[] $expectedType
-     * @param string|object|resource $actualType
+     * @param mixed $actualType
      * @param Throwable|null $previous
      */
     public function __construct($expectedType, $actualType, ?Throwable $previous = null)

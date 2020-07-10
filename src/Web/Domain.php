@@ -39,8 +39,10 @@ class Domain
     public function getTld(): Tld
     {
         $parts = explode('.', $this->name);
+        /** @var string $tld */
+        $tld = end($parts);
 
-        return Tld::get(end($parts));
+        return Tld::get($tld);
     }
 
 }

@@ -184,7 +184,10 @@ class Locale
         if (empty($this->components['language'])) {
             return null;
         }
-        return Language::get($this->components['language']);
+        /** @var string $language */
+        $language = $this->components['language'];
+
+        return Language::get($language);
     }
 
     public function getScript(): ?Script
@@ -192,7 +195,10 @@ class Locale
         if (empty($this->components['script'])) {
             return null;
         }
-        return Script::get($this->components['script']);
+        /** @var string $script */
+        $script = $this->components['script'];
+
+        return Script::get($script);
     }
 
     public function getCountry(): ?Country
@@ -200,7 +206,10 @@ class Locale
         if (empty($this->components['region'])) {
             return null;
         }
-        return Country::get($this->components['region']);
+        /** @var string $country */
+        $country = $this->components['region'];
+
+        return Country::get($country);
     }
 
     /**
@@ -217,7 +226,10 @@ class Locale
         if (empty($this->components[$key])) {
             return null;
         }
-        return $this->components[$key];
+        /** @var string $variant */
+        $variant = $this->components[$key];
+
+        return $variant;
     }
 
     public function hasVariant(string $variant): bool
@@ -231,12 +243,14 @@ class Locale
     public function getPrivates(): array
     {
         $privates = [];
+        /** @var string $component */
         foreach ($this->components as $key => $component) {
             if (preg_match('/^private\\d+$/', $key)) {
                 // work around bug, when last private variant is returned with keywords
                 $privates[] = Str::toFirst($component, '@');
             }
         }
+
         return $privates;
     }
 
@@ -246,8 +260,11 @@ class Locale
         if (empty($this->components[$key])) {
             return null;
         }
+        /** @var string $private */
+        $private = $this->components[$key];
+
         // work around bug, when last private variant is returned with keywords
-        return Str::toFirst($this->components[$key], '@');
+        return Str::toFirst($private, '@');
     }
 
     /**
@@ -255,12 +272,18 @@ class Locale
      */
     public function getKeywords(): array
     {
-        return $this->components['keywords'] ?? [];
+        /** @var string[] $keywords */
+        $keywords = $this->components['keywords'] ?? [];
+
+        return $keywords;
     }
 
     public function getKeyword(string $keyword): ?string
     {
-        return $this->components['keywords'][$keyword] ?? null;
+        /** @var string[] $keywords */
+        $keywords = $this->components['keywords'];
+
+        return $keywords[$keyword] ?? null;
     }
 
     public function getCurrency(): ?Currency
@@ -296,7 +319,6 @@ class Locale
      */
     public function getCollationOptions(): array
     {
-        /** @var LocaleCollationOption[] $options */
         $options = [];
         /** @var LocaleCollationOption $class */
         foreach (LocaleKeyword::getCollationOptions() as $keyword => $class) {
@@ -305,6 +327,9 @@ class Locale
                 $options[$keyword] = $class::get($value);
             }
         }
+        /** @var LocaleCollationOption[] $options */
+        $options = $options;
+
         return $options;
     }
 
@@ -339,6 +364,7 @@ class Locale
                 LocaleKeyword::getValueRegexp()
             );
         }
+
         return $regexp;
     }
 

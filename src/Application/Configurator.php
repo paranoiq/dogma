@@ -17,6 +17,7 @@ use function array_key_exists;
 use function array_map;
 use function array_merge;
 use function array_pad;
+use function error_get_last;
 use function explode;
 use function file_get_contents;
 use function getopt;
@@ -27,6 +28,7 @@ use function is_file;
 use function is_numeric;
 use function is_string;
 use function parse_ini_file;
+use function sprintf;
 use function substr;
 use function trigger_error;
 
@@ -163,7 +165,12 @@ final class Configurator extends stdClass
     {
         if (is_file($filePath)) {
             if (substr($filePath, -5) === '.neon') {
-                $config = Neon::decode(file_get_contents($filePath));
+                $file = file_get_contents($filePath);
+                if ($file === false) {
+                    echo C::white(sprintf("Error while reading configuration file: %s!\n\n", error_get_last()['message']), C::RED);
+                    exit(1);
+                }
+                $config = Neon::decode($file);
             } elseif (substr($filePath, -4) === '.ini') {
                 $config = parse_ini_file($filePath);
             } else {
@@ -236,9 +243,9 @@ final class Configurator extends stdClass
     }
 
     /**
-     * @param string|string[]|null $value
+     * @param string|string[]|float|int|bool|null $value
      * @param string|null $type
-     * @return string|int|float|string[]|int[]|float[]
+     * @return string|int|float|bool|string[]|int[]|float[]
      */
     private function normalize($value, ?string $type = null)
     {
@@ -247,7 +254,7 @@ final class Configurator extends stdClass
             foreach ($value as &$item) {
                 $item = $this->normalize($item);
             }
-        } elseif (is_numeric($value)) {
+        } elseif (is_numeric($value) && !is_array($value)) { // todo: is_array is for https://github.com/phpstan/phpstan/issues/3489
             $value = (float) $value;
             if ($value === (float) (int) $value) {
                 $value = (int) $value;

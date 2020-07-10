@@ -9,11 +9,10 @@
 
 namespace Dogma\System\Error;
 
+use Dogma\System\Os;
 use Throwable;
-use const PHP_OS;
-use function is_int;
-use function strpos;
-use function strtolower;
+use const PHP_OS_FAMILY;
+use function is_string;
 
 class ErrorHelper
 {
@@ -31,8 +30,8 @@ class ErrorHelper
      */
     public static function getError(int $errno, $system = self::LOCAL): ?SystemError
     {
-        if (!$system || !is_int($system)) {
-            $system = self::detectSystem($system);
+        if ($system === self::LOCAL || is_string($system)) {
+            $system = self::detectSystem();
         }
         if (!$system) {
             return null;
@@ -70,22 +69,17 @@ class ErrorHelper
         return null;
     }
 
-    public static function detectSystem(?string $string = null): ?int
+    private static function detectSystem(): ?int
     {
-        if (!$string) {
-            $string = PHP_OS;
-        }
-        $string = strtolower($string);
-
-        if (strpos($string, 'linux') !== false) {
+        if (PHP_OS_FAMILY === Os::LINUX) {
             return self::LINUX;
-        } elseif (strpos($string, 'win') !== false) {
+        } elseif (PHP_OS_FAMILY === Os::WINDOWS) {
             return self::WINDOWS;
-        } elseif (strpos($string, 'mac') !== false) {
+        } elseif (PHP_OS_FAMILY === Os::BSD) {
             return self::UNIX;
-        } elseif (strpos($string, 'bsd') !== false) {
+        } elseif (PHP_OS_FAMILY === Os::SOLARIS) {
             return self::UNIX;
-        } elseif (strpos($string, 'unix') !== false) {
+        } elseif (PHP_OS_FAMILY === Os::DARWIN) {
             return self::UNIX;
         }
 

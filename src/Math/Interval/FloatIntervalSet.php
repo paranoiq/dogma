@@ -184,6 +184,9 @@ class FloatIntervalSet implements IntervalSet
             }
         }
 
+        /** @var FloatInterval[] $results */
+        $results = $results;
+
         return new static($results);
     }
 

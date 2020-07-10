@@ -124,7 +124,10 @@ class MethodTypeParser
         if (($containerTypes && $otherTypes) || count($containerTypes) > 1 || count($otherTypes) > 1 || count($itemTypes) > 1) {
             throw new InvalidMethodAnnotationException($method, 'Invalid combination of types.');
         } elseif ($itemTypes) {
-            return Type::collectionOf($containerTypes[0], $itemTypes[0], $options['nullable']);
+            /** @var string $container */
+            $container = $containerTypes[0];
+
+            return Type::collectionOf($container, $itemTypes[0], $options['nullable']);
         } elseif ($otherTypes) {
             return Type::get($otherTypes[0], $options['nullable']);
         } else {

@@ -135,6 +135,9 @@ class IntCalc
             $result /= ($i + 1);
         }
 
+        /** @var int $result */
+        $result = $result;
+
         return $result;
     }
 

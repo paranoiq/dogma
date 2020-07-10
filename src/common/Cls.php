@@ -29,8 +29,10 @@ class Cls
     public static function short(string $class): string
     {
         $parts = explode('\\', $class);
+        /** @var string $result */
+        $result = end($parts);
 
-        return end($parts);
+        return $result;
     }
 
     /**
@@ -100,6 +102,7 @@ class Cls
 
         if ($after !== null) {
             $common = array_values($common);
+            /** @var int $index */
             $index = array_search($after, $common, true);
             $common = array_slice($common, 0, $index);
             if ($common === []) {
@@ -152,6 +155,7 @@ class Cls
 
         if ($after !== null) {
             $common = array_values($common);
+            /** @var int $index */
             $index = array_search($after, $common, true);
             $common = array_slice($common, 0, $index);
             if ($common === []) {

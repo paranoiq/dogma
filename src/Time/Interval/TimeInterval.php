@@ -509,7 +509,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 
     /**
      * @param TimeInterval ...$items
-     * @return TimeInterval[][]|int[][] ($interval, $count)
+     * @return array<array{0: TimeInterval, 1: int}> ($interval, $count)
      */
     public static function countOverlaps(self ...$items): array
     {

@@ -190,6 +190,9 @@ class DayOfYearIntervalSet implements IntervalSet
             }
         }
 
+        /** @var DayOfYearInterval[] $results */
+        $results = $results;
+
         return new static($results);
     }
 

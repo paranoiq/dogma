@@ -37,7 +37,7 @@ class HttpChannelManager
     use NonSerializableMixin;
     use NonCloneableMixin;
 
-    /** @var resource|bool (curl) */
+    /** @var resource (curl) */
     private $handler;
 
     /** @var int maximum threads for all channels */
@@ -58,17 +58,16 @@ class HttpChannelManager
     public function __construct(?HttpHeaderParser $headerParser = null)
     {
         $this->headerParser = $headerParser;
-        $this->handler = curl_multi_init();
-        if (!$this->handler) {
+        $handler = curl_multi_init();
+        if ($handler === false) {
             throw new HttpChannelException('Cannot initialize CURL multi-request.');
         }
+        $this->handler = $handler;
     }
 
     public function __destruct()
     {
-        if ($this->handler !== false) {
-            curl_multi_close($this->handler);
-        }
+        curl_multi_close($this->handler);
     }
 
     /**

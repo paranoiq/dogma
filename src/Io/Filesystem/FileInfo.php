@@ -10,6 +10,7 @@
 namespace Dogma\Io\Filesystem;
 
 use Dogma\Io\File;
+use Dogma\Io\FileException;
 use Dogma\Io\FileMode;
 use Dogma\Io\Path;
 use Dogma\StrictBehaviorMixin;
@@ -72,7 +73,12 @@ class FileInfo extends SplFileInfo implements Path
      */
     public function open(string $mode = FileMode::OPEN_READ, $streamContext = null): File
     {
-        return new File($this->getRealPath(), $mode, $streamContext);
+        $file = $this->getRealPath();
+        if ($file === false) {
+            throw new FileException('File does not exist.');
+        }
+
+        return new File($file, $mode, $streamContext);
     }
 
     /**

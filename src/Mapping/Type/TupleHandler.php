@@ -29,7 +29,10 @@ class TupleHandler implements TypeHandler
      */
     public function getParameters(Type $type): array
     {
-        return $type->getItemType();
+        /** @var Type[] $types */
+        $types = $type->getItemType();
+
+        return $types;
     }
 
     /**

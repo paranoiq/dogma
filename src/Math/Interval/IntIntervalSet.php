@@ -184,6 +184,9 @@ class IntIntervalSet implements IntervalSet
             }
         }
 
+        /** @var IntInterval[] $results */
+        $results = $results;
+
         return new static($results);
     }
 
