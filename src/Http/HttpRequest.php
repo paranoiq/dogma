@@ -14,6 +14,7 @@ use Dogma\Http\Curl\CurlHelper;
 use Dogma\InvalidValueException;
 use Dogma\Io\FileMode;
 use Dogma\NonSerializableMixin;
+use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use RuntimeException;
 use const CURLAUTH_ANYSAFE;
@@ -123,9 +124,10 @@ class HttpRequest
         /** @var resource|false $curl */
         $curl = curl_init();
         if ($curl === false) {
-            $message = error_get_last()['message'];
+            /** @var string[] $error */
+            $error = error_get_last();
 
-            throw new HttpRequestException("Cannot initialize curl. Error: $message");
+            throw new HttpRequestException('Cannot initialize curl. Error: ' . $error['message']);
         }
         $this->curl = $curl;
 
@@ -623,9 +625,9 @@ class HttpRequest
 
             $value = urlencode($this->variables[$name]);
             if ($short) {
-                $this->url = preg_replace("/(?<=\\W$name=)%%(?=[^0-9A-Fa-f])/", $value, $this->url);
+                $this->url = Str::replace($this->url, "/(?<=\\W$name=)%%(?=[^0-9A-Fa-f])/", $value);
             } else {
-                $this->url = preg_replace("/{%%$name}/", $value, $this->url);
+                $this->url = Str::replace($this->url, "/{%%$name}/", $value);
             }
 
             unset($this->variables[$name]);

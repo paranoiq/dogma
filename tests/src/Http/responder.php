@@ -2,6 +2,8 @@
 
 // phpcs:disable SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable
 
+use Dogma\Str;
+
 set_time_limit(0);
 
 $options = [
@@ -65,7 +67,7 @@ foreach ($options as $option => $type) {
             $rats = [];
             $sum = 0.0;
             foreach ($arr as $st) {
-                $ratio = 1 / (10 ** strlen(preg_replace('/[^-]/', '', $st)));
+                $ratio = 1 / (10 ** strlen(Str::replace($st, '/[^-]/', '')));
                 $status = (int) $st;
                 $rats[$status] = $ratio;
                 $sum += $ratio;

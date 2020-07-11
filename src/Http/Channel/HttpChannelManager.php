@@ -53,7 +53,7 @@ class HttpChannelManager
     /** @var mixed[] ($resourceId => array($channelId, $jobName, $request)) */
     private $resources = [];
 
-    /** @var HttpHeaderParser */
+    /** @var HttpHeaderParser|null */
     private $headerParser;
 
     public function __construct(?HttpHeaderParser $headerParser = null)

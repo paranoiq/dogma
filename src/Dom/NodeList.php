@@ -48,7 +48,10 @@ class NodeList implements Countable, Iterator
      */
     public function item(int $offset)
     {
-        return $this->wrap($this->nodeList->item($offset));
+        /** @var DOMNode $item */
+        $item = $this->nodeList->item($offset);
+
+        return $this->wrap($item);
     }
 
     public function count(): int
@@ -66,7 +69,10 @@ class NodeList implements Countable, Iterator
      */
     public function current()
     {
-        return $this->wrap($this->nodeList->item($this->offset));
+        /** @var DOMNode $item */
+        $item = $this->nodeList->item($this->offset);
+
+        return $this->wrap($item);
     }
 
     public function key(): int

@@ -23,13 +23,19 @@ class SimpleDateTimeIntervalFormatter implements DateTimeIntervalFormatter
 
     public function format(DateOrTimeInterval $interval, ?string $format = null): string
     {
-        $parts = explode(self::START_END_SEPARATOR, $format);
-        if (count($parts) !== 2) {
-            throw new InvalidFormattingStringException(
-                "Format string '$format' should contain exactly one '|' separator, to distinguish format for start and end date/time."
-            );
+        if ($format !== null) {
+            $parts = explode(self::START_END_SEPARATOR, $format);
+            if (count($parts) !== 2) {
+                throw new InvalidFormattingStringException(
+                    "Format string '$format' should contain exactly one '|' separator, to distinguish format for start and end date/time."
+                );
+            }
+            [$startFormat, $endFormat] = $parts;
+            $separator = '';
+        } else {
+            $startFormat = $endFormat = null;
+            $separator = ' - ';
         }
-        [$startFormat, $endFormat] = $parts;
 
         if ($interval instanceof DateInterval) {
             $start = $interval->getStart()->toDateTime();
@@ -42,7 +48,7 @@ class SimpleDateTimeIntervalFormatter implements DateTimeIntervalFormatter
             $end = $interval->getEnd();
         }
 
-        return $start->format($startFormat) . $end->format($endFormat);
+        return $start->format($startFormat) . $separator . $end->format($endFormat);
     }
 
 }

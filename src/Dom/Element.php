@@ -9,6 +9,7 @@
 
 namespace Dogma\Dom;
 
+use Dogma\LogicException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
@@ -95,7 +96,12 @@ class Element
 
     public function remove(): bool
     {
-        $this->element->parentNode->removeChild($this->element);
+        $parent = $this->element->parentNode;
+        if ($parent === null) {
+            throw new LogicException('There is no parent to remove from.');
+        }
+
+        $parent->removeChild($this->element);
 
         return true;
     }

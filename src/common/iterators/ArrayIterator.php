@@ -51,7 +51,7 @@ class ArrayIterator implements Iterator
     }
 
     /**
-     * @return int|string
+     * @return int|string|null
      */
     public function key()
     {

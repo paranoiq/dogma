@@ -10,6 +10,7 @@
 namespace Dogma\System\Error;
 
 use Dogma\Enum\IntEnum;
+use Dogma\Str;
 use function preg_replace;
 use function str_replace;
 use function strtolower;
@@ -2770,11 +2771,11 @@ class WindowsError extends IntEnum implements SystemError
 
     public function getDescription(): string
     {
-        return ucfirst(preg_replace('/^error /', '', str_replace(
+        return ucfirst(Str::replace(str_replace(
             ['crc', 'dos', 'eof', 'sem_', 'iopl', 'eas', 'ea_', 'rpc', 'dns', 'frs', '_'],
             ['CRC', 'DOS', 'EOF', 'SEM ', 'IOPL', 'EAS', 'EA ', 'RPC', 'DNS', 'FRS', ' '],
             strtolower($this->getConstantName())
-        )));
+        ), '/^error /', ''));
     }
 
 }

@@ -174,7 +174,9 @@ final class Configurator extends stdClass
             if (substr($filePath, -5) === '.neon') {
                 $file = file_get_contents($filePath);
                 if ($file === false) {
-                    echo C::white(sprintf("Error while reading configuration file: %s!\n\n", error_get_last()['message']), C::RED);
+                    /** @var string[] $error */
+                    $error = error_get_last();
+                    echo C::white(sprintf("Error while reading configuration file: %s!\n\n", $error['message']), C::RED);
                     exit(1);
                 }
                 $config = Neon::decode($file);
@@ -252,7 +254,7 @@ final class Configurator extends stdClass
     /**
      * @param string|string[]|float|int|bool|null $value
      * @param string|null $type
-     * @return string|int|float|bool|string[]|int[]|float[]
+     * @return string|int|float|bool|string[]|int[]|float[]|null
      */
     private function normalize($value, ?string $type = null)
     {

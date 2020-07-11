@@ -84,6 +84,7 @@ class SimplePdo extends PDO
     {
         $types = [];
         $counter = 0;
+        /** @var string $query */
         $query = preg_replace_callback('~\'[^\']*+\'|"[^"]*+"|\?[a-z]?|%~i', function ($match) use (&$counter, &$types, &$args) {
             $match = $match[0];
             $firstChar = substr($match, 0, 1);

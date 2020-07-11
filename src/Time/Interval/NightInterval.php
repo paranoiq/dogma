@@ -396,6 +396,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         /** @var self[] $items */
         $items = Arr::sortComparable($items);
 
+        /** @var self $result */
         $result = array_shift($items);
         foreach ($items as $item) {
             if ($result->end->isAfter($item->start)) {
@@ -414,6 +415,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         /** @var self[] $items */
         $items = Arr::sortComparable($items);
 
+        /** @var NightInterval $current */
         $current = array_shift($items);
         $results = [$current];
         foreach ($items as $item) {

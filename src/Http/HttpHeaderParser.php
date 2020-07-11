@@ -66,6 +66,7 @@ class HttpHeaderParser
     {
         $headers = [];
 
+        /** @var string $versionAndStatus */
         $versionAndStatus = array_shift($rawHeaders);
         $parts = Str::match($versionAndStatus, '~HTTP/(\d\.\d)\s(\d\d\d)\s(.*)~');
         if ($parts !== null) {

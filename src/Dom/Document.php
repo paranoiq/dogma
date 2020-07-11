@@ -70,10 +70,10 @@ class Document extends DOMDocument
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $source
-     * @param int|null $options
+     * @param int $options
      * @return true
      */
-    public function loadXml($source, $options = null): bool
+    public function loadXml($source, $options = 0): bool
     {
         $previousState = libxml_use_internal_errors(true);
         libxml_clear_errors();
@@ -151,7 +151,7 @@ class Document extends DOMDocument
 
     /**
      * @param string $xpath
-     * @return Element|DOMNode
+     * @return Element|DOMNode|null
      */
     public function findOne(string $xpath)
     {

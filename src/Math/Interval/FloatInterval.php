@@ -135,7 +135,7 @@ class FloatInterval implements OpenClosedInterval
 
     // queries ---------------------------------------------------------------------------------------------------------
 
-    public function format(?int $decimals = 15, string $decimalPoint = '.'): string
+    public function format(int $decimals = 15, string $decimalPoint = '.'): string
     {
         return sprintf(
             '%s%s, %s%s',
@@ -356,6 +356,7 @@ class FloatInterval implements OpenClosedInterval
         /** @var self[] $items */
         $items = Arr::sortComparable($items);
 
+        /** @var self $result */
         $result = array_shift($items);
         foreach ($items as $item) {
             if ($result->start < $item->start || ($result->start === $item->start && $result->openStart && !$item->openStart)) {
@@ -383,6 +384,7 @@ class FloatInterval implements OpenClosedInterval
         /** @var self[] $items */
         $items = Arr::sortComparable($items);
 
+        /** @var FloatInterval $current */
         $current = array_shift($items);
         $results = [$current];
         foreach ($items as $item) {

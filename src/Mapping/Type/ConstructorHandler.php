@@ -38,6 +38,9 @@ abstract class ConstructorHandler implements TypeHandler
         $class = $type->getName();
         $ref = new ReflectionClass($class);
         $constructor = $ref->getConstructor();
+        if ($constructor === null) {
+            throw new NoConstructorException($class);
+        }
 
         return $this->parser->getParameterTypes($constructor);
     }

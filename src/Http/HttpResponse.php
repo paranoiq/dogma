@@ -39,13 +39,13 @@ class HttpResponse
     /** @var string[] */
     private $cookies;
 
-    /** @var string */
+    /** @var string|null */
     private $body;
 
     /** @var mixed */
     private $context;
 
-    /** @var HttpHeaderParser */
+    /** @var HttpHeaderParser|null */
     private $headerParser;
 
     /**
@@ -90,7 +90,7 @@ class HttpResponse
         return $this->status;
     }
 
-    public function getBody(): string
+    public function getBody(): ?string
     {
         return $this->body;
     }

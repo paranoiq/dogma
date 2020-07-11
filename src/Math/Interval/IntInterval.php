@@ -252,6 +252,7 @@ class IntInterval implements Interval
         /** @var self[] $items */
         $items = Arr::sortComparable($items);
 
+        /** @var self $result */
         $result = array_shift($items);
         foreach ($items as $item) {
             if ($result->end >= $item->start) {
@@ -273,6 +274,7 @@ class IntInterval implements Interval
         /** @var self[] $items */
         $items = Arr::sortComparable($items);
 
+        /** @var IntInterval $current */
         $current = array_shift($items);
         $results = [$current];
         foreach ($items as $item) {

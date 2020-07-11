@@ -11,6 +11,7 @@ namespace Dogma\Reflection;
 
 use Dogma\Arr;
 use Dogma\ShouldNotHappenException;
+use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 use ReflectionClass;
@@ -29,7 +30,6 @@ use function in_array;
 use function is_subclass_of;
 use function ltrim;
 use function preg_match;
-use function preg_replace;
 use function rtrim;
 use function strpos;
 use function strtolower;
@@ -267,7 +267,7 @@ class MethodTypeParser
             return $method->getDeclaringClass()->getName();
         }
 
-        $typeString = preg_replace('/\\(([0-9]+)u\\)/', '(\\1,unsigned)', $typeString);
+        $typeString = Str::replace('/\\(([0-9]+)u\\)/', '(\\1,unsigned)', $typeString);
 
         $trimmed = rtrim(ltrim($typeString, '\\'), '[]');
 

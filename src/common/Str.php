@@ -345,10 +345,10 @@ class Str
 
     public static function underscore(string $string): string
     {
-        return strtolower(preg_replace(
+        return strtolower(self::replace(
+            self::replace($string, '/([a-z\d])([A-Z])/', '\1_\2'),
             '/([A-Z]+)([A-Z])/',
-            '\1_\2',
-            preg_replace('/([a-z\d])([A-Z])/', '\1_\2', $string)
+            '\1_\2'
         ));
     }
 

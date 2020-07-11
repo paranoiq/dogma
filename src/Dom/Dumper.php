@@ -49,7 +49,10 @@ class Dumper
             if ($depth === 0) {
                 echo "<b>Document:</b>\n";
             }
-            self::dump($node->documentElement, $maxDepth);
+            /** @var DOMDocument $element */
+            $element = $node->documentElement;
+
+            self::dump($element, $maxDepth);
 
         } elseif ($node instanceof DOMCdataSection) {
             if ($depth === 0) {
@@ -103,7 +106,7 @@ class Dumper
         }
         echo '<b>&lt;</b><b style="color: red">', $node->nodeName, '</b>';
 
-        foreach ($node->attributes as $attribute) {
+        foreach ($node->attributes ?? [] as $attribute) {
             echo ' <span style="color: green">', $attribute->name, '</span>=<span style="color: blue">"', $attribute->value, '"</span>';
         }
 

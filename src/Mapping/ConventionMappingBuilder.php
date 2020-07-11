@@ -24,7 +24,7 @@ class ConventionMappingBuilder implements MappingBuilder
     /** @var TypeMetaDataContainer */
     private $typeMetaData;
 
-    /** @var NamingStrategy|null */
+    /** @var NamingStrategy */
     private $fieldNamingStrategy;
 
     /** @var string */
