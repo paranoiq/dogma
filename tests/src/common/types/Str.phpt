@@ -20,6 +20,13 @@ Assert::same(Str::fromFirst('abc@def', '#'), '');
 Assert::same(Str::splitByFirst('abc@def', '@'), ['abc', 'def']);
 Assert::same(Str::splitByFirst('abc@def@ghi', '@'), ['abc', 'def@ghi']);
 
+// splitByLast()
+Assert::same(Str::splitByLast('abc@def', '@'), ['abc', 'def']);
+Assert::same(Str::splitByLast('abc@def@ghi', '@'), ['abc@def', 'ghi']);
+
+// trimLinesRight()
+Assert::same(Str::trimLinesRight("foo \n bar\t\n\tbaz"), "foo\n bar\n\tbaz");
+
 // levenshteinUnicode()
 Assert::same(Str::levenshteinUnicode('příliš', 'příliš'), 0.0);
 Assert::same(Str::levenshteinUnicode('žluťoučký', 'Žluťoučký'), 0.25);

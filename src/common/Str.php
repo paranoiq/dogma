@@ -48,6 +48,7 @@ use function strcmp;
 use function strlen;
 use function strncmp;
 use function strpos;
+use function strrpos;
 use function strtolower;
 use function substr;
 use function utf8_decode;
@@ -140,6 +141,26 @@ class Str
         }
 
         return [substr($string, 0, $pos), substr($string, $pos + 1)];
+    }
+
+    /**
+     * @param string $string
+     * @param string $search
+     * @return string[]
+     */
+    public static function splitByLast(string $string, string $search): array
+    {
+        $pos = strrpos($string, $search);
+        if ($pos === false) {
+            return [$string, ''];
+        }
+
+        return [substr($string, 0, $pos), substr($string, $pos + 1)];
+    }
+
+    public static function trimLinesRight(string $string): string
+    {
+        return self::replace($string, "/[\t ]+\n/", "\n");
     }
 
     /**
