@@ -65,7 +65,7 @@ trait StrictBehaviorMixin
      * @param string $name
      * @throws UndefinedPropertyException
      */
-    public function __isset(string $name): void
+    public function __isset(string $name): bool
     {
         throw new UndefinedPropertyException(static::class, $name);
     }
