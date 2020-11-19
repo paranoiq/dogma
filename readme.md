@@ -1,7 +1,7 @@
 Dogma
 ========
 
-The standard library you wish PHP had.
+The incomplete standard library.
 
 Collection of:
 - basic types
@@ -10,12 +10,13 @@ Collection of:
 - constant list and enumerations
 - math/graph algorithms
 - easy to use wrappers over built in functions
-- some essential libraries
+- the best date and time library there is
+- some other essential libraries
 
 
 Requirements
 --------
- - **PHP-64 7.1+**
+ - **PHP-64 7.2+**
 
 
 Author:
