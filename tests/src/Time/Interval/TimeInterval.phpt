@@ -30,7 +30,7 @@ $t = static function (int $hour): Time {
 $i = static function (int $start, int $end): TimeInterval {
     return new TimeInterval(
         new Time(Str::padLeft(strval($start), 2, '0') . ':00:00.000000'),
-        new Time(Str::padLeft(strval($end), 2, '0') . ':00:00.000000'),
+        new Time(Str::padLeft(strval($end), 2, '0') . ':00:00.000000')
     );
 };
 $s = static function (TimeInterval ...$items): TimeIntervalSet {

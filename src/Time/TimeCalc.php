@@ -12,7 +12,6 @@ namespace Dogma\Time;
 use Dogma\Math\ModuloCalc;
 use Dogma\NotImplementedException;
 use Dogma\Overflow;
-use function call_user_func;
 use function get_class;
 
 class TimeCalc
@@ -75,7 +74,9 @@ class TimeCalc
         $dayOverflow = false;
         switch ($unit->getValue()) {
             case DateTimeUnit::HOUR:
-                [$hours, $overflow] = call_user_func([ModuloCalc::class, $method], $value->getHours() + $value->getMinutes() / 60 + $value->getSeconds() / 3600 + $value->getMicroseconds() / 3600 / 1000000, $allowedValues, 24);
+                /** @var callable $cb */
+                $cb = [ModuloCalc::class, $method];
+                [$hours, $overflow] = $cb($value->getHours() + $value->getMinutes() / 60 + $value->getSeconds() / 3600 + $value->getMicroseconds() / 3600 / 1000000, $allowedValues, 24);
                 if ($overflow !== Overflow::NONE) {
                     $dayOverflow = $overflow;
                 }
@@ -84,7 +85,9 @@ class TimeCalc
                 $microseconds = 0;
                 break;
             case DateTimeUnit::MINUTE:
-                [$minutes, $overflow] = call_user_func([ModuloCalc::class, $method], $value->getMinutes() + $value->getSeconds() / 3600 + $value->getMicroseconds() / 3600 / 1000000, $allowedValues, 60);
+                /** @var callable $cb */
+                $cb = [ModuloCalc::class, $method];
+                [$minutes, $overflow] = $cb($value->getMinutes() + $value->getSeconds() / 3600 + $value->getMicroseconds() / 3600 / 1000000, $allowedValues, 60);
                 $hours = $value->getHours();
                 if ($overflow === Overflow::OVERFLOW) {
                     $hours++;
@@ -103,7 +106,9 @@ class TimeCalc
                 $microseconds = 0;
                 break;
             case DateTimeUnit::SECOND:
-                [$seconds, $overflow] = call_user_func([ModuloCalc::class, $method], $value->getSeconds() + $value->getMicroseconds() / 3600 / 1000000, $allowedValues, 60);
+                /** @var callable $cb */
+                $cb = [ModuloCalc::class, $method];
+                [$seconds, $overflow] = $cb($value->getSeconds() + $value->getMicroseconds() / 3600 / 1000000, $allowedValues, 60);
                 $hours = $value->getHours();
                 $minutes = $value->getMinutes();
                 if ($overflow === Overflow::OVERFLOW) {
@@ -130,7 +135,9 @@ class TimeCalc
                 $microseconds = 0;
                 break;
             case DateTimeUnit::MILISECOND:
-                [$miliseconds, $overflow] = call_user_func([ModuloCalc::class, $method], $value->getMicroseconds() / 1000, $allowedValues, 1000);
+                /** @var callable $cb */
+                $cb = [ModuloCalc::class, $method];
+                [$miliseconds, $overflow] = $cb($value->getMicroseconds() / 1000, $allowedValues, 1000);
                 $hours = $value->getHours();
                 $minutes = $value->getMinutes();
                 $seconds = $value->getSeconds();
@@ -166,7 +173,9 @@ class TimeCalc
                 $microseconds = $miliseconds * 1000;
                 break;
             case DateTimeUnit::MICROSECOND:
-                [$microseconds, $overflow] = call_user_func([ModuloCalc::class, $method], $value->getMicroseconds(), $allowedValues, 1000000);
+                /** @var callable $cb */
+                $cb = [ModuloCalc::class, $method];
+                [$microseconds, $overflow] = $cb($value->getMicroseconds(), $allowedValues, 1000000);
                 $hours = $value->getHours();
                 $minutes = $value->getMinutes();
                 $seconds = $value->getSeconds();
@@ -205,7 +214,10 @@ class TimeCalc
         }
 
         if (!$value instanceof DateTime) {
-            return call_user_func([$class, 'createFromComponents'], $hours, $minutes, $seconds, $microseconds);
+            /** @var callable $cb */
+            $cb = [$class, 'createFromComponents'];
+
+            return $cb($hours, $minutes, $seconds, $microseconds);
         }
 
         $time = Time::createFromComponents($hours, $minutes, $seconds, $microseconds);
@@ -216,7 +228,10 @@ class TimeCalc
             $date = $date->subtractDay();
         }
 
-        return call_user_func([$class, 'createFromDateAndTime'], $date, $time, $value->getTimezone());
+        /** @var callable $cb */
+        $cb = [$class, 'createFromDateAndTime'];
+
+        return $cb($date, $time, $value->getTimezone());
     }
 
 }

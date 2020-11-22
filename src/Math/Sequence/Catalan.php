@@ -7,6 +7,8 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
+// phpcs:disable Squiz.Arrays.ArrayDeclaration.ValueNoNewline
+
 namespace Dogma\Math\Sequence;
 
 use Dogma\Math\IntCalc;
@@ -21,9 +23,7 @@ class Catalan implements Sequence
 {
     use StaticClassMixin;
 
-    // phpcs:disable Squiz.Arrays.ArrayDeclaration.ValueNoNewline
-
-    /** @var int[] */
+    /** @var array<int, int> */
     private static $cache = [
         1 => 1, 2, 5, 14, 42, 132, 429, 1430, 4862, 16796, 58786, 208012, 742900, 2674440, 9694845, 35357670, 129644790,
         477638700, 1767263190, 6564120420, 24466267020, 91482563640, 343059613650, 1289904147324, 4861946401452,

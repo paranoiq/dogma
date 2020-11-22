@@ -7,6 +7,8 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
+// phpcs:disable Squiz.Arrays.ArrayDeclaration.ValueNoNewline
+
 namespace Dogma\Math\Sequence;
 
 use Dogma\Math\PowersOfTwo;
@@ -28,8 +30,6 @@ class Prime implements Sequence
     use StaticClassMixin;
 
     private const MAX_SIEVE_SIZE = PowersOfTwo::_4M;
-
-    // phpcs:disable Squiz.Arrays.ArrayDeclaration.ValueNoNewline
 
     /** @var int[] */
     private static $cache = [
@@ -115,7 +115,7 @@ class Prime implements Sequence
         }
 
         /** @var int|false $position */
-        $position = array_search($number, self::$cache);
+        $position = array_search($number, self::$cache, true);
 
         return $position ?: null;
     }

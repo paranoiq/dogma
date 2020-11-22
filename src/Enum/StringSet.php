@@ -13,7 +13,6 @@ use Dogma\Cls;
 use Dogma\Dumpable;
 use Dogma\Equalable;
 use Dogma\Obj;
-use Dogma\Type;
 use function array_diff;
 use function array_intersect;
 use function array_merge;
@@ -170,7 +169,7 @@ abstract class StringSet implements Set, Dumpable
     {
         $names = [];
         foreach ($this->values as $value) {
-            $names[$value] = array_search($value, self::$availableValues[static::class], Type::STRICT);
+            $names[$value] = array_search($value, self::$availableValues[static::class], true);
         }
 
         return $names;

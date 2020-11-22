@@ -1,24 +1,24 @@
 {
     "name": "dogma/dogma",
     "type": "library",
-    "description": "The standard library you wish PHP had.",
+    "description": "The incomplete standard library",
     "homepage": "http://github.com/paranoiq/dogma",
     "license": ["BSD-3-Clause"],
     "authors": [
         {
             "name": "Vlasta Neubauer",
-            "homepage": "http://www.paranoiq.cz"
+            "homepage": "https://paranoiq.cz"
         }
     ],
     "require": {
-        "php-64bit": "^7.2.0",
+        "php": "^7.2|^8.0",
         "ext-calendar":"*",
         "nette/http": "~2.4|~3.0",
         "nette/utils": "~2.4|~3.0",
         "tracy/tracy": "~2.4"
     },
     "require-dev": {
-        "dogma/dogma-dev": "0.1.14"
+        "dogma/dogma-dev": "0.1.17"
     },
     "suggest": {
         "ext-dom": "for Dom",
@@ -29,11 +29,75 @@
         "symfony/polyfill-intl-normalizer": "for Str",
         "symfony/polyfill-mbstring": "for Str"
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.2-dev"
+        }
+    },
     "autoload": {
         "classmap": ["src", "tests"]
     },
-    "config": {
-        "bin-dir": "bin"
-    },
-    "minimum-stability": "alpha"
+    "scripts": {
+        "c": "@check",
+        "t": "@test",
+        "tc": "@tests-coverage",
+        "da": "composer dump-autoload",
+        "cs": [
+            "@cs-tests",
+            "@cs-src"
+        ],
+
+        "build": [
+            "composer install",
+            "php -r \"@mkdir('log', 0777, true);\"",
+            "php -r \"@mkdir('temp/cache', 0777, true);\"",
+            "rm -rf temp/cache/*"
+        ],
+        "check": [
+            "@test",
+            "@stan",
+            "@lint",
+            "@spell",
+            "@cs-src",
+            "@cs-tests"
+        ],
+        "check-all": [
+            "@test-all",
+            "@stan-all",
+            "@lint-all",
+            "@spell",
+            "@cs-tests",
+            "@cs-src"
+        ],
+
+        "test": "sh vendor/bin/tester tests -c tests --colors 1",
+        "test-all": [
+            "@test",
+            "php74 vendor/nette/tester/src/tester tests -c tests --colors 1",
+            "php73 vendor/nette/tester/src/tester tests -c tests --colors 1",
+            "php72 vendor/nette/tester/src/tester tests -c tests --colors 1"
+        ],
+        "tests-coverage": "sh vendor/bin/tester tests -c tests --colors 1 -p phpdbg --coverage tests/coverage.html --coverage-src src",
+
+        "stan": "sh vendor/bin/phpstan analyse -c build/phpstan/phpstan.neon -l 7 src tests",
+        "stan-74": "php74 vendor/phpstan/phpstan/phpstan analyse -c build/phpstan/phpstan.neon -l 7 src tests",
+        "stan-all": [
+            "@stan",
+            "@stan-74"
+        ],
+
+        "cs-src": "sh vendor/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset.xml --extensions=php --encoding=utf-8 --tab-width=4 -sp src",
+        "cs-tests": "sh vendor/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml --extensions=php,phpt --encoding=utf-8 --tab-width=4 -sp tests",
+        "cs-fix": "sh vendor/bin/phpcbf --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml --extensions=php,phpt --encoding=utf-8 --tab-width=4 src tests",
+
+        "spell": "sh vendor/bin/spell-checker -c build/spell-checker/spell-checker.neon --checkDictionaryFiles --memoryLimit 1024M --noLogo",
+
+        "lint": "sh vendor/bin/parallel-lint src tests",
+        "lint-all": [
+            "@lint",
+            "php74 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
+            "php73 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
+            "php72 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests"
+        ]
+    }
 }

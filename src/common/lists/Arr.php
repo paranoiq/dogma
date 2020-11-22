@@ -81,12 +81,11 @@ class Arr
      */
     public static function combine(array $keys, array $values): array
     {
-        $result = array_combine($keys, $values);
-        if ($result === false) {
+        if (count($keys) !== count($values)) {
             throw new InvalidArgumentException('Count of keys and values must be the same.');
         }
 
-        return $result;
+        return array_combine($keys, $values);
     }
 
     /**
@@ -242,7 +241,7 @@ class Arr
      */
     public static function contains(array $array, $value): bool
     {
-        return in_array($value, $array, Type::STRICT);
+        return in_array($value, $array, true);
     }
 
     /**
@@ -276,7 +275,7 @@ class Arr
         if ($from > 0) {
             return self::indexOf(self::drop($array, $from), $value);
         }
-        $result = array_search($value, $array, Type::STRICT);
+        $result = array_search($value, $array, true);
 
         return $result === false ? null : $result;
     }
@@ -288,7 +287,7 @@ class Arr
      */
     public static function indexesOf(array $array, $value): array
     {
-        return array_keys($array, $value, Type::STRICT);
+        return array_keys($array, $value, true);
     }
 
     /**

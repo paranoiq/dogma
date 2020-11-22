@@ -41,11 +41,12 @@ class Cls
      */
     public static function parents($class): array
     {
-        if (is_object($class)) {
-            $class = get_class($class);
+        $parents = class_parents($class);
+        if ($parents === false) {
+            throw new InvalidValueException($class, 'class name or object');
         }
 
-        return array_values(class_parents($class));
+        return array_values($parents);
     }
 
     /**
@@ -58,7 +59,12 @@ class Cls
             $class = get_class($class);
         }
 
-        $parents = array_values(class_parents($class));
+        $parents = class_parents($class);
+        if ($parents === false) {
+            throw new InvalidValueException($class, 'class name or object');
+        }
+
+        $parents = array_values($parents);
         array_unshift($parents, $class);
 
         return $parents;

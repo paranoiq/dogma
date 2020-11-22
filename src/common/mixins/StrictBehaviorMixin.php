@@ -13,8 +13,7 @@ trait StrictBehaviorMixin
 {
 
     /**
-     * Call to undefined method
-     * @deprecated
+     * @deprecated Magic calls are forbidden
      * @param string $name
      * @param mixed $args
      * @throws UndefinedMethodException
@@ -25,8 +24,7 @@ trait StrictBehaviorMixin
     }
 
     /**
-     * Call to undefined static method
-     * @deprecated
+     * @deprecated Magic static calls are forbidden
      * @param string $name
      * @param mixed $args
      * @throws UndefinedMethodException
@@ -37,8 +35,7 @@ trait StrictBehaviorMixin
     }
 
     /**
-     * Access to undefined property
-     * @deprecated
+     * @deprecated Magic property access is forbidden
      * @param string $name
      * @throws UndefinedPropertyException
      */
@@ -48,8 +45,7 @@ trait StrictBehaviorMixin
     }
 
     /**
-     * Write to undefined property
-     * @deprecated
+     * @deprecated Magic property access is forbidden
      * @param string $name
      * @param mixed $value
      * @throws UndefinedPropertyException
@@ -60,8 +56,7 @@ trait StrictBehaviorMixin
     }
 
     /**
-     * Isset undefined property
-     * @deprecated
+     * @deprecated Magic property access is forbidden
      * @param string $name
      * @throws UndefinedPropertyException
      */
@@ -71,8 +66,7 @@ trait StrictBehaviorMixin
     }
 
     /**
-     * Unset undefined property
-     * @deprecated
+     * @deprecated Magic property access is forbidden
      * @param string $name
      * @throws UndefinedPropertyException
      */

@@ -1081,7 +1081,7 @@ final class Check
     public static function typeName($value): void
     {
         self::string($value);
-        if (!class_exists($value, true) && !in_array($value, Type::listTypes(), Type::STRICT)) {
+        if (!class_exists($value, true) && !in_array($value, Type::listTypes(), true)) {
             throw new InvalidValueException($value, 'type name');
         }
     }

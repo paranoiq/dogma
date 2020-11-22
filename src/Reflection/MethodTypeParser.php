@@ -13,6 +13,7 @@ use Dogma\Arr;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
+use ReflectionClass;
 use ReflectionMethod;
 use ReflectionNamedType;
 use Traversable;
@@ -144,21 +145,23 @@ class MethodTypeParser
         $items = [];
         $paramRefs = $method->getParameters();
         foreach ($paramRefs as $paramRef) {
-            if ($paramRef->isArray()) {
-                $types = [Type::PHP_ARRAY];
-            } elseif ($paramRef->isCallable()) {
-                $types = [Type::PHP_CALLABLE];
-            } elseif ($paramRef->getClass()) {
-                $types = [$paramRef->getClass()->getName()];
-            } elseif ($paramRef->hasType()) {
-                $type = $paramRef->getType();
-                if ($type instanceof ReflectionNamedType) {
-                    $types = [$type->getName()];
+            $type = $paramRef->getType();
+            $types = [];
+            if ($type instanceof ReflectionNamedType) {
+                if ($type->getName() === 'array') {
+                    $types = [Type::PHP_ARRAY];
+                } elseif ($type->getName() === 'callable') {
+                    $types = [Type::PHP_CALLABLE];
+                } elseif ($type->getName() === 'self') {
+                    $types = [$method->getDeclaringClass()->getName()];
+                } elseif (!$type->isBuiltin()) {
+                    $class = new ReflectionClass($type->getName());
+                    $types = [$class->getName()];
                 } else {
-                    throw new ShouldNotHappenException('Composite types in PHP already?');
+                    $types = [$type->getName()];
                 }
-            } else {
-                $types = [];
+            } elseif ($type !== null) {
+                throw new ShouldNotHappenException('Composite types in PHP already?');
             }
 
             $nullable = $paramRef->isDefaultValueAvailable() && $paramRef->getDefaultValue() === null;
@@ -213,7 +216,7 @@ class MethodTypeParser
                     throw new InvalidMethodAnnotationException($method, 'invalid @param annotation format at: ' . $row);
                 }
                 $matches = Arr::padTo($matches, 5, null);
-                [$x, $mod1, $types, $mod2, $name] = $matches;
+                [, $mod1, $types, $mod2, $name] = $matches;
                 $variadic = $mod1 === '...' || $mod2 === '...';
                 $types = explode('|', $types);
                 $nullable = false;

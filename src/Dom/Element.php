@@ -18,7 +18,6 @@ use DOMNamedNodeMap;
 use DOMNode;
 use DOMNodeList;
 use function array_shift;
-use function call_user_func;
 use function func_get_args;
 
 /**
@@ -119,7 +118,10 @@ class Element
     {
         $args = func_get_args();
 
-        return call_user_func([$this->element, $name], array_shift($args));
+        /** @var callable $cb */
+        $cb = [$this->element, $name];
+
+        return $cb(array_shift($args));
     }
 
     public function dump(): void

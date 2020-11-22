@@ -15,7 +15,6 @@ use Dogma\Mapping\Mapper;
 use Dogma\Mapping\Type\TypeHandler;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
-use function call_user_func;
 
 /**
  * Creates an enum from raw value and vice versa
@@ -46,7 +45,10 @@ class EnumHandler implements TypeHandler
      */
     public function createInstance(Type $type, $value, Mapper $mapper)
     {
-        return call_user_func([$type->getName(), 'get'], $value);
+        /** @var callable $cb */
+        $cb = [$type->getName(), 'get'];
+
+        return $cb($value);
     }
 
     /**

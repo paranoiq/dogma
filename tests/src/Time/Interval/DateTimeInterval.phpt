@@ -33,7 +33,7 @@ $d = static function (int $day): DateTime {
 $i = static function (int $start, int $end): DateTimeInterval {
     return new DateTimeInterval(
         new DateTime('2000-01-' . $start . ' 00:00:00.000000'),
-        new DateTime('2000-01-' . $end . ' 00:00:00.000000'),
+        new DateTime('2000-01-' . $end . ' 00:00:00.000000')
     );
 };
 $s = static function (DateTimeInterval ...$items): DateTimeIntervalSet {

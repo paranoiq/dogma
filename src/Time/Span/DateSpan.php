@@ -6,6 +6,7 @@ use DateInterval;
 use Dogma\Arr;
 use Dogma\Comparable;
 use Dogma\Equalable;
+use Dogma\InvalidValueException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\InvalidTimeSpanException;
 use function floor;
@@ -61,9 +62,12 @@ class DateSpan implements DateOrTimeSpan
 
     public static function createFromDateString(string $string): self
     {
-        $dateString = DateInterval::createFromDateString($string);
+        $dateInterval = DateInterval::createFromDateString($string);
+        if ($dateInterval === false) {
+            throw new InvalidValueException($string, 'date span string');
+        }
 
-        return self::createFromDateInterval($dateString);
+        return self::createFromDateInterval($dateInterval);
     }
 
     // queries ---------------------------------------------------------------------------------------------------------

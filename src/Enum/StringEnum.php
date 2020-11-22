@@ -14,7 +14,6 @@ use Dogma\Dumpable;
 use Dogma\Equalable;
 use Dogma\InvalidValueException;
 use Dogma\Obj;
-use Dogma\Type;
 use function array_search;
 use function in_array;
 use function sprintf;
@@ -92,7 +91,7 @@ abstract class StringEnum implements Enum, Dumpable
     final public function getConstantName(): string
     {
         /** @var string $result */
-        $result = array_search($this->value, self::$availableValues[static::class], Type::STRICT);
+        $result = array_search($this->value, self::$availableValues[static::class], true);
 
         return $result;
     }

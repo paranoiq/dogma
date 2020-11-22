@@ -11,7 +11,6 @@ namespace Dogma\Time;
 
 use DateInterval;
 use DateTime as PhpDateTime;
-use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Dogma\Arr;
@@ -56,7 +55,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
     /** @var int */
     private $julianDay;
 
-    /** @var DateTimeImmutable|null */
+    /** @var DateTime|null */
     private $dateTime;
 
     /**
@@ -69,7 +68,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
             $this->julianDay = $julianDayOrDateString;
         } else {
             try {
-                $this->dateTime = (new DateTimeImmutable($julianDayOrDateString))->setTime(0, 0, 0);
+                $this->dateTime = (new DateTime($julianDayOrDateString))->setTime(0, 0, 0);
                 $this->julianDay = self::calculateDayNumber($this->dateTime);
             } catch (Throwable $e) {
                 throw new InvalidDateTimeException($julianDayOrDateString, $e);
@@ -217,7 +216,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
     {
         Check::types($date, [DateTimeInterface::class, self::class]);
 
-        return (new DateTimeImmutable($this->format()))->diff(new DateTimeImmutable($date->format(self::DEFAULT_FORMAT)), $absolute);
+        return (new DateTime($this->format()))->diff(new DateTime($date->format(self::DEFAULT_FORMAT)), $absolute);
     }
 
     public function difference(Date $other, bool $absolute = false): DateSpan
@@ -335,12 +334,12 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     // getters ---------------------------------------------------------------------------------------------------------
 
-    private function getDateTime(): DateTimeImmutable
+    private function getDateTime(): DateTime
     {
         if ($this->dateTime === null) {
             [$m, $d, $y] = explode('/', jdtogregorian($this->julianDay));
 
-            $this->dateTime = new DateTimeImmutable($y . '-' . $m . '-' . $d . ' 00:00:00');
+            $this->dateTime = new DateTime($y . '-' . $m . '-' . $d . ' 00:00:00');
         }
 
         return $this->dateTime;

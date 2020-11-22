@@ -11,7 +11,6 @@ namespace Dogma\Time;
 
 use DateInterval;
 use DateTime as PhpDateTime;
-use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Dogma\Arr;
@@ -61,7 +60,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
     /** @var int */
     private $microseconds;
 
-    /** @var DateTimeImmutable|null */
+    /** @var DateTime|null */
     private $dateTime;
 
     /**
@@ -329,7 +328,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
     {
         Check::types($time, [DateTimeInterface::class, self::class]);
 
-        return (new DateTimeImmutable($this->format()))->diff(new DateTimeImmutable($time->format(self::DEFAULT_FORMAT)), $absolute);
+        return (new DateTime($this->format()))->diff(new DateTime($time->format(self::DEFAULT_FORMAT)), $absolute);
     }
 
     public function difference(Time $other, bool $absolute = false): TimeSpan
@@ -341,13 +340,13 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
 
     // getters ---------------------------------------------------------------------------------------------------------
 
-    private function getDateTime(): DateTimeImmutable
+    private function getDateTime(): DateTime
     {
         if ($this->dateTime === null) {
             $total = $this->microseconds % Microseconds::DAY;
             $seconds = (int) floor($total / 1000000);
             $microseconds = $total - ($seconds * 1000000);
-            $this->dateTime = new DateTimeImmutable(DateTime::MIN . ' +' . $seconds . ' seconds +' . $microseconds . ' microseconds');
+            $this->dateTime = new DateTime(DateTime::MIN . ' +' . $seconds . ' seconds +' . $microseconds . ' microseconds');
         }
 
         return $this->dateTime;

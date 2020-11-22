@@ -7,6 +7,8 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
+// phpcs:disable Squiz.Arrays.ArrayDeclaration.ValueNoNewline
+
 namespace Dogma\Math\Sequence;
 
 use Dogma\Math\IntCalc;
@@ -20,8 +22,6 @@ use function count;
 class Divisors implements Sequence
 {
     use StaticClassMixin;
-
-    // phpcs:disable Squiz.Arrays.ArrayDeclaration.ValueNoNewline
 
     /** @var int[] */
     public static $cache = [

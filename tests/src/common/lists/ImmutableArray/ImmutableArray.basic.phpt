@@ -10,6 +10,8 @@ use Dogma\ImmutableArray;
 use Dogma\ReverseArrayIterator;
 use Dogma\Tester\Assert;
 use IteratorAggregate;
+use const E_WARNING;
+use const PHP_VERSION_ID;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
@@ -50,9 +52,13 @@ Assert::true($array->offsetExists(0));
 Assert::false($array->offsetExists(3));
 
 Assert::same($array->offsetGet(0), 1);
-Assert::error(static function () use ($array): void {
-    $array->offsetGet(3);
-}, E_NOTICE, 'Undefined offset: 3');
+Assert::error(
+    static function () use ($array): void {
+        $array->offsetGet(3);
+    },
+    PHP_VERSION_ID < 80000 ? E_NOTICE : E_WARNING,
+    PHP_VERSION_ID < 80000 ? 'Undefined offset: 3' : 'Undefined array key 3'
+);
 
 Assert::exception(static function () use ($array): void {
     $array->offsetSet(3, 4);

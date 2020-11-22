@@ -7,13 +7,13 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
+// phpcs:disable Squiz.Arrays.ArrayDeclaration.ValueNoNewline
+
 namespace Dogma;
 
 class AsciiChars
 {
     use StaticClassMixin;
-
-    // phpcs:disable Squiz.Arrays.ArrayDeclaration.ValueNoNewline
 
     public const SPECIAL_WITHOUT_WHITESPACE = [
         Char::NUL, Char::SOH, Char::STX, Char::ETX, Char::EOT, Char::ENQ, Char::ACK, Char::BEL, Char::BS, Char::VT,

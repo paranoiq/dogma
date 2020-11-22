@@ -10,6 +10,7 @@
 namespace Dogma\Application;
 
 use Dogma\Application\Colors as C;
+use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Nette\Neon\Neon;
 use stdClass;
@@ -140,8 +141,14 @@ final class Configurator extends stdClass
         }
 
         $values = getopt(implode('', $short), $long);
+        if ($values === false) {
+            throw new ShouldNotHappenException('Something is wrong! ^_^');
+        }
         if ($shortAlt || $longAlt) {
             $altValues = getopt(implode('', $shortAlt), $longAlt);
+            if ($altValues === false) {
+                throw new ShouldNotHappenException('Something is wrong! ^_^');
+            }
             $values = array_merge($values, $altValues);
         }
         foreach ($this->arguments as $name => [$shortcut, $type]) {
@@ -254,7 +261,7 @@ final class Configurator extends stdClass
             foreach ($value as &$item) {
                 $item = $this->normalize($item);
             }
-        } elseif (is_numeric($value) && !is_array($value)) { // todo: is_array is for https://github.com/phpstan/phpstan/issues/3489
+        } elseif (is_numeric($value)) {
             $value = (float) $value;
             if ($value === (float) (int) $value) {
                 $value = (int) $value;

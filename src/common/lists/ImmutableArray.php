@@ -119,12 +119,12 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     {
         $keys = self::convertToArray($keys);
         $values = self::convertToArray($values);
-        $result = array_combine($keys, $values);
-        if ($result === false) {
+
+        if (count($keys) !== count($values)) {
             throw new InvalidArgumentException('Count of keys and values must be the same.');
         }
 
-        return new static($result);
+        return new static(array_combine($keys, $values));
     }
 
     /**
@@ -246,7 +246,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
      */
     public function contains($value): bool
     {
-        return in_array($value, $this->toArray(), Type::STRICT);
+        return in_array($value, $this->toArray(), true);
     }
 
     /**
@@ -278,7 +278,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
             return $this->drop($from)->indexOf($value);
         }
 
-        $result = array_search($value, $this->toArray(), Type::STRICT);
+        $result = array_search($value, $this->toArray(), true);
         if ($result === false) {
             return null;
         }
@@ -292,7 +292,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
      */
     public function indexesOf($value): self
     {
-        return new static(array_keys($this->items, $value, Type::STRICT));
+        return new static(array_keys($this->items, $value, true));
     }
 
     /**

@@ -9,11 +9,13 @@
 
 namespace Dogma\Http;
 
+use CurlHandle;
 use Dogma\Http\Curl\CurlHelper;
 use Dogma\InvalidValueException;
 use Dogma\Io\FileMode;
 use Dogma\NonSerializableMixin;
 use Dogma\StrictBehaviorMixin;
+use RuntimeException;
 use const CURLAUTH_ANYSAFE;
 use const CURLOPT_BINARYTRANSFER;
 use const CURLOPT_CONNECTTIMEOUT;
@@ -82,7 +84,7 @@ class HttpRequest
     use StrictBehaviorMixin;
     use NonSerializableMixin;
 
-    /** @var resource (curl) */
+    /** @var CurlHandle|resource */
     private $curl;
 
     /** @var callable|null */
@@ -443,7 +445,7 @@ class HttpRequest
     /**
      * Called by RequestManager.
      * @internal
-     * @return resource
+     * @return CurlHandle|resource
      */
     public function getHandler()
     {
@@ -632,7 +634,11 @@ class HttpRequest
 
     final public function __clone()
     {
-        $this->curl = curl_copy_handle($this->curl);
+        $handle = curl_copy_handle($this->curl);
+        if ($handle === false) {
+            throw new RuntimeException('Could not copy Curl handle.');
+        }
+        $this->curl = $handle;
 
         // need to set the closure to $this again
         $this->setHeaderFunction();

@@ -1,4 +1,7 @@
 
+includes:
+    - phpstan.conf.php
+
 parameters:
     ignoreErrors:
         # misleading
@@ -6,31 +9,30 @@ parameters:
         - '~^Instanceof between Dogma\\Dom\\Element\|DOMNode and DOMCdataSection will always evaluate to false.~' # DOMCdataSection is a child of DOMNode
         - '~Parameter .* of static method Dogma\\Type::get\(\) expects~' # parameters magic
         - '~Variable \$result in PHPDoc tag @var does not exist~' # while ($result = array_shift($sources)) {
-        - '~Strict comparison using === between array<int, string> and array\(\) will always evaluate to false.~' # Cls
         - '~Method Dogma\\Time\\DateTime::createFromAnyFormat\(\) should return static\(Dogma\\Time\\DateTime\) but return statement is missing.~' # WTF?!
-        - '~Parameter #1 \$function of function call_user_func expects callable\(\): mixed, array\(~'
-        -
-            message: '~Cannot cast .* to int~' # bullshit
-            path: "../../src/common/Check.php"
+        - '~Parameter #1 \$value of static method Dogma\\Enum\\(Int|String)(Enum|Set)::isValid\(\) expects (int|string), int\|string given.~'
+        - '~Method Dogma\\Enum\\(Int|String)Set::getConstantNames\(\) should return array<string> but returns array<(int|string), int\|string\|false>.~'
+        - '~Parameter #(1|2) \$arr(1|2) of function array_[a-z_]+ expects array, array\|\(callable\) given.~' # callables filtered out
+        - "~Cannot cast 0\\|0.0\\|1\\|1.0\\|''\\|'0'\\|'0.0'\\|'1'\\|'1.0' to int.~" # '' is a bool ^_^
+        - '~Method Dogma\\Io\\FileMetaData::.*\(\) should return (int|string) but returns int\|string.~'
         -
             message: "~Result of && is always false.~" # ???
             path: "../../src/common/Check.php"
         -
             message: "~Strict comparison using === between string and false will always evaluate to false~"
             path: "../../src/common/Str.php"
-
-        # intended
-        - '~^Parameter #1 \$value of static method Dogma\\Enum\\(Int|String)(Enum|Set)::isValid\(\) expects (int|string), int\|string given~'
-        - '~^Method Dogma\\Io\\FileMetaData::get.*\(\) should return (int|string) but returns int\|string~'
+        -
+            message: '~Binary operation "." between string and array<string>\|string results in an error.~'
+            path: "../../src/Language/Transliterator.php"
 
         # interface
         - '~^PHPDoc tag @return with type Dogma\\Language\\Locale\\LocaleCollationOption is not subtype of native type Dogma\\Enum\\StringEnum~'
 
-        # the fuck i know
-        - '~^Binary operation "\." between string and array<string>\|string results in an error~'
-
         # deprecated things, won't fix
         - '~method Dogma\\Database\\SimplePdo~'
+
+        # PHP 7 -> 8
+        - '~expects (Curl(Multi)?Handle|resource), Curl(Multi)?Handle\|resource given~'
 
     excludes_analyse:
         - */tests/*/data/*

@@ -1051,16 +1051,24 @@ class Country extends StringEnum
 
     public static function getByLongCode(string $longCode): self
     {
+        /** @var string|false $code */
         $code = array_search($longCode, self::$longCodes, true);
         if ($code === false) {
             throw new InvalidValueException($longCode, self::class);
         }
+
         return self::get($code);
     }
 
     public static function getByIdent(string $ident): self
     {
-        return self::get(array_search($ident, self::$idents, true));
+        /** @var string|false $ident */
+        $ident = array_search($ident, self::$idents, true);
+        if ($ident === false) {
+            throw new InvalidValueException($ident, self::class);
+        }
+
+        return self::get($ident);
     }
 
     public static function validateValue(string &$value): bool

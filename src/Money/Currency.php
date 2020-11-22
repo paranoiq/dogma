@@ -524,7 +524,7 @@ class Currency extends StringEnum
     public function getByIdent(string $ident): self
     {
         /** @var string $code */
-        $code = array_search($ident, self::$idents);
+        $code = array_search($ident, self::$idents, true);
 
         return self::get($code);
     }

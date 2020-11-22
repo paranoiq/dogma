@@ -181,14 +181,14 @@ class Inflector
     {
         $lower = Str::lower($word);
 
-        return !in_array($lower, self::$uncountable);
+        return !in_array($lower, self::$uncountable, true);
     }
 
     public static function isIrregular(string $word): bool
     {
         $lower = Str::lower($word);
 
-        return in_array($lower, self::$irregular) || array_key_exists($lower, self::$irregular);
+        return in_array($lower, self::$irregular, true) || array_key_exists($lower, self::$irregular);
     }
 
     /**

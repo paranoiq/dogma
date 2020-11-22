@@ -190,7 +190,7 @@ class QueryEngine
         if (!$alias) {
             $alias = $name;
         }
-        if (in_array($alias, $this->nativeFunctions)) {
+        if (in_array($alias, $this->nativeFunctions, true)) {
             throw new QueryEngineException("Function '$alias' is already registered.");
         }
 

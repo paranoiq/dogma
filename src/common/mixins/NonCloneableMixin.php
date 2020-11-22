@@ -13,8 +13,7 @@ trait NonCloneableMixin
 {
 
     /**
-     * To avoid cloning a non cloneable object
-     * @deprecated
+     * @deprecated Cloning this class is forbidden
      * @throws NonCloneableObjectException
      */
     final public function __clone()

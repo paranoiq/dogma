@@ -2590,7 +2590,7 @@ class ContentType extends PartialStringEnum
     public function getExtension(): ?string
     {
         /** @var string|null $extension */
-        $extension = array_search($this->getValue(), self::$extensions) ?: null;
+        $extension = array_search($this->getValue(), self::$extensions, true) ?: null;
 
         return $extension;
     }

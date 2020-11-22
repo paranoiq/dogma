@@ -12,6 +12,7 @@ namespace Dogma\Language\Locale;
 use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Country\Country;
+use Dogma\InvalidArgumentException;
 use Dogma\Language\Collator;
 use Dogma\Language\Language;
 use Dogma\Language\Script;
@@ -105,6 +106,9 @@ class Locale
         }
 
         $value = PhpLocale::composeLocale(array_filter($components));
+        if ($value === false) {
+            throw new InvalidArgumentException('Invalid locale components.');
+        }
         if ($keywords) {
             $value .= '@' . implode(';', Arr::mapPairs($keywords, static function (string $key, string $value) {
                 return $key . '=' . $value;

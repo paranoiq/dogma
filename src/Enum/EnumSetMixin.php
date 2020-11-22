@@ -9,13 +9,13 @@
 
 namespace Dogma\Enum;
 
-use _HumbugBox09702017065e\Roave\BetterReflection\Reflection\ReflectionConstant;
 use Dogma\Cls;
 use Dogma\InvalidTypeException;
 use Dogma\InvalidValueException;
 use Dogma\LogicException;
 use Dogma\StrictBehaviorMixin;
 use ReflectionClass;
+use ReflectionClassConstant;
 use function array_diff_key;
 use function end;
 use function explode;
@@ -112,6 +112,7 @@ trait EnumSetMixin
             if (!$constant->isPublic()) {
                 continue;
             }
+            /** @var string $constantName */
             $constantName = $constant->getName();
 
             if (!$isDescendant) {
@@ -135,7 +136,7 @@ trait EnumSetMixin
                     sprintf('Enum constant %s::%s must have the same value as its definition in parent class %s.', $class, $constantName, $parentClass)
                 );
             }
-            /** @var ReflectionConstant $parentConstant */
+            /** @var ReflectionClassConstant $parentConstant */
             $parentConstant = $parent->getReflectionConstant($constantName);
             $removed = strpos($constant->getDocComment() ?: '', '@removed') !== false;
             $parentRemoved = strpos($parentConstant->getDocComment() ?: '', '@removed') !== false;

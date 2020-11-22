@@ -15,9 +15,8 @@ trait NonSerializableMixin
 {
 
     /**
-     * To avoid serializing a non serializable object
      * @return mixed[]
-     * @deprecated
+     * @deprecated Serializing this class is forbidden
      * @throws NonSerializableObjectException
      */
     final public function __sleep(): array
@@ -30,8 +29,7 @@ trait NonSerializableMixin
     }
 
     /**
-     * To avoid serializing a non serializable object
-     * @deprecated
+     * @deprecated Serializing this class is forbidden
      * @throws NonSerializableObjectException
      */
     final public function __wakeup(): void

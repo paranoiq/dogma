@@ -12,6 +12,7 @@ namespace Dogma\Language;
 use Collator as PhpCollator;
 use Dogma\Arr;
 use Dogma\Check;
+use Dogma\InvalidArgumentException;
 use Dogma\Language\Locale\Locale;
 use Dogma\Language\Locale\LocaleCollationOption;
 use Dogma\Language\Locale\LocaleKeyword;
@@ -102,7 +103,12 @@ class Collator extends PhpCollator
 
     public function getLocaleObject(int $type = PhpLocale::ACTUAL_LOCALE): Locale
     {
-        return Locale::get($this->getLocale($type));
+        $locale = $this->getLocale($type);
+        if ($locale === false) {
+            throw new InvalidArgumentException('Invalid locale type.');
+        }
+
+        return Locale::get($locale);
     }
 
     /**
@@ -114,10 +120,15 @@ class Collator extends PhpCollator
     public function compare($str1, $str2): int
     {
         if ($this->backwards) {
-            return parent::compare($str2, $str1);
+            $result = parent::compare($str2, $str1);
         } else {
-            return parent::compare($str1, $str2);
+            $result = parent::compare($str1, $str2);
         }
+        if ($result === false) {
+            throw new InvalidArgumentException('Incomparable strings given.');
+        }
+
+        return $result;
     }
 
     /**

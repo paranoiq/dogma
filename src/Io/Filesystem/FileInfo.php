@@ -20,41 +20,40 @@ use function str_replace;
 
 /**
  * File Info
+ *
+ * inherits:
+ * getATime()
+ * getBasename()
+ * getCTime()
+ * getExtension()
+ * getFileInfo()
+ * getFilename()
+ * getGroup()
+ * getInode()
+ * getLinkTarget()
+ * getMTime()
+ * getOwner()
+ * getPath()
+ * getPathInfo()
+ * getPathname()
+ * getPerms()
+ * getRealPath()
+ * getSize()
+ * getType()
+ * isDir()
+ * isExecutable()
+ * isFile()
+ * isLink()
+ * isReadable()
+ * isWritable()
+ * openFile() ***
+ * setFileClass() ???
+ * setInfoClass() ok
+ * __toString() ???
  */
 class FileInfo extends SplFileInfo implements Path
 {
     use StrictBehaviorMixin;
-
-    /* inherits:
-    getATime()
-    getBasename()
-    getCTime()
-    getExtension()
-    getFileInfo()
-    getFilename()
-    getGroup()
-    getInode()
-    getLinkTarget()
-    getMTime()
-    getOwner()
-    getPath()
-    getPathInfo()
-    getPathname()
-    getPerms()
-    getRealPath()
-    getSize()
-    getType()
-    isDir()
-    isExecutable()
-    isFile()
-    isLink()
-    isReadable()
-    isWritable()
-    openFile() ***
-    setFileClass() ???
-    setInfoClass() ok
-    __toString() ???
-    */
 
     public function getPath(): string
     {

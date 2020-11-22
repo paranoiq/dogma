@@ -560,7 +560,7 @@ final class Tld extends PartialStringEnum
     public static function getByCountry(Country $country): self
     {
         /** @var string $domain */
-        $domain = array_search($country->getValue(), self::$countryMap);
+        $domain = array_search($country->getValue(), self::$countryMap, true);
 
         return self::get($domain);
     }

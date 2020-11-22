@@ -9,6 +9,7 @@
 
 namespace Dogma\Http\Channel;
 
+use CurlMultiHandle;
 use Dogma\Http\Curl\CurlHelper;
 use Dogma\Http\HttpHeaderParser;
 use Dogma\Http\HttpRequest;
@@ -37,7 +38,7 @@ class HttpChannelManager
     use NonSerializableMixin;
     use NonCloneableMixin;
 
-    /** @var resource (curl) */
+    /** @var CurlMultiHandle|resource */
     private $handler;
 
     /** @var int maximum threads for all channels */
@@ -71,7 +72,7 @@ class HttpChannelManager
     }
 
     /**
-     * @return resource
+     * @return CurlMultiHandle|resource
      */
     public function getHandler()
     {

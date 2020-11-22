@@ -106,6 +106,9 @@ class SimplePdo extends PDO
             if ($counter > 0) {
                 $args = array_values($args);
                 $statement = $this->prepare($query);
+                if ($statement === false) {
+                    throw new PDOException('Could not prepare statement.');
+                }
                 foreach (array_values($args) as $i => $arg) {
                     $type = $types[$i] ?? self::$nativeTypes[gettype($arg)] ?? self::PARAM_NULL;
                     $statement->bindParam(':arg_' . $i, $args[$i], $type);
@@ -167,7 +170,12 @@ class SimplePdo extends PDO
         } elseif ($parameterType !== null && $parameterType === 'binary') {
             return 'X\'' . bin2hex($value) . '\'';
         } else {
-            return parent::quote($value);
+            $result = parent::quote($value);
+            if ($result === false) {
+                throw new PDOException('Could not quote string.');
+            }
+
+            return $result;
         }
     }
 

@@ -102,7 +102,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     {
         return new static(
             DateTime::createFromDateAndTime($date, $timeInterval->getStart(), $timeZone),
-            DateTime::createFromDateAndTime($date, $timeInterval->getEnd(), $timeZone),
+            DateTime::createFromDateAndTime($date, $timeInterval->getEnd(), $timeZone)
         );
     }
 
@@ -110,7 +110,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     {
         return new static(
             DateTime::createFromDateAndTime($dateInterval->getStart(), $time, $timeZone),
-            DateTime::createFromDateAndTime($dateInterval->getEnd(), $time, $timeZone),
+            DateTime::createFromDateAndTime($dateInterval->getEnd(), $time, $timeZone)
         );
     }
 
