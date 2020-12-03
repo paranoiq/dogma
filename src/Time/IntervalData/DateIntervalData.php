@@ -29,6 +29,7 @@ use Dogma\Time\Span\DateTimeSpan;
 use Tracy\Debugger;
 use function array_shift;
 use function array_values;
+use function get_class;
 use function sprintf;
 use function trim;
 
@@ -228,7 +229,7 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
      */
     public function dataEquals($otherData): bool
     {
-        if ($this->data instanceof Equalable && $otherData instanceof Equalable) {
+        if ($this->data instanceof Equalable && $otherData instanceof Equalable && get_class($this->data) === get_class($otherData)) {
             return $this->data->equals($otherData);
         }
 
