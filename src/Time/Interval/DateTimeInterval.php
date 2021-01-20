@@ -98,6 +98,11 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue()));
     }
 
+    public static function createFromDateTimeInterfaces(DateTimeInterface $start, DateTimeInterface $end): self
+    {
+        return new static(DateTime::createFromDateTimeInterface($start), DateTime::createFromDateTimeInterface($end));
+    }
+
     public static function createFromDateAndTimeInterval(Date $date, TimeInterval $timeInterval, ?DateTimeZone $timeZone = null): self
     {
         return new static(

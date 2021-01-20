@@ -103,6 +103,11 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue() . ' -1 day'));
     }
 
+    public static function createFromDateTimeInterfaces(DateTimeInterface $start, DateTimeInterface $end): self
+    {
+        return new static(Date::createFromDateTimeInterface($start), Date::createFromDateTimeInterface($end));
+    }
+
     public static function future(?TimeProvider $timeProvider = null): self
     {
         $tomorrow = $timeProvider !== null ? $timeProvider->getDate()->addDay() : new Date('tomorrow');

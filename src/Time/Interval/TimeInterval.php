@@ -9,6 +9,7 @@
 
 namespace Dogma\Time\Interval;
 
+use DateTimeInterface;
 use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
@@ -107,6 +108,11 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         }
 
         return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue()));
+    }
+
+    public static function createFromDateTimeInterfaces(DateTimeInterface $start, DateTimeInterface $end): self
+    {
+        return new static(Time::createFromDateTimeInterface($start), Time::createFromDateTimeInterface($end));
     }
 
     public static function closed(Time $start, Time $end): self
