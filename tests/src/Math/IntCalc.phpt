@@ -41,6 +41,17 @@ Assert::same(IntCalc::roundDownTo(-22, 3), -24);
 Assert::same(IntCalc::roundDownTo(20, -3), 18);
 Assert::same(IntCalc::roundDownTo(22, -3), 21);
 
+// factorial()
+Assert::same(IntCalc::factorial(-4), -24);
+Assert::same(IntCalc::factorial(-3), -6);
+Assert::same(IntCalc::factorial(-2), -2);
+Assert::same(IntCalc::factorial(-1), -1);
+Assert::same(IntCalc::factorial(0), 1);
+Assert::same(IntCalc::factorial(1), 1);
+Assert::same(IntCalc::factorial(2), 2);
+Assert::same(IntCalc::factorial(3), 6);
+Assert::same(IntCalc::factorial(4), 24);
+
 // factorize()
 Assert::same(IntCalc::factorize(1), [1]);
 Assert::same(IntCalc::factorize(2), [2]);

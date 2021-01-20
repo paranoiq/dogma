@@ -81,7 +81,10 @@ class IntCalc
      */
     public static function factorial(int $n)
     {
-        return array_product(range(2, $n));
+        $sign = $n < 0 ? -1 : 1;
+        $n = $sign * $n;
+
+        return $sign * ($n > 1 ? array_product(range(2, $n)) : 1);
     }
 
     /**
