@@ -20,38 +20,49 @@ $s = static function (FloatInterval ...$items) {
     return new FloatIntervalSet($items);
 };
 
-// getIntervals() & getIterator()
+
+getIntervals:
+getIterator:
 Assert::same($set->getIntervals(), iterator_to_array($set->getIterator()));
 
-// isEmpty()
+
+isEmpty:
 Assert::true((new FloatIntervalSet([]))->isEmpty());
 Assert::true((new FloatIntervalSet([$emptyInterval]))->isEmpty());
 
-// equals()
+
+equals:
 Assert::true($set->equals($s($i(1, 5))));
 Assert::false($set->equals($s($i(1, 6))));
 
-// containsValue()
+
+containsValue:
 Assert::true($set->containsValue(1));
 Assert::true($set->containsValue(5));
 Assert::false($set->containsValue(6));
 
-// envelope()
+
+envelope:
 Assert::equal($s($i(1, 2), $i(4, 5))->envelope(), $interval);
 
-// normalize()
+
+normalize:
 Assert::equal($s($i(1, 4), $i(2, 5))->normalize(), $set);
 
-// add()
+
+add:
 Assert::equal($s($i(1, 2), $i(3, 4), $i(5, 6)), $s($i(1, 2))->add($s($i(3, 4), $i(5, 6))));
 
-// subtract()
+
+subtract:
 Assert::equal($s($i(1, 10))->subtract($s($i(3, 4), $i(7, 8))), $s($i(1, 3, false, true), $i(4, 7, true, true), $i(8, 10, true, false)));
 
-// intersect()
+
+intersect:
 Assert::equal($s($i(1, 5), $i(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $s($i(4, 5), $i(10, 12), $i(14, 15)));
 
-// map()
+
+map:
 Assert::equal($set->map(static function (FloatInterval $interval) {
     return $interval;
 }), $set);
@@ -64,7 +75,8 @@ Assert::equal($set->map(static function (FloatInterval $interval) {
 
 $set = $s(FloatInterval::empty(), $i(1, 1), $i(1, 2), $i(1, 3));
 
-// filterByLength()
+
+filterByLength:
 Assert::equal($set->filterByLength('>', 1), $s($i(1, 3)));
 Assert::equal($set->filterByLength('>=', 1), $s($i(1, 2), $i(1, 3)));
 Assert::equal($set->filterByLength('=', 1), $s($i(1, 2)));

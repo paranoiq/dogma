@@ -12,101 +12,131 @@ require_once __DIR__ . '/../../bootstrap.php';
 $callable = Type::callable();
 $callableNullable = Type::callable(Type::NULLABLE);
 
-// getId()
+
+getId:
 Assert::same($callable->getId(), 'callable');
 Assert::same($callableNullable->getId(), 'callable?');
 
-// fromId()
+
+fromId:
 Assert::same(Type::fromId('callable'), $callable);
 Assert::same(Type::fromId('callable?'), $callableNullable);
 
-// getName()
+
+getName:
 Assert::same($callable->getName(), Type::PHP_CALLABLE);
 
-// isNullable()
+
+isNullable:
 Assert::false($callable->isNullable());
 Assert::true($callableNullable->isNullable());
 
-// isSigned()
+
+isSigned:
 Assert::false($callable->isSigned());
 
-// isUnsigned()
+
+isUnsigned:
 Assert::false($callable->isUnsigned());
 
-// isFixed()
+
+isFixed:
 Assert::false($callable->isFixed());
 
-// getResourceType()
+
+getResourceType:
 Assert::null($callable->getResourceType());
 
-// getItemType()
+
+getItemType:
 Assert::null($callable->getItemType());
 
-// getSize()
+
+getSize:
 Assert::null($callable->getSize());
 
-// getEncoding()
+
+getEncoding:
 Assert::null($callable->getEncoding());
 
-// getLocale()
+
+getLocale:
 Assert::null($callable->getLocale());
 
-// isBool()
+
+isBool:
 Assert::false($callable->isBool());
 
-// isInt()
+
+isInt:
 Assert::false($callable->isInt());
 
-// isFloat()
+
+isFloat:
 Assert::false($callable->isFloat());
 
-// isNumeric()
+
+isNumeric:
 Assert::false($callable->isNumeric());
 
-// isString()
+
+isString:
 Assert::false($callable->isString());
 
-// isScalar()
+
+isScalar:
 Assert::false($callable->isScalar());
 
-// isArray()
+
+isArray:
 Assert::false($callable->isArray());
 
-// isCollection()
+
+isCollection:
 Assert::false($callable->isCollection());
 
-// isTuple()
+
+isTuple:
 Assert::false($callable->isTuple());
 
-// isClass()
+
+isClass:
 Assert::false($callable->isClass());
 
-// isCallable()
+
+isCallable:
 Assert::true($callable->isCallable());
 
-// isResource()
+
+isResource:
 Assert::false($callable->isResource());
 
-// is()
+
+is:
 Assert::true($callable->is(Type::PHP_CALLABLE));
 Assert::false($callable->is(DateTime::class));
 
-// isImplementing()
+
+isImplementing:
 Assert::false($callable->isImplementing(DateTime::class));
 
-// getBaseType()
+
+getBaseType:
 Assert::same($callable->getBaseType(), $callable);
 Assert::same($callableNullable->getBaseType(), $callable);
 
-// getNonNullableType()
+
+getNonNullableType:
 Assert::same($callable->getNonNullableType(), $callable);
 Assert::same($callableNullable->getNonNullableType(), $callable);
 
-// getTypeWithoutParams()
+
+getTypeWithoutParams:
 Assert::same($callable->getTypeWithoutParams(), $callable);
 Assert::same($callableNullable->getTypeWithoutParams(), $callableNullable);
 
-// getInstance()
+
+getInstance:
 Assert::exception(static function () use ($callable): void {
     $callable->getInstance();
 }, Error::class);

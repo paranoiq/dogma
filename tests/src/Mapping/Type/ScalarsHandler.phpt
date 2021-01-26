@@ -19,7 +19,8 @@ $floatType = Type::get(Type::FLOAT);
 $numericType = Type::get(Type::NUMBER);
 $stringType = Type::get(Type::STRING);
 
-// acceptType()
+
+acceptType:
 Assert::false($handler->acceptsType(Type::get(Assert::class)));
 Assert::true($handler->acceptsType($boolType));
 Assert::true($handler->acceptsType($intType));
@@ -27,14 +28,16 @@ Assert::true($handler->acceptsType($floatType));
 Assert::true($handler->acceptsType($numericType));
 Assert::true($handler->acceptsType($stringType));
 
-// getParameters()
+
+getParameters:
 Assert::same($handler->getParameters($boolType), null);
 Assert::same($handler->getParameters($intType), null);
 Assert::same($handler->getParameters($floatType), null);
 Assert::same($handler->getParameters($numericType), null);
 Assert::same($handler->getParameters($stringType), null);
 
-// createInstance()
+
+createInstance:
 $boolInstance = $handler->createInstance($boolType, '1', $mapper);
 Assert::same($boolInstance, true);
 $intInstance = $handler->createInstance($intType, '123', $mapper);
@@ -48,7 +51,8 @@ Assert::same($numericFloatInstance, 1.23);
 $stringInstance = $handler->createInstance($stringType, 123, $mapper);
 Assert::same($stringInstance, '123');
 
-// exportInstance()
+
+exportInstance:
 // expected behavior - does not map back since the original type is unknown. proper reverse mapping must be
 // implemented either by a specialised handler (eg. MysqlScalarsHandler) or at an another layer (connection adapter)
 Assert::same($handler->exportInstance($boolType, $boolInstance, $mapper), true);

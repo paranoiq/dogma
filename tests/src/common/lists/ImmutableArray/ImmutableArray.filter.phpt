@@ -14,23 +14,28 @@ $f = static function (int $v): int {
     return $v % 2;
 };
 
-// collect()
+
+collect:
 Assert::same($array->collect($f)->toArray(), [1, 2 => 1]);
 Assert::same($empty->collect($f)->toArray(), []);
 
-// filter()
+
+filter:
 Assert::same($array->filter($f)->toArray(), [1, 2 => 3]);
 Assert::same($empty->filter($f)->toArray(), []);
 
-// filterKeys()
+
+filterKeys:
 Assert::same($array->filterKeys($f)->toArray(), [1 => 2, 3 => 4]);
 Assert::same($empty->filterKeys($f)->toArray(), []);
 
-// filterNot()
+
+filterNot:
 Assert::same($array->filterNot($f)->toArray(), [1 => 2, 3 => 4]);
 Assert::same($empty->filterNot($f)->toArray(), []);
 
-// partition()
+
+partition:
 /** @var ImmutableArray $a */
 /** @var ImmutableArray $b */
 [$a, $b] = $array->partition($f);

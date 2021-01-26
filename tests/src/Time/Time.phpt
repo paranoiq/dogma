@@ -16,7 +16,8 @@ $microSeconds = 11045000006;
 $denormalizedTime = new Time('27:04:05.000006');
 $denormalizedMicroSeconds = 97445000006;
 
-// __construct()
+
+__construct:
 Assert::throws(static function (): void {
     new Time(-200);
 }, ValueOutOfRangeException::class);
@@ -26,98 +27,117 @@ Assert::throws(static function (): void {
 
 Assert::same((new Time($timeString))->format(), $timeString);
 
-// createFromComponents()
+
+createFromComponents:
 Assert::throws(static function (): void {
     Time::createFromComponents(-1, 0, 0);
 }, ValueOutOfRangeException::class);
 Assert::type(Time::createFromComponents(3, 4, 5, 6), Time::class);
 Assert::same(Time::createFromComponents(3, 4, 5, 6)->format(), $timeString);
 
-// createFromSeconds()
+
+createFromSeconds:
 Assert::throws(static function (): void {
     Time::createFromSeconds(-1);
 }, ValueOutOfRangeException::class);
 Assert::type(Time::createFromSeconds((int) ($microSeconds / 1000000)), Time::class);
 Assert::same(Time::createFromSeconds((int) ($microSeconds / 1000000))->format(), '03:04:05.000000');
 
-// createFromFormat()
+
+createFromFormat:
 Assert::throws(static function (): void {
     Time::createFromFormat(Time::DEFAULT_FORMAT, 'asdf');
 }, InvalidDateTimeException::class);
 Assert::type(Time::createFromFormat(Time::DEFAULT_FORMAT, $timeString), Time::class);
 Assert::same(Time::createFromFormat(Time::DEFAULT_FORMAT, $timeString)->format(), $timeString);
 
-// normalize()
+
+normalize:
 Assert::same($time->normalize()->getMicroTime(), $microSeconds);
 Assert::same($denormalizedTime->normalize()->getMicroTime(), $microSeconds);
 
-// denormalize()
+
+denormalize:
 Assert::same($time->denormalize()->getMicroTime(), $denormalizedMicroSeconds);
 Assert::same($denormalizedTime->denormalize()->getMicroTime(), $denormalizedMicroSeconds);
 
-// modify()
+
+modify:
 Assert::same($time->modify('+1 hour')->getMicroTime(), $microSeconds + 3600 * 1000000);
 Assert::same($denormalizedTime->modify('+1 hour')->getMicroTime(), $denormalizedMicroSeconds + 3600 * 1000000);
 // todo: overflows
 
-// getMicroTime()
+
+getMicroTime:
 Assert::same($time->getMicroTime(), $microSeconds);
 Assert::same($denormalizedTime->getMicroTime(), $denormalizedMicroSeconds);
 
-// getHours()
+
+getHours:
 Assert::same($time->getHours(), 3);
 Assert::same($denormalizedTime->getHours(), 3);
 
-// getMinutes()
+
+getMinutes:
 Assert::same($time->getMinutes(), 4);
 Assert::same($denormalizedTime->getMinutes(), 4);
 
-// getSeconds()
+
+getSeconds:
 Assert::same($time->getSeconds(), 5);
 Assert::same($denormalizedTime->getSeconds(), 5);
 
-// getMicroseconds()
+
+getMicroseconds:
 Assert::same($time->getMicroseconds(), 6);
 Assert::same($denormalizedTime->getMicroseconds(), 6);
 
 $before = new Time('02:00:00');
 $after = new Time('04:00:00');
 
-// equals()
+
+equals:
 Assert::false($time->equals(new Time(0)));
 Assert::true($time->equals(new Time($timeString)));
 
-// compare()
+
+compare:
 Assert::same($time->compare($before), 1);
 Assert::same($time->compare($time), 0);
 Assert::same($time->compare($after), -1);
 
-// isBefore()
+
+isBefore:
 Assert::false($time->isBefore($before));
 Assert::false($time->isBefore($time));
 Assert::true($time->isBefore($after));
 
-// isAfter()
+
+isAfter:
 Assert::true($time->isAfter($before));
 Assert::false($time->isAfter($time));
 Assert::false($time->isAfter($after));
 
-// isSameOrBefore()
+
+isSameOrBefore:
 Assert::false($time->isSameOrBefore($before));
 Assert::true($time->isSameOrBefore($time));
 Assert::true($time->isSameOrBefore($after));
 
-// isSameOrAfter()
+
+isSameOrAfter:
 Assert::true($time->isSameOrAfter($before));
 Assert::true($time->isSameOrAfter($time));
 Assert::false($time->isSameOrAfter($after));
 
-// isBetween()
+
+isBetween:
 Assert::false($time->isBetween(new Time('10:00:00'), new Time('12:00:00')));
 Assert::true($time->isBetween(new Time('02:00:00'), new Time('04:00:00')));
 Assert::true($time->isBetween(new Time('22:00:00'), new Time('04:00:00')));
 
-// rounding
+
+// rounding ------------------------------------------------------------------------------------------------------------
 
 $hour = DateTimeUnit::hour();
 $minute = DateTimeUnit::minute();
@@ -134,7 +154,8 @@ $criticalTime = new Time('23:59:59.999999');
 
 Assert::equal((new Time('14:55:00.000000'))->roundUpTo($minute, [20]), new Time('15:20:00.000000'));
 
-// roundTo()
+
+roundTo:
 Assert::equal($time->roundTo($hour, $hours), new Time('00:00:00.000000'));
 Assert::equal($time->roundTo($minute, $minutes), new Time('03:00:00.000000'));
 Assert::equal($time->roundTo($second, $seconds), new Time('03:04:00.000000'));
@@ -153,7 +174,8 @@ Assert::equal($criticalTime->roundTo($second, $seconds), new Time('00:00:00.0000
 Assert::equal($criticalTime->roundTo($milisecond, $miliseconds), new Time('00:00:00.000000'));
 Assert::equal($criticalTime->roundTo($microsecond, $microseconds), new Time('00:00:00.000000'));
 
-// roundUpTo()
+
+roundUpTo:
 Assert::equal($time->roundUpTo($hour, $hours), new Time('08:00:00.000000'));
 Assert::equal($time->roundUpTo($minute, $minutes), new Time('03:15:00.000000'));
 Assert::equal($time->roundUpTo($second, $seconds), new Time('03:04:15.000000'));
@@ -172,7 +194,8 @@ Assert::equal($criticalTime->roundUpTo($second, $seconds), new Time('00:00:00.00
 Assert::equal($criticalTime->roundUpTo($milisecond, $miliseconds), new Time('00:00:00.000000'));
 Assert::equal($criticalTime->roundUpTo($microsecond, $microseconds), new Time('00:00:00.000000'));
 
-// roundDownTo()
+
+roundDownTo:
 Assert::equal($time->roundDownTo($hour, $hours), new Time('00:00:00.000000'));
 Assert::equal($time->roundDownTo($minute, $minutes), new Time('03:00:00.000000'));
 Assert::equal($time->roundDownTo($second, $seconds), new Time('03:04:00.000000'));

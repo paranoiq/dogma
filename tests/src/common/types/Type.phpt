@@ -10,9 +10,8 @@ use SplFixedArray;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-// more complex examples:
 
-// without params
+without_params:
 $id = 'Dogma\\Tuple<int,string,Dogma\\Tuple<int,array<int>,int>,SplFixedArray<int>>';
 $type = Type::fromId($id);
 $expected = Type::tupleOf(
@@ -28,7 +27,8 @@ $expected = Type::tupleOf(
 Assert::same($type, $expected);
 Assert::same($expected->getId(), $id);
 
-// with nullable
+
+with_nullable:
 $id = 'Dogma\\Tuple<int?,string,Dogma\\Tuple<int,array<int>,int>?,SplFixedArray<int>>?';
 $type = Type::fromId($id);
 $expected = Type::tupleOf(
@@ -46,7 +46,8 @@ $expected = Type::tupleOf(
 Assert::same($type, $expected);
 Assert::same($expected->getId(), $id);
 
-// with nullable and params
+
+with_nullable_and_params:
 $id = 'Dogma\\Tuple<int?,string(20),Dogma\\Tuple<int(16,unsigned),array<int>,int>?,SplFixedArray<int>>?';
 $type = Type::fromId($id);
 $expected = Type::tupleOf(

@@ -14,7 +14,8 @@ use Dogma\Tester\Assert;
 
 require_once __DIR__ . '/../bootstrap.php';
 
-// roundTo()
+
+roundTo:
 Assert::same(FloatCalc::roundTo(0.0, 0.25), 0.0);
 Assert::same(FloatCalc::roundTo(2.1, 0.25), 2.0);
 Assert::same(FloatCalc::roundTo(2.2, 0.25), 2.25);
@@ -23,7 +24,8 @@ Assert::same(FloatCalc::roundTo(-2.2, 0.25), -2.25);
 Assert::same(FloatCalc::roundTo(2.1, -0.25), 2.0);
 Assert::same(FloatCalc::roundTo(2.2, -0.25), 2.25);
 
-// roundUpTo()
+
+roundUpTo:
 Assert::same(FloatCalc::roundUpTo(0.0, 0.25), 0.0);
 Assert::same(FloatCalc::roundUpTo(2.1, 0.25), 2.25);
 Assert::same(FloatCalc::roundUpTo(2.2, 0.25), 2.25);
@@ -32,7 +34,8 @@ Assert::same(FloatCalc::roundUpTo(-2.2, 0.25), -2.0);
 Assert::same(FloatCalc::roundUpTo(2.1, -0.25), 2.25);
 Assert::same(FloatCalc::roundUpTo(2.2, -0.25), 2.25);
 
-// roundDownTo()
+
+roundDownTo:
 Assert::same(FloatCalc::roundDownTo(0.0, 0.25), 0.0);
 Assert::same(FloatCalc::roundDownTo(2.1, 0.25), 2.0);
 Assert::same(FloatCalc::roundDownTo(2.2, 0.25), 2.0);

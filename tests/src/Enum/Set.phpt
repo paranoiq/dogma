@@ -78,23 +78,28 @@ $jklOneTwo = JKL::get(1, 2);
 $jkmOneTwo = JKM::get(1, 2);
 $nOneTwo = N::get(1, 2);
 
-// get()
+
+get:
 Assert::type($jOne, J::class);
 Assert::equal($jOne, $jOne2);
 
-// getValue()
+
+getValue:
 Assert::same($jOne->getValue(), 1);
 Assert::same($jOneTwo->getValue(), 3);
 
-// getValues()
+
+getValues:
 Assert::same($jOne->getValues(), [1]);
 Assert::same($jOneTwo->getValues(), [1, 2]);
 
-// getConstantNames()
+
+getConstantNames:
 Assert::same($jOne->getConstantNames(), [1 => 'ONE']);
 Assert::same($jOneTwo->getConstantNames(), [1 => 'ONE', 2 => 'TWO']);
 
-// equals()
+
+equals:
 Assert::exception(static function () use ($jOne, $nOne): void {
     $jOne->equals($nOne);
 }, InvalidTypeException::class);
@@ -117,17 +122,20 @@ Assert::true($jkOneTwo->equals($jklOneTwo));
 Assert::true($jkOneTwo->equals($jkmOneTwo));
 Assert::true($jklOneTwo->equals($jkmOneTwo));
 
-// equalsValue()
+
+equalsValue:
 Assert::false($jOne->equalsValue(2));
 Assert::true($jOne->equalsValue(1));
 Assert::false($jOneTwo->equalsValue(6));
 Assert::true($jOneTwo->equalsValue(3));
 
-// isValid()
+
+isValid:
 Assert::false(J::isValid(5));
 Assert::true(J::isValid(1));
 
-// getAllowedValues()
+
+getAllowedValues:
 Assert::same(J::getAllowedValues(), [
     'ONE' => 1,
     'TWO' => 2,
@@ -151,7 +159,8 @@ Assert::same(JKM::getAllowedValues(), [
     'TWO' => 2,
 ]);
 
-// getInstances()
+
+getInstances:
 Assert::equal(J::getInstances(), [
     'ONE' => $jOne,
     'TWO' => $jTwo,
@@ -164,69 +173,82 @@ Assert::equal(JKL::getInstances(), [
     'TWO' => $jklTwo,
 ]);
 
-// invert()
+
+invert:
 Assert::equal($jTwoFour->invert(), $jOneEight);
 Assert::equal($jEmpty->invert(), $jAll);
 Assert::equal($jAll->invert(), $jEmpty);
 
-// contains()
+
+contains:
 Assert::false($jOneTwo->contains($jTwoFour));
 Assert::true($jOneTwo->contains($jOneTwo2));
 Assert::true($jOneTwo->contains($jOne));
 Assert::true($jOneTwo->contains($jEmpty));
 
-// intersects()
+
+intersects:
 Assert::false($jOne->intersects($jTwo));
 Assert::false($jOne->intersects($jEmpty));
 Assert::true($jOneTwo->intersects($jTwoFour));
 
-// intersect()
+
+intersect:
 Assert::equal($jOneTwo->intersect($jTwoFour), $jTwo);
 Assert::equal($jOneTwo->intersect($jEmpty), $jEmpty);
 
-// union()
+
+union:
 Assert::equal($jEmpty->union($jOne), $jOne);
 Assert::equal($jOne->union($jTwo), $jOneTwo);
 Assert::equal($jOneTwo->union($jTwoFour), $jOneTwoFour);
 
-// subtract()
+
+subtract:
 Assert::equal($jOneTwo->subtract($jOne), $jTwo);
 Assert::equal($jOneTwo->subtract($jEmpty), $jOneTwo);
 Assert::equal($jEmpty->subtract($jOne), $jEmpty);
 Assert::equal($jOneTwo->subtract($jEmpty), $jOneTwo);
 
-// difference()
+
+difference:
 Assert::equal($jOneTwo->difference($jTwoFour), $jOneFour);
 Assert::equal($jEmpty->difference($jEmpty), $jEmpty);
 Assert::equal($jEmpty->difference($jAll), $jAll);
 Assert::equal($jAll->difference($jAll), $jEmpty);
 Assert::equal($jAll->difference($jEmpty), $jAll);
 
-// containsAll()
+
+containsAll:
 Assert::false($jOneTwo->containsAll(2, 4));
 Assert::true($jOneTwo->containsAll(1, 2));
 Assert::true($jAll->containsAll(1, 2, 4, 8));
 
-// containsAny()
+
+containsAny:
 Assert::false($jOneTwo->containsAny(4, 8));
 Assert::true($jOneTwo->containsAny(2, 4));
 Assert::false($jEmpty->containsAny(1, 2, 4, 8));
 
-// filter()
+
+filter:
 Assert::equal($jOneTwo->filter(1, 4), $jOne);
 Assert::equal($jAll->filter(1, 2), $jOneTwo);
 Assert::equal($jAll->filter(), $jEmpty);
 Assert::equal($jEmpty->filter(1, 2), $jEmpty);
 
-// add()
+
+add:
 Assert::equal($jOneTwo->add(2, 4), $jOneTwoFour);
 Assert::equal($jOneTwo->add(4, 8), $jAll);
 
-// remove()
+
+remove:
 Assert::equal($jAll->remove(4, 8), $jOneTwo);
 Assert::equal($jOneTwo->remove(2, 4), $jOne);
 
-// xor()
+
+_xor:
 Assert::equal($jOneTwo->xor(2, 4), $jOneFour);
 Assert::equal($jEmpty->xor(), $jEmpty);
 Assert::equal($jEmpty->xor(1, 2, 4, 8), $jAll);

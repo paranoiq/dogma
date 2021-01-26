@@ -25,7 +25,8 @@ $stringLocale = Type::string($czech);
 $stringNullable = Type::string(Type::NULLABLE);
 $stringAllParams = Type::string(32, Length::FIXED, $utf8, $czech, Type::NULLABLE);
 
-// getId()
+
+getId:
 Assert::same($string->getId(), 'string');
 Assert::same($stringLength->getId(), 'string(32)');
 Assert::same($stringFixed->getId(), 'string(fixed)');
@@ -34,7 +35,8 @@ Assert::same($stringLocale->getId(), 'string(cs_CZ)');
 Assert::same($stringNullable->getId(), 'string?');
 Assert::same($stringAllParams->getId(), 'string(32,fixed,UTF-8,cs_CZ)?');
 
-// fromId()
+
+fromId:
 Assert::same(Type::fromId('string'), $string);
 Assert::same(Type::fromId('string(32)'), $stringLength);
 Assert::same(Type::fromId('string(fixed)'), $stringFixed);
@@ -45,100 +47,128 @@ Assert::same(Type::fromId('string(cs_CZ)'), $stringLocale);
 Assert::same(Type::fromId('string?'), $stringNullable);
 Assert::same(Type::fromId('string(32,fixed,UTF-8,cs_CZ)?'), $stringAllParams);
 
-// getName()
+
+getName:
 Assert::same($string->getName(), Type::STRING);
 
-// isNullable()
+
+isNullable:
 Assert::false($string->isNullable());
 Assert::true($stringNullable->isNullable());
 
-// isSigned()
+
+isSigned:
 Assert::false($string->isSigned());
 
-// isUnsigned()
+
+isUnsigned:
 Assert::false($string->isUnsigned());
 
-// isFixed()
+
+isFixed:
 Assert::false($string->isFixed());
 Assert::true($stringFixed->isFixed());
 Assert::true($stringAllParams->isFixed());
 
-// getResourceType()
+
+getResourceType:
 Assert::null($string->getResourceType());
 
-// getItemType()
+
+getItemType:
 Assert::null($string->getItemType());
 
-// getSize()
+
+getSize:
 Assert::null($string->getSize());
 Assert::null($stringFixed->getSize());
 Assert::same($stringLength->getSize(), 32);
 Assert::same($stringAllParams->getSize(), 32);
 
-// getEncoding()
+
+getEncoding:
 Assert::null($string->getEncoding());
 Assert::same($stringEncoding->getEncoding(), $utf8);
 
-// getLocale()
+
+getLocale:
 Assert::null($string->getLocale());
 Assert::same($stringLocale->getLocale(), $czech);
 
-// isBool()
+
+isBool:
 Assert::false($string->isBool());
 
-// isInt()
+
+isInt:
 Assert::false($string->isInt());
 
-// isFloat()
+
+isFloat:
 Assert::false($string->isFloat());
 
-// isNumeric()
+
+isNumeric:
 Assert::false($string->isNumeric());
 
-// isString()
+
+isString:
 Assert::true($string->isString());
 
-// isScalar()
+
+isScalar:
 Assert::true($string->isScalar());
 
-// isArray()
+
+isArray:
 Assert::false($string->isArray());
 
-// isCollection()
+
+isCollection:
 Assert::false($string->isCollection());
 
-// isTuple()
+
+isTuple:
 Assert::false($string->isTuple());
 
-// isClass()
+
+isClass:
 Assert::false($string->isClass());
 
-// isCallable()
+
+isCallable:
 Assert::false($string->isCallable());
 
-// isResource()
+
+isResource:
 Assert::false($string->isResource());
 
-// is()
+
+is:
 Assert::true($string->is(Type::STRING));
 Assert::false($string->is(DateTime::class));
 
-// isImplementing()
+
+isImplementing:
 Assert::false($string->isImplementing(DateTime::class));
 
-// getBaseType()
+
+getBaseType:
 Assert::same($stringNullable->getBaseType(), $string);
 Assert::same($stringAllParams->getBaseType(), $string);
 
-// getNonNullableType()
+
+getNonNullableType:
 Assert::same($stringNullable->getNonNullableType(), $string);
 Assert::same($stringAllParams->getNonNullableType(), Type::fromId('string(32,fixed,UTF-8,cs_CZ)'));
 
-// getTypeWithoutParams()
+
+getTypeWithoutParams:
 Assert::same($stringNullable->getTypeWithoutParams(), $stringNullable);
 Assert::same($stringAllParams->getTypeWithoutParams(), $stringNullable);
 
-// getInstance()
+
+getInstance:
 Assert::exception(static function () use ($string): void {
     $string->getInstance();
 }, Error::class);

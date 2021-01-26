@@ -21,11 +21,13 @@ $mapper = new Mapper(new StaticMappingContainer([]));
 
 $dateTimeType = Type::get(DateTime::class);
 
-// acceptType()
+
+acceptType:
 Assert::true($handler->acceptsType($dateTimeType));
 Assert::true($handler->acceptsType(Type::get('Any')));
 
-// getParameters()
+
+getParameters:
 if (PHP_VERSION_ID < 80000) {
     Assert::equal($handler->getParameters($dateTimeType), [
         'time' => Type::get(Type::MIXED),
@@ -38,7 +40,8 @@ if (PHP_VERSION_ID < 80000) {
     ]);
 }
 
-// createInstance()
+
+createInstance:
 if (PHP_VERSION_ID < 80000) {
     $dateInstance = $handler->createInstance($dateTimeType, [
         'time' => '2001-02-03 04:05:06',
@@ -53,7 +56,8 @@ if (PHP_VERSION_ID < 80000) {
 Assert::type($dateInstance, DateTime::class);
 Assert::same($dateInstance->format('Y-m-d H:i:s'), '2001-02-03 04:05:06');
 
-// exportInstance()
+
+exportInstance:
 Assert::throws(static function () use ($handler, $mapper, $dateTimeType): void {
     $handler->exportInstance($dateTimeType, new DateTime(), $mapper);
 }, OneWayHandlerException::class);

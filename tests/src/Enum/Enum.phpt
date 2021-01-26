@@ -65,17 +65,21 @@ $abcTwo = ABC::get(2);
 $abdOne = ABD::get(1);
 $fOne = E::get(1);
 
-// get()
+
+get:
 Assert::type($aOne, A::class);
 Assert::equal($aOne, $aOne2);
 
-// getValue()
+
+getValue:
 Assert::same($aOne->getValue(), 1);
 
-// getConstantName()
+
+getConstantName:
 Assert::same($aOne->getConstantName(), 'ONE');
 
-// equals()
+
+equals:
 Assert::exception(static function () use ($aOne, $fOne): void {
     $aOne->equals($fOne);
 }, InvalidTypeException::class);
@@ -87,15 +91,18 @@ Assert::true($abOne->equals($abcOne));
 Assert::true($abOne->equals($abdOne));
 Assert::true($abcOne->equals($abdOne));
 
-// equalsValue()
+
+equalsValue:
 Assert::false($aOne->equalsValue(2));
 Assert::true($aOne->equalsValue(1));
 
-// isValid()
+
+isValid:
 Assert::false(A::isValid(5));
 Assert::true(A::isValid(1));
 
-// getAllowedValues()
+
+getAllowedValues:
 Assert::same(A::getAllowedValues(), [
     'ONE' => 1,
     'TWO' => 2,
@@ -119,7 +126,8 @@ Assert::same(ABD::getAllowedValues(), [
     'TWO' => 2,
 ]);
 
-// getInstances()
+
+getInstances:
 Assert::equal(A::getInstances(), [
     'ONE' => $aOne,
     'TWO' => $aTwo,

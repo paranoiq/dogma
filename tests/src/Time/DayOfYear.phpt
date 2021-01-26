@@ -18,7 +18,8 @@ $number = 60;
 $denormalizedNumber = $number + 366;
 $denormalizedDay = new DayOfYear($denormalizedNumber);
 
-// __construct()
+
+__construct:
 Assert::throws(static function (): void {
     new DayOfYear(-200);
 }, ValueOutOfRangeException::class);
@@ -43,7 +44,8 @@ Assert::throws(static function (): void {
 
 Assert::same((new DayOfYear($dayString))->format(), $dayString);
 
-// createFromMonthAndDay()
+
+createFromMonthAndDay:
 Assert::throws(static function (): void {
     DayOfYear::createFromMonthAndDay(-1, 1);
 }, ValueOutOfRangeException::class);
@@ -59,83 +61,100 @@ Assert::throws(static function (): void {
 Assert::type(DayOfYear::createFromMonthAndDay(2, 29), DayOfYear::class);
 Assert::same(DayOfYear::createFromMonthAndDay(2, 29)->format(), $dayString);
 
-// createFromDate()
+
+createFromDate:
 $date = new Date('2000-02-29');
 Assert::type(DayOfYear::createFromDate($date), DayOfYear::class);
 Assert::same(DayOfYear::createFromDate($date)->format(), $dayString);
 
-// createFromDateTime()
+
+createFromDateTime:
 $dateTime = new DateTime('2000-02-29 00:00:00');
 Assert::type(DayOfYear::createFromDateTime($dateTime), DayOfYear::class);
 Assert::same(DayOfYear::createFromDateTime($dateTime)->format(), $dayString);
 
-// normalize()
+
+normalize:
 Assert::same($day->normalize()->getNumber(), $number);
 Assert::same($denormalizedDay->normalize()->getNumber(), $number);
 
-// denormalize()
+
+denormalize:
 Assert::same($day->denormalize()->getNumber(), $denormalizedNumber);
 Assert::same($denormalizedDay->denormalize()->getNumber(), $denormalizedNumber);
 
-// modify()
+
+modify:
 Assert::same($day->modify('+1 day')->getNumber(), $number + 1);
 Assert::same($denormalizedDay->modify('+1 day')->getNumber(), $denormalizedNumber + 1);
 // todo: overflows
 
-// getNumber()
+
+getNumber:
 Assert::same($day->getNumber(), $number);
 Assert::same($denormalizedDay->getNumber(), $denormalizedNumber);
 
-// getMonth()
+
+getMonth:
 Assert::same($day->getMonth(), 2);
 Assert::same($denormalizedDay->getMonth(), 2);
 
-// getMonthEnum()
+
+getMonthEnum:
 Assert::equal($day->getMonthEnum(), Month::february());
 Assert::equal($denormalizedDay->getMonthEnum(), Month::february());
 
-// getDayOfMonth()
+
+getDayOfMonth:
 Assert::same($day->getDayOfMonth(), 29);
 Assert::same($denormalizedDay->getDayOfMonth(), 29);
 
-// toDate()
+
+toDate:
 Assert::equal($day->toDate(2000), new Date('2000-02-29'));
 Assert::equal($denormalizedDay->toDate(2000), new Date('2001-02-29'));
 
 $before = new DayOfYear('02-28');
 $after = new DayOfYear('03-01');
 
-// equals()
+
+equals:
 Assert::false($day->equals($before));
 Assert::true($day->equals(new DayOfYear($dayString)));
 Assert::true($day->equals(new DayOfYear($number)));
 
-// compare()
+
+compare:
 Assert::same($day->compare($before), 1);
 Assert::same($day->compare($day), 0);
 Assert::same($day->compare($after), -1);
 
-// isBefore()
+
+isBefore:
 Assert::false($day->isBefore($before));
 Assert::false($day->isBefore($day));
 Assert::true($day->isBefore($after));
 
-// isAfter()
+
+isAfter:
 Assert::true($day->isAfter($before));
 Assert::false($day->isAfter($day));
 Assert::false($day->isAfter($after));
 
-// isSameOrBefore()
+
+isSameOrBefore:
 Assert::false($day->isSameOrBefore($before));
 Assert::true($day->isSameOrBefore($day));
 Assert::true($day->isSameOrBefore($after));
 
-// isSameOrAfter()
+
+isSameOrAfter:
 Assert::true($day->isSameOrAfter($before));
 Assert::true($day->isSameOrAfter($day));
 Assert::false($day->isSameOrAfter($after));
 
-// isBetween()
+
+isBetween:
 Assert::false($day->isBetween(new DayOfYear('12-01'), new DayOfYear('01-31')));
 Assert::true($day->isBetween($before, $after));
 Assert::true($day->isBetween(new DayOfYear('12-01'), $after));

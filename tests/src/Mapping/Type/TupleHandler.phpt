@@ -15,16 +15,20 @@ $mapper = new Mapper(new StaticMappingContainer([]));
 
 $tupleType = Type::tupleOf(Type::INT, Type::STRING);
 
-// acceptType()
+
+acceptType:
 Assert::true($handler->acceptsType($tupleType));
 Assert::false($handler->acceptsType(Type::get(Type::PHP_ARRAY)));
 
-// getParameters()
+
+getParameters:
 Assert::same($handler->getParameters($tupleType), [Type::get(Type::INT), Type::get(Type::STRING)]);
 
-// createInstance()
+
+createInstance:
 $tupleInstance = $handler->createInstance($tupleType, [123, 'abc'], $mapper);
 Assert::same($tupleInstance->toArray(), [123, 'abc']);
 
-// exportInstance()
+
+exportInstance:
 Assert::same($handler->exportInstance($tupleType, $tupleInstance, $mapper), [123, 'abc']);

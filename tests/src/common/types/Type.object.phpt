@@ -12,100 +12,130 @@ require_once __DIR__ . '/../../bootstrap.php';
 $datetime = Type::get(DateTime::class);
 $datetimeNullable = Type::get(DateTime::class, Type::NULLABLE);
 
-// getId()
+
+getId:
 Assert::same($datetime->getId(), 'DateTime');
 Assert::same($datetimeNullable->getId(), 'DateTime?');
 
-// fromId()
+
+fromId:
 Assert::same(Type::fromId('DateTime'), $datetime);
 Assert::same(Type::fromId('DateTime?'), $datetimeNullable);
 
-// getName()
+
+getName:
 Assert::same($datetime->getName(), DateTime::class);
 
-// isNullable()
+
+isNullable:
 Assert::false($datetime->isNullable());
 Assert::true($datetimeNullable->isNullable());
 
-// isSigned()
+
+isSigned:
 Assert::false($datetime->isSigned());
 
-// isUnsigned()
+
+isUnsigned:
 Assert::false($datetime->isUnsigned());
 
-// isFixed()
+
+isFixed:
 Assert::false($datetime->isFixed());
 
-// getResourceType()
+
+getResourceType:
 Assert::null($datetime->getResourceType());
 
-// getItemType()
+
+getItemType:
 Assert::null($datetime->getItemType());
 
-// getSize()
+
+getSize:
 Assert::null($datetime->getSize());
 
-// getEncoding()
+
+getEncoding:
 Assert::null($datetime->getEncoding());
 
-// getLocale()
+
+getLocale:
 Assert::null($datetime->getLocale());
 
-// isBool()
+
+isBool:
 Assert::false($datetime->isBool());
 
-// isInt()
+
+isInt:
 Assert::false($datetime->isInt());
 
-// isFloat()
+
+isFloat:
 Assert::false($datetime->isFloat());
 
-// isNumeric()
+
+isNumeric:
 Assert::false($datetime->isNumeric());
 
-// isString()
+
+isString:
 Assert::false($datetime->isString());
 
-// isScalar()
+
+isScalar:
 Assert::false($datetime->isScalar());
 
-// isArray()
+
+isArray:
 Assert::false($datetime->isArray());
 
-// isCollection()
+
+isCollection:
 Assert::false($datetime->isCollection());
 
-// isTuple()
+
+isTuple:
 Assert::false($datetime->isTuple());
 
-// isClass()
+
+isClass:
 Assert::true($datetime->isClass());
 
-// isCallable()
+
+isCallable:
 Assert::false($datetime->isCallable());
 
-// isResource()
+
+isResource:
 Assert::false($datetime->isResource());
 
-// is()
+
+is:
 Assert::true($datetime->is(DateTime::class));
 Assert::false($datetime->is(DateTimeImmutable::class));
 
-// isImplementing()
+
+isImplementing:
 Assert::true($datetime->isImplementing(DateTime::class));
 Assert::false($datetime->isImplementing(DateTimeImmutable::class));
 
-// getBaseType()
+
+getBaseType:
 Assert::same($datetime->getBaseType(), $datetime);
 Assert::same($datetimeNullable->getBaseType(), $datetime);
 
-// getNonNullableType()
+
+getNonNullableType:
 Assert::same($datetime->getNonNullableType(), $datetime);
 Assert::same($datetimeNullable->getNonNullableType(), $datetime);
 
-// getTypeWithoutParams()
+
+getTypeWithoutParams:
 Assert::same($datetime->getTypeWithoutParams(), $datetime);
 Assert::same($datetimeNullable->getTypeWithoutParams(), $datetimeNullable);
 
-// getInstance()
+
+getInstance:
 Assert::equal($datetime->getInstance('2016-01-01 00:00:00'), new DateTime('2016-01-01 00:00:00'));

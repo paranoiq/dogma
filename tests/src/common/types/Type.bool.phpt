@@ -12,98 +12,128 @@ require_once __DIR__ . '/../../bootstrap.php';
 $bool = Type::bool();
 $boolNullable = Type::bool(Type::NULLABLE);
 
-// getId()
+
+getId:
 Assert::same($bool->getId(), 'bool');
 Assert::same($boolNullable->getId(), 'bool?');
 
-// fromId()
+
+fromId:
 Assert::same(Type::fromId('bool'), $bool);
 Assert::same(Type::fromId('bool?'), $boolNullable);
 
-// getName()
+
+getName:
 Assert::same($bool->getName(), Type::BOOL);
 
-// isNullable()
+
+isNullable:
 Assert::false($bool->isNullable());
 Assert::true($boolNullable->isNullable());
 
-// isSigned()
+
+isSigned:
 Assert::false($bool->isSigned());
 
-// isUnsigned()
+
+isUnsigned:
 Assert::false($bool->isUnsigned());
 
-// isFixed()
+
+isFixed:
 Assert::false($bool->isFixed());
 
-// getResourceType()
+
+getResourceType:
 Assert::null($bool->getResourceType());
 
-// getItemType()
+
+getItemType:
 Assert::null($bool->getItemType());
 
-// getSize()
+
+getSize:
 Assert::null($bool->getSize());
 
-// getEncoding()
+
+getEncoding:
 Assert::null($bool->getEncoding());
 
-// getLocale()
+
+getLocale:
 Assert::null($bool->getLocale());
 
-// isBool()
+
+isBool:
 Assert::true($bool->isBool());
 
-// isInt()
+
+isInt:
 Assert::false($bool->isInt());
 
-// isFloat()
+
+isFloat:
 Assert::false($bool->isFloat());
 
-// isNumeric()
+
+isNumeric:
 Assert::false($bool->isNumeric());
 
-// isString()
+
+isString:
 Assert::false($bool->isString());
 
-// isScalar()
+
+isScalar:
 Assert::true($bool->isScalar());
 
-// isArray()
+
+isArray:
 Assert::false($bool->isArray());
 
-// isCollection()
+
+isCollection:
 Assert::false($bool->isCollection());
 
-// isTuple()
+
+isTuple:
 Assert::false($bool->isTuple());
 
-// isClass()
+
+isClass:
 Assert::false($bool->isClass());
 
-// isCallable()
+
+isCallable:
 Assert::false($bool->isCallable());
 
-// isResource()
+
+isResource:
 Assert::false($bool->isResource());
 
-// is()
+
+is:
 Assert::true($bool->is(Type::BOOL));
 Assert::false($bool->is(DateTime::class));
 
-// isImplementing()
+
+isImplementing:
 Assert::false($bool->isImplementing(DateTime::class));
 
-// getBaseType()
+
+getBaseType:
 Assert::same($boolNullable->getBaseType(), $bool);
 
-// getNonNullableType()
+
+getNonNullableType:
 Assert::same($boolNullable->getNonNullableType(), $bool);
 
-// getTypeWithoutParams()
+
+getTypeWithoutParams:
 Assert::same($boolNullable->getTypeWithoutParams(), $boolNullable);
 
-// getInstance()
+
+getInstance:
 Assert::exception(static function () use ($bool): void {
     $bool->getInstance();
 }, Error::class);

@@ -9,15 +9,18 @@ require_once __DIR__ . '/../../../bootstrap.php';
 
 $array = [1, 2, 3, 4];
 
-// containsSlice()
+
+containsSlice:
 Assert::false(Arr::containsSlice($array, [3, 4, 5]));
 Assert::true(Arr::containsSlice($array, [2, 3, 4]));
 
-// indexOfSlice()
+
+indexOfSlice:
 Assert::null(Arr::indexOfSlice($array, [3, 4, 5]));
 Assert::same(Arr::indexOfSlice($array, [2, 3, 4]), 1);
 
-// corresponds()
+
+corresponds:
 Assert::false(Arr::corresponds($array, [1, 4, 9], static function ($a, $b): bool {
     return $a * $a === $b;
 }));
@@ -31,14 +34,17 @@ Assert::false(Arr::corresponds($array, [1, 2, 3, 4], static function ($a, $b): b
     return $a * $a === $b;
 }));
 
-// hasSameElements()
+
+hasSameElements:
 Assert::false(Arr::hasSameElements($array, [1, 1, 1, 1]));
 Assert::true(Arr::hasSameElements($array, [1, 2, 3, 4]));
 
-// startsWith()
+
+startsWith:
 Assert::false(Arr::startsWith($array, [2, 3, 4]));
 Assert::true(Arr::startsWith($array, [1, 2, 3]));
 
-// endsWith()
+
+endsWith:
 Assert::false(Arr::endsWith($array, [1, 2, 3]));
 Assert::true(Arr::endsWith($array, [2, 3, 4]));

@@ -15,16 +15,20 @@ $mapper = new Mapper(new StaticMappingContainer([]));
 
 $typeType = Type::get(Type::class);
 
-// acceptType()
+
+acceptType:
 Assert::false($handler->acceptsType(Type::get(Assert::class)));
 Assert::true($handler->acceptsType($typeType));
 
-// getParameters()
+
+getParameters:
 Assert::same($handler->getParameters($typeType), null);
 
-// createInstance()
+
+createInstance:
 $typeInstance = $handler->createInstance($typeType, 'array<int>', $mapper);
 Assert::same($typeInstance, Type::arrayOf(Type::INT));
 
-// exportInstance()
+
+exportInstance:
 Assert::same($handler->exportInstance($typeType, $typeInstance, $mapper), 'array<int>');

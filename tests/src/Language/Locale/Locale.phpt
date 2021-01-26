@@ -28,11 +28,13 @@ if (PHP_VERSION_ID > 70011) {
 $localeString = 'cs_Latn_CZ_VAR1_VAR2_X_PRI1_PRI2@currency=CZK;numbers=arab;calendar=iso8601;collation=phonebook;colbackwards=yes;colcasefirst=lower';
 $localeStringCanonicalized = 'cs_Latn_CZ_VAR1_VAR2_X_PRI1_PRI2@calendar=iso8601;colbackwards=yes;colcasefirst=lower;collation=phonebook;currency=CZK;numbers=arab';
 
-// get()
+
+get:
 $locale = Locale::get($localeString);
 $simple = Locale::get('cs');
 
-// create()
+
+create:
 $created = Locale::create(
     Language::get(Language::CZECH),
     Country::get(Country::CZECHIA),
@@ -50,65 +52,80 @@ $created = Locale::create(
 );
 Assert::same($created, $locale);
 
-// removeCollation()
+
+removeCollation:
 $safeLocale = $locale->removeCollation();
 Assert::type($safeLocale, Locale::class);
 Assert::same($safeLocale->getValue(), 'cs_Latn_CZ_VAR1_VAR2_X_PRI1_PRI2@calendar=iso8601;currency=CZK;numbers=arab');
 
-// getDefault()
+
+getDefault:
 Assert::type(Locale::getDefault(), Locale::class);
 
-// getCollator()
+
+getCollator:
 $collator = $locale->getCollator();
 Assert::type($collator, Collator::class);
 Assert::same($collator->getLocaleObject()->getValue(), 'cs');
 
-// matches()
+
+matches:
 Assert::true($locale->matches($simple));
 
-// findBestMatch()
+
+findBestMatch:
 Assert::same($locale->findBestMatch(['cs', 'cs_Latn_CZ', 'cs_CZ', 'en'])->getValue(), 'cs_Latn_CZ');
 
-// getValue()
+
+getValue:
 Assert::same($locale->getValue(), $localeStringCanonicalized);
 Assert::same($simple->getValue(), 'cs');
 
-// getLanguage()
+
+getLanguage:
 Assert::same($locale->getLanguage(), Language::get(Language::CZECH));
 Assert::same($simple->getLanguage(), Language::get(Language::CZECH));
 
-// getScript()
+
+getScript:
 Assert::same($locale->getScript(), Script::get(Script::LATIN));
 Assert::null($simple->getScript());
 
-// getCountry()
+
+getCountry:
 Assert::same($locale->getCountry(), Country::get(Country::CZECHIA));
 Assert::null($simple->getCountry());
 
-// getVariants()
+
+getVariants:
 Assert::same($locale->getVariants(), ['VAR1', 'VAR2']);
 Assert::same($simple->getVariants(), []);
 
-// getVariant()
+
+getVariant:
 Assert::same($locale->getVariant(0), 'VAR1');
 Assert::same($locale->getVariant(1), 'VAR2');
 Assert::null($simple->getVariant(0));
 
-// hasVariant()
+
+hasVariant:
 Assert::true($locale->hasVariant('VAR1'));
 Assert::true($locale->hasVariant('VAR2'));
 Assert::false($locale->hasVariant('VAR3'));
 
-// getPrivates()
+
+getPrivates:
 Assert::same($locale->getPrivates(), ['PRI1', 'PRI2']);
 Assert::same($simple->getPrivates(), []);
 
-// getPrivate()
+
+getPrivate:
 Assert::same($locale->getPrivate(0), 'PRI1');
 Assert::same($locale->getPrivate(1), 'PRI2');
 Assert::null($simple->getPrivate(0));
 
-// getKeywords()
+
+getKeywords:
 Assert::same($locale->getKeywords(), [
     LocaleKeyword::CALENDAR => LocaleCalendar::ISO8601,
     LocaleKeyword::COL_BACKWARDS => LocaleColBackwards::YES,
@@ -119,7 +136,8 @@ Assert::same($locale->getKeywords(), [
 ]);
 Assert::same($simple->getKeywords(), []);
 
-// getKeyword()
+
+getKeyword:
 Assert::same($locale->getKeyword(LocaleKeyword::CURRENCY), Currency::CZECH_KORUNA);
 Assert::same($locale->getKeyword(LocaleKeyword::NUMBERS), LocaleNumbers::ARABIC_INDIC);
 Assert::same($locale->getKeyword(LocaleKeyword::CALENDAR), LocaleCalendar::ISO8601);
@@ -128,23 +146,28 @@ Assert::same($locale->getKeyword(LocaleKeyword::COL_BACKWARDS), LocaleColBackwar
 Assert::same($locale->getKeyword(LocaleKeyword::COL_CASE_FIRST), LocaleColCaseFirst::LOWER);
 Assert::null($locale->getKeyword('foo'));
 
-// getCurrency()
+
+getCurrency:
 Assert::same($locale->getCurrency(), Currency::get(Currency::CZECH_KORUNA));
 Assert::null($simple->getCurrency());
 
-// getNumbers()
+
+getNumbers:
 Assert::same($locale->getNumbers(), LocaleNumbers::get(LocaleNumbers::ARABIC_INDIC));
 Assert::null($simple->getNumbers());
 
-// getCalendar()
+
+getCalendar:
 Assert::same($locale->getCalendar(), LocaleCalendar::get(LocaleCalendar::ISO8601));
 Assert::null($simple->getCalendar());
 
-// getCollation()
+
+getCollation:
 Assert::same($locale->getCollation(), LocaleCollation::get(LocaleCollation::PHONEBOOK));
 Assert::null($simple->getCollation());
 
-// getCollationOptions()
+
+getCollationOptions:
 Assert::same($locale->getCollationOptions(), [
     LocaleKeyword::COL_BACKWARDS => LocaleColBackwards::get(LocaleColBackwards::YES),
     LocaleKeyword::COL_CASE_FIRST => LocaleColCaseFirst::get(LocaleColCaseFirst::LOWER),

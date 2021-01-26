@@ -17,35 +17,45 @@ require_once __DIR__ . '/../../../bootstrap.php';
 
 $array = new ImmutableArray([1, 2, 3]);
 
-// __construct(), toArray()
+
+__construct:
+toArray:
 Assert::same((new ImmutableArray([1, 2, 3]))->toArray(), [1, 2, 3]);
 
-// create()
+
+create:
 Assert::same(ImmutableArray::create(1, 2, 3)->toArray(), [1, 2, 3]);
 
-// from(), convertToArray()
+
+from:
+convertToArray:
 Assert::same(ImmutableArray::from([1, 2, 3])->toArray(), [1, 2, 3]);
 Assert::same(ImmutableArray::from(new ImmutableArray([1, 2, 3]))->toArray(), [1, 2, 3]);
 Assert::same(ImmutableArray::from(new ArrayIterator([1, 2, 3]))->toArray(), [1, 2, 3]);
 
-// combine()
+
+combine:
 Assert::same(ImmutableArray::combine([1, 2, 3], [4, 5, 6])->toArray(), [1 => 4, 2 => 5, 3 => 6]);
 
-// range()
+
+range:
 Assert::same(ImmutableArray::range(3, 5)->toArray(), [3, 4, 5]);
 Assert::same(ImmutableArray::range(5, 3)->toArray(), [5, 4, 3]);
 Assert::same(ImmutableArray::range(3, 7, 2)->toArray(), [3, 5, 7]);
 Assert::same(ImmutableArray::range(3, 6, 2)->toArray(), [3, 5]);
 
-// Countable
+
+Countable:
 Assert::type(new ImmutableArray([]), Countable::class);
 Assert::same(count(new ImmutableArray([1, 2, 3])), 3);
 
-// IteratorAggregate
+
+IteratorAggregate:
 Assert::type(new ImmutableArray([]), IteratorAggregate::class);
 Assert::type((new ImmutableArray([]))->getIterator(), ArrayIterator::class);
 
-// ArrayAccess
+
+ArrayAccess:
 Assert::type(new ImmutableArray([]), ArrayAccess::class);
 
 Assert::true($array->offsetExists(0));
@@ -68,25 +78,32 @@ Assert::exception(static function () use ($array): void {
     $array->offsetUnset(0);
 }, BadMethodCallException::class);
 
-// getReverseIterator()
+
+getReverseIterator:
 Assert::type((new ImmutableArray([]))->getReverseIterator(), ReverseArrayIterator::class);
 
-// getKeys()
+
+getKeys:
 Assert::same($array->keys()->toArray(), [0, 1, 2]);
 
-// getValues()
+
+getValues:
 Assert::same($array->values()->toArray(), [1, 2, 3]);
 
-// toArrayRecursive()
+
+toArrayRecursive:
 Assert::same((new ImmutableArray([1, 2, new ImmutableArray([3, 4, 5])]))->toArrayRecursive(), [1, 2, [3, 4, 5]]);
 
-// randomKey()
+
+randomKey:
 Assert::contains($array->keys()->toArray(), $array->randomKey());
 
-// randomValue()
+
+randomValue:
 Assert::contains($array->values()->toArray(), $array->randomValue());
 
-// doForEach()
+
+doForEach:
 $x = 0;
 $array->doForEach(static function (int $v) use (&$x): void {
     $x += $v;

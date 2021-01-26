@@ -17,7 +17,7 @@ use Dogma\Tester\Assert;
 require_once __DIR__ . '/../bootstrap.php';
 
 
-// differences()
+differences:
 Assert::same(ModuloCalc::differences([0], 60), [60]);
 Assert::same(ModuloCalc::differences([10], 60), [60]);
 Assert::same(ModuloCalc::differences([0, 10, 20, 30, 40, 50], 60), [10, 10, 10, 10, 10, 10]);
@@ -33,7 +33,7 @@ Assert::throws(static function (): void {
 }, InvalidArgumentException::class);
 
 
-// roundTo()
+roundTo:
 Assert::same(ModuloCalc::roundTo(3, [0, 10, 20, 30, 40, 50], 60), [0, Overflow::NONE]);
 Assert::same(ModuloCalc::roundTo(23, [0, 10, 20, 30, 40, 50], 60), [20, Overflow::NONE]);
 Assert::same(ModuloCalc::roundTo(27, [0, 10, 20, 30, 40, 50], 60), [30, Overflow::NONE]);
@@ -52,7 +52,7 @@ Assert::throws(static function (): void {
 }, InvalidArgumentException::class);
 
 
-// roundUpTo()
+roundUpTo:
 Assert::same(ModuloCalc::roundUpTo(3, [0, 10, 20, 30, 40, 50], 60), [10, Overflow::NONE]);
 Assert::same(ModuloCalc::roundUpTo(23, [0, 10, 20, 30, 40, 50], 60), [30, Overflow::NONE]);
 Assert::same(ModuloCalc::roundUpTo(27, [0, 10, 20, 30, 40, 50], 60), [30, Overflow::NONE]);
@@ -71,7 +71,7 @@ Assert::throws(static function (): void {
 }, InvalidArgumentException::class);
 
 
-// roundDownTo()
+roundDownTo:
 Assert::same(ModuloCalc::roundDownTo(3, [0, 10, 20, 30, 40, 50], 60), [0, Overflow::NONE]);
 Assert::same(ModuloCalc::roundDownTo(23, [0, 10, 20, 30, 40, 50], 60), [20, Overflow::NONE]);
 Assert::same(ModuloCalc::roundDownTo(27, [0, 10, 20, 30, 40, 50], 60), [20, Overflow::NONE]);

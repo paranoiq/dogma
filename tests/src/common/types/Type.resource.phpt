@@ -16,104 +16,134 @@ $resource = Type::resource();
 $resourceAspell = Type::resource($aspell);
 $resourceNullable = Type::resource(Type::NULLABLE);
 
-// getId()
+
+getId:
 Assert::same($resource->getId(), 'resource');
 Assert::same($resourceAspell->getId(), 'resource(aspell)');
 Assert::same($resourceNullable->getId(), 'resource?');
 
-// fromId()
+
+fromId:
 Assert::same(Type::fromId('resource'), $resource);
 Assert::same(Type::fromId('resource(aspell)'), $resourceAspell);
 Assert::same(Type::fromId('resource?'), $resourceNullable);
 
-// getName()
+
+getName:
 Assert::same($resource->getName(), Type::RESOURCE);
 
-// isNullable()
+
+isNullable:
 Assert::false($resource->isNullable());
 Assert::true($resourceNullable->isNullable());
 
-// isSigned()
+
+isSigned:
 Assert::false($resource->isSigned());
 
-// isUnsigned()
+
+isUnsigned:
 Assert::false($resource->isUnsigned());
 
-// isFixed()
+
+isFixed:
 Assert::false($resource->isFixed());
 
-// getResourceType()
+
+getResourceType:
 Assert::null($resource->getResourceType());
 Assert::equal($resourceAspell->getResourceType(), $aspell);
 
-// getItemType()
+
+getItemType:
 Assert::null($resource->getItemType());
 
-// getSize()
+
+getSize:
 Assert::null($resource->getSize());
 
-// getEncoding()
+
+getEncoding:
 Assert::null($resource->getEncoding());
 
-// getLocale()
+
+getLocale:
 Assert::null($resource->getLocale());
 
-// isBool()
+
+isBool:
 Assert::false($resource->isBool());
 
-// isInt()
+
+isInt:
 Assert::false($resource->isInt());
 
-// isFloat()
+
+isFloat:
 Assert::false($resource->isFloat());
 
-// isNumeric()
+
+isNumeric:
 Assert::false($resource->isNumeric());
 
-// isString()
+
+isString:
 Assert::false($resource->isString());
 
-// isScalar()
+
+isScalar:
 Assert::false($resource->isScalar());
 
-// isArray()
+
+isArray:
 Assert::false($resource->isArray());
 
-// isCollection()
+
+isCollection:
 Assert::false($resource->isCollection());
 
-// isTuple()
+
+isTuple:
 Assert::false($resource->isTuple());
 
-// isClass()
+
+isClass:
 Assert::false($resource->isClass());
 
-// isCallable()
+
+isCallable:
 Assert::false($resource->isCallable());
 
-// isResource()
+
+isResource:
 Assert::true($resource->isResource());
 
-// is()
+
+is:
 Assert::true($resource->is(Type::RESOURCE));
 Assert::false($resource->is(DateTime::class));
 
-// isImplementing()
+
+isImplementing:
 Assert::false($resource->isImplementing(DateTime::class));
 
-// getBaseType()
+
+getBaseType:
 Assert::same($resourceNullable->getBaseType(), $resource);
 Assert::same($resourceAspell->getBaseType(), $resource);
 
-// getNonNullableType()
+
+getNonNullableType:
 Assert::same($resourceNullable->getNonNullableType(), $resource);
 Assert::same($resourceAspell->getNonNullableType(), $resourceAspell);
 
-// getTypeWithoutParams()
+
+getTypeWithoutParams:
 Assert::same($resourceNullable->getTypeWithoutParams(), $resourceNullable);
 Assert::same($resourceAspell->getTypeWithoutParams(), $resource);
 
-// getInstance()
+
+getInstance:
 Assert::exception(static function () use ($resource): void {
     $resource->getInstance('abc');
 }, Error::class);

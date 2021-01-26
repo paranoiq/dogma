@@ -37,61 +37,75 @@ $s = static function (DateIntervalData ...$items): DateIntervalDataSet {
     return new DateIntervalDataSet($items);
 };
 
-// __construct()
+
+__construct:
 Assert::exception(static function () use ($data): void {
     new DateIntervalData(new Date('today'), new Date('yesterday'), $data);
 }, InvalidIntervalStartEndOrderException::class);
 
 
-// toDateInterval()
+
+toDateInterval:
 Assert::equal($interval->toDateInterval(), DateInterval::createFromString('2000-01-10 - 2000-01-20'));
 
-// toDateDataArray()
+
+toDateDataArray:
 Assert::equal($di(1, 1)->toDateDataArray(), [[$d(1), $data]]);
 Assert::equal($di(1, 2)->toDateDataArray(), [[$d(1), $data], [$d(2), $data]]);
 Assert::equal($emptyData->toDateDataArray(), []);
 
-// shift()
+
+shift:
 Assert::equal($interval->shift('+1 day'), $di(11, 21));
 
-// getStart()
+
+getStart:
 Assert::equal($interval->getStart(), new Date('2000-01-10'));
 
-// getEnd()
+
+getEnd:
 Assert::equal($interval->getEnd(), new Date('2000-01-20'));
 
-// getSpan()
+
+getSpan:
 Assert::equal($interval->getSpan(), new DateTimeSpan(0, 0, 10));
 
-// getDateSpan()
+
+getDateSpan:
 Assert::equal($interval->getDateSpan(), new DateSpan(0, 0, 10));
 
-// getLengthInDays()
+
+getLengthInDays:
 Assert::same($interval->getLengthInDays(), 10);
 Assert::same($emptyData->getLengthInDays(), 0);
 
-// getDayCount()
+
+getDayCount:
 Assert::same($interval->getDayCount(), 11);
 Assert::same($emptyData->getDayCount(), 0);
 
-// isEmpty()
+
+isEmpty:
 Assert::false($interval->isEmpty());
 Assert::false($allData->isEmpty());
 Assert::true($emptyData->isEmpty());
 
-// equals()
+
+equals:
 Assert::true($interval->equals($di(10, 20)));
 Assert::false($interval->equals($di(10, 15)));
 Assert::false($interval->equals($di(15, 20)));
 
-// compare()
+
+compare:
 Assert::same($interval->compare($di(10, 19)), 1);
 Assert::same($interval->compare($di(10, 21)), -1);
 Assert::same($interval->compare($interval), 0);
 Assert::same($interval->compare($di(9, 19)), 1);
 Assert::same($interval->compare($di(11, 21)), -1);
 
-// containsValue()
+
+containsValue:
 Assert::true($interval->containsValue($d(10)));
 Assert::true($interval->containsValue($d(15)));
 Assert::true($interval->containsValue($d(20)));
@@ -99,7 +113,8 @@ Assert::false($interval->containsValue($d(5)));
 Assert::false($interval->containsValue($d(25)));
 Assert::true($interval->containsValue(new DateTimeImmutable('2000-01-15')));
 
-// contains()
+
+contains:
 Assert::true($interval->contains($i(10, 20)));
 Assert::true($interval->contains($i(10, 15)));
 Assert::true($interval->contains($i(15, 20)));
@@ -108,7 +123,8 @@ Assert::false($interval->contains($i(10, 25)));
 Assert::false($interval->contains($i(1, 5)));
 Assert::false($interval->contains($emptyInterval));
 
-// intersects()
+
+intersects:
 Assert::true($interval->intersects($i(5, 25)));
 Assert::true($interval->intersects($i(10, 20)));
 Assert::true($interval->intersects($i(5, 15)));
@@ -116,14 +132,16 @@ Assert::true($interval->intersects($i(15, 25)));
 Assert::false($interval->intersects($i(1, 5)));
 Assert::false($interval->intersects($emptyInterval));
 
-// touches()
+
+touches:
 Assert::true($interval->touches($i(1, 9)));
 Assert::true($interval->touches($i(21, 25)));
 Assert::false($interval->touches($i(1, 10)));
 Assert::false($interval->touches($i(20, 25)));
 Assert::false($interval->touches($emptyInterval));
 
-// intersect()
+
+intersect:
 Assert::equal($interval->intersect($i(1, 15)), $di(10, 15));
 Assert::equal($interval->intersect($i(15, 30)), $di(15, 20));
 Assert::equal($interval->intersect($i(1, 18), $i(14, 30)), $di(14, 18));
@@ -131,7 +149,8 @@ Assert::equal($interval->intersect($i(1, 5)), $emptyData);
 Assert::equal($interval->intersect($i(1, 5), $i(5, 15)), $emptyData);
 Assert::equal($interval->intersect($emptyInterval), $emptyData);
 
-// subtract()
+
+subtract:
 Assert::equal($interval->subtract($i(5, 15)), $s($di(16, 20)));
 Assert::equal($interval->subtract($i(15, 25)), $s($di(10, 14)));
 Assert::equal($interval->subtract($i(13, 17)), $s($di(10, 12), $di(18, 20)));

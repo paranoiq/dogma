@@ -14,35 +14,43 @@ $f = static function (int $a, int $b): int {
     return $a + $b;
 };
 
-// fold()
+
+fold:
 Assert::same(Arr::fold($array, $f, 0), 10);
 Assert::same(Arr::fold($empty, $f, 0), 0);
 Assert::same(Arr::fold($empty, $f), null);
 
-// foldLeft()
+
+foldLeft:
 Assert::same(Arr::foldLeft($array, $f, 0), 10);
 Assert::same(Arr::foldLeft($empty, $f, 0), 0);
 Assert::same(Arr::foldLeft($empty, $f), null);
 
-// foldRight()
+
+foldRight:
 Assert::same(Arr::foldRight($array, $f, 0), 10);
 Assert::same(Arr::foldRight($empty, $f, 0), 0);
 Assert::same(Arr::foldRight($empty, $f), null);
 
-// reduce()
+
+reduce:
 Assert::same(Arr::reduce($array, $f), 10);
 Assert::same(Arr::reduce($empty, $f), null);
 
-// reduceLeft()
+
+reduceLeft:
 Assert::same(Arr::reduceLeft($array, $f), 10);
 Assert::same(Arr::reduceLeft($empty, $f), null);
 
-// reduceRight()
+
+reduceRight:
 Assert::same(Arr::reduceRight($array, $f), 10);
 Assert::same(Arr::reduceRight($empty, $f), null);
 
-// scanLeft()
+
+scanLeft:
 Assert::same(Arr::scanLeft($array, $f, 0), [0, 1, 3, 6, 10]);
 
-// scanRight()
+
+scanRight:
 Assert::same(Arr::scanRight($array, $f, 0), [10, 9, 7, 4, 0]);

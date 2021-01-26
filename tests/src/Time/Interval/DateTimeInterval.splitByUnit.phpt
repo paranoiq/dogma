@@ -19,7 +19,8 @@ $s = static function (string ...$is): DateTimeIntervalSet {
     }, $is));
 };
 
-// year
+
+year:
 Assert::equal($i('2000-05-05 00:00 - 2000-06-05 00:00')->splitByUnitAligned(DateTimeUnit::year()), $s(
     '2000-05-05 00:00 - 2000-06-05 00:00'
 ));
@@ -36,7 +37,8 @@ Assert::equal($i('2000-05-05 00:00 - 2001-10-05 00:00')->splitByUnit(DateTimeUni
     '2001-05-05 00:00 - 2001-10-05 00:00'
 ));
 
-// quarter
+
+quarter:
 Assert::equal($i('2000-01-05 00:00 - 2000-01-06 00:00')->splitByUnitAligned(DateTimeUnit::quarter()), $s(
     '2000-01-05 00:00 - 2000-01-06 00:00'
 ));
@@ -52,7 +54,8 @@ Assert::equal($i('2000-01-05 00:00 - 2000-05-05 00:00')->splitByUnit(DateTimeUni
     '2000-04-05 00:00 - 2000-05-05 00:00'
 ));
 
-// month
+
+month:
 Assert::equal($i('2000-01-05 00:00 - 2000-01-06 00:00')->splitByUnitAligned(DateTimeUnit::month()), $s(
     '2000-01-05 00:00 - 2000-01-06 00:00'
 ));
@@ -69,7 +72,8 @@ Assert::equal($i('2000-01-05 00:00 - 2000-02-05 00:00')->splitByUnit(DateTimeUni
     '2000-02-05 00:00 - 2000-02-05 00:00'
 ));
 
-// week
+
+week:
 Assert::equal($i('2000-01-01 00:00 - 2000-01-02 00:00')->splitByUnitAligned(DateTimeUnit::week()), $s(
     '2000-01-01 00:00 - 2000-01-02 00:00'
 ));
@@ -87,7 +91,8 @@ Assert::equal($i('2000-01-01 00:00 - 2000-01-12 00:00')->splitByUnit(DateTimeUni
     '2000-01-08 00:00 - 2000-01-12 00:00'
 ));
 
-// day
+
+day:
 Assert::equal($i('2000-01-01 12:00 - 2000-01-01 13:00')->splitByUnitAligned(DateTimeUnit::day()), $s(
     '2000-01-01 12:00 - 2000-01-01 13:00'
 ));
@@ -104,7 +109,8 @@ Assert::equal($i('2000-01-01 12:00 - 2000-01-02 12:00')->splitByUnit(DateTimeUni
     '2000-01-02 12:00 - 2000-01-02 12:00'
 ));
 
-// hour
+
+hour:
 Assert::equal($i('2000-01-01 00:12 - 2000-01-01 00:13')->splitByUnitAligned(DateTimeUnit::hour()), $s(
     '2000-01-01 00:12 - 2000-01-01 00:13'
 ));
@@ -121,7 +127,8 @@ Assert::equal($i('2000-01-01 00:12 - 2000-01-01 01:12')->splitByUnit(DateTimeUni
     '2000-01-01 00:12 - 2000-01-01 01:12'
 ));
 
-// minute
+
+minute:
 Assert::equal($i('2000-01-01 00:00:12 - 2000-01-01 00:00:13')->splitByUnitAligned(DateTimeUnit::minute()), $s(
     '2000-01-01 00:00:12 - 2000-01-01 00:00:13'
 ));
@@ -138,7 +145,8 @@ Assert::equal($i('2000-01-01 00:00:12 - 2000-01-01 00:01:12')->splitByUnit(DateT
     '2000-01-01 00:00:12 - 2000-01-01 00:01:12'
 ));
 
-// second
+
+second:
 Assert::equal($i('2000-01-01 00:00:00.12 - 2000-01-01 00:00:00.13')->splitByUnitAligned(DateTimeUnit::second()), $s(
     '2000-01-01 00:00:00.12 - 2000-01-01 00:00:00.13'
 ));
@@ -155,7 +163,8 @@ Assert::equal($i('2000-01-01 00:00:00.12 - 2000-01-01 00:00:01.12')->splitByUnit
     '2000-01-01 00:00:00.12 - 2000-01-01 00:00:01.12'
 ));
 
-// milisecond
+
+milisecond:
 Assert::equal($i('2000-01-01 00:00:00.000012 - 2000-01-01 00:00:00.000013')->splitByUnitAligned(DateTimeUnit::milisecond()), $s(
     '2000-01-01 00:00:00.000012 - 2000-01-01 00:00:00.000013'
 ));
@@ -172,7 +181,8 @@ Assert::equal($i('2000-01-01 00:00:00.000012 - 2000-01-01 00:00:00.001012')->spl
     '2000-01-01 00:00:00.000012 - 2000-01-01 00:00:00.001012'
 ));
 
-// microsecond
+
+microsecond:
 Assert::equal($i('2000-01-01 00:00:00.000001 - 2000-01-01 00:00:00.000003')->splitByUnitAligned(DateTimeUnit::microsecond()), $s(
     '2000-01-01 00:00:00.000001 - 2000-01-01 00:00:00.000002',
     '2000-01-01 00:00:00.000002 - 2000-01-01 00:00:00.000003'

@@ -44,38 +44,47 @@ $interval = new NightIntervalData($d(1), $d(5), 1);
 $emptyInterval = NightInterval::empty();
 $set = new NightIntervalDataSet([$interval]);
 
-// toDateDataArray()
+
+toDateDataArray:
 Assert::equal($emptyInterval->toDateArray(), []);
 Assert::equal($interval->toDateDataArray(), [[$d(1), 1], [$d(2), 1], [$d(3), 1], [$d(4), 1]]);
 Assert::equal($ds('1-3, 4-6')->toDateDataArray(), [[$d(1), 1], [$d(2), 1], [$d(4), 1], [$d(5), 1]]);
 
-// isEmpty()
+
+isEmpty:
 Assert::true((new NightIntervalSet([]))->isEmpty());
 Assert::true((new NightIntervalSet([$emptyInterval]))->isEmpty());
 
-// equals()
+
+equals:
 Assert::true($set->equals($ds('1-5')));
 Assert::false($set->equals($ds('1-6')));
 
-// containsValue()
+
+containsValue:
 Assert::true($set->containsValue($d(1)));
 Assert::true($set->containsValue($d(4)));
 Assert::false($set->containsValue($d(5)));
 
-// normalize()
+
+normalize:
 Assert::equal($ds('1-4, 2-5')->normalize(), $set);
 Assert::equal($ds('10-14, 5-10, 18-22, 5-7, 15-20')->normalize(), $ds('5-14, 15-22'));
 
-// add()
+
+add:
 Assert::equal($ds('1-2, 3-4, 5-6'), $ds('1-2')->add($ds('3-4, 5-6')));
 
-// subtract()
+
+subtract:
 Assert::equal($ds('1-11')->subtract($s('3-5, 7-9')), $ds('1-3, 5-7, 9-11'));
 
-// intersect()
+
+intersect:
 Assert::equal($ds('1-5, 10-15')->intersect($s('4-12, 14-20')), $ds('4-5, 10-12, 14-15'));
 
-// map()
+
+map:
 Assert::equal($set->map(static function (NightIntervalData $interval) {
     return $interval;
 }), $set);
@@ -86,15 +95,18 @@ Assert::equal($set->map(static function (NightIntervalData $interval) use ($i) {
     return $interval->subtract($i('3-4'))->getIntervals();
 }), $ds('1-3, 4-5'));
 
-// collect()
 
-// collectData()
+collect:
+
+
+collectData:
 
 $reducer = static function (int $state, int $change): int {
     return $state + $change;
 };
 
-// modifyData()
+
+modifyData:
 Call::withArgs(static function ($orig, $input, $output, $i) use ($ds, $reducer): void {
     $orig = $ds($orig);
     $input = $ds($input);
@@ -126,7 +138,8 @@ $reducer = static function (int $state, $data): int {
     return $state + $data[1];
 };
 
-// modifyDataByStream()
+
+modifyDataByStream:
 Call::withArgs(static function ($orig, $input, $output, $i) use ($ds, $di, $mapper, $reducer): void {
     $orig = $ds($orig);
     $input = $di($input);

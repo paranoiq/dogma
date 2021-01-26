@@ -29,38 +29,49 @@ $emptyInterval = DayOfYearInterval::empty();
 
 $set = new DayOfYearIntervalSet([$interval]);
 
-// getIntervals() & getIterator()
+
+getIntervals:
+getIterator:
 Assert::same($set->getIntervals(), iterator_to_array($set->getIterator()));
 
-// isEmpty()
+
+isEmpty:
 Assert::true((new DayOfYearIntervalSet([]))->isEmpty());
 Assert::true((new DayOfYearIntervalSet([$emptyInterval]))->isEmpty());
 
-// equals()
+
+equals:
 Assert::true($set->equals($s($i(1, 5))));
 Assert::false($set->equals($s($i(1, 6))));
 
-// containsValue()
+
+containsValue:
 Assert::true($set->containsValue($d(1)));
 Assert::true($set->containsValue($d(5)));
 Assert::false($set->containsValue($d(6)));
 
-// envelope()
+
+envelope:
 Assert::equal($s($i(1, 2), $i(4, 5))->envelope(), $interval);
 
-// normalize()
+
+normalize:
 Assert::equal($s($i(1, 4), $i(2, 5))->normalize(), $set);
 
-// add()
+
+add:
 Assert::equal($s($i(1, 2), $i(3, 4), $i(5, 6)), $s($i(1, 2))->add($s($i(3, 4), $i(5, 6))));
 
-// subtract()
+
+subtract:
 Assert::equal($s($i(1, 10))->subtract($s($i(3, 4), $i(7, 8))), $s($i(1, 3), $i(4, 7), $i(8, 10)));
 
-// intersect()
+
+intersect:
 Assert::equal($s($i(1, 5), $i(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $s($i(4, 5), $i(10, 12), $i(14, 15)));
 
-// map()
+
+map:
 Assert::equal($set->map(static function (DayOfYearInterval $interval) {
     return $interval;
 }), $set);

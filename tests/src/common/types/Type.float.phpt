@@ -14,105 +14,135 @@ $float = Type::float();
 $single = Type::float(BitSize::BITS_32);
 $floatNullable = Type::float(Type::NULLABLE);
 
-// getId()
+
+getId:
 Assert::same($float->getId(), 'float');
 Assert::same($single->getId(), 'float(32)');
 Assert::same($floatNullable->getId(), 'float?');
 
-// fromId()
+
+fromId:
 Assert::same(Type::fromId('float'), $float);
 Assert::same(Type::fromId('float(32)'), $single);
 Assert::same(Type::fromId('float?'), $floatNullable);
 
-// getName()
+
+getName:
 Assert::same($float->getName(), Type::FLOAT);
 
-// isNullable()
+
+isNullable:
 Assert::false($float->isNullable());
 Assert::true($floatNullable->isNullable());
 
-// isSigned()
+
+isSigned:
 Assert::false($float->isSigned());
 
-// isUnsigned()
+
+isUnsigned:
 Assert::false($float->isUnsigned());
 
-// isFixed()
+
+isFixed:
 Assert::false($float->isFixed());
 
-// getResourceType()
+
+getResourceType:
 Assert::null($float->getResourceType());
 
-// getItemType()
+
+getItemType:
 Assert::null($float->getItemType());
 
-// getSize()
+
+getSize:
 Assert::null($float->getSize());
 Assert::same($single->getSize(), 32);
 Assert::null($floatNullable->getSize());
 
-// getEncoding()
+
+getEncoding:
 Assert::null($float->getEncoding());
 
-// getLocale()
+
+getLocale:
 Assert::null($float->getLocale());
 
-// isBool()
+
+isBool:
 Assert::false($float->isBool());
 
-// isInt()
+
+isInt:
 Assert::false($float->isInt());
 
-// isFloat()
+
+isFloat:
 Assert::true($float->isFloat());
 
-// isNumeric()
+
+isNumeric:
 Assert::true($float->isNumeric());
 
-// isString()
+
+isString:
 Assert::false($float->isString());
 
-// isScalar()
+
+isScalar:
 Assert::true($float->isScalar());
 
-// isArray()
+
+isArray:
 Assert::false($float->isArray());
 
-// isCollection()
+
+isCollection:
 Assert::false($float->isCollection());
 
-// isTuple()
+
+isTuple:
 Assert::false($float->isTuple());
 
-// isClass()
+
+isClass:
 Assert::false($float->isClass());
 
-// isCallable()
+
+isCallable:
 Assert::false($float->isCallable());
 
-// isResource()
+
+isResource:
 Assert::false($float->isResource());
 
-// is()
+
+is:
 Assert::true($float->is(Type::FLOAT));
 Assert::false($float->is(DateTime::class));
 
-// isImplementing()
+
+isImplementing:
 Assert::false($float->isImplementing(DateTime::class));
 
-// getBaseType()
+
+getBaseType:
 Assert::same($floatNullable->getBaseType(), $float);
 Assert::same($single->getBaseType(), $float);
 
-// getNonNullableType()
+
+getNonNullableType:
 Assert::same($floatNullable->getNonNullableType(), $float);
 Assert::same($single->getNonNullableType(), $single);
 
-// getTypeWithoutParams()
+
+getTypeWithoutParams:
 Assert::same($floatNullable->getTypeWithoutParams(), $floatNullable);
 Assert::same($single->getTypeWithoutParams(), $float);
 
-// getInstance()
+
+getInstance:
 Assert::exception(static function () use ($float): void {
     $float->getInstance();
 }, Error::class);

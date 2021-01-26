@@ -9,7 +9,8 @@ use Dogma\Tester\Assert;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-// compareIntersects()
+
+compareIntersects:
 Call::withArgs(static function (array $boundaries, int $expected, int $case): void {
     Assert::same(IntervalCalc::compareIntersects(...$boundaries), $expected, (string) $case);
 }, [

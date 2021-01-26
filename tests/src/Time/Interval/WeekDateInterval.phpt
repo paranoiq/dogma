@@ -18,6 +18,8 @@ $d = static function (int $day): Date {
     return new Date('2000-01-' . $day);
 };
 
+
+__construct:
 // wrong start day
 Assert::exception(static function () use ($d): void {
     new WeekDateInterval($d(1), $d(8));
@@ -33,23 +35,29 @@ Assert::exception(static function () use ($startDate, $d): void {
     new WeekDateInterval($startDate, $d(20));
 }, InvalidWeekDateIntervalException::class);
 
-// createFromDate()
+
+createFromDate:
 Assert::equal(WeekDateInterval::createFromDate(new Date('2000-01-13')), $interval);
 
-// createFromDateTime()
+
+createFromDateTime:
 Assert::equal(WeekDateInterval::createFromDate($d(13)), $interval);
 
-// createFromYearAndWeekNumber()
+
+createFromYearAndWeekNumber:
 Assert::equal(WeekDateInterval::createFromIsoYearAndWeek(2000, 2), $interval);
 
-// previous()
+
+previous:
 $previous = WeekDateInterval::createFromIsoYearAndWeek(2000, 1);
 Assert::equal($interval->previous(), $previous);
 
-// next()
+
+next:
 $next = WeekDateInterval::createFromIsoYearAndWeek(2000, 3);
 Assert::equal($interval->next(), $next);
 
-// createOverlappingIntervals()
+
+createOverlappingIntervals:
 Assert::equal(WeekDateInterval::createOverlappingIntervals($interval), [$interval]);
 Assert::equal(WeekDateInterval::createOverlappingIntervals(new DateInterval($d(5), $d(20))), [$previous, $interval, $next]);

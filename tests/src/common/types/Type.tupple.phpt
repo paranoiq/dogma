@@ -12,100 +12,130 @@ require_once __DIR__ . '/../../bootstrap.php';
 $tuple = Type::tupleOf(Type::INT, Type::STRING);
 $tupleNullable = Type::tupleOf(Type::INT, Type::STRING, Type::NULLABLE);
 
-// getId()
+
+getId:
 Assert::same($tuple->getId(), 'Dogma\\Tuple<int,string>');
 Assert::same($tupleNullable->getId(), 'Dogma\\Tuple<int,string>?');
 
-// fromId()
+
+fromId:
 Assert::same(Type::fromId('Dogma\\Tuple<int,string>'), $tuple);
 Assert::same(Type::fromId('Dogma\\Tuple<int,string>?'), $tupleNullable);
 
-// getName()
+
+getName:
 Assert::same($tuple->getName(), Tuple::class);
 
-// isNullable()
+
+isNullable:
 Assert::false($tuple->isNullable());
 Assert::true($tupleNullable->isNullable());
 
-// isSigned()
+
+isSigned:
 Assert::false($tuple->isSigned());
 
-// isUnsigned()
+
+isUnsigned:
 Assert::false($tuple->isUnsigned());
 
-// isFixed()
+
+isFixed:
 Assert::false($tuple->isFixed());
 
-// getResourceType()
+
+getResourceType:
 Assert::null($tuple->getResourceType());
 
-// getItemType()
+
+getItemType:
 Assert::same($tuple->getItemType(), [Type::int(), Type::string()]);
 
-// getSize()
+
+getSize:
 Assert::null($tuple->getSize());
 
-// getEncoding()
+
+getEncoding:
 Assert::null($tuple->getEncoding());
 
-// getLocale()
+
+getLocale:
 Assert::null($tuple->getLocale());
 
-// isBool()
+
+isBool:
 Assert::false($tuple->isBool());
 
-// isInt()
+
+isInt:
 Assert::false($tuple->isInt());
 
-// isFloat()
+
+isFloat:
 Assert::false($tuple->isFloat());
 
-// isNumeric()
+
+isNumeric:
 Assert::false($tuple->isNumeric());
 
-// isString()
+
+isString:
 Assert::false($tuple->isString());
 
-// isScalar()
+
+isScalar:
 Assert::false($tuple->isScalar());
 
-// isArray()
+
+isArray:
 Assert::false($tuple->isArray());
 
-// isCollection()
+
+isCollection:
 Assert::false($tuple->isCollection());
 
-// isTuple()
+
+isTuple:
 Assert::true($tuple->isTuple());
 
-// isClass()
+
+isClass:
 Assert::true($tuple->isClass());
 
-// isCallable()
+
+isCallable:
 Assert::false($tuple->isCallable());
 
-// isResource()
+
+isResource:
 Assert::false($tuple->isResource());
 
-// is()
+
+is:
 Assert::true($tuple->is(Tuple::class));
 Assert::false($tuple->is(DateTime::class));
 
-// isImplementing()
+
+isImplementing:
 Assert::true($tuple->isImplementing(Tuple::class));
 Assert::false($tuple->isImplementing(DateTime::class));
 
-// getBaseType()
+
+getBaseType:
 Assert::same($tuple->getBaseType(), Type::get(Tuple::class));
 Assert::same($tupleNullable->getBaseType(), Type::get(Tuple::class));
 
-// getNonNullableType()
+
+getNonNullableType:
 Assert::same($tuple->getNonNullableType(), $tuple);
 Assert::same($tupleNullable->getNonNullableType(), $tuple);
 
-// getTypeWithoutParams()
+
+getTypeWithoutParams:
 Assert::same($tuple->getTypeWithoutParams(), $tuple);
 Assert::same($tupleNullable->getTypeWithoutParams(), $tupleNullable);
 
-// getInstance()
+
+getInstance:
 Assert::equal($tuple->getInstance(1, 'abc'), new Tuple(1, 'abc'));

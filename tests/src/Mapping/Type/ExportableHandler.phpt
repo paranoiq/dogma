@@ -21,20 +21,24 @@ $mapper = new Mapper(new StaticMappingContainer([]));
 
 $exportableType = Type::get(ExportableTestClass::class);
 
-// acceptType()
+
+acceptType:
 Assert::true($handler->acceptsType($exportableType));
 Assert::false($handler->acceptsType(Type::get(Date::class)));
 
-// getParameters()
+
+getParameters:
 Assert::equal($handler->getParameters($exportableType), [
     'one' => Type::get(Type::INT),
     'two' => Type::get(Type::FLOAT),
 ]);
 
-// createInstance()
+
+createInstance:
 $data = ['one' => 1, 'two' => 1.23];
 $exportableInstance = $handler->createInstance($exportableType, $data, $mapper);
 Assert::type($exportableInstance, ExportableTestClass::class);
 
-// exportInstance()
+
+exportInstance:
 Assert::same($handler->exportInstance($exportableType, $exportableInstance, $mapper), $data);

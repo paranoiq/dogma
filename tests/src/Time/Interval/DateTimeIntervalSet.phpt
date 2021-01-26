@@ -34,7 +34,8 @@ $emptyInterval = DateTimeInterval::empty();
 $set = new DateTimeIntervalSet([$interval]);
 $emptySet = new DateTimeIntervalSet([]);
 
-// createFromDateAndTimeIntervalSet()
+
+createFromDateAndTimeIntervalSet:
 Assert::equal(DateTimeIntervalSet::createFromDateAndTimeIntervalSet(
     new Date('2000-01-01'),
     new TimeIntervalSet([
@@ -46,7 +47,8 @@ Assert::equal(DateTimeIntervalSet::createFromDateAndTimeIntervalSet(
     DateTimeInterval::createFromString('2000-01-01 12:00 - 2000-01-01 13:00'),
 ]));
 
-// createFromDateIntervalAndTimeInterval()
+
+createFromDateIntervalAndTimeInterval:
 Assert::equal(DateTimeIntervalSet::createFromDateIntervalAndTimeInterval(
     DateInterval::createFromString('2000-01-01 - 2000-01-02'),
     TimeInterval::createFromString('10:00 - 11:00')
@@ -55,7 +57,8 @@ Assert::equal(DateTimeIntervalSet::createFromDateIntervalAndTimeInterval(
     DateTimeInterval::createFromString('2000-01-02 10:00 - 2000-01-02 11:00'),
 ]));
 
-// createFromDateIntervalAndTimeIntervalSet()
+
+createFromDateIntervalAndTimeIntervalSet:
 Assert::equal(DateTimeIntervalSet::createFromDateIntervalAndTimeIntervalSet(
     DateInterval::createFromString('2000-01-01 - 2000-01-02'),
     new TimeIntervalSet([
@@ -69,7 +72,8 @@ Assert::equal(DateTimeIntervalSet::createFromDateIntervalAndTimeIntervalSet(
     DateTimeInterval::createFromString('2000-01-02 12:00 - 2000-01-02 13:00'),
 ]));
 
-// createFromDateIntervalSetAndTimeInterval()
+
+createFromDateIntervalSetAndTimeInterval:
 Assert::equal(DateTimeIntervalSet::createFromDateIntervalSetAndTimeInterval(
     new DateIntervalSet([
         DateInterval::createFromString('2000-01-01 - 2000-01-02'),
@@ -83,7 +87,8 @@ Assert::equal(DateTimeIntervalSet::createFromDateIntervalSetAndTimeInterval(
     DateTimeInterval::createFromString('2000-01-06 10:00 - 2000-01-06 11:00'),
 ]));
 
-// createFromDateIntervalSetAndTimeIntervalSet()
+
+createFromDateIntervalSetAndTimeIntervalSet:
 Assert::equal(DateTimeIntervalSet::createFromDateIntervalSetAndTimeIntervalSet(
     new DateIntervalSet([
         DateInterval::createFromString('2000-01-01 - 2000-01-02'),
@@ -104,7 +109,8 @@ Assert::equal(DateTimeIntervalSet::createFromDateIntervalSetAndTimeIntervalSet(
     DateTimeInterval::createFromString('2000-01-06 12:00 - 2000-01-06 13:00'),
 ]));
 
-// createFromDateIntervalAndWeekDayHoursSet()
+
+createFromDateIntervalAndWeekDayHoursSet:
 Assert::equal(DateTimeIntervalSet::createFromDateIntervalAndWeekDayHoursSet(
     DateInterval::createFromString('2000-01-01 - 2000-01-02'),
     new WeekDayHoursSet([
@@ -115,7 +121,8 @@ Assert::equal(DateTimeIntervalSet::createFromDateIntervalAndWeekDayHoursSet(
     DateTimeInterval::createFromString('2000-01-02 12:00 - 2000-01-02 13:00'),
 ]));
 
-// createFromDateIntervalSetAndWeekDayHoursSet()
+
+createFromDateIntervalSetAndWeekDayHoursSet:
 Assert::equal(DateTimeIntervalSet::createFromDateIntervalSetAndWeekDayHoursSet(
     new DateIntervalSet([
         DateInterval::createFromString('2000-01-01 - 2000-01-02'),
@@ -130,43 +137,54 @@ Assert::equal(DateTimeIntervalSet::createFromDateIntervalSetAndWeekDayHoursSet(
     DateTimeInterval::createFromString('2000-01-09 12:00 - 2000-01-09 13:00'),
 ]));
 
-// getIntervals() & getIterator()
+
+getIntervals:
+getIterator:
 Assert::same($set->getIntervals(), iterator_to_array($set->getIterator()));
 
-// isEmpty()
+
+isEmpty:
 Assert::true((new DateTimeIntervalSet([]))->isEmpty());
 Assert::true((new DateTimeIntervalSet([$emptyInterval]))->isEmpty());
 
-// equals()
+
+equals:
 Assert::true($set->equals($s($i(1, 5))));
 Assert::false($set->equals($s($i(1, 5), $i(6, 7))));
 Assert::false($set->equals($s($i(1, 6))));
 Assert::false($set->equals($emptySet));
 Assert::false($emptySet->equals($set));
 
-// containsValue()
+
+containsValue:
 Assert::true($set->containsValue($dt(1)));
 Assert::true($set->containsValue($dt(4)));
 Assert::false($set->containsValue($dt(5)));
 Assert::false($set->containsValue($dt(6)));
 
-// envelope()
+
+envelope:
 Assert::equal($s($i(1, 2), $i(4, 5))->envelope(), $interval);
 Assert::equal($emptySet->envelope(), $emptyInterval);
 
-// normalize()
+
+normalize:
 Assert::equal($s($i(1, 4), $i(2, 5))->normalize(), $set);
 
-// add()
+
+add:
 Assert::equal($s($i(1, 2), $i(3, 4), $i(5, 6)), $s($i(1, 2))->add($s($i(3, 4), $i(5, 6))));
 
-// subtract()
+
+subtract:
 Assert::equal($s($i(1, 10))->subtract($s($i(3, 4), $i(7, 8))), $s($i(1, 3), $i(4, 7), $i(8, 10)));
 
-// intersect()
+
+intersect:
 Assert::equal($s($i(1, 5), $i(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $s($i(4, 5), $i(10, 12), $i(14, 15)));
 
-// map()
+
+map:
 Assert::equal($set->map(static function (DateTimeInterval $interval) {
     return $interval;
 }), $set);
@@ -179,7 +197,8 @@ Assert::equal($set->map(static function (DateTimeInterval $interval) {
 
 $set = $s(DateTimeInterval::empty(), $i(1, 1), $i(1, 2), $i(1, 3));
 
-// filterByLength()
+
+filterByLength:
 Assert::equal($set->filterByLength('>', Microseconds::DAY), $s($i(1, 3)));
 Assert::equal($set->filterByLength('>=', Microseconds::DAY), $s($i(1, 2), $i(1, 3)));
 Assert::equal($set->filterByLength('=', Microseconds::DAY), $s($i(1, 2)));

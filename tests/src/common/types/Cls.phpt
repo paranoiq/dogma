@@ -44,7 +44,7 @@ class G
 }
 
 
-// commonRoot()
+commonRoot:
 Assert::same(Cls::commonRoot(new A(), new AB()), A::class);
 Assert::same(Cls::commonRoot(new A(), new ABD()), A::class);
 Assert::same(Cls::commonRoot(new AB(), new AC()), A::class);
@@ -53,7 +53,8 @@ Assert::same(Cls::commonRoot(new ABD(), new ABE()), A::class);
 Assert::same(Cls::commonRoot(new ABD(), new ACF()), A::class);
 Assert::same(Cls::commonRoot(new ABD(), new G()), null);
 
-// commonBranch()
+
+commonBranch:
 Assert::same(Cls::commonBranch(new A(), new AB()), A::class);
 Assert::same(Cls::commonBranch(new A(), new ABD()), A::class);
 Assert::same(Cls::commonBranch(new AB(), new AC()), A::class);

@@ -11,34 +11,42 @@ require_once __DIR__ . '/../../../bootstrap.php';
 
 $array = [1, 2, 3];
 
-// toArray()
+toArray:
 Assert::same(Arr::toArray(new ImmutableArray([1, 2, 3])), [1, 2, 3]);
 
-// combine()
+
+combine:
 Assert::same(Arr::combine([1, 2, 3], [4, 5, 6]), [1 => 4, 2 => 5, 3 => 6]);
 
-// range()
+
+range:
 Assert::same(Arr::range(3, 5), [3, 4, 5]);
 Assert::same(Arr::range(5, 3), [5, 4, 3]);
 Assert::same(Arr::range(3, 7, 2), [3, 5, 7]);
 Assert::same(Arr::range(3, 6, 2), [3, 5]);
 
-// backwards()
+
+backwards:
 Assert::type(Arr::backwards($array), ReverseArrayIterator::class);
 
-// keys()
+
+keys:
 Assert::same(Arr::keys($array), [0, 1, 2]);
 
-// getValues()
+
+getValues:
 Assert::same(Arr::values($array), [1, 2, 3]);
 
-// randomKey()
+
+randomKey:
 Assert::contains(Arr::keys($array), Arr::randomKey($array));
 
-// randomValue()
+
+randomValue:
 Assert::contains(Arr::values($array), Arr::randomValue($array));
 
-// doForEach()
+
+doForEach:
 $x = 0;
 Arr::doForEach($array, static function (int $v) use (&$x): void {
     $x += $v;

@@ -25,16 +25,20 @@ $mapper = new Mapper(new StaticMappingContainer([]));
 
 $enumType = Type::get(TestEnum::class);
 
-// acceptType()
+
+acceptType:
 Assert::true($handler->acceptsType($enumType));
 Assert::false($handler->acceptsType(Type::get(Date::class)));
 
-// getParameters()
+
+getParameters:
 Assert::equal($handler->getParameters($enumType), null);
 
-// createInstance()
+
+createInstance:
 $enumInstance = $handler->createInstance($enumType, 1, $mapper);
 Assert::equal($enumInstance, TestEnum::get(TestEnum::ONE));
 
-// exportInstance()
+
+exportInstance:
 Assert::same($handler->exportInstance($enumType, $enumInstance, $mapper), 1);

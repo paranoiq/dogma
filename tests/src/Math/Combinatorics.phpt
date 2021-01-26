@@ -7,6 +7,8 @@ use Dogma\Tester\Assert;
 
 require_once __DIR__ . '/../bootstrap.php';
 
+
+sumFactorize:
 Assert::same(Combinatorics::sumFactorize(4), [
     [4],
     [3, 1],
@@ -18,7 +20,8 @@ Assert::same(Combinatorics::sumFactorize(4), [
     [1, 1, 1, 1],
 ]);
 
-// getAllSubstringCombinations()
+
+getAllSubstringCombinations:
 Assert::same(Combinatorics::getAllSubstringCombinations('abcd'), [
     ['abcd'],
     ['abc', 'd'],

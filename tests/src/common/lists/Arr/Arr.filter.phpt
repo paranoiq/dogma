@@ -15,23 +15,28 @@ $f = static function (int $v): int {
     return $v % 2;
 };
 
-// collect()
+
+collect:
 Assert::same(Arr::collect($array, $f), [1, 2 => 1]);
 Assert::same(Arr::collect($empty, $f), []);
 
-// filter()
+
+filter:
 Assert::same(Arr::filter($array, $f), [1, 2 => 3]);
 Assert::same(Arr::filter($empty, $f), []);
 
-// filterKeys()
+
+filterKeys:
 Assert::same(Arr::filterKeys($array, $f), [1 => 2, 3 => 4]);
 Assert::same(Arr::filterKeys($empty, $f), []);
 
-// filterNot()
+
+filterNot:
 Assert::same(Arr::filterNot($array, $f), [1 => 2, 3 => 4]);
 Assert::same(Arr::filterNot($empty, $f), []);
 
-// partition()
+
+partition:
 /** @var ImmutableArray $a */
 /** @var ImmutableArray $b */
 [$a, $b] = Arr::partition($array, $f);

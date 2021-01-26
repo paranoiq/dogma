@@ -24,23 +24,27 @@ $mapper = new Mapper(new DynamicMappingContainer(new ConventionMappingBuilder(
 $arrayType = Type::get(Type::PHP_ARRAY);
 $intArrayType = Type::arrayOf(Type::INT);
 
-// acceptType()
+
+acceptType:
 Assert::true($handler->acceptsType($arrayType));
 Assert::true($handler->acceptsType($intArrayType));
 Assert::false($handler->acceptsType(Type::get(SplFixedArray::class)));
 
-// getParameters()
+
+getParameters:
 Assert::same($handler->getParameters($arrayType), null);
 // intentionally does not return item type. items type must be mapped by ArrayHandler, since MappingBuilder
 // can only handle non-iterable structures
 Assert::same($handler->getParameters($intArrayType), null);
 
-// createInstance()
+
+createInstance:
 $arrayInstance = $handler->createInstance($arrayType, ['1', '2'], $mapper);
 Assert::same($arrayInstance, ['1', '2']);
 $intArrayInstance = $handler->createInstance($intArrayType, ['1', '2'], $mapper);
 Assert::same($intArrayInstance, [1, 2]);
 
-// exportInstance()
+
+exportInstance:
 Assert::same($handler->exportInstance($intArrayType, $intArrayInstance, $mapper), [1, 2]); // expected (viz ScalarsHandler)
 Assert::same($handler->exportInstance($arrayType, $arrayInstance, $mapper), ['1', '2']);

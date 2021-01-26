@@ -18,7 +18,8 @@ use Traversable;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-// negative zero
+
+negativeZero:
 $negativeZero = -(0.0);
 Check::float($negativeZero);
 Assert::same((string) $negativeZero, '0');
@@ -27,7 +28,8 @@ $negativeZero = -0.0;
 Check::string($negativeZero);
 Assert::same($negativeZero, '0');
 
-// nullables
+
+nullables:
 $null = null;
 
 Check::nullableType($null, Type::BOOL);
@@ -41,25 +43,29 @@ $array = ['a' => 1, 'b' => 2, 'c' => 3];
 $vector = [1, 2, 3];
 $mixed = [1, 2, 'a', 'b'];
 
-// type()
+
+type:
 Check::type($vector, 'array<int>');
 Assert::exception(static function () use ($mixed): void {
     Check::itemsOfType($mixed, Type::INT);
 }, InvalidTypeException::class);
 
-// itemsOfType()
+
+itemsOfType:
 Check::itemsOfType($array, Type::INT);
 Assert::exception(static function () use ($mixed): void {
     Check::itemsOfType($mixed, Type::INT);
 }, InvalidTypeException::class);
 
-// itemsOfTypes()
+
+itemsOfTypes:
 Check::itemsOfTypes($mixed, [Type::INT, Type::STRING]);
 Assert::exception(static function () use ($mixed): void {
     Check::itemsOfTypes($mixed, [Type::INT, Type::FLOAT]);
 }, InvalidTypeException::class);
 
-// traversable()
+
+traversable:
 Check::traversable($array);
 Check::traversable($vector);
 Check::traversable(new SplFixedArray());
@@ -68,19 +74,22 @@ Assert::exception(static function (): void {
     Check::traversable(new Exception());
 }, InvalidTypeException::class);
 
-// phpArray()
+
+_array:
 Check::array($array);
 Assert::exception(static function () use ($null): void {
     Check::array($null);
 }, InvalidTypeException::class);
 
-// plainArray()
+
+plainArray:
 Check::plainArray($vector);
 Assert::exception(static function () use ($array): void {
     Check::plainArray($array);
 }, InvalidTypeException::class);
 
-// tuple()
+
+tuple:
 Check::tuple(new Tuple(123, 'abc'), [Type::INT, Type::STRING]);
 Assert::exception(static function (): void {
     Check::tuple(new Tuple(123, 'abc', 789), [Type::INT, Type::STRING]);
@@ -96,26 +105,29 @@ Assert::exception(static function () use ($array): void {
 }, InvalidTypeException::class);
 
 
-// object()
+object:
 Check::object(new stdClass(), stdClass::class);
 Assert::exception(static function () use ($array): void {
     Check::object($array, stdClass::class);
 }, InvalidTypeException::class);
 
-// className()
+
+className:
 Check::className(stdClass::class);
 Assert::exception(static function (): void {
     Check::className(Type::STRING);
 }, InvalidValueException::class);
 
-// typeName
+
+typeName:
 Check::typeName(stdClass::class);
 Check::typeName(Type::STRING);
 Assert::exception(static function (): void {
     Check::typeName('asdf');
 }, InvalidValueException::class);
 
-// ranges
+
+ranges:
 $small = -100;
 $big = 100;
 
@@ -146,7 +158,8 @@ Assert::exception(static function () use ($long): void {
     Check::string($long, 5, 6);
 }, ValueOutOfRangeException::class);
 
-// oneOf()
+
+oneOf:
 Check::oneOf($short);
 Check::oneOf($short, $null);
 Check::oneOf($null, $short);
@@ -172,13 +185,14 @@ class TestNonTraversable
 
 }
 
-// isIterable()
+isIterable:
 Assert::true(Check::isIterable([]));
 Assert::true(Check::isIterable(new stdClass()));
 Assert::true(Check::isIterable(new TestTraversable()));
 Assert::false(Check::isIterable(new TestNonTraversable()));
 
-// isPlainArray()
+
+isPlainArray:
 Assert::true(Check::isPlainArray([]));
 Assert::true(Check::isPlainArray([1, 2, 3]));
 Assert::false(Check::isPlainArray([1 => 1, 2, 3]));

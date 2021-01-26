@@ -17,27 +17,33 @@ $f = static function (int $a, int $b): int {
     return $a > $b ? 1 : ($a < $b ? -1 : 0);
 };
 
-// diff()
+
+diff:
 Assert::same($array->diff($diff1)->toArray(), [1, 3 => 4, 5, 6]);
 Assert::same($array->diff($diff1, $diff2)->toArray(), [1, 5 => 6]);
 
-// diffWith()
+
+diffWith:
 Assert::same($array->diffWith($f, $diff1)->toArray(), [1, 3 => 4, 5, 6]);
 Assert::same($array->diffWith($f, $diff1, $diff2)->toArray(), [1, 5 => 6]);
 
-// diffKeys()
+
+diffKeys:
 Assert::same($array->diffKeys($diff1)->toArray(), [1, 3 => 4, 5, 6]);
 Assert::same($array->diffKeys($diff1, $diff2)->toArray(), [1, 5 => 6]);
 
-// diffKeysWith()
+
+diffKeysWith:
 Assert::same($array->diffKeysWith($f, $diff1)->toArray(), [1, 3 => 4, 5, 6]);
 Assert::same($array->diffKeysWith($f, $diff1, $diff2)->toArray(), [1, 5 => 6]);
 
-// diffPairs()
+
+diffPairs:
 Assert::same($array->diffPairs($diff1)->toArray(), [1, 3 => 4, 5, 6]);
 Assert::same($array->diffPairs($diff1, $diff2)->toArray(), [1, 5 => 6]);
 
-// diffPairsWith()
+
+diffPairsWith:
 Assert::same($array->diffPairsWith($f, $f, $diff1)->toArray(), [1, 3 => 4, 5, 6]);
 Assert::same($array->diffPairsWith($f, $f, $diff1, $diff2)->toArray(), [1, 5 => 6]);
 Assert::same($array->diffPairsWith(null, $f, $diff1)->toArray(), [1, 3 => 4, 5, 6]);
@@ -47,27 +53,33 @@ Assert::same($array->diffPairsWith($f, null, $diff1, $diff2)->toArray(), [1, 5 =
 Assert::same($array->diffPairsWith(null, null, $diff1)->toArray(), [1, 3 => 4, 5, 6]);
 Assert::same($array->diffPairsWith(null, null, $diff1, $diff2)->toArray(), [1, 5 => 6]);
 
-// intersect()
+
+intersect:
 Assert::same($array->intersect($int1)->toArray(), [1 => 2, 3, 4, 5]);
 Assert::same($array->intersect($int1, $int2)->toArray(), [2 => 3, 4, 5]);
 
-// intersectWith()
+
+intersectWith:
 Assert::same($array->intersectWith($f, $int1)->toArray(), [1 => 2, 3, 4, 5]);
 Assert::same($array->intersectWith($f, $int1, $int2)->toArray(), [2 => 3, 4, 5]);
 
-// intersectKeys()
+
+intersectKeys:
 Assert::same($array->intersectKeys($int1)->toArray(), [1 => 2, 3, 4, 5]);
 Assert::same($array->intersectKeys($int1, $int2)->toArray(), [2 => 3, 4, 5]);
 
-// intersectKeysWith()
+
+intersectKeysWith:
 Assert::same($array->intersectKeysWith($f, $int1)->toArray(), [1 => 2, 3, 4, 5]);
 Assert::same($array->intersectKeysWith($f, $int1, $int2)->toArray(), [2 => 3, 4, 5]);
 
-// intersectPairs()
+
+intersectPairs:
 Assert::same($array->intersectPairs($int1)->toArray(), [1 => 2, 3, 4, 5]);
 Assert::same($array->intersectPairs($int1, $int2)->toArray(), [2 => 3, 4, 5]);
 
-// intersectPairsWith()
+
+intersectPairsWith:
 Assert::same($array->intersectPairsWith($f, $f, $int1)->toArray(), [1 => 2, 3, 4, 5]);
 Assert::same($array->intersectPairsWith($f, $f, $int1, $int2)->toArray(), [2 => 3, 4, 5]);
 Assert::same($array->intersectPairsWith(null, $f, $int1)->toArray(), [1 => 2, 3, 4, 5]);

@@ -16,112 +16,139 @@ $arrayNullable = Type::get(Type::PHP_ARRAY, Type::NULLABLE);
 $arrayOfInt = Type::arrayOf($int);
 $arrayOfIntNullable = Type::arrayOf($int, Type::NULLABLE);
 
-// getId()
+
+getId:
 Assert::same($array->getId(), 'array<mixed>');
 Assert::same($arrayNullable->getId(), 'array<mixed>?');
 Assert::same($arrayOfInt->getId(), 'array<int>');
 Assert::same($arrayOfIntNullable->getId(), 'array<int>?');
 
-// fromId()
+
+fromId:
 Assert::same(Type::fromId('array'), $array);
 Assert::same(Type::fromId('array?'), $arrayNullable);
 Assert::same(Type::fromId('array<int>'), $arrayOfInt);
 Assert::same(Type::fromId('array<int>?'), $arrayOfIntNullable);
 
-// getName()
+
+getName:
 Assert::same($array->getName(), Type::PHP_ARRAY);
 
-// isNullable()
+
+isNullable:
 Assert::false($array->isNullable());
 Assert::true($arrayNullable->isNullable());
 
-// isSigned()
+
+isSigned:
 Assert::false($array->isSigned());
 
-// isUnsigned()
+
+isUnsigned:
 Assert::false($array->isUnsigned());
 
-// isFixed()
+
+isFixed:
 Assert::false($array->isFixed());
 
-// getResourceType()
+
+getResourceType:
 Assert::null($array->getResourceType());
 
-// getItemType()
+
+getItemType:
 Assert::same($array->getItemType(), Type::get(Type::MIXED));
 Assert::same($arrayOfInt->getItemType(), Type::int());
 
-// getSize()
+
+getSize:
 Assert::null($array->getSize());
 
-// getEncoding()
+
+getEncoding:
 Assert::null($array->getEncoding());
 
-// getLocale()
+
+getLocale:
 Assert::null($array->getLocale());
 
-// isBool()
+
+isBool:
 Assert::false($array->isBool());
 
-// isInt()
+
+isInt:
 Assert::false($array->isInt());
 
-// isFloat()
+
+isFloat:
 Assert::false($array->isFloat());
 
-// isNumeric()
+
+isNumeric:
 Assert::false($array->isNumeric());
 
-// isString()
+
+isString:
 Assert::false($array->isString());
 
-// isScalar()
+
+isScalar:
 Assert::false($array->isScalar());
 
-// isArray()
+
+isArray:
 Assert::true($array->isArray());
 Assert::true($arrayOfInt->isArray());
 
-// isCollection()
+
+isCollection:
 Assert::false($array->isCollection());
 Assert::false($arrayOfInt->isCollection());
 
-// isTuple()
+
+isTuple:
 Assert::false($array->isTuple());
 
-// isClass()
+
+isClass:
 Assert::false($array->isClass());
 
-// isCallable()
+
+isCallable:
 Assert::false($array->isCallable());
 
-// isResource()
+
+isResource:
 Assert::false($array->isResource());
 
-// is()
+
+is:
 Assert::true($array->is(Type::PHP_ARRAY));
 Assert::false($array->is(DateTime::class));
 
-// isImplementing()
+
+isImplementing:
 Assert::false($array->isImplementing(DateTime::class));
 Assert::false($array->is(DateTime::class));
 
-// isImplementing()
-Assert::false($array->isImplementing(DateTime::class));
 
-// getBaseType()
+getBaseType:
 Assert::same($arrayNullable->getBaseType(), $array);
 Assert::same($array->getBaseType(), $array);
 
-// getNonNullableType()
+
+getNonNullableType:
 Assert::same($arrayNullable->getNonNullableType(), $array);
 Assert::same($array->getNonNullableType(), $array);
 
-// getTypeWithoutParams()
+
+getTypeWithoutParams:
 Assert::same($arrayNullable->getTypeWithoutParams(), $arrayNullable);
 Assert::same($array->getTypeWithoutParams(), $array);
 
-// getInstance()
+
+getInstance:
 Assert::exception(static function () use ($array): void {
     $array->getInstance('abc');
 }, Error::class);

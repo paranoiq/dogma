@@ -14,7 +14,8 @@ use Dogma\Tester\Assert;
 
 require_once __DIR__ . '/../bootstrap.php';
 
-// roundTo()
+
+roundTo:
 Assert::same(IntCalc::roundTo(0, 3), 0);
 Assert::same(IntCalc::roundTo(20, 3), 21);
 Assert::same(IntCalc::roundTo(22, 3), 21);
@@ -23,7 +24,8 @@ Assert::same(IntCalc::roundTo(-22, 3), -21);
 Assert::same(IntCalc::roundTo(20, -3), 21);
 Assert::same(IntCalc::roundTo(22, -3), 21);
 
-// roundUpTo()
+
+roundUpTo:
 Assert::same(IntCalc::roundUpTo(0, 3), 0);
 Assert::same(IntCalc::roundUpTo(20, 3), 21);
 Assert::same(IntCalc::roundUpTo(22, 3), 24);
@@ -32,7 +34,8 @@ Assert::same(IntCalc::roundUpTo(-22, 3), -21);
 Assert::same(IntCalc::roundUpTo(20, -3), 21);
 Assert::same(IntCalc::roundUpTo(22, -3), 24);
 
-// roundDownTo()
+
+roundDownTo:
 Assert::same(IntCalc::roundDownTo(0, 3), 0);
 Assert::same(IntCalc::roundDownTo(20, 3), 18);
 Assert::same(IntCalc::roundDownTo(22, 3), 21);
@@ -41,7 +44,8 @@ Assert::same(IntCalc::roundDownTo(-22, 3), -24);
 Assert::same(IntCalc::roundDownTo(20, -3), 18);
 Assert::same(IntCalc::roundDownTo(22, -3), 21);
 
-// factorial()
+
+factorial:
 Assert::same(IntCalc::factorial(-4), -24);
 Assert::same(IntCalc::factorial(-3), -6);
 Assert::same(IntCalc::factorial(-2), -2);
@@ -52,7 +56,8 @@ Assert::same(IntCalc::factorial(2), 2);
 Assert::same(IntCalc::factorial(3), 6);
 Assert::same(IntCalc::factorial(4), 24);
 
-// factorize()
+
+factorize:
 Assert::same(IntCalc::factorize(1), [1]);
 Assert::same(IntCalc::factorize(2), [2]);
 Assert::same(IntCalc::factorize(3), [3]);
@@ -61,7 +66,8 @@ Assert::same(IntCalc::factorize(8), [2, 2, 2]);
 Assert::same(IntCalc::factorize(60), [2, 2, 3, 5]);
 Assert::same(IntCalc::factorize(720), [2, 2, 2, 2, 3, 3, 5]);
 
-// greatestCommonDivider()
+
+greatestCommonDivider:
 Assert::same(IntCalc::greatestCommonDivider(1, 1), 1);
 Assert::same(IntCalc::greatestCommonDivider(1, 2), 1);
 Assert::same(IntCalc::greatestCommonDivider(2, 2), 2);
@@ -69,7 +75,8 @@ Assert::same(IntCalc::greatestCommonDivider(2, 3), 1);
 Assert::same(IntCalc::greatestCommonDivider(4, 6), 2);
 Assert::same(IntCalc::greatestCommonDivider(84, 140), 28);
 
-// leastCommonMultiple()
+
+leastCommonMultiple:
 Assert::same(IntCalc::leastCommonMultiple(1, 1), 1);
 Assert::same(IntCalc::leastCommonMultiple(1, 2), 2);
 Assert::same(IntCalc::leastCommonMultiple(2, 2), 2);

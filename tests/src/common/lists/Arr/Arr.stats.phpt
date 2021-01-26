@@ -10,43 +10,52 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $array = [1, 2, 3, 2];
 $empty = [];
 
-// count()
+
+count:
 Assert::same(Arr::count($array), 4);
 Assert::same(Arr::count($array, static function (int $v): bool {
     return $v > 1;
 }), 3);
 Assert::same(Arr::count($empty), 0);
 
-// size()
+
+size:
 Assert::same(Arr::size($array), 4);
 Assert::same(Arr::size($empty), 0);
 
-// countValues()
+
+countValues:
 Assert::same(Arr::countValues($array), [1 => 1, 2 => 2, 3 => 1]);
 Assert::same(Arr::countValues($empty), []);
 
-// max()
+
+max:
 Assert::same(Arr::max($array), 3);
 Assert::null(Arr::max($empty));
 
-// min()
+
+min:
 Assert::same(Arr::min($array), 1);
 Assert::null(Arr::min($empty));
 
-// maxBy()
+
+maxBy:
 Assert::same(Arr::maxBy($array, static function ($v): float {
     return 1 / $v;
 }), 1);
 
-// minBy()
+
+minBy:
 Assert::same(Arr::minBy($array, static function (int $v): float {
     return 1 / $v;
 }), 3);
 
-// product()
+
+product:
 Assert::same(Arr::product($array), 12);
 Assert::same(Arr::product($empty), 1);
 
-// sum()
+
+sum:
 Assert::same(Arr::sum($array), 8);
 Assert::same(Arr::sum($empty), 0);

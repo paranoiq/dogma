@@ -20,7 +20,8 @@ $intSizeUnsignedNullable = Type::int(32, Sign::UNSIGNED, Type::NULLABLE);
 
 Assert::same($int, $intSigned);
 
-// getId()
+
+getId:
 Assert::same($int->getId(), 'int');
 Assert::same($intNullable->getId(), 'int?');
 Assert::same($intSigned->getId(), 'int');
@@ -29,7 +30,8 @@ Assert::same($intUnsignedNullable->getId(), 'int(unsigned)?');
 Assert::same($intSize->getId(), 'int(32)');
 Assert::same($intSizeUnsignedNullable->getId(), 'int(32,unsigned)?');
 
-// fromId()
+
+fromId:
 Assert::same(Type::fromId('int'), $int);
 Assert::same(Type::fromId('int?'), $intNullable);
 Assert::same(Type::fromId('int(unsigned)'), $intUnsigned);
@@ -43,95 +45,123 @@ Assert::same(Type::fromId('int(s)?'), $intNullable);
 Assert::same(Type::fromId('int(32)'), $intSize);
 Assert::same(Type::fromId('int(32,unsigned)?'), $intSizeUnsignedNullable);
 
-// getName()
+
+getName:
 Assert::same($int->getName(), Type::INT);
 
-// isNullable()
+
+isNullable:
 Assert::false($int->isNullable());
 Assert::true($intNullable->isNullable());
 
-// isSigned()
+
+isSigned:
 Assert::true($int->isSigned());
 Assert::false($intUnsigned->isSigned());
 
-// isUnsigned()
+
+isUnsigned:
 Assert::false($int->isUnsigned());
 Assert::true($intUnsigned->isUnsigned());
 
-// isFixed()
+
+isFixed:
 Assert::false($int->isFixed());
 
-// getResourceType()
+
+getResourceType:
 Assert::null($int->getResourceType());
 
-// getItemType()
+
+getItemType:
 Assert::null($int->getItemType());
 
-// getSize()
+
+getSize:
 Assert::null($int->getSize());
 Assert::same($intSize->getSize(), 32);
 
-// getEncoding()
+
+getEncoding:
 Assert::null($int->getEncoding());
 
-// getLocale()
+
+getLocale:
 Assert::null($int->getLocale());
 
-// isBool()
+
+isBool:
 Assert::false($int->isBool());
 
-// isInt()
+
+isInt:
 Assert::true($int->isInt());
 
-// isFloat()
+
+isFloat:
 Assert::false($int->isFloat());
 
-// isNumeric()
+
+isNumeric:
 Assert::true($int->isNumeric());
 
-// isString()
+
+isString:
 Assert::false($int->isString());
 
-// isScalar()
+
+isScalar:
 Assert::true($int->isScalar());
 
-// isArray()
+
+isArray:
 Assert::false($int->isArray());
 
-// isCollection()
+
+isCollection:
 Assert::false($int->isCollection());
 
-// isTuple()
+
+isTuple:
 Assert::false($int->isTuple());
 
-// isClass()
+
+isClass:
 Assert::false($int->isClass());
 
-// isCallable()
+
+isCallable:
 Assert::false($int->isCallable());
 
-// isResource()
+
+isResource:
 Assert::false($int->isResource());
 
-// is()
+
+is:
 Assert::true($int->is(Type::INT));
 Assert::false($int->is(DateTime::class));
 
-// isImplementing()
+
+isImplementing:
 Assert::false($int->isImplementing(DateTime::class));
 
-// getBaseType()
+
+getBaseType:
 Assert::same($intNullable->getBaseType(), $int);
 
-// getNonNullableType()
+
+getNonNullableType:
 Assert::same($intNullable->getNonNullableType(), $int);
 Assert::same($intSizeUnsignedNullable->getNonNullableType(), Type::fromId('int(32u)'));
 
-// getTypeWithoutParams()
+
+getTypeWithoutParams:
 Assert::same($intNullable->getTypeWithoutParams(), $intNullable);
 Assert::same($intSizeUnsignedNullable->getTypeWithoutParams(), $intNullable);
 
-// getInstance()
+
+getInstance:
 Assert::exception(static function () use ($int): void {
     $int->getInstance();
 }, Error::class);

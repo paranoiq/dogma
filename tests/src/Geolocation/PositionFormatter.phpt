@@ -11,6 +11,7 @@ require_once __DIR__ . '/../bootstrap.php';
 $position = new Position(-15, -50);
 $positionFormatter = new PositionFormatter();
 
+
 Assert::same($positionFormatter->format($position, 'l'), '15');
 Assert::same($positionFormatter->format($position, 'L'), '-15');
 Assert::same($positionFormatter->format($position, 'n'), 'S');

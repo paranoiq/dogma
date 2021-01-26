@@ -11,6 +11,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 $angle = 87 + 45 / 60 + 54.765432 / 3600;
 $angleFormatter = new AngleFormatter();
 
+
 Assert::same($angleFormatter->format($angle, 'd'), '87');
 Assert::same($angleFormatter->format($angle, 'D'), '87.765213');
 Assert::same($angleFormatter->format($angle, 'D', 4), '87.7652');

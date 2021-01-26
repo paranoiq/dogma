@@ -14,35 +14,43 @@ $f = static function (int $a, int $b): int {
     return $a + $b;
 };
 
-// fold()
+
+fold:
 Assert::same($array->fold($f, 0), 10);
 Assert::same($empty->fold($f, 0), 0);
 Assert::same($empty->fold($f), null);
 
-// foldLeft()
+
+foldLeft:
 Assert::same($array->foldLeft($f, 0), 10);
 Assert::same($empty->foldLeft($f, 0), 0);
 Assert::same($empty->foldLeft($f), null);
 
-// foldRight()
+
+foldRight:
 Assert::same($array->foldRight($f, 0), 10);
 Assert::same($empty->foldRight($f, 0), 0);
 Assert::same($empty->foldRight($f), null);
 
-// reduce()
+
+reduce:
 Assert::same($array->reduce($f), 10);
 Assert::same($empty->reduce($f), null);
 
-// reduceLeft()
+
+reduceLeft:
 Assert::same($array->reduceLeft($f), 10);
 Assert::same($empty->reduceLeft($f), null);
 
-// reduceRight()
+
+reduceRight:
 Assert::same($array->reduceRight($f), 10);
 Assert::same($empty->reduceRight($f), null);
 
-// scanLeft()
+
+scanLeft:
 Assert::same($array->scanLeft($f, 0)->toArray(), [0, 1, 3, 6, 10]);
 
-// scanRight()
+
+scanRight:
 Assert::same($array->scanRight($f, 0)->toArray(), [10, 9, 7, 4, 0]);
