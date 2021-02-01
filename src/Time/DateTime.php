@@ -30,6 +30,8 @@ use Dogma\Time\Span\DateOrTimeSpan;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Type;
 use const DATE_RFC2822;
+use function array_keys;
+use function array_values;
 use function ceil;
 use function explode;
 use function floatval;
@@ -38,6 +40,8 @@ use function is_int;
 use function is_string;
 use function number_format;
 use function sprintf;
+use function str_replace;
+use function strtolower;
 use function strval;
 
 /**
@@ -77,6 +81,14 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     final public function __construct(string $time = 'now', ?DateTimeZone $timezone = null)
     {
+        $replacements = [
+            'the day after tomorrow' => 'tomorrow +1 day',
+            'overmorrow' => 'tomorrow +1 day',
+            'the day before yesterday' => 'yesterday -1 day',
+            'ereyesterday' => 'yesterday -1 day',
+        ];
+        $time = str_replace(array_keys($replacements), array_values($replacements), strtolower($time));
+
         parent::__construct($time, $timezone);
     }
 

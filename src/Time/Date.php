@@ -29,12 +29,16 @@ use Dogma\Time\Provider\TimeProvider;
 use Dogma\Time\Span\DateSpan;
 use Dogma\Type;
 use Throwable;
+use function array_keys;
+use function array_values;
 use function explode;
 use function gregoriantojd;
 use function intval;
 use function is_int;
 use function jdtogregorian;
 use function sprintf;
+use function str_replace;
+use function strtolower;
 
 /**
  * Date class.
@@ -65,13 +69,23 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
         if (is_int($julianDayOrDateString)) {
             Check::range($julianDayOrDateString, self::MIN_DAY_NUMBER, self::MAX_DAY_NUMBER);
             $this->julianDay = $julianDayOrDateString;
-        } else {
-            try {
-                $this->dateTime = (new DateTime($julianDayOrDateString))->setTime(0, 0, 0);
-                $this->julianDay = self::calculateDayNumber($this->dateTime);
-            } catch (Throwable $e) {
-                throw new InvalidDateTimeException($julianDayOrDateString, $e);
-            }
+
+            return;
+        }
+
+        $replacements = [
+            'the day after tomorrow' => 'tomorrow +1 day',
+            'overmorrow' => 'tomorrow +1 day',
+            'the day before yesterday' => 'yesterday -1 day',
+            'ereyesterday' => 'yesterday -1 day',
+        ];
+        $dateString = str_replace(array_keys($replacements), array_values($replacements), strtolower($julianDayOrDateString));
+
+        try {
+            $this->dateTime = (new DateTime($dateString))->setTime(0, 0, 0);
+            $this->julianDay = self::calculateDayNumber($this->dateTime);
+        } catch (Throwable $e) {
+            throw new InvalidDateTimeException($dateString, $e);
         }
     }
 
