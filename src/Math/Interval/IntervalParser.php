@@ -24,7 +24,7 @@ class IntervalParser
     public const OPEN_START = '(';
     public const OPEN_END = ')';
 
-    public const SEPARATORS = [',', '|', '/', ' - '];
+    public const SEPARATORS = [',', '|', '/', ' - ', '--'];
 
     /**
      * @param string $string
