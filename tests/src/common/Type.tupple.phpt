@@ -7,7 +7,7 @@ use Dogma\Tester\Assert;
 use Dogma\Tuple;
 use Dogma\Type;
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 $tuple = Type::tupleOf(Type::INT, Type::STRING);
 $tupleNullable = Type::tupleOf(Type::INT, Type::STRING, Type::NULLABLE);

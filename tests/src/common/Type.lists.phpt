@@ -7,7 +7,7 @@ use Dogma\Time\DateTime;
 use Dogma\Type;
 use Error;
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 $int = Type::int();
 

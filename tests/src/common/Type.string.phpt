@@ -12,7 +12,7 @@ use Dogma\Tester\Assert;
 use Dogma\Type;
 use Error;
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 $utf8 = Encoding::get(Encoding::UTF_8);
 $czech = Locale::create(Language::get(Language::CZECH), Country::get(Country::CZECHIA));

@@ -6,7 +6,7 @@ use BadMethodCallException;
 use Dogma\Tester\Assert;
 use Dogma\Tuple;
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 
 $tuple = new Tuple(123, 'abc');

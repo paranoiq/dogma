@@ -8,7 +8,7 @@ use Dogma\Tester\Assert;
 use Dogma\Type;
 use SplFixedArray;
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 
 without_params:

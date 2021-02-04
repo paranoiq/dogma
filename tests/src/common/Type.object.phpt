@@ -7,7 +7,7 @@ use DateTimeImmutable;
 use Dogma\Tester\Assert;
 use Dogma\Type;
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 $datetime = Type::get(DateTime::class);
 $datetimeNullable = Type::get(DateTime::class, Type::NULLABLE);

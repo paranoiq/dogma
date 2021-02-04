@@ -8,7 +8,7 @@ use Dogma\Tester\Assert;
 use Dogma\Type;
 use Error;
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 $int = Type::int();
 $intNullable = Type::int(Type::NULLABLE);
