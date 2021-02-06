@@ -7,6 +7,8 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
+// phpcs:disable SlevomatCodingStandard.Classes.ClassMemberSpacing.IncorrectCountOfBlankLinesBetweenMembers
+
 namespace Dogma;
 
 use Collator as PhpCollator;
@@ -18,15 +20,10 @@ use Dogma\Language\UnicodeCharacterCategory;
 use Error;
 use Nette\Utils\Strings;
 use const MB_CASE_TITLE;
-use function array_keys;
-use function array_values;
 use function error_clear_last;
 use function error_get_last;
 use function function_exists;
 use function iconv;
-use function is_array;
-use function is_callable;
-use function is_object;
 use function is_string;
 use function mb_convert_case;
 use function mb_convert_encoding;
@@ -35,12 +32,7 @@ use function mb_strtolower;
 use function mb_strtoupper;
 use function mb_substr;
 use function min;
-use function preg_last_error;
-use function preg_match;
-use function preg_match_all;
 use function preg_replace;
-use function preg_replace_callback;
-use function preg_split;
 use function range;
 use function str_replace;
 use function strcasecmp;
@@ -61,42 +53,129 @@ class Str
 {
     use StaticClassMixin;
 
-    /**
-     * @param string $first
-     * @param string $second
-     * @param int|string|Collator|Locale $collation
-     * @return bool
-     */
-    public static function equals(string $first, string $second, $collation = CaseComparison::CASE_SENSITIVE): bool
+    // proxy -----------------------------------------------------------------------------------------------------------
+
+    public static function checkEncoding(string $string): bool
     {
-        return self::compare($first, $second, $collation) === 0;
+        return $string === self::fixEncoding($string);
     }
 
-    /**
-     * @param string $first
-     * @param string $second
-     * @param int|string|Collator|Locale $collation
-     * @return int
-     */
-    public static function compare(string $first, string $second, $collation = CaseComparison::CASE_SENSITIVE): int
+    public static function fixEncoding(string $string): string
     {
-        if ($collation === CaseComparison::CASE_SENSITIVE) {
-            return strcmp($first, $second);
-        } elseif ($collation === CaseComparison::CASE_INSENSITIVE) {
-            return strcasecmp($first, $second);
-        } elseif (is_string($collation) || $collation instanceof Locale) {
-            $collation = new Collator($collation);
-        } elseif (!$collation instanceof PhpCollator) {
-            throw new InvalidValueException($collation, [Type::STRING, PhpCollator::class, Locale::class]);
-        }
-
-        return $collation->compare($first, $second);
+        return Strings::fixEncoding($string);
     }
 
-    public static function substringCount(string $string, string $substring): int
+    public static function chr(int $code): string
     {
-        return (strlen($string) - strlen(str_replace($substring, '', $string))) / strlen($substring);
+        return Strings::chr($code);
     }
+
+    public static function startsWith(string $string, string $find): bool
+    {
+        return strncmp($string, $find, strlen($find)) === 0;
+    }
+
+    public static function endsWith(string $string, string $find): bool
+    {
+        return $find === '' || substr($string, -strlen($find)) === $find;
+    }
+
+    public static function contains(string $string, string $find): bool
+    {
+        return strpos($string, $find) !== false;
+    }
+
+    public static function substring(string $string, int $start, ?int $length = null): string
+    {
+        return Strings::substring($string, $start, $length);
+    }
+
+    public static function normalize(string $string): string
+    {
+        return Strings::normalize($string);
+    }
+
+    public static function normalizeNewLines(string $string): string
+    {
+        return str_replace(["\r\n", "\r"], "\n", $string);
+    }
+
+    public static function toAscii(string $string): string
+    {
+        return Strings::toAscii($string);
+    }
+
+    public static function webalize(string $string, ?string $chars = null, bool $lower = true): string
+    {
+        return Strings::webalize($string, $chars, $lower);
+    }
+
+    public static function truncate(string $string, int $maxLength, string $append = "\u{2026}"): string
+    {
+        return Strings::truncate($string, $maxLength, $append);
+    }
+
+    public static function indent(string $string, int $level = 1, string $chars = "\t"): string
+    {
+        return Strings::indent($string, $level, $chars);
+    }
+
+    public static function lower(string $string): string
+    {
+        return mb_strtolower($string, 'UTF-8');
+    }
+
+    public static function firstLower(string $string): string
+    {
+        return self::lower(self::substring($string, 0, 1)) . self::substring($string, 1);
+    }
+
+    public static function upper(string $string): string
+    {
+        return mb_strtoupper($string, 'UTF-8');
+    }
+
+    public static function firstUpper(string $string): string
+    {
+        return self::upper(self::substring($string, 0, 1)) . self::substring($string, 1);
+    }
+
+    public static function capitalize(string $string): string
+    {
+        return mb_convert_case($string, MB_CASE_TITLE, 'UTF-8');
+    }
+
+    public static function length(string $string): int
+    {
+        return Strings::length($string);
+    }
+
+    public static function trim(string $string, string $chars = Strings::TRIM_CHARACTERS): string
+    {
+        return Strings::trim($string, $chars);
+    }
+
+    public static function padRight(string $string, int $length, string $pad = ' '): string
+    {
+        return Strings::padRight($string, $length, $pad);
+    }
+
+    public static function padLeft(string $string, int $length, string $pad = ' '): string
+    {
+        return Strings::padLeft($string, $length, $pad);
+    }
+
+    public static function before(string $string, string $find, int $nth = 1): ?string
+    {
+        return Strings::before($string, $find, $nth);
+    }
+
+    public static function after(string $string, string $find, int $nth = 1): ?string
+    {
+        return Strings::after($string, $find, $nth);
+    }
+
+    // substrings etc --------------------------------------------------------------------------------------------------
 
     public static function between(string $string, string $from, string $to): ?string
     {
@@ -108,6 +187,13 @@ class Str
         return self::before($after, $to);
     }
 
+    /**
+     * Similar to before(), but always returns start or the entire string
+     *
+     * @param string $string
+     * @param string $search
+     * @return string
+     */
     public static function toFirst(string $string, string $search): string
     {
         $pos = strpos($string, $search);
@@ -118,6 +204,13 @@ class Str
         return substr($string, 0, $pos);
     }
 
+    /**
+     * Similar to after(), but always returns end or entire string
+     *
+     * @param string $string
+     * @param string $search
+     * @return string
+     */
     public static function fromFirst(string $string, string $search): string
     {
         $pos = strpos($string, $search);
@@ -158,9 +251,76 @@ class Str
         return [substr($string, 0, $pos), substr($string, $pos + 1)];
     }
 
+    /**
+     * @see Re::count()
+     * @param string $string
+     * @param string $substring
+     * @return int
+     */
+    public static function count(string $string, string $substring): int
+    {
+        return (strlen($string) - strlen(str_replace($substring, '', $string))) / strlen($substring);
+    }
+
+    /**
+     * @deprecated use Str::count() instead
+     * @param string $string
+     * @param string $substring
+     * @return int
+     */
+    public static function substringCount(string $string, string $substring): int
+    {
+        return (strlen($string) - strlen(str_replace($substring, '', $string))) / strlen($substring);
+    }
+
+    // misc ------------------------------------------------------------------------------------------------------------
+
+    public static function underscore(string $string): string
+    {
+        return strtolower(preg_replace(
+            '/([A-Z]+)([A-Z])/',
+            '\1_\2',
+            preg_replace('/([a-z\d])([A-Z])/', '\1_\2', $string)
+        ));
+    }
+
     public static function trimLinesRight(string $string): string
     {
-        return self::replace($string, "/[\t ]+\n/", "\n");
+        return Re::replace($string, "/[\t ]+\n/", "\n");
+    }
+
+    // comparison ------------------------------------------------------------------------------------------------------
+
+    /**
+     * @param string $first
+     * @param string $second
+     * @param int|string|Collator|Locale $collation
+     * @return bool
+     */
+    public static function equals(string $first, string $second, $collation = CaseComparison::CASE_SENSITIVE): bool
+    {
+        return self::compare($first, $second, $collation) === 0;
+    }
+
+    /**
+     * @param string $first
+     * @param string $second
+     * @param int|string|Collator|Locale $collation
+     * @return int
+     */
+    public static function compare(string $first, string $second, $collation = CaseComparison::CASE_SENSITIVE): int
+    {
+        if ($collation === CaseComparison::CASE_SENSITIVE) {
+            return strcmp($first, $second);
+        } elseif ($collation === CaseComparison::CASE_INSENSITIVE) {
+            return strcasecmp($first, $second);
+        } elseif (is_string($collation) || $collation instanceof Locale) {
+            $collation = new Collator($collation);
+        } elseif (!$collation instanceof PhpCollator) {
+            throw new InvalidValueException($collation, [Type::STRING, PhpCollator::class, Locale::class]);
+        }
+
+        return $collation->compare($first, $second);
     }
 
     /**
@@ -314,6 +474,8 @@ class Str
         return $previousRow[$length2];
     }
 
+    // character manipulation ------------------------------------------------------------------------------------------
+
     public static function removeDiacritics(string $string): string
     {
         static $transliterator;
@@ -341,15 +503,6 @@ class Str
         }
 
         return $transliterator->transliterate($string);
-    }
-
-    public static function underscore(string $string): string
-    {
-        return strtolower(preg_replace(
-            '/([A-Z]+)([A-Z])/',
-            '\1_\2',
-            preg_replace('/([a-z\d])([A-Z])/', '\1_\2', $string)
-        ));
     }
 
     public static function convertEncoding(string $string, string $from, string $to): string
@@ -397,9 +550,10 @@ class Str
         }
     }
 
-    // faster but stupid replacement of Nette\Utils\Strings regexp methods with far worse error detection --------------
+    // -----------------------------------------------------------------------------------------------------------------
 
     /**
+     * @deprecated use Re::split() instead
      * @param string $string
      * @param string $pattern
      * @param int $flags
@@ -407,17 +561,11 @@ class Str
      */
     public static function split(string $string, string $pattern, int $flags = 0): array
     {
-        $result = preg_split($pattern, $string, -1, $flags);
-        if ($result === false) {
-            $error = preg_last_error() ?: 0;
-
-            throw new RegexpException($error);
-        }
-
-        return $result;
+        return Re::split($string, $pattern, $flags);
     }
 
     /**
+     * @deprecated use Re::match() instead
      * @param string $string
      * @param string $pattern
      * @param int $flags
@@ -426,23 +574,11 @@ class Str
      */
     public static function match(string $string, string $pattern, int $flags = 0, int $offset = 0): ?array
     {
-        if ($offset > strlen($string)) {
-            return null;
-        }
-
-        $result = preg_match($pattern, $string, $matches, $flags, $offset);
-        if ($result === false) {
-            $error = preg_last_error() ?: 0;
-
-            throw new RegexpException($error);
-        } elseif ($result === 0) {
-            return null;
-        }
-
-        return $matches;
+        return Re::match($string, $pattern, $flags, $offset);
     }
 
     /**
+     * @deprecated use Re::matchAll() instead
      * @param string $string
      * @param string $pattern
      * @param int $flags
@@ -451,23 +587,11 @@ class Str
      */
     public static function matchAll(string $string, string $pattern, int $flags = 0, int $offset = 0): array
     {
-        if ($offset > strlen($string)) {
-            return [];
-        }
-
-        $result = preg_match_all($pattern, $string, $matches, $flags, $offset);
-        if ($result === false) {
-            $error = preg_last_error() ?: 0;
-
-            throw new RegexpException($error);
-        } elseif ($result === 0) {
-            return [];
-        }
-
-        return $matches;
+        return Re::matchAll($string, $pattern, $flags, $offset);
     }
 
     /**
+     * @deprecated use Re::replace() instead
      * @param string $string
      * @param string|string[] $pattern
      * @param string|callable|null $replacement
@@ -476,153 +600,7 @@ class Str
      */
     public static function replace(string $string, $pattern, $replacement = null, int $limit = -1): string
     {
-        if (is_object($replacement) || is_array($replacement)) {
-            if (!is_callable($replacement, false, $name)) {
-                throw new InvalidArgumentException("Callback '$name' is not callable.");
-            }
-
-            $result = preg_replace_callback($pattern, $replacement, $string, $limit);
-        } else {
-            if ($replacement === null && is_array($pattern)) {
-                $replacement = array_values($pattern);
-                $pattern = array_keys($pattern);
-            } else {
-                /** @var string $replacement */
-                $replacement = $replacement;
-            }
-
-            $result = preg_replace($pattern, $replacement, $string, $limit);
-        }
-
-        if ($result === null) {
-            $error = preg_last_error() ?: 0;
-
-            throw new RegexpException($error);
-        }
-
-        return $result;
-    }
-
-    // proxy -----------------------------------------------------------------------------------------------------------
-
-    public static function checkEncoding(string $string): bool
-    {
-        return $string === self::fixEncoding($string);
-    }
-
-    public static function fixEncoding(string $string): string
-    {
-        return Strings::fixEncoding($string);
-    }
-
-    public static function chr(int $code): string
-    {
-        return Strings::chr($code);
-    }
-
-    public static function startsWith(string $string, string $find): bool
-    {
-        return strncmp($string, $find, strlen($find)) === 0;
-    }
-
-    public static function endsWith(string $string, string $find): bool
-    {
-        return $find === '' || substr($string, -strlen($find)) === $find;
-    }
-
-    public static function contains(string $string, string $find): bool
-    {
-        return strpos($string, $find) !== false;
-    }
-
-    public static function substring(string $string, int $start, ?int $length = null): string
-    {
-        return Strings::substring($string, $start, $length);
-    }
-
-    public static function normalize(string $string): string
-    {
-        return Strings::normalize($string);
-    }
-
-    public static function normalizeNewLines(string $string): string
-    {
-        return str_replace(["\r\n", "\r"], "\n", $string);
-    }
-
-    public static function toAscii(string $string): string
-    {
-        return Strings::toAscii($string);
-    }
-
-    public static function webalize(string $string, ?string $chars = null, bool $lower = true): string
-    {
-        return Strings::webalize($string, $chars, $lower);
-    }
-
-    public static function truncate(string $string, int $maxLength, string $append = "\u{2026}"): string
-    {
-        return Strings::truncate($string, $maxLength, $append);
-    }
-
-    public static function indent(string $string, int $level = 1, string $chars = "\t"): string
-    {
-        return Strings::indent($string, $level, $chars);
-    }
-
-    public static function lower(string $string): string
-    {
-        return mb_strtolower($string, 'UTF-8');
-    }
-
-    public static function firstLower(string $string): string
-    {
-        return self::lower(self::substring($string, 0, 1)) . self::substring($string, 1);
-    }
-
-    public static function upper(string $string): string
-    {
-        return mb_strtoupper($string, 'UTF-8');
-    }
-
-    public static function firstUpper(string $string): string
-    {
-        return self::upper(self::substring($string, 0, 1)) . self::substring($string, 1);
-    }
-
-    public static function capitalize(string $string): string
-    {
-        return mb_convert_case($string, MB_CASE_TITLE, 'UTF-8');
-    }
-
-    public static function before(string $string, string $find, int $nth = 1): ?string
-    {
-        return Strings::before($string, $find, $nth);
-    }
-
-    public static function after(string $string, string $find, int $nth = 1): ?string
-    {
-        return Strings::after($string, $find, $nth);
-    }
-
-    public static function length(string $string): int
-    {
-        return Strings::length($string);
-    }
-
-    public static function trim(string $string, string $chars = Strings::TRIM_CHARACTERS): string
-    {
-        return Strings::trim($string, $chars);
-    }
-
-    public static function padRight(string $string, int $length, string $pad = ' '): string
-    {
-        return Strings::padRight($string, $length, $pad);
-    }
-
-    public static function padLeft(string $string, int $length, string $pad = ' '): string
-    {
-        return Strings::padLeft($string, $length, $pad);
+        return Re::replace($string, $pattern, $replacement, $limit);
     }
 
 }

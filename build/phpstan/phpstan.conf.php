@@ -33,6 +33,10 @@ $ignore = PHP_VERSION_ID < 80000
         [
             'message' => '~Strict comparison using === between array<string, array<int, mixed>\|string\|false> and false will always evaluate to false.~',
             'path' => '../../src/Application/Configurator.php',
+        ],
+        [
+            'message' => '~Strict comparison using === between array and false will always evaluate to false~',
+            'path' => '../../src/common/Re.php',
         ]
     ]
     : [
