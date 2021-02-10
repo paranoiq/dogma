@@ -108,6 +108,11 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         return new static(Date::createFromDateTimeInterface($start), Date::createFromDateTimeInterface($end));
     }
 
+    public static function createFromNightInterval(NightInterval $interval): self
+    {
+        return $interval->toDateInterval();
+    }
+
     public static function future(?TimeProvider $timeProvider = null): self
     {
         $tomorrow = $timeProvider !== null ? $timeProvider->getDate()->addDay() : new Date('tomorrow');
@@ -183,6 +188,11 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     public function getDayCount(): int
     {
         return $this->isEmpty() ? 0 : $this->end->getJulianDay() - $this->start->getJulianDay() + 1;
+    }
+
+    public function toNightInterval(): NightInterval
+    {
+        return NightInterval::createFromDateInterval($this);
     }
 
     public function toDateTimeInterval(?DateTimeZone $timeZone = null): DateTimeInterval
