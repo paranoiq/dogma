@@ -18,7 +18,7 @@ use function range;
 
 /**
  * Floyd-Warshall algorithm for finding all shortest paths in oriented weighted graph.
- * All the hard work is done in constructor to enable serialization and caching.
+ * Initial cost O(n³) where n is count of nodes. Path cost O(1)
  *
  * @see http://en.wikipedia.org/wiki/Floyd–Warshall_algorithm
  * @see https://github.com/pierre-fromager/PeopleFloydWarshall/blob/4731f8d1e6dd5e659f5945d03ddf8746a578a665/class/floyd-warshall.class.php
@@ -34,7 +34,7 @@ class FloydWarshallPathFinder
     private $nodeCount;
 
     /** @var string[]|int[] */
-    private $nodeNames;
+    private $nodeNames = [];
 
     /** @var int[][] */
     private $distances = [[]];
@@ -76,9 +76,6 @@ class FloydWarshallPathFinder
         $this->calculatePaths();
     }
 
-    /**
-     * Implementation of Floyd-Warshall algorithm
-     */
     private function calculatePaths(): void
     {
         // init
@@ -116,7 +113,7 @@ class FloydWarshallPathFinder
      */
     public function getDistance($i, $j): int
     {
-        if (!empty($this->nodeNames)) {
+        if ($this->nodeNames !== []) {
             $i = $this->nodeNames[$i];
             $j = $this->nodeNames[$j];
         }
@@ -132,7 +129,8 @@ class FloydWarshallPathFinder
      */
     public function getPath($i, $j): array
     {
-        if (!empty($this->nodeNames)) {
+        $names = array_keys($this->nodeNames);
+        if ($this->nodeNames !== []) {
             $i = $this->nodeNames[$i];
             $j = $this->nodeNames[$j];
         }
@@ -140,9 +138,14 @@ class FloydWarshallPathFinder
         $path = [];
         $k = $j;
         do {
-            $path[] = $k;
+            $path[] = $names[$k] ?? $k;
             $k = $this->predecessors[$i][$k];
         } while ($i !== $k);
+
+        $start = $names[$i] ?? $i;
+        if ($path !== [$start]) {
+            $path[] = $names[$i] ?? $i;
+        }
 
         return array_reverse($path);
     }
@@ -152,26 +155,28 @@ class FloydWarshallPathFinder
      */
     public function printGraphMatrix(): string
     {
+        $names = array_keys($this->nodeNames);
         $rt = "<table>\n";
         if (!empty($this->nodeNames)) {
             $rt .= '<tr>';
             $rt .= '<td>&nbsp;</td>';
             for ($n = 0; $n < $this->nodeCount; $n++) {
-                $rt .= '<td>' . $this->nodeNames[$n] . '</td>';
+                $rt .= '<td>' . ($names[$n] ?? $n) . '</td>';
             }
         }
         $rt .= '</tr>';
         for ($i = 0; $i < $this->nodeCount; $i++) {
             $rt .= '<tr>';
             if (!empty($this->nodeNames)) {
-                $rt .= '<td>' . $this->nodeNames[$i] . '</td>';
+                $rt .= '<td>' . ($names[$i] ?? $i) . '</td>';
             }
             for ($j = 0; $j < $this->nodeCount; $j++) {
-                $rt .= '<td>' . $this->weights[$i][$j] . '</td>';
+                $rt .= '<td>' . ($this->weights[$i][$j] ?? '') . '</td>';
             }
             $rt .= '</tr>';
         }
         $rt .= '</table>';
+
         return $rt;
     }
 
@@ -180,19 +185,20 @@ class FloydWarshallPathFinder
      */
     public function printDistances(): string
     {
+        $names = array_keys($this->nodeNames);
         $rt = "<table>\n";
         if (!empty($this->nodeNames)) {
             $rt .= '<tr>';
             $rt .= "<td>&nbsp;</td>\n";
             for ($n = 0; $n < $this->nodeCount; $n++) {
-                $rt .= '<td>' . $this->nodeNames[$n] . '</td>';
+                $rt .= '<td>' . ($names[$n] ?? $n) . '</td>';
             }
         }
         $rt .= '</tr>';
         for ($i = 0; $i < $this->nodeCount; $i++) {
             $rt .= '<tr>';
             if (!empty($this->nodeNames)) {
-                $rt .= '<td>' . $this->nodeNames[$i] . "</td>\n";
+                $rt .= '<td>' . ($names[$i] ?? $i) . "</td>\n";
             }
             for ($j = 0; $j < $this->nodeCount; $j++) {
                 $rt .= '<td>' . $this->distances[$i][$j] . "</td>\n";
@@ -200,6 +206,7 @@ class FloydWarshallPathFinder
             $rt .= '</tr>';
         }
         $rt .= "</table>\n";
+
         return $rt;
     }
 
@@ -208,19 +215,20 @@ class FloydWarshallPathFinder
      */
     public function printPredecessors(): string
     {
+        $names = array_keys($this->nodeNames);
         $rt = "<table>\n";
         if (!empty($this->nodeNames)) {
             $rt .= '<tr>';
             $rt .= '<td>&nbsp;</td>';
             for ($n = 0; $n < $this->nodeCount; $n++) {
-                $rt .= '<td>' . $this->nodeNames[$n] . "</td>\n";
+                $rt .= '<td>' . ($names[$n] ?? $n) . "</td>\n";
             }
         }
         $rt .= '</tr>';
         for ($i = 0; $i < $this->nodeCount; $i++) {
             $rt .= '<tr>';
             if (!empty($this->nodeNames)) {
-                $rt .= "<td>{$this->nodeNames[$i]}[$i]</td>\n";
+                $rt .= '<td>' . ($names[$i] ?? $i) . "</td>\n";
             }
             for ($j = 0; $j < $this->nodeCount; $j++) {
                 $rt .= '<td>' . $this->predecessors[$i][$j] . "</td>\n";
@@ -228,6 +236,7 @@ class FloydWarshallPathFinder
             $rt .= "</tr>\n";
         }
         $rt .= "</table>\n";
+
         return $rt;
     }
 
