@@ -208,6 +208,11 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
         return new static($results);
     }
 
+    public function invert(): self
+    {
+        return (new static([TimeInterval::all()]))->subtract($this);
+    }
+
     /**
      * Intersect with another set of intervals.
      * @param self $set

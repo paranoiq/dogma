@@ -190,6 +190,11 @@ class IntIntervalSet implements IntervalSet
         return new static($results);
     }
 
+    public function invert(): self
+    {
+        return (new static([IntInterval::all()]))->subtract($this);
+    }
+
     /**
      * Intersect with another set of intervals.
      * @param self $set

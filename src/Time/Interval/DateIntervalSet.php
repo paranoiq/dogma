@@ -249,6 +249,11 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
+    public function invert(): self
+    {
+        return (new static([DateInterval::all()]))->subtract($this);
+    }
+
     /**
      * Intersect with another set of intervals.
      * @param self $set

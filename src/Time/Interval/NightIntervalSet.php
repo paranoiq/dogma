@@ -258,6 +258,11 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
+    public function invert(): self
+    {
+        return (new static([NightInterval::all()]))->subtract($this);
+    }
+
     /**
      * Intersect with another set of intervals.
      * @param self $set
