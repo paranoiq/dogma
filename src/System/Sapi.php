@@ -58,6 +58,11 @@ class Sapi extends StringEnum
         self::WEBJAMES,
     ];
 
+    public function isCli(): bool
+    {
+        return $this->getValue() === self::CLI;
+    }
+
     public function isMultithreaded(): bool
     {
         return Arr::contains(self::$multithreaded, $this->getValue());
