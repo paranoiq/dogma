@@ -13,7 +13,6 @@ use Dogma\Arr;
 use Dogma\ArrayIterator;
 use Dogma\Check;
 use Dogma\Cls;
-use Dogma\Dumpable;
 use Dogma\Equalable;
 use Dogma\IntersectResult;
 use Dogma\Math\Interval\IntervalCalc;
@@ -38,7 +37,7 @@ use function sprintf;
 /**
  * @implements IteratorAggregate<DateIntervalData>
  */
-class DateIntervalDataSet implements Equalable, Pokeable, Dumpable, IteratorAggregate
+class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 {
     use StrictBehaviorMixin;
 

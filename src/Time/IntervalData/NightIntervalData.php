@@ -14,7 +14,6 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Cls;
 use Dogma\Comparable;
-use Dogma\Dumpable;
 use Dogma\Equalable;
 use Dogma\IntersectComparable;
 use Dogma\Math\Interval\IntervalCalc;
@@ -36,7 +35,7 @@ use function trim;
 /**
  * Interval of nights with data bound to it.
  */
-class NightIntervalData implements Equalable, Comparable, IntersectComparable, Pokeable, Dumpable
+class NightIntervalData implements Equalable, Comparable, IntersectComparable, Pokeable
 {
     use StrictBehaviorMixin;
 
