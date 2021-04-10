@@ -82,10 +82,10 @@
         ],
         "test-coverage": "sh vendor/bin/tester tests -c tests --colors 1 -p phpdbg --coverage tests/coverage.html --coverage-src src",
 
-        "stan": "vendor/bin/phpstan analyse --memory-limit 256M -c build/phpstan/phpstan.neon -l 7 src tests",
+        "stan": "vendor/bin/phpstan analyse --memory-limit 256M -c build/phpstan/phpstan.neon -l 8 src tests",
         "stan-all": [
-            "php80 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan/phpstan.neon -l 7 src tests",
-            "php74 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan/phpstan.neon -l 7 src tests"
+            "php80 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan/phpstan.neon -l 8 src tests",
+            "php74 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan/phpstan.neon -l 8 src tests"
         ],
 
         "cs-src": "vendor/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset.xml --extensions=php --encoding=utf-8 --tab-width=4 -sp src",
