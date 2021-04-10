@@ -11,14 +11,14 @@
         }
     ],
     "require": {
-        "php": "^7.2|^8.0",
+        "php": "^7.1|^8.0",
         "ext-calendar":"*",
         "nette/http": "~2.4|~3.0",
         "nette/utils": "~2.4|~3.0",
         "tracy/tracy": "~2.4"
     },
     "require-dev": {
-        "dogma/dogma-dev": "0.1.17"
+        "dogma/dogma-dev": "0.1.18"
     },
     "suggest": {
         "ext-dom": "for Dom (basic functionality)",
@@ -77,7 +77,8 @@
             "php80 vendor/nette/tester/src/tester tests -c tests --colors 1",
             "php74 vendor/nette/tester/src/tester tests -c tests --colors 1",
             "php73 vendor/nette/tester/src/tester tests -c tests --colors 1",
-            "php72 vendor/nette/tester/src/tester tests -c tests --colors 1"
+            "php72 vendor/nette/tester/src/tester tests -c tests --colors 1",
+            "php71 vendor/nette/tester/src/tester tests -c tests --colors 1"
         ],
         "test-coverage": "sh vendor/bin/tester tests -c tests --colors 1 -p phpdbg --coverage tests/coverage.html --coverage-src src",
 
@@ -98,7 +99,8 @@
             "php80 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
             "php74 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
             "php73 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
-            "php72 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests"
+            "php72 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
+            "php71 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests"
         ]
     },
     "scripts-descriptions": {
