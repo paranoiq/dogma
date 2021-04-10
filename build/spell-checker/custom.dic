@@ -49,6 +49,7 @@ ascii
 catalan
 csp
 csrf
+cygwin
 darwin
 euc
 fsync
@@ -73,9 +74,11 @@ ucs
 uhc
 unix
 uri
+ux
 wap
 warshall
 webkit
+winnt
 xenix
 xss
 

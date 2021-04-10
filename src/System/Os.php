@@ -10,10 +10,10 @@
 namespace Dogma\System;
 
 use Dogma\Enum\StringEnum;
-use const PHP_OS_FAMILY;
+use const PHP_OS;
 
 /**
- * PHP_OS_FAMILY values
+ * PHP_OS_FAMILY values (PHP 7.2+)
  */
 class Os extends StringEnum
 {
@@ -25,9 +25,30 @@ class Os extends StringEnum
     public const LINUX = 'Linux';
     public const UNKNOWN = 'Unknown';
 
+    private const FAMILIES = [
+        'CYGWIN_NT-5.1' => self::WINDOWS,
+        'Darwin' => self::DARWIN,
+        'FreeBSD' => self::BSD,
+        'HP-UX' => self::UNKNOWN,
+        'IRIX64' => self::UNKNOWN,
+        'Linux' => self::LINUX,
+        'NetBSD' => self::BSD,
+        'OpenBSD' => self::BSD,
+        'SunOS' => self::SOLARIS,
+        'Unix' => self::UNKNOWN,
+        'WIN32' => self::WINDOWS,
+        'WINNT' => self::WINDOWS,
+        'Windows' => self::WINDOWS,
+    ];
+
+    public static function family(): string
+    {
+        return self::FAMILIES[PHP_OS] ?? self::UNKNOWN;
+    }
+
     public static function isWindows(): bool
     {
-        return PHP_OS_FAMILY === self::WINDOWS;
+        return self::family() === self::WINDOWS;
     }
 
 }
