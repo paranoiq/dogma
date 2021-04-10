@@ -657,10 +657,11 @@ class Type
 
     /**
      * Returns new instance of type. Works only on simple class types with public constructor.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      * @param mixed ...$arguments
      * @return object
      */
-    public function getInstance(...$arguments): object
+    public function getInstance(...$arguments)
     {
         $className = $this->type;
 
