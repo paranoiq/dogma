@@ -119,6 +119,7 @@ class ResourceType extends StringEnum
     public const SOCKETS_FILE_DESCRIPTOR_SET = 'sockets file descriptor set';
     public const SOCKETS_IO_VECTOR = 'sockets i/o vector';
     public const STREAM = 'stream';
+    public const STREAM_CONTEXT = 'stream-context';
     public const SOCKET = 'socket';
     public const SYBASE_DB_LINK = 'sybase-db link';
     public const SYBASE_DB_LINK_PERSISTENT = 'sybase-db link persistent';
