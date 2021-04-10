@@ -16,11 +16,19 @@ class AsciiChars
     use StaticClassMixin;
 
     public const SPECIAL_WITHOUT_WHITESPACE = [
-        Char::NUL, Char::SOH, Char::STX, Char::ETX, Char::EOT, Char::ENQ, Char::ACK, Char::BEL, Char::BS, Char::VT,
-        Char::FF, Char::SO, Char::SI, Char::DLE, Char::DC1, Char::DC2, Char::DC3, Char::DC4, Char::NAK, Char::SYN,
-        Char::ETB, Char::CAN, Char::EM, Char::SUB, Char::ESC, Char::FS, Char::GS, Char::RS, Char::US, Char::DEL,
+        Char::NUL, Char::SOH, Char::STX, Char::ETX, Char::EOT, Char::ENQ, Char::ACK, Char::BEL,
+        Char::BS,/*Char::HT,  Char::LF,*/Char::VT,  Char::FF,/*Char::CR,*/Char::SO,  Char::SI,
+        Char::DLE, Char::DC1, Char::DC2, Char::DC3, Char::DC4, Char::NAK, Char::SYN, Char::ETB,
+        Char::CAN, Char::EM,  Char::SUB, Char::ESC, Char::FS,  Char::GS,  Char::RS,  Char::US,
+        Char::DEL,
     ];
-    public const SPECIAL_CHARS = self::SPECIAL_WITHOUT_WHITESPACE + ["\t", "\r", "\n"];
+    public const SPECIAL_CHARS = [
+        Char::NUL, Char::SOH, Char::STX, Char::ETX, Char::EOT, Char::ENQ, Char::ACK, Char::BEL,
+        Char::BS,  Char::HT,  Char::LF,  Char::VT,  Char::FF,  Char::CR,  Char::SO,  Char::SI,
+        Char::DLE, Char::DC1, Char::DC2, Char::DC3, Char::DC4, Char::NAK, Char::SYN, Char::ETB,
+        Char::CAN, Char::EM,  Char::SUB, Char::ESC, Char::FS,  Char::GS,  Char::RS,  Char::US,
+        Char::DEL,
+    ];
 
     public const WHITESPACE = [' ', "\t", "\r", "\n"];
 
