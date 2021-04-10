@@ -237,11 +237,13 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed $value
+     * @param bool $strict
      * @return bool
      */
-    public static function contains(array $array, $value): bool
+    public static function contains(array $array, $value, bool $strict = true): bool
     {
-        return in_array($value, $array, true);
+        // phpcs:ignore SlevomatCodingStandard.Functions.StrictCall.NonStrictComparison
+        return in_array($value, $array, $strict);
     }
 
     /**
