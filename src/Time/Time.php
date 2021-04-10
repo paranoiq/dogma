@@ -24,7 +24,6 @@ use Dogma\Order;
 use Dogma\Pokeable;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
-use Dogma\Time\Format\DateTimeFormatter;
 use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Span\TimeSpan;
 use Throwable;
@@ -243,13 +242,9 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
 
     // queries ---------------------------------------------------------------------------------------------------------
 
-    public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeFormatter $formatter = null): string
+    public function format(string $format = self::DEFAULT_FORMAT): string
     {
-        if ($formatter === null) {
-            return $this->getDateTime()->format($format);
-        } else {
-            return $formatter->format($this, $format);
-        }
+        return $this->getDateTime()->format($format);
     }
 
     public function toDateTime(?Date $date = null, ?DateTimeZone $timeZone = null): DateTime

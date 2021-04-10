@@ -18,7 +18,6 @@ use Dogma\Equalable;
 use Dogma\Obj;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
-use Dogma\Time\Format\DateTimeFormatter;
 use Throwable;
 use function explode;
 use function implode;
@@ -166,13 +165,9 @@ class YearMonth implements Comparable, Equalable, Dumpable
         return $this->getStart()->modify('last day of this month');
     }
 
-    public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeFormatter $formatter = null): string
+    public function format(string $format = self::DEFAULT_FORMAT): string
     {
-        if ($formatter === null) {
-            return $this->getStart()->format($format);
-        } else {
-            return $formatter->format($this->getStart(), $format);
-        }
+        return $this->getStart()->format($format);
     }
 
     public function next(): self

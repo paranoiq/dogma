@@ -18,7 +18,6 @@ use Dogma\Equalable;
 use Dogma\Obj;
 use Dogma\Order;
 use Dogma\StrictBehaviorMixin;
-use Dogma\Time\Format\DateTimeFormatter;
 use function is_string;
 use function sprintf;
 
@@ -210,13 +209,9 @@ class DayOfYear implements Equalable, Comparable, Dumpable
 
     // queries ---------------------------------------------------------------------------------------------------------
 
-    public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeFormatter $formatter = null): string
+    public function format(string $format = self::DEFAULT_FORMAT): string
     {
-        if ($formatter === null) {
-            return $this->toDate(self::DEFAULT_FORMAT_YEAR)->format($format);
-        } else {
-            return $formatter->format($this->toDate(self::DEFAULT_FORMAT_YEAR), $format);
-        }
+        return $this->toDate(self::DEFAULT_FORMAT_YEAR)->format($format);
     }
 
     public function toDate(int $year): Date

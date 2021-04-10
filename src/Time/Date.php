@@ -23,7 +23,6 @@ use Dogma\Obj;
 use Dogma\Order;
 use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
-use Dogma\Time\Format\DateTimeFormatter;
 use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Interval\DateTimeInterval;
 use Dogma\Time\Provider\TimeProvider;
@@ -171,13 +170,9 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     // queries ---------------------------------------------------------------------------------------------------------
 
-    public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeFormatter $formatter = null): string
+    public function format(string $format = self::DEFAULT_FORMAT): string
     {
-        if ($formatter === null) {
-            return $this->getDateTime()->format($format);
-        } else {
-            return $formatter->format($this, $format);
-        }
+        return $this->getDateTime()->format($format);
     }
 
     public function toDateTime(?DateTimeZone $timeZone = null): DateTime
