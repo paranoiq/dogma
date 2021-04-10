@@ -11,7 +11,6 @@ namespace Dogma\System\Error;
 
 use Dogma\System\Os;
 use Throwable;
-use const PHP_OS_FAMILY;
 use function is_string;
 
 class ErrorHelper
@@ -71,15 +70,15 @@ class ErrorHelper
 
     private static function detectSystem(): ?int
     {
-        if (PHP_OS_FAMILY === Os::LINUX) {
+        if (Os::family() === Os::LINUX) {
             return self::LINUX;
-        } elseif (PHP_OS_FAMILY === Os::WINDOWS) {
+        } elseif (Os::family() === Os::WINDOWS) {
             return self::WINDOWS;
-        } elseif (PHP_OS_FAMILY === Os::BSD) {
+        } elseif (Os::family() === Os::BSD) {
             return self::UNIX;
-        } elseif (PHP_OS_FAMILY === Os::SOLARIS) {
+        } elseif (Os::family() === Os::SOLARIS) {
             return self::UNIX;
-        } elseif (PHP_OS_FAMILY === Os::DARWIN) {
+        } elseif (Os::family() === Os::DARWIN) {
             return self::UNIX;
         }
 
