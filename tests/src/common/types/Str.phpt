@@ -32,6 +32,24 @@ trimLinesRight:
 Assert::same(Str::trimLinesRight("foo \n bar\t\n\tbaz"), "foo\n bar\n\tbaz");
 
 
+findTag:
+Assert::same(Str::findTag(' foo ', '{', '}'), [null, null]);
+Assert::same(Str::findTag(' {foo} ', '{', '}'), [1, 5]);
+Assert::same(Str::findTag(' {foo} {foo} ', '{', '}'), [1, 5]);
+
+Assert::same(Str::findTag(' {{foo}} ', '{', '}', '{', '}'), [null, null]);
+Assert::same(Str::findTag(' {{foo} {foo} ', '{', '}', '{', '}'), [8, 5]);
+Assert::same(Str::findTag(' {foo}} foo} ', '{', '}', '{', '}'), [1, 11]);
+
+Assert::same(Str::findTag(' \\{foo\\} ', '{', '}', '\\', '\\'), [null, null]);
+Assert::same(Str::findTag(' \\{foo} {foo} ', '{', '}', '\\', '\\'), [8, 5]);
+Assert::same(Str::findTag(' {foo\\} foo} ', '{', '}', '\\', '\\'), [1, 11]);
+
+Assert::same(Str::findTag(' {foo} ', '{', '}', null, null, 1), [1, 5]);
+Assert::same(Str::findTag(' {foo} ', '{', '}', null, null, 2), [null, null]);
+Assert::same(Str::findTag(' {foo} {foo} ', '{', '}', null, null, 5), [7, 5]);
+
+
 levenshteinUnicode:
 Assert::same(Str::levenshteinUnicode('příliš', 'příliš'), 0.0);
 Assert::same(Str::levenshteinUnicode('žluťoučký', 'Žluťoučký'), 0.25);
