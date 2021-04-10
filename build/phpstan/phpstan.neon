@@ -34,6 +34,9 @@ parameters:
         # PHP 7 -> 8
         - '~expects (Curl(Multi)?Handle|resource), Curl(Multi)?Handle\|resource given~'
 
+        # PHP 7.1 compatibility (cannot declare interface method with default value)
+        - '~Call to an undefined method Dogma\\Time\\DateOr(Date)?Time::format\(\)~'
+
     excludes_analyse:
         - */tests/*/data/*
 

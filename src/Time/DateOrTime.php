@@ -11,13 +11,12 @@ namespace Dogma\Time;
 
 use Dogma\Comparable;
 use Dogma\Equalable;
-use Dogma\Time\Format\DateTimeFormatter;
 use Dogma\Time\Format\DateTimeValues;
 
 interface DateOrTime extends Equalable, Comparable
 {
 
-    public function format(string $format = '', ?DateTimeFormatter $formatter = null): string;
+    //public function format(string $format = ''): string; // PHP 7.2+
 
     public function fillValues(DateTimeValues $values): void;
 

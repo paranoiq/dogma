@@ -24,7 +24,6 @@ use Dogma\Obj;
 use Dogma\ShouldNotHappenException;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
-use Dogma\Time\Format\DateTimeFormatter;
 use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Provider\TimeProvider;
 use Dogma\Time\Span\DateOrTimeSpan;
@@ -88,7 +87,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
      * @param DateTimeZone|null $timeZone
      * @return static
      */
-    public static function createFromFormat($format, $timeString, ?DateTimeZone $timeZone = null): self
+    public static function createFromFormat($format, $timeString, $timeZone = null): self
     {
         // due to invalid type hint in parent class...
         Check::nullableObject($timeZone, DateTimeZone::class);
@@ -389,16 +388,11 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $format
-     * @param DateTimeFormatter|null $formatter
      * @return string
      */
-    public function format($format = self::DEFAULT_FORMAT, ?DateTimeFormatter $formatter = null): string
+    public function format($format = self::DEFAULT_FORMAT): string
     {
-        if ($formatter === null) {
-            return parent::format($format);
-        } else {
-            return $formatter->format($this, $format);
-        }
+        return parent::format($format);
     }
 
     /**
