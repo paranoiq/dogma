@@ -660,7 +660,7 @@ class Type
      * @param mixed ...$arguments
      * @return object
      */
-    public function getInstance(...$arguments): object
+    public function getInstance(...$arguments)
     {
         $className = $this->type;
 

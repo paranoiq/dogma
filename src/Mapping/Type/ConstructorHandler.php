@@ -49,7 +49,7 @@ abstract class ConstructorHandler implements TypeHandler
      * @param Mapper $mapper
      * @return object
      */
-    public function createInstance(Type $type, $parameters, Mapper $mapper): object
+    public function createInstance(Type $type, $parameters, Mapper $mapper)
     {
         $orderedParams = [];
         foreach ($this->getParameters($type) as $name => $paramType) {
