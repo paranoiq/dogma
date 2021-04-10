@@ -164,6 +164,82 @@ class Str
     }
 
     /**
+     * Locates a "tag" surrounded by given markers which may be escaped. Returns start and length pair.
+     *
+     * Eg. called with ("foo {{no-tag}} {tag}}body} bar", '{', '}', '{', '}) will return [15, 12] for the "{tag{{body}"
+     *
+     * @param string $string
+     * @param string $start
+     * @param string $end
+     * @param string|null $startEscape
+     * @param string|null $endEscape
+     * @param int $offset
+     * @return int[]|null[] ($start, $length)
+     */
+    public static function findTag(
+        string $string,
+        string $start,
+        string $end,
+        ?string $startEscape = null,
+        ?string $endEscape = null,
+        int $offset = 0
+    ): ?array
+    {
+        $seDouble = $start === $startEscape;
+        $seLength = $startEscape ? strlen($startEscape) : 0;
+        do {
+            $i = strpos($string, $start, $offset);
+            if ($i === false) {
+                return [null, null];
+            }
+            if ($startEscape === null) {
+                break;
+            }
+            if ($seDouble) {
+                $next = substr($string, $i + 1, $seLength);
+                if ($next !== $startEscape) {
+                    break;
+                }
+                $offset = $i + $seLength + 1;
+            } else {
+                $prev = substr($string, $i - $seLength, $seLength);
+                if ($prev !== $startEscape) {
+                    break;
+                }
+                $offset++;
+            }
+        } while (true);
+        $offset = $i + strlen($start) + 1;
+
+        $eeDouble = $end === $endEscape;
+        $eeLength = $endEscape ? strlen($startEscape) : 0;
+        do {
+            $j = strpos($string, $end, $offset);
+            if ($j === false) {
+                return [null, null];
+            }
+            if ($endEscape === null) {
+                break;
+            }
+            if ($eeDouble) {
+                $next = substr($string, $j + 1, $eeLength);
+                if ($next !== $endEscape) {
+                    break;
+                }
+                $offset = $j + $eeLength + 1;
+            } else {
+                $prev = substr($string, $j - $eeLength, $eeLength);
+                if ($prev !== $endEscape) {
+                    break;
+                }
+                $offset++;
+            }
+        } while (true);
+
+        return [$i, $j - $i + 1];
+    }
+
+    /**
      * Levenshtein distance for UTF-8 with additional weights for accent and case differences.
      * Expects input strings to be normalized UTF-8.
      *
