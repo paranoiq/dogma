@@ -21,10 +21,12 @@
         "dogma/dogma-dev": "0.1.17"
     },
     "suggest": {
-        "ext-dom": "for Dom",
-        "ext-iconv": "for Str",
-        "ext-intl": "for Str and Language",
-        "ext-mbstring": "for Str",
+        "ext-dom": "for Dom (basic functionality)",
+        "ext-mbstring": "for Str (basic functionality)",
+        "ext-intl": "for Str and Language (advanced unicode manipulation)",
+        "ext-iconv": "for Str (converting encoding when ext-mbstring is not available)",
+        "ext-recode": "for Str (converting encoding when ext-mbstring and ext-iconv are not available)",
+        "ext-fileinfo": "for Io (content type and encoding detection)",
         "symfony/polyfill-intl-icu": "for Str and Language",
         "symfony/polyfill-intl-normalizer": "for Str",
         "symfony/polyfill-mbstring": "for Str"
@@ -40,7 +42,7 @@
     "scripts": {
         "c": "@check",
         "t": "@test",
-        "tc": "@tests-coverage",
+        "tc": "@test-coverage",
         "da": "composer dump-autoload",
         "cs": [
             "@cs-src",
