@@ -70,7 +70,6 @@ use function is_array;
 use function is_int;
 use function is_string;
 use function preg_match_all;
-use function preg_replace;
 use function strlen;
 use function strtolower;
 use function substr;
@@ -108,9 +107,6 @@ class HttpRequest
 
     /** @var string */
     private $content;
-
-    /** @var HttpHeaderParser|null */
-    protected $headerParser;
 
     /** @var mixed */
     protected $context;
@@ -158,16 +154,6 @@ class HttpRequest
     public function setInit(callable $init): void
     {
         $this->init = $init;
-    }
-
-    public function setHeaderParser(HttpHeaderParser $headerParser): void
-    {
-        $this->headerParser = $headerParser;
-    }
-
-    public function getHeaderParser(): ?HttpHeaderParser
-    {
-        return $this->headerParser;
     }
 
     /**

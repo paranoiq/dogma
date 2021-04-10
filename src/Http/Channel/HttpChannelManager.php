@@ -11,12 +11,10 @@ namespace Dogma\Http\Channel;
 
 use CurlMultiHandle;
 use Dogma\Http\Curl\CurlHelper;
-use Dogma\Http\HttpHeaderParser;
 use Dogma\Http\HttpRequest;
 use Dogma\NonCloneableMixin;
 use Dogma\NonSerializableMixin;
 use Dogma\StrictBehaviorMixin;
-use Dogma\Time\Provider\CurrentTimeProvider;
 use const CURLM_CALL_MULTI_PERFORM;
 use const PHP_INT_MIN;
 use function abs;
@@ -53,12 +51,8 @@ class HttpChannelManager
     /** @var mixed[] ($resourceId => array($channelId, $jobName, $request)) */
     private $resources = [];
 
-    /** @var HttpHeaderParser|null */
-    private $headerParser;
-
-    public function __construct(?HttpHeaderParser $headerParser = null)
+    public function __construct()
     {
-        $this->headerParser = $headerParser;
         $handler = curl_multi_init();
         if ($handler === false) {
             throw new HttpChannelException('Cannot initialize CURL multi-request.');
@@ -222,14 +216,6 @@ class HttpChannelManager
     public function jobStarted($resource, HttpChannel $channel, $name, HttpRequest $request): void
     {
         $this->resources[(string) $resource] = [spl_object_hash($channel), $name, $request];
-    }
-
-    public function getHeaderParser(): HttpHeaderParser
-    {
-        if ($this->headerParser === null) {
-            $this->headerParser = new HttpHeaderParser(new CurrentTimeProvider());
-        }
-        return $this->headerParser;
     }
 
 }

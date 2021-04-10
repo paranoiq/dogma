@@ -313,9 +313,6 @@ class HttpChannel
         }
     }
 
-    /**
-     * @return HttpResponse|null
-     */
     public function fetch(): ?HttpResponse
     {
         if (!empty($this->finished)) {

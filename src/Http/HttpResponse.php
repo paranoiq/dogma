@@ -15,7 +15,6 @@ use Dogma\Language\Encoding;
 use Dogma\Language\Locale\Locale;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateTime;
-use Dogma\Time\Provider\CurrentTimeProvider;
 use Dogma\Web\Host;
 use Dogma\Web\Url;
 use function is_int;
@@ -45,31 +44,25 @@ class HttpResponse
     /** @var mixed */
     private $context;
 
-    /** @var HttpHeaderParser|null */
-    private $headerParser;
-
     /**
      * @param HttpOrCurlStatus $status
      * @param string|null $body
      * @param string[] $rawHeaders
      * @param string[] $info
      * @param mixed $context
-     * @param HttpHeaderParser|null $headerParser
      */
     public function __construct(
         HttpOrCurlStatus $status,
         ?string $body,
         array $rawHeaders,
         array $info,
-        $context,
-        ?HttpHeaderParser $headerParser = null
+        $context
     ) {
         $this->status = $status;
         $this->body = $body;
         $this->rawHeaders = $rawHeaders;
         $this->info = $info;
         $this->context = $context;
-        $this->headerParser = $headerParser;
     }
 
     /**
@@ -101,7 +94,7 @@ class HttpResponse
     public function getHeaders(): array
     {
         if ($this->headers === null) {
-            $this->headers = $this->getHeaderParser()->parseHeaders($this->rawHeaders);
+            $this->headers = HttpHeaderParser::parseHeaders($this->rawHeaders);
         }
 
         return $this->headers;
@@ -120,15 +113,6 @@ class HttpResponse
         return $this->headers[$name] ?? null;
     }
 
-    private function getHeaderParser(): HttpHeaderParser
-    {
-        if ($this->headerParser === null) {
-            $this->headerParser = new HttpHeaderParser(new CurrentTimeProvider());
-        }
-
-        return $this->headerParser;
-    }
-
     /**
      * @return string[]
      */
@@ -140,7 +124,7 @@ class HttpResponse
             if ($cookies === null) {
                 return [];
             }
-            $this->cookies = $this->getHeaderParser()->parseCookies($cookies);
+            $this->cookies = HttpHeaderParser::parseCookies($cookies);
         }
 
         return $this->cookies;
@@ -155,7 +139,7 @@ class HttpResponse
     }
 
     /**
-     * @param string|int $name
+     * @param string|int|null $name
      * @return string|string[]
      */
     public function getInfo($name = null)

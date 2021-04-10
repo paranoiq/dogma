@@ -9,14 +9,15 @@
 
 namespace Dogma\Http;
 
+use DateTimeInterface;
+use DateTimeZone;
 use Dogma\Check;
 use Dogma\Io\ContentType\ContentType;
 use Dogma\Language\Encoding;
 use Dogma\Language\Locale\Locale;
+use Dogma\StaticClassMixin;
 use Dogma\Str;
-use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateTime;
-use Dogma\Time\Provider\TimeProvider;
 use Dogma\Type;
 use Dogma\Web\Host;
 use Dogma\Web\Url;
@@ -28,7 +29,7 @@ use function trim;
 
 class HttpHeaderParser
 {
-    use StrictBehaviorMixin;
+    use StaticClassMixin;
 
     /** @var string[] */
     private static $types = [
@@ -50,19 +51,12 @@ class HttpHeaderParser
         HttpHeader::X_WAP_PROFILE => Url::class,
     ];
 
-    /** @var TimeProvider */
-    private $timeProvider;
-
-    public function __construct(TimeProvider $timeProvider)
-    {
-        $this->timeProvider = $timeProvider;
-    }
-
     /**
      * @param string[] $rawHeaders
+     * @param ?DateTimeZone $useTimezone
      * @return mixed[]
      */
-    public function parseHeaders(array $rawHeaders): array
+    public static function parseHeaders(array $rawHeaders, ?DateTimeZone $useTimezone = null): array
     {
         $headers = [];
 
@@ -83,14 +77,14 @@ class HttpHeaderParser
             if ($name === HttpHeader::CONTENT_TYPE && Str::contains($value, ';')) {
                 [$value, $charset] = Str::splitByFirst($value, ';');
                 $charset = Str::fromFirst($charset, '=');
-                $this->insertHeader($headers, HttpHeader::CONTENT_CHARSET, $this->formatValue(trim($charset), Encoding::class));
+                self::insertHeader($headers, HttpHeader::CONTENT_CHARSET, self::parseValue(trim($charset), Encoding::class));
             }
 
             $type = self::$types[$name] ?? null;
             if ($type !== null) {
-                $this->insertHeader($headers, $name, $this->formatValue(trim($value), $type));
+                self::insertHeader($headers, $name, self::parseValue(trim($value), $type, $useTimezone));
             } else {
-                $this->insertHeader($headers, $name, trim($value));
+                self::insertHeader($headers, $name, trim($value));
             }
         }
 
@@ -98,10 +92,24 @@ class HttpHeaderParser
     }
 
     /**
+     * @param mixed[] $headers
+     * @return string[]
+     */
+    public static function formatHeaders(array $headers): array
+    {
+        $rows = [];
+        foreach ($headers as $name => $value) {
+            $rows[] = $name . ': ' . self::formatValue($value);
+        }
+
+        return $rows;
+    }
+
+    /**
      * @param string|string[] $rawCookies
      * @return string[]
      */
-    public function parseCookies($rawCookies): array
+    public static function parseCookies($rawCookies): array
     {
         if (!is_array($rawCookies)) {
             $rawCookies = [$rawCookies];
@@ -122,7 +130,7 @@ class HttpHeaderParser
      * @param string $name
      * @param mixed $value
      */
-    private function insertHeader(array &$headers, string $name, $value): void
+    private static function insertHeader(array &$headers, string $name, $value): void
     {
         if (isset($headers[$name])) {
             if (is_array($headers[$name])) {
@@ -138,17 +146,21 @@ class HttpHeaderParser
     /**
      * @param string $value
      * @param string $type
+     * @param DateTimeZone|null $useTimezone
      * @return string|int|DateTime|Host|Url|ContentType|Encoding|Locale
      */
-    private function formatValue(string $value, string $type)
+    private static function parseValue(string $value, string $type, ?DateTimeZone $useTimezone = null)
     {
         switch ($type) {
             case Type::INT:
                 Check::int($value);
                 return $value;
             case DateTime::class:
-                return DateTime::createFromFormat(DateTime::FORMAT_EMAIL_HTTP, $value)
-                    ->setTimezone($this->timeProvider->getTimeZone());
+                $dateTime = DateTime::createFromFormat(DateTime::FORMAT_EMAIL_HTTP, $value);
+                if ($useTimezone) {
+                    $dateTime = $dateTime->setTimezone($useTimezone);
+                }
+                return $dateTime;
             case Host::class:
                 [$host, $port] = Str::splitByFirst($value, ':');
                 return new Host($host, $port ? (int) $port : null);
@@ -162,6 +174,34 @@ class HttpHeaderParser
                 return Locale::get($value);
             default:
                 return $value;
+        }
+    }
+
+    /**
+     * @param mixed $value
+     * @param DateTimeZone|null $useTimezone
+     * @return string
+     */
+    private static function formatValue($value, ?DateTimeZone $useTimezone = null): string
+    {
+        if ($value instanceof DateTimeInterface) {
+            if ($useTimezone !== null) {
+                $value = DateTime::createFromDateTimeInterface($value)->setTimezone($useTimezone);
+            }
+
+            return $value->format(DateTime::FORMAT_EMAIL_HTTP);
+        } elseif ($value instanceof Host) {
+            return $value->format();
+        } elseif ($value instanceof Url) {
+            return $value->format();
+        } elseif ($value instanceof ContentType) {
+            return $value->getValue();
+        } elseif ($value instanceof Encoding) {
+            return $value->getValue();
+        } elseif ($value instanceof Locale) {
+            return $value->getValue();
+        } else {
+            return (string) $value;
         }
     }
 
