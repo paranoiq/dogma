@@ -7,19 +7,19 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Io;
+namespace Dogma\Io\Stream;
 
 use Dogma\StaticClassMixin;
-use const SEEK_CUR;
-use const SEEK_END;
-use const SEEK_SET;
+use const STREAM_NOTIFY_SEVERITY_ERR;
+use const STREAM_NOTIFY_SEVERITY_INFO;
+use const STREAM_NOTIFY_SEVERITY_WARN;
 
-class FilePosition
+class StreamEventSeverity
 {
     use StaticClassMixin;
 
-    public const BEGINNING = SEEK_SET;
-    public const CURRENT = SEEK_CUR;
-    public const END = SEEK_END;
+    public const INFO = STREAM_NOTIFY_SEVERITY_INFO;
+    public const WARNING = STREAM_NOTIFY_SEVERITY_WARN;
+    public const ERROR = STREAM_NOTIFY_SEVERITY_ERR;
 
 }

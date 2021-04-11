@@ -10,14 +10,16 @@
 namespace Dogma\System;
 
 use Dogma\Re;
+use Dogma\Io\Output;
 use Dogma\StaticClassMixin;
 use const INFO_GENERAL;
 use const PHP_INT_SIZE;
 use const PHP_SAPI;
+use function error_clear_last;
+use function error_get_last;
 use function extension_loaded;
-use function ob_get_clean;
-use function ob_start;
 use function phpinfo;
+use function proc_nice;
 
 class Php
 {
@@ -52,13 +54,22 @@ class Php
     {
         static $threadSafe;
         if ($threadSafe === null) {
-            ob_start();
-            phpinfo(INFO_GENERAL);
-            $info = (string) ob_get_clean();
+            $info = Output::capture(function () {
+                phpinfo(INFO_GENERAL);
+            });
             $threadSafe = (bool) Re::match($info, '~Thread Safety\s*</td>\s*<td[^>]*>\s*enabled~');
         }
 
         return $threadSafe;
+    }
+
+    public static function setPriority(int $priority): void
+    {
+        error_clear_last();
+        $result = @proc_nice($priority);
+        if ($result !== true) {
+            throw new CannotChangePriorityException('Cannot change system priority: ' . error_get_last()['message']);
+        }
     }
 
 }

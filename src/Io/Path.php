@@ -7,11 +7,22 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Io\Filesystem;
+namespace Dogma\Io;
 
-use Dogma\Io\IoException;
-
-class DirectoryException extends IoException
+/**
+ * File or directory path
+ */
+interface Path
 {
+
+    /**
+     * Fully qualified path with name
+     */
+    public function getPath(): string;
+
+    /**
+     * Name without path
+     */
+    public function getName(): string;
 
 }

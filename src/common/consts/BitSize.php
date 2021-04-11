@@ -20,7 +20,8 @@ class BitSize
     public const BITS_16 = 16;
     public const BITS_24 = 24;
     public const BITS_32 = 32;
-    public const BITS_48 = 48;
+    public const BITS_48 = 48; // MySQL medium int
+    public const BITS_53 = 53; // what fits in double without precision loss
     public const BITS_64 = 64;
 
     public const DEFAULT_INT_SIZE = PHP_INT_SIZE * 8;
@@ -37,6 +38,7 @@ class BitSize
             self::BITS_24,
             self::BITS_32,
             self::BITS_48,
+            self::BITS_53,
             self::BITS_64,
         ];
     }

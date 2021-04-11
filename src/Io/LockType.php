@@ -9,13 +9,14 @@
 
 namespace Dogma\Io;
 
-use Dogma\Enum\IntEnum;
+use Dogma\StaticClassMixin;
 use const LOCK_EX;
 use const LOCK_NB;
 use const LOCK_SH;
 
-class LockType extends IntEnum
+class LockType
 {
+    use StaticClassMixin;
 
     public const SHARED = LOCK_SH;
     public const EXCLUSIVE = LOCK_EX;
