@@ -9,13 +9,14 @@
 
 namespace Dogma\Io;
 
-use Dogma\Enum\IntEnum;
+use Dogma\StaticClassMixin;
 use const SEEK_CUR;
 use const SEEK_END;
 use const SEEK_SET;
 
-class FilePosition extends IntEnum
+class FilePosition
 {
+    use StaticClassMixin;
 
     public const BEGINNING = SEEK_SET;
     public const CURRENT = SEEK_CUR;

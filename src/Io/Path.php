@@ -9,13 +9,20 @@
 
 namespace Dogma\Io;
 
-use Dogma\Enum\StringEnum;
-
-class LineEndings extends StringEnum
+/**
+ * File or directory path
+ */
+interface Path
 {
 
-    public const UNIX = "\n";
-    public const WINDOWS = "\r\n";
-    public const MAC = "\r";
+    /**
+     * Fully qualified path with name
+     */
+    public function getPath(): string;
+
+    /**
+     * Name without path
+     */
+    public function getName(): string;
 
 }

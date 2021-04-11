@@ -14,7 +14,8 @@ parameters:
         - '~Method Dogma\\Enum\\(Int|String)Set::getConstantNames\(\) should return array<string> but returns array<(int|string), int\|string\|false>.~'
         - '~Parameter #(1|2) \$arr(1|2) of function array_[a-z_]+ expects array, array\|\(callable\) given.~' # callables filtered out
         - "~Cannot cast 0\\|0.0\\|1\\|1.0\\|''\\|'0'\\|'0.0'\\|'1'\\|'1.0' to int.~" # '' is a bool ^_^
-        - '~Method Dogma\\Io\\FileMetaData::.*\(\) should return (int|string) but returns int\|string.~'
+        - '~Method Dogma\\System\\CallstackFrame::getClassReflection\(\) return type with generic class ReflectionClass does not specify its types: T~' # don't want to turn of the whole rule
+        - '~Parameter #1 \$(finfo|magic_database) of function finfo_[a-z_]+ expects resource, resource\|null given.~' # handled by init()
         -
             message: "~Result of && is always false.~" # ???
             path: "../../src/common/Check.php"

@@ -6,7 +6,9 @@ use Tracy\Debugger;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/../../vendor/nette/tester/src/bootstrap.php';
-require_once __DIR__ . '/../../vendor/dogma/dogma-dev/src/debug-client.php';
+if (file_exists(__DIR__ . '/../../vendor/dogma/dogma-dev/src/debug-client.php')) {
+    require_once __DIR__ . '/../../vendor/dogma/dogma-dev/src/debug-client.php';
+}
 
 if (!empty($_SERVER['argv'])) {
     // may be running from command line, but under 'cgi-fcgi' SAPI

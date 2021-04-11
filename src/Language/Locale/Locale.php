@@ -54,12 +54,15 @@ class Locale
 
     public static function get(string $value): self
     {
+        /** @var string $value */
         $value = PhpLocale::canonicalize($value);
 
         if (isset(self::$instances[$value])) {
             return self::$instances[$value];
         } else {
+            /** @var string[] $components */
             $components = PhpLocale::parseLocale($value);
+            /** @var string[] $keywords */
             $keywords = PhpLocale::getKeywords($value);
             if ($keywords) {
                 $components['keywords'] = $keywords;
@@ -114,6 +117,7 @@ class Locale
                 return $key . '=' . $value;
             }));
         }
+        /** @var string $value */
         $value = PhpLocale::canonicalize($value);
 
         if (isset(self::$instances[$value])) {
@@ -124,6 +128,11 @@ class Locale
             self::$instances[$value] = $instance;
             return $instance;
         }
+    }
+
+    public function getValue(): string
+    {
+        return $this->value;
     }
 
     public function getCollator(): Collator
@@ -178,11 +187,6 @@ class Locale
         return $match ? self::get($match) : null;
     }
 
-    public function getValue(): string
-    {
-        return $this->value;
-    }
-
     public function getLanguage(): Language
     {
         /** @var string $language */
@@ -218,7 +222,7 @@ class Locale
      */
     public function getVariants(): array
     {
-        return PhpLocale::getAllVariants($this->value);
+        return PhpLocale::getAllVariants($this->value) ?? [];
     }
 
     public function getVariant(int $n): ?string

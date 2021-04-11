@@ -42,6 +42,11 @@ $ignore = PHP_VERSION_ID < 80000
         '~Cannot call method [a-zA-Z]+\(\) on DateTimeZone\|false.~', # -//-
         '~Parameter #1 \$objectOrClass of class ReflectionClass constructor expects class-string<T of object>\|T of object, string given.~', # in MethodTypeParser; temporary
         '~Strict comparison using === between CurlMultiHandle and false will always evaluate to false.~', # in HttpChannelManager; probably a reflection bug
+        '~Method Dogma\\\\Language\\\\Locale\\\\Locale::matches\(\) should return bool but returns bool\|null.~', # not sure
+        [
+            'message' => '~Strict comparison using === between array and null will always evaluate to false.~',
+            'path' => '../../src/Io/TextFile.php',
+        ]
     ];
 
 return ['parameters' => ['ignoreErrors' => $ignore]];

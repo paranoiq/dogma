@@ -74,6 +74,7 @@ Assert::same(IntCalc::greatestCommonDivider(2, 2), 2);
 Assert::same(IntCalc::greatestCommonDivider(2, 3), 1);
 Assert::same(IntCalc::greatestCommonDivider(4, 6), 2);
 Assert::same(IntCalc::greatestCommonDivider(84, 140), 28);
+Assert::same(IntCalc::greatestCommonDivider(11322, 2098765413), 153);
 
 
 leastCommonMultiple:

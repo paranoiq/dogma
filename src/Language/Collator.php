@@ -156,7 +156,6 @@ class Collator extends PhpCollator
      */
     public function sort(array &$arr, $sortFlag = self::SORT_REGULAR): bool
     {
-
         $result = parent::sort($arr, $sortFlag);
 
         if ($this->backwards) {

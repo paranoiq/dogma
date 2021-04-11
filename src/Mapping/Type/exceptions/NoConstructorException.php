@@ -18,10 +18,6 @@ class NoConstructorException extends Exception implements MappingTypeException
     /** @var mixed */
     private $class;
 
-    /**
-     * @param string $class
-     * @param Throwable|null $previous
-     */
     public function __construct(string $class, ?Throwable $previous = null)
     {
         parent::__construct("Class $class cannot be mapped using ConstructorHandler, as it has no constructor.", $previous);

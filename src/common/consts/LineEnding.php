@@ -17,8 +17,14 @@ class LineEnding
     public const CRLF = "\r\n";
     public const CR = "\r";
 
+    public const UNIX = self::LF;
     public const LINUX = self::LF;
     public const WINDOWS = self::CRLF;
     public const MAC = self::CR;
+
+    public static function checkValue(string $value): void
+    {
+        Check::enum($value, [self::LF, self::CRLF, self::CR]);
+    }
 
 }

@@ -41,6 +41,16 @@ class IntCalc
         return $components;
     }
 
+    public static function floor(float $number): int
+    {
+        return (int) floor($number);
+    }
+
+    public static function ceil(float $number): int
+    {
+        return (int) ceil($number);
+    }
+
     public static function roundTo(int $number, int $multiple): int
     {
         $up = self::roundUpTo($number, $multiple);

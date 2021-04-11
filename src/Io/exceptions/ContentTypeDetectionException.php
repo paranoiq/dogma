@@ -9,32 +9,24 @@
 
 namespace Dogma\Io;
 
+use Dogma\Exception;
 use Throwable;
 
-class FileException extends IoException
+class ContentTypeDetectionException extends Exception
 {
-
-    /** @var mixed[]|null */
-    private $error;
 
     /**
      * @param string $message
      * @param mixed[]|null $error
      * @param Throwable|null $previous
      */
-    public function __construct(string $message, ?array $error = null, ?Throwable $previous = null)
+    public function __construct(string $message, ?array $error, ?Throwable $previous = null)
     {
+        if ($error !== null) {
+            $message .= ' ' . $error['message'];
+        }
+
         parent::__construct($message, $previous);
-
-        $this->error = $error;
-    }
-
-    /**
-     * @return mixed[]|null
-     */
-    public function getError(): ?array
-    {
-        return $this->error;
     }
 
 }

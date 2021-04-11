@@ -14,11 +14,10 @@ namespace Dogma\Io;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateTime;
+use StreamContext;
 use function basename;
-use function chgrp;
-use function chmod;
-use function chown;
 use function clearstatcache;
+use function decoct;
 use function dirname;
 use function error_clear_last;
 use function error_get_last;
@@ -30,27 +29,28 @@ use function is_resource;
 use function is_writable;
 use function realpath;
 use function scandir;
-use function sprintf;
 use function stat;
 use function str_replace;
-use function touch;
 
-class Info implements Path
+/**
+ * Represents a file system path to a directory, file or a symbolic link target
+ * Does not validate existence of the path
+ *
+ * @see LinkInfo for symbolic link specific things
+ */
+class FileInfo implements Path
 {
     use StrictBehaviorMixin;
 
     /** @var string */
     protected $path;
 
-    /** @var int[]|string[]|null */
-    protected $stat;
-
     /** @var resource|null */
     private $handle;
 
     /**
      * @param string|Path $file
-     * @param resource|null $stat
+     * @param resource|null $handle
      */
     public function __construct($file, $handle = null)
     {
@@ -64,11 +64,13 @@ class Info implements Path
 
     public function clearCache(): void
     {
-        $this->stat = null;
         clearstatcache(true, $this->path);
     }
 
-    protected function init(): void
+    /**
+     * @return mixed[]
+     */
+    protected function stat(): array
     {
         error_clear_last();
         if (is_resource($this->handle)) {
@@ -78,64 +80,66 @@ class Info implements Path
         }
 
         if ($stat === false) {
-            throw new FileException('Cannot acquire file metadata.', error_get_last());
+            throw FilesystemException::create("Cannot acquire file metadata", $this->path, null, error_get_last());
         }
 
-        $this->stat = $stat;
+        return $stat;
     }
 
     public function getLinkInfo(): LinkInfo
     {
-        if (!$this->isLink()) {
-            throw new FileException('File is not a link.');
-        }
-
         return new LinkInfo($this->path);
     }
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    public function open(): File
+    public function open(string $mode = FileMode::OPEN_READ, ?StreamContext $context = null): BinaryFile
     {
         $path = $this->getRealPath();
 
-        return new File($path);
+        return new BinaryFile($path, $mode, $context);
     }
 
-    public function touch(): void
+    public function read(int $offset = 0, ?int $length = null, ?StreamContext $context = null): string
     {
-        error_clear_last();
-        $res = touch($this->path);
-        if ($res === false) {
-            throw new FileException('Cannot touch file.', error_get_last());
-        }
+        return Io::read($this->path, $offset, $length, $context);
     }
 
-    public function changePermissions(int $permissions): void
+    /**
+     * @param int $start
+     * @param int|null $count
+     * @param int $flags
+     * @param StreamContext|null $context
+     * @return string[]
+     */
+    public function readLines(int $start = 0, ?int $count = null, int $flags = 0, ?StreamContext $context = null): array
     {
-        error_clear_last();
-        $res = chmod($this->path, $permissions);
-        if ($res === false) {
-            throw new FileException('Cannot change permissions.', error_get_last());
-        }
+        return Io::readLines($this->path, $start, $count, $flags, $context);
     }
 
-    public function changeOwner(int $ownerId): void
+    /**
+     * @param string $data
+     * @param int $flags (FILE_APPEND, LOCK_EX)
+     * @param StreamContext|null $context
+     * @return int
+     */
+    public function write(string $data, int $flags = 0, ?StreamContext $context = null): int
     {
-        error_clear_last();
-        $res = chown($this->path, $ownerId);
-        if ($res === false) {
-            throw new FileException('Cannot change file owner.', error_get_last());
-        }
+        return Io::write($this->path, $data, $flags, $context);
     }
 
-    public function changeGroup(int $groupId): void
+    /**
+     * @param int|DateTime|null $time
+     * @param int|DateTime|null $accessTime
+     */
+    public function touch($time = null, $accessTime = null): void
     {
-        error_clear_last();
-        $res = chgrp($this->path, $groupId);
-        if ($res === false) {
-            throw new FileException('Cannot change file owner.', error_get_last());
-        }
+        Io::touch($this->path, $time, $accessTime);
+    }
+
+    public function updatePermissions(int $add, int $remove, ?int $owner = null, ?int $group = null): void
+    {
+        Io::updatePermissions($this->path, $add, $remove, $owner, $group, Io::FOLLOW_SYMLINKS);
     }
 
     // path ------------------------------------------------------------------------------------------------------------
@@ -161,7 +165,7 @@ class Info implements Path
     {
         $path = realpath($this->path);
         if ($path === false) {
-            throw new FileException(sprintf('File %s does not exits.', $this->path));
+            throw FilesystemException::create("Cannot get real path, file does not exits", $this->path);
         }
 
         return $path;
@@ -176,11 +180,12 @@ class Info implements Path
 
     public function getType(): int
     {
-        if ($this->stat === null) {
-            $this->init();
-        }
+        return $this->stat()['mode'] & 0770000;
+    }
 
-        return $this->stat['mode'] & 0770000;
+    public function getTypeLetter(): string
+    {
+        return FileType::LETTERS[$this->getType()];
     }
 
     public function isDirectory(): bool
@@ -196,16 +201,24 @@ class Info implements Path
     public function isEmpty(): bool
     {
         if (!$this->isDirectory()) {
-            throw new FileException('Path is not a directory.');
+            throw FilesystemException::create("Path is not a directory", $this->path);
         }
 
         error_clear_last();
         $files = scandir($this->path);
         if ($files === false) {
-            throw new FileException('Cannot read directory.', error_get_last());
+            throw FilesystemException::create("Cannot read directory", $this->path, null, error_get_last());
+        }
+        foreach ($files as $name) {
+            if ($name === '.' || $name === '..') {
+                continue;
+            }
+            if (file_exists($this->path . '/' . $name)) {
+                return false;
+            }
         }
 
-        return count($files) === 2;
+        return true;
     }
 
     public function isFile(): bool
@@ -262,121 +275,105 @@ class Info implements Path
 
     public function getPermissions(): int
     {
-        if ($this->stat === null) {
-            $this->init();
-        }
+        return $this->stat()['mode'] & FilePermissions::ALL;
+    }
 
-        return $this->stat['mode'] & 0777;
+    public function getPermissionsOct(): string
+    {
+        return decoct($this->stat()['mode'] & FilePermissions::ALL);
+    }
+
+    public function getPermissionsString(): string
+    {
+        $perms = $this->stat()['mode'] & FilePermissions::ALL;
+
+        return $this->getTypeLetter()
+            . (($perms & FilePermissions::OWNER_READ) ? 'r' : '-')
+            . (($perms & FilePermissions::OWNER_WRITE) ? 'w' : '-')
+            . (($perms & FilePermissions::OWNER_EXECUTE) ? 'x' : '-')
+            . (($perms & FilePermissions::GROUP_READ) ? 'r' : '-')
+            . (($perms & FilePermissions::GROUP_WRITE) ? 'w' : '-')
+            . (($perms & FilePermissions::GROUP_EXECUTE) ? 'x' : '-')
+            . (($perms & FilePermissions::OTHER_READ) ? 'r' : '-')
+            . (($perms & FilePermissions::OTHER_WRITE) ? 'w' : '-')
+            . (($perms & FilePermissions::OTHER_EXECUTE) ? 'x' : '-');
     }
 
     // stats -----------------------------------------------------------------------------------------------------------
 
     public function getLinksCount(): int
     {
-        if ($this->stat === null) {
-            $this->init();
-        }
-
-        return $this->stat['nlink'];
+        return $this->stat()['nlink'];
     }
 
     public function getOwner(): int
     {
-        if ($this->stat === null) {
-            $this->init();
-        }
-
-        return $this->stat['uid'];
+        return $this->stat()['uid'];
     }
 
     public function getGroup(): int
     {
-        if ($this->stat === null) {
-            $this->init();
-        }
-
-        return $this->stat['gid'];
+        return $this->stat()['gid'];
     }
 
-    public function getAccessTime(): DateTime
+    public function getAccessed(): int
     {
-        if ($this->stat === null) {
-            $this->init();
-        }
-
-        return DateTime::createFromTimestamp($this->stat['atime']);
+        return $this->stat()['atime'];
     }
 
-    public function getModifyTime(): DateTime
+    public function getAccessedTime(): DateTime
     {
-        if ($this->stat === null) {
-            $this->init();
-        }
-
-        return DateTime::createFromTimestamp($this->stat['mtime']);
+        return DateTime::createFromTimestamp($this->stat()['atime']);
     }
 
-    public function getInodeChangeTime(): DateTime
+    public function getModified(): int
     {
-        if ($this->stat === null) {
-            $this->init();
-        }
+        return $this->stat()['mtime'];
+    }
 
-        return DateTime::createFromTimestamp($this->stat['ctime']);
+    public function getModifiedTime(): DateTime
+    {
+        return DateTime::createFromTimestamp($this->stat()['mtime']);
+    }
+
+    public function getChanged(): int
+    {
+        return $this->stat()['ctime'];
+    }
+
+    public function getChangedTime(): DateTime
+    {
+        return DateTime::createFromTimestamp($this->stat()['ctime']);
     }
 
     public function getInode(): int
     {
-        if ($this->stat === null) {
-            $this->init();
-        }
-
-        return $this->stat['ino'];
+        return $this->stat()['ino'];
     }
 
     public function getDeviceId(): int
     {
-        if ($this->stat === null) {
-            $this->init();
-        }
-
-        return $this->stat['dev'];
+        return $this->stat()['dev'];
     }
 
     public function getDeviceType(): string
     {
-        if ($this->stat === null) {
-            $this->init();
-        }
-
-        return $this->stat['rdev'];
+        return $this->stat()['rdev'];
     }
 
     public function getSize(): int
     {
-        if ($this->stat === null) {
-            $this->init();
-        }
-
-        return $this->stat['size'];
+        return $this->stat()['size'];
     }
 
     public function getBlockSize(): int
     {
-        if ($this->stat === null) {
-            $this->init();
-        }
-
-        return $this->stat['blksize'];
+        return $this->stat()['blksize'];
     }
 
     public function getBlocks(): int
     {
-        if ($this->stat === null) {
-            $this->init();
-        }
-
-        return $this->stat['blocks'];
+        return $this->stat()['blocks'];
     }
 
 }

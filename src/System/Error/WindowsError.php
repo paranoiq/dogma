@@ -11,7 +11,6 @@ namespace Dogma\System\Error;
 
 use Dogma\Enum\IntEnum;
 use Dogma\Str;
-use function preg_replace;
 use function str_replace;
 use function strtolower;
 use function ucfirst;

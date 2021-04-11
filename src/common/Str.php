@@ -420,7 +420,7 @@ class Str
     /**
      * @param string $string
      * @param string $pattern
-     * @param int $flags
+     * @param int $flags PREG_OFFSET_CAPTURE | PREG_UNMATCHED_AS_NULL
      * @param int $offset
      * @return string[]|null
      */
@@ -445,9 +445,9 @@ class Str
     /**
      * @param string $string
      * @param string $pattern
-     * @param int $flags
+     * @param int $flags PREG_SET_ORDER | PREG_PATTERN_ORDER
      * @param int $offset
-     * @return string[]
+     * @return string[][]
      */
     public static function matchAll(string $string, string $pattern, int $flags = 0, int $offset = 0): array
     {
@@ -465,6 +465,13 @@ class Str
         }
 
         return $matches;
+    }
+
+    public static function matchSingle(string $string, string $pattern): ?string
+    {
+        $match = self::match($string, $pattern);
+
+        return $match === null ? null : $match[1];
     }
 
     /**

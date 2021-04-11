@@ -242,6 +242,7 @@ class Arr
      */
     public static function contains(array $array, $value, bool $strict = true): bool
     {
+        // phpcs:ignore SlevomatCodingStandard.Functions.StrictCall.NonStrictComparison
         return in_array($value, $array, $strict);
     }
 

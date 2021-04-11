@@ -267,7 +267,7 @@ class MethodTypeParser
             return $method->getDeclaringClass()->getName();
         }
 
-        $typeString = Str::replace('/\\(([0-9]+)u\\)/', '(\\1,unsigned)', $typeString);
+        $typeString = Str::replace($typeString, '/\\(([0-9]+)u\\)/', '(\\1,unsigned)');
 
         $trimmed = rtrim(ltrim($typeString, '\\'), '[]');
 

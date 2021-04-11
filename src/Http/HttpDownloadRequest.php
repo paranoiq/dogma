@@ -9,7 +9,7 @@
 
 namespace Dogma\Http;
 
-use Dogma\Io\File;
+use Dogma\Io\BinaryFile;
 use const CURLOPT_BINARYTRANSFER;
 use const CURLOPT_FILE;
 
@@ -19,7 +19,7 @@ use const CURLOPT_FILE;
 class HttpDownloadRequest extends HttpRequest
 {
 
-    /** @var File */
+    /** @var BinaryFile */
     private $file;
 
     /**
@@ -38,7 +38,7 @@ class HttpDownloadRequest extends HttpRequest
     {
         parent::prepare();
 
-        $this->file = File::createTemporaryFile();
+        $this->file = BinaryFile::createTemporaryFile();
 
         $this->setOption(CURLOPT_FILE, $this->file->getHandle());
         $this->setOption(CURLOPT_BINARYTRANSFER, true);

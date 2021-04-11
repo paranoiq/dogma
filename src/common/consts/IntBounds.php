@@ -9,9 +9,6 @@
 
 namespace Dogma;
 
-use const PHP_INT_MAX;
-use const PHP_INT_MIN;
-
 class IntBounds
 {
     use StaticClassMixin;
@@ -21,7 +18,8 @@ class IntBounds
     public const UINT24_MAX = 16777215;
     public const UINT32_MAX = 4294967295;
     public const UINT48_MAX = 281474976710655;
-    public const UINT64_MAX = PHP_INT_MAX; // this is actually 63 bits, since PHP int is always signed
+    public const UINT53_MAX = 4503599627370495; // this is actually 52 bits, since double is always signed
+    public const UINT64_MAX = 9223372036854775807; // this is actually 63 bits, since PHP int is always signed
 
     public const INT8_MIN = -128;
     public const INT8_MAX = 127;
@@ -33,8 +31,10 @@ class IntBounds
     public const INT32_MAX = 2147483647;
     public const INT48_MIN = -140737488355328;
     public const INT48_MAX = 140737488355327;
-    public const INT64_MIN = PHP_INT_MIN;
-    public const INT64_MAX = PHP_INT_MAX;
+    public const INT53_MIN = -4503599627370495;
+    public const INT53_MAX = 4503599627370495;
+    public const INT64_MIN = -9223372036854775808;
+    public const INT64_MAX = 9223372036854775807;
 
     /**
      * @param int $size
@@ -50,6 +50,7 @@ class IntBounds
                 BitSize::BITS_24 => [0, self::UINT24_MAX],
                 BitSize::BITS_32 => [0, self::UINT32_MAX],
                 BitSize::BITS_48 => [0, self::UINT48_MAX],
+                BitSize::BITS_53 => [0, self::UINT53_MAX],
                 BitSize::BITS_64 => [0, self::UINT64_MAX],
             ],
             Sign::SIGNED => [
@@ -58,6 +59,7 @@ class IntBounds
                 BitSize::BITS_24 => [self::INT24_MIN, self::INT24_MAX],
                 BitSize::BITS_32 => [self::INT32_MIN, self::INT32_MAX],
                 BitSize::BITS_48 => [self::INT48_MIN, self::INT48_MAX],
+                BitSize::BITS_53 => [self::INT48_MIN, self::INT53_MAX],
                 BitSize::BITS_64 => [self::INT64_MIN, self::INT64_MAX],
             ],
         ];

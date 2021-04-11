@@ -29,6 +29,7 @@ use Dogma\Time\Provider\TimeProvider;
 use Dogma\Time\Span\DateOrTimeSpan;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Type;
+use Throwable;
 use const DATE_RFC2822;
 use function ceil;
 use function explode;
@@ -126,6 +127,21 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
         if ($e !== null) {
             throw $e;
+        }
+    }
+
+    /**
+     * @param string[] $formats
+     * @param string $timeString
+     * @param DateTimeZone|null $timeZone
+     * @return static|null
+     */
+    public static function tryCreateFromAnyFormat(array $formats, string $timeString, ?DateTimeZone $timeZone = null): ?self
+    {
+        try {
+            return self::createFromAnyFormat($formats, $timeString, $timeZone);
+        } catch (Throwable $e) {
+            return null;
         }
     }
 
