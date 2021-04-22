@@ -35,7 +35,6 @@ use function stream_get_meta_data;
 use function stream_set_blocking;
 use function stream_set_read_buffer;
 use function stream_set_write_buffer;
-use function tmpfile;
 
 /**
  * Common base for BinaryFile and TextFile
@@ -91,11 +90,7 @@ abstract class File implements Path
     public function getFileInfo(): FileInfo
     {
         if (!$this->fileInfo) {
-            if ($this->handle) {
-                $this->fileInfo = new FileInfo($this->getPath(), $this->handle);
-            } else {
-                $this->fileInfo = new FileInfo($this->getPath());
-            }
+            $this->fileInfo = new FileInfo($this);
         }
 
         return $this->fileInfo;
@@ -158,6 +153,7 @@ abstract class File implements Path
             $this->close();
         }
 
+        // todo: does not work for previously opened file. must be created
         Io::rename($this->getPath(), $destination, $flags, $this->context);
 
         $this->path = $destination;

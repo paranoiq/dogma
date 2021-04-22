@@ -12,16 +12,12 @@ namespace Dogma\System;
 use Dogma\Io\Output;
 use Dogma\StaticClassMixin;
 use Dogma\Str;
-use function getenv;
-use const INFO_ENVIRONMENT;
 use const INFO_GENERAL;
 use const PHP_INT_SIZE;
 use const PHP_SAPI;
 use function error_clear_last;
 use function error_get_last;
 use function extension_loaded;
-use function ob_get_clean;
-use function ob_start;
 use function phpinfo;
 use function proc_nice;
 

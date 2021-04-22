@@ -94,6 +94,7 @@ getFileInfo:
 $file = new BinaryFile($testFile, FileMode::CREATE_OR_TRUNCATE_READ_WRITE);
 $info = $file->getFileInfo();
 Assert::same(get_class($info), FileInfo::class);
+$file->close();
 
 
 getStreamMetaData:
@@ -117,15 +118,15 @@ $file->close();
 getName:
 $file = new BinaryFile($testFile, FileMode::OPEN_READ_WRITE);
 Assert::same($file->getName(), basename($testFile));
-$file->close();
+//$file->close();
 
 
 rename:
 $file = new BinaryFile($testFile, FileMode::OPEN_READ_WRITE);
 $file->rename($testDir . '/rename1.txt');
-$file->close();
 Assert::false(file_exists($testFile));
 Assert::true(file_exists($testDir . '/rename1.txt'));
+$file->close();
 
 
 close:
@@ -159,12 +160,14 @@ Assert::false($file->endOfFileReached());
 $str = $file->read(1);
 Assert::same($str, null);
 Assert::true($file->endOfFileReached());
+$file->close();
 
 
 copyData:
 $file = new BinaryFile($testFile, FileMode::CREATE_OR_TRUNCATE_READ_WRITE);
 $file->write('0123456789');
 
+// callback
 $result = $file->copyData(static function (string $data): void {
     Assert::same($data, '234');
 }, 2, 3);
@@ -175,6 +178,7 @@ $result = $file->copyData(static function (): void {
 }, 20, 3);
 Assert::same($result, 0);
 
+// File instance
 $destinationFile = new BinaryFile($testDir . '/dest.txt', FileMode::CREATE_OR_TRUNCATE_READ_WRITE);
 $result = $file->copyData($destinationFile, 2, 3);
 Assert::same($result, 3);
@@ -189,6 +193,23 @@ $destinationFile->truncate();
 $result = $file->copyData($destinationFile, 2);
 Assert::same($result, 8);
 Assert::same(Io::read($destinationFile), '23456789');
+
+$destinationFile->close();
+
+// FileInfo
+Io::delete($destinationFile);
+$result = $file->copyData($destinationFile->getFileInfo(), 2);
+Assert::same($result, 8);
+Assert::same(Io::read($destinationFile), '23456789');
+
+
+// file path
+Io::delete($destinationFile);
+$result = $file->copyData($destinationFile->getPath(), 2);
+Assert::same($result, 8);
+Assert::same(Io::read($destinationFile), '23456789');
+
+$file->close();
 
 
 getContents:
@@ -247,4 +268,5 @@ if (!Os::isWindows()) {
 }
 
 
+$file->close();
 $cleanup();

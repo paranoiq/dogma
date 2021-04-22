@@ -50,6 +50,10 @@ class FilesystemException extends IoException
         ?array $error = null,
         ?Throwable $previous = null
     ) {
+        if ($path !== null) {
+            $message .= ': ' . $path;
+        }
+
         parent::__construct($message, $previous);
 
         $this->path = $path;

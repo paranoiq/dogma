@@ -162,9 +162,9 @@ class BinaryFile extends File
     }
 
     /**
-     * Copy range of data to another File or callback. Returns actual length of copied data.
+     * Copy range of data to another file (appending) or callback. Returns actual length of copied data.
      *
-     * @param self|FileInfo|callable $destination
+     * @param self|string|FileInfo|callable $destination
      * @param int|null $start
      * @param int $bytes
      * @param int|null $chunkSize
@@ -177,8 +177,13 @@ class BinaryFile extends File
             $this->setPosition($start);
         }
 
+        $close = false;
+        if (is_string($destination) && !is_callable($destination)) {
+            $destination = new FileInfo($destination);
+        }
         if ($destination instanceof FileInfo) {
             $destination = $destination->open(FileMode::CREATE_OR_APPEND_WRITE);
+            $close = true;
         }
 
         $done = 0;
@@ -200,6 +205,10 @@ class BinaryFile extends File
             } else {
                 throw new InvalidArgumentException('Destination must be File or callable!');
             }
+        }
+
+        if ($close) {
+            $destination->close();
         }
 
         return $done;

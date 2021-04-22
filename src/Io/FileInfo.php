@@ -45,21 +45,22 @@ class FileInfo implements Path
     /** @var string */
     protected $path;
 
-    /** @var resource|null */
-    private $handle;
+    /** @var File|null */
+    private $file;
 
     /**
-     * @param string|Path $file
-     * @param resource|null $handle
+     * @param string|Path|File $file
      */
-    public function __construct($file, $handle = null)
+    public function __construct($file)
     {
-        if ($file instanceof Path) {
+        if ($file instanceof File) {
+            $this->path = $file->getPath();
+            $this->file = $file;
+        } elseif ($file instanceof Path) {
             $this->path = $file->getPath();
         } else {
-            $this->path = str_replace('\\', '/', $file);
+            $this->path = Io::normalizePath($file);
         }
-        $this->handle = $handle;
     }
 
     public function clearCache(): void
@@ -73,8 +74,8 @@ class FileInfo implements Path
     protected function stat(): array
     {
         error_clear_last();
-        if (is_resource($this->handle)) {
-            $stat = fstat($this->handle);
+        if ($this->file !== null && $this->file->isOpen()) {
+            $stat = fstat($this->file->getHandle());
         } else {
             $stat = stat($this->path);
         }
@@ -95,9 +96,7 @@ class FileInfo implements Path
 
     public function open(string $mode = FileMode::OPEN_READ, ?StreamContext $context = null): BinaryFile
     {
-        $path = $this->getRealPath();
-
-        return new BinaryFile($path, $mode, $context);
+        return new BinaryFile($this->path, $mode, $context);
     }
 
     public function read(int $offset = 0, ?int $length = null, ?StreamContext $context = null): string
