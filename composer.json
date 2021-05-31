@@ -88,9 +88,9 @@
             "php74 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan/phpstan.neon -l 7 src tests"
         ],
 
-        "cs-src": "vendor/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset.xml --extensions=php --encoding=utf-8 --tab-width=4 -sp src",
-        "cs-tests": "vendor/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml --extensions=php,phpt --encoding=utf-8 --tab-width=4 -sp tests",
-        "cs-fix": "vendor/bin/phpcbf --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml --extensions=php,phpt --encoding=utf-8 --tab-width=4 src tests",
+        "cs-src": "sh vendor/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset.xml src",
+        "cs-tests": "sh vendor/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml tests",
+        "cs-fix": "sh vendor/bin/phpcbf --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml src tests",
 
         "spell": "vendor/bin/spell-checker -c build/spell-checker/spell-checker.neon --checkDictionaryFiles --memoryLimit 1024M --noLogo",
 
