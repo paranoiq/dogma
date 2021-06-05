@@ -72,7 +72,7 @@
             "@cs-tests"
         ],
 
-        "test": "sh vendor/bin/tester tests -c tests --colors 1",
+        "test": "php vendor/nette/tester/src/tester tests -c tests --colors 1",
         "test-all": [
             "php80 vendor/nette/tester/src/tester tests -c tests --colors 1",
             "php74 vendor/nette/tester/src/tester tests -c tests --colors 1",
@@ -80,21 +80,21 @@
             "php72 vendor/nette/tester/src/tester tests -c tests --colors 1",
             "php71 vendor/nette/tester/src/tester tests -c tests --colors 1"
         ],
-        "test-coverage": "sh vendor/bin/tester tests -c tests --colors 1 -p phpdbg --coverage tests/coverage.html --coverage-src src",
+        "test-coverage": "php vendor/nette/tester/src/tester tests -c tests --colors 1 -p phpdbg --coverage tests/coverage.html --coverage-src src",
 
-        "stan": "sh vendor/bin/phpstan analyse --memory-limit 256M -c build/phpstan/phpstan.neon -l 7 src tests",
+        "stan": "php vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan/phpstan.neon -l 7 src tests",
         "stan-all": [
             "php80 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan/phpstan.neon -l 7 src tests",
             "php74 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan/phpstan.neon -l 7 src tests"
         ],
 
-        "cs-src": "sh vendor/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset.xml src",
-        "cs-tests": "sh vendor/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml tests",
-        "cs-fix": "sh vendor/bin/phpcbf --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml src tests",
+        "cs-src": "php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset.xml -sp src",
+        "cs-tests": "php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml -sp tests",
+        "cs-fix": "php vendor/squizlabs/php_codesniffer/bin/phpcbf --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml -sp src tests",
 
-        "spell": "vendor/bin/spell-checker -c build/spell-checker/spell-checker.neon --checkDictionaryFiles --memoryLimit 1024M --noLogo",
+        "spell": "php vendor/spell-checker/spell-checker/spell-checker -c build/spell-checker/spell-checker.neon --checkDictionaryFiles --memoryLimit 1024M --noLogo",
 
-        "lint": "sh vendor/bin/parallel-lint src tests",
+        "lint": "php vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
         "lint-all": [
             "php80 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
             "php74 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
