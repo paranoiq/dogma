@@ -17,7 +17,7 @@ class Obj
 {
     use StaticClassMixin;
 
-    public static function dumpHash(object $object): string
+    public static function dumpHash($object): string
     {
         return substr(md5(spl_object_hash($object)), 0, 4);
     }
