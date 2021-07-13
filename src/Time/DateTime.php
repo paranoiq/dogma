@@ -351,6 +351,20 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     }
 
     /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+     * @param DateTimeZone|string $timeZone
+     * @return DateTime
+     */
+    public function setTimezone($timeZone)
+    {
+        if (!$timeZone instanceof DateTimeZone) {
+            $timeZone = new DateTimeZone($timeZone);
+        }
+
+        return parent::setTimezone($timeZone);
+    }
+
+    /**
      * Round to closest value from given list of values for given unit
      * (eg. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
      * @param DateTimeUnit $unit
