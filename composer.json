@@ -48,6 +48,10 @@
             "@cs-src",
             "@cs-tests"
         ],
+        "cs-fast": [
+            "@cs-src-fast",
+            "@cs-tests-fast"
+        ],
 
         "build": [
             "composer install",
@@ -60,16 +64,16 @@
             "@stan",
             "@lint",
             "@spell",
-            "@cs-src",
-            "@cs-tests"
+            "@cs-src-fast",
+            "@cs-tests-fast"
         ],
         "check-all": [
             "@test-all",
             "@stan-all",
             "@lint-all",
             "@spell",
-            "@cs-src",
-            "@cs-tests"
+            "@cs-src-fast",
+            "@cs-tests-fast"
         ],
 
         "test": "php vendor/nette/tester/src/tester tests -c tests --colors 1",
@@ -89,7 +93,15 @@
         ],
 
         "cs-src": "php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset.xml -sp src",
+        "cs-src-fast": [
+            "@modified-php-src",
+            "php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset.xml --file-list=temp/modified-php-src.txt -sp"
+        ],
         "cs-tests": "php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml -sp tests",
+        "cs-tests-fast": [
+            "@modified-php-tests",
+            "php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml --file-list=temp/modified-php-tests.txt -sp"
+        ],
         "cs-fix": "php vendor/squizlabs/php_codesniffer/bin/phpcbf --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml -sp src tests",
 
         "spell": "php vendor/spell-checker/spell-checker/spell-checker -c build/spell-checker/spell-checker.neon --checkDictionaryFiles --memoryLimit 1024M --noLogo",
@@ -101,7 +113,10 @@
             "php73 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
             "php72 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
             "php71 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests"
-        ]
+        ],
+
+        "modified-php-src": "chmod 777 temp && git diff-index --name-only --diff-filter=ACMR origin/master | grep \"^src.*\\.php$\" > temp/modified-php-src.txt || echo src/loader.php > temp/modified-php-src.txt",
+        "modified-php-tests": "chmod 777 temp && git diff-index --name-only --diff-filter=ACMR origin/master | grep \"^tests.*\\.php$\" > temp/modified-php-tests.txt || echo tests/src/bootstrap.php > temp/modified-php-tests.txt"
     },
     "scripts-descriptions": {
         "c": "\u001B[0;33m⭐Run all checks (shortcut)\u001B[0m",
