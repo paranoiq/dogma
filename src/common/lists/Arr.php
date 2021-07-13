@@ -67,6 +67,9 @@ use function uasort;
 use function uksort;
 use function usort;
 
+/**
+ * Array manipulation for pirates ☠
+ */
 class Arr
 {
     use StaticClassMixin;

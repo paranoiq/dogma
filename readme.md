@@ -16,7 +16,7 @@ Collection of:
 
 Requirements
 --------
- - **PHP-64 7.2+**
+ - **PHP 7.1+**
 
 
 Author:
