@@ -10,6 +10,7 @@ $ignore = PHP_VERSION_ID < 80000
         '~Strict comparison using === between static\(Dogma\\\\Time\\\\DateTime\) and false will always evaluate to false.~', # in DateTime
         '~has unknown class Curl(Multi)?Handle as its type.~', # PHP 7 -> 8
         '~has invalid type Curl(Multi)?Handle.~', # PHP 7 -> 8
+        '~Method Dogma\\\\Obj::dumpHash\(\) has parameter \$object with no typehint specified~',
         [
             'message' => '~Strict comparison using === between int and false will always evaluate to false.~',
             'path' => '../../src/Time/DateTime.php',
@@ -46,6 +47,7 @@ $ignore = PHP_VERSION_ID < 80000
         '~Cannot call method [a-zA-Z]+\(\) on DateTimeZone\|false.~', # -//-
         '~Parameter #1 \$objectOrClass of class ReflectionClass constructor expects class-string<T of object>\|T of object, string given.~', # in MethodTypeParser; temporary
         '~Strict comparison using === between CurlMultiHandle and false will always evaluate to false.~', # in HttpChannelManager; probably a reflection bug
+        '~Method Dogma\\\\Obj::dumpHash\(\) has parameter \$object with no typehint specified~',
     ];
 
 return ['parameters' => ['ignoreErrors' => $ignore]];
