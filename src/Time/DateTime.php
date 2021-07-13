@@ -351,11 +351,10 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      * @param DateTimeZone|string $timeZone
      * @return DateTime
      */
-    public function setTimezone($timeZone)
+    public function setTimezone($timeZone): self
     {
         if (!$timeZone instanceof DateTimeZone) {
             $timeZone = new DateTimeZone($timeZone);
