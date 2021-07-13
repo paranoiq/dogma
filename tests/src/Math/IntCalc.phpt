@@ -15,6 +15,11 @@ use Dogma\Tester\Assert;
 require_once __DIR__ . '/../bootstrap.php';
 
 
+binaryComponents:
+Assert::same(IntCalc::binaryComponents(23), [1, 2, 4, 16]);
+Assert::same(IntCalc::binaryComponents(0), []);
+
+
 roundTo:
 Assert::same(IntCalc::roundTo(0, 3), 0);
 Assert::same(IntCalc::roundTo(20, 3), 21);
