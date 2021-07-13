@@ -19,7 +19,9 @@ use Dogma\Language\Transliterator;
 use Dogma\Language\UnicodeCharacterCategory;
 use Error;
 use Nette\Utils\Strings;
+use UConverter;
 use const MB_CASE_TITLE;
+use function class_exists;
 use function error_clear_last;
 use function error_get_last;
 use function function_exists;
@@ -514,6 +516,7 @@ class Str
                 if (error_get_last() !== null) {
                     throw new ErrorException('Cannot convert encoding', error_get_last());
                 }
+
                 return $result;
             } catch (Error $e) {
                 throw new ErrorException('Cannot convert encoding', null, $e);
@@ -525,10 +528,22 @@ class Str
                 if ($result === false) {
                     throw new ErrorException('Cannot convert encoding', error_get_last());
                 }
+
                 return $result;
             } catch (Error $e) {
                 throw new ErrorException('Cannot convert encoding', null, $e);
             }
+        } elseif (class_exists(UConverter::class)) {
+            // from intl extension
+            $converter = new UConverter($from, $to);
+
+            error_clear_last();
+            $result = $converter->convert($string);
+            if ($result === false) {
+                throw new ErrorException('Cannot convert encoding.', error_get_last());
+            }
+
+            return $result;
         } elseif (function_exists('recode_string')) {
             $request = $from . '..' . $to;
             try {
@@ -537,6 +552,7 @@ class Str
                 if ($result === false) {
                     throw new ErrorException('Cannot convert encoding', error_get_last());
                 }
+
                 return $result;
             } catch (Error $e) {
                 throw new ErrorException('Cannot convert encoding', null, $e);
