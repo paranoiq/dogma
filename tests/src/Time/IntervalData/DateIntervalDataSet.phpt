@@ -9,6 +9,7 @@ use Dogma\Time\Interval\DateInterval;
 use Dogma\Time\Interval\DateIntervalSet;
 use Dogma\Time\IntervalData\DateIntervalData;
 use Dogma\Time\IntervalData\DateIntervalDataSet;
+use function explode;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -102,29 +103,31 @@ Assert::equal($set->map(static function (DateIntervalData $interval) use ($i) {
 
 
 collect:
+// todo
 
 
 collectData:
-
-$reducer = static function (int $state, $data): int {
-    return $state + $data;
-};
+// todo
 
 
 modifyData:
+$reducer = static function (int $state, $data): int {
+    return $state + $data;
+};
 Call::withArgs(static function ($orig, $input, $output, $i) use ($ds, $reducer): void {
     $orig = $ds($orig);
     $input = $ds($input);
     $output = $ds($output);
     Assert::equal($orig->modifyData($input, $reducer)->normalize(), $output, (string) $i);
 }, [
-    ['10-15', '20-25', '10-15'], // no match
+    // data after "/", default 1
+    ['10-15', '20-25', '10-15/1'], // no match
     ['10-15', '10-15', '10-15/2'], // same
-    ['10-15', '10-12', '10-12/2, 13-15'], // same start
-    ['10-15', '13-15', '10-12, 13-15/2'], // same end
-    ['10-15', ' 5-12', '10-12/2, 13-15'], // overlaps start
-    ['10-15', '13-20', '10-12, 13-15/2'], // overlaps end
-    ['10-15', '12-13', '10-11, 12-13/2, 14-15'], // in middle
+    ['10-15', '10-12', '10-12/2, 13-15/1'], // same start
+    ['10-15', '13-15', '10-12/1, 13-15/2'], // same end
+    ['10-15', ' 5-12', '10-12/2, 13-15/1'], // overlaps start
+    ['10-15', '13-20', '10-12/1, 13-15/2'], // overlaps end
+    ['10-15', '12-13', '10-11/1, 12-13/2, 14-15/1'], // in middle
     ['10-15', ' 5-20', '10-15/2'], // overlaps whole
 
     ['10-15, 20-25', '10-25', '10-15/2, 20-25/2'], // envelope
@@ -136,6 +139,16 @@ Call::withArgs(static function ($orig, $input, $output, $i) use ($ds, $reducer):
     ['10-15, 20-25', ' 5-30', '10-15/2, 20-25/2'], // overlaps whole
 ]);
 
+
+modifyDataByStream:
+$data = static function (string $days) use ($i): array {
+    $intervals = [];
+    foreach (explode(',', $days) as $startEnd) {
+        [$startEnd, $data] = explode('/', $startEnd . '/');
+        $intervals[] = [$i($startEnd), $data ? (int) $data : 1];
+    }
+    return $intervals;
+};
 $mapper = static function ($data): array {
     return $data[0]->getStartEnd();
 };
@@ -143,28 +156,32 @@ $reducer = static function (int $state, $data): int {
     return $state + $data[1];
 };
 
-
-modifyDataByStream:
-Call::withArgs(static function ($orig, $input, $output, $i) use ($ds, $di, $mapper, $reducer): void {
+Call::withArgs(static function ($orig, $input, $output, $i) use ($ds, $data, $mapper, $reducer): void {
     $orig = $ds($orig);
-    $input = $di($input);
+    $input = $data($input);
     $output = $ds($output);
-    Assert::equal($orig->modifyDataByStream([[$input, 1]], $mapper, $reducer)->normalize(), $output, (string) $i);
+    Assert::equal($orig->modifyDataByStream($input, $mapper, $reducer)->normalize(), $output, (string) $i);
 }, [
-    ['10-15', '20-25', '10-15'], // no match
+    // data after "/", default 1
+    ['10-15', '20-25', '10-15/1'], // no match
     ['10-15', '10-15', '10-15/2'], // same
-    ['10-15', '10-12', '10-12/2, 13-15'], // same start
-    ['10-15', '13-15', '10-12, 13-15/2'], // same end
-    ['10-15', ' 5-12', '10-12/2, 13-15'], // overlaps start
-    ['10-15', '13-20', '10-12, 13-15/2'], // overlaps end
-    ['10-15', '12-13', '10-11, 12-13/2, 14-15'], // in middle
+    ['10-15', '10-12', '10-12/2, 13-15/1'], // same start
+    ['10-15', '13-15', '10-12/1, 13-15/2'], // same end
+    ['10-15', ' 5-12', '10-12/2, 13-15/1'], // overlaps start
+    ['10-15', '13-20', '10-12/1, 13-15/2'], // overlaps end
+    ['10-15', '12-13', '10-11/1, 12-13/2, 14-15/1'], // in middle
     ['10-15', ' 5-20', '10-15/2'], // overlaps whole
 
     ['10-15, 20-25', '10-25', '10-15/2, 20-25/2'], // envelope
-    ['10-15, 20-25', '10-22', '10-15/2, 20-22/2, 23-25'], // same start
-    ['10-15, 20-25', '13-25', '10-12, 13-15/2, 20-25/2'], // same end
-    ['10-15, 20-25', ' 5-22', '10-15/2, 20-22/2, 23-25'], // overlaps start
-    ['10-15, 20-25', '13-25', '10-12, 13-15/2, 20-25/2'], // overlaps end
-    ['10-15, 20-25', '13-22', '10-12, 13-15/2, 20-22/2, 23-25'], // in middle
+    ['10-15, 20-25', '10-22', '10-15/2, 20-22/2, 23-25/1'], // same start
+    ['10-15, 20-25', '13-25', '10-12/1, 13-15/2, 20-25/2'], // same end
+    ['10-15, 20-25', ' 5-22', '10-15/2, 20-22/2, 23-25/1'], // overlaps start
+    ['10-15, 20-25', '13-25', '10-12/1, 13-15/2, 20-25/2'], // overlaps end
+    ['10-15, 20-25', '13-22', '10-12/1, 13-15/2, 20-22/2, 23-25/1'], // in middle
     ['10-15, 20-25', ' 5-30', '10-15/2, 20-25/2'], // overlaps whole
+
+    // overlaps in inputs
+    ['1-30', '5-25, 10-20', '1-4/1, 5-9/2, 10-20/3, 21-25/2, 26-30/1'],
+    ['1-30', '5-20, 10-25', '1-4/1, 5-9/2, 10-20/3, 21-25/2, 26-30/1'],
+    ['1-30', '1-30, 4-6, 5-7, 14-15, 20-26, 27-30', '1-3/2, 4-4/3, 5-6/4, 7-7/3, 8-13/2, 14-15/3, 16-19/2, 20-30/3'],
 ]);

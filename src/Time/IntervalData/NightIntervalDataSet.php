@@ -404,8 +404,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
                 switch ($intersect) {
                     case IntersectResult::BEFORE_START:
                     case IntersectResult::TOUCHES_START:
-                        // skip result for all following inputs
-                        $startIndex++;
+                        // skip input
                         continue 3;
                     case IntersectResult::AFTER_END:
                     case IntersectResult::TOUCHES_END:
