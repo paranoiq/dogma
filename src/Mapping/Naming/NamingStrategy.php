@@ -12,6 +12,9 @@ namespace Dogma\Mapping\Naming;
 interface NamingStrategy
 {
 
+    /**
+     * @param non-empty-string $fieldSeparator
+     */
     public function translateName(string $localName, string $path, string $fieldSeparator): string;
 
 }

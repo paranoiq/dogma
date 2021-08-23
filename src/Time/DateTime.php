@@ -18,10 +18,8 @@ use Dogma\Cls;
 use Dogma\Comparable;
 use Dogma\Dumpable;
 use Dogma\Equalable;
-use Dogma\InvalidArgumentException;
 use Dogma\InvalidValueException;
 use Dogma\Obj;
-use Dogma\ShouldNotHappenException;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeValues;
@@ -205,9 +203,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
             $timeZone = $dateTime->getTimezone();
         }
         $timestamp = $dateTime->getTimestamp();
-        if ($timestamp === false) {
-            throw new ShouldNotHappenException('Time is hard!');
-        }
         $microseconds = (int) $dateTime->format('u');
 
         return self::createFromTimestamp($timestamp, $timeZone)->modify('+' . $microseconds . ' microseconds');
@@ -252,6 +247,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
      */
     public function modify($modify): self
     {
+        /** @var self|false $result */
         $result = parent::modify($modify);
         if ($result === false) {
             throw new InvalidValueException($modify, 'date-time modification string');
@@ -411,22 +407,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     public function format($format = self::DEFAULT_FORMAT): string
     {
         return parent::format($format);
-    }
-
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param DateTimeInterface $datetime2
-     * @param bool $absolute
-     * @return DateInterval
-     */
-    public function diff($datetime2, $absolute = false): DateInterval
-    {
-        $result = parent::diff($datetime2, $absolute);
-        if ($result === false) {
-            throw new InvalidArgumentException('Incompatible value for diff().');
-        }
-
-        return $result;
     }
 
     public function difference(DateTimeInterface $other, bool $absolute = false): DateTimeSpan

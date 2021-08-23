@@ -27,9 +27,12 @@ class ConventionMappingBuilder implements MappingBuilder
     /** @var NamingStrategy|null */
     private $fieldNamingStrategy;
 
-    /** @var string */
+    /** @var non-empty-string */
     private $fieldSeparator;
 
+    /**
+     * @param non-empty-string $fieldSeparator
+     */
     public function __construct(
         TypeMetaDataContainer $typeMetaDataContainer,
         ?NamingStrategy $fieldNamingStrategy = null,

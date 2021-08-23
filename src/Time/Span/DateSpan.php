@@ -62,6 +62,7 @@ class DateSpan implements DateOrTimeSpan
 
     public static function createFromDateString(string $string): self
     {
+        /** @var DateInterval|false $dateInterval */
         $dateInterval = DateInterval::createFromDateString($string);
         if ($dateInterval === false) {
             throw new InvalidValueException($string, 'date span string');

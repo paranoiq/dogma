@@ -55,20 +55,20 @@
             "rm -rf temp/cache/*"
         ],
         "check:fast": [
-            "@test",
-            "@stan",
-            "@lint",
-            "@spell",
-            "@cs-src-fast",
-            "@cs-tests-fast"
+            "@tests:run",
+            "@phpstan:run",
+            "@lint:php",
+            "@spell:check",
+            "@phpcs:src-fast",
+            "@phpcs:tests-fast"
         ],
         "check:all": [
-            "@test-all",
-            "@stan-all",
-            "@lint-all",
-            "@spell",
-            "@cs-src-fast",
-            "@cs-tests-fast"
+            "@tests:all",
+            "@phpstan:all",
+            "@lint:php-all",
+            "@spell:check",
+            "@phpcs:src-fast",
+            "@phpcs:tests-fast"
         ],
 
         "tests:run": "php vendor/nette/tester/src/tester tests -c tests --colors 1",

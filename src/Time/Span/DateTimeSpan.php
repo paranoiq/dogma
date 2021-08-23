@@ -103,6 +103,8 @@ class DateTimeSpan implements DateOrTimeSpan
 
     public static function createFromDateString(string $string): self
     {
+        // todo: works properly since 7.3.3 etc. before that returned empty interval on invalid input. should check this
+        /** @var DateInterval|false $dateInterval */
         $dateInterval = DateInterval::createFromDateString($string);
         if ($dateInterval === false) {
             throw new InvalidValueException($string, 'date-time span string');

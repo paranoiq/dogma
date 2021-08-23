@@ -103,6 +103,7 @@ class Collator extends PhpCollator
 
     public function getLocaleObject(int $type = PhpLocale::ACTUAL_LOCALE): Locale
     {
+        /** @var string|false $locale */
         $locale = $this->getLocale($type);
         if ($locale === false) {
             throw new InvalidArgumentException('Invalid locale type.');

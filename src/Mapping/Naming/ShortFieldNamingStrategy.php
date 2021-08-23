@@ -17,6 +17,9 @@ class ShortFieldNamingStrategy implements NamingStrategy
 {
     use StrictBehaviorMixin;
 
+    /**
+     * @param non-empty-string $fieldSeparator
+     */
     public function translateName(string $localName, string $path, string $fieldSeparator): string
     {
         /** @var string[] $parts */
