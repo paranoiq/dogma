@@ -5,7 +5,6 @@ $ignore = PHP_VERSION_ID < 80000
         '~Parameter #1 \$argument of class ReflectionClass constructor expects class-string<T of object>\|T of object, string given.~', # you know nothing
         '~Method Dogma\\\\Arr::combine\(\) should return array but returns array\|false.~', # in Arr
         '~Parameter #1 \$items of class Dogma\\\\ImmutableArray constructor expects array, array\|false given.~', # in ImmutableArray
-        '~Strict comparison using === between array<string, class-string> and false will always evaluate to false.~', # in Cls
         '~Strict comparison using === between DateInterval and false will always evaluate to false.~', # in Time
         '~Strict comparison using === between static\(Dogma\\\\Time\\\\DateTime\) and false will always evaluate to false.~', # in DateTime
         '~has unknown class Curl(Multi)?Handle as its type.~', # PHP 7 -> 8
@@ -24,21 +23,9 @@ $ignore = PHP_VERSION_ID < 80000
             'path' => '../../src/Language/Collator.php',
         ],
         [
-            'message' => '~Strict comparison using === between resource and false will always evaluate to false.~',
-            'path' => '../../src/Http/HttpRequest.php',
-        ],
-        [
             'message' => '~Strict comparison using === between (PDOStatement|string) and false will always evaluate to false.~',
             'path' => '../../src/Database/SimplePdo.php',
         ],
-        [
-            'message' => '~Strict comparison using === between array<string, array<int, mixed>\|string\|false> and false will always evaluate to false.~',
-            'path' => '../../src/Application/Configurator.php',
-        ],
-        [
-            'message' => '~Strict comparison using === between array and false will always evaluate to false~',
-            'path' => '../../src/common/Re.php',
-        ]
     ]
     : [
         '~expects DateTimeZone(\|null)?, DateTimeZone\|false given~', # ignore DateTime::getTimeZone() returning false everywhere, because in that case, something is very wrong (probably php.ini)

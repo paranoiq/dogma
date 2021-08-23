@@ -166,7 +166,6 @@ class Collator extends PhpCollator
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param mixed[] $arr
      * @return bool
      */

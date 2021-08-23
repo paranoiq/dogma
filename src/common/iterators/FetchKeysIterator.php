@@ -11,10 +11,13 @@ namespace Dogma;
 
 use ArrayAccess;
 use IteratorIterator;
+use Traversable;
 use function is_array;
 
 /**
  * Returns only selected keys from iterated arrays (eg. rows) as keys and values.
+ *
+ * @extends IteratorIterator<mixed, mixed, Traversable<mixed, mixed>>
  */
 class FetchKeysIterator extends IteratorIterator
 {

@@ -10,9 +10,12 @@
 namespace Dogma;
 
 use IteratorIterator;
+use Traversable;
 
 /**
  * Returns results from given iterator in chunks.
+ *
+ * @extends IteratorIterator<mixed, mixed, Traversable<mixed, mixed>>
  */
 class ChunkIterator extends IteratorIterator
 {

@@ -47,11 +47,11 @@ class HttpDownloadRequest extends HttpRequest
     /**
      * Called by Channel.
      * @internal
-     * @param string|bool $response
+     * @param string|null $response
      * @param int $error
      * @return HttpFileResponse
      */
-    public function createResponse($response, int $error): HttpResponse
+    public function createResponse(?string $response, int $error): HttpResponse
     {
         $info = $this->getInfo();
         $status = $this->getResponseStatus($error, $info);

@@ -18,7 +18,7 @@
         "tracy/tracy": "~2.4"
     },
     "require-dev": {
-        "dogma/dogma-dev": "0.1.18"
+        "dogma/dogma-dev": "0.1.19"
     },
     "suggest": {
         "ext-dom": "for Dom (basic functionality)",
@@ -40,26 +40,21 @@
         "classmap": ["src", "tests"]
     },
     "scripts": {
-        "c": "@check",
-        "t": "@test",
-        "tc": "@test-coverage",
         "da": "composer dump-autoload",
-        "cs": [
-            "@cs-src",
-            "@cs-tests"
-        ],
-        "cs-fast": [
-            "@cs-src-fast",
-            "@cs-tests-fast"
-        ],
+        "c": "@check:fast",
+        "ca": "@check:all",
+        "t": "@tests:run",
+        "tc": "@tests:coverage",
+        "cs": "@phpcs:all",
+        "csf": "@phpcs:fix",
 
-        "build": [
+        "build:run": [
             "composer install",
             "php -r \"@mkdir('log', 0777, true);\"",
             "php -r \"@mkdir('temp/cache', 0777, true);\"",
             "rm -rf temp/cache/*"
         ],
-        "check": [
+        "check:fast": [
             "@test",
             "@stan",
             "@lint",
@@ -67,7 +62,7 @@
             "@cs-src-fast",
             "@cs-tests-fast"
         ],
-        "check-all": [
+        "check:all": [
             "@test-all",
             "@stan-all",
             "@lint-all",
@@ -76,38 +71,42 @@
             "@cs-tests-fast"
         ],
 
-        "test": "php vendor/nette/tester/src/tester tests -c tests --colors 1",
-        "test-all": [
+        "tests:run": "php vendor/nette/tester/src/tester tests -c tests --colors 1",
+        "tests:all": [
             "php80 vendor/nette/tester/src/tester tests -c tests --colors 1",
             "php74 vendor/nette/tester/src/tester tests -c tests --colors 1",
             "php73 vendor/nette/tester/src/tester tests -c tests --colors 1",
             "php72 vendor/nette/tester/src/tester tests -c tests --colors 1",
             "php71 vendor/nette/tester/src/tester tests -c tests --colors 1"
         ],
-        "test-coverage": "php vendor/nette/tester/src/tester tests -c tests --colors 1 -p phpdbg --coverage tests/coverage.html --coverage-src src",
+        "tests:coverage": "php vendor/nette/tester/src/tester tests -c tests --colors 1 -p phpdbg --coverage tests/coverage.html --coverage-src src",
 
-        "stan": "php vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan/phpstan.neon -l 7 src tests",
-        "stan-all": [
+        "phpstan:run": "php vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan/phpstan.neon -l 7 src tests",
+        "phpstan:all": [
             "php80 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan/phpstan.neon -l 7 src tests",
             "php74 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan/phpstan.neon -l 7 src tests"
         ],
 
-        "cs-src": "php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset.xml -sp src",
-        "cs-src-fast": [
+        "phpcs:all": [
+            "@phpcs:src",
+            "@phpcs:tests"
+        ],
+        "phpcs:src": "php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset.xml -sp src",
+        "phpcs:src-fast": [
             "@modified-php-src",
             "php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset.xml --file-list=temp/modified-php-src.txt -sp"
         ],
-        "cs-tests": "php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml -sp tests",
-        "cs-tests-fast": [
+        "phpcs:tests": "php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml -sp tests",
+        "phpcs:tests-fast": [
             "@modified-php-tests",
             "php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml --file-list=temp/modified-php-tests.txt -sp"
         ],
-        "cs-fix": "php vendor/squizlabs/php_codesniffer/bin/phpcbf --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml -sp src tests",
+        "phpcs:fix": "php vendor/squizlabs/php_codesniffer/bin/phpcbf --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml -sp src tests",
 
-        "spell": "php vendor/spell-checker/spell-checker/spell-checker -c build/spell-checker/spell-checker.neon --checkDictionaryFiles --memoryLimit 1024M --noLogo",
+        "spell:check": "php vendor/spell-checker/spell-checker/spell-checker -c build/spell-checker/spell-checker.neon --checkDictionaryFiles --memoryLimit 1024M --noLogo",
 
-        "lint": "php vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
-        "lint-all": [
+        "lint:php": "php vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
+        "lint:php-all": [
             "php80 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
             "php74 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
             "php73 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",

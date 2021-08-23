@@ -10,10 +10,13 @@
 namespace Dogma;
 
 use IteratorIterator;
+use Traversable;
 use function call_user_func;
 
 /**
  * Calls given callback on each value or key and returns result.
+ *
+ * @extends IteratorIterator<mixed, mixed, Traversable<mixed, mixed>>
  */
 class CallbackIterator extends IteratorIterator
 {

@@ -52,7 +52,6 @@ class EnumHandler implements TypeHandler
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param Type $type
      * @param IntEnum|StringEnum $enum
      * @param Mapper $mapper

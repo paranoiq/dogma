@@ -13,7 +13,6 @@ parameters:
         - '~Parameter #1 \$value of static method Dogma\\Enum\\(Int|String)(Enum|Set)::isValid\(\) expects (int|string), int\|string given.~'
         - '~Method Dogma\\Enum\\(Int|String)Set::getConstantNames\(\) should return array<string> but returns array<(int|string), int\|string\|false>.~'
         - '~Parameter #(1|2) \$arr(1|2) of function array_[a-z_]+ expects array, array\|\(callable\) given.~' # callables filtered out
-        - "~Cannot cast 0\\|0.0\\|1\\|1.0\\|''\\|'0'\\|'0.0'\\|'1'\\|'1.0' to int.~" # '' is a bool ^_^
         - '~Method Dogma\\Io\\FileMetaData::.*\(\) should return (int|string) but returns int\|string.~'
         -
             message: "~Result of && is always false.~" # ???
@@ -22,8 +21,14 @@ parameters:
             message: "~Strict comparison using === between string and false will always evaluate to false~"
             path: "../../src/common/Str.php"
         -
-            message: '~Binary operation "." between string and array<string>\|string results in an error.~'
+            message: '~Binary operation "." between non-empty-string and array<string>\|string results in an error.~'
             path: "../../src/Language/Transliterator.php"
+        -
+            message: '~Negated boolean expression is always true.~'
+            path: "../../src/common/lists/Arr.php"
+        -
+            message: '~Negated boolean expression is always true.~'
+            path: "../../src/common/lists/ImmutableArray.php"
 
         # interface
         - '~^PHPDoc tag @return with type Dogma\\Language\\Locale\\LocaleCollationOption is not subtype of native type Dogma\\Enum\\StringEnum~'
