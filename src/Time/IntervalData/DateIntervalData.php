@@ -52,8 +52,6 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     private $data;
 
     /**
-     * @param Date $start
-     * @param Date $end
      * @param mixed|null $data
      */
     final public function __construct(Date $start, Date $end, $data)
@@ -68,7 +66,6 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     }
 
     /**
-     * @param DateInterval $interval
      * @param mixed|null $data
      * @return self
      */
@@ -116,7 +113,6 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     // modifications ---------------------------------------------------------------------------------------------------
 
     /**
-     * @param string $value
      * @return static
      */
     public function shift(string $value): self

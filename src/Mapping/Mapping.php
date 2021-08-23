@@ -28,7 +28,6 @@ class Mapping
     private $reverseSteps;
 
     /**
-     * @param Type $type
      * @param mixed[] $steps
      */
     public function __construct(Type $type, array $steps)
@@ -54,7 +53,6 @@ class Mapping
 
     /**
      * @param mixed[] $data
-     * @param Mapper $mapper
      * @return mixed
      */
     public function mapForward(array $data, Mapper $mapper)
@@ -67,7 +65,6 @@ class Mapping
 
     /**
      * @param mixed $instance
-     * @param Mapper $mapper
      * @return mixed[]
      */
     public function mapBack($instance, Mapper $mapper): array

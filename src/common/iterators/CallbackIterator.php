@@ -30,8 +30,6 @@ class CallbackIterator extends IteratorIterator
 
     /**
      * @param iterable|mixed[] $iterable
-     * @param callable $valuesCallback
-     * @param callable|null $keysCallback
      */
     public function __construct(iterable $iterable, callable $valuesCallback, ?callable $keysCallback = null)
     {

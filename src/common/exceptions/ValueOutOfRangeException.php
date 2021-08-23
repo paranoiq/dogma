@@ -18,7 +18,6 @@ class ValueOutOfRangeException extends InvalidValueException
      * @param int|float|string $value
      * @param int|float|null $min
      * @param int|float|null $max
-     * @param Throwable|null $previous
      */
     public function __construct($value, $min, $max, ?Throwable $previous = null)
     {

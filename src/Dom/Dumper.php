@@ -29,9 +29,6 @@ class Dumper
 
     /**
      * @param Element|NodeList|DOMNode $node
-     * @param int $maxDepth
-     * @param int $depth
-     * @param bool $onlyChild
      */
     public static function dump($node, int $maxDepth = 15, int $depth = 0, bool $onlyChild = false): void
     {
@@ -89,9 +86,6 @@ class Dumper
 
     /**
      * @param Element|DOMNode $node
-     * @param int $maxDepth
-     * @param int $depth
-     * @param bool $onlyChild
      */
     private static function dumpElement($node, int $maxDepth = 15, int $depth = 0, bool $onlyChild = false): void
     {

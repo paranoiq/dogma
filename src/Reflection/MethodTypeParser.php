@@ -40,7 +40,6 @@ class MethodTypeParser
     use StrictBehaviorMixin;
 
     /**
-     * @param ReflectionMethod $method
      * @return Type[]
      */
     public function getTypes(ReflectionMethod $method): array
@@ -56,7 +55,6 @@ class MethodTypeParser
     }
 
     /**
-     * @param ReflectionMethod $method
      * @return Type[]
      */
     public function getParameterTypes(ReflectionMethod $method): array
@@ -76,7 +74,6 @@ class MethodTypeParser
 
     /**
      * @param mixed[] $options
-     * @param ReflectionMethod $method
      * @return Type
      */
     private function createType(array $options, ReflectionMethod $method): Type
@@ -137,7 +134,6 @@ class MethodTypeParser
     }
 
     /**
-     * @param ReflectionMethod $method
      * @return mixed[] ($name => ($types, $nullable, $reference, $variadic, $optional))
      */
     public function getTypesRaw(ReflectionMethod $method): array
@@ -202,8 +198,6 @@ class MethodTypeParser
     }
 
     /**
-     * @param string $docComment
-     * @param ReflectionMethod $method
      * @return mixed[]
      */
     public function parseDocComment(string $docComment, ReflectionMethod $method): array

@@ -118,7 +118,6 @@ class HttpHeaderParser
 
     /**
      * @param mixed[] $headers
-     * @param string $name
      * @param mixed $value
      */
     private function insertHeader(array &$headers, string $name, $value): void
@@ -135,8 +134,6 @@ class HttpHeaderParser
     }
 
     /**
-     * @param string $value
-     * @param string $type
      * @return string|int|DateTime|Host|Url|ContentType|Encoding|Locale
      */
     private function formatValue(string $value, string $type)

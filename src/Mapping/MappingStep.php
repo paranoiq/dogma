@@ -34,10 +34,7 @@ class MappingStep
     private $destinationKey;
 
     /**
-     * @param Type $type
-     * @param TypeHandler $handler
      * @param string[] $handlerKeys ($sourceKey => $handlerKey)
-     * @param string $destinationKey
      */
     public function __construct(Type $type, TypeHandler $handler, array $handlerKeys, string $destinationKey)
     {
@@ -52,7 +49,6 @@ class MappingStep
     /**
      * Does a forward transformation step on the data
      * @param mixed[] $data
-     * @param Mapper $mapper
      */
     public function stepForward(array &$data, Mapper $mapper): void
     {
@@ -79,7 +75,6 @@ class MappingStep
     /**
      * Does a backward transformation step on the data
      * @param mixed[] $data
-     * @param Mapper $mapper
      */
     public function stepBack(array &$data, Mapper $mapper): void
     {

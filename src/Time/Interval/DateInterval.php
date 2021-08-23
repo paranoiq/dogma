@@ -150,7 +150,6 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     // modifications ---------------------------------------------------------------------------------------------------
 
     /**
-     * @param string $value
      * @return static
      */
     public function shift(string $value): self
@@ -487,7 +486,6 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     // static ----------------------------------------------------------------------------------------------------------
 
     /**
-     * @param self ...$items
      * @return array<array{0: DateInterval, 1: int}> ($interval, $count)
      */
     public static function countOverlaps(self ...$items): array
@@ -508,7 +506,6 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param self ...$items
      * @return DateInterval[]
      */
     public static function explodeOverlaps(self ...$items): array

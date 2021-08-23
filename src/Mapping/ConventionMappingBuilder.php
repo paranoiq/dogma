@@ -50,9 +50,6 @@ class ConventionMappingBuilder implements MappingBuilder
     }
 
     /**
-     * @param Type $type
-     * @param string $path
-     * @param string $destinationKey
      * @param MappingStep[] $steps
      */
     private function buildStep(Type $type, string $path, string $destinationKey, array &$steps): void

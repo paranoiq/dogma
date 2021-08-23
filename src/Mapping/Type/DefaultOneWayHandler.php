@@ -21,9 +21,7 @@ class DefaultOneWayHandler extends ConstructorHandler
     }
 
     /**
-     * @param Type $type
      * @param mixed $instance
-     * @param Mapper $mapper
      * @throws OneWayHandlerException
      */
     public function exportInstance(Type $type, $instance, Mapper $mapper): void

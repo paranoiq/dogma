@@ -62,8 +62,6 @@ class Re
 
     /**
      * @see Str::count()
-     * @param string $string
-     * @param string $pattern
      * @return int
      */
     public static function count(string $string, string $pattern): int
@@ -72,8 +70,6 @@ class Re
     }
 
     /**
-     * @param string $string
-     * @param string $pattern
      * @param int $flags PREG_SPLIT_NO_EMPTY|PREG_SPLIT_OFFSET_CAPTURE
      * @return string[]
      */
@@ -95,10 +91,7 @@ class Re
     }
 
     /**
-     * @param string $string
-     * @param string $pattern
      * @param int $flags PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL
-     * @param int $offset
      * @return string[]|null
      */
     public static function match(string $string, string $pattern, int $flags = 0, int $offset = 0): ?array
@@ -120,10 +113,7 @@ class Re
     }
 
     /**
-     * @param string $string
-     * @param string $pattern
      * @param int $flags PREG_SET_ORDER|PREG_PATTERN_ORDER
-     * @param int $offset
      * @return string[]
      */
     public static function matchAll(string $string, string $pattern, int $flags = 0, int $offset = 0): array
@@ -145,10 +135,8 @@ class Re
     }
 
     /**
-     * @param string $string
      * @param string|string[] $pattern
      * @param string|callable|null $replacement
-     * @param int $limit
      * @return string
      */
     public static function replace(string $string, $pattern, $replacement = null, int $limit = -1): string
@@ -182,8 +170,6 @@ class Re
 
     /**
      * @param string[] $strings
-     * @param string $pattern
-     * @param int $flags
      * @return string[]
      */
     public static function filter(array $strings, string $pattern, int $flags = 0): array

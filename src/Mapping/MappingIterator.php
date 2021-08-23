@@ -41,9 +41,6 @@ class MappingIterator implements Iterator
 
     /**
      * @param iterable|mixed[] $source
-     * @param Type $type
-     * @param Mapper $mapper
-     * @param bool $reverse
      */
     public function __construct(iterable $source, Type $type, Mapper $mapper, bool $reverse = false)
     {

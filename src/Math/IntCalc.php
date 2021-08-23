@@ -24,7 +24,6 @@ class IntCalc
     use StaticClassMixin;
 
     /**
-     * @param int $number
      * @return int[]
      */
     public static function binaryComponents(int $number): array
@@ -67,7 +66,6 @@ class IntCalc
      * Maps number from range 0.0 - 1.0 to integers 0 to $max with same probability for each integer
      *
      * @param float $number (range 0..1)
-     * @param int $max
      * @return int
      */
     public static function mapTo(float $number, int $max): int
@@ -76,7 +74,6 @@ class IntCalc
     }
 
     /**
-     * @param int $n
      * @return int|float
      */
     public static function factorial(int $n)
@@ -88,7 +85,6 @@ class IntCalc
     }
 
     /**
-     * @param int $number
      * @return int[]
      */
     public static function factorize(int $number): array

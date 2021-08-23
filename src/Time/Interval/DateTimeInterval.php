@@ -352,8 +352,6 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     /**
      * Splits interval into smaller by increments of given unit from the beginning of interval.
      *
-     * @param DateTimeUnit $unit
-     * @param int $amount
      * @return DateTimeIntervalSet
      */
     public function splitByUnit(DateTimeUnit $unit, int $amount = 1): DateTimeIntervalSet
@@ -379,9 +377,6 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
      * *) in context of a superior unit - number of month in year, iso number of week in year, number of day in month...
      *  eg. for 5 months beginning of May or October will be used as base.
      *
-     * @param DateTimeUnit $unit
-     * @param int $amount
-     * @param DateTime|null $reference
      * @return DateTimeIntervalSet
      */
     public function splitByUnitAligned(DateTimeUnit $unit, int $amount = 1, ?DateTime $reference = null): DateTimeIntervalSet

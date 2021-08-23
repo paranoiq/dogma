@@ -91,14 +91,8 @@ class Type
     private $locale;
 
     /**
-     * @param string $id
-     * @param string $type
-     * @param bool $nullable
      * @param Type|Type[]|null $itemType
      * @param int|int[]|null $size
-     * @param string|null $specific
-     * @param Encoding $encoding
-     * @param Locale $locale
      */
     final private function __construct(
         string $id,
@@ -122,7 +116,6 @@ class Type
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param string $type
      * @param int|int[]|null $size [optional]
      * @param string|null $specific [optional]
      * @param Encoding|null $encoding [optional]
@@ -238,7 +231,6 @@ class Type
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param int|null $size
      * @param string|null $sign
-     * @param bool|null $nullable
      * @return self
      */
     public static function int($size = null, $sign = null, ?bool $nullable = null): self
@@ -249,7 +241,6 @@ class Type
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param int|null $size
-     * @param bool|null $nullable
      * @return self
      */
     public static function uint($size = null, ?bool $nullable = null): self
@@ -260,7 +251,6 @@ class Type
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param int|null $size
-     * @param bool|null $nullable
      * @return self
      */
     public static function float($size = null, ?bool $nullable = null): self
@@ -274,7 +264,6 @@ class Type
      * @param string|null $fixed
      * @param Encoding|null $encoding
      * @param Locale|null $locale
-     * @param bool|null $nullable
      * @return self
      */
     public static function string($size = null, $fixed = null, $encoding = null, $locale = null, ?bool $nullable = null): self
@@ -289,7 +278,6 @@ class Type
 
     /**
      * @param ResourceType|string|null $resourceType
-     * @param bool $nullable
      * @return self
      */
     public static function resource($resourceType = null, ?bool $nullable = null): self
@@ -299,7 +287,6 @@ class Type
 
     /**
      * @param string|self $itemType
-     * @param bool $nullable
      * @return self
      */
     public static function arrayOf($itemType, ?bool $nullable = false): self
@@ -308,9 +295,7 @@ class Type
     }
 
     /**
-     * @param string $type
      * @param string|self $itemType
-     * @param bool $nullable
      * @return self
      */
     public static function collectionOf(string $type, $itemType, ?bool $nullable = false): self
@@ -368,7 +353,6 @@ class Type
 
     /**
      * Converts string in syntax like "Foo<Bar,Baz<int>>" to a Type instance
-     * @param string $id
      * @return self
      */
     public static function fromId(string $id): self

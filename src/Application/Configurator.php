@@ -238,7 +238,6 @@ final class Configurator extends stdClass
 
     /**
      * @param mixed[] $config
-     * @param bool $rewrite
      */
     private function loadValues(array $config, bool $rewrite): void
     {
@@ -251,7 +250,6 @@ final class Configurator extends stdClass
 
     /**
      * @param string|string[]|float|int|bool|null $value
-     * @param string|null $type
      * @return string|int|float|bool|string[]|int[]|float[]
      */
     private function normalize($value, ?string $type = null)
@@ -284,7 +282,6 @@ final class Configurator extends stdClass
     }
 
     /**
-     * @param string $name
      * @return ConfigurationProfile|mixed|null
      */
     public function __get(string $name)

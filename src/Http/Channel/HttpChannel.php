@@ -176,7 +176,6 @@ class HttpChannel
      * @param string|string[]|mixed $data
      * @param mixed $context
      * @param string|int $name
-     * @param bool $forceStart
      * @return string|int
      */
     public function addJob($data, $context = null, $name = null, bool $forceStart = false)
@@ -289,7 +288,6 @@ class HttpChannel
      * @internal
      * @param string|int $name
      * @param mixed[] $multiInfo
-     * @param HttpRequest $request
      */
     public function jobFinished($name, array $multiInfo, HttpRequest $request): void
     {

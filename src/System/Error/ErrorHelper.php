@@ -23,7 +23,6 @@ class ErrorHelper
 
     /**
      * Get error object for given error number.
-     * @param int $errno
      * @param int|string $system
      * @return SystemError|null
      */
@@ -54,7 +53,6 @@ class ErrorHelper
 
     /**
      * Get error message for given error number.
-     * @param int $errno
      * @param int|string $system
      * @return string|null
      */

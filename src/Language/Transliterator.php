@@ -254,7 +254,6 @@ class Transliterator extends PhpTransliterator
      * ```
      *
      * @param string[]|string[][]|string[][][] $rules
-     * @param int|null $direction
      * @return PhpTransliterator
      */
     public static function createFromIds(array $rules, ?int $direction = null): PhpTransliterator

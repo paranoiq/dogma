@@ -49,12 +49,9 @@ class HttpResponse
     private $headerParser;
 
     /**
-     * @param HttpOrCurlStatus $status
-     * @param string|null $body
      * @param string[] $rawHeaders
      * @param string[] $info
      * @param mixed $context
-     * @param HttpHeaderParser|null $headerParser
      */
     public function __construct(
         HttpOrCurlStatus $status,
@@ -108,7 +105,6 @@ class HttpResponse
     }
 
     /**
-     * @param string $name
      * @return string|string[]|int|DateTime|Host|Url|ContentType|Encoding|Locale|null
      */
     public function getHeader(string $name)

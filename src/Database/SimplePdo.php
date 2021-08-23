@@ -60,9 +60,6 @@ class SimplePdo extends PDO
     ];
 
     /**
-     * @param string $dsn
-     * @param string|null $userName
-     * @param string|null $password
      * @param mixed[] $options
      */
     public function __construct(string $dsn, ?string $userName, ?string $password, array $options = [])
@@ -76,7 +73,6 @@ class SimplePdo extends PDO
     }
 
     /**
-     * @param string $query
      * @param mixed ...$args
      * @return SimplePdoResult
      */

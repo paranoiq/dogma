@@ -22,7 +22,6 @@ trait StaticClassMixin
 
     /**
      * @deprecated Magic static call are forbidden
-     * @param string $name
      * @param mixed $args
      * @throws UndefinedMethodException
      */

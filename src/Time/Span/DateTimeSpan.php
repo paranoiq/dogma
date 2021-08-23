@@ -370,7 +370,6 @@ class DateTimeSpan implements DateOrTimeSpan
 
     /**
      * Normalizes values by summarizing smaller units into bigger. eg: '34 days' -> '1 month, 4 days'
-     * @param bool $safeOnly
      * @return self
      */
     public function normalize(bool $safeOnly = false): self

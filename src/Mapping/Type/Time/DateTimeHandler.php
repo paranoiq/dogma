@@ -58,7 +58,6 @@ class DateTimeHandler implements TypeHandler
     }
 
     /**
-     * @param Type $type
      * @return Type[]|null
      */
     public function getParameters(Type $type): ?array
@@ -67,9 +66,7 @@ class DateTimeHandler implements TypeHandler
     }
 
     /**
-     * @param Type $type
      * @param mixed $value
-     * @param Mapper $mapper
      * @return DateTime|Date|Time
      */
     public function createInstance(Type $type, $value, Mapper $mapper)
@@ -84,9 +81,7 @@ class DateTimeHandler implements TypeHandler
     }
 
     /**
-     * @param Type $type
      * @param DateTime|Date|Time $instance
-     * @param Mapper $mapper
      * @return string
      */
     public function exportInstance(Type $type, $instance, Mapper $mapper): string

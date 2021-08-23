@@ -66,7 +66,6 @@ class FileInfo extends SplFileInfo implements Path
     }
 
     /**
-     * @param string $mode
      * @param resource|null $streamContext
      * @return File
      */

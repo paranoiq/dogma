@@ -206,7 +206,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     /**
      * Returns Julian day number (count of days since January 1st, 4713 B.C.)
-     * @param DateTimeInterface $dateTime
      * @return int
      */
     public static function calculateDayNumber(DateTimeInterface $dateTime): int
@@ -218,7 +217,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     /**
      * @param DateTimeInterface|Date $date
-     * @param bool $absolute
      * @return DateInterval
      */
     public function diff($date, bool $absolute = false): DateInterval
@@ -417,7 +415,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     /**
      * @param Date[] $items
-     * @param int $flags
      * @return Date[]
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */

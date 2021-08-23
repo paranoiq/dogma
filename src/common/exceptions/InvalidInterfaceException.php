@@ -19,9 +19,7 @@ class InvalidInterfaceException extends InvalidTypeException
 {
 
     /**
-     * @param string $expectedInterface
      * @param mixed $value
-     * @param Throwable|null $previous
      */
     public function __construct(string $expectedInterface, $value, ?Throwable $previous = null)
     {

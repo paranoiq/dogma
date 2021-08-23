@@ -367,7 +367,6 @@ class IntInterval implements Interval
 
     /**
      * O(n log n)
-     * @param self ...$items
      * @return self[]
      */
     public static function explodeOverlaps(self ...$items): array

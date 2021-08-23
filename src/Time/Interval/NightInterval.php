@@ -150,7 +150,6 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
     // modifications ---------------------------------------------------------------------------------------------------
 
     /**
-     * @param string $value
      * @return static
      */
     public function shift(string $value): self
@@ -479,7 +478,6 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
     // static ----------------------------------------------------------------------------------------------------------
 
     /**
-     * @param self ...$items
      * @return array<array{0: NightInterval, 1: int}> ($interval, $count)
      */
     public static function countOverlaps(self ...$items): array
@@ -500,7 +498,6 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param self ...$items
      * @return NightInterval[]
      */
     public static function explodeOverlaps(self ...$items): array

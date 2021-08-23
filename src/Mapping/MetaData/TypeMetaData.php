@@ -28,9 +28,7 @@ class TypeMetaData
     private $handler;
 
     /**
-     * @param Type $type
      * @param Type[] $fields ($name => $type)
-     * @param TypeHandler $handler
      */
     public function __construct(Type $type, array $fields, TypeHandler $handler)
     {

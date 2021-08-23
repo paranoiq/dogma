@@ -302,7 +302,6 @@ class FloatInterval implements OpenClosedInterval
 
     /**
      * @param float[] $intervalStarts
-     * @param int $splitMode
      * @return FloatIntervalSet
      */
     public function splitBy(array $intervalStarts, int $splitMode = self::SPLIT_OPEN_ENDS): FloatIntervalSet

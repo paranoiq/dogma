@@ -34,7 +34,6 @@ class NodeList implements Countable, Iterator
 
     /**
      * @param DOMNodeList<DOMNode> $nodeList
-     * @param QueryEngine $engine
      */
     public function __construct(DOMNodeList $nodeList, QueryEngine $engine)
     {
@@ -43,7 +42,6 @@ class NodeList implements Countable, Iterator
     }
 
     /**
-     * @param int $offset
      * @return Element|DOMNode
      */
     public function item(int $offset)
@@ -91,7 +89,6 @@ class NodeList implements Countable, Iterator
     }
 
     /**
-     * @param DOMNode $node
      * @return Element|DOMNode
      */
     private function wrap(DOMNode $node)

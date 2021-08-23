@@ -53,7 +53,6 @@ class BitSize
     }
 
     /**
-     * @param int $size
      * @throws InvalidSizeException
      */
     public static function checkIntSize(int $size): void
@@ -65,7 +64,6 @@ class BitSize
     }
 
     /**
-     * @param int $size
      * @throws InvalidSizeException
      */
     public static function checkFloatSize(int $size): void

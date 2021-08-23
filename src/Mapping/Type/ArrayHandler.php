@@ -27,7 +27,6 @@ class ArrayHandler implements TypeHandler
     }
 
     /**
-     * @param Type $type
      * @return Type[]|null
      */
     public function getParameters(Type $type): ?array
@@ -37,9 +36,7 @@ class ArrayHandler implements TypeHandler
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param Type $type
      * @param mixed[] $items
-     * @param Mapper $mapper
      * @return mixed[]
      */
     public function createInstance(Type $type, $items, Mapper $mapper): array
@@ -59,9 +56,7 @@ class ArrayHandler implements TypeHandler
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param Type $type
      * @param mixed[] $instance
-     * @param Mapper $mapper
      * @return mixed[]
      */
     public function exportInstance(Type $type, $instance, Mapper $mapper): array

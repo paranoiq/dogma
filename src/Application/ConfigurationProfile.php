@@ -28,7 +28,6 @@ final class ConfigurationProfile extends stdClass
     }
 
     /**
-     * @param string $name
      * @return mixed
      */
     public function __get(string $name)

@@ -59,7 +59,6 @@ abstract class StringSet implements Set, Dumpable
     }
 
     /**
-     * @param string ...$values
      * @return static
      */
     final public static function get(string ...$values): self
@@ -68,7 +67,6 @@ abstract class StringSet implements Set, Dumpable
     }
 
     /**
-     * @param string $value
      * @return static
      */
     final public static function getByValue(string $value): self
@@ -118,7 +116,6 @@ abstract class StringSet implements Set, Dumpable
     /**
      * Validates given value. Can also normalize the value, if needed.
      *
-     * @param string $value
      * @return bool
      */
     public static function validateValue(string &$value): bool
@@ -260,7 +257,6 @@ abstract class StringSet implements Set, Dumpable
     }
 
     /**
-     * @param string ...$allowedValues
      * @return static
      */
     public function filter(string ...$allowedValues): self
@@ -269,7 +265,6 @@ abstract class StringSet implements Set, Dumpable
     }
 
     /**
-     * @param string ...$addValues
      * @return static
      */
     public function add(string ...$addValues): self
@@ -278,7 +273,6 @@ abstract class StringSet implements Set, Dumpable
     }
 
     /**
-     * @param string ...$removeValues
      * @return static
      */
     public function remove(string ...$removeValues): self

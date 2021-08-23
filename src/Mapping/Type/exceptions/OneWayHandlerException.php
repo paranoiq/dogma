@@ -24,8 +24,6 @@ class OneWayHandlerException extends Exception implements MappingTypeException
 
     /**
      * @param mixed $instance
-     * @param TypeHandler $handler
-     * @param Throwable|null $previous
      */
     public function __construct($instance, TypeHandler $handler, ?Throwable $previous = null)
     {

@@ -29,9 +29,6 @@ class Document extends DOMDocument
 
     /**
      * XML or HTML content or file path prefixed with '@'
-     * @param string|null $document
-     * @param string $version
-     * @param string $encoding
      */
     public function __construct(?string $document = null, string $version = '1.0', string $encoding = 'utf-8')
     {
@@ -150,7 +147,6 @@ class Document extends DOMDocument
     }
 
     /**
-     * @param string $xpath
      * @return Element|DOMNode
      */
     public function findOne(string $xpath)
@@ -159,7 +155,6 @@ class Document extends DOMDocument
     }
 
     /**
-     * @param string $xpath
      * @return int|float|bool|string|Date|DateTime|null
      */
     public function evaluate(string $xpath)
@@ -182,7 +177,6 @@ class Document extends DOMDocument
     }
 
     /**
-     * @param DOMNode $node
      * @return Element|DOMNode
      */
     private function wrap(DOMNode $node)

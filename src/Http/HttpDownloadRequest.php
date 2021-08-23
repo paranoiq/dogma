@@ -47,8 +47,6 @@ class HttpDownloadRequest extends HttpRequest
     /**
      * Called by Channel.
      * @internal
-     * @param string|null $response
-     * @param int $error
      * @return HttpFileResponse
      */
     public function createResponse(?string $response, int $error): HttpResponse

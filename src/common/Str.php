@@ -192,8 +192,6 @@ class Str
     /**
      * Similar to before(), but always returns start or the entire string
      *
-     * @param string $string
-     * @param string $search
      * @return string
      */
     public static function toFirst(string $string, string $search): string
@@ -209,8 +207,6 @@ class Str
     /**
      * Similar to after(), but always returns end or entire string
      *
-     * @param string $string
-     * @param string $search
      * @return string
      */
     public static function fromFirst(string $string, string $search): string
@@ -224,8 +220,6 @@ class Str
     }
 
     /**
-     * @param string $string
-     * @param string $search
      * @return string[]
      */
     public static function splitByFirst(string $string, string $search): array
@@ -239,8 +233,6 @@ class Str
     }
 
     /**
-     * @param string $string
-     * @param string $search
      * @return string[]
      */
     public static function splitByLast(string $string, string $search): array
@@ -255,8 +247,6 @@ class Str
 
     /**
      * @see Re::count()
-     * @param string $string
-     * @param string $substring
      * @return int
      */
     public static function count(string $string, string $substring): int
@@ -266,8 +256,6 @@ class Str
 
     /**
      * @deprecated use Str::count() instead
-     * @param string $string
-     * @param string $substring
      * @return int
      */
     public static function substringCount(string $string, string $substring): int
@@ -294,8 +282,6 @@ class Str
     // comparison ------------------------------------------------------------------------------------------------------
 
     /**
-     * @param string $first
-     * @param string $second
      * @param int|string|Collator|Locale $collation
      * @return bool
      */
@@ -305,8 +291,6 @@ class Str
     }
 
     /**
-     * @param string $first
-     * @param string $second
      * @param int|string|Collator|Locale $collation
      * @return int
      */
@@ -330,12 +314,6 @@ class Str
      *
      * Eg. called with ("foo {{no-tag}} {tag}}body} bar", '{', '}', '{', '}) will return [15, 12] for the "{tag{{body}"
      *
-     * @param string $string
-     * @param string $start
-     * @param string $end
-     * @param string|null $startEscape
-     * @param string|null $endEscape
-     * @param int $offset
      * @return int[]|null[] ($start, $length)
      */
     public static function findTag(
@@ -405,13 +383,6 @@ class Str
      * Levenshtein distance for UTF-8 with additional weights for accent and case differences.
      * Expects input strings to be normalized UTF-8.
      *
-     * @param string $string1
-     * @param string $string2
-     * @param float $insertionCost
-     * @param float $deletionCost
-     * @param float $replacementCost
-     * @param float|null $replacementAccentCost
-     * @param float|null $replacementCaseCost
      * @return float
      */
     public static function levenshteinUnicode(
@@ -570,9 +541,6 @@ class Str
 
     /**
      * @deprecated use Re::split() instead
-     * @param string $string
-     * @param string $pattern
-     * @param int $flags
      * @return string[]
      */
     public static function split(string $string, string $pattern, int $flags = 0): array
@@ -582,10 +550,6 @@ class Str
 
     /**
      * @deprecated use Re::match() instead
-     * @param string $string
-     * @param string $pattern
-     * @param int $flags
-     * @param int $offset
      * @return string[]|null
      */
     public static function match(string $string, string $pattern, int $flags = 0, int $offset = 0): ?array
@@ -595,10 +559,6 @@ class Str
 
     /**
      * @deprecated use Re::matchAll() instead
-     * @param string $string
-     * @param string $pattern
-     * @param int $flags
-     * @param int $offset
      * @return string[]
      */
     public static function matchAll(string $string, string $pattern, int $flags = 0, int $offset = 0): array
@@ -608,10 +568,8 @@ class Str
 
     /**
      * @deprecated use Re::replace() instead
-     * @param string $string
      * @param string|string[] $pattern
      * @param string|callable|null $replacement
-     * @param int $limit
      * @return string
      */
     public static function replace(string $string, $pattern, $replacement = null, int $limit = -1): string

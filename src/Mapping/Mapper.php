@@ -26,7 +26,6 @@ class Mapper
     }
 
     /**
-     * @param Type $type
      * @param mixed[] $data
      * @return mixed
      */
@@ -36,7 +35,6 @@ class Mapper
     }
 
     /**
-     * @param Type $type
      * @param mixed $data
      * @return mixed[]
      */
@@ -46,7 +44,6 @@ class Mapper
     }
 
     /**
-     * @param Type $type
      * @param iterable|mixed[] $data
      * @return Traversable|mixed[]
      */
@@ -63,7 +60,6 @@ class Mapper
     }
 
     /**
-     * @param Type $type
      * @param iterable|mixed[] $data
      * @return MappingIterator
      */

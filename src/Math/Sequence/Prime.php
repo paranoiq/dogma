@@ -96,7 +96,6 @@ class Prime implements Sequence
 
     /**
      * Returns nth prime (n starts from 0)
-     * @param int $position
      * @return int
      */
     public static function getNth(int $position): int
@@ -122,7 +121,6 @@ class Prime implements Sequence
 
     /**
      * Returns firs n primes
-     * @param int $count
      * @return int[]
      */
     public static function getUntilPosition(int $count): array
@@ -136,7 +134,6 @@ class Prime implements Sequence
 
     /**
      * Returns primes lower than certain number
-     * @param int $max
      * @return int[]
      */
     public static function getUntil(int $max): array
@@ -159,8 +156,6 @@ class Prime implements Sequence
 
     /**
      * Returns primes between min and max
-     * @param int $min
-     * @param int $max
      * @return int[]
      */
     public static function getBetween(int $min, int $max): array

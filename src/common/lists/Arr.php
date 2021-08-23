@@ -178,7 +178,6 @@ class Arr
     /**
      * @deprecated will be removed. use Call::with() instead
      * @param mixed[] $array
-     * @param callable $function
      */
     public static function doForEach(array $array, callable $function): void
     {
@@ -240,7 +239,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed $value
-     * @param bool $strict
      * @return bool
      */
     public static function contains(array $array, $value, bool $strict = true): bool
@@ -272,7 +270,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed $value
-     * @param int $from
      * @return int|string|null
      */
     public static function indexOf(array $array, $value, int $from = 0)
@@ -298,7 +295,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed $value
-     * @param int|null $end
      * @return int|string|null
      */
     public static function lastIndexOf(array $array, $value, ?int $end = null)
@@ -312,8 +308,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
-     * @param int $from
      * @return int|string|null
      */
     public static function indexWhere(array $array, callable $function, int $from = 0)
@@ -329,8 +323,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
-     * @param int $end
      * @return int|string|null
      */
     public static function lastIndexWhere(array $array, callable $function, ?int $end = null)
@@ -370,7 +362,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return bool
      */
     public static function exists(array $array, callable $function): bool
@@ -386,7 +377,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return bool
      */
     public static function forAll(array $array, callable $function): bool
@@ -402,7 +392,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed|null
      */
     public static function find(array $array, callable $function)
@@ -418,7 +407,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return int
      */
     public static function prefixLength(array $array, callable $function): int
@@ -428,8 +416,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
-     * @param int $from
      * @return int
      */
     public static function segmentLength(array $array, callable $function, int $from = 0): int
@@ -449,7 +435,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return int
      */
     public static function count(array $array, ?callable $function = null): int
@@ -515,7 +500,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed|null
      */
     public static function maxBy(array $array, callable $function)
@@ -532,7 +516,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed|null
      */
     public static function minBy(array $array, callable $function)
@@ -580,7 +563,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed[] $slice
-     * @param int $from
      * @return int|null
      */
     public static function indexOfSlice(array $array, array $slice, int $from = 0): ?int
@@ -600,7 +582,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed[] $other
-     * @param callable $function
      * @return bool
      */
     public static function corresponds(array $array, array $other, callable $function): bool
@@ -635,7 +616,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed[] $slice
-     * @param int $from
      * @return bool
      */
     public static function startsWith(array $array, array $slice, int $from = 0): bool
@@ -667,7 +647,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @param mixed|null $init
      * @return mixed|null
      */
@@ -678,7 +657,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @param mixed|null $init
      * @return mixed|null
      */
@@ -689,7 +667,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @param mixed|null $init
      * @return mixed|null
      */
@@ -704,7 +681,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed|null
      */
     public static function reduce(array $array, callable $function)
@@ -714,7 +690,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed|null
      */
     public static function reduceLeft(array $array, callable $function)
@@ -728,7 +703,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed|null
      */
     public static function reduceRight(array $array, callable $function)
@@ -742,7 +716,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @param mixed $init
      * @return mixed[]
      */
@@ -759,7 +732,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @param mixed $init
      * @return mixed[]
      */
@@ -885,8 +857,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param int $from
-     * @param int $length
      * @return mixed[]
      */
     public static function slice(array $array, int $from, ?int $length = null): array
@@ -896,7 +866,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param int $size
      * @return mixed[]
      */
     public static function chunks(array $array, int $size): array
@@ -906,8 +875,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param int $size
-     * @param int $step
      * @return mixed[]
      */
     public static function sliding(array $array, int $size, int $step = 1): array
@@ -921,7 +888,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param int $count
      * @return mixed[]
      */
     public static function drop(array $array, int $count): array
@@ -931,7 +897,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param int $count
      * @return mixed[]
      */
     public static function dropRight(array $array, int $count): array
@@ -941,7 +906,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed[]
      */
     public static function dropWhile(array $array, callable $function): array
@@ -962,7 +926,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param int $length
      * @param mixed $value
      * @return mixed[]
      */
@@ -973,7 +936,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed[][] (static $l, static $r)
      */
     public static function span(array $array, callable $function): array
@@ -995,7 +957,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param int|null $count
      * @return mixed[]
      */
     public static function take(array $array, ?int $count = null): array
@@ -1005,7 +966,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param int $count
      * @return mixed[]
      */
     public static function takeRight(array $array, int $count): array
@@ -1015,7 +975,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed[]
      */
     public static function takeWhile(array $array, callable $function): array
@@ -1033,7 +992,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param int $positions
      * @return mixed[]
      */
     public static function rotateLeft(array $array, int $positions = 1): array
@@ -1048,7 +1006,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param int $positions
      * @return mixed[]
      */
     public static function rotateRight(array $array, int $positions = 1): array
@@ -1065,7 +1022,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed[]
      */
     public static function collect(array $array, callable $function): array
@@ -1075,7 +1031,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed[]
      */
     public static function filter(array $array, ?callable $function = null): array
@@ -1089,7 +1044,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed[]
      */
     public static function filterKeys(array $array, callable $function): array
@@ -1106,7 +1060,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed[]
      */
     public static function filterNot(array $array, callable $function): array
@@ -1118,7 +1071,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed[][] (mixed[] $fist, mixed[] $second)
      */
     public static function partition(array $array, callable $function): array
@@ -1140,7 +1092,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed[]
      */
     public static function flatMap(array $array, callable $function): array
@@ -1170,7 +1121,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed[]
      */
     public static function groupBy(array $array, callable $function): array
@@ -1186,7 +1136,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed[]
      */
     public static function map(array $array, callable $function): array
@@ -1196,7 +1145,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed[]
      */
     public static function mapPairs(array $array, callable $function): array
@@ -1208,7 +1156,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @return mixed[]
      */
     public static function remap(array $array, callable $function): array
@@ -1305,7 +1252,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param int $flags
      * @return mixed[]
      */
     public static function sort(array $array, int $flags = Sorting::REGULAR): array
@@ -1322,7 +1268,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param int $flags
      * @return mixed[]
      */
     public static function sortKeys(array $array, int $flags = Sorting::REGULAR): array
@@ -1339,8 +1284,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
-     * @param int $flags
      * @return mixed[]
      */
     public static function sortWith(array $array, callable $function, int $flags = Order::ASCENDING): array
@@ -1356,8 +1299,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
-     * @param int $flags
      * @return mixed[]
      */
     public static function sortKeysWith(array $array, callable $function, int $flags = Order::ASCENDING): array
@@ -1373,7 +1314,6 @@ class Arr
 
     /**
      * @param Comparable[] $array
-     * @param int $flags
      * @return mixed[]
      */
     public static function sortComparable(array $array, int $flags = Sorting::REGULAR): array
@@ -1394,7 +1334,6 @@ class Arr
 
     /**
      * @param Comparable[] $array
-     * @param int $flags
      * @return mixed[]
      */
     public static function sortComparableValues(array $array, int $flags = Sorting::REGULAR): array
@@ -1415,7 +1354,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param int $sortFlags
      * @return mixed[]
      */
     public static function distinct(array $array, int $sortFlags = Sorting::REGULAR): array
@@ -1497,8 +1435,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param int $from
-     * @param int $length
      * @return mixed[]
      */
     public static function remove(array $array, int $from, int $length = 0): array
@@ -1510,9 +1446,7 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param int $from
      * @param mixed[] $patch
-     * @param int $length
      * @return mixed[]
      */
     public static function patch(array $array, int $from, array $patch, ?int $length = null): array
@@ -1527,7 +1461,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param int $from
      * @param mixed[] $patch
      * @return mixed[]
      */
@@ -1562,7 +1495,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @param mixed[] ...$args
      * @return mixed[]
      */
@@ -1585,7 +1517,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @param mixed[] ...$args
      * @return mixed[]
      */
@@ -1609,8 +1540,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable|null $function
-     * @param callable|null $keysFunction
      * @param mixed[] ...$args
      * @return mixed[]
      */
@@ -1646,7 +1575,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @param mixed[] ...$args
      * @return mixed[]
      */
@@ -1669,7 +1597,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable $function
      * @param mixed[] ...$args
      * @return mixed[]
      */
@@ -1692,8 +1619,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param callable|null $function
-     * @param callable|null $keysFunction
      * @param mixed[] ...$args
      * @return mixed[]
      */

@@ -31,7 +31,6 @@ class ModuloCalc
     /**
      * Calculates all differences between given values.
      * @param int[]|float[] $values
-     * @param int $modulus
      * @return int[]|float[]
      */
     public static function differences(array $values, int $modulus): array
@@ -58,7 +57,6 @@ class ModuloCalc
      * Sets overflow to true when maximal value is picked, but minimal value is returned.
      * @param int|float $value
      * @param int[]|float[] $allowedValues
-     * @param int $modulus
      * @return int[]|float[] (int|float $result, int $overflow)
      */
     public static function roundTo($value, array $allowedValues, int $modulus): array
@@ -81,7 +79,6 @@ class ModuloCalc
      * Sets overflow to true when maximal value is picked, but minimal value is returned.
      * @param int|float $value
      * @param int[]|float[] $allowedValues
-     * @param int $modulus
      * @return int[]|float[] (int|float $result, int $overflow)
      */
     public static function roundUpTo($value, array $allowedValues, int $modulus): array
@@ -118,7 +115,6 @@ class ModuloCalc
      * Cannot overflow.
      * @param int|float $value
      * @param int[]|float[] $allowedValues
-     * @param int $modulus
      * @return int[]|float[] (int|float $result, int $overflow)
      */
     public static function roundDownTo($value, array $allowedValues, int $modulus): array
@@ -149,7 +145,6 @@ class ModuloCalc
 
     /**
      * @param int[] $values
-     * @param int $modulus
      */
     private static function checkValues(array &$values, int $modulus): void
     {

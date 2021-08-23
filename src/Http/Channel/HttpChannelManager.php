@@ -81,7 +81,6 @@ class HttpChannelManager
 
     /**
      * Set maximum of request to run in parallel.
-     * @param int $threads
      */
     public function setThreadLimit(int $threads): void
     {
@@ -215,9 +214,7 @@ class HttpChannelManager
     /**
      * Save data for later use.
      * @param resource $resource
-     * @param HttpChannel $channel
      * @param string|int $name
-     * @param HttpRequest $request
      */
     public function jobStarted($resource, HttpChannel $channel, $name, HttpRequest $request): void
     {

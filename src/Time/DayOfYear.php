@@ -320,7 +320,6 @@ class DayOfYear implements Equalable, Comparable, Dumpable
 
     /**
      * @param DayOfYear[] $items
-     * @param int $flags
      * @return DayOfYear[]
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */

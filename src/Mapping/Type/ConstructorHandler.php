@@ -29,7 +29,6 @@ abstract class ConstructorHandler implements TypeHandler
     }
 
     /**
-     * @param Type $type
      * @return Type[]
      */
     public function getParameters(Type $type): array
@@ -45,9 +44,7 @@ abstract class ConstructorHandler implements TypeHandler
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     * @param Type $type
      * @param mixed[] $parameters
-     * @param Mapper $mapper
      * @return object
      */
     public function createInstance(Type $type, $parameters, Mapper $mapper)

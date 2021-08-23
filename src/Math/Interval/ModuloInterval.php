@@ -45,7 +45,6 @@ interface ModuloInterval /*<T>*/ extends Equalable, Comparable, Dumpable
     // actions ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @param int $parts
      * @return mixed|ModuloIntervalSet
      */
     public function split(int $parts);//: ModuloIntervalSet<T>;

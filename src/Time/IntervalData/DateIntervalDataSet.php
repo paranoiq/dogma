@@ -55,7 +55,6 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @param DateIntervalSet $set
      * @param mixed|null $data
      * @return DateIntervalDataSet
      */
@@ -200,7 +199,6 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Add another set of intervals to this one without normalization.
-     * @param self $set
      * @return self
      */
     public function add(self $set): self
@@ -215,7 +213,6 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Remove another set of intervals from this one.
-     * @param DateIntervalSet $set
      * @return self
      */
     public function subtract(DateIntervalSet $set): self
@@ -251,7 +248,6 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Intersect with another set of intervals.
-     * @param DateIntervalSet $set
      * @return self
      */
     public function intersect(DateIntervalSet $set): self
@@ -337,7 +333,6 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Only modifies and splits intersecting intervals. Does not insert new ones nor remove things.
      * Complexity O(m*n). For bigger sets use modifyDataByStream()
      *
-     * @param self $other
      * @param callable $reducer (mixed $oldData, mixed $input): mixed $newData
      * @return self
      */

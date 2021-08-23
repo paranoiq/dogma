@@ -103,7 +103,6 @@ final class Colors
 
     /**
      * Remove formatting characters from a string
-     * @param string $string
      * @return string
      */
     public static function remove(string $string): string
@@ -113,10 +112,6 @@ final class Colors
 
     /**
      * Safely pads string with formatting characters to length
-     * @param string $string
-     * @param int $length
-     * @param string $with
-     * @param int $type
      * @return string
      */
     public static function padString(string $string, int $length, string $with = ' ', int $type = STR_PAD_RIGHT): string

@@ -99,7 +99,6 @@ class HtmlTableIterator implements Iterator
     }
 
     /**
-     * @param Element $row
      * @return string[]
      */
     private function formatRow(Element $row): array

@@ -142,7 +142,6 @@ class IntIntervalSet implements IntervalSet
 
     /**
      * Add another set of intervals to this one without normalization.
-     * @param self $set
      * @return self
      */
     public function add(self $set): self
@@ -157,7 +156,6 @@ class IntIntervalSet implements IntervalSet
 
     /**
      * Remove another set of intervals from this one.
-     * @param self $set
      * @return self
      */
     public function subtract(self $set): self
@@ -197,7 +195,6 @@ class IntIntervalSet implements IntervalSet
 
     /**
      * Intersect with another set of intervals.
-     * @param self $set
      * @return self
      */
     public function intersect(self $set): self

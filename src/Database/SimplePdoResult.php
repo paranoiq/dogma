@@ -53,7 +53,6 @@ class SimplePdoResult implements Iterator
     }
 
     /**
-     * @param int $mode
      * @return mixed[]|bool
      */
     public function fetch(int $mode = PDO::FETCH_ASSOC)
@@ -62,7 +61,6 @@ class SimplePdoResult implements Iterator
     }
 
     /**
-     * @param int $mode
      * @return mixed[][]
      */
     public function fetchAll(int $mode = PDO::FETCH_ASSOC): array

@@ -13,7 +13,6 @@ interface IntersectComparable
 {
 
     /**
-     * @param self $other
      * @return int @see IntersectResult
      */
     public function compareIntersects(self $other): int;

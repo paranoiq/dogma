@@ -15,7 +15,6 @@ interface LocaleCollationOption
 {
 
     /**
-     * @param string $value
      * @return LocaleCollationOption
      */
     public static function get(string $value): StringEnum;

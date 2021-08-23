@@ -274,7 +274,6 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 
     /**
      * Add another set of intervals to this one without normalization.
-     * @param self $set
      * @return self
      */
     public function add(self $set): self
@@ -289,7 +288,6 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 
     /**
      * Remove another set of intervals from this one.
-     * @param self $set
      * @return self
      */
     public function subtract(self $set): self
@@ -324,7 +322,6 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 
     /**
      * Intersect with another set of intervals.
-     * @param self $set
      * @return self
      */
     public function intersect(self $set): self

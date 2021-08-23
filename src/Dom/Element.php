@@ -62,7 +62,6 @@ class Element
     }
 
     /**
-     * @param string $xpath
      * @return Element|DOMNode|null
      */
     public function findOne(string $xpath)
@@ -71,7 +70,6 @@ class Element
     }
 
     /**
-     * @param string $xpath
      * @return string|int|float|bool|Date|DateTime|null
      */
     public function evaluate(string $xpath)
@@ -101,7 +99,6 @@ class Element
     }
 
     /**
-     * @param string $name
      * @return mixed
      */
     public function &__get(string $name)
@@ -110,7 +107,6 @@ class Element
     }
 
     /**
-     * @param string $name
      * @param mixed $arg
      * @return mixed
      */

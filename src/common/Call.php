@@ -44,7 +44,6 @@ class Call
      * Call given function n times. Syntactic sugar for simple `for (...) {...}`
      *
      * @param callable $function (int $i)
-     * @param int $n
      * @return mixed[]
      */
     public static function nTimes(callable $function, int $n): array

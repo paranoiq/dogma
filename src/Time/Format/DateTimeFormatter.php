@@ -18,7 +18,6 @@ interface DateTimeFormatter
 
     /**
      * @param DateTimeInterface|Date|Time $dateTime
-     * @param string|null $format
      * @return string
      */
     public function format($dateTime, ?string $format = null): string;

@@ -219,7 +219,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @deprecated will be removed. use Call::with() instead
-     * @param callable $function
      */
     public function doForEach(callable $function): void
     {
@@ -269,7 +268,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param mixed $value
-     * @param int $from
      * @return mixed|null
      */
     public function indexOf($value, int $from = 0)
@@ -297,7 +295,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param mixed $value
-     * @param int|null $end
      * @return mixed|null
      */
     public function lastIndexOf($value, ?int $end = null)
@@ -310,8 +307,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable $function
-     * @param int $from
      * @return mixed|null
      */
     public function indexWhere(callable $function, int $from = 0)
@@ -326,8 +321,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable $function
-     * @param int $end
      * @return mixed
      */
     public function lastIndexWhere(callable $function, ?int $end = null)
@@ -385,7 +378,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable $function
      * @return mixed|null
      */
     public function find(callable $function)
@@ -469,7 +461,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable $function
      * @return mixed|null
      */
     public function maxBy(callable $function)
@@ -485,7 +476,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable $function
      * @return mixed|null
      */
     public function minBy(callable $function)
@@ -529,7 +519,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $array
-     * @param int $from
      * @return int|null
      */
     public function indexOfSlice(iterable $array, int $from = 0): ?int
@@ -548,7 +537,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $array
-     * @param callable $function
      * @return bool
      */
     public function corresponds(iterable $array, callable $function): bool
@@ -578,7 +566,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $slice
-     * @param int $from
      * @return bool
      */
     public function startsWith(iterable $slice, int $from = 0): bool
@@ -611,7 +598,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     // transforming ----------------------------------------------------------------------------------------------------
 
     /**
-     * @param callable $function
      * @param mixed $init
      * @return mixed|null
      */
@@ -621,7 +607,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable $function
      * @param mixed $init
      * @return mixed|null
      */
@@ -631,7 +616,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable $function
      * @param mixed $init
      * @return mixed|null
      */
@@ -645,7 +629,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable $function
      * @return mixed|null
      */
     public function reduce(callable $function)
@@ -654,7 +637,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable $function
      * @return mixed|null
      */
     public function reduceLeft(callable $function)
@@ -667,7 +649,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable $function
      * @return mixed|null
      */
     public function reduceRight(callable $function)
@@ -680,7 +661,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable $function
      * @param mixed $init
      * @return static
      */
@@ -696,7 +676,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable $function
      * @param mixed $init
      * @return static
      */
@@ -850,7 +829,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param int $length
      * @param mixed $value
      * @return static
      */
@@ -860,7 +838,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable $function
      * @return static[] (static $l, static $r)
      */
     public function span(callable $function): array
@@ -959,7 +936,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable $function
      * @return static[] (static $fist, static $second)
      */
     public function partition(callable $function): array
@@ -1235,8 +1211,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param int $from
-     * @param int $length
      * @return static
      */
     public function remove(int $from, int $length = 0): self
@@ -1248,9 +1222,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param int $from
      * @param mixed[] $patch
-     * @param int $length
      * @return static
      */
     public function patch(int $from, array $patch, ?int $length = null): self
@@ -1265,7 +1237,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param int $from
      * @param mixed[] $patch
      * @return self
      */
@@ -1309,7 +1280,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable $function
      * @param iterable|mixed[] ...$args
      * @return self
      */
@@ -1341,7 +1311,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable $function
      * @param iterable|mixed[] ...$args
      * @return self
      */
@@ -1373,8 +1342,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable|null $function
-     * @param callable|null $keysFunction
      * @param iterable|mixed[] ...$args
      * @return self
      */
@@ -1417,7 +1384,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable $function
      * @param iterable|mixed[] ...$args
      * @return self
      */
@@ -1449,7 +1415,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable $function
      * @param iterable|mixed[] ...$args
      * @return self
      */
@@ -1481,8 +1446,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param callable|null $function
-     * @param callable|null $keysFunction
      * @param iterable|mixed[] ...$args
      * @return self
      */

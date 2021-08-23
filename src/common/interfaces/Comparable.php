@@ -13,7 +13,6 @@ interface Comparable
 {
 
     /**
-     * @param self $other
      * @return int @see ComparisonResult
      */
     public function compare(self $other): int;

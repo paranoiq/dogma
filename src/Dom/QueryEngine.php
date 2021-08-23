@@ -212,7 +212,6 @@ class QueryEngine
 
     /**
      * Find nodes
-     * @param string $query
      * @param Element|DOMNode|null $context
      * @return NodeList
      */
@@ -238,7 +237,6 @@ class QueryEngine
 
     /**
      * Find one node
-     * @param string $query
      * @param Element|DOMNode|null $context
      * @return DOMNode|Element|null
      */
@@ -268,7 +266,6 @@ class QueryEngine
 
     /**
      * Evaluate a query
-     * @param string $query
      * @param Element|DOMNode|null $context
      * @return string|int|float|bool|Date|DateTime|null
      */
@@ -336,7 +333,6 @@ class QueryEngine
     // internals -------------------------------------------------------------------------------------------------------
 
     /**
-     * @param string $query
      * @param Element|DOMNode $context
      * @return int|float|bool|string|Date|DateTime|null
      */
@@ -406,7 +402,6 @@ class QueryEngine
 
     /**
      * Wrap element in DomElement object
-     * @param DOMNode $node
      * @return Element|DOMNode
      */
     private function wrap(DOMNode $node)
@@ -422,8 +417,6 @@ class QueryEngine
 
     /**
      * Test with regular expression and return matching string
-     * @param string $string
-     * @param string $pattern
      * @return string|null
      */
     public static function match(string $string, string $pattern): ?string

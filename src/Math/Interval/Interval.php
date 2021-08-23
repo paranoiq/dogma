@@ -51,7 +51,6 @@ interface Interval /*<T>*/ extends Equalable, Comparable, IntersectComparable, D
     // actions ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @param int $parts
      * @return mixed|IntervalSet
      */
     public function split(int $parts);//: IntervalSet<T>;

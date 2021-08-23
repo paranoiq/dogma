@@ -34,10 +34,7 @@ class TextFile extends File
 
     /**
      * @param string|resource $file
-     * @param string $mode
      * @param resource|null $streamContext
-     * @param Encoding $encoding
-     * @param LineEndings $lineEndings
      * @return self
      */
     public static function create(
@@ -101,9 +98,6 @@ class TextFile extends File
     }
 
     /**
-     * @param string $delimiter
-     * @param string $quoteChar
-     * @param string $escapeChar
      * @return string[]
      */
     public function readCsvRow(string $delimiter, string $quoteChar, string $escapeChar): array
@@ -130,8 +124,6 @@ class TextFile extends File
 
     /**
      * @param string[] $row
-     * @param string $delimiter
-     * @param string $quoteChar
      * @return int
      */
     public function writeCsvRow(array $row, string $delimiter, string $quoteChar): int

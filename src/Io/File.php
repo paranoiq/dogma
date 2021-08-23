@@ -75,7 +75,6 @@ class File implements Path
 
     /**
      * @param string|resource|FilePath|FileInfo $file
-     * @param string $mode
      * @param resource|null $streamContext
      */
     final public function __construct($file, string $mode = FileMode::OPEN_READ, $streamContext = null)
@@ -253,9 +252,6 @@ class File implements Path
     /**
      * Copy range of data to another File or callback. Returns actual length of copied data.
      * @param File|callable $destination
-     * @param int|null $start
-     * @param int $length
-     * @param int|null $chunkSize
      * @return int
      */
     public function copyData($destination, ?int $start = null, int $length = 0, ?int $chunkSize = null): int
@@ -315,7 +311,6 @@ class File implements Path
 
     /**
      * Truncate file and move pointer at the end
-     * @param int $size
      */
     public function truncate(int $size = 0): void
     {

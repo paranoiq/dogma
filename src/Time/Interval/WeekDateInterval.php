@@ -57,7 +57,6 @@ class WeekDateInterval extends DateInterval
     }
 
     /**
-     * @param DateInterval $interval
      * @return self[]
      */
     public static function createOverlappingIntervals(DateInterval $interval): array

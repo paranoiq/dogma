@@ -14,7 +14,6 @@ trait StrictBehaviorMixin
 
     /**
      * @deprecated Magic calls are forbidden
-     * @param string $name
      * @param mixed $args
      * @throws UndefinedMethodException
      */
@@ -25,7 +24,6 @@ trait StrictBehaviorMixin
 
     /**
      * @deprecated Magic static calls are forbidden
-     * @param string $name
      * @param mixed $args
      * @throws UndefinedMethodException
      */
@@ -36,7 +34,6 @@ trait StrictBehaviorMixin
 
     /**
      * @deprecated Magic property access is forbidden
-     * @param string $name
      * @throws UndefinedPropertyException
      */
     public function &__get(string $name): void
@@ -46,7 +43,6 @@ trait StrictBehaviorMixin
 
     /**
      * @deprecated Magic property access is forbidden
-     * @param string $name
      * @param mixed $value
      * @throws UndefinedPropertyException
      */
@@ -57,7 +53,6 @@ trait StrictBehaviorMixin
 
     /**
      * @deprecated Magic property access is forbidden
-     * @param string $name
      * @throws UndefinedPropertyException
      */
     public function __isset(string $name): bool
@@ -67,7 +62,6 @@ trait StrictBehaviorMixin
 
     /**
      * @deprecated Magic property access is forbidden
-     * @param string $name
      * @throws UndefinedPropertyException
      */
     public function __unset(string $name): void

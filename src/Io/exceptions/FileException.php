@@ -18,9 +18,7 @@ class FileException extends IoException
     private $error;
 
     /**
-     * @param string $message
      * @param mixed[]|null $error
-     * @param Throwable|null $previous
      */
     public function __construct(string $message, ?array $error = null, ?Throwable $previous = null)
     {

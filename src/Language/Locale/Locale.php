@@ -43,7 +43,6 @@ class Locale
     private $components;
 
     /**
-     * @param string $value
      * @param string[]|string[][] $components
      */
     final private function __construct(string $value, array $components)
@@ -76,9 +75,6 @@ class Locale
     }
 
     /**
-     * @param Language $language
-     * @param Country|null $country
-     * @param Script|null $script
      * @param string[] $variants
      * @param string[] $private
      * @param string[] $keywords

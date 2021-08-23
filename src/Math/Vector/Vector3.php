@@ -48,9 +48,6 @@ class Vector3
     }
 
     /**
-     * @param float $x
-     * @param float $y
-     * @param float $z
      * @return float[] ($latitude, $longitude)
      */
     public static function normalVectorToRadians(float $x, float $y, float $z): array
@@ -62,8 +59,6 @@ class Vector3
     }
 
     /**
-     * @param float $latitude
-     * @param float $longitude
      * @return float[] ($x, $y, $z)
      */
     public static function radiansToNormalVector(float $latitude, float $longitude): array
@@ -76,9 +71,6 @@ class Vector3
     }
 
     /**
-     * @param float $x
-     * @param float $y
-     * @param float $z
      * @return float[]
      */
     public static function normalize(float $x, float $y, float $z): array

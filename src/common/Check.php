@@ -155,7 +155,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param string $type
      * @param int|float|null $min
      * @param int|float|null $max
      * @throws InvalidTypeException
@@ -194,7 +193,6 @@ final class Check
 
     /**
      * @param iterable|mixed[] $items
-     * @param string $type
      * @param int|float|null $valueMin
      * @param int|float|null $valueMax
      * @throws InvalidTypeException
@@ -265,8 +263,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $min
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -296,8 +292,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $min
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -311,7 +305,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -326,7 +319,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -344,8 +336,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $min
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -361,8 +351,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $min
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -381,7 +369,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -397,7 +384,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -416,8 +402,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $min
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -433,8 +417,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $min
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -453,7 +435,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -469,7 +450,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -488,8 +468,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $min
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -505,8 +483,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $min
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -525,7 +501,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -541,7 +516,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -560,8 +534,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $min
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -577,8 +549,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $min
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -597,7 +567,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -613,7 +582,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -632,8 +600,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $min
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -649,8 +615,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $min
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -669,7 +633,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -685,7 +648,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $max
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
@@ -706,8 +668,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param float|null $min
-     * @param float|null $max
      * @throws InvalidTypeException
      * @throws InvalidValueException
      * @throws ValueOutOfRangeException
@@ -753,8 +713,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param float|null $min
-     * @param float|null $max
      * @throws InvalidTypeException
      * @throws InvalidValueException
      * @throws ValueOutOfRangeException
@@ -771,8 +729,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int $totalDigits
-     * @param int $afterDigits
      * @throws InvalidTypeException
      * @throws InvalidValueException
      * @throws ValueOutOfBoundsException
@@ -795,8 +751,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int $totalDigits
-     * @param int $afterDigits
      * @throws InvalidTypeException
      * @throws InvalidValueException
      * @throws ValueOutOfBoundsException
@@ -813,8 +767,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $minLength
-     * @param int|null $maxLength
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -835,8 +787,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $minLength
-     * @param int|null $maxLength
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -850,8 +800,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $minLength
-     * @param int|null $maxLength
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -866,8 +814,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $minLength
-     * @param int|null $maxLength
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -885,8 +831,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $minLength
-     * @param int|null $maxLength
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -901,8 +845,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $minLength
-     * @param int|null $maxLength
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -933,8 +875,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $minLength
-     * @param int|null $maxLength
      * @throws InvalidTypeException
      */
     public static function array($value, ?int $minLength = null, ?int $maxLength = null): void
@@ -947,8 +887,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param int|null $minLength
-     * @param int|null $maxLength
      * @throws InvalidTypeException
      */
     public static function plainArray($value, ?int $minLength = null, ?int $maxLength = null): void
@@ -992,7 +930,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param string|null $className
      * @throws InvalidTypeException
      */
     public static function object($value, ?string $className = null): void
@@ -1007,7 +944,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param string $className
      * @throws InvalidTypeException
      */
     public static function instance($value, string $className): void
@@ -1019,7 +955,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param string|null $className
      * @throws InvalidTypeException
      */
     public static function nullableObject($value, ?string $className = null): void
@@ -1034,7 +969,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param string $type
      * @throws InvalidTypeException
      */
     public static function resource($value, ?string $type = null): void
@@ -1060,7 +994,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @param string $parentClass
      * @throws InvalidValueException
      */
     public static function className($value, ?string $parentClass = null): void
@@ -1089,9 +1022,6 @@ final class Check
     // helpers ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @param string $value
-     * @param int|null $min
-     * @param int|null $max
      * @throws ValueOutOfRangeException
      */
     public static function length(string $value, ?int $min = null, ?int $max = null): void
@@ -1102,8 +1032,6 @@ final class Check
 
     /**
      * @param mixed[] $value
-     * @param int|null $min
-     * @param int|null $max
      * @throws ValueOutOfRangeException
      */
     public static function count(array $value, ?int $min = null, ?int $max = null): void
@@ -1113,8 +1041,6 @@ final class Check
     }
 
     /**
-     * @param string $value
-     * @param string $regexp
      * @throws InvalidValueException
      */
     public static function match(string $value, string $regexp): void
@@ -1127,7 +1053,6 @@ final class Check
     /**
      * Checks type specific bounds
      * @param mixed $value
-     * @param Type $type
      * @throws ValueOutOfBoundsException
      */
     public static function bounds($value, Type $type): void
@@ -1163,8 +1088,6 @@ final class Check
     /**
      * Checks type specific bounds for integers
      * @param mixed $value
-     * @param int $size
-     * @param bool $signed
      * @throws ValueOutOfBoundsException
      */
     public static function intBounds($value, int $size, bool $signed = true): void

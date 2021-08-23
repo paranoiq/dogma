@@ -119,8 +119,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @param string[] $formats
-     * @param string $timeString
-     * @param DateTimeZone|null $timeZone
      * @return static
      */
     public static function createFromAnyFormat(array $formats, string $timeString, ?DateTimeZone $timeZone = null): self
@@ -364,7 +362,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     /**
      * Round to closest value from given list of values for given unit
      * (eg. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
-     * @param DateTimeUnit $unit
      * @param int[]|null $allowedValues
      * @return DateTime
      */
@@ -379,7 +376,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     /**
      * Round to firs upper value from given list of values for given unit
      * (eg. 15:32:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
-     * @param DateTimeUnit $unit
      * @param int[]|null $allowedValues
      * @return DateTime
      */
@@ -394,7 +390,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     /**
      * Round to firs lower value from given list of values for given unit
      * (eg. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:30:00)
-     * @param DateTimeUnit $unit
      * @param int[]|null $allowedValues
      * @return DateTime
      */

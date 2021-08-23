@@ -29,7 +29,6 @@ class EnumHandler implements TypeHandler
     }
 
     /**
-     * @param Type $type
      * @return string[]|null
      */
     public function getParameters(Type $type): ?array
@@ -38,9 +37,7 @@ class EnumHandler implements TypeHandler
     }
 
     /**
-     * @param Type $type
      * @param int|string $value
-     * @param Mapper $mapper
      * @return IntEnum|StringEnum
      */
     public function createInstance(Type $type, $value, Mapper $mapper)
@@ -52,9 +49,7 @@ class EnumHandler implements TypeHandler
     }
 
     /**
-     * @param Type $type
      * @param IntEnum|StringEnum $enum
-     * @param Mapper $mapper
      * @return int|string
      */
     public function exportInstance(Type $type, $enum, Mapper $mapper)

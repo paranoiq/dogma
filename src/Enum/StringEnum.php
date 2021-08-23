@@ -48,7 +48,6 @@ abstract class StringEnum implements Enum, Dumpable
     }
 
     /**
-     * @param string $value
      * @return static
      */
     final public static function get(string $value): self
@@ -70,7 +69,6 @@ abstract class StringEnum implements Enum, Dumpable
     /**
      * Validates given value. Can also normalize the value, if needed.
      *
-     * @param string $value
      * @return bool
      */
     public static function validateValue(string &$value): bool

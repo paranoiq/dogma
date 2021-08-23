@@ -27,7 +27,6 @@ interface TypeHandler
     /**
      * Returns true if handler accepts the type represented by $type parameter.
      *
-     * @param Type $type
      * @return bool
      */
     public function acceptsType(Type $type): bool;
@@ -44,7 +43,6 @@ interface TypeHandler
      * Type::MIXED is the only type, that stops MappingBuilder from further unwrapping the type definition. Use this
      * type when you don't want the value to be changed at all.
      *
-     * @param Type $type
      * @return Type[]|null ($parameterName => $type)
      */
     public function getParameters(Type $type): ?array;
@@ -56,9 +54,7 @@ interface TypeHandler
      *
      * May use given Mapper for mapping some intermediate values.
      *
-     * @param Type $type
      * @param mixed|mixed[]|null $parameters
-     * @param Mapper $mapper
      * @return mixed
      */
     public function createInstance(Type $type, $parameters, Mapper $mapper);
@@ -68,9 +64,7 @@ interface TypeHandler
      *
      * May use given Mapper for reverse mapping some intermediate values.
      *
-     * @param Type $type
      * @param mixed|null $instance
-     * @param Mapper $mapper
      * @return mixed|mixed[]
      */
     public function exportInstance(Type $type, $instance, Mapper $mapper);

@@ -16,7 +16,6 @@ class InvalidRegularExpressionException extends InvalidValueException
 
     /**
      * @param mixed $regexp
-     * @param Throwable|null $previous
      */
     public function __construct($regexp, ?Throwable $previous = null)
     {

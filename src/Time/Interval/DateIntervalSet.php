@@ -201,7 +201,6 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 
     /**
      * Add another set of intervals to this one without normalization.
-     * @param self $set
      * @return self
      */
     public function add(self $set): self
@@ -216,7 +215,6 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 
     /**
      * Remove another set of intervals from this one.
-     * @param self $set
      * @return self
      */
     public function subtract(self $set): self
@@ -256,7 +254,6 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 
     /**
      * Intersect with another set of intervals.
-     * @param self $set
      * @return self
      */
     public function intersect(self $set): self

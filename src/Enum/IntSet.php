@@ -60,7 +60,6 @@ abstract class IntSet implements Set, Dumpable
     }
 
     /**
-     * @param int ...$values
      * @return static
      */
     final public static function get(int ...$values): self
@@ -69,7 +68,6 @@ abstract class IntSet implements Set, Dumpable
     }
 
     /**
-     * @param int $value
      * @return static
      */
     final public static function getByValue(int $value): self
@@ -120,7 +118,6 @@ abstract class IntSet implements Set, Dumpable
     /**
      * Validates a single value. Can also normalize the value, if needed.
      *
-     * @param int $value
      * @return bool
      */
     public static function validateValue(int &$value): bool
@@ -265,7 +262,6 @@ abstract class IntSet implements Set, Dumpable
     }
 
     /**
-     * @param int ...$allowedValues
      * @return static
      */
     public function filter(int ...$allowedValues): self
@@ -276,7 +272,6 @@ abstract class IntSet implements Set, Dumpable
     }
 
     /**
-     * @param int ...$addValues
      * @return static
      */
     public function add(int ...$addValues): self
@@ -285,7 +280,6 @@ abstract class IntSet implements Set, Dumpable
     }
 
     /**
-     * @param int ...$removeValues
      * @return static
      */
     public function remove(int ...$removeValues): self

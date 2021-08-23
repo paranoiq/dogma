@@ -48,7 +48,6 @@ abstract class IntEnum implements Enum, Dumpable
     }
 
     /**
-     * @param int $value
      * @return static
      */
     final public static function get(int $value): self
@@ -70,7 +69,6 @@ abstract class IntEnum implements Enum, Dumpable
     /**
      * Validates given value. Can also normalize the value, if needed.
      *
-     * @param int $value
      * @return bool
      */
     public static function validateValue(int &$value): bool

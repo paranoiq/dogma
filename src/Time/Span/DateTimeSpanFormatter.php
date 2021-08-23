@@ -256,10 +256,6 @@ class DateTimeSpanFormatter
      * Q    Pretty, single value                        "15 days", "2 weeks", "13 days"
      * q    Pretty, single value, units                 "15d", "2w", "13d"
      *
-     * @param DateTimeSpan $span
-     * @param string|null $format
-     * @param int|null $maxDecimals
-     * @param string|null $decimalPoint
      * @return string
      */
     public function format(
@@ -620,8 +616,6 @@ class DateTimeSpanFormatter
 
     /**
      * (Override for other plural rules or use Translator.)
-     * @param string $unit
-     * @param int|null $number
      * @return string
      */
     protected function getUnit(string $unit, ?int $number = null): string

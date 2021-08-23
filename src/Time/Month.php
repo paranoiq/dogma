@@ -132,7 +132,6 @@ class Month extends IntEnum
     }
 
     /**
-     * @param bool $leapYear
      * @return int[]
      */
     public static function getLengths(bool $leapYear = false): array
