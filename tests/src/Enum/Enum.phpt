@@ -54,6 +54,20 @@ class E extends IntEnum
 
 }
 
+// skip abstract
+abstract class F extends IntEnum
+{
+
+}
+
+class G extends F
+{
+
+    public const ONE = 1;
+    public const TWO = 2;
+
+}
+
 $aOne = A::get(1);
 $aOne2 = A::get(1);
 $aTwo = A::get(2);
@@ -63,12 +77,14 @@ $abOne = AB::get(1);
 $abcOne = ABC::get(1);
 $abcTwo = ABC::get(2);
 $abdOne = ABD::get(1);
-$fOne = E::get(1);
+$eOne = E::get(1);
+$gOne = G::get(1);
 
 
 get:
 Assert::type($aOne, A::class);
 Assert::equal($aOne, $aOne2);
+Assert::equal($gOne, G::get(1));
 
 
 getValue:
@@ -80,8 +96,8 @@ Assert::same($aOne->getConstantName(), 'ONE');
 
 
 equals:
-Assert::exception(static function () use ($aOne, $fOne): void {
-    $aOne->equals($fOne);
+Assert::exception(static function () use ($aOne, $eOne): void {
+    $aOne->equals($eOne);
 }, InvalidTypeException::class);
 Assert::false($aOne->equals($aTwo));
 Assert::true($aOne->equals($aOne2));

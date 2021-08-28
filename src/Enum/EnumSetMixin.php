@@ -97,6 +97,11 @@ trait EnumSetMixin
         /** @var ReflectionClass<Enum|Set> $parent */
         $parent = $ref->getParentClass();
         $parentClass = $parent->getName();
+        if (!in_array($parentClass, [IntEnum::class, StringEnum::class, IntSet::class, StringSet::class], true) && $parent->isAbstract()) {
+            /** @var ReflectionClass<Enum|Set> $parent */
+            $parent = $parent->getParentClass();
+            $parentClass = $parent->getName();
+        }
         $isDescendant = !in_array($parentClass, $rootClasses, true);
 
         $parentValues = [];
