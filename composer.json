@@ -18,7 +18,7 @@
         "tracy/tracy": "~2.4"
     },
     "require-dev": {
-        "dogma/dogma-dev": "0.1.19"
+        "dogma/dogma-dev": "0.1.20"
     },
     "suggest": {
         "ext-dom": "for Dom (basic functionality)",
@@ -113,6 +113,8 @@
             "php72 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
             "php71 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests"
         ],
+
+        "require:check": "php vendor/maglnet/composer-require-checker/bin/composer-require-checker.php check",
 
         "modified-php-src": "chmod 777 temp && git diff-index --name-only --diff-filter=ACMR origin/master | grep \"^src.*\\.php$\" > temp/modified-php-src.txt || echo src/loader.php > temp/modified-php-src.txt",
         "modified-php-tests": "chmod 777 temp && git diff-index --name-only --diff-filter=ACMR origin/master | grep \"^tests.*\\.php$\" > temp/modified-php-tests.txt || echo tests/src/bootstrap.php > temp/modified-php-tests.txt"
