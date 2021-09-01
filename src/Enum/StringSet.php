@@ -90,6 +90,9 @@ abstract class StringSet implements Set, Dumpable
         return new static(array_diff(self::getAllowedValues(), $this->values));
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function dump(): string
     {
         $names = [];

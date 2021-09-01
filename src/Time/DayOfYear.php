@@ -141,6 +141,9 @@ class DayOfYear implements Equalable, Comparable, Dumpable
         return $this->number <= self::MAX_NUMBER;
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function dump(): string
     {
         return sprintf(

@@ -85,6 +85,9 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($intervals);
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function poke(): void
     {
         foreach ($this->intervals as $interval) {

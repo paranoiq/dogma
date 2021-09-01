@@ -171,6 +171,9 @@ class Document extends DOMDocument
         return $this->engine->extract($target);
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function dump(): void
     {
         Dumper::dump($this);

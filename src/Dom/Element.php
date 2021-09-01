@@ -120,6 +120,9 @@ class Element
         return $cb(array_shift($args));
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function dump(): void
     {
         Dumper::dump($this);

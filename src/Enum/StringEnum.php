@@ -55,6 +55,9 @@ abstract class StringEnum implements Enum, Dumpable
         return new static($value);
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function dump(): string
     {
         return sprintf(

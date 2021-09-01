@@ -134,11 +134,17 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
         return self::createFromDateTimeInterface($dateTime);
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function poke(): void
     {
         $this->getDateTime();
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function dump(): string
     {
         return sprintf(

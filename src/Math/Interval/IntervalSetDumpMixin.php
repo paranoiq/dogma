@@ -15,9 +15,15 @@ use function count;
 use function implode;
 use function sprintf;
 
+/**
+ * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+ */
 trait IntervalSetDumpMixin
 {
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function dump(): string
     {
         $intervals = [];

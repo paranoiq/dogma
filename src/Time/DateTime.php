@@ -217,6 +217,9 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return new static($date->format(Date::DEFAULT_FORMAT) . ' ' . $time->format(Time::DEFAULT_FORMAT), $timeZone);
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function dump(): string
     {
         return sprintf(

@@ -149,6 +149,9 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         }
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function poke(): void
     {
         $this->start->format();

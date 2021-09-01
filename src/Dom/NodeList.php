@@ -100,6 +100,9 @@ class NodeList implements Countable, Iterator
         }
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function dump(): void
     {
         Dumper::dump($this);

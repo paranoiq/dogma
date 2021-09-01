@@ -108,6 +108,9 @@ class FloatInterval implements OpenClosedInterval
         return new static(self::MIN, self::MAX);
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function dump(): string
     {
         return sprintf(

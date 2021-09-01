@@ -9,6 +9,9 @@
 
 namespace Dogma;
 
+/**
+ * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+ */
 interface Dumpable
 {
 

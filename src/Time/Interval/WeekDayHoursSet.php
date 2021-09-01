@@ -67,6 +67,9 @@ class WeekDayHoursSet implements Pokeable, Dumpable, IteratorAggregate
         return new static($dayItems);
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function poke(): void
     {
         foreach ($this->weekDayHours as $hours) {
@@ -74,6 +77,9 @@ class WeekDayHoursSet implements Pokeable, Dumpable, IteratorAggregate
         }
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function dump(): string
     {
         $hours = [];

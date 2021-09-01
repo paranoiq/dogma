@@ -155,6 +155,9 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         return new static(new Date(self::MIN), new Date(self::MAX));
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function poke(): void
     {
         $this->format();

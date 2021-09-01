@@ -74,6 +74,9 @@ class YearMonth implements Comparable, Equalable, Dumpable
         return new static($year . '-' . $month);
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function dump(): string
     {
         return sprintf('%s(%s #%s)', Cls::short(static::class), $this->format(), Obj::dumpHash($this));

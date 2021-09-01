@@ -38,11 +38,17 @@ class WeekDayHours implements Pokeable, Dumpable
         return new static($day, $break !== null ? $opening->subtract($break) : new TimeIntervalSet([$opening]));
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function poke(): void
     {
         $this->hours->poke();
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function dump(): string
     {
         return sprintf(

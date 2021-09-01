@@ -15,6 +15,8 @@ namespace Dogma;
  * Simply that which is considered worthy of being poked.
  *
  * "Sure, that Hilton is dumb as a post, but she's still pokeable."
+ *
+ * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
  */
 interface Pokeable
 {

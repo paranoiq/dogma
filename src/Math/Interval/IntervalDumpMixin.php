@@ -13,9 +13,15 @@ use Dogma\Cls;
 use Dogma\Obj;
 use function sprintf;
 
+/**
+ * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+ */
 trait IntervalDumpMixin
 {
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function dump(): string
     {
         return sprintf(

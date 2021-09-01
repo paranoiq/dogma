@@ -25,12 +25,10 @@ use Dogma\Time\Interval\DateInterval;
 use Dogma\Time\InvalidIntervalStartEndOrderException;
 use Dogma\Time\Span\DateSpan;
 use Dogma\Time\Span\DateTimeSpan;
-use Tracy\Debugger;
 use function array_shift;
 use function array_values;
 use function get_class;
 use function sprintf;
-use function trim;
 
 /**
  * Interval of dates with data bound to it.
@@ -92,12 +90,18 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
         return new static(new Date(self::MIN), new Date(self::MAX), $data);
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function poke(): void
     {
         $this->start->format();
         $this->end->format();
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function dump(): string
     {
         return sprintf(
@@ -105,7 +109,7 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
             Cls::short(static::class),
             $this->start->dump(),
             $this->end->dump(),
-            trim(Debugger::dump($this->data, true)),
+            '...',
             Obj::dumpHash($this)
         );
     }

@@ -67,6 +67,9 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static($intervals);
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function poke(): void
     {
         foreach ($this->intervals as $interval) {
@@ -74,6 +77,9 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         }
     }
 
+    /**
+     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
+     */
     public function dump(): string
     {
         $intervals = [];

@@ -431,7 +431,7 @@ class Str
      * Levenshtein distance for UTF-8 with additional weights for accent and case differences.
      * Expects input strings to be normalized UTF-8.
      *
-     * @depreated use levenshtein()
+     * @deprecated use levenshtein()
      */
     public static function levenshteinUnicode(
         string $string1,
