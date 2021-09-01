@@ -25,7 +25,6 @@ use Dogma\Time\Interval\DateInterval;
 use Dogma\Time\InvalidIntervalStartEndOrderException;
 use Dogma\Time\Span\DateSpan;
 use Dogma\Time\Span\DateTimeSpan;
-use Tracy\Debugger;
 use function array_shift;
 use function array_values;
 use function get_class;
@@ -96,18 +95,6 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     {
         $this->start->format();
         $this->end->format();
-    }
-
-    public function dump(): string
-    {
-        return sprintf(
-            '%s(%s - %s %s #%s)',
-            Cls::short(static::class),
-            $this->start->dump(),
-            $this->end->dump(),
-            trim(Debugger::dump($this->data, true)),
-            Obj::dumpHash($this)
-        );
     }
 
     // modifications ---------------------------------------------------------------------------------------------------
