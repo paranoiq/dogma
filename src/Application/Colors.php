@@ -9,6 +9,7 @@
 
 namespace Dogma\Application;
 
+use Dogma\Re;
 use Dogma\StaticClassMixin;
 use const STR_PAD_RIGHT;
 use function preg_replace;
@@ -107,7 +108,7 @@ final class Colors
      */
     public static function remove(string $string): string
     {
-        return preg_replace('/\\x1B\\[[^m]+m/U', '', $string);
+        return Re::replace($string, '/\\x1B\\[[^m]+m/U', '');
     }
 
     /**

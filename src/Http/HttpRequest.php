@@ -14,6 +14,7 @@ use Dogma\Http\Curl\CurlHelper;
 use Dogma\InvalidValueException;
 use Dogma\Io\FileMode;
 use Dogma\NonSerializableMixin;
+use Dogma\Re;
 use Dogma\StrictBehaviorMixin;
 use RuntimeException;
 use const CURLAUTH_ANYSAFE;
@@ -69,7 +70,6 @@ use function is_array;
 use function is_int;
 use function is_string;
 use function preg_match_all;
-use function preg_replace;
 use function strlen;
 use function strtolower;
 use function substr;
@@ -620,9 +620,9 @@ class HttpRequest
 
             $value = urlencode($this->variables[$name]);
             if ($short) {
-                $this->url = preg_replace("/(?<=\\W$name=)%%(?=[^0-9A-Fa-f])/", $value, $this->url);
+                $this->url = Re::replace($this->url, "/(?<=\\W$name=)%%(?=[^0-9A-Fa-f])/", $value);
             } else {
-                $this->url = preg_replace("/{%%$name}/", $value, $this->url);
+                $this->url = Re::replace($this->url, "/{%%$name}/", $value);
             }
 
             unset($this->variables[$name]);

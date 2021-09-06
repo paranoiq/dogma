@@ -9,6 +9,7 @@
 
 namespace Dogma\Dom;
 
+use Dogma\Re;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
@@ -373,17 +374,17 @@ class QueryEngine
             }
         }
 
-        $query = Str::replace($query, $this->translations);
+        $query = Re::replace($query, $this->translations);
 
         // adding ".//" before element names
-        $query = Str::replace($query, '@(?<=\\()([0-9A-Za-z_:]+)(?!\\()@', './/$1');
+        $query = Re::replace($query, '@(?<=\\()([0-9A-Za-z_:]+)(?!\\()@', './/$1');
 
         // fixing ".//" before function names
-        $query = Str::replace($query, '@\\.//([0-9A-Za-z_:-]+)\\(@', '$1(');
+        $query = Re::replace($query, '@\\.//([0-9A-Za-z_:-]+)\\(@', '$1(');
 
         $nativeFunctions = $this->nativeFunctions;
         $userFunctions = $this->userFunctions;
-        $query = Str::replace(
+        $query = Re::replace(
             $query,
             '/(?<![A-Za-z0-9_-])([A-Za-z0-9_-]+)\\(/',
             static function ($match) use ($nativeFunctions, $userFunctions) {
@@ -421,7 +422,7 @@ class QueryEngine
      */
     public static function match(string $string, string $pattern): ?string
     {
-        $match = Str::match($string, $pattern);
+        $match = Re::match($string, $pattern);
         if ($match) {
             return $match[0];
         }
@@ -431,7 +432,7 @@ class QueryEngine
 
     public static function replace(string $string, string $pattern, string $replacement): string
     {
-        return Str::replace($string, $pattern, $replacement);
+        return Re::replace($string, $pattern, $replacement);
     }
 
     public static function date(string $string, string $format = 'Y-m-d'): string

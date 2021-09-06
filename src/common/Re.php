@@ -114,7 +114,7 @@ class Re
 
     /**
      * @param int $flags PREG_SET_ORDER|PREG_PATTERN_ORDER
-     * @return string[]
+     * @return string[][]
      */
     public static function matchAll(string $string, string $pattern, int $flags = 0, int $offset = 0): array
     {

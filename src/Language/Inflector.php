@@ -9,13 +9,13 @@
 
 namespace Dogma\Language;
 
+use Dogma\Re;
 use Dogma\StaticClassMixin;
 use Dogma\Str;
 use function array_key_exists;
 use function array_values;
 use function in_array;
 use function preg_match;
-use function preg_replace;
 
 class Inflector
 {
@@ -115,7 +115,7 @@ class Inflector
 
         foreach (self::$plurals as $rule => $replacement) {
             if (preg_match($rule, $word)) {
-                return preg_replace($rule, $replacement, $word);
+                return Re::replace($word, $rule, $replacement);
             }
         }
 
@@ -140,7 +140,7 @@ class Inflector
 
         foreach (self::$singulars as $rule => $replacement) {
             if (preg_match($rule, $word)) {
-                return preg_replace($rule, $replacement, $word);
+                return Re::replace($word, $rule, $replacement);
             }
         }
 
