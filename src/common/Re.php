@@ -113,6 +113,29 @@ class Re
     }
 
     /**
+     * Same as match(), but only returns first subpattern or null
+     *
+     * @param int $flags PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL
+     */
+    public static function submatch(string $string, string $pattern, int $flags = 0, int $offset = 0): ?string
+    {
+        if ($offset > strlen($string)) {
+            return null;
+        }
+
+        $result = preg_match($pattern, $string, $matches, $flags, $offset);
+        if ($result === false) {
+            $error = preg_last_error() ?: 0;
+
+            throw new RegexpException($error);
+        } elseif ($result === 0) {
+            return null;
+        }
+
+        return $matches ? $matches[1] : null;
+    }
+
+    /**
      * @param int $flags PREG_SET_ORDER|PREG_PATTERN_ORDER
      * @return string[][]
      */
@@ -132,6 +155,29 @@ class Re
         }
 
         return $matches;
+    }
+
+    /**
+     * Same as matchAll(), but only returns first subpattern from each match
+     *
+     * @return string[]
+     */
+    public static function submatchAll(string $string, string $pattern, int $offset = 0): array
+    {
+        if ($offset > strlen($string)) {
+            return [];
+        }
+
+        $result = preg_match_all($pattern, $string, $matches, PREG_PATTERN_ORDER, $offset);
+        if ($result === false) {
+            $error = preg_last_error() ?: 0;
+
+            throw new RegexpException($error);
+        } elseif ($result === 0) {
+            return [];
+        }
+
+        return $matches[1];
     }
 
     /**
