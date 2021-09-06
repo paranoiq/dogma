@@ -12,6 +12,10 @@
 namespace Dogma\Time;
 
 use Dogma\Enum\IntEnum;
+use Dogma\InvalidValueException;
+use function array_search;
+use function is_int;
+use function strtolower;
 
 class Month extends IntEnum
 {
@@ -87,6 +91,17 @@ class Month extends IntEnum
     public static function december(): self
     {
         return self::get(self::DECEMBER);
+    }
+
+    public static function getByName(string $name): self
+    {
+        $name = strtolower($name);
+        $number = array_search($name, self::getNames(), true);
+        if (!is_int($number)) {
+            throw new InvalidValueException($name, static::class);
+        }
+
+        return self::get($number);
     }
 
     /**

@@ -30,6 +30,7 @@ use Throwable;
 use function explode;
 use function floor;
 use function is_int;
+use function is_string;
 use function ltrim;
 use function preg_match;
 use function round;
@@ -250,6 +251,32 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
     }
 
     /**
+     * @param DateTimeInterface|Time|string $other
+     * @return DateInterval
+     */
+    public function diff($other, bool $absolute = false): DateInterval
+    {
+        if (is_string($other)) {
+            $other = new DateTime($other);
+        } elseif ($other instanceof self) {
+            $other = new DateTime($other->format());
+        }
+
+        return (new DateTime($this->format()))->diff($other, $absolute);
+    }
+
+    /**
+     * @param DateTimeInterface|Time|string $other
+     * @return TimeSpan
+     */
+    public function difference($other, bool $absolute = false): TimeSpan
+    {
+        $interval = $this->diff($other, $absolute);
+
+        return TimeSpan::createFromDateInterval($interval);
+    }
+
+    /**
      * @param self $other
      * @return bool
      */
@@ -271,28 +298,72 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
         return ($this->microseconds % Microseconds::DAY) <=> ($other->microseconds % Microseconds::DAY);
     }
 
-    public function isBefore(Time $time): bool
+    /**
+     * @param Time|string $time
+     * @return bool
+     */
+    public function isBefore($time): bool
     {
+        if (is_string($time)) {
+            $time = new static($time);
+        }
+
         return ($this->microseconds % Microseconds::DAY) < ($time->microseconds % Microseconds::DAY);
     }
 
-    public function isAfter(Time $time): bool
+    /**
+     * @param Time|string $time
+     * @return bool
+     */
+    public function isAfter($time): bool
     {
+        if (is_string($time)) {
+            $time = new static($time);
+        }
+
         return ($this->microseconds % Microseconds::DAY) > ($time->microseconds % Microseconds::DAY);
     }
 
-    public function isSameOrBefore(Time $time): bool
+    /**
+     * @param Time|string $time
+     * @return bool
+     */
+    public function isSameOrBefore($time): bool
     {
+        if (is_string($time)) {
+            $time = new static($time);
+        }
+
         return ($this->microseconds % Microseconds::DAY) <= ($time->microseconds % Microseconds::DAY);
     }
 
-    public function isSameOrAfter(Time $time): bool
+    /**
+     * @param Time|string $time
+     * @return bool
+     */
+    public function isSameOrAfter($time): bool
     {
+        if (is_string($time)) {
+            $time = new static($time);
+        }
+
         return ($this->microseconds % Microseconds::DAY) >= ($time->microseconds % Microseconds::DAY);
     }
 
-    public function isBetween(Time $since, Time $until): bool
+    /**
+     * @param Time|string $since
+     * @param Time|string $until
+     * @return bool
+     */
+    public function isBetween($since, $until): bool
     {
+        if (is_string($since)) {
+            $since = new static($since);
+        }
+        if (is_string($until)) {
+            $until = new static($until);
+        }
+
         $sinceTime = $since->microseconds % Microseconds::DAY;
         $untilTime = $until->microseconds % Microseconds::DAY;
         $thisTime = $this->microseconds % Microseconds::DAY;
@@ -309,24 +380,6 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
     public function isMidnight(): bool
     {
         return $this->microseconds === 0 || $this->microseconds === Microseconds::DAY;
-    }
-
-    /**
-     * @param DateTimeInterface|Time $time
-     * @return DateInterval
-     */
-    public function diff($time, bool $absolute = false): DateInterval
-    {
-        Check::types($time, [DateTimeInterface::class, self::class]);
-
-        return (new DateTime($this->format()))->diff(new DateTime($time->format(self::DEFAULT_FORMAT)), $absolute);
-    }
-
-    public function difference(Time $other, bool $absolute = false): TimeSpan
-    {
-        $interval = $this->diff($other, $absolute);
-
-        return TimeSpan::createFromDateInterval($interval);
     }
 
     // getters ---------------------------------------------------------------------------------------------------------

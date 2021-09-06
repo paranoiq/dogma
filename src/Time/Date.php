@@ -27,7 +27,6 @@ use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Interval\DateTimeInterval;
 use Dogma\Time\Provider\TimeProvider;
 use Dogma\Time\Span\DateSpan;
-use Dogma\Type;
 use Throwable;
 use function array_keys;
 use function array_values;
@@ -216,17 +215,25 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
     }
 
     /**
-     * @param DateTimeInterface|Date $date
+     * @param DateTimeInterface|Date|string $other
      * @return DateInterval
      */
-    public function diff($date, bool $absolute = false): DateInterval
+    public function diff($other, bool $absolute = false): DateInterval
     {
-        Check::types($date, [DateTimeInterface::class, self::class]);
+        if (is_string($other)) {
+            $other = new DateTime($other);
+        } elseif ($other instanceof self) {
+            $other = new DateTime($other->format());
+        }
 
-        return (new DateTime($this->format()))->diff(new DateTime($date->format(self::DEFAULT_FORMAT)), $absolute);
+        return (new DateTime($this->format()))->diff($other, $absolute);
     }
 
-    public function difference(Date $other, bool $absolute = false): DateSpan
+    /**
+     * @param DateTimeInterface|Date|string $other
+     * @return DateSpan
+     */
+    public function difference($other, bool $absolute = false): DateSpan
     {
         $interval = $this->diff($other, $absolute);
 
@@ -265,28 +272,72 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
         return $this->julianDay === $other->julianDay;
     }
 
-    public function isBefore(Date $date): bool
+    /**
+     * @param Date|string $date
+     * @return bool
+     */
+    public function isBefore($date): bool
     {
+        if (is_string($date)) {
+            $date = new static($date);
+        }
+
         return $this->julianDay < $date->julianDay;
     }
 
-    public function isAfter(Date $date): bool
+    /**
+     * @param Date|string $date
+     * @return bool
+     */
+    public function isAfter($date): bool
     {
+        if (is_string($date)) {
+            $date = new static($date);
+        }
+
         return $this->julianDay > $date->julianDay;
     }
 
-    public function isSameOrBefore(Date $date): bool
+    /**
+     * @param Date|string $date
+     * @return bool
+     */
+    public function isSameOrBefore($date): bool
     {
+        if (is_string($date)) {
+            $date = new static($date);
+        }
+
         return $this->julianDay <= $date->julianDay;
     }
 
-    public function isSameOrAfter(Date $date): bool
+    /**
+     * @param Date|string $date
+     * @return bool
+     */
+    public function isSameOrAfter($date): bool
     {
+        if (is_string($date)) {
+            $date = new static($date);
+        }
+
         return $this->julianDay >= $date->julianDay;
     }
 
-    public function isBetween(Date $sinceDate, Date $untilDate): bool
+    /**
+     * @param Date|string $sinceDate
+     * @param Date|string $untilDate
+     * @return bool
+     */
+    public function isBetween($sinceDate, $untilDate): bool
     {
+        if (is_string($sinceDate)) {
+            $sinceDate = new static($sinceDate);
+        }
+        if (is_string($untilDate)) {
+            $untilDate = new static($untilDate);
+        }
+
         return $this->julianDay >= $sinceDate->julianDay && $this->julianDay <= $untilDate->julianDay;
     }
 
@@ -305,15 +356,15 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
     }
 
     /**
-     * @param int|DayOfWeek $day
+     * @param int|string|DayOfWeek $day
      * @return bool
      */
     public function isDayOfWeek($day): bool
     {
-        Check::types($day, [Type::INT, DayOfWeek::class]);
-
         if (is_int($day)) {
             $day = DayOfWeek::get($day);
+        } elseif (is_string($day)) {
+            $day = DayOfWeek::getByName($day);
         }
 
         return (($this->julianDay % 7) + 1) === $day->getValue();
@@ -325,15 +376,15 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
     }
 
     /**
-     * @param int|Month $month
+     * @param int|string|Month $month
      * @return bool
      */
     public function isMonth($month): bool
     {
-        Check::types($month, [Type::INT, Month::class]);
-
         if (is_int($month)) {
             $month = Month::get($month);
+        } elseif (is_string($month)) {
+            $month = Month::getByName($month);
         }
 
         return (int) $this->format('n') === $month->getValue();

@@ -26,7 +26,6 @@ use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Provider\TimeProvider;
 use Dogma\Time\Span\DateOrTimeSpan;
 use Dogma\Time\Span\DateTimeSpan;
-use Dogma\Type;
 use const DATE_RFC2822;
 use function array_keys;
 use function array_values;
@@ -409,7 +408,26 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return parent::format($format);
     }
 
-    public function difference(DateTimeInterface $other, bool $absolute = false): DateTimeSpan
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param DateTimeInterface|string $other
+     * @param bool $absolute
+     * @return DateInterval
+     */
+    public function diff($other, $absolute = false): DateInterval
+    {
+        if (is_string($other)) {
+            $other = new static($other);
+        }
+
+        return parent::diff($other, $absolute);
+    }
+
+    /**
+     * @param DateTimeInterface|string $other
+     * @return DateTimeSpan
+     */
+    public function difference($other, bool $absolute = false): DateTimeSpan
     {
         $interval = $this->diff($other, $absolute);
 
@@ -459,18 +477,46 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this->getTimezone()->getOffset($this) === $other->getTimezone()->getOffset($other);
     }
 
-    public function isBefore(DateTimeInterface $dateTime): bool
+    /**
+     * @param DateTimeInterface|string $dateTime
+     * @return bool
+     */
+    public function isBefore($dateTime): bool
     {
+        if (is_string($dateTime)) {
+            $dateTime = new static($dateTime);
+        }
+
         return $this < $dateTime;
     }
 
-    public function isAfter(DateTimeInterface $dateTime): bool
+    /**
+     * @param DateTimeInterface|string $dateTime
+     * @return bool
+     */
+    public function isAfter($dateTime): bool
     {
+        if (is_string($dateTime)) {
+            $dateTime = new static($dateTime);
+        }
+
         return $this > $dateTime;
     }
 
-    public function isBetween(DateTimeInterface $sinceTime, DateTimeInterface $untilTime): bool
+    /**
+     * @param DateTimeInterface|string $sinceTime
+     * @param DateTimeInterface|string $untilTime
+     * @return bool
+     */
+    public function isBetween($sinceTime, $untilTime): bool
     {
+        if (is_string($sinceTime)) {
+            $sinceTime = new static($sinceTime);
+        }
+        if (is_string($untilTime)) {
+            $untilTime = new static($untilTime);
+        }
+
         return $this >= $sinceTime && $this <= $untilTime;
     }
 
@@ -490,47 +536,57 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     }
 
     /**
-     * @param DateTimeInterface|Date $date
+     * @param DateTimeInterface|Date|string $date
      * @return bool
      */
     public function isSameDay($date): bool
     {
-        Check::types($date, [DateTimeInterface::class, Date::class]);
+        if (is_string($date)) {
+            $date = new static($date);
+        }
 
         return $this->format(Date::DEFAULT_FORMAT) === $date->format(Date::DEFAULT_FORMAT);
     }
 
     /**
-     * @param DateTimeInterface|Date $date
+     * @param DateTimeInterface|Date|string $date
      * @return bool
      */
     public function isBeforeDay($date): bool
     {
-        Check::types($date, [DateTimeInterface::class, Date::class]);
+        if (is_string($date)) {
+            $date = new static($date);
+        }
 
         return $this->format(Date::DEFAULT_FORMAT) < $date->format(Date::DEFAULT_FORMAT);
     }
 
     /**
-     * @param DateTimeInterface|Date $date
+     * @param DateTimeInterface|Date|string $date
      * @return bool
      */
     public function isAfterDay($date): bool
     {
-        Check::types($date, [DateTimeInterface::class, Date::class]);
+        if (is_string($date)) {
+            $date = new static($date);
+        }
 
         return $this->format(Date::DEFAULT_FORMAT) > $date->format(Date::DEFAULT_FORMAT);
     }
 
     /**
-     * @param DateTimeInterface|Date $sinceDate
-     * @param DateTimeInterface|Date $untilDate
+     * @param DateTimeInterface|Date|string $sinceDate
+     * @param DateTimeInterface|Date|string $untilDate
      * @return bool
      */
     public function isBetweenDays($sinceDate, $untilDate): bool
     {
-        Check::types($sinceDate, [DateTimeInterface::class, Date::class]);
-        Check::types($untilDate, [DateTimeInterface::class, Date::class]);
+        if (is_string($sinceDate)) {
+            $sinceDate = new static($sinceDate);
+        }
+        if (is_string($untilDate)) {
+            $untilDate = new static($untilDate);
+        }
 
         $thisDate = $this->format(Date::DEFAULT_FORMAT);
 
@@ -560,15 +616,15 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     }
 
     /**
-     * @param int|DayOfWeek $day
+     * @param int|string|DayOfWeek $day
      * @return bool
      */
     public function isDayOfWeek($day): bool
     {
-        Check::types($day, [Type::INT, DayOfWeek::class]);
-
         if (is_int($day)) {
             $day = DayOfWeek::get($day);
+        } elseif (is_string($day)) {
+            $day = DayOfWeek::getByName($day);
         }
 
         return (int) $this->format('N') === $day->getValue();
@@ -580,15 +636,15 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     }
 
     /**
-     * @param int|Month $month
+     * @param int|string|Month $month
      * @return bool
      */
     public function isMonth($month): bool
     {
-        Check::types($month, [Type::INT, Month::class]);
-
         if (is_int($month)) {
             $month = Month::get($month);
+        } elseif (is_string($month)) {
+            $month = Month::getByName($month);
         }
 
         return (int) $this->format('n') === $month->getValue();

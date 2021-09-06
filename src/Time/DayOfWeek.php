@@ -12,6 +12,10 @@
 namespace Dogma\Time;
 
 use Dogma\Enum\IntEnum;
+use Dogma\InvalidValueException;
+use function array_search;
+use function is_int;
+use function strtolower;
 
 /**
  * Day of week as defined in ISO-8601 (1 for Monday through 7 for Sunday)
@@ -60,6 +64,17 @@ class DayOfWeek extends IntEnum
     public static function sunday(): self
     {
         return self::get(self::SUNDAY);
+    }
+
+    public static function getByName(string $name): self
+    {
+        $name = strtolower($name);
+        $number = array_search($name, self::getNames(), true);
+        if (!is_int($number)) {
+            throw new InvalidValueException($name, static::class);
+        }
+
+        return self::get($number);
     }
 
     /**
