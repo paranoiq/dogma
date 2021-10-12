@@ -21,6 +21,8 @@ use Error;
 use Nette\Utils\Strings;
 use UConverter;
 use const MB_CASE_TITLE;
+use function array_keys;
+use function array_values;
 use function class_exists;
 use function error_clear_last;
 use function error_get_last;
@@ -261,6 +263,14 @@ class Str
     public static function substringCount(string $string, string $substring): int
     {
         return (strlen($string) - strlen(str_replace($substring, '', $string))) / strlen($substring);
+    }
+
+    /**
+     * @param string[] $replacements
+     */
+    public static function replaceKeys(string $string, array $replacements): string
+    {
+        return str_replace(array_keys($replacements), array_values($replacements), $string);
     }
 
     // misc ------------------------------------------------------------------------------------------------------------
