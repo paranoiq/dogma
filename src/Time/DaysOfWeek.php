@@ -57,7 +57,7 @@ class DaysOfWeek extends IntSet
     {
         $days = [];
         foreach (DayOfWeek::getAllowedValues() as $value) {
-            if ($this->containsAll($value)) {
+            if ($this->containsAll(2 ** ($value - 1))) {
                 $days[] = DayOfWeek::get($value);
             }
         }
