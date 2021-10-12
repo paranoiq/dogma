@@ -34,6 +34,7 @@ use function explode;
 use function gregoriantojd;
 use function intval;
 use function is_int;
+use function is_string;
 use function jdtogregorian;
 use function sprintf;
 use function str_replace;

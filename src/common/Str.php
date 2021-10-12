@@ -61,7 +61,7 @@ class Str
 
     public static function checkEncoding(string $string): bool
     {
-        return $string === self::fixEncoding($string);
+        return $string === Strings::fixEncoding($string);
     }
 
     public static function fixEncoding(string $string): string
@@ -569,7 +569,7 @@ class Str
 
     /**
      * @deprecated use Re::matchAll() instead
-     * @return string[]
+     * @return string[][]
      */
     public static function matchAll(string $string, string $pattern, int $flags = 0, int $offset = 0): array
     {
