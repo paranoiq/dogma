@@ -108,7 +108,6 @@ class QueryEngine
         '/replace\\(/' => 'php:functionString("Dogma\\Dom\\QueryEngine::replace", .//',
 
         // jQuery-like shortcuts
-        /*
         '/:input/' => "*[name() = 'input' or name() = 'textarea' or name() = 'select' or name() = 'button']",
         '/:file/' => "input[@type = 'file']",
         '/:button/' => "*[name() = 'button' or (name() = 'input' and @type = 'button')]",
@@ -124,7 +123,6 @@ class QueryEngine
         '/:header/' => "*[name() = 'h1' or name() = 'h2' or name() = 'h3' or name() = 'h4' or name() = 'h5' or name() = 'h6']",
         '/:link/' => "a[@href]",
         '/:anchor/' => "*[@id or (name() = 'a' and @name)]",
-        */
     ];
 
     /** @var string[] */
