@@ -20,16 +20,15 @@ use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateTimeUnit;
 use Dogma\Time\DayOfYear;
 use Dogma\Time\InvalidDateTimeUnitException;
-use Dogma\Time\InvalidDayOfYearIntervalException;
 use function array_fill;
 use function array_map;
 use function array_shift;
 use function array_unique;
 use function array_values;
 use function count;
+use function floor;
 use function max;
 use function min;
-use function round;
 
 /**
  * Interval between two dates represented as DayOfYear. Does not include information about year.
@@ -64,13 +63,7 @@ class DayOfYearInterval implements ModuloInterval
             $end = $end->normalize();
         }
         if ($startNumber > $endNumber) {
-            $endNumber += DayOfYear::MAX_NUMBER;
             $end = $end->denormalize();
-        }
-
-        $length = $endNumber - $startNumber;
-        if ($length > DayOfYear::MAX_NUMBER) {
-            throw new InvalidDayOfYearIntervalException($start, $end);
         }
 
         $this->start = $start;

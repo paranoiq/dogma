@@ -10,6 +10,7 @@
 namespace Dogma;
 
 use Iterator;
+use ReturnTypeWillChange;
 
 /**
  * Combines values from two given iterators as keys and values. Iterators should return same number of items.
@@ -64,7 +65,7 @@ class CombineIterator implements Iterator
     /**
      * @return mixed|null
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function current()
     {
         return $this->values->valid() ? $this->values->current() : null;
@@ -73,7 +74,7 @@ class CombineIterator implements Iterator
     /**
      * @return int|string|null
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function key()
     {
         return $this->keys->valid() ? $this->keys->current() : null;

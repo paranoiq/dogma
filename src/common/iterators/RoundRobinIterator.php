@@ -10,6 +10,7 @@
 namespace Dogma;
 
 use Iterator;
+use ReturnTypeWillChange;
 use function array_values;
 use function count;
 
@@ -113,7 +114,7 @@ class RoundRobinIterator implements Iterator
     /**
      * @return mixed|null
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function current()
     {
         return $this->iterators[$this->current]->current();
@@ -122,7 +123,7 @@ class RoundRobinIterator implements Iterator
     /**
      * @return mixed|null
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function key()
     {
         return $this->key;

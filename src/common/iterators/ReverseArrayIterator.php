@@ -10,6 +10,7 @@
 namespace Dogma;
 
 use Iterator;
+use ReturnTypeWillChange;
 use function current;
 use function end;
 use function key;
@@ -53,7 +54,7 @@ class ReverseArrayIterator implements Iterator
     /**
      * @return int|string
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function key()
     {
         return key($this->array);
@@ -62,7 +63,7 @@ class ReverseArrayIterator implements Iterator
     /**
      * @return mixed
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function current()
     {
         return current($this->array);

@@ -39,7 +39,6 @@ use function array_values;
 use function count;
 use function floor;
 use function range;
-use function round;
 
 /**
  * Interval of times including date.
@@ -371,12 +370,12 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     /**
      * Splits interval into parts with borders aligned to given reference or to a beginning of splitting unit.
-     * eg. [2018-01-15 - 2018-02-15] split by 1 month will return two intervals:
+     * e.g. [2018-01-15 - 2018-02-15] split by 1 month will return two intervals:
      *  [2018-01-15 - 2018-01-31] and [2018-02-01 - 2018-02-15]
      *
      * When no reference is given, base for splitting will be calculated by rounding given unit* to a number divisible by given amount.
      * *) in context of a superior unit - number of month in year, iso number of week in year, number of day in month...
-     *  eg. for 5 months beginning of May or October will be used as base.
+     *  e.g. for 5 months beginning of May or October will be used as base.
      *
      * @return DateTimeIntervalSet
      */

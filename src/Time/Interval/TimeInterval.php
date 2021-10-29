@@ -21,7 +21,6 @@ use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateTimeUnit;
 use Dogma\Time\InvalidDateTimeUnitException;
-use Dogma\Time\InvalidTimeIntervalException;
 use Dogma\Time\Microseconds;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Span\TimeSpan;
@@ -74,13 +73,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
             $end = $end->normalize();
         }
         if ($startTime > $endTime) {
-            $endTime += Microseconds::DAY;
             $end = $end->denormalize();
-        }
-
-        $length = $endTime - $startTime;
-        if ($length > Microseconds::DAY) {
-            throw new InvalidTimeIntervalException($start, $end);
         }
 
         $this->start = $start;

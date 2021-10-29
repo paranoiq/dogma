@@ -10,6 +10,7 @@
 namespace Dogma;
 
 use BadMethodCallException;
+use ReturnTypeWillChange;
 use function array_key_exists;
 
 trait ImmutableArrayAccessMixin
@@ -28,7 +29,7 @@ trait ImmutableArrayAccessMixin
      * @param mixed $key
      * @return mixed
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetGet($key)
     {
         return $this->items[$key];

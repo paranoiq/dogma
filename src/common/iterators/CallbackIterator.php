@@ -10,6 +10,7 @@
 namespace Dogma;
 
 use IteratorIterator;
+use ReturnTypeWillChange;
 use Traversable;
 use function call_user_func;
 
@@ -44,7 +45,7 @@ class CallbackIterator extends IteratorIterator
     /**
      * @return mixed
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function key()
     {
         $key = parent::key();
@@ -59,7 +60,7 @@ class CallbackIterator extends IteratorIterator
     /**
      * @return mixed
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function current()
     {
         $value = parent::current();

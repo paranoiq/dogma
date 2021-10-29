@@ -11,6 +11,7 @@ namespace Dogma;
 
 use ArrayAccess;
 use IteratorIterator;
+use ReturnTypeWillChange;
 use Traversable;
 use function is_array;
 
@@ -45,7 +46,7 @@ class FetchKeysIterator extends IteratorIterator
     /**
      * @return mixed
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function current()
     {
         if ($this->valuesKey === null) {
@@ -62,7 +63,7 @@ class FetchKeysIterator extends IteratorIterator
     /**
      * @return string|int
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function key()
     {
         if ($this->keysKey === null) {

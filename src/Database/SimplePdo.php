@@ -73,10 +73,12 @@ class SimplePdo extends PDO
     }
 
     /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param string $query
      * @param mixed ...$args
      * @return SimplePdoResult
      */
-    public function query(string $query, ...$args): SimplePdoResult
+    public function query($query, ...$args): SimplePdoResult
     {
         $types = [];
         $counter = 0;
