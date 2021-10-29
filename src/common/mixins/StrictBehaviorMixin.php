@@ -36,7 +36,7 @@ trait StrictBehaviorMixin
      * @deprecated Magic property access is forbidden
      * @throws UndefinedPropertyException
      */
-    public function &__get(string $name): void
+    public function __get(string $name): void
     {
         throw new UndefinedPropertyException(static::class, $name);
     }

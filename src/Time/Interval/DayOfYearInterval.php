@@ -279,7 +279,7 @@ class DayOfYearInterval implements ModuloInterval
         $intervalStarts = [];
         for ($n = 1; $n < $parts; $n++) {
             // rounded to days
-            $intervalStarts[] = round(($this->start->getNumber() + $partSize * $n) % (DayOfYear::MAX_NUMBER + 1));
+            $intervalStarts[] = floor($this->start->getNumber() + $partSize * $n) % (DayOfYear::MAX_NUMBER + 1);
         }
         $intervalStarts = array_unique($intervalStarts);
         $intervalStarts = Arr::map($intervalStarts, static function (int $number): DayOfYear {

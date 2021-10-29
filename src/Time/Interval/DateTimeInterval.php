@@ -37,6 +37,7 @@ use function array_shift;
 use function array_unique;
 use function array_values;
 use function count;
+use function floor;
 use function range;
 use function round;
 
@@ -314,7 +315,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         $intervalStarts = [];
         for ($n = 1; $n < $parts; $n++) {
             // rounded to microseconds
-            $intervalStarts[] = round($this->start->getMicroTimestamp() + $partSize * $n, 6);
+            $intervalStarts[] = floor($this->start->getMicroTimestamp() + $partSize * $n);
         }
         $intervalStarts = array_unique($intervalStarts); /// why unique???
         $intervalStarts = Arr::map($intervalStarts, function (int $timestamp) {
