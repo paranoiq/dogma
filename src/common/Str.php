@@ -247,6 +247,21 @@ class Str
         return [substr($string, 0, $pos), substr($string, $pos + 1)];
     }
 
+    public static function getLineAt(string $string, int $position, string $separator = "\n"): string
+    {
+        $before = substr($string, 0, $position);
+        $lineStart = strrpos($before, $separator);
+        if ($lineStart === false) {
+            $lineStart = 0;
+        }
+        $lineEnd = strpos($string, $separator, $position);
+        if ($lineEnd === false) {
+            $lineEnd = strlen($string) - 1;
+        }
+
+        return substr($string, $lineStart + 1, $lineEnd - $lineStart - 1);
+    }
+
     /**
      * @see Re::count()
      * @return int
