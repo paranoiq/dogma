@@ -90,6 +90,24 @@ class Re
         return $result;
     }
 
+    public static function pos(string $string, string $pattern, int $offset = 0): ?int
+    {
+        if ($offset > strlen($string)) {
+            return null;
+        }
+
+        $result = preg_match($pattern, $string, $matches, PREG_OFFSET_CAPTURE, $offset);
+        if ($result === false) {
+            $error = preg_last_error() ?: 0;
+
+            throw new RegexpException($error);
+        } elseif ($result === 0) {
+            return null;
+        }
+
+        return $matches[0][1];
+    }
+
     /**
      * @param int $flags PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL
      * @return string[]|null
