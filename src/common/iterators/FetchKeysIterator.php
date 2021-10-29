@@ -45,6 +45,7 @@ class FetchKeysIterator extends IteratorIterator
     /**
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         if ($this->valuesKey === null) {
@@ -61,6 +62,7 @@ class FetchKeysIterator extends IteratorIterator
     /**
      * @return string|int
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         if ($this->keysKey === null) {

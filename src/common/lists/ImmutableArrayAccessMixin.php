@@ -28,6 +28,7 @@ trait ImmutableArrayAccessMixin
      * @param mixed $key
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($key)
     {
         return $this->items[$key];

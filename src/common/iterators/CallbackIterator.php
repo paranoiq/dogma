@@ -44,6 +44,7 @@ class CallbackIterator extends IteratorIterator
     /**
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         $key = parent::key();
@@ -58,6 +59,7 @@ class CallbackIterator extends IteratorIterator
     /**
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         $value = parent::current();

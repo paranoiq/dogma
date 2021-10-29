@@ -113,6 +113,7 @@ class RoundRobinIterator implements Iterator
     /**
      * @return mixed|null
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->iterators[$this->current]->current();
@@ -121,6 +122,7 @@ class RoundRobinIterator implements Iterator
     /**
      * @return mixed|null
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->key;

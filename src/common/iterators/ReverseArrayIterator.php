@@ -53,6 +53,7 @@ class ReverseArrayIterator implements Iterator
     /**
      * @return int|string
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return key($this->array);
@@ -61,6 +62,7 @@ class ReverseArrayIterator implements Iterator
     /**
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return current($this->array);
