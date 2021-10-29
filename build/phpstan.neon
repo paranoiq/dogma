@@ -3,32 +3,44 @@ includes:
     - phpstan.conf.php
 
 parameters:
+    level: 7
+
+    featureToggles:
+        disableRuntimeReflectionProvider: true
+
+    paths:
+        - ../src
+        - ../tests
+
+    earlyTerminatingMethodCalls:
+        Dogma\Check:
+            - invalidClass
+
     ignoreErrors:
         # misleading
         - '~^Method Dogma\\Http\\HttpDownloadRequest::execute\(\) should return Dogma\\Http\\HttpFileResponse but returns Dogma\\Http\\HttpResponse.~' # guaranteed
         - '~^Instanceof between Dogma\\Dom\\Element\|DOMNode and DOMCdataSection will always evaluate to false.~' # DOMCdataSection is a child of DOMNode
         - '~Parameter .* of static method Dogma\\Type::get\(\) expects~' # parameters magic
         - '~Variable \$result in PHPDoc tag @var does not exist~' # while ($result = array_shift($sources)) {
-        - '~Method Dogma\\Time\\DateTime::createFromAnyFormat\(\) should return static\(Dogma\\Time\\DateTime\) but return statement is missing.~' # WTF?!
         - '~Parameter #1 \$value of static method Dogma\\Enum\\(Int|String)(Enum|Set)::isValid\(\) expects (int|string), int\|string given.~'
         - '~Method Dogma\\Enum\\(Int|String)Set::getConstantNames\(\) should return array<string> but returns array<(int|string), int\|string\|false>.~'
         - '~Parameter #(1|2) \$arr(1|2) of function array_[a-z_]+ expects array, array\|\(callable\) given.~' # callables filtered out
         - '~Method Dogma\\Io\\FileMetaData::.*\(\) should return (int|string) but returns int\|string.~'
         -
-            message: "~Result of && is always false.~" # ???
-            path: "../../src/common/Check.php"
+            message: "~Result of && is always false~" # phpstan bug with is_subclass_of
+            path: "../src/common/Check.php"
         -
             message: "~Strict comparison using === between string and false will always evaluate to false~"
-            path: "../../src/common/Str.php"
+            path: "../src/common/Str.php"
         -
-            message: '~Binary operation "." between non-empty-string and array<string>\|string results in an error.~'
-            path: "../../src/Language/Transliterator.php"
+            message: '~Binary operation "." between non-empty-string and array<string>\|string results in an error~'
+            path: "../src/Language/Transliterator.php"
         -
-            message: '~Negated boolean expression is always true.~'
-            path: "../../src/common/lists/Arr.php"
+            message: '~Negated boolean expression is always true~'
+            path: "../src/common/lists/Arr.php"
         -
-            message: '~Negated boolean expression is always true.~'
-            path: "../../src/common/lists/ImmutableArray.php"
+            message: '~Negated boolean expression is always true~'
+            path: "../src/common/lists/ImmutableArray.php"
 
         # interface
         - '~^PHPDoc tag @return with type Dogma\\Language\\Locale\\LocaleCollationOption is not subtype of native type Dogma\\Enum\\StringEnum~'
@@ -41,10 +53,3 @@ parameters:
 
         # PHP 7.1 compatibility (cannot declare interface method with default value)
         - '~Call to an undefined method Dogma\\Time\\DateOr(Date)?Time::format\(\)~'
-
-    excludes_analyse:
-        - */tests/*/data/*
-
-    earlyTerminatingMethodCalls:
-        Dogma\Check:
-            - invalidClass

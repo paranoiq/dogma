@@ -30,7 +30,7 @@ dictionariesByFileExtension:
     php: en php html iso custom
 
 dictionaryDirectories:
-    - build/spell-checker
+    - build
     - vendor/spell-checker/spell-checker
     - vendor/spell-checker/dictionary-en
 
