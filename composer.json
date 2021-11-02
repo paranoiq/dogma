@@ -92,6 +92,16 @@
             "php71 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan.neon"
         ],
 
+        "lint:php": "php vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
+        "lint:php-all": [
+            "php81 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
+            "php80 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
+            "php74 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
+            "php73 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
+            "php72 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
+            "php71 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests"
+        ],
+
         "phpcs:all": [
             "@phpcs:src",
             "@phpcs:tests"
@@ -109,16 +119,6 @@
         "phpcs:fix": "php vendor/squizlabs/php_codesniffer/bin/phpcbf --standard=vendor/dogma/dogma-dev/src/CodeSniffer/ruleset-tests.xml -sp src tests",
 
         "spell:check": "php vendor/spell-checker/spell-checker/spell-checker -c build/spell-checker.neon --checkDictionaryFiles --memoryLimit 1024M --noLogo",
-
-        "lint:php": "php vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
-        "lint:php-all": [
-            "php81 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
-            "php80 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
-            "php74 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
-            "php73 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
-            "php72 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
-            "php71 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests"
-        ],
 
         "require:check": "php vendor/maglnet/composer-require-checker/bin/composer-require-checker.php check",
 
