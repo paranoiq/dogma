@@ -45,7 +45,7 @@ class DayOfYear implements Equalable, Comparable, Dumpable
     private $dayOfMonth;
 
     /**
-     * Receives date string (eg. "02-29") or number of day in year.
+     * Receives date string (e.g. "02-29") or number of day in year.
      *
      * This number may differ from the actual order of day in a particular year, because always counts with February 29th:
      * 1 = January 1st

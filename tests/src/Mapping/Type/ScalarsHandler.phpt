@@ -54,7 +54,7 @@ Assert::same($stringInstance, '123');
 
 exportInstance:
 // expected behavior - does not map back since the original type is unknown. proper reverse mapping must be
-// implemented either by a specialised handler (eg. MysqlScalarsHandler) or at an another layer (connection adapter)
+// implemented either by a specialised handler (e.g. MysqlScalarsHandler) or at an another layer (connection adapter)
 Assert::same($handler->exportInstance($boolType, $boolInstance, $mapper), true);
 Assert::same($handler->exportInstance($intType, $intInstance, $mapper), 123);
 Assert::same($handler->exportInstance($floatType, $floatInstance, $mapper), 1.23);
