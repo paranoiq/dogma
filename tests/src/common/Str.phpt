@@ -50,13 +50,34 @@ Assert::same(Str::findTag(' {foo} ', '{', '}', null, null, 2), [null, null]);
 Assert::same(Str::findTag(' {foo} {foo} ', '{', '}', null, null, 5), [7, 5]);
 
 
-levenshteinUnicode:
-Assert::same(Str::levenshteinUnicode('příliš', 'příliš'), 0.0);
-Assert::same(Str::levenshteinUnicode('žluťoučký', 'Žluťoučký'), 0.25);
-Assert::same(Str::levenshteinUnicode('kůň', 'kuň'), 0.5);
-Assert::same(Str::levenshteinUnicode('úpěl', 'úpl'), 1.0);
-Assert::same(Str::levenshteinUnicode('ďábelské', 'ďábelskéé'), 1.0);
-Assert::same(Str::levenshteinUnicode('ódy', 'údy'), 1.0);
+levenshtein:
+Assert::same(Str::levenshtein('příliš', 'příliš'), 0);
+Assert::same(Str::levenshtein('žluťoučký', 'Žluťoučký'), 1);
+Assert::same(Str::levenshtein('kůň', 'kuň'), 2);
+Assert::same(Str::levenshtein('úpěl', 'úpl'), 4);
+Assert::same(Str::levenshtein('ďábelské', 'ďábelskéé'), 4);
+Assert::same(Str::levenshtein('ódy', 'údy'), 4);
+Assert::same(Str::levenshtein('ódy', 'óyd'), 8);
+
+
+optimalDistance:
+Assert::same(Str::optimalDistance('příliš', 'příliš'), 0);
+Assert::same(Str::optimalDistance('žluťoučký', 'Žluťoučký'), 1);
+Assert::same(Str::optimalDistance('kůň', 'kuň'), 2);
+Assert::same(Str::optimalDistance('úpěl', 'úpl'), 4);
+Assert::same(Str::optimalDistance('ďábelské', 'ďábelskéé'), 4);
+Assert::same(Str::optimalDistance('ódy', 'údy'), 4);
+Assert::same(Str::optimalDistance('ódy', 'óyd'), 4);
+
+
+optimalDistanceBin:
+Assert::same(Str::optimalDistanceBin('příliš', 'příliš'), 0);
+Assert::same(Str::optimalDistanceBin('žluťoučký', 'Žluťoučký'), 1);
+Assert::same(Str::optimalDistanceBin('kůň', 'kuň'), 2);
+Assert::same(Str::optimalDistanceBin('úpěl', 'úpl'), 2);
+Assert::same(Str::optimalDistanceBin('ďábelské', 'ďábelskéé'), 2);
+Assert::same(Str::optimalDistanceBin('ódy', 'údy'), 1); // sub-character
+Assert::same(Str::optimalDistanceBin('ódy', 'óyd'), 1);
 
 
 removeDiacritics:
