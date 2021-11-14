@@ -429,7 +429,7 @@ class Str
      * Levenshtein distance for UTF-8 with additional weights for accent and case differences.
      * Expects input strings to be normalized UTF-8.
      *
-     * @return float
+     * @depreated use levenshtein()
      */
     public static function levenshteinUnicode(
         string $string1,
@@ -491,6 +491,192 @@ class Str
         }
 
         return $previousRow[$length2];
+    }
+
+    /**
+     * Levenshtein distance for UTF-8 with additional weights for accent and case differences.
+     * Expects input strings to be normalized UTF-8.
+     */
+    public static function levenshtein(
+        string $string1,
+        string $string2,
+        int $insertCost = 4,
+        int $deleteCost = 4,
+        int $replaceCost = 4,
+        ?int $accentCost = 2,
+        ?int $caseCost = 1
+    ): int
+    {
+        if ($string1 === $string2) {
+            return 0;
+        }
+
+        $length1 = mb_strlen($string1, 'UTF-8');
+        $length2 = mb_strlen($string2, 'UTF-8');
+        if ($length1 < $length2) {
+            return self::levenshtein(
+                $string2,
+                $string1,
+                $insertCost,
+                $deleteCost,
+                $replaceCost,
+                $accentCost,
+                $caseCost
+            );
+        }
+        if ($length1 === 0) {
+            return $length2 * $insertCost;
+        }
+
+        $previousRow = range(0, $length2);
+        for ($i = 0; $i < $length1; $i++) {
+            $currentRow = [];
+            $currentRow[0] = $i + 1;
+            $ci = mb_substr($string1, $i, 1, 'UTF-8');
+            for ($j = 0; $j < $length2; $j++) {
+                $cj = mb_substr($string2, $j, 1, 'UTF-8');
+
+                if ($ci === $cj) {
+                    $cost = 0;
+                } elseif ($caseCost !== null && self::lower($ci) === self::lower($cj)) {
+                    $cost = $caseCost;
+                } elseif ($accentCost !== null && self::removeDiacritics($ci) === self::removeDiacritics($cj)) {
+                    $cost = $accentCost;
+                } elseif ($caseCost !== null && $accentCost !== null && self::removeDiacriticsAndLower($ci) === self::removeDiacriticsAndLower($cj)) {
+                    $cost = $caseCost + $accentCost;
+                } else {
+                    $cost = $replaceCost;
+                }
+                $replacement = $previousRow[$j] + $cost;
+                $insertions = $previousRow[$j + 1] + $insertCost;
+                $deletions = $currentRow[$j] + $deleteCost;
+
+                $currentRow[] = min($replacement, $insertions, $deletions);
+            }
+            $previousRow = $currentRow;
+        }
+
+        return $previousRow[$length2];
+    }
+
+    /**
+     * "Optimal string alignment distance" for Unicode (Levenshtein + swaps + one edit in one place only)
+     * Expects input strings to be normalized UTF-8.
+     */
+    public static function optimalDistance(
+        string $string1,
+        string $string2,
+        int $insertCost = 4,
+        int $deleteCost = 4,
+        int $swapCost = 4,
+        int $replaceCost = 4,
+        ?int $accentCost = 2,
+        ?int $caseCost = 1
+    ): int
+    {
+        $length1 = mb_strlen($string1, 'UTF-8');
+        $length2 = mb_strlen($string2, 'UTF-8');
+        if ($length1 === 0) {
+            return $length2 * $insertCost;
+        } elseif ($length2 === 0) {
+            return $length1 * $deleteCost;
+        }
+
+        // for all $i and $j, $d[$i][$j] holds the string-alignment distance between the first $i characters of $s1 and the first $j characters of $s2.
+        $d = [];
+        for ($i = 0; $i <= $length1; $i++) {
+            $d[$i] = [];
+            $d[$i][0] = $i;
+        }
+        for ($j = 0; $j <= $length2; $j++) {
+            $d[0][$j] = $j;
+        }
+
+        // determine substring distances
+        for ($j = 0; $j < $length2; $j++) {
+            $cj = mb_substr($string2, $j, 1, 'UTF-8');
+            if ($j !== 0) {
+                $cj1 = mb_substr($string2, $j - 1, 1, 'UTF-8');
+            }
+            for ($i = 0; $i < $length1; $i++) {
+                $ci = mb_substr($string1, $i, 1, 'UTF-8');
+                if ($ci === $cj) {
+                    $cost = 0;
+                } elseif ($caseCost !== null && self::lower($ci) === self::lower($cj)) {
+                    $cost = $caseCost;
+                } elseif ($accentCost !== null && self::removeDiacritics($ci) === self::removeDiacritics($cj)) {
+                    $cost = $accentCost;
+                } elseif ($caseCost !== null && $accentCost !== null && self::removeDiacriticsAndLower($ci) === self::removeDiacriticsAndLower($cj)) {
+                    $cost = $caseCost + $accentCost;
+                } else {
+                    $cost = $replaceCost;
+                }
+                $d[$i + 1][$j + 1] = min($d[$i + 1][$j] + $insertCost, $d[$i][$j + 1] + $deleteCost, $d[$i][$j] + $cost);
+
+                if ($i === 0 || $j === 0) {
+                    continue;
+                }
+                $ci1 = mb_substr($string1, $i - 1, 1, 'UTF-8');
+                if ($ci === $cj1 && $ci1 === $cj) {
+                    $d[$i + 1][$j + 1] = min($d[$i + 1][$j + 1], $d[$i - 1][$j - 1] + ($ci === $cj ? 0 : $swapCost));
+                }
+            }
+        }
+
+        return $d[$length1][$length2];
+    }
+
+    /**
+     * "Optimal string alignment distance" for binary data and ASCII (Levenshtein + swaps + one edit in one place only)
+     */
+    public static function optimalDistanceBin(
+        string $string1,
+        string $string2,
+        int $insertCost = 1,
+        int $deleteCost = 1,
+        int $swapCost = 1,
+        int $replaceCost = 1
+    ): int
+    {
+        $length1 = strlen($string1);
+        $length2 = strlen($string2);
+        if ($length1 === 0) {
+            return $length2 * $insertCost;
+        } elseif ($length2 === 0) {
+            return $length1 * $deleteCost;
+        }
+
+        // for all $i and $j, $d[$i][$j] holds the string-alignment distance between the first $i characters of $s1 and the first $j characters of $s2.
+        $d = [];
+        for ($i = 0; $i <= $length1; $i++) {
+            $d[$i] = [];
+            $d[$i][0] = $i;
+        }
+        for ($j = 0; $j <= $length2; $j++) {
+            $d[0][$j] = $j;
+        }
+
+        // determine substring distances
+        for ($j = 0; $j < $length2; $j++) {
+            $cj = $string2[$j];
+            if ($j !== 0) {
+                $cj1 = $string2[$j - 1];
+            }
+            for ($i = 0; $i < $length1; $i++) {
+                $ci = $string1[$i];
+                $d[$i + 1][$j + 1] = min($d[$i + 1][$j] + $insertCost, $d[$i][$j + 1] + $deleteCost, $d[$i][$j] + ($ci === $cj ? 0 : $replaceCost));
+
+                if ($i === 0 || $j === 0) {
+                    continue;
+                }
+                $ci1 = $string1[$i - 1];
+                if ($ci === $cj1 && $ci1 === $cj) {
+                    $d[$i + 1][$j + 1] = min($d[$i + 1][$j + 1], $d[$i - 1][$j - 1] + ($ci === $cj ? 0 : $swapCost));
+                }
+            }
+        }
+
+        return $d[$length1][$length2];
     }
 
     // character manipulation ------------------------------------------------------------------------------------------
