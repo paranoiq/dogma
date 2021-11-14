@@ -39,7 +39,7 @@ use function count;
 use function round;
 
 /**
- * Interval of nights (eg. length of stay in a hotel in days). Based on IntInterval.
+ * Interval of nights (e.g. length of stay in a hotel in days). Based on IntInterval.
  *
  * Is calculated as if it was an interval with open end. The end date is not considered as included.
  * Appears to be one day "longer" than relevant DateInterval, in fact it is basically shifted forward by undefined number of hours.

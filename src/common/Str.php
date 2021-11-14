@@ -358,7 +358,7 @@ class Str
     /**
      * Locates a "tag" surrounded by given markers which may be escaped. Returns start and length pair.
      *
-     * Eg. called with ("foo {{no-tag}} {tag}}body} bar", '{', '}', '{', '}) will return [15, 12] for the "{tag{{body}"
+     * E.g. called with ("foo {{no-tag}} {tag}}body} bar", '{', '}', '{', '}) will return [15, 12] for the "{tag{{body}"
      *
      * @return int[]|null[] ($start, $length)
      */

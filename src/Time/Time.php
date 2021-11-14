@@ -197,8 +197,8 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
     }
 
     /**
-     * Round to closest value from given list of values for given unit
-     * (eg. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
+     * Round to the closest value from given list of values for given unit
+     * (e.g. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
      * @param int[]|null $allowedValues
      * @return Time
      */
@@ -212,7 +212,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
 
     /**
      * Round to firs upper value from given list of values for given unit
-     * (eg. 15:32:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
+     * (e.g. 15:32:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
      * @param int[]|null $allowedValues
      * @return Time
      */
@@ -226,7 +226,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
 
     /**
      * Round to firs lower value from given list of values for given unit
-     * (eg. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:30:00)
+     * (e.g. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:30:00)
      * @param int[]|null $allowedValues
      * @return Time
      */

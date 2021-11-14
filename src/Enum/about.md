@@ -18,8 +18,8 @@ Enum/Set value inheritance:
 
 To keep LSP, enums and sets has to be contravariant.
 This means, that you can not add new values in a descendant class, but only remove them.
-The class on top of hierarchy must be the most wide, with all possible values (eg. Country),
-while the child classes can have only subsets of original values (eg. CountryEurope).
+The class on top of hierarchy must be the most wide, with all possible values (e.g. Country),
+while the child classes can have only subsets of original values (e.g. CountryEurope).
 
 There are several ways of reducing values of a child enum:
 

@@ -16,7 +16,7 @@ use Traversable;
 use function is_array;
 
 /**
- * Returns only selected keys from iterated arrays (eg. rows) as keys and values.
+ * Returns only selected keys from iterated arrays (e.g. rows) as keys and values.
  *
  * @extends IteratorIterator<mixed, mixed, Traversable<mixed, mixed>>
  */
