@@ -2,6 +2,7 @@
 # code
 args
 binlog
+bsf
 cb
 CP
 dst
@@ -146,6 +147,7 @@ multithreaded
 nullable
 ok
 overmorrow
+permutate
 pokeable
 prepend
 quaternary
