@@ -22,12 +22,14 @@ use Nette\Utils\Strings;
 use UConverter;
 use const MB_CASE_TITLE;
 use function array_keys;
+use function array_pop;
 use function array_values;
 use function class_exists;
 use function error_clear_last;
 use function error_get_last;
 use function function_exists;
 use function iconv;
+use function implode;
 use function is_string;
 use function mb_convert_case;
 use function mb_convert_encoding;
@@ -260,6 +262,25 @@ class Str
         }
 
         return substr($string, $lineStart + 1, $lineEnd - $lineStart - 1);
+    }
+
+    /**
+     * Implode with optional different separator for last item in the list ("A, B, C and D")
+     * @param string[] $items
+     */
+    public static function join(array $items, string $separator = '', ?string $lastSeparator = null): string
+    {
+        if (count($items) === 0) {
+            return '';
+        } elseif (count($items) === 1) {
+            return (string) array_pop($items);
+        } elseif ($lastSeparator === null) {
+            return implode($separator, $items);
+        } else {
+            $last = array_pop($items);
+
+            return implode($separator, $items) . $lastSeparator . $last;
+        }
     }
 
     /**
