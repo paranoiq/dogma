@@ -12,7 +12,6 @@ namespace Dogma\Application;
 use Dogma\Re;
 use Dogma\StaticClassMixin;
 use const STR_PAD_RIGHT;
-use function preg_replace;
 use function str_pad;
 use function strlen;
 
@@ -120,6 +119,11 @@ final class Colors
         $original = self::remove($string);
 
         return str_pad($string, $length + strlen($string) - strlen($original), $with, $type);
+    }
+
+    public static function length(string $string): int
+    {
+        return Str::length(self::remove($string));
     }
 
     // shortcuts -------------------------------------------------------------------------------------------------------
