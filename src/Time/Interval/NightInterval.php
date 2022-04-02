@@ -65,12 +65,19 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
 
     final public function __construct(Date $start, Date $end)
     {
-        if ($start->getJulianDay() > $end->getJulianDay()) {
-            throw new InvalidIntervalStartEndOrderException($start, $end);
-        }
+        $startJd = $start->getJulianDay();
+        $endJd = $end->getJulianDay();
 
-        $this->start = $start;
-        $this->end = $end;
+        if ($startJd > $endJd) {
+            throw new InvalidIntervalStartEndOrderException($start, $end);
+        } elseif ($startJd === $endJd) {
+            // canonical empty interval
+            $this->start = new Date(self::MAX);
+            $this->end = new Date(self::MIN);
+        } else {
+            $this->start = $start;
+            $this->end = $end;
+        }
     }
 
     public static function createFromDateInterval(DateInterval $interval): self
@@ -94,11 +101,17 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         if ($openEnd) {
             $end = $end->subtractDay();
         }
-        if ($start->getJulianDay() > $end->getJulianDay()) {
-            return self::empty();
-        }
 
-        return new static($start, $end);
+        $startJd = $start->getJulianDay();
+        $endJd = $end->getJulianDay();
+
+        if ($startJd > $endJd) {
+            throw new InvalidIntervalStartEndOrderException($start, $end);
+        } elseif ($startJd === $endJd) {
+            return self::empty();
+        } else {
+            return new static($start, $end);
+        }
     }
 
     public static function createFromStartAndLength(Date $start, DateTimeUnit $unit, int $amount): self
