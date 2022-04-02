@@ -40,7 +40,6 @@ use function mb_strtolower;
 use function mb_strtoupper;
 use function mb_substr;
 use function min;
-use function preg_replace;
 use function range;
 use function str_replace;
 use function strcasecmp;
@@ -315,10 +314,10 @@ class Str
 
     public static function underscore(string $string): string
     {
-        return strtolower(preg_replace(
+        return strtolower(Re::replace(
+            Re::replace($string, '/([a-z\d])([A-Z])/', '\1_\2'),
             '/([A-Z]+)([A-Z])/',
-            '\1_\2',
-            preg_replace('/([a-z\d])([A-Z])/', '\1_\2', $string)
+            '\1_\2'
         ));
     }
 

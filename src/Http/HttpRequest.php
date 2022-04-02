@@ -123,9 +123,10 @@ class HttpRequest
         /** @var resource|false $curl */
         $curl = curl_init();
         if ($curl === false) {
-            $message = error_get_last()['message'];
+            /** @var string[] $error */
+            $error = error_get_last();
 
-            throw new HttpRequestException("Cannot initialize curl. Error: $message");
+            throw new HttpRequestException('Cannot initialize curl. Error: ' . $error['message']);
         }
         $this->curl = $curl;
 

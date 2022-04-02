@@ -505,6 +505,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         /** @var self[] $items */
         $items = Arr::sortComparable($items);
 
+        /** @var self $result */
         $result = array_shift($items);
         foreach ($items as $item) {
             if ($result->start < $item->start) {
@@ -530,6 +531,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         /** @var self[] $items */
         $items = Arr::sortComparable($items);
 
+        /** @var DateTimeInterval $current */
         $current = array_shift($items);
         $results = [$current];
         foreach ($items as $item) {

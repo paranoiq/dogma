@@ -381,6 +381,7 @@ class DayOfYearInterval implements ModuloInterval
         /** @var self[] $items */
         $items = Arr::sortComparable($items);
 
+        /** @var DayOfYearInterval $current */
         $current = array_shift($items);
         $results = [$current];
         foreach ($items as $item) {

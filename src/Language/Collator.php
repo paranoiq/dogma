@@ -135,10 +135,10 @@ class Collator extends PhpCollator
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param mixed[] $arr
-     * @param int|null $sortFlag
+     * @param int $sortFlag
      * @return bool
      */
-    public function asort(array &$arr, $sortFlag = null): bool
+    public function asort(array &$arr, $sortFlag = self::SORT_REGULAR): bool
     {
         $result = parent::asort($arr, $sortFlag);
 
@@ -152,10 +152,10 @@ class Collator extends PhpCollator
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param mixed[] $arr
-     * @param int|null $sortFlag
+     * @param int $sortFlag
      * @return bool
      */
-    public function sort(array &$arr, $sortFlag = null): bool
+    public function sort(array &$arr, $sortFlag = self::SORT_REGULAR): bool
     {
         $result = parent::sort($arr, $sortFlag);
 

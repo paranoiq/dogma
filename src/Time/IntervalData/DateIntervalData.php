@@ -315,6 +315,7 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
         /** @var self[] $items */
         $items = Arr::sortComparable($items);
 
+        /** @var DateInterval $result */
         $result = array_shift($items);
         foreach ($items as $item) {
             if ($result->getEnd()->isSameOrAfter($item->getStart())) {

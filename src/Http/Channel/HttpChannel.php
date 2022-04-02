@@ -156,7 +156,7 @@ class HttpChannel
     {
         $name = $this->addJob($data, $context, null, true);
 
-        return $this->fetch($name);
+        return $this->fetchByName($name);
     }
 
     /**
@@ -311,16 +311,8 @@ class HttpChannel
         }
     }
 
-    /**
-     * @param string|int|null $name
-     * @return HttpResponse|null
-     */
-    public function fetch($name = null): ?HttpResponse
+    public function fetch(): ?HttpResponse
     {
-        if ($name !== null) {
-            return $this->fetchByName($name);
-        }
-
         if (!empty($this->finished)) {
             return array_shift($this->finished);
         }
@@ -336,7 +328,7 @@ class HttpChannel
         }
 
         // potentially endless loop, if something goes wrong (always set request timeouts!)
-        /// add timeout or retries
+        // todo: add timeout or retries
         while (empty($this->finished)) {
             $this->manager->read();
         }
@@ -348,7 +340,7 @@ class HttpChannel
      * @param string|int $name
      * @return HttpResponse
      */
-    private function fetchByName($name): HttpResponse
+    public function fetchByName($name): HttpResponse
     {
         if (!isset($this->queue[$name]) && !isset($this->running[$name]) && !isset($this->finished[$name])) {
             throw new HttpChannelException("Job named '$name' was not found.");

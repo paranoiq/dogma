@@ -39,11 +39,11 @@ class Locale
     /** @var string */
     private $value;
 
-    /** @var string[]|string[][] */
+    /** @var string[]|string[][]|null[] */
     private $components;
 
     /**
-     * @param string[]|string[][] $components
+     * @param string[]|string[][]|null[] $components
      */
     final private function __construct(string $value, array $components)
     {
@@ -180,11 +180,8 @@ class Locale
         return $this->value;
     }
 
-    public function getLanguage(): ?Language
+    public function getLanguage(): Language
     {
-        if (empty($this->components['language'])) {
-            return null;
-        }
         /** @var string $language */
         $language = $this->components['language'];
 

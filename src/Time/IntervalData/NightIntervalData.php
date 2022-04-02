@@ -315,6 +315,7 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
         /** @var self[] $items */
         $items = Arr::sortComparable($items);
 
+        /** @var NightInterval $result */
         $result = array_shift($items);
         foreach ($items as $item) {
             if ($result->getEnd()->isSameOrAfter($item->getStart())) {

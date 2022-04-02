@@ -420,6 +420,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         /** @var self[] $items */
         $items = Arr::sortComparable($items);
 
+        /** @var TimeInterval $current */
         $current = array_shift($items);
         $results = [$current];
         foreach ($items as $item) {

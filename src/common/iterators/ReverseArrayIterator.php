@@ -52,7 +52,7 @@ class ReverseArrayIterator implements Iterator
     }
 
     /**
-     * @return int|string
+     * @return int|string|null
      */
     #[ReturnTypeWillChange]
     public function key()

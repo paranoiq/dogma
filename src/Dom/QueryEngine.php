@@ -259,7 +259,10 @@ class QueryEngine
             return null;
         }
 
-        return $this->wrap($list->item(0));
+        /** @var DOMNode $item */
+        $item = $list->item(0);
+
+        return $this->wrap($item);
     }
 
     /**
@@ -331,10 +334,10 @@ class QueryEngine
     // internals -------------------------------------------------------------------------------------------------------
 
     /**
-     * @param Element|DOMNode $context
+     * @param Element|DOMNode|null $context
      * @return int|float|bool|string|Date|DateTime|null
      */
-    private function extractPath(string $query, $context)
+    private function extractPath(string $query, $context = null)
     {
         if (Re::match($query, '/^[a-zA-Z0-9_-]+\\(/')) {
             $node = $this->evaluate($query, $context);

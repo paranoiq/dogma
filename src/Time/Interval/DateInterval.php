@@ -406,6 +406,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         /** @var self[] $items */
         $items = Arr::sortComparable($items);
 
+        /** @var self $result */
         $result = array_shift($items);
         foreach ($items as $item) {
             if ($result->end->isSameOrAfter($item->start)) {
@@ -424,6 +425,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         /** @var self[] $items */
         $items = Arr::sortComparable($items);
 
+        /** @var DateInterval $current */
         $current = array_shift($items);
         $results = [$current];
         foreach ($items as $item) {

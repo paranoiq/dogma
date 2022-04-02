@@ -97,7 +97,7 @@ class Type
     final private function __construct(
         string $id,
         string $type,
-        ?bool $nullable = null,
+        bool $nullable = false,
         $itemType = null,
         $size = null,
         ?string $specific = null,
@@ -194,7 +194,7 @@ class Type
         return self::$instances[$id];
     }
 
-    private static function checkSize(string $type, ?int $size = null): void
+    private static function checkSize(string $type, int $size): void
     {
         if ($type === self::INT) {
             BitSize::checkIntSize($size);
@@ -216,7 +216,7 @@ class Type
         if ($type === self::STRING && $specific === Length::FIXED) {
             return;
         }
-        if ($type === self::RESOURCE && ResourceType::isValid($specific)) {
+        if ($type === self::RESOURCE && ResourceType::isValid((string) $specific)) {
             return;
         }
         throw new InvalidTypeException($type, "$type($specific)");
@@ -289,7 +289,7 @@ class Type
      * @param string|self $itemType
      * @return self
      */
-    public static function arrayOf($itemType, ?bool $nullable = false): self
+    public static function arrayOf($itemType, bool $nullable = false): self
     {
         return self::collectionOf(self::PHP_ARRAY, $itemType, $nullable);
     }
@@ -298,7 +298,7 @@ class Type
      * @param string|self $itemType
      * @return self
      */
-    public static function collectionOf(string $type, $itemType, ?bool $nullable = false): self
+    public static function collectionOf(string $type, $itemType, bool $nullable = false): self
     {
         Check::types($itemType, [self::STRING, self::class]);
 

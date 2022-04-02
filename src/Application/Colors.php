@@ -11,6 +11,7 @@ namespace Dogma\Application;
 
 use Dogma\Re;
 use Dogma\StaticClassMixin;
+use Dogma\Str;
 use const STR_PAD_RIGHT;
 use function str_pad;
 use function strlen;

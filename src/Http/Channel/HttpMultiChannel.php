@@ -212,7 +212,7 @@ class HttpMultiChannel
 
         $responses = [];
         foreach ($jobs as $channel => $subJobName) {
-            $responses[$channel] = $this->channels[$channel]->fetch($subJobName);
+            $responses[$channel] = $this->channels[$channel]->fetchByName($subJobName);
         }
 
         return $responses;
@@ -265,7 +265,7 @@ class HttpMultiChannel
         foreach ($this->queue as $subJobName => $channel) {
             foreach ($channel as $channelName => $jobName) {
                 if ($jobName === $name) {
-                    $this->responseHandler($this->channels[$channelName]->fetch($subJobName), $this->channels[$channelName], $subJobName);
+                    $this->responseHandler($this->channels[$channelName]->fetchByName($subJobName), $this->channels[$channelName], $subJobName);
                 }
             }
         }
