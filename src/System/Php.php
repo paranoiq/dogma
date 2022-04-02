@@ -9,8 +9,8 @@
 
 namespace Dogma\System;
 
+use Dogma\Re;
 use Dogma\StaticClassMixin;
-use Dogma\Str;
 use const INFO_GENERAL;
 use const PHP_INT_SIZE;
 use const PHP_SAPI;
@@ -55,7 +55,7 @@ class Php
             ob_start();
             phpinfo(INFO_GENERAL);
             $info = (string) ob_get_clean();
-            $threadSafe = (bool) Str::match($info, '~Thread Safety\s*</td>\s*<td[^>]*>\s*enabled~');
+            $threadSafe = (bool) Re::match($info, '~Thread Safety\s*</td>\s*<td[^>]*>\s*enabled~');
         }
 
         return $threadSafe;

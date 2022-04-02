@@ -10,7 +10,6 @@
 namespace Dogma\Dom;
 
 use Dogma\Re;
-use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
@@ -337,7 +336,7 @@ class QueryEngine
      */
     private function extractPath(string $query, $context)
     {
-        if (Str::match($query, '/^[a-zA-Z0-9_-]+\\(/')) {
+        if (Re::match($query, '/^[a-zA-Z0-9_-]+\\(/')) {
             $node = $this->evaluate($query, $context);
         } else {
             $node = $this->findOne($query, $context);

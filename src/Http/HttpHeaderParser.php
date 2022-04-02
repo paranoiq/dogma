@@ -13,6 +13,7 @@ use Dogma\Check;
 use Dogma\Io\ContentType\ContentType;
 use Dogma\Language\Encoding;
 use Dogma\Language\Locale\Locale;
+use Dogma\Re;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateTime;
@@ -67,7 +68,7 @@ class HttpHeaderParser
         $headers = [];
 
         $versionAndStatus = array_shift($rawHeaders);
-        $parts = Str::match($versionAndStatus, '~HTTP/(\d\.\d)\s(\d\d\d)\s(.*)~');
+        $parts = Re::match($versionAndStatus, '~HTTP/(\d\.\d)\s(\d\d\d)\s(.*)~');
         if ($parts !== null) {
             $headers[HttpHeader::HTTP_VERSION] = $parts[1];
             $headers[HttpHeader::STATUS] = $parts[2] . ' ' . $parts[3];
