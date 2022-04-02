@@ -498,6 +498,8 @@ class Str
     /**
      * Levenshtein distance for UTF-8 with additional weights for accent and case differences.
      * Expects input strings to be normalized UTF-8.
+     *
+     * @see https://www.joyofdata.de/blog/comparison-of-string-distance-algorithms/
      */
     public static function levenshtein(
         string $string1,
