@@ -17,7 +17,7 @@
         "nette/utils": "~2.4|~3.0"
     },
     "require-dev": {
-        "dogma/dogma-dev": "0.1.21"
+        "dogma/dogma-dev": "0.1.27"
     },
     "suggest": {
         "ext-dom": "for Dom (basic functionality)",
@@ -102,6 +102,7 @@
         ],
 
         "phpcs:all": [
+            "Composer\\Config::disableProcessTimeout",
             "@phpcs:src",
             "@phpcs:tests"
         ],
