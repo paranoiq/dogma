@@ -32,10 +32,10 @@ class HttpMultiChannel
     /** @var int */
     private $lastIndex = -1;
 
-    /** @var string[][] (string $subJobName => (string $channelName => string $jobName)) */
+    /** @var array<array<int|string>> ($subJobName => ($channelName => $jobName)) */
     private $queue = [];
 
-    /** @var HttpResponse[][] (string $jobName => (string $channelName => Response $response)) */
+    /** @var array<array<HttpResponse>> ($jobName => ($channelName => $response)) */
     private $finished = [];
 
     /** @var callable|null */

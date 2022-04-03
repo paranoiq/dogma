@@ -9,8 +9,6 @@
 
 namespace Dogma;
 
-use const PHP_VERSION;
-
 trait NonSerializableMixin
 {
 
@@ -21,11 +19,7 @@ trait NonSerializableMixin
      */
     final public function __sleep(): array
     {
-        if (PHP_VERSION !== '') {
-            throw new NonSerializableObjectException(static::class);
-        }
-
-        return [];
+        throw new NonSerializableObjectException(static::class);
     }
 
     /**

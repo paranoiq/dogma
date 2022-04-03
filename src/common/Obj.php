@@ -7,7 +7,7 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-// phpcs:disable SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint
+// phpcs:disable SlevomatCodingStandard.TypeHints.ParameterTypeHint
 
 namespace Dogma;
 
@@ -19,6 +19,9 @@ class Obj
 {
     use StaticClassMixin;
 
+    /**
+     * @param object $object
+     */
     public static function dumpHash($object): string
     {
         return substr(md5(spl_object_hash($object)), 0, 4);

@@ -15,6 +15,7 @@ use Dogma\Time\DateTime;
 use DOMDocument;
 use DOMElement;
 use DOMNode;
+use ReturnTypeWillChange;
 use function libxml_clear_errors;
 use function libxml_get_last_error;
 use function libxml_use_internal_errors;
@@ -134,6 +135,7 @@ class Document extends DOMDocument
      * @param string $id
      * @return Element|DOMNode|null
      */
+    #[ReturnTypeWillChange]
     public function getElementById($id)
     {
         $element = parent::getElementById($id);

@@ -13,6 +13,7 @@ use Dogma\StrictBehaviorMixin;
 use PDO;
 use PDOException;
 use PDOStatement;
+use ReturnTypeWillChange;
 use function array_shift;
 use function array_values;
 use function bin2hex;
@@ -145,6 +146,7 @@ class SimplePdo extends PDO
      * @param mixed ...$args
      * @return void
      */
+    #[ReturnTypeWillChange]
     public function exec($query, ...$args): void
     {
         $args = func_get_args();

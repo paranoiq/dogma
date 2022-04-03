@@ -55,7 +55,7 @@ class File implements Path
     use NonCloneableMixin;
     use NonSerializableMixin;
 
-    /** @var int */
+    /** @var positive-int */
     public static $defaultChunkSize = 8192;
 
     /** @var string */
@@ -227,6 +227,9 @@ class File implements Path
         return $feof;
     }
 
+    /**
+     * @param positive-int|null $length
+     */
     public function read(?int $length = null): string
     {
         $this->checkOpened();
@@ -264,6 +267,7 @@ class File implements Path
         }
 
         $done = 0;
+        /** @var positive-int $chunk */
         $chunk = $length ? min($length - $done, $chunkSize) : $chunkSize;
         while (!$this->endOfFileReached() && (!$length || $done < $length)) {
             $buff = $this->read($chunk);
@@ -311,6 +315,7 @@ class File implements Path
 
     /**
      * Truncate file and move pointer at the end
+     * @param int<0, max> $size
      */
     public function truncate(int $size = 0): void
     {

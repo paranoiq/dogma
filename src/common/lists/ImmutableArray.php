@@ -783,6 +783,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         return new static(array_slice($this->toArray(), $from, $length, self::PRESERVE_KEYS));
     }
 
+    /**
+     * @param int<1, max> $size
+     */
     public function chunks(int $size): self
     {
         $res = new static(array_chunk($this->toArray(), $size, self::PRESERVE_KEYS));

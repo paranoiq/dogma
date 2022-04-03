@@ -447,8 +447,8 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
         $values->year = (int) $results[0];
         $values->leapYear = (bool) $results[1];
         $values->dayOfYear = (int) $results[2];
-        $values->quarter = (int) ($results[3] / 3);
         $values->month = (int) $results[3];
+        $values->quarter = (int) ($values->month / 3);
         $values->day = (int) $results[4];
         $values->dayOfWeek = (int) $results[5];
         $values->weekOfYear = (int) $results[6];

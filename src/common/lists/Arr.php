@@ -866,6 +866,7 @@ class Arr
 
     /**
      * @param mixed[] $array
+     * @param int<1, max> $size
      * @return mixed[]
      */
     public static function chunks(array $array, int $size): array

@@ -14,6 +14,7 @@ use Exception;
 use Iterator;
 use PDO;
 use PDOStatement;
+use ReturnTypeWillChange;
 use function is_array;
 use function is_int;
 
@@ -113,6 +114,7 @@ class SimplePdoResult implements Iterator
         $this->current = $this->fetch();
     }
 
+    #[ReturnTypeWillChange]
     public function next(): bool
     {
         $this->key++;
