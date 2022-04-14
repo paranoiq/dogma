@@ -14,11 +14,11 @@
         "php": "^7.1|^8.0",
         "ext-calendar":"*",
         "nette/http": "~2.4|~3.0",
-        "nette/utils": "~2.4|~3.0",
-        "phpstan/phpstan": "1.4.10"
+        "nette/utils": "~2.4|~3.0"
     },
     "require-dev": {
-        "dogma/dogma-dev": "0.1.27"
+        "dogma/dogma-dev": "0.1.27",
+        "phpstan/phpstan": "1.4.10"
     },
     "suggest": {
         "ext-dom": "for Dom (basic functionality)",
