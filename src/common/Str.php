@@ -24,6 +24,7 @@ use UConverter;
 use const MB_CASE_TITLE;
 use function array_keys;
 use function array_pop;
+use function array_shift;
 use function array_values;
 use function class_exists;
 use function count;
@@ -250,38 +251,64 @@ class Str
         return [substr($string, 0, $pos), substr($string, $pos + 1)];
     }
 
-    public static function getLineAt(string $string, int $position, string $separator = "\n"): string
+    /**
+     * Position is per bytes, not per characters!
+     */
+    public static function getLineAt(string $string, int $bytePosition, string $separator = "\n"): string
     {
-        $before = substr($string, 0, $position);
+        if ($bytePosition >= strlen($string)) {
+            return '';
+        }
+
+        $before = self::substring($string, 0, $bytePosition);
         $lineStart = strrpos($before, $separator);
         if ($lineStart === false) {
-            $lineStart = 0;
+            $lineStart = -1;
         }
-        $lineEnd = strpos($string, $separator, $position);
+        $lineEnd = strpos($string, $separator, $bytePosition);
         if ($lineEnd === false) {
-            $lineEnd = strlen($string) - 1;
+            $lineEnd = strlen($string);
         }
 
         return substr($string, $lineStart + 1, $lineEnd - $lineStart - 1);
     }
 
     /**
-     * Implode with optional different separator for last item in the list ("A, B, C and D")
+     * Implode with optional different separator for last item in the list ("A, B, C and D") and length limit ("A, B, C...")
      * @param string[] $items
      */
-    public static function join(array $items, string $separator = '', ?string $lastSeparator = null): string
+    public static function join(
+        array $items,
+        string $separator = '',
+        ?string $lastSeparator = null,
+        ?int $maxLength = null,
+        string $ellipsis = '…'
+    ): string
     {
         if (count($items) === 0) {
             return '';
         } elseif (count($items) === 1) {
             return (string) array_pop($items);
-        } elseif ($lastSeparator === null) {
-            return implode($separator, $items);
+        }
+
+        if ($lastSeparator === null) {
+            $result = implode($separator, $items);
         } else {
             $last = array_pop($items);
 
-            return implode($separator, $items) . $lastSeparator . $last;
+            $result = implode($separator, $items) . $lastSeparator . $last;
         }
+        if ($maxLength === null || self::length($result) <= $maxLength) {
+            return $result;
+        }
+
+        $maxLength -= self::length($ellipsis);
+        $result = (string) array_shift($items);
+        while (self::length($result) < $maxLength && $items !== []) {
+            $result .= $separator . array_shift($items);
+        }
+
+        return $result . $ellipsis;
     }
 
     /**
