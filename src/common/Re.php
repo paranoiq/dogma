@@ -108,6 +108,24 @@ class Re
         return $matches[0][1];
     }
 
+    public static function hasMatch(string $string, string $pattern, int $offset = 0): bool
+    {
+        if ($offset > strlen($string)) {
+            return false;
+        }
+
+        $result = preg_match($pattern, $string, $matches, $offset);
+        if ($result === false) {
+            $error = preg_last_error() ?: 0;
+
+            throw new RegexpException($error);
+        } elseif ($result === 0) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * @param int $flags PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL
      * @return string[]|null
