@@ -15,6 +15,7 @@ use Dogma\Http\HttpHeaderParser;
 use Dogma\Http\HttpRequest;
 use Dogma\NonCloneableMixin;
 use Dogma\NonSerializableMixin;
+use Dogma\Obj;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Provider\CurrentTimeProvider;
 use const CURLM_CALL_MULTI_PERFORM;
@@ -50,7 +51,7 @@ class HttpChannelManager
     /** @var HttpChannel[] */
     private $channels = [];
 
-    /** @var mixed[] ($resourceId => array($channelId, $jobName, $request)) */
+    /** @var mixed[] (int $resourceId => array($channelId, $jobName, $request)) */
     private $resources = [];
 
     /** @var HttpHeaderParser|null */
@@ -154,7 +155,7 @@ class HttpChannelManager
     private function readResults(): void
     {
         while ($info = curl_multi_info_read($this->handler)) {
-            $resourceId = (string) $info['handle'];
+            $resourceId = Obj::objectId($info['handle']);
             [$channelId, $name, $request] = $this->resources[$resourceId];
             $channel = &$this->channels[$channelId];
 
@@ -218,7 +219,7 @@ class HttpChannelManager
      */
     public function jobStarted($resource, HttpChannel $channel, $name, HttpRequest $request): void
     {
-        $this->resources[(string) $resource] = [spl_object_hash($channel), $name, $request];
+        $this->resources[Obj::objectId($resource)] = [spl_object_hash($channel), $name, $request];
     }
 
     public function getHeaderParser(): HttpHeaderParser
