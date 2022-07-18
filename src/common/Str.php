@@ -93,6 +93,34 @@ class Str
         return strpos($string, $find) !== false;
     }
 
+    /**
+     * @param string[] $find
+     */
+    public static function containsAny(string $string, array $find): bool
+    {
+        foreach ($find as $value) {
+            if (strpos($string, $value) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string[] $find
+     */
+    public static function containsAll(string $string, array $find): bool
+    {
+        foreach ($find as $value) {
+            if (strpos($string, $value) === false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static function substring(string $string, int $start, ?int $length = null): string
     {
         return Strings::substring($string, $start, $length);
