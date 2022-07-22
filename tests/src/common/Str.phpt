@@ -2,10 +2,45 @@
 
 namespace Dogma\Tests\Str;
 
+use Dogma\InvalidValueException;
 use Dogma\Str;
 use Dogma\Tester\Assert;
 
 require_once __DIR__ . '/../bootstrap.php';
+
+chr:
+Assert::same(Str::chr(0x000000), "\x00");
+Assert::same(Str::chr(0x00007F), "\x7F");
+Assert::same(Str::chr(0x000080), "\u{80}");
+Assert::same(Str::chr(0x0007FF), "\u{7FF}");
+Assert::same(Str::chr(0x000800), "\u{800}");
+Assert::same(Str::chr(0x00D7FF), "\u{D7FF}");
+Assert::same(Str::chr(0x00E000), "\u{E000}");
+Assert::same(Str::chr(0x00FFFF), "\u{FFFF}");
+Assert::same(Str::chr(0x010000), "\u{10000}");
+Assert::same(Str::chr(0x10FFFF), "\u{10FFFF}");
+
+foreach ([-1, 0xD800, 0xDFFF, 0x110000] as $code) {
+    Assert::exception(
+        static function() use ($code): void {
+            Str::chr($code);
+        },
+        InvalidValueException::class
+    );
+}
+
+
+ord:
+Assert::same(Str::ord("\x00"), 0x000000);
+Assert::same(Str::ord("\x7F"), 0x00007F);
+Assert::same(Str::ord("\u{80}"), 0x000080);
+Assert::same(Str::ord("\u{7FF}"), 0x0007FF);
+Assert::same(Str::ord("\u{800}"), 0x000800);
+Assert::same(Str::ord("\u{D7FF}"), 0x00D7FF);
+Assert::same(Str::ord("\u{E000}"), 0x00E000);
+Assert::same(Str::ord("\u{FFFF}"), 0x00FFFF);
+Assert::same(Str::ord("\u{10000}"), 0x010000);
+Assert::same(Str::ord("\u{10FFFF}"), 0x10FFFF);
 
 
 between:

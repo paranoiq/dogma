@@ -21,12 +21,12 @@ use Dogma\Language\UnicodeCharacterCategory;
 use Error;
 use Nette\Utils\Strings;
 use UConverter;
-use function ord;
 use const MB_CASE_TITLE;
 use function array_keys;
 use function array_pop;
 use function array_shift;
 use function array_values;
+use function chr;
 use function class_exists;
 use function count;
 use function error_clear_last;
@@ -42,6 +42,7 @@ use function mb_strtolower;
 use function mb_strtoupper;
 use function mb_substr;
 use function min;
+use function ord;
 use function range;
 use function str_replace;
 use function strcasecmp;
@@ -76,7 +77,25 @@ class Str
 
     public static function chr(int $code): string
     {
-        return Strings::chr($code);
+        if ($code < 0 || ($code >= 0xD800 && $code <= 0xDFFF) || $code > 0x10FFFF) {
+            throw new InvalidValueException($code, 'unicode codepoint in range 0x00 to 0xD7FF or 0xE000 to 0x10FFFF');
+        }
+
+        if ($code <= 0x7F) {
+            return chr($code); // 0-7,0-F
+        } elseif ($code <= 0x7FF) {
+            return chr(0b11000000 + ($code >> 6)) // 0xC-D,0-F,8-B,0-9
+                . chr(128 + ($code & 63));
+        } elseif ($code <= 0xFFFF) {
+            return chr(0b11100000 + ($code >> 12)) // 0xE,0-F,8-B,0-9,8-B,0-9
+                . chr(128 + (($code >> 6) & 63))
+                . chr(128 + ($code & 63));
+        } else {
+            return chr(0b11110000 + ($code >> 18)) // 0xF,0-7,8-B,0-9,8-B,0-9,8-B,0-9
+                . chr(128 + (($code >> 12) & 63))
+                . chr(128 + (($code >> 6) & 63))
+                . chr(128 + ($code & 63));
+        }
     }
 
     public static function ord(string $ch): int
