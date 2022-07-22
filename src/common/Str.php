@@ -100,28 +100,42 @@ class Str
 
     public static function ord(string $ch): int
     {
+        if ($ch === '') {
+            throw new InvalidValueException($ch, "UTF-8 character");
+        }
+
         $ord0 = ord($ch[0]);
-        if ($ord0 >= 0 && $ord0 <= 127) {
+        if ($ord0 <= 127) {
             return $ord0;
-        }
-        $ord1 = ord($ch[1]);
-        if ($ord0 >= 192 && $ord0 <= 223) {
+        } elseif ($ord0 >= 192 && $ord0 <= 223 && strlen($ch) >= 2) {
+            $ord1 = ord($ch[1]);
+
             return ($ord0 - 192) * 64 + ($ord1 - 128);
-        }
-        $ord2 = ord($ch[2]);
-        if ($ord0 >= 224 && $ord0 <= 239) {
+        } elseif ($ord0 >= 224 && $ord0 <= 239 && strlen($ch) >= 3) {
+            $ord1 = ord($ch[1]);
+            $ord2 = ord($ch[2]);
+
             return ($ord0 - 224) * 4096 + ($ord1 - 128) * 64 + ($ord2 - 128);
-        }
-        $ord3 = ord($ch[3]);
-        if ($ord0 >= 240 && $ord0 <= 247) {
+        } elseif ($ord0 >= 240 && $ord0 <= 247 && strlen($ch) >= 4) {
+            $ord1 = ord($ch[1]);
+            $ord2 = ord($ch[2]);
+            $ord3 = ord($ch[3]);
+
             return ($ord0 - 240) * 262144 + ($ord1 - 128) * 4096 + ($ord2 - 128) * 64 + ($ord3 - 128);
-        }
-        $ord4 = ord($ch[4]);
-        if ($ord0 >= 248 && $ord0 <= 251) {
+        } elseif ($ord0 >= 248 && $ord0 <= 251 && strlen($ch) >= 5) {
+            $ord1 = ord($ch[1]);
+            $ord2 = ord($ch[2]);
+            $ord3 = ord($ch[3]);
+            $ord4 = ord($ch[4]);
+
             return ($ord0 - 248) * 16777216 + ($ord1 - 128) * 262144 + ($ord2 - 128) * 4096 + ($ord3 - 128) * 64 + ($ord4 - 128);
-        }
-        $ord5 = ord($ch[5]);
-        if ($ord0 >= 252 && $ord0 <= 253) {
+        } elseif ($ord0 >= 252 && $ord0 <= 253 && strlen($ch) >= 6) {
+            $ord1 = ord($ch[1]);
+            $ord2 = ord($ch[2]);
+            $ord3 = ord($ch[3]);
+            $ord4 = ord($ch[4]);
+            $ord5 = ord($ch[5]);
+
             return ($ord0 - 252) * 1073741824 + ($ord1 - 128) * 16777216 + ($ord2 - 128) * 262144 + ($ord3 - 128) * 4096 + ($ord4 - 128) * 64 + ($ord5 - 128);
         }
 
