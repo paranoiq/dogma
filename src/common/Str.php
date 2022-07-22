@@ -21,6 +21,7 @@ use Dogma\Language\UnicodeCharacterCategory;
 use Error;
 use Nette\Utils\Strings;
 use UConverter;
+use function ord;
 use const MB_CASE_TITLE;
 use function array_keys;
 use function array_pop;
@@ -76,6 +77,36 @@ class Str
     public static function chr(int $code): string
     {
         return Strings::chr($code);
+    }
+
+    public static function ord(string $ch): int
+    {
+        $ord0 = ord($ch[0]);
+        if ($ord0 >= 0 && $ord0 <= 127) {
+            return $ord0;
+        }
+        $ord1 = ord($ch[1]);
+        if ($ord0 >= 192 && $ord0 <= 223) {
+            return ($ord0 - 192) * 64 + ($ord1 - 128);
+        }
+        $ord2 = ord($ch[2]);
+        if ($ord0 >= 224 && $ord0 <= 239) {
+            return ($ord0 - 224) * 4096 + ($ord1 - 128) * 64 + ($ord2 - 128);
+        }
+        $ord3 = ord($ch[3]);
+        if ($ord0 >= 240 && $ord0 <= 247) {
+            return ($ord0 - 240) * 262144 + ($ord1 - 128) * 4096 + ($ord2 - 128) * 64 + ($ord3 - 128);
+        }
+        $ord4 = ord($ch[4]);
+        if ($ord0 >= 248 && $ord0 <= 251) {
+            return ($ord0 - 248) * 16777216 + ($ord1 - 128) * 262144 + ($ord2 - 128) * 4096 + ($ord3 - 128) * 64 + ($ord4 - 128);
+        }
+        $ord5 = ord($ch[5]);
+        if ($ord0 >= 252 && $ord0 <= 253) {
+            return ($ord0 - 252) * 1073741824 + ($ord1 - 128) * 16777216 + ($ord2 - 128) * 262144 + ($ord3 - 128) * 4096 + ($ord4 - 128) * 64 + ($ord5 - 128);
+        }
+
+        throw new InvalidValueException($ch, "UTF-8 character");
     }
 
     public static function startsWith(string $string, string $find): bool
