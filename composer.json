@@ -11,14 +11,14 @@
         }
     ],
     "require": {
-        "php": "^7.1|^8.0",
+        "php": "^7.2|^8.0",
         "ext-calendar":"*",
         "nette/http": "~2.4|~3.0",
         "nette/utils": "~2.4|~3.0"
     },
     "require-dev": {
-        "dogma/dogma-dev": "0.1.27",
-        "phpstan/phpstan": "1.4.10"
+        "dogma/dogma-dev": "0.1.29",
+        "phpstan/phpstan": "1.8.2"
     },
     "suggest": {
         "ext-dom": "for Dom (basic functionality)",
@@ -73,33 +73,33 @@
 
         "tests:run": "php vendor/nette/tester/src/tester tests -c tests --colors 1",
         "tests:all": [
+            "php82 vendor/nette/tester/src/tester tests -c tests --colors 1",
             "php81 vendor/nette/tester/src/tester tests -c tests --colors 1",
             "php80 vendor/nette/tester/src/tester tests -c tests --colors 1",
             "php74 vendor/nette/tester/src/tester tests -c tests --colors 1",
             "php73 vendor/nette/tester/src/tester tests -c tests --colors 1",
-            "php72 vendor/nette/tester/src/tester tests -c tests --colors 1",
-            "php71 vendor/nette/tester/src/tester tests -c tests --colors 1"
+            "php72 vendor/nette/tester/src/tester tests -c tests --colors 1"
         ],
         "tests:coverage": "php vendor/nette/tester/src/tester tests -c tests --colors 1 -p phpdbg --coverage tests/coverage.html --coverage-src src",
 
         "phpstan:run": "php vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan.neon",
         "phpstan:all": [
+            "php82 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan.neon",
             "php81 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan.neon",
             "php80 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan.neon",
             "php74 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan.neon",
             "php73 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan.neon",
-            "php72 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan.neon",
-            "php71 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan.neon"
+            "php72 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/phpstan.neon"
         ],
 
         "lint:php": "php vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
         "lint:php-all": [
+            "php82 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
             "php81 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
             "php80 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
             "php74 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
             "php73 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
-            "php72 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
-            "php71 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests"
+            "php72 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests"
         ],
 
         "phpcs:all": [
@@ -152,5 +152,11 @@
         "spell:check": "Run spell-checker",
         "lint:php": "Run PHPLint",
         "lint:php-all": "Run PHPLint on all supported PHP versions (7.2, 7.3, 7.4, 8.0)"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": false,
+            "sllh/composer-versions-check": true
+        }
     }
 }

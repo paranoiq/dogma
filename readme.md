@@ -9,14 +9,14 @@ Collection of:
 - iterable types and iterators
 - constant list and enumerations
 - math/graph algorithms
-- easy to use wrappers over built in functions
+- easy to use wrappers over built-in functions
 - the best date and time library there is
 - some other essential libraries
 
 
 Requirements
 --------
- - **PHP 7.1+**
+ - **PHP 7.2+**
 
 
 Author:
