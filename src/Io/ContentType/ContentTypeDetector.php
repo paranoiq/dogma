@@ -12,13 +12,14 @@ namespace Dogma\Io\ContentType;
 use Dogma\Io\Path;
 use Dogma\Language\Encoding;
 use Dogma\StrictBehaviorMixin;
-use const FILEINFO_MIME_ENCODING;
-use const FILEINFO_MIME_TYPE;
+use finfo;
 use function error_clear_last;
 use function error_get_last;
 use function finfo_buffer;
 use function finfo_file;
 use function finfo_open;
+use const FILEINFO_MIME_ENCODING;
+use const FILEINFO_MIME_TYPE;
 
 class ContentTypeDetector
 {
@@ -27,10 +28,10 @@ class ContentTypeDetector
     /** @var string|null */
     private $magicFile;
 
-    /** @var resource|null */
+    /** @var resource|finfo|null */
     private $typeHandler;
 
-    /** @var resource|null */
+    /** @var resource|finfo|null */
     private $encodingHandler;
 
     public function __construct(?string $magicFile = null)

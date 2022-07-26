@@ -48,6 +48,7 @@ wildcard
 armscii
 ascii
 catalan
+codepoint
 csp
 csrf
 cygwin
@@ -74,6 +75,7 @@ tcp
 tftp
 ucs
 uhc
+unicode
 unix
 uri
 ux

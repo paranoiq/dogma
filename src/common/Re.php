@@ -9,13 +9,6 @@
 
 namespace Dogma;
 
-use const PREG_GREP_INVERT;
-use const PREG_OFFSET_CAPTURE;
-use const PREG_PATTERN_ORDER;
-use const PREG_SET_ORDER;
-use const PREG_SPLIT_DELIM_CAPTURE;
-use const PREG_SPLIT_NO_EMPTY;
-use const PREG_SPLIT_OFFSET_CAPTURE;
 use function array_keys;
 use function array_values;
 use function count;
@@ -31,6 +24,14 @@ use function preg_replace;
 use function preg_replace_callback;
 use function preg_split;
 use function strlen;
+use const PREG_GREP_INVERT;
+use const PREG_OFFSET_CAPTURE;
+use const PREG_PATTERN_ORDER;
+use const PREG_SET_ORDER;
+use const PREG_SPLIT_DELIM_CAPTURE;
+use const PREG_SPLIT_NO_EMPTY;
+use const PREG_SPLIT_OFFSET_CAPTURE;
+use const PREG_UNMATCHED_AS_NULL;
 
 /**
  * Strings manipulation with regular expressions
@@ -47,7 +48,7 @@ class Re
     public const CAPTURE_DELIMITER = PREG_SPLIT_DELIM_CAPTURE;
 
     public const FILTER_EMPTY = PREG_SPLIT_NO_EMPTY;
-    //public const UNMATCHED_AS_NULL = PREG_UNMATCHED_AS_NULL; // PHP 7.2
+    public const UNMATCHED_AS_NULL = PREG_UNMATCHED_AS_NULL;
 
     public const INVERT = PREG_GREP_INVERT;
 

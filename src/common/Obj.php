@@ -11,11 +11,10 @@
 
 namespace Dogma;
 
-use function function_exists;
-use function hexdec;
 use function is_object;
 use function md5;
 use function spl_object_hash;
+use function spl_object_id;
 use function substr;
 
 class Obj
@@ -37,15 +36,7 @@ class Obj
     public static function objectId($object): int
     {
         if (is_object($object)) {
-            // PHP >= 7.2
-            if (function_exists('spl_object_id')) {
-                return spl_object_id($object);
-            } else {
-                $hash = spl_object_hash($object);
-                $hash = substr($hash, 8, 8) . substr($hash, 24, 8);
-
-                return (int) hexdec($hash);
-            }
+            return spl_object_id($object);
         } else {
             return (int) $object;
         }

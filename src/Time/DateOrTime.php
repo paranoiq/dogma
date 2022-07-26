@@ -16,7 +16,7 @@ use Dogma\Time\Format\DateTimeValues;
 interface DateOrTime extends Equalable, Comparable
 {
 
-    //public function format(string $format = ''): string; // PHP 7.2+
+    public function format(string $format = ''): string;
 
     public function fillValues(DateTimeValues $values): void;
 
