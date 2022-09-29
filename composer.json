@@ -137,12 +137,12 @@
 
         "build:run": "Run build script",
         "check:fast": "Run all checks (tests, phpstan, phpcs, phplint, spell-check)",
-        "check:all": "Run all checks on all supported PHP versions (7.2, 7.3, 7.4, 8.0)",
+        "check:all": "Run all checks on all supported PHP versions (7.2 - 8.2)",
         "tests:run": "Run tests",
-        "tests:all": "Run tests on all supported PHP versions (7.2, 7.3, 7.4, 8.0)",
+        "tests:all": "Run tests on all supported PHP versions (7.2 - 8.2)",
         "tests:coverage": "Run tests with code coverage",
         "phpstan:run": "Run PHPStan check",
-        "phpstan:all": "Run PHPStan check on PHP 8.0 and 7.4",
+        "phpstan:all": "Run PHPStan check on all supported PHP versions (7.2 - 8.2)",
         "phpcs:all": "Run CS check on all code",
         "phpcs:src": "Run CS check on /src",
         "phpcs:src-fast": "Run fast CS check on /src",
@@ -151,7 +151,7 @@
         "phpcs:fix": "Run CS check with auto-fixing on /src and /tests",
         "spell:check": "Run spell-checker",
         "lint:php": "Run PHPLint",
-        "lint:php-all": "Run PHPLint on all supported PHP versions (7.2, 7.3, 7.4, 8.0)"
+        "lint:php-all": "Run PHPLint on all supported PHP versions (7.2 - 8.2)"
     },
     "config": {
         "allow-plugins": {
