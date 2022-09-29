@@ -53,8 +53,6 @@ use function strpos;
 use function strrpos;
 use function strtolower;
 use function substr;
-use function utf8_decode;
-use function utf8_encode;
 
 /**
  * UTF-8 strings manipulation
@@ -884,10 +882,6 @@ class Str
             } catch (Error $e) {
                 throw new ErrorException('Cannot convert encoding', null, $e);
             }
-        } elseif ($from === Encoding::ISO_8859_1 && $to === Encoding::UTF_8 && function_exists('utf8_encode')) {
-            return utf8_encode($string);
-        } elseif ($from === Encoding::UTF_8 && $to === Encoding::ISO_8859_1 && function_exists('utf8_decode')) {
-            return utf8_decode($string);
         } else {
             throw new ShouldNotHappenException('No extension for converting encodings installed.');
         }
