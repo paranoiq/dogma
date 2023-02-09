@@ -14,7 +14,7 @@
         "php": "^7.2|^8.0",
         "ext-calendar":"*",
         "nette/http": "~2.4|~3.0",
-        "nette/utils": "~2.4|~3.0"
+        "nette/utils": "~2.4|~3.0|~4.0"
     },
     "require-dev": {
         "dogma/dogma-dev": "0.1.29",
