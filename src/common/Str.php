@@ -365,7 +365,7 @@ class Str
 
     /**
      * Implode with optional different separator for last item in the list ("A, B, C and D") and length limit ("A, B, C...")
-     * @param string[] $items
+     * @param array<string|int|float> $items
      */
     public static function join(
         array $items,
