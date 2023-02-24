@@ -38,6 +38,14 @@ parameters:
         -
             message: '~Negated boolean expression is always true~'
             path: "../../src/common/lists/ImmutableArray.php"
+        -
+            message: '~Strict comparison using === between \*NEVER\* and 0 will always evaluate to false~'
+            path: "../../tests/src/Http/responder.php"
+
+        # Re flags & WTFs
+        - '~Parameter #4 \$flags of function preg_match expects TFlags of 0|256|512|768, int given.~'
+        - '~Method Dogma\\Re::match\(\) should return array<string>\|null but returns array<array<int, int\|string\|null>\|string\|null>.~'
+        - '~Method Dogma\\Re::submatch\(\) should return string\|null but returns array<int, int\|string\|null>\|string\|null.~'
 
         # interface
         - '~^PHPDoc tag @return with type Dogma\\Language\\Locale\\LocaleCollationOption is not subtype of native type Dogma\\Enum\\StringEnum~'

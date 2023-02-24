@@ -143,7 +143,7 @@ $chars = str_split($chars);
 if ($request['time']) {
     $chunkSize = (int) ($request['size'] / $request['time']);
     for ($n = 0; $n < $request['size']; $n++) {
-        if ($n % $chunkSize === 0) {
+        if (($n % $chunkSize) === 0) {
             sleep(1);
         }
         if ($n % 100 === 0) {
