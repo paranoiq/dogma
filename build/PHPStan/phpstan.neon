@@ -9,8 +9,8 @@ parameters:
         disableRuntimeReflectionProvider: true
 
     paths:
-        - ../src
-        - ../tests
+        - ../../src
+        - ../../tests
 
     earlyTerminatingMethodCalls:
         Dogma\Check:
@@ -28,19 +28,16 @@ parameters:
         - '~Method Dogma\\Io\\FileMetaData::.*\(\) should return (int|string) but returns int\|string.~'
         -
             message: "~Result of && is always false~" # phpstan bug with is_subclass_of
-            path: "../src/common/Check.php"
+            path: "../../src/common/Check.php"
         -
             message: "~Strict comparison using === between string and false will always evaluate to false~"
-            path: "../src/common/Str.php"
-        -
-            message: '~Binary operation "." between non-empty-string and array<string>\|string results in an error~'
-            path: "../src/Language/Transliterator.php"
+            path: "../../src/common/Str.php"
         -
             message: '~Negated boolean expression is always true~'
-            path: "../src/common/lists/Arr.php"
+            path: "../../src/common/lists/Arr.php"
         -
             message: '~Negated boolean expression is always true~'
-            path: "../src/common/lists/ImmutableArray.php"
+            path: "../../src/common/lists/ImmutableArray.php"
 
         # interface
         - '~^PHPDoc tag @return with type Dogma\\Language\\Locale\\LocaleCollationOption is not subtype of native type Dogma\\Enum\\StringEnum~'
