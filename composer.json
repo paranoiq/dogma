@@ -38,7 +38,10 @@
         }
     },
     "autoload": {
-        "classmap": ["src", "tests"]
+        "classmap": ["src"]
+    },
+    "autoload-dev": {
+        "classmap": ["tests"]
     },
     "scripts": {
         "da": "composer dump-autoload",
