@@ -15,9 +15,6 @@ use Dogma\Http\HttpOrCurlStatus;
 use Dogma\Http\HttpResponseStatus;
 use Dogma\Io\ContentType\BaseContentType;
 use Dogma\Io\ContentType\ContentType;
-use Dogma\Io\FilePosition;
-use Dogma\Io\LineEndings;
-use Dogma\Io\LockType;
 use Dogma\Language\Encoding;
 use Dogma\Language\Language;
 use Dogma\Language\Locale\LocaleCalendar;
@@ -64,9 +61,6 @@ $enums = [
     HttpResponseStatus::class,
     BaseContentType::class,
     ContentType::class,
-    FilePosition::class,
-    LineEndings::class,
-    LockType::class,
     Encoding::class,
     Language::class,
     Script::class,

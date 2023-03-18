@@ -7,11 +7,11 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-namespace Dogma\Io\Filesystem;
+namespace Dogma\System;
 
-use Dogma\Io\IoException;
+use Dogma\Exception;
 
-class DirectoryException extends IoException
+class CannotChangePriorityException extends Exception
 {
 
 }

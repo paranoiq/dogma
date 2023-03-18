@@ -167,6 +167,21 @@ Assert::exception(static function () use ($short): void {
     Check::oneOf($short, $short);
 }, ValueOutOfRangeException::class);
 
+
+enum:
+Check::enum(1, 1, 2, 3);
+Assert::exception(static function (): void {
+    Check::enum(11, 1, 2, 3);
+}, InvalidValueException::class);
+
+
+flags:
+Check::flags(7, 1 | 2 | 4);
+Assert::exception(static function (): void {
+    Check::flags(11, 1 | 2 | 3);
+}, InvalidValueException::class);
+
+
 class TestTraversable implements IteratorAggregate
 {
 

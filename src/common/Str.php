@@ -915,6 +915,13 @@ class Str
         return Re::matchAll($string, $pattern, $flags, $offset);
     }
 
+    public static function matchSingle(string $string, string $pattern): ?string
+    {
+        $match = self::match($string, $pattern);
+
+        return $match === null ? null : $match[1];
+    }
+
     /**
      * @deprecated use Re::replace() instead
      * @param string|string[] $pattern

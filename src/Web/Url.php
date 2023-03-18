@@ -29,6 +29,15 @@ class Url
         }
     }
 
+    /**
+     * Alias of getValue()
+     * @return string
+     */
+    public function format(): string
+    {
+        return $this->url->getAbsoluteUrl();
+    }
+
     public function getValue(): string
     {
         return $this->url->getAbsoluteUrl();
