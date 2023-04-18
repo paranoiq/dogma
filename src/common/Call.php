@@ -16,8 +16,9 @@ class Call
     /**
      * Call function with each given value as param
      *
-     * @param callable $function ($value, $key)
-     * @param iterable|mixed[] $values
+     * @template T
+     * @param callable(T, int|string): void $function ($value, $key)
+     * @param iterable<T> $values
      */
     public static function with(callable $function, iterable $values): void
     {
@@ -29,7 +30,7 @@ class Call
     /**
      * Call function with each set of given arguments
      *
-     * @param callable $function (...$values, $key)
+     * @param callable(mixed): void $function (...$values, $key)
      * @param iterable|mixed[][] $arguments
      */
     public static function withArgs(callable $function, iterable $arguments): void
@@ -43,7 +44,7 @@ class Call
     /**
      * Call given function n times. Syntactic sugar for simple `for (...) {...}`
      *
-     * @param callable $function (int $i)
+     * @param callable(int): mixed $function (int $i)
      * @return mixed[]
      */
     public static function nTimes(callable $function, int $n): array

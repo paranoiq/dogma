@@ -132,7 +132,6 @@ class IntInterval implements Interval
 
     /**
      * @param IntInterval $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -143,7 +142,6 @@ class IntInterval implements Interval
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -154,7 +152,6 @@ class IntInterval implements Interval
 
     /**
      * @param self $other
-     * @return int
      */
     public function compareIntersects(IntersectComparable $other): int
     {
@@ -209,7 +206,6 @@ class IntInterval implements Interval
 
     /**
      * @param int[] $intervalStarts
-     * @return IntIntervalSet
      */
     public function splitBy(array $intervalStarts): IntIntervalSet
     {
@@ -252,12 +248,10 @@ class IntInterval implements Interval
     public function intersect(self ...$items): self
     {
         $items[] = $this;
-        /** @var self[] $items */
-        $items = Arr::sortComparable($items);
+        $sorted = Arr::sortComparable($items);
 
-        /** @var self $result */
-        $result = array_shift($items);
-        foreach ($items as $item) {
+        $result = array_shift($sorted);
+        foreach ($sorted as $item) {
             if ($result->end >= $item->start) {
                 $result = new static(max($result->start, $item->start), min($result->end, $item->end));
             } else {
@@ -274,13 +268,11 @@ class IntInterval implements Interval
     public function union(self ...$items): IntIntervalSet
     {
         $items[] = $this;
-        /** @var self[] $items */
-        $items = Arr::sortComparable($items);
+        $sorted = Arr::sortComparable($items);
 
-        /** @var IntInterval $current */
-        $current = array_shift($items);
+        $current = array_shift($sorted);
         $results = [$current];
-        foreach ($items as $item) {
+        foreach ($sorted as $item) {
             if ($item->isEmpty()) {
                 continue;
             }
@@ -378,18 +370,17 @@ class IntInterval implements Interval
     {
         // 0-5 1-6 2-7 -->  0-0 1-1 1-1 2-5 2-5 2-5 6-6 6-6 7-7
 
-        /** @var self[] $items */
-        $items = Arr::sortComparable($items);
-        $starts = array_fill(0, count($items), 0);
+        $sorted = Arr::sortComparable($items);
+        $starts = array_fill(0, count($sorted), 0);
         $i = 0;
-        while (isset($items[$i])) {
-            $a = $items[$i];
+        while (isset($sorted[$i])) {
+            $a = $sorted[$i];
             if ($a->isEmpty()) {
-                unset($items[$i]);
+                unset($sorted[$i]);
                 $i++;
                 continue;
             }
-            foreach ($items as $j => $b) {
+            foreach ($sorted as $j => $b) {
                 if ($i === $j) {
                     // same item
                     continue;
@@ -402,9 +393,9 @@ class IntInterval implements Interval
                 } elseif ($a->start === $b->start) {
                     if ($a->end > $b->end) {
                         // a1=b1----b2----a2
-                        $items[$i] = $b;
-                        $items[] = new static($b->end + 1, $a->end);
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $b;
+                        $sorted[] = new static($b->end + 1, $a->end);
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $b;
                     } else {
                         // a1=b1----a2=b2
@@ -414,33 +405,33 @@ class IntInterval implements Interval
                 } elseif ($a->start < $b->start) {
                     if ($a->end === $b->end) {
                         // a1----b1----a2=b2
-                        $items[$i] = $b;
-                        $items[] = new static($a->start, $b->start - 1);
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $b;
+                        $sorted[] = new static($a->start, $b->start - 1);
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $b;
                     } elseif ($a->end > $b->end) {
                         // a1----b1----b2----a2
-                        $items[$i] = $b;
-                        $items[] = new static($a->start, $b->start - 1);
-                        $starts[count($items) - 1] = $i + 1;
-                        $items[] = new static($b->end + 1, $a->end);
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $b;
+                        $sorted[] = new static($a->start, $b->start - 1);
+                        $starts[count($sorted) - 1] = $i + 1;
+                        $sorted[] = new static($b->end + 1, $a->end);
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $b;
                     } else {
                         // a1----b1----a2----b2
                         $new = new static($b->start, $a->end);
-                        $items[$i] = $new;
-                        $items[] = new static($a->start, $b->start - 1);
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $new;
+                        $sorted[] = new static($a->start, $b->start - 1);
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $new;
                     }
                 } else {
                     if ($a->end > $b->end) {
                         // b1----a1----b2----a2
                         $new = new static($a->start, $b->end);
-                        $items[$i] = $new;
-                        $items[] = new static($b->end + 1, $a->end);
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $new;
+                        $sorted[] = new static($b->end + 1, $a->end);
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $new;
                     } else {
                         // b1----a1----a2=b2
@@ -452,7 +443,7 @@ class IntInterval implements Interval
             $i++;
         }
 
-        return array_values(Arr::sortComparable($items));
+        return array_values(Arr::sortComparable($sorted));
     }
 
     /**

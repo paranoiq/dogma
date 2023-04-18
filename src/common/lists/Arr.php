@@ -74,13 +74,13 @@ class Arr
 {
     use StaticClassMixin;
 
-    /** @internal */
     private const PRESERVE_KEYS = true;
 
     /**
-     * @param mixed[] $keys
-     * @param mixed[] $values
-     * @return mixed[]
+     * @template T
+     * @param array<T> $keys
+     * @param array<T> $values
+     * @return array<T>
      */
     public static function combine(array $keys, array $values): array
     {
@@ -88,12 +88,18 @@ class Arr
             throw new InvalidArgumentException('Count of keys and values must be the same.');
         }
 
-        return array_combine($keys, $values);
+        $result = array_combine($keys, $values);
+        if ($result === false) {
+            throw new InvalidArgumentException('Count of keys and values must be the same.');
+        }
+
+        return $result;
     }
 
     /**
-     * @param iterable|mixed[] $that
-     * @return mixed[]
+     * @template T
+     * @param iterable<T> $that
+     * @return array<T>
      */
     public static function toArray(iterable $that): array
     {
@@ -109,8 +115,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return ArrayIterator
+     * @template T
+     * @param array<T> $array
+     * @return ArrayIterator<T>
      */
     public static function iterate(array $array): ArrayIterator
     {
@@ -118,8 +125,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return ReverseArrayIterator
+     * @template T
+     * @param array<T> $array
+     * @return ReverseArrayIterator<T>
      */
     public static function backwards(array $array): ReverseArrayIterator
     {
@@ -127,10 +135,11 @@ class Arr
     }
 
     /**
-     * @param int|string $start
-     * @param int|string $end
+     * @template T of int|string
+     * @param T $start
+     * @param T $end
      * @param int $step >= 1
-     * @return mixed[]
+     * @return array<T>
      */
     public static function range($start, $end, int $step = 1): array
     {
@@ -141,7 +150,7 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return mixed[]
+     * @return array<int|string>
      */
     public static function keys(array $array): array
     {
@@ -149,8 +158,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function values(array $array): array
     {
@@ -159,7 +169,7 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return mixed
+     * @return int|string
      */
     public static function randomKey(array $array)
     {
@@ -167,8 +177,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed
+     * @template T
+     * @param array<T> $array
+     * @return T
      */
     public static function randomValue(array $array)
     {
@@ -188,8 +199,9 @@ class Arr
 
     /**
      * Copy array to remove any existing references
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function copy(array $array): array
     {
@@ -203,8 +215,9 @@ class Arr
 
     /**
      * Copy array to remove any existing references. Drop keys
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function copyValues(array $array): array
     {
@@ -220,7 +233,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return bool
      */
     public static function isEmpty(array $array): bool
     {
@@ -229,7 +241,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return bool
      */
     public static function isNotEmpty(array $array): bool
     {
@@ -237,9 +248,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed $value
-     * @return bool
+     * @template T
+     * @param array<T> $array
+     * @param T $value
      */
     public static function contains(array $array, $value, bool $strict = true): bool
     {
@@ -248,9 +259,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] $values
-     * @return bool
+     * @template T
+     * @param array<T> $array
+     * @param array<T> $values
      */
     public static function containsAny(array $array, array $values): bool
     {
@@ -258,9 +269,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] $values
-     * @return bool
+     * @template T
+     * @param array<T> $array
+     * @param array<T> $values
      */
     public static function containsAll(array $array, array $values): bool
     {
@@ -268,8 +279,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed $value
+     * @template T
+     * @param array<T> $array
+     * @param T $value
      * @return int|string|null
      */
     public static function indexOf(array $array, $value, int $from = 0)
@@ -283,9 +295,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed $value
-     * @return int[]|string[]
+     * @template T
+     * @param array<T> $array
+     * @param T $value
+     * @return array<int|string>
      */
     public static function indexesOf(array $array, $value): array
     {
@@ -293,8 +306,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed $value
+     * @template T
+     * @param array<T> $array
+     * @param T $value
      * @return int|string|null
      */
     public static function lastIndexOf(array $array, $value, ?int $end = null)
@@ -307,7 +321,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @template T
+     * @param array<T> $array
+     * @param callable(T): bool $function
      * @return int|string|null
      */
     public static function indexWhere(array $array, callable $function, int $from = 0)
@@ -322,7 +338,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @template T
+     * @param array<T> $array
+     * @param callable(T): bool $function
      * @return int|string|null
      */
     public static function lastIndexWhere(array $array, callable $function, ?int $end = null)
@@ -332,8 +350,7 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed $key
-     * @return bool
+     * @param int|string $key
      */
     public static function containsKey(array $array, $key): bool
     {
@@ -342,8 +359,7 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed[] $keys
-     * @return bool
+     * @param array<int|string> $keys
      */
     public static function containsAnyKey(array $array, array $keys): bool
     {
@@ -352,8 +368,7 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed[] $keys
-     * @return bool
+     * @param array<int|string> $keys
      */
     public static function containsAllKeys(array $array, array $keys): bool
     {
@@ -361,8 +376,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return bool
+     * @template T
+     * @param array<T> $array
+     * @param callable(T): bool $function
      */
     public static function exists(array $array, callable $function): bool
     {
@@ -376,8 +392,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return bool
+     * @template T
+     * @param array<T> $array
+     * @param callable(T): mixed $function
      */
     public static function forAll(array $array, callable $function): bool
     {
@@ -391,8 +408,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed|null
+     * @template T
+     * @param array<T> $array
+     * @param callable(T): bool $function
+     * @return T|null
      */
     public static function find(array $array, callable $function)
     {
@@ -406,8 +425,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return int
+     * @template T
+     * @param array<T> $array
+     * @param callable(T): mixed $function
      */
     public static function prefixLength(array $array, callable $function): int
     {
@@ -415,8 +435,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return int
+     * @template T
+     * @param array<T> $array
+     * @param callable(T): mixed $function
      */
     public static function segmentLength(array $array, callable $function, int $from = 0): int
     {
@@ -434,8 +455,9 @@ class Arr
     // stats -----------------------------------------------------------------------------------------------------------
 
     /**
-     * @param mixed[] $array
-     * @return int
+     * @template T
+     * @param array<T> $array
+     * @param callable(T): bool|null $function
      */
     public static function count(array $array, ?callable $function = null): int
     {
@@ -456,7 +478,6 @@ class Arr
     /**
      * Alias of count() without params
      * @param mixed[] $array
-     * @return int
      */
     public static function size(array $array): int
     {
@@ -464,8 +485,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return int[]|string[]
+     * @template T of int|string
+     * @param array<T> $array
+     * @return array<T, int>
      */
     public static function countValues(array $array): array
     {
@@ -473,8 +495,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed|null
+     * @template T
+     * @param array<T> $array
+     * @return T|null
      */
     public static function max(array $array)
     {
@@ -486,8 +509,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed|null
+     * @template T
+     * @param array<T> $array
+     * @return T|null
      */
     public static function min(array $array)
     {
@@ -499,8 +523,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed|null
+     * @template T
+     * @param array<T> $array
+     * @param callable(T): mixed $function
+     * @return T|null
      */
     public static function maxBy(array $array, callable $function)
     {
@@ -515,8 +541,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed|null
+     * @template T
+     * @param array<T> $array
+     * @param callable(T): mixed $function
+     * @return T|null
      */
     public static function minBy(array $array, callable $function)
     {
@@ -531,7 +559,7 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @param array<int|float> $array
      * @return int|float
      */
     public static function product(array $array)
@@ -540,7 +568,7 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @param array<int|float> $array
      * @return int|float
      */
     public static function sum(array $array)
@@ -551,9 +579,9 @@ class Arr
     // comparison ------------------------------------------------------------------------------------------------------
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] $slice
-     * @return bool
+     * @template T
+     * @param array<T> $array
+     * @param array<T> $slice
      */
     public static function containsSlice(array $array, array $slice): bool
     {
@@ -561,9 +589,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] $slice
-     * @return int|null
+     * @template T
+     * @param array<T> $array
+     * @param array<T> $slice
      */
     public static function indexOfSlice(array $array, array $slice, int $from = 0): ?int
     {
@@ -582,7 +610,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed[] $other
-     * @return bool
      */
     public static function corresponds(array $array, array $other, callable $function): bool
     {
@@ -604,7 +631,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed[] $other
-     * @return bool
      */
     public static function hasSameElements(array $array, array $other): bool
     {
@@ -616,7 +642,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed[] $slice
-     * @return bool
      */
     public static function startsWith(array $array, array $slice, int $from = 0): bool
     {
@@ -636,7 +661,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed[] $slice
-     * @return bool
      */
     public static function endsWith(array $array, array $slice): bool
     {
@@ -1231,8 +1255,9 @@ class Arr
     // sorting ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function reverse(array $array): array
     {
@@ -1240,8 +1265,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function shuffle(array $array): array
     {
@@ -1252,8 +1278,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function sort(array $array, int $flags = Sorting::REGULAR): array
     {
@@ -1268,8 +1295,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function sortKeys(array $array, int $flags = Sorting::REGULAR): array
     {
@@ -1284,8 +1312,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function sortWith(array $array, callable $function, int $flags = Order::ASCENDING): array
     {
@@ -1299,8 +1328,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function sortKeysWith(array $array, callable $function, int $flags = Order::ASCENDING): array
     {
@@ -1314,8 +1344,9 @@ class Arr
     }
 
     /**
-     * @param Comparable[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<Comparable&T> $array
+     * @return array<Comparable&T>
      */
     public static function sortComparable(array $array, int $flags = Sorting::REGULAR): array
     {
@@ -1334,8 +1365,9 @@ class Arr
     }
 
     /**
-     * @param Comparable[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<Comparable&T> $array
+     * @return array<Comparable&T>
      */
     public static function sortComparableValues(array $array, int $flags = Sorting::REGULAR): array
     {
@@ -1354,8 +1386,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function distinct(array $array, int $sortFlags = Sorting::REGULAR): array
     {
@@ -1365,9 +1398,10 @@ class Arr
     // merging ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @param mixed[] $array
-     * @param mixed ...$values
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param T ...$values
+     * @return array<T>
      */
     public static function append(array $array, ...$values): array
     {
@@ -1375,9 +1409,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] $values
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param array<T> $values
+     * @return array<T>
      */
     public static function appendAll(array $array, array $values): array
     {
@@ -1389,9 +1424,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed ...$values
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param T ...$values
+     * @return array<T>
      */
     public static function prepend(array $array, ...$values): array
     {
@@ -1399,14 +1435,15 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] $values
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param array<T> $values
+     * @return array<T>
      */
     public static function prependAll(array $array, array $values): array
     {
-        $values = new ReverseArrayIterator($values);
-        foreach ($values as $value) {
+        $iterator = new ReverseArrayIterator($values);
+        foreach ($iterator as $value) {
             array_unshift($array, $value);
         }
 
@@ -1414,10 +1451,11 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed $find
-     * @param mixed $replace
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param T $find
+     * @param T $replace
+     * @return array<T>
      */
     public static function replace(array $array, $find, $replace): array
     {
@@ -1425,9 +1463,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] $replacements
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param array<T> $replacements
+     * @return array<T>
      */
     public static function replaceAll(array $array, array $replacements): array
     {
@@ -1435,8 +1474,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function remove(array $array, int $from, int $length = 0): array
     {
@@ -1446,9 +1486,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] $patch
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param array<T> $patch
+     * @return array<T>
      */
     public static function patch(array $array, int $from, array $patch, ?int $length = null): array
     {
@@ -1461,9 +1502,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] $patch
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param array<T> $patch
+     * @return array<T>
      */
     public static function insert(array $array, int $from, array $patch): array
     {
@@ -1473,9 +1515,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param array<T> ...$args
+     * @return array<T>
      */
     public static function merge(array $array, array ...$args): array
     {
@@ -1485,9 +1528,10 @@ class Arr
     // diffing ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param array<T> ...$args
+     * @return array<T>
      */
     public static function diff(array $array, array ...$args): array
     {
@@ -1495,21 +1539,23 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param array<T> ...$args
+     * @return array<T>
      */
     public static function diffWith(array $array, callable $function, array ...$args): array
     {
         $args[] = $function;
 
-        return array_udiff($array, ...$args);
+        return array_udiff($array, ...$args); // @phpstan-ignore-line Parameter #2 $arr2 of function array_udiff expects array<T>, array<T>|(callable) given.
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param array<T> ...$args
+     * @return array<T>
      */
     public static function diffKeys(array $array, array ...$args): array
     {
@@ -1517,22 +1563,24 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param array<T> ...$args
+     * @return array<T>
      */
     public static function diffKeysWith(array $array, callable $function, array ...$args): array
     {
         $args[] = $function;
 
-        return array_diff_ukey($array, ...$args);
+        return array_diff_ukey($array, ...$args); // @phpstan-ignore-line Parameter #2 $arr2 of function array_diff_ukey expects array, array<T>|(callable) given.
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
+     * @template T
+     * @param array<T> $array
+     * @param array<T> ...$args
      * @lastParam callable|null $function
-     * @return mixed[]
+     * @return array<T>
      */
     public static function diffPairs(array $array, array ...$args): array
     {
@@ -1540,9 +1588,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param array<T> ...$args
+     * @return array<T>
      */
     public static function diffPairsWith(array $array, ?callable $function, ?callable $keysFunction, array ...$args): array
     {
@@ -1550,24 +1599,25 @@ class Arr
             $args[] = $function;
             $args[] = $keysFunction;
 
-            return array_udiff_uassoc($array, ...$args);
+            return array_udiff_uassoc($array, ...$args); // @phpstan-ignore-line Parameter #2 $arr2 of function array_udiff_uassoc expects array, array<T>|(callable) given.
         } elseif ($function && !$keysFunction) {
             $args[] = $function;
 
-            return array_udiff_assoc($array, ...$args);
+            return array_udiff_assoc($array, ...$args); // @phpstan-ignore-line Parameter #2 $arr2 of function array_udiff_assoc expects array, array<T>|(callable) given.
         } elseif (!$function && $keysFunction) {
             $args[] = $keysFunction;
 
-            return array_diff_uassoc($array, ...$args);
+            return array_diff_uassoc($array, ...$args); // @phpstan-ignore-line Parameter #2 $arr2 of function array_diff_uassoc expects array, array<T>|(callable) given.
         } else {
             return array_diff_assoc($array, ...$args);
         }
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param array<T> ...$args
+     * @return array<T>
      */
     public static function intersect(array $array, array ...$args): array
     {
@@ -1575,21 +1625,23 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param array<T> ...$args
+     * @return array<T>
      */
     public static function intersectWith(array $array, callable $function, array ...$args): array
     {
         $args[] = $function;
 
-        return array_uintersect($array, ...$args);
+        return array_uintersect($array, ...$args); // @phpstan-ignore-line Parameter #2 $arr2 of function array_uintersect expects array, array<T>|(callable) given.
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param array<T> ...$args
+     * @return array<T>
      */
     public static function intersectKeys(array $array, array ...$args): array
     {
@@ -1597,21 +1649,23 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param array<T> ...$args
+     * @return array<T>
      */
     public static function intersectKeysWith(array $array, callable $function, array ...$args): array
     {
         $args[] = $function;
 
-        return array_intersect_ukey($array, ...$args);
+        return array_intersect_ukey($array, ...$args); // @phpstan-ignore-line Parameter #2 $arr2 of function array_intersect_ukey expects array, array<T>|(callable) given.
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param array<T> ...$args
+     * @return array<T>
      */
     public static function intersectPairs(array $array, array ...$args): array
     {
@@ -1619,9 +1673,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param array<T> ...$args
+     * @return array<T>
      */
     public static function intersectPairsWith(array $array, ?callable $function, ?callable $keysFunction, array ...$args): array
     {
@@ -1629,15 +1684,15 @@ class Arr
             $args[] = $function;
             $args[] = $keysFunction;
 
-            return array_uintersect_uassoc($array, ...$args);
+            return array_uintersect_uassoc($array, ...$args); // @phpstan-ignore-line Parameter #2 $arr2 of function array_uintersect_uassoc expects array, array<T>|(callable) given.
         } elseif ($function && !$keysFunction) {
             $args[] = $function;
 
-            return array_uintersect_assoc($array, ...$args);
+            return array_uintersect_assoc($array, ...$args); // @phpstan-ignore-line Parameter #2 $arr2 of function array_uintersect_assoc expects array, array<T>|(callable) given.
         } elseif (!$function && $keysFunction) {
             $args[] = $keysFunction;
 
-            return array_intersect_uassoc($array, ...$args);
+            return array_intersect_uassoc($array, ...$args); // @phpstan-ignore-line Parameter #2 $arr2 of function array_intersect_uassoc expects array, array<T>|(callable) given.
         } else {
             return array_intersect_assoc($array, ...$args);
         }

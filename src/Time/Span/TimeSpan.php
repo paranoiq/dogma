@@ -107,7 +107,6 @@ class TimeSpan implements DateOrTimeSpan
 
     /**
      * @param TimeSpan $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -116,7 +115,6 @@ class TimeSpan implements DateOrTimeSpan
 
     /**
      * @param TimeSpan $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -193,7 +191,6 @@ class TimeSpan implements DateOrTimeSpan
 
     /**
      * Normalizes values by summarizing smaller units into bigger. eg: '34 days' -> '1 month, 4 days'
-     * @return self
      */
     public function normalize(): self
     {

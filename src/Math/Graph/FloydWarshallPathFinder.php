@@ -109,7 +109,6 @@ class FloydWarshallPathFinder
      * Get total cost (distance) between point a and b
      * @param int|string $i
      * @param int|string $j
-     * @return int
      */
     public function getDistance($i, $j): int
     {

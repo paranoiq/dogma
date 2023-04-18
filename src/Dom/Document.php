@@ -69,7 +69,6 @@ class Document extends DOMDocument
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $source
      * @param int $options
-     * @return true
      */
     public function loadXml($source, $options = 0): bool
     {
@@ -87,7 +86,6 @@ class Document extends DOMDocument
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $source
      * @param int $options
-     * @return true
      */
     public function loadHtml($source, $options = 0): bool
     {
@@ -105,7 +103,6 @@ class Document extends DOMDocument
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $fileName
      * @param int $options
-     * @return true
      */
     public function loadHtmlFile($fileName, $options = 0): bool
     {

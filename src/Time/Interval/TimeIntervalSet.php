@@ -92,7 +92,6 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -144,7 +143,6 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
 
     /**
      * Join overlapping intervals in set.
-     * @return self
      */
     public function normalize(): self
     {
@@ -163,7 +161,6 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
 
     /**
      * Add another set of intervals to this one without normalization.
-     * @return self
      */
     public function add(self $set): self
     {
@@ -177,7 +174,6 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
 
     /**
      * Remove another set of intervals from this one.
-     * @return self
      */
     public function subtract(self $set): self
     {
@@ -216,7 +212,6 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
 
     /**
      * Intersect with another set of intervals.
-     * @return self
      */
     public function intersect(self $set): self
     {

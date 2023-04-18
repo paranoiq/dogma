@@ -26,7 +26,6 @@ interface Set extends Equalable
 
     /**
      * @param int|string $value
-     * @return bool
      */
     public function equalsValue($value): bool;
 

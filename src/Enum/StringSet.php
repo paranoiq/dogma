@@ -118,8 +118,6 @@ abstract class StringSet implements Set, Dumpable
 
     /**
      * Validates given value. Can also normalize the value, if needed.
-     *
-     * @return bool
      */
     public static function validateValue(string &$value): bool
     {
@@ -179,7 +177,6 @@ abstract class StringSet implements Set, Dumpable
 
     /**
      * @param StringSet $other
-     * @return bool
      */
     final public function equals(Equalable $other): bool
     {
@@ -238,7 +235,6 @@ abstract class StringSet implements Set, Dumpable
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $value
-     * @return bool
      */
     public function equalsValue($value): bool
     {

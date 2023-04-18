@@ -75,8 +75,6 @@ class AngleFormatter
      * m    Minutes floored
      * S    Seconds with fraction
      * s    Seconds floored
-     *
-     * @return string
      */
     public function format(float $degrees, ?string $format = null, ?int $maxDecimals = null, ?string $decimalPoint = null): string
     {

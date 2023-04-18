@@ -189,7 +189,6 @@ class FloatInterval implements OpenClosedInterval
 
     /**
      * @param FloatInterval $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -202,7 +201,6 @@ class FloatInterval implements OpenClosedInterval
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -214,7 +212,6 @@ class FloatInterval implements OpenClosedInterval
 
     /**
      * @param self $other
-     * @return int
      */
     public function compareIntersects(IntersectComparable $other): int
     {
@@ -305,7 +302,6 @@ class FloatInterval implements OpenClosedInterval
 
     /**
      * @param float[] $intervalStarts
-     * @return FloatIntervalSet
      */
     public function splitBy(array $intervalStarts, int $splitMode = self::SPLIT_OPEN_ENDS): FloatIntervalSet
     {
@@ -355,12 +351,11 @@ class FloatInterval implements OpenClosedInterval
     public function intersect(self ...$items): self
     {
         $items[] = $this;
-        /** @var self[] $items */
-        $items = Arr::sortComparable($items);
+        $sorted = Arr::sortComparable($items);
 
         /** @var self $result */
-        $result = array_shift($items);
-        foreach ($items as $item) {
+        $result = array_shift($sorted);
+        foreach ($sorted as $item) {
             if ($result->start < $item->start || ($result->start === $item->start && $result->openStart && !$item->openStart)) {
                 if ($result->end < $item->start || ($result->end === $item->start && ($result->openEnd || $item->openStart))) {
                     return self::empty();
@@ -383,13 +378,12 @@ class FloatInterval implements OpenClosedInterval
     public function union(self ...$items): FloatIntervalSet
     {
         $items[] = $this;
-        /** @var self[] $items */
-        $items = Arr::sortComparable($items);
+        $sorted = Arr::sortComparable($items);
 
         /** @var FloatInterval $current */
-        $current = array_shift($items);
+        $current = array_shift($sorted);
         $results = [$current];
-        foreach ($items as $item) {
+        foreach ($sorted as $item) {
             if ($item->isEmpty()) {
                 continue;
             }
@@ -508,18 +502,17 @@ class FloatInterval implements OpenClosedInterval
     {
         // 0-5 1-6 2-7 -->  0-1< 1-2< 1-2< 2-5 2-5 2-5 >5-6 >5-6 >6-7
 
-        /** @var self[] $items */
-        $items = Arr::sortComparable($items);
-        $starts = array_fill(0, count($items), 0);
+        $sorted = Arr::sortComparable($items);
+        $starts = array_fill(0, count($sorted), 0);
         $i = 0;
-        while (isset($items[$i])) {
-            $a = $items[$i];
+        while (isset($sorted[$i])) {
+            $a = $sorted[$i];
             if ($a->isEmpty()) {
-                unset($items[$i]);
+                unset($sorted[$i]);
                 $i++;
                 continue;
             }
-            foreach ($items as $j => $b) {
+            foreach ($sorted as $j => $b) {
                 if ($i === $j) {
                     // same item
                     continue;
@@ -536,9 +529,9 @@ class FloatInterval implements OpenClosedInterval
                         continue;
                     } elseif ($a->end > $b->end || ($a->end === $b->end && $a->openEnd === false)) {
                         // a1=b1----b2----a2
-                        $items[$i] = $b;
-                        $items[] = new static($b->end, $a->end, !$b->openEnd, $a->openEnd);
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $b;
+                        $sorted[] = new static($b->end, $a->end, !$b->openEnd, $a->openEnd);
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $b;
                     } else {
                         // a1=b1----a2----b2
@@ -547,24 +540,24 @@ class FloatInterval implements OpenClosedInterval
                 } elseif ($a->start < $b->start || ($a->start === $b->start && $a->openStart === false)) {
                     if ($a->end === $b->end && $a->openEnd === $b->openEnd) {
                         // a1----b1----a2=b2
-                        $items[$i] = $b;
-                        $items[] = new static($a->start, $b->start, $a->openStart, !$b->openStart);
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $b;
+                        $sorted[] = new static($a->start, $b->start, $a->openStart, !$b->openStart);
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $b;
                     } elseif ($a->end > $b->end || ($a->end === $b->end && $a->openEnd === false)) {
                         // a1----b1----b2----a2
-                        $items[$i] = $b;
-                        $items[] = new static($a->start, $b->start, $a->openStart, !$b->openStart);
-                        $starts[count($items) - 1] = $i + 1;
-                        $items[] = new static($b->end, $a->end, !$b->openEnd, $a->openEnd);
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $b;
+                        $sorted[] = new static($a->start, $b->start, $a->openStart, !$b->openStart);
+                        $starts[count($sorted) - 1] = $i + 1;
+                        $sorted[] = new static($b->end, $a->end, !$b->openEnd, $a->openEnd);
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $b;
                     } else {
                         // a1----b1----a2----b2
                         $new = new static($b->start, $a->end, $b->openStart, $a->openEnd);
-                        $items[$i] = $new;
-                        $items[] = new static($a->start, $b->start, $a->openStart, !$b->openStart);
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $new;
+                        $sorted[] = new static($a->start, $b->start, $a->openStart, !$b->openStart);
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $new;
                     }
                 } else {
@@ -574,9 +567,9 @@ class FloatInterval implements OpenClosedInterval
                     } elseif ($a->end > $b->end || ($a->end === $b->end && $a->openEnd === false)) {
                         // b1----a1----b2----a2
                         $new = new static($a->start, $b->end, $a->openStart, $b->openEnd);
-                        $items[$i] = $new;
-                        $items[] = new static($b->end, $a->end, !$b->openEnd, $a->openEnd);
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $new;
+                        $sorted[] = new static($b->end, $a->end, !$b->openEnd, $a->openEnd);
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $new;
                     } else {
                         // b1----a1----a2----b2
@@ -587,7 +580,7 @@ class FloatInterval implements OpenClosedInterval
             $i++;
         }
 
-        return array_values(Arr::sortComparable($items));
+        return array_values(Arr::sortComparable($sorted));
     }
 
     /**

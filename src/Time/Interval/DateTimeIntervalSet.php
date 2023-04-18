@@ -203,7 +203,6 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -255,7 +254,6 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 
     /**
      * Join overlapping intervals in set.
-     * @return self
      */
     public function normalize(): self
     {
@@ -274,7 +272,6 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 
     /**
      * Add another set of intervals to this one without normalization.
-     * @return self
      */
     public function add(self $set): self
     {
@@ -288,7 +285,6 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 
     /**
      * Remove another set of intervals from this one.
-     * @return self
      */
     public function subtract(self $set): self
     {
@@ -322,7 +318,6 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 
     /**
      * Intersect with another set of intervals.
-     * @return self
      */
     public function intersect(self $set): self
     {

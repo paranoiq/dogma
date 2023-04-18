@@ -30,7 +30,6 @@ class ExceptionValueFormatter
 
     /**
      * @param mixed $value
-     * @return string
      */
     public static function format($value): string
     {

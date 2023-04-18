@@ -50,9 +50,8 @@ abstract class ConstructorHandler implements TypeHandler
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      * @param mixed[] $parameters
-     * @return object
      */
-    public function createInstance(Type $type, $parameters, Mapper $mapper)
+    public function createInstance(Type $type, $parameters, Mapper $mapper): object
     {
         $orderedParams = [];
         foreach ($this->getParameters($type) as $name => $paramType) {

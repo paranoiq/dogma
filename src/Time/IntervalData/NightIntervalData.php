@@ -65,7 +65,6 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     /**
      * @param mixed|null $data
-     * @return self
      */
     public static function createFromNightInterval(NightInterval $interval, $data): self
     {
@@ -83,7 +82,6 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     /**
      * @param mixed|null $data
-     * @return self
      */
     public static function all($data): self
     {
@@ -213,7 +211,6 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -224,7 +221,6 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     /**
      * @param mixed|null $otherData
-     * @return bool
      */
     public function dataEquals($otherData): bool
     {
@@ -237,7 +233,6 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -249,7 +244,6 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     /**
      * @param self $other
-     * @return int
      */
     public function compareIntersects(IntersectComparable $other): int
     {
@@ -265,7 +259,6 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     /**
      * @param Date|DateTimeInterface $date
-     * @return bool
      */
     public function containsValue($date): bool
     {
@@ -278,7 +271,6 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     /**
      * @param NightInterval|NightIntervalData $interval
-     * @return bool
      */
     public function contains($interval): bool
     {
@@ -291,7 +283,6 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     /**
      * @param NightInterval|NightIntervalData $interval
-     * @return bool
      */
     public function intersects($interval): bool
     {
@@ -300,7 +291,6 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     /**
      * @param NightInterval|NightIntervalData $interval
-     * @return bool
      */
     public function touches($interval): bool
     {
@@ -312,12 +302,10 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     public function intersect(NightInterval ...$items): self
     {
         $items[] = $this->toNightInterval();
-        /** @var self[] $items */
-        $items = Arr::sortComparable($items);
+        $sorted = Arr::sortComparable($items);
 
-        /** @var NightInterval $result */
-        $result = array_shift($items);
-        foreach ($items as $item) {
+        $result = array_shift($sorted);
+        foreach ($sorted as $item) {
             if ($result->getEnd()->isSameOrAfter($item->getStart())) {
                 $result = new NightInterval(Date::max($result->getStart(), $item->getStart()), Date::min($result->getEnd(), $item->getEnd()));
             } else {

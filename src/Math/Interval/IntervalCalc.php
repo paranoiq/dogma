@@ -16,6 +16,9 @@ class IntervalCalc
 {
     use StaticClassMixin;
 
+    /**
+     * @return IntersectResult::*
+     */
     public static function compareIntersects(int $aStart, int $aEnd, int $bStart, int $bEnd): int
     {
         if ($aStart === $bStart) {

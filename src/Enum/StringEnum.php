@@ -71,8 +71,6 @@ abstract class StringEnum implements Enum, Dumpable
 
     /**
      * Validates given value. Can also normalize the value, if needed.
-     *
-     * @return bool
      */
     public static function validateValue(string &$value): bool
     {
@@ -117,7 +115,6 @@ abstract class StringEnum implements Enum, Dumpable
 
     /**
      * @param StringEnum $other
-     * @return bool
      */
     final public function equals(Equalable $other): bool
     {
@@ -129,7 +126,6 @@ abstract class StringEnum implements Enum, Dumpable
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $value
-     * @return bool
      */
     final public function equalsValue($value): bool
     {

@@ -82,7 +82,6 @@ class DateTimeHandler implements TypeHandler
 
     /**
      * @param DateTime|Date|Time $instance
-     * @return string
      */
     public function exportInstance(Type $type, $instance, Mapper $mapper): string
     {

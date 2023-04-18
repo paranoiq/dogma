@@ -37,7 +37,6 @@ class TupleHandler implements TypeHandler
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param mixed[] $items
-     * @return Tuple
      */
     public function createInstance(Type $type, $items, Mapper $mapper): Tuple
     {

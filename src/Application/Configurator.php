@@ -273,7 +273,6 @@ final class Configurator extends stdClass
 
     /**
      * @param mixed $value
-     * @return string
      */
     private function format($value): string
     {

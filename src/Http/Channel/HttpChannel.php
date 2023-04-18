@@ -99,7 +99,7 @@ class HttpChannel
 
     /**
      * Set callback handler for every response (even an error)
-     * @param callable $responseHandler (Response $response, Channel $channel, string $name)
+     * @param callable(HttpResponse, HttpChannel, string): void $responseHandler ($response, $channel, $name)
      */
     public function setResponseHandler(callable $responseHandler): void
     {
@@ -108,7 +108,7 @@ class HttpChannel
 
     /**
      * Set separate callback handler for redirects. ResponseHandler will no longer handle these.
-     * @param callable $redirectHandler (Response $response, Channel $channel, string $name)
+     * @param callable(HttpResponse, HttpChannel, string): void $redirectHandler ($response, $channel, $name)
      */
     public function setRedirectHandler(callable $redirectHandler): void
     {
@@ -117,7 +117,7 @@ class HttpChannel
 
     /**
      * Set separate callback handler for errors. ResponseHandler will no longer handle these.
-     * @param callable $errorHandler (Response $response, Channel $channel, string $name)
+     * @param callable(HttpResponse, HttpChannel, string): void $errorHandler ($response, $channel, $name)
      */
     public function setErrorHandler(callable $errorHandler): void
     {
@@ -338,7 +338,6 @@ class HttpChannel
 
     /**
      * @param string|int $name
-     * @return HttpResponse
      */
     public function fetchByName($name): HttpResponse
     {
@@ -372,7 +371,6 @@ class HttpChannel
     /**
      * Check if channel or a job is finished.
      * @param string|int|null $name
-     * @return bool
      */
     public function isFinished($name = null): bool
     {

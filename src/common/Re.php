@@ -63,7 +63,6 @@ class Re
 
     /**
      * @see Str::count()
-     * @return int
      */
     public static function count(string $string, string $pattern): int
     {
@@ -220,7 +219,6 @@ class Re
     /**
      * @param string|string[] $pattern
      * @param string|callable|null $replacement
-     * @return string
      */
     public static function replace(string $string, $pattern, $replacement = null, int $limit = -1): string
     {

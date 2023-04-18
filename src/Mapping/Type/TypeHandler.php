@@ -26,8 +26,6 @@ interface TypeHandler
 
     /**
      * Returns true if handler accepts the type represented by $type parameter.
-     *
-     * @return bool
      */
     public function acceptsType(Type $type): bool;
 

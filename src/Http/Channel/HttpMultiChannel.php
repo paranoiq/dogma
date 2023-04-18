@@ -121,7 +121,7 @@ class HttpMultiChannel
 
     /**
      * Set callback handler for every response (even an error)
-     * @param callable $responseHandler (Response $response, HttpChannel $channel, string $name)
+     * @param callable(HttpResponse, HttpChannel, string): void $responseHandler ($response, $channel, $name)
      */
     public function setResponseHandler(callable $responseHandler): void
     {
@@ -130,7 +130,7 @@ class HttpMultiChannel
 
     /**
      * Set separate callback handler for redirects. ResponseHandler will no longer handle these.
-     * @param callable $redirectHandler (Response $response, HttpChannel $channel, string $name)
+     * @param callable(HttpResponse, HttpChannel, string): void $redirectHandler ($response, $channel, $name)
      */
     public function setRedirectHandler(callable $redirectHandler): void
     {
@@ -139,7 +139,7 @@ class HttpMultiChannel
 
     /**
      * Set separate callback handler for errors. ResponseHandler will no longer handle these.
-     * @param callable $errorHandler (Response $response, HttpChannel $channel, string $name)
+     * @param callable(HttpResponse, HttpChannel, string): void $errorHandler ($response, $channel, $name)
      */
     public function setErrorHandler(callable $errorHandler): void
     {
@@ -147,7 +147,7 @@ class HttpMultiChannel
     }
 
     /**
-     * @param callable $function (mixed $data, HttpChannel[] $channels)
+     * @param callable(mixed, HttpChannel[]): array<int|string, mixed> $function ($data, $channels)
      */
     public function setDispatchFunction(callable $function): void
     {

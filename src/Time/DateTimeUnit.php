@@ -139,7 +139,6 @@ class DateTimeUnit extends StringEnum
 
     /**
      * Used in DateTime::equalsUpTo()
-     * @return string
      */
     public function getComparisonFormat(): string
     {

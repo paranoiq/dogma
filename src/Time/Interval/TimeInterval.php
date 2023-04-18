@@ -231,7 +231,6 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -243,7 +242,6 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -265,7 +263,6 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 
     /**
      * @param TimeInterval $interval
-     * @return bool
      */
     public function contains(self $interval): bool
     {
@@ -292,7 +289,6 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 
     /**
      * @param TimeInterval $interval
-     * @return bool
      */
     public function touches(self $interval): bool
     {
@@ -324,7 +320,6 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 
     /**
      * @param Time[] $intervalStarts
-     * @return TimeIntervalSet
      */
     public function splitBy(array $intervalStarts): TimeIntervalSet
     {

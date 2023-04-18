@@ -269,7 +269,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $modify
-     * @return self
      */
     public function modify($modify): self
     {
@@ -284,7 +283,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @param DateInterval|DateOrTimeSpan $interval
-     * @return self
      */
     public function add($interval): self
     {
@@ -303,7 +301,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @param DateInterval|DateOrTimeSpan $interval
-     * @return self
      */
     public function sub($interval): self
     {
@@ -347,7 +344,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
      * @param int|null $minutes
      * @param int|null $seconds
      * @param int|null $microseconds
-     * @return self
      */
     public function setTime($time, $minutes = null, $seconds = null, $microseconds = null): self
     {
@@ -370,7 +366,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @param DateTimeZone|string $timeZone
-     * @return DateTime
      */
     public function setTimezone($timeZone): self
     {
@@ -382,10 +377,9 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     }
 
     /**
-     * Round to closest value from given list of values for given unit
+     * Round to the closest value from given list of values for given unit
      * (e.g. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
      * @param int[]|null $allowedValues
-     * @return DateTime
      */
     public function roundTo(DateTimeUnit $unit, ?array $allowedValues = null): self
     {
@@ -399,7 +393,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
      * Round to firs upper value from given list of values for given unit
      * (e.g. 15:32:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
      * @param int[]|null $allowedValues
-     * @return DateTime
      */
     public function roundUpTo(DateTimeUnit $unit, ?array $allowedValues = null): self
     {
@@ -413,7 +406,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
      * Round to firs lower value from given list of values for given unit
      * (e.g. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:30:00)
      * @param int[]|null $allowedValues
-     * @return DateTime
      */
     public function roundDownTo(DateTimeUnit $unit, ?array $allowedValues = null): self
     {
@@ -428,7 +420,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $format
-     * @return string
      */
     public function format($format = self::DEFAULT_FORMAT): string
     {
@@ -439,7 +430,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param DateTimeInterface|string $other
      * @param bool $absolute
-     * @return DateInterval
      */
     public function diff($other, $absolute = false): DateInterval
     {
@@ -452,7 +442,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @param DateTimeInterface|string $other
-     * @return DateTimeSpan
      */
     public function difference($other, bool $absolute = false): DateTimeSpan
     {
@@ -463,7 +452,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -474,7 +462,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -506,7 +493,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @param DateTimeInterface|string $dateTime
-     * @return bool
      */
     public function isBefore($dateTime): bool
     {
@@ -519,7 +505,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @param DateTimeInterface|string $dateTime
-     * @return bool
      */
     public function isAfter($dateTime): bool
     {
@@ -533,7 +518,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     /**
      * @param DateTimeInterface|string $sinceTime
      * @param DateTimeInterface|string $untilTime
-     * @return bool
      */
     public function isBetween($sinceTime, $untilTime): bool
     {
@@ -564,7 +548,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @param DateTimeInterface|Date|string $date
-     * @return bool
      */
     public function isSameDay($date): bool
     {
@@ -577,7 +560,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @param DateTimeInterface|Date|string $date
-     * @return bool
      */
     public function isBeforeDay($date): bool
     {
@@ -590,7 +572,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @param DateTimeInterface|Date|string $date
-     * @return bool
      */
     public function isAfterDay($date): bool
     {
@@ -604,7 +585,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     /**
      * @param DateTimeInterface|Date|string $sinceDate
      * @param DateTimeInterface|Date|string $untilDate
-     * @return bool
      */
     public function isBetweenDays($sinceDate, $untilDate): bool
     {
@@ -644,7 +624,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @param int|string|DayOfWeek $day
-     * @return bool
      */
     public function isDayOfWeek($day): bool
     {
@@ -664,7 +643,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @param int|string|Month $month
-     * @return bool
      */
     public function isMonth($month): bool
     {

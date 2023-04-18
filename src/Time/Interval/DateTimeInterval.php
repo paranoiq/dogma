@@ -226,7 +226,6 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -238,7 +237,6 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -249,7 +247,6 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     /**
      * @param self $other
-     * @return int
      */
     public function compareIntersects(IntersectComparable $other): int
     {
@@ -290,10 +287,6 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
             || ($this->start->equals($interval->start) && $this->end->equals($interval->end));
     }
 
-    /**
-     * @param DateTimeInterval $interval
-     * @return bool
-     */
     public function touches(self $interval): bool
     {
         return ($this->start->getMicroTimestamp() === $interval->end->getMicroTimestamp())
@@ -326,7 +319,6 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     /**
      * @param DateTime[] $intervalStarts
-     * @return DateTimeIntervalSet
      */
     public function splitBy(array $intervalStarts): DateTimeIntervalSet
     {
@@ -351,8 +343,6 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     /**
      * Splits interval into smaller by increments of given unit from the beginning of interval.
-     *
-     * @return DateTimeIntervalSet
      */
     public function splitByUnit(DateTimeUnit $unit, int $amount = 1): DateTimeIntervalSet
     {
@@ -376,8 +366,6 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
      * When no reference is given, base for splitting will be calculated by rounding given unit* to a number divisible by given amount.
      * *) in context of a superior unit - number of month in year, iso number of week in year, number of day in month...
      *  e.g. for 5 months beginning of May or October will be used as base.
-     *
-     * @return DateTimeIntervalSet
      */
     public function splitByUnitAligned(DateTimeUnit $unit, int $amount = 1, ?DateTime $reference = null): DateTimeIntervalSet
     {
@@ -502,12 +490,10 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     public function intersect(self ...$items): self
     {
         $items[] = $this;
-        /** @var self[] $items */
-        $items = Arr::sortComparable($items);
+        $sorted = Arr::sortComparable($items);
 
-        /** @var self $result */
-        $result = array_shift($items);
-        foreach ($items as $item) {
+        $result = array_shift($sorted);
+        foreach ($sorted as $item) {
             if ($result->start < $item->start) {
                 if ($result->end < $item->start) {
                     return self::empty();
@@ -528,13 +514,11 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     public function union(self ...$items): DateTimeIntervalSet
     {
         $items[] = $this;
-        /** @var self[] $items */
-        $items = Arr::sortComparable($items);
+        $sorted = Arr::sortComparable($items);
 
-        /** @var DateTimeInterval $current */
-        $current = array_shift($items);
+        $current = array_shift($sorted);
         $results = [$current];
-        foreach ($items as $item) {
+        foreach ($sorted as $item) {
             if ($item->isEmpty()) {
                 continue;
             }
@@ -643,18 +627,17 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
      */
     public static function explodeOverlaps(self ...$items): array
     {
-        /** @var self[] $items */
-        $items = Arr::sortComparable($items);
-        $starts = array_fill(0, count($items), 0);
+        $sorted = Arr::sortComparable($items);
+        $starts = array_fill(0, count($sorted), 0);
         $i = 0;
-        while (isset($items[$i])) {
-            $a = $items[$i];
+        while (isset($sorted[$i])) {
+            $a = $sorted[$i];
             if ($a->isEmpty()) {
-                unset($items[$i]);
+                unset($sorted[$i]);
                 $i++;
                 continue;
             }
-            foreach ($items as $j => $b) {
+            foreach ($sorted as $j => $b) {
                 if ($i === $j) {
                     // same item
                     continue;
@@ -667,9 +650,9 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
                 } elseif ($a->start->equals($b->start)) {
                     if ($a->end->isAfter($b->end)) {
                         // a1=b1----b2----a2
-                        $items[$i] = $b;
-                        $items[] = new static($b->end, $a->end);
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $b;
+                        $sorted[] = new static($b->end, $a->end);
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $b;
                     } else {
                         // a1=b1----a2=b2
@@ -679,33 +662,33 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
                 } elseif ($a->start < $b->start) {
                     if ($a->end->equals($b->end)) {
                         // a1----b1----a2=b2
-                        $items[$i] = $b;
-                        $items[] = new static($a->start, $b->start);
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $b;
+                        $sorted[] = new static($a->start, $b->start);
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $b;
                     } elseif ($a->end->isAfter($b->end)) {
                         // a1----b1----b2----a2
-                        $items[$i] = $b;
-                        $items[] = new static($a->start, $b->start);
-                        $starts[count($items) - 1] = $i + 1;
-                        $items[] = new static($b->end, $a->end);
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $b;
+                        $sorted[] = new static($a->start, $b->start);
+                        $starts[count($sorted) - 1] = $i + 1;
+                        $sorted[] = new static($b->end, $a->end);
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $b;
                     } else {
                         // a1----b1----a2----b2
                         $new = new static($b->start, $a->end);
-                        $items[$i] = $new;
-                        $items[] = new static($a->start, $b->start);
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $new;
+                        $sorted[] = new static($a->start, $b->start);
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $new;
                     }
                 } else {
                     if ($a->end->isAfter($b->end)) {
                         // b1----a1----b2----a2
                         $new = new static($a->start, $b->end);
-                        $items[$i] = $new;
-                        $items[] = new static($b->end, $a->end);
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $new;
+                        $sorted[] = new static($b->end, $a->end);
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $new;
                     } else {
                         // b1----a1----a2----b2
@@ -718,7 +701,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
             $i++;
         }
 
-        return array_values(Arr::sortComparable($items));
+        return array_values(Arr::sortComparable($sorted));
     }
 
     /**

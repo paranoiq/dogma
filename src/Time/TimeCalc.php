@@ -21,7 +21,6 @@ class TimeCalc
      * Round to the closest value from given list of values for given unit
      * (e.g. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
      * @param int[]|null $allowedValues
-     * @return DateTimeOrTime
      */
     public static function roundTo(DateTimeOrTime $value, DateTimeUnit $unit, ?array $allowedValues = null): DateTimeOrTime
     {
@@ -32,7 +31,6 @@ class TimeCalc
      * Round to first upper value from given list of values for given unit
      * (e.g. 15:32:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
      * @param int[]|null $allowedValues
-     * @return DateTimeOrTime
      */
     public static function roundUpTo(DateTimeOrTime $value, DateTimeUnit $unit, ?array $allowedValues = null): DateTimeOrTime
     {
@@ -43,7 +41,6 @@ class TimeCalc
      * Round to first lower value from given list of values for given unit
      * (e.g. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:30:00)
      * @param int[]|null $allowedValues
-     * @return DateTimeOrTime
      */
     public static function roundDownTo(DateTimeOrTime $value, DateTimeUnit $unit, ?array $allowedValues = null): DateTimeOrTime
     {
@@ -52,7 +49,6 @@ class TimeCalc
 
     /**
      * @param int[]|null $allowedValues
-     * @return DateTimeOrTime
      */
     private static function roundAny(string $method, DateTimeOrTime $value, DateTimeUnit $unit, ?array $allowedValues = null): DateTimeOrTime
     {

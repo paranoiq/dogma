@@ -74,7 +74,6 @@ class MethodTypeParser
 
     /**
      * @param mixed[] $options
-     * @return Type
      */
     private function createType(array $options, ReflectionMethod $method): Type
     {

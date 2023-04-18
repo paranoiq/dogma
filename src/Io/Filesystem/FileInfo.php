@@ -67,7 +67,6 @@ class FileInfo extends SplFileInfo implements Path
 
     /**
      * @param resource|null $streamContext
-     * @return File
      */
     public function open(string $mode = FileMode::OPEN_READ, $streamContext = null): File
     {

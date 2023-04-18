@@ -255,7 +255,6 @@ class File implements Path
     /**
      * Copy range of data to another File or callback. Returns actual length of copied data.
      * @param File|callable $destination
-     * @return int
      */
     public function copyData($destination, ?int $start = null, int $length = 0, ?int $chunkSize = null): int
     {

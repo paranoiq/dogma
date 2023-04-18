@@ -207,7 +207,6 @@ class Transliterator extends PhpTransliterator
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $id
      * @param int|null $direction
-     * @return PhpTransliterator
      */
     public static function create($id, $direction = null): PhpTransliterator
     {
@@ -228,7 +227,6 @@ class Transliterator extends PhpTransliterator
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $rules
      * @param int|null $direction
-     * @return PhpTransliterator
      */
     public static function createFromRules($rules, $direction = null): PhpTransliterator
     {
@@ -256,7 +254,6 @@ class Transliterator extends PhpTransliterator
      * @see https://unicode-org.github.io/icu/userguide/transforms/general/rules.html
      *
      * @param non-empty-list<string|array{string, string|non-empty-list<string>}> $rules
-     * @return PhpTransliterator
      */
     public static function createFromIds(array $rules, ?int $direction = null): PhpTransliterator
     {

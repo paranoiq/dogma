@@ -121,7 +121,6 @@ class Type
      * @param Encoding|null $encoding [optional]
      * @param Locale|null $locale [optional]
      * @param bool $nullable [optional]
-     * @return self
      */
     public static function get(
         string $type,
@@ -231,7 +230,6 @@ class Type
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param int|null $size
      * @param string|null $sign
-     * @return self
      */
     public static function int($size = null, $sign = null, ?bool $nullable = null): self
     {
@@ -241,7 +239,6 @@ class Type
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param int|null $size
-     * @return self
      */
     public static function uint($size = null, ?bool $nullable = null): self
     {
@@ -251,7 +248,6 @@ class Type
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param int|null $size
-     * @return self
      */
     public static function float($size = null, ?bool $nullable = null): self
     {
@@ -264,7 +260,6 @@ class Type
      * @param string|null $fixed
      * @param Encoding|null $encoding
      * @param Locale|null $locale
-     * @return self
      */
     public static function string($size = null, $fixed = null, $encoding = null, $locale = null, ?bool $nullable = null): self
     {
@@ -278,7 +273,6 @@ class Type
 
     /**
      * @param ResourceType|string|null $resourceType
-     * @return self
      */
     public static function resource($resourceType = null, ?bool $nullable = null): self
     {
@@ -287,7 +281,6 @@ class Type
 
     /**
      * @param string|self $itemType
-     * @return self
      */
     public static function arrayOf($itemType, bool $nullable = false): self
     {
@@ -296,7 +289,6 @@ class Type
 
     /**
      * @param string|self $itemType
-     * @return self
      */
     public static function collectionOf(string $type, $itemType, bool $nullable = false): self
     {
@@ -317,7 +309,6 @@ class Type
 
     /**
      * @param string|self|bool ...$itemTypes
-     * @return self
      */
     public static function tupleOf(...$itemTypes): self
     {
@@ -353,7 +344,6 @@ class Type
 
     /**
      * Converts string in syntax like "Foo<Bar,Baz<int>>" to a Type instance
-     * @return self
      */
     public static function fromId(string $id): self
     {
@@ -641,11 +631,9 @@ class Type
 
     /**
      * Returns new instance of type. Works only on simple class types with public constructor.
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      * @param mixed ...$arguments
-     * @return object
      */
-    public function getInstance(...$arguments)
+    public function getInstance(...$arguments): object
     {
         $className = $this->type;
 
@@ -653,7 +641,7 @@ class Type
     }
 
     /**
-     * List of types and pseudotypes, that can be used in annotations. Does not include 'null' and 'void'
+     * List of types and pseudo-types, that can be used in annotations. Does not include 'null' and 'void'
      * @return string[]
      */
     public static function listTypes(): array

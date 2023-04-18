@@ -228,7 +228,6 @@ class DayOfYear implements Equalable, Comparable, Dumpable
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -239,7 +238,6 @@ class DayOfYear implements Equalable, Comparable, Dumpable
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {

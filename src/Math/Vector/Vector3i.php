@@ -58,7 +58,6 @@ class Vector3i implements Equalable
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {

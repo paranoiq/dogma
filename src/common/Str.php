@@ -286,8 +286,6 @@ class Str
 
     /**
      * Similar to before(), but always returns start or the entire string
-     *
-     * @return string
      */
     public static function toFirst(string $string, string $search): string
     {
@@ -301,8 +299,6 @@ class Str
 
     /**
      * Similar to after(), but always returns end or entire string
-     *
-     * @return string
      */
     public static function fromFirst(string $string, string $search): string
     {
@@ -402,7 +398,6 @@ class Str
 
     /**
      * @see Re::count()
-     * @return int
      */
     public static function count(string $string, string $substring): int
     {
@@ -411,7 +406,6 @@ class Str
 
     /**
      * @deprecated use Str::count() instead
-     * @return int
      */
     public static function substringCount(string $string, string $substring): int
     {
@@ -446,7 +440,6 @@ class Str
 
     /**
      * @param int|string|Collator|Locale $collation
-     * @return bool
      */
     public static function equals(string $first, string $second, $collation = CaseComparison::CASE_SENSITIVE): bool
     {
@@ -455,7 +448,6 @@ class Str
 
     /**
      * @param int|string|Collator|Locale $collation
-     * @return int
      */
     public static function compare(string $first, string $second, $collation = CaseComparison::CASE_SENSITIVE): int
     {
@@ -919,7 +911,6 @@ class Str
      * @deprecated use Re::replace() instead
      * @param string|string[] $pattern
      * @param string|callable|null $replacement
-     * @return string
      */
     public static function replace(string $string, $pattern, $replacement = null, int $limit = -1): string
     {

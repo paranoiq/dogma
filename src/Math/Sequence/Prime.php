@@ -96,7 +96,6 @@ class Prime implements Sequence
 
     /**
      * Returns nth prime (n starts from 0)
-     * @return int
      */
     public static function getNth(int $position): int
     {

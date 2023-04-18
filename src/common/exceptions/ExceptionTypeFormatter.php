@@ -25,7 +25,6 @@ class ExceptionTypeFormatter
 
     /**
      * @param mixed $type
-     * @return string
      */
     public static function format($type): string
     {
@@ -38,7 +37,6 @@ class ExceptionTypeFormatter
 
     /**
      * @param mixed $type
-     * @return string
      */
     private static function formatType($type): string
     {

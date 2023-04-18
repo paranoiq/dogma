@@ -64,7 +64,6 @@ class IntCalc
      * Maps number from range 0.0 - 1.0 to integers 0 to $max with same probability for each integer
      *
      * @param float $n (range 0..1)
-     * @return int
      */
     public static function mapTo(float $n, int $max): int
     {

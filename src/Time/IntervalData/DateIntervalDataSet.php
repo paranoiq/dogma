@@ -56,7 +56,6 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * @param mixed|null $data
-     * @return DateIntervalDataSet
      */
     public static function createFromDateIntervalSet(DateIntervalSet $set, $data): self
     {
@@ -148,7 +147,6 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -180,7 +178,6 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Join overlapping intervals in set, if they have the same data.
-     * @return self
      */
     public function normalize(): self
     {
@@ -205,7 +202,6 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Add another set of intervals to this one without normalization.
-     * @return self
      */
     public function add(self $set): self
     {
@@ -219,7 +215,6 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Remove another set of intervals from this one.
-     * @return self
      */
     public function subtract(DateIntervalSet $set): self
     {
@@ -254,7 +249,6 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Intersect with another set of intervals.
-     * @return self
      */
     public function intersect(DateIntervalSet $set): self
     {
@@ -318,8 +312,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     /**
      * Maps data with mapper and collects intervals with non-null results.
      *
-     * @param callable $mapper (mixed $data): mixed|null $data
-     * @return self
+     * @param callable(mixed): (mixed|null) $mapper
      */
     public function collectData(callable $mapper): self
     {
@@ -339,8 +332,8 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Only modifies and splits intersecting intervals. Does not insert new ones nor remove things.
      * Complexity O(m*n). For bigger sets use modifyDataByStream()
      *
-     * @param callable $reducer (mixed $oldData, mixed $input): mixed $newData
-     * @return self
+     * @template T
+     * @param callable(T, mixed): T $reducer
      */
     public function modifyData(self $other, callable $reducer): self
     {
@@ -383,16 +376,16 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Both $this and inputs must be ordered to work properly, $this must be normalized.
      * Complexity ~O(m+n), worst case O(m*n) if all inputs cover whole interval set.
      *
+     * @template T
      * @param iterable|mixed[] $inputs
-     * @param callable $mapper (mixed $input): array{0: Date $start, 1: Date $end}
-     * @param callable $reducer (mixed $oldData, mixed $input): mixed $newData
-     * @return self
+     * @param callable(mixed): array{Date, Date} $mapper ($input): array{$start, $end}
+     * @param callable(T, mixed): T $reducer (mixed $oldData, mixed $input): mixed $newData
      */
     public function modifyDataByStream(iterable $inputs, callable $mapper, callable $reducer): self
     {
         $results = $this->getIntervals();
         $resultsCount = count($results);
-        $startIndex = $currentIndex = 0;
+        $startIndex = 0;
         foreach ($inputs as $input) {
             $currentIndex = $startIndex;
             /** @var Date $inputStart */
@@ -479,7 +472,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Split interval set to more interval sets with different subsets of original data.
      * Splitter maps original data to a group of data. Should return array with keys indicating the data set group.
      *
-     * @param callable $splitter (mixed $data): array<int|string $group, mixed $data>
+     * @param callable(mixed): array<int|string, mixed> $splitter ($data): array<$group, $data>
      * @return self[]
      */
     public function splitData(callable $splitter): array

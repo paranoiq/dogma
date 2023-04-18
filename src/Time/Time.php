@@ -211,7 +211,6 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
      * Round to the closest value from given list of values for given unit
      * (e.g. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
      * @param int[]|null $allowedValues
-     * @return Time
      */
     public function roundTo(DateTimeUnit $unit, ?array $allowedValues = null): self
     {
@@ -222,10 +221,9 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
     }
 
     /**
-     * Round to firs upper value from given list of values for given unit
+     * Round to first upper value from given list of values for given unit
      * (e.g. 15:32:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
      * @param int[]|null $allowedValues
-     * @return Time
      */
     public function roundUpTo(DateTimeUnit $unit, ?array $allowedValues = null): self
     {
@@ -236,10 +234,9 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
     }
 
     /**
-     * Round to firs lower value from given list of values for given unit
+     * Round to first lower value from given list of values for given unit
      * (e.g. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:30:00)
      * @param int[]|null $allowedValues
-     * @return Time
      */
     public function roundDownTo(DateTimeUnit $unit, ?array $allowedValues = null): self
     {
@@ -263,7 +260,6 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
 
     /**
      * @param DateTimeInterface|Time|string $other
-     * @return DateInterval
      */
     public function diff($other, bool $absolute = false): DateInterval
     {
@@ -278,7 +274,6 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
 
     /**
      * @param DateTimeInterface|Time|string $other
-     * @return TimeSpan
      */
     public function difference($other, bool $absolute = false): TimeSpan
     {
@@ -289,7 +284,6 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -300,7 +294,6 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -311,7 +304,6 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
 
     /**
      * @param Time|string $time
-     * @return bool
      */
     public function isBefore($time): bool
     {
@@ -324,7 +316,6 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
 
     /**
      * @param Time|string $time
-     * @return bool
      */
     public function isAfter($time): bool
     {
@@ -337,7 +328,6 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
 
     /**
      * @param Time|string $time
-     * @return bool
      */
     public function isSameOrBefore($time): bool
     {
@@ -350,7 +340,6 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
 
     /**
      * @param Time|string $time
-     * @return bool
      */
     public function isSameOrAfter($time): bool
     {
@@ -364,7 +353,6 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
     /**
      * @param Time|string $since
      * @param Time|string $until
-     * @return bool
      */
     public function isBetween($since, $until): bool
     {

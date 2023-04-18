@@ -192,7 +192,6 @@ class DayOfYearInterval implements ModuloInterval
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -204,7 +203,6 @@ class DayOfYearInterval implements ModuloInterval
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -226,7 +224,6 @@ class DayOfYearInterval implements ModuloInterval
 
     /**
      * @param DayOfYearInterval $interval
-     * @return bool
      */
     public function contains(self $interval): bool
     {
@@ -253,7 +250,6 @@ class DayOfYearInterval implements ModuloInterval
 
     /**
      * @param DayOfYearInterval $interval
-     * @return bool
      */
     public function touches(self $interval): bool
     {
@@ -284,7 +280,6 @@ class DayOfYearInterval implements ModuloInterval
 
     /**
      * @param DayOfYear[] $intervalStarts
-     * @return DayOfYearIntervalSet
      */
     public function splitBy(array $intervalStarts): DayOfYearIntervalSet
     {

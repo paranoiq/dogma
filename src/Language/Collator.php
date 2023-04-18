@@ -58,7 +58,6 @@ class Collator extends PhpCollator
 
     /**
      * @param Locale|string $locale
-     * @return self
      */
     public static function create($locale): self
     {
@@ -116,7 +115,6 @@ class Collator extends PhpCollator
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $str1
      * @param string $str2
-     * @return int
      */
     public function compare($str1, $str2): int
     {
@@ -136,7 +134,6 @@ class Collator extends PhpCollator
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param mixed[] $arr
      * @param int $sortFlag
-     * @return bool
      */
     public function asort(array &$arr, $sortFlag = self::SORT_REGULAR): bool
     {
@@ -153,7 +150,6 @@ class Collator extends PhpCollator
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param mixed[] $arr
      * @param int $sortFlag
-     * @return bool
      */
     public function sort(array &$arr, $sortFlag = self::SORT_REGULAR): bool
     {
@@ -168,7 +164,6 @@ class Collator extends PhpCollator
 
     /**
      * @param mixed[] $arr
-     * @return bool
      */
     public function sortWithSortKeys(array &$arr): bool
     {

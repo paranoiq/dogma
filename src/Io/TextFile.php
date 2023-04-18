@@ -35,7 +35,6 @@ class TextFile extends File
     /**
      * @param string|resource $file
      * @param resource|null $streamContext
-     * @return self
      */
     public static function create(
         $file,
@@ -124,7 +123,6 @@ class TextFile extends File
 
     /**
      * @param string[] $row
-     * @return int
      */
     public function writeCsvRow(array $row, string $delimiter, string $quoteChar): int
     {

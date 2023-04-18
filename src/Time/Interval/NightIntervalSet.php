@@ -60,7 +60,6 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 
     /**
      * @param Date[] $dates
-     * @return NightIntervalSet
      */
     public static function createFromDateArray(array $dates): self
     {
@@ -142,7 +141,6 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -194,7 +192,6 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 
     /**
      * Join overlapping intervals in set.
-     * @return self
      */
     public function normalize(): self
     {
@@ -213,7 +210,6 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 
     /**
      * Add another set of intervals to this one without normalization.
-     * @return self
      */
     public function add(self $set): self
     {
@@ -227,7 +223,6 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 
     /**
      * Remove another set of intervals from this one.
-     * @return self
      */
     public function subtract(self $set): self
     {
@@ -266,7 +261,6 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 
     /**
      * Intersect with another set of intervals.
-     * @return self
      */
     public function intersect(self $set): self
     {

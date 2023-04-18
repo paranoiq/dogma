@@ -211,7 +211,6 @@ class QueryEngine
     /**
      * Find nodes
      * @param Element|DOMNode|null $context
-     * @return NodeList
      */
     public function find(string $query, $context = null): NodeList
     {

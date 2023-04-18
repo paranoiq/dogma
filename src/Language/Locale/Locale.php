@@ -78,7 +78,6 @@ class Locale
      * @param string[] $variants
      * @param string[] $private
      * @param string[] $keywords
-     * @return self
      */
     public static function create(
         Language $language,
@@ -130,7 +129,6 @@ class Locale
 
     /**
      * @param string|Locale $locale
-     * @return bool
      */
     public function matches($locale): bool
     {
@@ -146,7 +144,6 @@ class Locale
     /**
      * @param Locale[]|string[] $locales
      * @param Locale|string $default
-     * @return self|null
      */
     public function findBestMatch(array $locales, $default = null): ?self
     {

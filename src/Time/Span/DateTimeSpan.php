@@ -117,7 +117,6 @@ class DateTimeSpan implements DateOrTimeSpan
 
     /**
      * Subtracts positive and negative values if needed
-     * @return DateInterval
      */
     public function toNative(): DateInterval
     {
@@ -271,7 +270,6 @@ class DateTimeSpan implements DateOrTimeSpan
 
     /**
      * @param DateTimeSpan $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -280,7 +278,6 @@ class DateTimeSpan implements DateOrTimeSpan
 
     /**
      * @param DateTimeSpan $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -372,7 +369,6 @@ class DateTimeSpan implements DateOrTimeSpan
 
     /**
      * Normalizes values by summarizing smaller units into bigger. eg: '34 days' -> '1 month, 4 days'
-     * @return self
      */
     public function normalize(bool $safeOnly = false): self
     {

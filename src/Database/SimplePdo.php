@@ -77,7 +77,6 @@ class SimplePdo extends PDO
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $query
      * @param mixed ...$args
-     * @return SimplePdoResult
      */
     public function query($query, ...$args): SimplePdoResult
     {
@@ -144,7 +143,6 @@ class SimplePdo extends PDO
     /**
      * @param string|mixed $query
      * @param mixed ...$args
-     * @return void
      */
     #[ReturnTypeWillChange]
     public function exec($query, ...$args): void
@@ -159,7 +157,6 @@ class SimplePdo extends PDO
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param mixed $value
      * @param string|null $parameterType
-     * @return string
      */
     public function quote($value, $parameterType = null): string
     {

@@ -31,7 +31,6 @@ class TypeTypeHandler implements TypeHandler
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $typeId
-     * @return Type
      */
     public function createInstance(Type $type, $typeId, Mapper $mapper): Type
     {
@@ -41,7 +40,6 @@ class TypeTypeHandler implements TypeHandler
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param Type $typeInstance
-     * @return string
      */
     public function exportInstance(Type $type, $typeInstance, Mapper $mapper): string
     {

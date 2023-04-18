@@ -31,7 +31,6 @@ class Obj
 
     /**
      * @param object|resource $object
-     * @return int
      */
     public static function objectId($object): int
     {

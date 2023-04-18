@@ -103,7 +103,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $that
-     * @return self
      */
     public static function from(iterable $that): self
     {
@@ -113,7 +112,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     /**
      * @param iterable|mixed[] $keys
      * @param iterable|mixed[] $values
-     * @return self
      */
     public static function combine(iterable $keys, iterable $values): self
     {
@@ -241,7 +239,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param mixed $value
-     * @return bool
      */
     public function contains($value): bool
     {
@@ -250,7 +247,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param mixed[] $values
-     * @return bool
      */
     public function containsAny(array $values): bool
     {
@@ -259,7 +255,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param mixed[] $values
-     * @return bool
      */
     public function containsAll(array $values): bool
     {
@@ -330,7 +325,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param int|string $key
-     * @return bool
      */
     public function containsKey($key): bool
     {
@@ -339,7 +333,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param mixed[] $keys
-     * @return bool
      */
     public function containsAnyKey(array $keys): bool
     {
@@ -348,7 +341,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param mixed[] $keys
-     * @return bool
      */
     public function containsAllKeys(array $keys): bool
     {
@@ -510,7 +502,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $array
-     * @return bool
      */
     public function containsSlice(iterable $array): bool
     {
@@ -519,7 +510,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $array
-     * @return int|null
      */
     public function indexOfSlice(iterable $array, int $from = 0): ?int
     {
@@ -537,7 +527,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $array
-     * @return bool
      */
     public function corresponds(iterable $array, callable $function): bool
     {
@@ -555,7 +544,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $array
-     * @return bool
      */
     public function hasSameElements(iterable $array): bool
     {
@@ -566,7 +554,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $slice
-     * @return bool
      */
     public function startsWith(iterable $slice, int $from = 0): bool
     {
@@ -586,7 +573,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $slice
-     * @return bool
      */
     public function endsWith(iterable $slice): bool
     {
@@ -1200,7 +1186,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $replacements
-     * @return self
      */
     public function replaceAll(iterable $replacements): self
     {
@@ -1241,7 +1226,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param mixed[] $patch
-     * @return self
      */
     public function insert(int $from, array $patch): self
     {
@@ -1253,7 +1237,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $that
-     * @return self
      */
     public function merge(iterable $that): self
     {
@@ -1269,7 +1252,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function diff(iterable ...$args): self
     {
@@ -1284,7 +1266,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function diffWith(callable $function, iterable ...$args): self
     {
@@ -1300,7 +1281,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function diffKeys(iterable ...$args): self
     {
@@ -1315,7 +1295,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function diffKeysWith(callable $function, iterable ...$args): self
     {
@@ -1331,7 +1310,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function diffPairs(iterable ...$args): self
     {
@@ -1346,7 +1324,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function diffPairsWith(?callable $function, ?callable $keysFunction, iterable ...$args): self
     {
@@ -1373,7 +1350,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function intersect(iterable ...$args): self
     {
@@ -1388,7 +1364,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function intersectWith(callable $function, iterable ...$args): self
     {
@@ -1404,7 +1379,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function intersectKeys(iterable ...$args): self
     {
@@ -1419,7 +1393,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function intersectKeysWith(callable $function, iterable ...$args): self
     {
@@ -1435,7 +1408,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function intersectPairs(iterable ...$args): self
     {
@@ -1450,7 +1422,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function intersectPairsWith(?callable $function, ?callable $keysFunction, iterable ...$args): self
     {

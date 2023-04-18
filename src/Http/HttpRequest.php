@@ -456,7 +456,6 @@ class HttpRequest
     /**
      * Called by RequestManager.
      * @internal
-     * @return HttpResponse
      */
     public function createResponse(?string $response, int $error): HttpResponse
     {
@@ -483,7 +482,6 @@ class HttpRequest
 
     /**
      * @param mixed[] $info
-     * @return HttpOrCurlStatus
      */
     protected function getResponseStatus(int $error, array $info): HttpOrCurlStatus
     {

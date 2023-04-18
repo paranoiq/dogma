@@ -61,7 +61,6 @@ class Mapper
 
     /**
      * @param iterable|mixed[] $data
-     * @return MappingIterator
      */
     public function reverseMapMany(Type $type, iterable $data): MappingIterator
     {

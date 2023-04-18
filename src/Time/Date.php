@@ -222,7 +222,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     /**
      * Returns Julian day number (count of days since January 1st, 4713 B.C.)
-     * @return int
      */
     public static function calculateDayNumber(DateTimeInterface $dateTime): int
     {
@@ -233,7 +232,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     /**
      * @param DateTimeInterface|Date|string $other
-     * @return DateInterval
      */
     public function diff($other, bool $absolute = false): DateInterval
     {
@@ -248,7 +246,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     /**
      * @param DateTimeInterface|Date|string $other
-     * @return DateSpan
      */
     public function difference($other, bool $absolute = false): DateSpan
     {
@@ -269,7 +266,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -280,7 +276,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -291,7 +286,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     /**
      * @param Date|string $date
-     * @return bool
      */
     public function isBefore($date): bool
     {
@@ -304,7 +298,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     /**
      * @param Date|string $date
-     * @return bool
      */
     public function isAfter($date): bool
     {
@@ -317,7 +310,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     /**
      * @param Date|string $date
-     * @return bool
      */
     public function isSameOrBefore($date): bool
     {
@@ -330,7 +322,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     /**
      * @param Date|string $date
-     * @return bool
      */
     public function isSameOrAfter($date): bool
     {
@@ -344,7 +335,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
     /**
      * @param Date|string $sinceDate
      * @param Date|string $untilDate
-     * @return bool
      */
     public function isBetween($sinceDate, $untilDate): bool
     {
@@ -374,7 +364,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     /**
      * @param int|string|DayOfWeek $day
-     * @return bool
      */
     public function isDayOfWeek($day): bool
     {
@@ -394,7 +383,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     /**
      * @param int|string|Month $month
-     * @return bool
      */
     public function isMonth($month): bool
     {

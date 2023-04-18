@@ -260,7 +260,6 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -271,7 +270,6 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -282,7 +280,6 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     /**
      * @param self $other
-     * @return int
      */
     public function compareIntersects(IntersectComparable $other): int
     {
@@ -298,7 +295,6 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     /**
      * @param Date|DateTimeInterface $date
-     * @return bool
      */
     public function containsValue($date): bool
     {
@@ -325,7 +321,6 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     /**
      * @param DateInterval $interval
-     * @return bool
      */
     public function touches(self $interval): bool
     {
@@ -357,7 +352,6 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     /**
      * @param Date[] $intervalStarts
-     * @return DateIntervalSet
      */
     public function splitBy(array $intervalStarts): DateIntervalSet
     {
@@ -403,12 +397,10 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     public function intersect(self ...$items): self
     {
         $items[] = $this;
-        /** @var self[] $items */
-        $items = Arr::sortComparable($items);
+        $sorted = Arr::sortComparable($items);
 
-        /** @var self $result */
-        $result = array_shift($items);
-        foreach ($items as $item) {
+        $result = array_shift($sorted);
+        foreach ($sorted as $item) {
             if ($result->end->isSameOrAfter($item->start)) {
                 $result = new static(Date::max($result->start, $item->start), Date::min($result->end, $item->end));
             } else {
@@ -422,13 +414,11 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     public function union(self ...$items): DateIntervalSet
     {
         $items[] = $this;
-        /** @var self[] $items */
-        $items = Arr::sortComparable($items);
+        $sorted = Arr::sortComparable($items);
 
-        /** @var DateInterval $current */
-        $current = array_shift($items);
+        $current = array_shift($sorted);
         $results = [$current];
-        foreach ($items as $item) {
+        foreach ($sorted as $item) {
             if ($item->isEmpty()) {
                 continue;
             }
@@ -515,18 +505,17 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
      */
     public static function explodeOverlaps(self ...$items): array
     {
-        /** @var self[] $items */
-        $items = Arr::sortComparable($items);
-        $starts = array_fill(0, count($items), 0);
+        $sorted = Arr::sortComparable($items);
+        $starts = array_fill(0, count($sorted), 0);
         $i = 0;
-        while (isset($items[$i])) {
-            $a = $items[$i];
+        while (isset($sorted[$i])) {
+            $a = $sorted[$i];
             if ($a->isEmpty()) {
-                unset($items[$i]);
+                unset($sorted[$i]);
                 $i++;
                 continue;
             }
-            foreach ($items as $j => $b) {
+            foreach ($sorted as $j => $b) {
                 if ($i === $j) {
                     // same item
                     continue;
@@ -539,9 +528,9 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
                 } elseif ($a->start->equals($b->start)) {
                     if ($a->end->isAfter($b->end)) {
                         // a1=b1----b2----a2
-                        $items[$i] = $b;
-                        $items[] = new static($b->end->addDay(), $a->end);
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $b;
+                        $sorted[] = new static($b->end->addDay(), $a->end);
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $b;
                     } else {
                         // a1=b1----a2=b2
@@ -551,33 +540,33 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
                 } elseif ($a->start->isBefore($b->start)) {
                     if ($a->end->equals($b->end)) {
                         // a1----b1----a2=b2
-                        $items[$i] = $b;
-                        $items[] = new static($a->start, $b->start->subtractDay());
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $b;
+                        $sorted[] = new static($a->start, $b->start->subtractDay());
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $b;
                     } elseif ($a->end->isAfter($b->end)) {
                         // a1----b1----b2----a2
-                        $items[$i] = $b;
-                        $items[] = new static($a->start, $b->start->subtractDay());
-                        $starts[count($items) - 1] = $i + 1;
-                        $items[] = new static($b->end->addDay(), $a->end);
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $b;
+                        $sorted[] = new static($a->start, $b->start->subtractDay());
+                        $starts[count($sorted) - 1] = $i + 1;
+                        $sorted[] = new static($b->end->addDay(), $a->end);
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $b;
                     } else {
                         // a1----b1----a2----b2
                         $new = new static($b->start, $a->end);
-                        $items[$i] = $new;
-                        $items[] = new static($a->start, $b->start->subtractDay());
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $new;
+                        $sorted[] = new static($a->start, $b->start->subtractDay());
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $new;
                     }
                 } else {
                     if ($a->end->isAfter($b->end)) {
                         // b1----a1----b2----a2
                         $new = new static($a->start, $b->end);
-                        $items[$i] = $new;
-                        $items[] = new static($b->end->addDay(), $a->end);
-                        $starts[count($items) - 1] = $i + 1;
+                        $sorted[$i] = $new;
+                        $sorted[] = new static($b->end->addDay(), $a->end);
+                        $starts[count($sorted) - 1] = $i + 1;
                         $a = $new;
                     } else {
                         // b1----a1----a2=b2
@@ -589,7 +578,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
             $i++;
         }
 
-        return array_values(Arr::sortComparable($items));
+        return array_values(Arr::sortComparable($sorted));
     }
 
     /**

@@ -1220,7 +1220,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @return bool
      */
     public static function isIterable($value): bool
     {
@@ -1229,7 +1228,6 @@ final class Check
 
     /**
      * @param mixed $value
-     * @return bool
      */
     public static function isPlainArray($value): bool
     {
