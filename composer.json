@@ -17,9 +17,9 @@
         "nette/utils": "~2.4|~3.0|~4.0"
     },
     "require-dev": {
-        "dogma/dogma-dev": "0.1.29",
-        "phpstan/phpstan": "1.10.2",
-        "phpstan/phpstan-strict-rules": "^1.0"
+        "dogma/dogma-dev": "0.1.30",
+        "phpstan/phpstan": "1.10.13",
+        "phpstan/phpstan-strict-rules": "1.5.1"
     },
     "suggest": {
         "ext-dom": "for Dom (basic functionality)",
@@ -64,7 +64,9 @@
             "@lint:php",
             "@spell:check",
             "@phpcs:src-fast",
-            "@phpcs:tests-fast"
+            "@phpcs:tests-fast",
+            "@package:check",
+            "printf \"\\n \\e[0;32mAll checks OK\\e[0m \\n\""
         ],
         "check:all": [
             "@tests:all",
@@ -72,7 +74,9 @@
             "@lint:php-all",
             "@spell:check",
             "@phpcs:src-fast",
-            "@phpcs:tests-fast"
+            "@phpcs:tests-fast",
+            "@package:check",
+            "printf \"\\n \\e[0;32mAll checks OK\\e[0m \\n\""
         ],
 
         "tests:run": "php vendor/nette/tester/src/tester tests -c tests --colors 1",
@@ -118,6 +122,8 @@
         "phpcs:fix": "php vendor/squizlabs/php_codesniffer/bin/phpcbf --standard=build/CodeSniffer/ruleset-tests.xml -sp src tests",
 
         "spell:check": "php vendor/spell-checker/spell-checker/spell-checker -c build/spell-checker/spell-checker.neon --checkDictionaryFiles --memoryLimit 1024M --noLogo",
+
+        "package:check": "php vendor/dogma/dogma-dev/src/package-check.php",
 
         "require:check": "php vendor/maglnet/composer-require-checker/bin/composer-require-checker.php check",
 

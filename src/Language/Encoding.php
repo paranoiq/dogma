@@ -12,6 +12,7 @@
 namespace Dogma\Language;
 
 use Dogma\Enum\StringEnum;
+use function preg_match;
 use function str_replace;
 use function strtolower;
 use function strtoupper;
@@ -120,8 +121,7 @@ class Encoding extends StringEnum
 
     public const ARMSCII_8 = 'ARMSCII-8';
 
-    // iconv aliases: https://gist.github.com/hakre/4188459
-    /** @var string[] */
+    /** @var string[] @see iconv aliases: https://gist.github.com/hakre/4188459 */
     private static $aliases = [
         'bin' => self::BINARY,
         'binary' => self::BINARY,

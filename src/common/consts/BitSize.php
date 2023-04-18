@@ -9,8 +9,8 @@
 
 namespace Dogma;
 
-use const PHP_INT_SIZE;
 use function in_array;
+use const PHP_INT_SIZE;
 
 class BitSize
 {

@@ -12,7 +12,6 @@
 namespace Dogma;
 
 use stdClass;
-use const INF;
 use function array_keys;
 use function class_exists;
 use function count;
@@ -45,6 +44,7 @@ use function strpos;
 use function strval;
 use function substr;
 use function trim;
+use const INF;
 
 /**
  * Type and range validations

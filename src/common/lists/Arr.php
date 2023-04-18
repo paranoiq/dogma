@@ -88,12 +88,7 @@ class Arr
             throw new InvalidArgumentException('Count of keys and values must be the same.');
         }
 
-        $result = array_combine($keys, $values);
-        if ($result === false) {
-            throw new InvalidArgumentException('Count of keys and values must be the same.');
-        }
-
-        return $result;
+        return array_combine($keys, $values);
     }
 
     /**
