@@ -33,7 +33,7 @@ class AngleFormatter
     public const FORMAT_NUMBER = 'D';
 
     /** @var string[] */
-    private static $specialCharacters = [
+    private static array $specialCharacters = [
         self::DEGREES,
         self::DEGREES_FLOORED,
         self::MINUTES,
@@ -42,14 +42,11 @@ class AngleFormatter
         self::SECONDS_FLOORED,
     ];
 
-    /** @var string */
-    private $format;
+    private string $format;
 
-    /** @var int */
-    private $maxDecimals;
+    private int $maxDecimals;
 
-    /** @var string */
-    private $decimalPoint;
+    private string $decimalPoint;
 
     public function __construct(string $format = self::FORMAT_DEFAULT, int $maxDecimals = 6, string $decimalPoint = '.')
     {

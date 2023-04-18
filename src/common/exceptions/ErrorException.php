@@ -18,7 +18,7 @@ class ErrorException extends Exception
 {
 
     /** @var string[]|int[]|null */
-    private $error;
+    private ?array $error = null;
 
     /**
      * @param string[]|int[]|null $error

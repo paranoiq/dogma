@@ -35,7 +35,7 @@ class DayOfYearIntervalSet implements IntervalSet
     use IntervalSetDumpMixin;
 
     /** @var DayOfYearInterval[] */
-    private $intervals;
+    private array $intervals;
 
     /**
      * @param DayOfYearInterval[] $intervals

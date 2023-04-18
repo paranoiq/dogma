@@ -17,8 +17,7 @@ class Mapper
 {
     use StrictBehaviorMixin;
 
-    /** @var MappingContainer */
-    private $mappings;
+    private MappingContainer $mappings;
 
     public function __construct(MappingContainer $mappings)
     {

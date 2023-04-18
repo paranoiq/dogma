@@ -18,8 +18,7 @@ class Domain
 {
     use StrictBehaviorMixin;
 
-    /** @var string */
-    private $name;
+    private string $name;
 
     public function __construct(string $name)
     {

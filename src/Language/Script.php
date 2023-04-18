@@ -199,7 +199,7 @@ class Script extends StringEnum
     public const YI = 'Yiii';
 
     /** @var string[] */
-    private static $names = [
+    private static array $names = [
         self::ADLAM => 'Adlam',
         self::AFAKA => 'Afaka',
         self::AHOM => 'Ahom, Tai Ahom',
@@ -383,7 +383,7 @@ class Script extends StringEnum
     ];
 
     /** @var string[] */
-    private static $idents = [
+    private static array $idents = [
         self::ADLAM => 'adlam',
         self::AFAKA => 'afaka',
         self::AHOM => 'ahom',

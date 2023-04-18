@@ -26,7 +26,7 @@ class ReverseArrayIterator implements Iterator
     use StrictBehaviorMixin;
 
     /** @var mixed[] */
-    private $array;
+    private array $array;
 
     /**
      * @param mixed[] $array

@@ -55,11 +55,9 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     public const DEFAULT_FORMAT = 'Y-m-d';
 
-    /** @var int */
-    private $julianDay;
+    private int $julianDay;
 
-    /** @var DateTime|null */
-    private $dateTime;
+    private ?DateTime $dateTime = null;
 
     /**
      * @param int|string $julianDayOrDateString
@@ -89,7 +87,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
         }
     }
 
-    public static function createFromDateTimeInterface(DateTimeInterface $dateTime): Date
+    public static function createFromDateTimeInterface(DateTimeInterface $dateTime): self
     {
         if ($dateTime instanceof DateTime) {
             return $dateTime->getDate();
@@ -350,14 +348,14 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     public function isFuture(?TimeProvider $timeProvider = null): bool
     {
-        $today = $timeProvider !== null ? $timeProvider->getDate() : new Date();
+        $today = $timeProvider !== null ? $timeProvider->getDate() : new self();
 
         return $this->julianDay > $today->julianDay;
     }
 
     public function isPast(?TimeProvider $timeProvider = null): bool
     {
-        $today = $timeProvider !== null ? $timeProvider->getDate() : new Date();
+        $today = $timeProvider !== null ? $timeProvider->getDate() : new self();
 
         return $this->julianDay < $today->julianDay;
     }

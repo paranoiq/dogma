@@ -27,7 +27,7 @@ class Tuple implements Countable, IteratorAggregate, ArrayAccess
     use ImmutableArrayAccessMixin;
 
     /** @var mixed[] */
-    private $items;
+    private array $items;
 
     /**
      * @param mixed ...$items

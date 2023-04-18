@@ -201,7 +201,7 @@ class Transliterator extends PhpTransliterator
     public const HALFWIDTH_TO_FULLWIDTH = 'Halfwidth-Fullwidth';
 
     /** @var PhpTransliterator[] */
-    private static $instances = [];
+    private static array $instances = [];
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint

@@ -64,31 +64,25 @@ class Type
     public const NOT_NULLABLE = false;
 
     /** @var Type[] (string $id => $type) */
-    private static $instances = [];
+    private static array $instances = [];
 
-    /** @var string */
-    private $id;
+    private string $id;
 
-    /** @var string */
-    private $type;
+    private string $type;
 
     /** @var Type|Type[]|null */
     private $itemType;
 
-    /** @var bool */
-    private $nullable;
+    private bool $nullable;
 
     /** @var int|int[]|null */
     private $size;
 
-    /** @var string|null */
-    private $specific;
+    private ?string $specific = null;
 
-    /** @var Encoding|null */
-    private $encoding;
+    private ?Encoding $encoding = null;
 
-    /** @var Locale|null */
-    private $locale;
+    private ?Locale $locale = null;
 
     /**
      * @param Type|Type[]|null $itemType

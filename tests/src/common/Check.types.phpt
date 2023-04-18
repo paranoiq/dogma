@@ -23,28 +23,22 @@ require_once __DIR__ . '/../bootstrap.php';
 class TestClass1
 {
 
-    /** @var int */
-    public $a = 1;
+    public int $a = 1;
 
-    /** @var int */
-    public $b = 2;
+    public int $b = 2;
 
-    /** @var int */
-    public $c = 3;
+    public int $c = 3;
 
 }
 
 class TestClass2
 {
 
-    /** @var int */
-    public $a = 1;
+    public int $a = 1;
 
-    /** @var int */
-    protected $b = 2;
+    protected int $b = 2;
 
-    /** @var bool */
-    private $c = true;
+    private bool $c = true;
 
     public function test(): bool
     {

@@ -27,10 +27,9 @@ class SimplePdoResult implements Iterator
     use StrictBehaviorMixin;
 
     /** @var PDOStatement<int, mixed[]> */
-    private $statement;
+    private PDOStatement $statement;
 
-    /** @var int */
-    private $key;
+    private int $key;
 
     /** @var mixed[]|bool */
     private $current;

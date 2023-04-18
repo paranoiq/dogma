@@ -25,17 +25,13 @@ class DateTimeHandler implements TypeHandler
 {
     use StrictBehaviorMixin;
 
-    /** @var string */
-    private $dateTimeFormat;
+    private string $dateTimeFormat;
 
-    /** @var string */
-    private $dateFormat;
+    private string $dateFormat;
 
-    /** @var string */
-    private $timeFormat;
+    private string $timeFormat;
 
-    /** @var DateTimeZone|null */
-    private $timeZone;
+    private ?DateTimeZone $timeZone = null;
 
     public function __construct(
         string $dateTimeFormat = 'Y-m-d H:i:s',

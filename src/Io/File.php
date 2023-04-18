@@ -56,13 +56,11 @@ class File implements Path
     use NonSerializableMixin;
 
     /** @var positive-int */
-    public static $defaultChunkSize = 8192;
+    public static int $defaultChunkSize = 8192;
 
-    /** @var string */
-    protected $path;
+    protected string $path;
 
-    /** @var string */
-    protected $mode;
+    protected string $mode;
 
     /** @var resource|null */
     protected $streamContext;
@@ -70,8 +68,7 @@ class File implements Path
     /** @var resource|null */
     protected $handle;
 
-    /** @var FileMetaData|null */
-    private $metaData;
+    private ?FileMetaData $metaData = null;
 
     /**
      * @param string|resource|FilePath|FileInfo $file

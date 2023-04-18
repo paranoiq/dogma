@@ -19,17 +19,13 @@ class TimeSpan implements DateOrTimeSpan
 
     public const DEFAULT_FORMAT = 'h:i:S';
 
-    /** @var  int */
-    private $hours;
+    private int $hours;
 
-    /** @var int */
-    private $minutes;
+    private int $minutes;
 
-    /** @var int */
-    private $seconds;
+    private int $seconds;
 
-    /** @var int */
-    private $microseconds;
+    private int $microseconds;
 
     final public function __construct(
         int $hours,

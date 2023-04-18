@@ -42,7 +42,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     use StrictBehaviorMixin;
 
     /** @var NightIntervalData[] */
-    private $intervals;
+    private array $intervals;
 
     /**
      * @param NightIntervalData[] $intervals
@@ -465,7 +465,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new NightIntervalDataSet($results);
+        return new self($results);
     }
 
     /**
@@ -486,7 +486,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
         $intervalSets = [];
         foreach ($intervalGroups as $intervals) {
-            $intervalSets[] = (new NightIntervalDataSet($intervals))->normalize();
+            $intervalSets[] = (new self($intervals))->normalize();
         }
 
         return $intervalSets;

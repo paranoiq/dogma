@@ -18,8 +18,7 @@ class CurrentTimeProvider implements TimeProvider
 {
     use StrictBehaviorMixin;
 
-    /** @var DateTimeZone|null */
-    private $timeZone;
+    private ?DateTimeZone $timeZone = null;
 
     public function __construct(?DateTimeZone $timeZone = null)
     {

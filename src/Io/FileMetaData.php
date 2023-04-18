@@ -21,7 +21,7 @@ class FileMetaData
     use StrictBehaviorMixin;
 
     /** @var int[]|string[] */
-    private $stat;
+    private array $stat;
 
     /**
      * @param int[]|string[] $stat

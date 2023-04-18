@@ -20,10 +20,10 @@ class TypeMetaDataContainer
     use StrictBehaviorMixin;
 
     /** @var TypeHandler[] */
-    private $handlers;
+    private array $handlers;
 
     /** @var TypeMetaData[] (string $typeId => $typeMetaData) */
-    private $types;
+    private array $types;
 
     /**
      * @param TypeHandler[] $handlers

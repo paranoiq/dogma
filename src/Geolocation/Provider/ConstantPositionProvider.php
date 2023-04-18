@@ -14,8 +14,7 @@ use Dogma\Geolocation\Position;
 class ConstantPositionProvider implements PositionProvider
 {
 
-    /** @var Position */
-    private $position;
+    private Position $position;
 
     public function __construct(Position $position)
     {

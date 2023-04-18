@@ -45,11 +45,9 @@ class Element
 {
     use StrictBehaviorMixin;
 
-    /** @var QueryEngine */
-    private $engine;
+    private QueryEngine $engine;
 
-    /** @var DOMElement */
-    private $element;
+    private DOMElement $element;
 
     public function __construct(DOMElement $element, QueryEngine $engine)
     {

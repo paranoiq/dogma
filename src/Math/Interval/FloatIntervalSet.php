@@ -32,7 +32,7 @@ class FloatIntervalSet implements IntervalSet
     use IntervalSetDumpMixin;
 
     /** @var FloatInterval[] */
-    private $intervals = [];
+    private array $intervals = [];
 
     /**
      * @param FloatInterval[] $intervals

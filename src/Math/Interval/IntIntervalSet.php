@@ -32,7 +32,7 @@ class IntIntervalSet implements IntervalSet
     use IntervalSetDumpMixin;
 
     /** @var IntInterval[] */
-    private $intervals = [];
+    private array $intervals = [];
 
     /**
      * @param IntInterval[] $intervals

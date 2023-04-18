@@ -208,7 +208,7 @@ class Language extends StringEnum
     public const ZULU = 'zu';
 
     /** @var string[] */
-    private static $names = [
+    private static array $names = [
         self::ABKHAZ => 'abkhaz',
         self::AFAR => 'afar',
         self::AFRIKAANS => 'afrikaans',
@@ -399,7 +399,7 @@ class Language extends StringEnum
     ];
 
     /** @var string[] */
-    private static $native = [
+    private static array $native = [
         self::ABKHAZ => 'аҧсуа',
         self::AFAR => 'afaraf',
         self::AFRIKAANS => 'afrikaans',
@@ -590,7 +590,7 @@ class Language extends StringEnum
     ];
 
     /** @var string[] */
-    private static $idents = [
+    private static array $idents = [
         self::ABKHAZ => 'abkhaz',
         self::AFAR => 'afar',
         self::AFRIKAANS => 'afrikaans',

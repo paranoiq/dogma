@@ -25,8 +25,7 @@ class ContentTypeDetector
 {
     use StrictBehaviorMixin;
 
-    /** @var string|null */
-    private $magicFile;
+    private ?string $magicFile = null;
 
     /** @var resource|finfo|null */
     private $typeHandler;

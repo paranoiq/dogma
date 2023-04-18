@@ -28,10 +28,9 @@ abstract class IntEnum implements Enum, Dumpable
     use EnumSetMixin;
 
     /** @var mixed[][] ($class => ($constName => $value)) */
-    private static $availableValues = [];
+    private static array $availableValues = [];
 
-    /** @var int */
-    private $value;
+    private int $value;
 
     final public function __construct(int $value)
     {

@@ -21,14 +21,12 @@ class ChunkIterator extends IteratorIterator
 {
     use StrictBehaviorMixin;
 
-    /** @var int */
-    private $chunkSize;
+    private int $chunkSize;
 
-    /** @var int */
-    private $key;
+    private int $key = 0;
 
     /** @var mixed[] */
-    private $chunk;
+    private array $chunk;
 
     /**
      * @param iterable|mixed[] $iterable

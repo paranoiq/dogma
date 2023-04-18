@@ -17,14 +17,11 @@ class Vector3i implements Equalable
 {
     use StrictBehaviorMixin;
 
-    /** @var int */
-    private $x;
+    private int $x;
 
-    /** @var int */
-    private $y;
+    private int $y;
 
-    /** @var int */
-    private $z;
+    private int $z;
 
     final public function __construct(int $x, int $y, int $z)
     {
@@ -66,12 +63,12 @@ class Vector3i implements Equalable
         return $other->x === $this->x && $other->y === $this->y && $other->z === $this->z;
     }
 
-    public function add(Vector3i $other): self
+    public function add(self $other): self
     {
         return new static($this->x + $other->x, $this->y + $other->y, $this->z + $other->z);
     }
 
-    public function subtract(Vector3i $other): self
+    public function subtract(self $other): self
     {
         return new static($this->x - $other->x, $this->y - $other->y, $this->z - $other->z);
     }

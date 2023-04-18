@@ -41,7 +41,7 @@ class PositionFormatter
     public const FORMAT_DEFAULT = 'L,O';
 
     /** @var string[] */
-    private static $specialCharacters = [
+    private static array $specialCharacters = [
         self::LATITUDE,
         self::LATITUDE_SIGNED,
         self::LATITUDE_NORTH_SOUTH,
@@ -56,11 +56,9 @@ class PositionFormatter
         self::ALTITUDE_AB,
     ];
 
-    /** @var AngleFormatter */
-    private $angleFormatter;
+    private AngleFormatter $angleFormatter;
 
-    /** @var string */
-    private $format;
+    private string $format;
 
     public function __construct(string $format = self::FORMAT_DEFAULT, ?AngleFormatter $angleFormatter = null)
     {
@@ -75,7 +73,6 @@ class PositionFormatter
     ): string
     {
         $format = $format ?? $this->format;
-        /** @var AngleFormatter $angleFormatter */
         $angleFormatter = $angleFormatter ?? $this->angleFormatter;
 
         $result = '';

@@ -23,14 +23,11 @@ use function fputcsv;
 class TextFile extends File
 {
 
-    /** @var string */
-    private $internalEncoding = Encoding::UTF_8;
+    private string $internalEncoding = Encoding::UTF_8;
 
-    /** @var string */
-    private $encoding = Encoding::UTF_8;
+    private string $encoding = Encoding::UTF_8;
 
-    /** @var string */
-    private $nl = LineEndings::UNIX;
+    private string $nl = LineEndings::UNIX;
 
     /**
      * @param string|resource $file

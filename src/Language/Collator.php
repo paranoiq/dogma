@@ -24,8 +24,7 @@ use function is_string;
 class Collator extends PhpCollator
 {
 
-    /** @var bool */
-    private $backwards = false;
+    private bool $backwards = false;
 
     /**
      * @param Locale|string $locale

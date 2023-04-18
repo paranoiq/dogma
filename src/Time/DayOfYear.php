@@ -35,14 +35,11 @@ class DayOfYear implements Equalable, Comparable, Dumpable
     public const DEFAULT_FORMAT = 'm-d';
     public const DEFAULT_FORMAT_YEAR = 2000; // because it is a leap-year. We do not want February 29th to fallback to March 1st
 
-    /** @var int */
-    private $number;
+    private int $number;
 
-    /** @var int */
-    private $month;
+    private int $month;
 
-    /** @var int */
-    private $dayOfMonth;
+    private int $dayOfMonth;
 
     /**
      * Receives date string (e.g. "02-29") or number of day in year.

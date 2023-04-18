@@ -24,16 +24,13 @@ class RoundRobinIterator implements Iterator
     use StrictBehaviorMixin;
 
     /** @var Iterator[] */
-    private $iterators;
+    private array $iterators;
 
-    /** @var int */
-    private $current;
+    private int $current;
 
-    /** @var int */
-    private $key;
+    private int $key;
 
-    /** @var bool */
-    private $allowUneven = false;
+    private bool $allowUneven = false;
 
     /**
      * @param iterable|mixed[] ...$iterables

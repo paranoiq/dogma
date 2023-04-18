@@ -26,19 +26,15 @@ class MappingIterator implements Iterator
     use StrictBehaviorMixin;
 
     /** @var Iterator<mixed, mixed> */
-    private $source;
+    private Iterator $source;
 
-    /** @var Type */
-    private $type;
+    private Type $type;
 
-    /** @var Mapper */
-    private $mapper;
+    private Mapper $mapper;
 
-    /** @var bool */
-    private $reverse;
+    private bool $reverse;
 
-    /** @var int */
-    private $key = 0;
+    private int $key = 0;
 
     /**
      * @param iterable|mixed[] $source

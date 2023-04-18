@@ -16,7 +16,7 @@ class NoConstructorException extends Exception implements MappingTypeException
 {
 
     /** @var class-string */
-    private $class;
+    private string $class;
 
     /**
      * @param class-string $class

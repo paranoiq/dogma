@@ -28,19 +28,18 @@ class FloydWarshallPathFinder
     use StrictBehaviorMixin;
 
     /** @var int[][] */
-    private $weights;
+    private array $weights;
 
-    /** @var int */
-    private $nodeCount;
+    private int $nodeCount;
 
     /** @var string[]|int[] */
-    private $nodeNames = [];
+    private array $nodeNames = [];
 
     /** @var int[][] */
-    private $distances = [[]];
+    private array $distances = [[]];
 
     /** @var mixed[][] */
-    private $predecessors = [[]];
+    private array $predecessors = [[]];
 
     /**
      * @param int[][] $weights graph edge weights. may be sparse

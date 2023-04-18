@@ -1816,7 +1816,7 @@ class ContentType extends PartialStringEnum
     public const X_CONFERENCE_X_COOLTALK = 'x-conference/x-cooltalk';
 
     /** @var string[] */
-    private static $extensions = [
+    private static array $extensions = [
         '123' => self::APPLICATION_VND_LOTUS_1_2_3,
         '3dml' => self::TEXT_VND_IN3D_3DML,
         '3g2' => self::VIDEO_3GPP2,
@@ -2523,7 +2523,7 @@ class ContentType extends PartialStringEnum
     ];
 
     /** @var bool[] */
-    private static $compressed = [
+    private static array $compressed = [
         self::APPLICATION_GZIP => true,
         self::APPLICATION_X_BZIP => true,
         self::APPLICATION_X_BZIP2 => true,
@@ -2536,7 +2536,7 @@ class ContentType extends PartialStringEnum
     ];
 
     /** @var bool[] */
-    private static $archive = [
+    private static array $archive = [
         // uncompressed
         self::APPLICATION_VND_EFI_ISO => false,
         self::APPLICATION_X_CPIO => false,

@@ -36,10 +36,10 @@ abstract class IntSet implements Set, Dumpable
     use EnumSetMixin;
 
     /** @var mixed[][] ($class => ($constName => $value)) */
-    private static $availableValues = [];
+    private static array $availableValues = [];
 
     /** @var int[] */
-    private $values;
+    private array $values;
 
     /**
      * @param int[] $values

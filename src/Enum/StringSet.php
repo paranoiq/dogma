@@ -35,10 +35,10 @@ abstract class StringSet implements Set, Dumpable
     use EnumSetMixin;
 
     /** @var mixed[][] ($class => ($constName => $value)) */
-    private static $availableValues = [];
+    private static array $availableValues = [];
 
     /** @var string[] */
-    private $values;
+    private array $values;
 
     /**
      * @param string[] $values

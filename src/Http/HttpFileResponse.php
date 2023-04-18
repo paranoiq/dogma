@@ -14,8 +14,7 @@ use Dogma\Io\File;
 class HttpFileResponse extends HttpResponse
 {
 
-    /** @var File */
-    private $file;
+    private File $file;
 
     /**
      * @param string[] $rawHeaders

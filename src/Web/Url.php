@@ -17,8 +17,7 @@ class Url
 {
     use StrictBehaviorMixin;
 
-    /** @var NetteUrl */
-    private $url;
+    private NetteUrl $url;
 
     public function __construct(string $url)
     {

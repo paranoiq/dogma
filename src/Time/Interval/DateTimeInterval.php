@@ -53,11 +53,9 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     public const DEFAULT_FORMAT = 'Y-m-d H:i:s| - Y-m-d H:i:s';
 
-    /** @var DateTime */
-    private $start;
+    private DateTime $start;
 
-    /** @var DateTime */
-    private $end;
+    private DateTime $end;
 
     final public function __construct(DateTime $start, DateTime $end)
     {

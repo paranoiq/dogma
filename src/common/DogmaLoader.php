@@ -26,11 +26,11 @@ final class DogmaLoader
 {
     use StrictBehaviorMixin;
 
-    /** @var static */
-    private static $instance;
+    /** @var static|null */
+    private static ?self $instance = null;
 
     /** @var string[] */
-    private $classMap = [];
+    private array $classMap = [];
 
     private function __construct()
     {

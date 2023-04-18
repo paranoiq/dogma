@@ -25,13 +25,11 @@ class NodeList implements Countable, Iterator
     use StrictBehaviorMixin;
 
     /** @var DOMNodeList<DOMNode> */
-    private $nodeList;
+    private DOMNodeList $nodeList;
 
-    /** @var QueryEngine */
-    private $engine;
+    private QueryEngine $engine;
 
-    /** @var int */
-    private $offset = 0;
+    private int $offset = 0;
 
     /**
      * @param DOMNodeList<DOMNode> $nodeList

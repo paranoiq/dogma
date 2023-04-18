@@ -21,14 +21,12 @@ class ConventionMappingBuilder implements MappingBuilder
 {
     use StrictBehaviorMixin;
 
-    /** @var TypeMetaDataContainer */
-    private $typeMetaData;
+    private TypeMetaDataContainer $typeMetaData;
 
-    /** @var NamingStrategy */
-    private $fieldNamingStrategy;
+    private NamingStrategy $fieldNamingStrategy;
 
     /** @var non-empty-string */
-    private $fieldSeparator;
+    private string $fieldSeparator;
 
     /**
      * @param non-empty-string $fieldSeparator

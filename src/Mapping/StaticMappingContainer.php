@@ -17,7 +17,7 @@ class StaticMappingContainer implements MappingContainer
     use StrictBehaviorMixin;
 
     /** @var Mapping[] (string $typeId => $mapping) */
-    private $mappings;
+    private array $mappings;
 
     /**
      * @param Mapping[] $mappings

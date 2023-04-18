@@ -17,7 +17,7 @@ final class ConfigurationProfile extends stdClass
     use StrictBehaviorMixin;
 
     /** @var mixed[] */
-    private $values;
+    private array $values;
 
     /**
      * @param mixed[] $values

@@ -18,11 +18,9 @@ class ConstantTimeProvider implements TimeProvider
 {
     use StrictBehaviorMixin;
 
-    /** @var DateTime */
-    private $dateTime;
+    private DateTime $dateTime;
 
-    /** @var DateTimeZone */
-    private $timeZone;
+    private DateTimeZone $timeZone;
 
     public function __construct(?DateTime $dateTime = null, ?DateTimeZone $timeZone = null)
     {

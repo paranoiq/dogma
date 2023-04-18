@@ -19,11 +19,9 @@ class Host
 {
     use StrictBehaviorMixin;
 
-    /** @var string */
-    private $host;
+    private string $host;
 
-    /** @var int|null */
-    private $port;
+    private ?int $port = null;
 
     public function __construct(string $host, ?int $port = null)
     {

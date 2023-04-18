@@ -19,8 +19,7 @@ use const CURLOPT_FILE;
 class HttpDownloadRequest extends HttpRequest
 {
 
-    /** @var File */
-    private $file;
+    private File $file;
 
     /**
      * @return HttpFileResponse

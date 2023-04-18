@@ -22,10 +22,10 @@ class CombineIterator implements Iterator
     use StrictBehaviorMixin;
 
     /** @var Iterator<mixed, mixed> */
-    private $keys;
+    private Iterator $keys;
 
     /** @var Iterator<mixed, mixed> */
-    private $values;
+    private Iterator $values;
 
     /**
      * @param iterable|mixed[] $keys

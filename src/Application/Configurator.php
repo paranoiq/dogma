@@ -48,16 +48,16 @@ final class Configurator extends stdClass
     public const MAP = 'map';
 
     /** @var string[]|string[][] */
-    private $arguments;
+    private array $arguments;
 
     /** @var mixed[] */
-    private $defaults;
+    private array $defaults;
 
     /** @var mixed[] */
-    private $values = [];
+    private array $values = [];
 
     /** @var mixed[] */
-    private $profiles = [];
+    private array $profiles = [];
 
     /**
      * @param string[]|string[][] $arguments

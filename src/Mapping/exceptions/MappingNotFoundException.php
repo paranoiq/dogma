@@ -16,8 +16,7 @@ use Throwable;
 class MappingNotFoundException extends Exception implements MappingException
 {
 
-    /** @var Type */
-    private $type;
+    private Type $type;
 
     public function __construct(Type $size, ?Throwable $previous = null)
     {

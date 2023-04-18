@@ -40,11 +40,9 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     public const MIN = Date::MIN;
     public const MAX = Date::MAX;
 
-    /** @var Date */
-    private $start;
+    private Date $start;
 
-    /** @var Date */
-    private $end;
+    private Date $end;
 
     /** @var mixed|null */
     private $data;

@@ -23,14 +23,11 @@ class Vector3
 {
     use StrictBehaviorMixin;
 
-    /** @var float */
-    private $x;
+    private float $x;
 
-    /** @var float */
-    private $y;
+    private float $y;
 
-    /** @var float */
-    private $z;
+    private float $z;
 
     final public function __construct(float $x, float $y, float $z)
     {
@@ -40,7 +37,7 @@ class Vector3
     }
 
     /**
-     * @return float[]
+     * @return array{float, float, float}
      */
     public function getValues(): array
     {
@@ -48,7 +45,7 @@ class Vector3
     }
 
     /**
-     * @return float[] ($latitude, $longitude)
+     * @return array{float, float} ($latitude, $longitude)
      */
     public static function normalVectorToRadians(float $x, float $y, float $z): array
     {
@@ -59,7 +56,7 @@ class Vector3
     }
 
     /**
-     * @return float[] ($x, $y, $z)
+     * @return array{float, float, float} ($x, $y, $z)
      */
     public static function radiansToNormalVector(float $latitude, float $longitude): array
     {
@@ -71,7 +68,7 @@ class Vector3
     }
 
     /**
-     * @return float[]
+     * @return array{float, float, float}
      */
     public static function normalize(float $x, float $y, float $z): array
     {

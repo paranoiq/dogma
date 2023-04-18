@@ -22,8 +22,7 @@ use ReflectionClass;
 abstract class ConstructorHandler implements TypeHandler
 {
 
-    /** @var MethodTypeParser */
-    private $parser;
+    private MethodTypeParser $parser;
 
     public function __construct(MethodTypeParser $parser)
     {

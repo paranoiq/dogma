@@ -28,10 +28,9 @@ abstract class StringEnum implements Enum, Dumpable
     use EnumSetMixin;
 
     /** @var mixed[][] ($class => ($constName => $value)) */
-    private static $availableValues = [];
+    private static array $availableValues = [];
 
-    /** @var string */
-    private $value;
+    private string $value;
 
     final public function __construct(string $value)
     {

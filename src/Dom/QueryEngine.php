@@ -41,11 +41,10 @@ class QueryEngine
 {
     use StrictBehaviorMixin;
 
-    /** @var DOMXPath */
-    private $xpath;
+    private DOMXPath $xpath;
 
     /** @var string[] (string $pattern => string $replacement) */
-    private $translations = [
+    private array $translations = [
         // index: [n]
         '/\\[([0-9]+)..([0-9]+)\\]/' => '[position() >= $1 and position() <= $2]', // [m..n]
         '/\\[..([0-9]+)\\]/' => '[position() <= $1]', // [..n]
@@ -125,7 +124,7 @@ class QueryEngine
     ];
 
     /** @var string[] */
-    private $nativeFunctions = [
+    private array $nativeFunctions = [
         'position',
         'last',
         'count',
@@ -167,7 +166,7 @@ class QueryEngine
     ];
 
     /** @var string[] */
-    private $userFunctions = [
+    private array $userFunctions = [
         'Dogma\\Dom\\QueryEngine::match',
         'Dogma\\Dom\\QueryEngine::replace',
         'Dogma\\Dom\\QueryEngine::date',

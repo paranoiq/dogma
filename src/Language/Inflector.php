@@ -22,7 +22,7 @@ class Inflector
     use StaticClassMixin;
 
     /** @var string[] */
-    public static $singulars = [
+    public static array $singulars = [
         '/(quiz)$/i' => '\1zes',
         '/^(ox)$/i' => '\1en',
         '/([m|l])ouse$/i' => '\1ice',
@@ -43,7 +43,7 @@ class Inflector
     ];
 
     /** @var string[] */
-    public static $plurals = [
+    public static array $plurals = [
         '/(database)s$/i' => '\1',
         '/(quiz)zes$/i' => '\1',
         '/(matr)ices$/i' => '\1ix',
@@ -72,7 +72,7 @@ class Inflector
     ];
 
     /** @var string[] of irregular nouns */
-    public static $irregular = [
+    public static array $irregular = [
         'person' => 'people',
         'man' => 'men',
         'child' => 'children',
@@ -82,7 +82,7 @@ class Inflector
     ];
 
     /** @var string[] of uncountable nouns */
-    public static $uncountable = [
+    public static array $uncountable = [
         'equipment',
         'information',
         'rice',

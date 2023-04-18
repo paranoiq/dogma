@@ -39,7 +39,7 @@ class Sapi extends StringEnum
     public const WEBJAMES = 'webjames';
 
     /** @var string[] */
-    private static $multithreaded = [
+    private static array $multithreaded = [
         self::AOL_SERVER,
         self::APACHE,
         self::APACHE_2_FILTER,

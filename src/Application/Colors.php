@@ -20,8 +20,7 @@ final class Colors
 {
     use StaticClassMixin;
 
-    /** @var bool */
-    public static $off = false;
+    public static bool $off = false;
 
     public const WHITE = 'white';
     public const LGRAY = 'lgray';
@@ -41,7 +40,7 @@ final class Colors
     public const LYELLOW = 'lyellow';
 
     /** @var string[] */
-    private static $fg = [
+    private static array $fg = [
         self::WHITE => '1;37',
         self::LGRAY => '0;37',
         self::GRAY => '1;30',
@@ -63,7 +62,7 @@ final class Colors
     ];
 
     /** @var string[] */
-    private static $bg = [
+    private static array $bg = [
         self::LGRAY => '47',
         self::BLACK => '40',
 

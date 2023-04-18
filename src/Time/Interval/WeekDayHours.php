@@ -21,11 +21,9 @@ class WeekDayHours implements Pokeable, Dumpable
 {
     use StrictBehaviorMixin;
 
-    /** @var DayOfWeek */
-    private $day;
+    private DayOfWeek $day;
 
-    /** @var TimeIntervalSet */
-    private $hours;
+    private TimeIntervalSet $hours;
 
     final public function __construct(DayOfWeek $day, TimeIntervalSet $hours)
     {

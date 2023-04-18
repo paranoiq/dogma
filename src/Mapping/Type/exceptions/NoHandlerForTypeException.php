@@ -16,8 +16,7 @@ use Throwable;
 class NoHandlerForTypeException extends Exception implements MappingTypeException
 {
 
-    /** @var Type */
-    private $type;
+    private Type $type;
 
     public function __construct(Type $size, ?Throwable $previous = null)
     {

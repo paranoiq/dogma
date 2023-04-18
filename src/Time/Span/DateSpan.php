@@ -20,14 +20,11 @@ class DateSpan implements DateOrTimeSpan
 
     public const DEFAULT_FORMAT = 'y-m-d';
 
-    /** @var int */
-    private $years;
+    private int $years;
 
-    /** @var int */
-    private $months;
+    private int $months;
 
-    /** @var int */
-    private $days;
+    private int $days;
 
     final public function __construct(
         int $years,

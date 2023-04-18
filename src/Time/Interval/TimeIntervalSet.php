@@ -37,7 +37,7 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
     use IntervalSetDumpMixin;
 
     /** @var TimeInterval[] */
-    private $intervals;
+    private array $intervals;
 
     /**
      * @param TimeInterval[] $intervals

@@ -34,13 +34,12 @@ class Locale
     use StrictBehaviorMixin;
 
     /** @var self[] */
-    private static $instances = [];
+    private static array $instances = [];
 
-    /** @var string */
-    private $value;
+    private string $value;
 
     /** @var string[]|string[][]|null[] */
-    private $components;
+    private array $components;
 
     /**
      * @param string[]|string[][]|null[] $components

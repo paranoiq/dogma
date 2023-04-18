@@ -50,11 +50,9 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     public const DEFAULT_FORMAT = 'Y-m-d| - Y-m-d';
 
-    /** @var Date */
-    private $start;
+    private Date $start;
 
-    /** @var Date */
-    private $end;
+    private Date $end;
 
     final public function __construct(Date $start, Date $end)
     {

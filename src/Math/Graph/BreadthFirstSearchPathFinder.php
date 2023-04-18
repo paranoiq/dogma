@@ -22,7 +22,7 @@ class BreadthFirstSearchPathFinder
     use StrictBehaviorMixin;
 
     /** @var int[][]|string[][] */
-    private $edges;
+    private array $edges;
 
     /**
      * @param int[][]|string[][] $edges

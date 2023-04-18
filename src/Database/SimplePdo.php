@@ -41,7 +41,7 @@ class SimplePdo extends PDO
     use StrictBehaviorMixin;
 
     /** @var int[] */
-    private static $typeShortcuts = [
+    private static array $typeShortcuts = [
         'b' => self::PARAM_BOOL,
         'n' => self::PARAM_NULL,
         'i' => self::PARAM_INT,
@@ -50,7 +50,7 @@ class SimplePdo extends PDO
     ];
 
     /** @var int[] */
-    private static $nativeTypes = [
+    private static array $nativeTypes = [
         'bool' => self::PARAM_BOOL,
         'boolean' => self::PARAM_BOOL,
         'null' => self::PARAM_NULL,

@@ -18,20 +18,17 @@ class MappingStep
 {
     use StrictBehaviorMixin;
 
-    /** @var Type */
-    private $type;
+    private Type $type;
 
-    /** @var TypeHandler */
-    private $handler;
+    private TypeHandler $handler;
 
     /** @var string[] */
-    private $handlerKeys;
+    private array $handlerKeys;
 
     /** @var string[] */
-    private $sourceKeys;
+    private array $sourceKeys;
 
-    /** @var string */
-    private $destinationKey;
+    private string $destinationKey;
 
     /**
      * @param string[] $handlerKeys ($sourceKey => $handlerKey)

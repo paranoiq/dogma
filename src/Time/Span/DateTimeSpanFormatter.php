@@ -92,7 +92,7 @@ class DateTimeSpanFormatter
     public const FORMAT_FULL_UNITS = '[yz, ][mo, ]df[, hl][, ik][, Sr]';
 
     /** @var string[] */
-    private static $specialCharacters = [
+    private static array $specialCharacters = [
         self::YEARS,
         self::YEARS_FRACTION,
         self::YEARS_UNIT,
@@ -147,17 +147,13 @@ class DateTimeSpanFormatter
         self::PRETTY_SINGLE_UNITS,
     ];
 
-    /** @var string */
-    private $format;
+    private string $format;
 
-    /** @var int */
-    private $maxDecimals;
+    private int $maxDecimals;
 
-    /** @var string */
-    private $decimalPoint;
+    private string $decimalPoint;
 
-    /** @var Translator|null */
-    private $translator;
+    private ?Translator $translator = null;
 
     public function __construct(
         string $format = self::FORMAT_DEFAULT,

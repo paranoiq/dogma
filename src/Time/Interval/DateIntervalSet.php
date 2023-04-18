@@ -39,7 +39,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
     use IntervalSetDumpMixin;
 
     /** @var DateInterval[] */
-    private $intervals;
+    private array $intervals;
 
     /**
      * @param DateInterval[] $intervals

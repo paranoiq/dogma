@@ -37,17 +37,13 @@ class FloatInterval implements OpenClosedInterval
     public const MIN = -INF;
     public const MAX = INF;
 
-    /** @var float */
-    private $start;
+    private float $start;
 
-    /** @var float */
-    private $end;
+    private float $end;
 
-    /** @var bool */
-    private $openStart;
+    private bool $openStart;
 
-    /** @var bool */
-    private $openEnd;
+    private bool $openEnd;
 
     final public function __construct(float $start, float $end, bool $openStart = false, bool $openEnd = false)
     {

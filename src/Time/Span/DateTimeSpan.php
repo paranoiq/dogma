@@ -41,26 +41,19 @@ class DateTimeSpan implements DateOrTimeSpan
 
     public const DEFAULT_FORMAT = 'y-m-d h:i:S';
 
-    /** @var  int */
-    private $years;
+    private int $years;
 
-    /** @var int */
-    private $months;
+    private int $months;
 
-    /** @var int */
-    private $days;
+    private int $days;
 
-    /** @var int */
-    private $hours;
+    private int $hours;
 
-    /** @var int */
-    private $minutes;
+    private int $minutes;
 
-    /** @var int */
-    private $seconds;
+    private int $seconds;
 
-    /** @var int */
-    private $microseconds;
+    private int $microseconds;
 
     final public function __construct(
         int $years,
@@ -348,7 +341,7 @@ class DateTimeSpan implements DateOrTimeSpan
 
     public function subtract(self ...$other): self
     {
-        return $this->add(...Arr::map($other, static function (DateTimeSpan $span): DateTimeSpan {
+        return $this->add(...Arr::map($other, static function (self $span): self {
             return $span->invert();
         }));
     }

@@ -25,8 +25,7 @@ use function trim;
 class Document extends DOMDocument
 {
 
-    /** @var QueryEngine */
-    private $engine;
+    private QueryEngine $engine;
 
     /**
      * XML or HTML content or file path prefixed with '@'

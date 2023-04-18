@@ -57,11 +57,9 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
 
     public const DEFAULT_FORMAT = 'H:i:s.u';
 
-    /** @var int */
-    private $microseconds;
+    private int $microseconds;
 
-    /** @var DateTime|null */
-    private $dateTime;
+    private ?DateTime $dateTime = null;
 
     /**
      * @param int|string $microsecondsOrTimeString
@@ -114,7 +112,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
         return new static(($hours * 3600 + $minutes * 60 + $seconds) * 1000000 + $microseconds);
     }
 
-    public static function createFromDateTimeInterface(DateTimeInterface $dateTime): Time
+    public static function createFromDateTimeInterface(DateTimeInterface $dateTime): self
     {
         if ($dateTime instanceof DateTime) {
             return $dateTime->getTime();

@@ -90,32 +90,28 @@ class HttpRequest
     /** @var callable|null */
     private $init;
 
-    /** @var string */
-    private $url;
+    private string $url;
 
-    /** @var string */
-    private $method = HttpMethod::GET;
+    private string $method = HttpMethod::GET;
 
     /** @var string[] */
-    private $headers = [];
+    private array $headers = [];
 
     /** @var string[] */
-    private $cookies = [];
+    private array $cookies = [];
 
     /** @var mixed[] */
-    private $variables = [];
+    private array $variables = [];
 
-    /** @var string */
-    private $content;
+    private string $content;
 
-    /** @var HttpHeaderParser|null */
-    protected $headerParser;
+    protected ?HttpHeaderParser $headerParser = null;
 
     /** @var mixed */
     protected $context;
 
     /** @var string[] */
-    protected $responseHeaders = [];
+    protected array $responseHeaders = [];
 
     public function __construct(?string $url = null, ?string $method = null)
     {

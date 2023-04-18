@@ -19,8 +19,7 @@ class OneWayHandlerException extends Exception implements MappingTypeException
     /** @var mixed */
     private $instance;
 
-    /** @var TypeHandler */
-    private $handler;
+    private TypeHandler $handler;
 
     /**
      * @param mixed $instance

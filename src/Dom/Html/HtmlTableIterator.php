@@ -23,23 +23,18 @@ class HtmlTableIterator implements Iterator
 {
     use StrictBehaviorMixin;
 
-    /** @var Element */
-    private $table;
+    private Element $table;
 
-    /** @var string */
-    private $headRowSelector;
+    private string $headRowSelector;
 
-    /** @var string */
-    private $bodyRowSelector;
+    private string $bodyRowSelector;
 
     /** @var string[] */
-    private $head;
+    private array $head;
 
-    /** @var NodeList */
-    private $rows;
+    private NodeList $rows;
 
-    /** @var int */
-    private $position;
+    private int $position;
 
     public function __construct(
         Element $table,

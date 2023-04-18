@@ -24,19 +24,18 @@ class HttpMultiChannel
     use StrictBehaviorMixin;
 
     /** @var HttpChannel[] */
-    private $channels;
+    private array $channels;
 
     /** @var string[] */
-    private $channelIds;
+    private array $channelIds;
 
-    /** @var int */
-    private $lastIndex = -1;
+    private int $lastIndex = -1;
 
     /** @var array<array<int|string>> ($subJobName => ($channelName => $jobName)) */
-    private $queue = [];
+    private array $queue = [];
 
     /** @var array<array<HttpResponse>> ($jobName => ($channelName => $response)) */
-    private $finished = [];
+    private array $finished = [];
 
     /** @var callable|null */
     private $responseHandler;

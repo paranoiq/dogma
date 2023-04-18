@@ -43,19 +43,18 @@ class HttpChannelManager
     private $handler;
 
     /** @var int maximum threads for all channels */
-    private $threadLimit = 20;
+    private int $threadLimit = 20;
 
     /** @var float sum of priorities of all channels */
-    private $sumPriorities = 0.0;
+    private float $sumPriorities = 0.0;
 
     /** @var HttpChannel[] */
-    private $channels = [];
+    private array $channels = [];
 
     /** @var mixed[] (int $resourceId => array($channelId, $jobName, $request)) */
-    private $resources = [];
+    private array $resources = [];
 
-    /** @var HttpHeaderParser|null */
-    private $headerParser;
+    private ?HttpHeaderParser $headerParser = null;
 
     public function __construct(?HttpHeaderParser $headerParser = null)
     {

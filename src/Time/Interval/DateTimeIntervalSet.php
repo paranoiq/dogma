@@ -38,7 +38,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
     use IntervalSetDumpMixin;
 
     /** @var DateTimeInterval[] */
-    private $intervals;
+    private array $intervals;
 
     /**
      * @param DateTimeInterval[] $intervals

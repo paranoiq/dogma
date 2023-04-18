@@ -36,11 +36,9 @@ class IntInterval implements Interval
     public const MIN = PHP_INT_MIN;
     public const MAX = PHP_INT_MAX;
 
-    /** @var int */
-    private $start;
+    private int $start;
 
-    /** @var int */
-    private $end;
+    private int $end;
 
     final public function __construct(int $start, int $end)
     {

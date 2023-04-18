@@ -82,7 +82,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     private const PRESERVE_KEYS = true;
 
     /** @var mixed[] */
-    private $items;
+    private array $items;
 
     /**
      * @param mixed[] $items

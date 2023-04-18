@@ -43,11 +43,9 @@ class DayOfYearInterval implements ModuloInterval
 
     public const DEFAULT_FORMAT = 'm-d| - m-d';
 
-    /** @var DayOfYear */
-    private $start;
+    private DayOfYear $start;
 
-    /** @var DayOfYear */
-    private $end;
+    private DayOfYear $end;
 
     final public function __construct(DayOfYear $start, DayOfYear $end)
     {

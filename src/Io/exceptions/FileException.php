@@ -15,7 +15,7 @@ class FileException extends IoException
 {
 
     /** @var mixed[]|null */
-    private $error;
+    private ?array $error = null;
 
     /**
      * @param mixed[]|null $error

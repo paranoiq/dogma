@@ -25,28 +25,25 @@ class HttpResponse
     use StrictBehaviorMixin;
 
     /** @var mixed[] */
-    protected $info;
+    protected array $info;
 
-    /** @var HttpOrCurlStatus */
-    private $status;
-
-    /** @var string[] */
-    private $rawHeaders;
-
-    /** @var mixed[] */
-    private $headers;
+    private HttpOrCurlStatus $status;
 
     /** @var string[] */
-    private $cookies;
+    private array $rawHeaders;
 
-    /** @var string|null */
-    private $body;
+    /** @var mixed[]|null */
+    private ?array $headers = null;
+
+    /** @var string[]|null */
+    private ?array $cookies = null;
+
+    private ?string $body;
 
     /** @var mixed */
     private $context;
 
-    /** @var HttpHeaderParser|null */
-    private $headerParser;
+    private ?HttpHeaderParser $headerParser;
 
     /**
      * @param string[] $rawHeaders

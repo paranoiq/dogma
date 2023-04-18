@@ -42,7 +42,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     use StrictBehaviorMixin;
 
     /** @var DateIntervalData[] */
-    private $intervals;
+    private array $intervals;
 
     /**
      * @param DateIntervalData[] $intervals
@@ -465,7 +465,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new DateIntervalDataSet($results);
+        return new self($results);
     }
 
     /**
@@ -486,7 +486,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
         $intervalSets = [];
         foreach ($intervalGroups as $intervals) {
-            $intervalSets[] = (new DateIntervalDataSet($intervals))->normalize();
+            $intervalSets[] = (new self($intervals))->normalize();
         }
 
         return $intervalSets;

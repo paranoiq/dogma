@@ -17,8 +17,7 @@ class FilePath implements Path
 {
     use StrictBehaviorMixin;
 
-    /** @var string */
-    private $path;
+    private string $path;
 
     public function __construct(string $path)
     {

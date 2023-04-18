@@ -18,14 +18,12 @@ class TypeMetaData
 {
     use StrictBehaviorMixin;
 
-    /** @var Type */
-    private $type;
+    private Type $type;
 
     /** @var Type[] (string $name => $type) */
-    private $fields;
+    private array $fields;
 
-    /** @var TypeHandler */
-    private $handler;
+    private TypeHandler $handler;
 
     /**
      * @param Type[] $fields ($name => $type)

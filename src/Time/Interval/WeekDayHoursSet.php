@@ -34,7 +34,7 @@ class WeekDayHoursSet implements Pokeable, Dumpable, IteratorAggregate
     use StrictBehaviorMixin;
 
     /** @var WeekDayHours[] */
-    private $weekDayHours = [];
+    private array $weekDayHours = [];
 
     /**
      * @param WeekDayHours[] $weekDayHoursList

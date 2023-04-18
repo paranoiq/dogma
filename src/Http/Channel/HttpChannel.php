@@ -32,41 +32,34 @@ class HttpChannel
 {
     use StrictBehaviorMixin;
 
-    /** @var HttpChannelManager */
-    private $manager;
+    private HttpChannelManager $manager;
 
-    /** @var HttpRequest */
-    private $requestPrototype;
+    private HttpRequest $requestPrototype;
 
-    /** @var int */
-    private $priority = 1;
+    private int $priority = 1;
 
-    /** @var int */
-    private $threadLimit = 10;
+    private int $threadLimit = 10;
 
-    /** @var int */
-    private $lastIndex = 0;
+    private int $lastIndex = 0;
 
-    /** @var bool */
-    private $initiated = false;
+    private bool $initiated = false;
 
-    /** @var bool */
-    private $stopped = false;
+    private bool $stopped = false;
 
     /** @var int|bool */
     private $paused = false;
 
     /** @var string[]|string[][] (int|string $name => $data) */
-    private $queue = [];
+    private array $queue = [];
 
     /** @var string[]|string[][] (int|string $name => $data) */
-    private $running = [];
+    private array $running = [];
 
     /** @var HttpResponse[] */
-    private $finished = [];
+    private array $finished = [];
 
     /** @var mixed[] (int|string $name => $context) */
-    private $contexts = [];
+    private array $contexts = [];
 
     /** @var callable|null */
     private $responseHandler;

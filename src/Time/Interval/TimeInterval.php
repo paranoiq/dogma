@@ -53,11 +53,9 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 
     public const DEFAULT_FORMAT = 'H:i:s.u| - H:i:s.u';
 
-    /** @var Time */
-    private $start;
+    private Time $start;
 
-    /** @var Time */
-    private $end;
+    private Time $end;
 
     final public function __construct(Time $start, Time $end)
     {

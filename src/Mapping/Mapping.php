@@ -18,11 +18,10 @@ class Mapping
 {
     use StrictBehaviorMixin;
 
-    /** @var Type */
-    private $type;
+    private Type $type;
 
     /** @var MappingStep[] */
-    private $steps;
+    private array $steps;
 
     /** @var MappingStep[]|ReverseArrayIterator */
     private $reverseSteps;

@@ -32,7 +32,7 @@ class HttpHeaderParser
     use StrictBehaviorMixin;
 
     /** @var string[] */
-    private static $types = [
+    private static array $types = [
         HttpHeader::AGE => Type::INT,
         HttpHeader::CONTENT_LANGUAGE => Locale::class,
         HttpHeader::CONTENT_LENGTH => Type::INT,
@@ -51,8 +51,7 @@ class HttpHeaderParser
         HttpHeader::X_WAP_PROFILE => Url::class,
     ];
 
-    /** @var TimeProvider */
-    private $timeProvider;
+    private TimeProvider $timeProvider;
 
     public function __construct(TimeProvider $timeProvider)
     {

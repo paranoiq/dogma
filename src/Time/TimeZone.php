@@ -450,7 +450,7 @@ class TimeZone extends PartialStringEnum
      * @see https://secure.php.net/manual/en/timezones.others.php for deprecated timezones info
      * @var string[]
      */
-    private static $deprecated = [
+    private static array $deprecated = [
         'Africa/Asmera',
         'Africa/Timbuktu',
         'America/Argentina/ComodRivadavia',

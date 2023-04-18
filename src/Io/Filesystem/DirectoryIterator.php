@@ -16,8 +16,7 @@ use UnexpectedValueException;
 class DirectoryIterator extends FilesystemIterator
 {
 
-    /** @var int|null */
-    private $flags;
+    private ?int $flags = null;
 
     public function __construct(string $path, ?int $flags = null)
     {

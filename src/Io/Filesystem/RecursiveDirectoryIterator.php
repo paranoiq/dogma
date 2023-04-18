@@ -17,8 +17,7 @@ use UnexpectedValueException;
 class RecursiveDirectoryIterator extends PhpRecursiveDirectoryIterator
 {
 
-    /** @var int */
-    private $flags;
+    private int $flags;
 
     public function __construct(string $path, ?int $flags = null)
     {

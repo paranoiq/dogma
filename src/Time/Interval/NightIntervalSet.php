@@ -39,7 +39,7 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
     use IntervalSetDumpMixin;
 
     /** @var NightInterval[] */
-    private $intervals;
+    private array $intervals;
 
     /**
      * @param NightInterval[] $intervals

@@ -17,59 +17,41 @@ class DateTimeValues
 {
     use StrictBehaviorMixin;
 
-    /** @var int */
-    public $year;
+    public int $year;
 
-    /** @var bool */
-    public $leapYear;
+    public bool $leapYear;
 
-    /** @var int */
-    public $dayOfYear;
+    public int $dayOfYear;
 
-    /** @var int */
-    public $quarter;
+    public int $quarter;
 
-    /** @var int */
-    public $month;
+    public int $month;
 
-    /** @var int */
-    public $weekOfYear;
+    public int $weekOfYear;
 
-    /** @var int */
-    public $isoWeekYear;
+    public int $isoWeekYear;
 
-    /** @var int */
-    public $dayOfWeek;
+    public int $dayOfWeek;
 
-    /** @var int */
-    public $day;
+    public int $day;
 
-    /** @var int */
-    public $hours;
+    public int $hours;
 
-    /** @var int */
-    public $minutes;
+    public int $minutes;
 
-    /** @var int */
-    public $seconds;
+    public int $seconds;
 
-    /** @var int */
-    public $miliseconds;
+    public int $miliseconds;
 
-    /** @var int */
-    public $microseconds;
+    public int $microseconds;
 
-    /** @var bool */
-    public $dst;
+    public bool $dst;
 
-    /** @var string */
-    public $offset;
+    public string $offset;
 
-    /** @var DateTimeZone */
-    public $timezone;
+    public DateTimeZone $timezone;
 
-    /** @var DateOrTime */
-    public $dateTime;
+    public DateOrTime $dateTime;
 
     private function __construct(DateOrTime $dateTime)
     {
