@@ -92,40 +92,40 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $format
-     * @param string $timeString
-     * @param DateTimeZone|null $timeZone
+     * @param string $datetime
+     * @param DateTimeZone|null $timezone
      * @return static
      */
-    public static function createFromFormat($format, $timeString, $timeZone = null): self
+    public static function createFromFormat($format, $datetime, $timezone = null): self
     {
         // due to invalid type hint in parent class...
-        Check::nullableObject($timeZone, DateTimeZone::class);
+        Check::nullableObject($timezone, DateTimeZone::class);
 
         // due to invalid optional arguments handling...
-        if ($timeZone === null) {
-            $dateTime = parent::createFromFormat($format, $timeString);
+        if ($timezone === null) {
+            $dateTime = parent::createFromFormat($format, $datetime);
         } else {
-            $dateTime = parent::createFromFormat($format, $timeString, $timeZone);
+            $dateTime = parent::createFromFormat($format, $datetime, $timezone);
         }
         if ($dateTime === false) {
-            throw new InvalidDateTimeException($timeString);
+            throw new InvalidDateTimeException($datetime);
         }
 
-        return new static($dateTime->format(self::DEFAULT_FORMAT), $timeZone ?? $dateTime->getTimezone());
+        return new static($dateTime->format(self::DEFAULT_FORMAT), $timezone ?? $dateTime->getTimezone());
     }
 
     /**
      * @param non-empty-array<string> $formats
      * @return static
      */
-    public static function createFromAnyFormat(array $formats, string $timeString, ?DateTimeZone $timeZone = null): self
+    public static function createFromAnyFormat(array $formats, string $timeString, ?DateTimeZone $timezone = null): self
     {
         Check::count($formats, 1);
 
         $e = null;
         foreach ($formats as $format) {
             try {
-                return self::createFromFormat($format, $timeString, $timeZone);
+                return self::createFromFormat($format, $timeString, $timezone);
             } catch (InvalidDateTimeException $e) {
                 continue;
             }
@@ -138,40 +138,40 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         }
     }
 
-    public static function createFromTimestamp(int $timestamp, ?DateTimeZone $timeZone = null): self
+    public static function createFromTimestamp(int $timestamp, ?DateTimeZone $timezone = null): self
     {
         $dateTime = static::createFromFormat('U', (string) $timestamp, TimeZone::getUtc());
-        if ($timeZone === null) {
-            $timeZone = TimeZone::getDefault();
+        if ($timezone === null) {
+            $timezone = TimeZone::getDefault();
         }
-        $dateTime = $dateTime->setTimezone($timeZone);
+        $dateTime = $dateTime->setTimezone($timezone);
 
         return $dateTime;
     }
 
-    public static function createFromFloatTimestamp(float $timestamp, ?DateTimeZone $timeZone = null): self
+    public static function createFromFloatTimestamp(float $timestamp, ?DateTimeZone $timezone = null): self
     {
         $formatted = number_format($timestamp, 6, '.', '');
 
         $dateTime = static::createFromFormat('U.u', $formatted, TimeZone::getUtc());
-        if ($timeZone === null) {
-            $timeZone = TimeZone::getDefault();
+        if ($timezone === null) {
+            $timezone = TimeZone::getDefault();
         }
-        $dateTime = $dateTime->setTimezone($timeZone);
+        $dateTime = $dateTime->setTimezone($timezone);
 
         return $dateTime;
     }
 
-    public static function createFromMicroTimestamp(int $microTimestamp, ?DateTimeZone $timeZone = null): self
+    public static function createFromMicroTimestamp(int $microTimestamp, ?DateTimeZone $timezone = null): self
     {
         $timestamp = (int) floor($microTimestamp / 1000000);
         $microseconds = $microTimestamp - $timestamp * 1000000;
 
         $dateTime = static::createFromTimestamp($timestamp, TimeZone::getUtc())->modify('+' . $microseconds . ' microseconds');
-        if ($timeZone === null) {
-            $timeZone = TimeZone::getDefault();
+        if ($timezone === null) {
+            $timezone = TimeZone::getDefault();
         }
-        $dateTime = $dateTime->setTimezone($timeZone);
+        $dateTime = $dateTime->setTimezone($timezone);
 
         return $dateTime;
     }
@@ -198,15 +198,15 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return new static("$year-$month-$day $hours:$minutes:$seconds.$microseconds", $timeZone);
     }
 
-    public static function createFromDateTimeInterface(DateTimeInterface $dateTime, ?DateTimeZone $timeZone = null): self
+    public static function createFromDateTimeInterface(DateTimeInterface $datetime, ?DateTimeZone $timezone = null): self
     {
-        if ($timeZone === null) {
-            $timeZone = $dateTime->getTimezone();
+        if ($timezone === null) {
+            $timezone = $datetime->getTimezone();
         }
-        $timestamp = $dateTime->getTimestamp();
-        $microseconds = (int) $dateTime->format('u');
+        $timestamp = $datetime->getTimestamp();
+        $microseconds = (int) $datetime->format('u');
 
-        return self::createFromTimestamp($timestamp, $timeZone)->modify('+' . $microseconds . ' microseconds');
+        return self::createFromTimestamp($timestamp, $timezone)->modify('+' . $microseconds . ' microseconds');
     }
 
     public static function createFromDateAndTime(Date $date, Time $time, ?DateTimeZone $timeZone = null): self
@@ -267,14 +267,14 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param string $modify
+     * @param string $modifier
      */
-    public function modify($modify): self
+    public function modify($modifier): self
     {
         /** @var self|false $result */
-        $result = parent::modify($modify);
+        $result = parent::modify($modifier);
         if ($result === false) {
-            throw new InvalidValueException($modify, 'date-time modification string');
+            throw new InvalidValueException($modifier, 'date-time modification string');
         }
 
         return $result;
@@ -339,40 +339,40 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param Time|int|string $time
-     * @param int|null $minutes
-     * @param int|null $seconds
-     * @param int|null $microseconds
+     * @param Time|int|string $hour
+     * @param int|null $minute
+     * @param int|null $second
+     * @param int|null $microsecond
      */
-    public function setTime($time, $minutes = null, $seconds = null, $microseconds = null): self
+    public function setTime($hour, $minute = null, $second = null, $microsecond = null): self
     {
-        if ($time instanceof Time) {
-            return self::createFromDateTimeInterface(parent::setTime($time->getHours(), $time->getMinutes(), $time->getSeconds(), $time->getMicroseconds()));
+        if ($hour instanceof Time) {
+            return self::createFromDateTimeInterface(parent::setTime($hour->getHours(), $hour->getMinutes(), $hour->getSeconds(), $hour->getMicroseconds()));
         }
-        if ($minutes === null && $seconds === null && is_string($time) && Str::contains($time, ':')) {
-            $parts = explode(':', $time);
-            $time = $parts[0];
-            $minutes = $parts[1] ?? null;
-            $seconds = strval($parts[2] ?? '');
-            if (Str::contains($seconds, '.')) {
-                [$seconds, $microseconds] = explode('.', $seconds);
-                $microseconds = floatval('0.' . $microseconds) * 1000000;
+        if ($minute === null && $second === null && is_string($hour) && Str::contains($hour, ':')) {
+            $parts = explode(':', $hour);
+            $hour = $parts[0];
+            $minute = $parts[1] ?? null;
+            $second = strval($parts[2] ?? '');
+            if (Str::contains($second, '.')) {
+                [$second, $microsecond] = explode('.', $second);
+                $microsecond = floatval('0.' . $microsecond) * 1000000;
             }
         }
 
-        return self::createFromDateTimeInterface(parent::setTime((int) $time, (int) $minutes, (int) $seconds, (int) $microseconds));
+        return self::createFromDateTimeInterface(parent::setTime((int) $hour, (int) $minute, (int) $second, (int) $microsecond));
     }
 
     /**
-     * @param DateTimeZone|string $timeZone
+     * @param DateTimeZone|string $timezone
      */
-    public function setTimezone($timeZone): self
+    public function setTimezone($timezone): self
     {
-        if (!$timeZone instanceof DateTimeZone) {
-            $timeZone = new DateTimeZone($timeZone);
+        if (!$timezone instanceof DateTimeZone) {
+            $timezone = new DateTimeZone($timezone);
         }
 
-        return parent::setTimezone($timeZone);
+        return parent::setTimezone($timezone);
     }
 
     /**
@@ -427,16 +427,16 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param DateTimeInterface|string $other
+     * @param DateTimeInterface|string $targetObject
      * @param bool $absolute
      */
-    public function diff($other, $absolute = false): DateInterval
+    public function diff($targetObject, $absolute = false): DateInterval
     {
-        if (is_string($other)) {
-            $other = new static($other);
+        if (is_string($targetObject)) {
+            $targetObject = new static($targetObject);
         }
 
-        return parent::diff($other, $absolute);
+        return parent::diff($targetObject, $absolute);
     }
 
     /**
