@@ -150,6 +150,7 @@ Assert::false($interval->containsValue($d(21)));
 Assert::false($interval->containsValue($d(5)));
 Assert::false($interval->containsValue($d(25)));
 Assert::true($interval->containsValue(new DateTimeImmutable('2000-01-15')));
+Assert::false($empty->containsValue($d(10)));
 
 
 contains:
