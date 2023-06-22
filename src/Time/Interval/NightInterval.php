@@ -101,17 +101,11 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         if ($openEnd) {
             $end = $end->subtractDay();
         }
-
-        $startJd = $start->getJulianDay();
-        $endJd = $end->getJulianDay();
-
-        if ($startJd > $endJd) {
-            throw new InvalidIntervalStartEndOrderException($start, $end);
-        } elseif ($startJd === $endJd) {
+        if ($start->getJulianDay() >= $end->getJulianDay()) {
             return self::empty();
-        } else {
-            return new static($start, $end);
         }
+
+        return new static($start, $end);
     }
 
     public static function createFromStartAndLength(Date $start, DateTimeUnit $unit, int $amount): self

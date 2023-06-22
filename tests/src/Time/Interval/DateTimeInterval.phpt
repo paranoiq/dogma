@@ -52,6 +52,7 @@ Assert::equal(DateTimeInterval::createFromString('2000-01-10 00:00,2000-01-20 00
 Assert::equal(DateTimeInterval::createFromString('2000-01-10 00:00|2000-01-20 00:00'), $interval);
 Assert::equal(DateTimeInterval::createFromString('2000-01-10 00:00/2000-01-20 00:00'), $interval);
 Assert::equal(DateTimeInterval::createFromString('2000-01-10 00:00 - 2000-01-20 00:00'), $interval);
+Assert::equal(DateTimeInterval::createFromString($empty->format()), $empty);
 Assert::exception(static function (): void {
     DateTimeInterval::createFromString('foo|bar|baz');
 }, InvalidIntervalStringFormatException::class);

@@ -49,6 +49,7 @@ Assert::equal(DateInterval::createFromString('[2000-01-10,2000-01-20]'), $interv
 Assert::equal(DateInterval::createFromString('[2000-01-10,2000-01-21)'), $interval);
 Assert::equal(DateInterval::createFromString('(2000-01-09,2000-01-21)'), $interval);
 Assert::equal(DateInterval::createFromString('(2000-01-09,2000-01-20]'), $interval);
+Assert::equal(DateInterval::createFromString($empty->format()), $empty);
 Assert::exception(static function (): void {
     DateInterval::createFromString('foo|bar|baz');
 }, InvalidIntervalStringFormatException::class);
