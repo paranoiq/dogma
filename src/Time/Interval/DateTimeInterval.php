@@ -81,6 +81,9 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
         $start = new DateTime($start);
         $end = new DateTime($end);
+        if ($start > $end) {
+            return self::empty();
+        }
 
         return new static($start, $end);
     }
