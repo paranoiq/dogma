@@ -318,14 +318,14 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     /**
      * Maps data with mapper and collects intervals with non-null results.
      *
-     * @param callable $mapper (mixed $data): mixed|null $data
+     * @param callable $mapper (mixed $data, DateInterval $interval): mixed|null $data
      * @return self
      */
     public function collectData(callable $mapper): self
     {
         $results = [];
         foreach ($this->intervals as $interval) {
-            $resultData = $mapper($interval->getData());
+            $resultData = $mapper($interval->getData(), $interval->toDateInterval());
             if ($resultData !== null) {
                 $results[] = new DateIntervalData($interval->getStart(), $interval->getEnd(), $resultData);
             }
@@ -339,7 +339,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Only modifies and splits intersecting intervals. Does not insert new ones nor remove things.
      * Complexity O(m*n). For bigger sets use modifyDataByStream()
      *
-     * @param callable $reducer (mixed $oldData, mixed $input): mixed $newData
+     * @param callable $reducer (mixed $oldData, mixed $input, DateInterval $interval): mixed $newData
      * @return self
      */
     public function modifyData(self $other, callable $reducer): self
@@ -350,7 +350,11 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
                 if (!$result->intersects($interval)) {
                     continue;
                 }
-                $newData = $reducer($result->getData(), $interval->getData());
+                $newData = $reducer(
+                    $result->getData(),
+                    $interval->getData(),
+                    $result->toDateInterval()->intersect($interval->toDateInterval()),
+                );
                 if ($result->dataEquals($newData)) {
                     continue;
                 }
@@ -385,7 +389,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      *
      * @param iterable|mixed[] $inputs
      * @param callable $mapper (mixed $input): array{0: Date $start, 1: Date $end}
-     * @param callable $reducer (mixed $oldData, mixed $input): mixed $newData
+     * @param callable $reducer (mixed $oldData, mixed $input, DateInterval $interval): mixed $newData
      * @return self
      */
     public function modifyDataByStream(iterable $inputs, callable $mapper, callable $reducer): self
@@ -418,10 +422,29 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
                         // next result
                         $currentIndex++;
                         continue 2;
+                    case IntersectResult::SAME:
+                    case IntersectResult::INTERSECTS_START:
+                    case IntersectResult::EXTENDS_START:
+                    case IntersectResult::FITS_TO_START:
+                        $interval = new DateInterval($resultStart, $inputEnd);
+                        break;
+                    case IntersectResult::INTERSECTS_END:
+                    case IntersectResult::EXTENDS_END:
+                    case IntersectResult::FITS_TO_END:
+                        $interval = new DateInterval($inputStart, $resultEnd);
+                        break;
+                    case IntersectResult::CONTAINS:
+                        $interval = new DateInterval($resultStart, $resultEnd);
+                        break;
+                    case IntersectResult::IS_CONTAINED:
+                        $interval = new DateInterval($inputStart, $inputEnd);
+                        break;
+                    default:
+                        throw new ShouldNotHappenException('Unknown IntersectResult.');
                 }
 
                 $oldData = $result->getData();
-                $newData = $reducer($oldData, $input);
+                $newData = $reducer($oldData, $input, $interval);
                 if ($result->dataEquals($newData)) {
                     $currentIndex++;
                     continue;
@@ -479,14 +502,14 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Split interval set to more interval sets with different subsets of original data.
      * Splitter maps original data to a group of data. Should return array with keys indicating the data set group.
      *
-     * @param callable $splitter (mixed $data): array<int|string $group, mixed $data>
+     * @param callable $splitter (mixed $data, DateInterval $interval): array<int|string $group, mixed $data>
      * @return self[]
      */
     public function splitData(callable $splitter): array
     {
         $intervalGroups = [];
         foreach ($this->intervals as $interval) {
-            foreach ($splitter($interval->getData()) as $key => $values) {
+            foreach ($splitter($interval->getData(), $interval->toDateInterval()) as $key => $values) {
                 $intervalGroups[$key][] = new DateIntervalData($interval->getStart(), $interval->getEnd(), $values);
             }
         }
