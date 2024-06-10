@@ -31,6 +31,8 @@ use function sprintf;
 
 /**
  * Interval of dates with data bound to it.
+ *
+ * @template TData
  */
 class DateIntervalData implements Equalable, Comparable, IntersectComparable, Pokeable
 {
@@ -45,6 +47,9 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
 
     private mixed $data;
 
+    /**
+     * @param TData $data
+     */
     final public function __construct(Date $start, Date $end, mixed $data)
     {
         if ($start->getJulianDay() > $end->getJulianDay()) {
@@ -56,20 +61,32 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
         $this->data = $data;
     }
 
+    /**
+     * @param TData $data
+     * @return static<TData>
+     */
     public static function createFromDateInterval(DateInterval $interval, mixed $data): static
     {
         return new static($interval->getStart(), $interval->getEnd(), $data);
     }
 
-    public static function empty(): static
+    /**
+     * @param TData $data
+     * @return static<TData>
+     */
+    public static function empty(mixed $data): static
     {
-        $interval = new static(new Date(), new Date(), null);
+        $interval = new static(new Date(), new Date(), $data);
         $interval->start = new Date(self::MAX);
         $interval->end = new Date(self::MIN);
 
         return $interval;
     }
 
+    /**
+     * @param TData $data
+     * @return static<TData>
+     */
     public static function all(mixed $data): static
     {
         return new static(new Date(self::MIN), new Date(self::MAX), $data);
@@ -144,7 +161,7 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     }
 
     /**
-     * @return array<array{Date, mixed}> array of pairs (Date $date, mixed $data)
+     * @return list<array{Date, TData}>
      */
     public function toDateDataArray(): array
     {
@@ -173,13 +190,16 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     }
 
     /**
-     * @return array<Date>
+     * @return array{Date, Date}
      */
     public function getStartEnd(): array
     {
         return [$this->start, $this->end];
     }
 
+    /**
+     * @return TData
+     */
     public function getData(): mixed
     {
         return $this->data;
@@ -191,7 +211,7 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     }
 
     /**
-     * @param self $other
+     * @param self<TData> $other
      */
     public function equals(Equalable $other): bool
     {
@@ -200,6 +220,9 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
         return $this->start->equals($other->start) && $this->end->equals($other->end) && $this->dataEquals($other->data);
     }
 
+    /**
+     * @param TData $otherData
+     */
     public function dataEquals(mixed $otherData): bool
     {
         if ($this->data instanceof Equalable && $otherData instanceof Equalable && $this->data::class === $otherData::class) {
@@ -210,7 +233,7 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     }
 
     /**
-     * @param self $other
+     * @param self<TData> $other
      */
     public function compare(Comparable $other): int
     {
@@ -221,7 +244,7 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     }
 
     /**
-     * @param self $other
+     * @param self<TData> $other
      */
     public function compareIntersects(IntersectComparable $other): int
     {
@@ -244,6 +267,9 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
         return $date->isBetween($this->start, $this->end);
     }
 
+    /**
+     * @param DateInterval|self<mixed> $interval
+     */
     public function contains(DateInterval|self $interval): bool
     {
         if ($this->isEmpty() || $interval->isEmpty()) {
@@ -253,11 +279,19 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
         return $this->start->isSameOrBefore($interval->getStart()) && $this->end->isSameOrAfter($interval->getEnd());
     }
 
+    // todo: containsSame(self<TData>): bool
+
+    /**
+     * @param DateInterval|self<mixed> $interval
+     */
     public function intersects(DateInterval|self $interval): bool
     {
         return $this->start->isSameOrBefore($interval->getEnd()) && $this->end->isSameOrAfter($interval->getStart());
     }
 
+    /**
+     * @param DateInterval|self<mixed> $interval
+     */
     public function touches(DateInterval|self $interval): bool
     {
         return $this->start->equals($interval->getEnd()->addDay()) || $this->end->equals($interval->getStart()->subtractDay());
@@ -265,6 +299,9 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
 
     // actions ---------------------------------------------------------------------------------------------------------
 
+    /**
+     * @return static<TData>
+     */
     public function intersect(DateInterval ...$items): static
     {
         $items[] = $this->toDateInterval();
@@ -276,13 +313,16 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
             if ($result->getEnd()->isSameOrAfter($item->getStart())) {
                 $result = new DateInterval(Date::max($result->getStart(), $item->getStart()), Date::min($result->getEnd(), $item->getEnd()));
             } else {
-                return static::empty();
+                return static::empty($this->data);
             }
         }
 
         return new static($result->getStart(), $result->getEnd(), $this->data);
     }
 
+    /**
+     * @return DateIntervalDataSet<TData>
+     */
     public function subtract(DateInterval ...$items): DateIntervalDataSet
     {
         $intervals = [$this];
@@ -310,8 +350,8 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     // static ----------------------------------------------------------------------------------------------------------
 
     /**
-     * @param array<self> $intervals
-     * @return array<self>
+     * @param array<static> $intervals
+     * @return array<static>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array
@@ -320,8 +360,8 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     }
 
     /**
-     * @param array<self> $intervals
-     * @return array<self>
+     * @param array<static> $intervals
+     * @return array<static>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array

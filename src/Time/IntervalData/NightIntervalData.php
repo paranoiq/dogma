@@ -31,6 +31,8 @@ use function sprintf;
 
 /**
  * Interval of nights with data bound to it.
+ *
+ * @template TData
  */
 class NightIntervalData implements Equalable, Comparable, IntersectComparable, Pokeable
 {
@@ -45,6 +47,9 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     private mixed $data;
 
+    /**
+     * @param TData $data
+     */
     final public function __construct(Date $start, Date $end, mixed $data)
     {
         if ($start->getJulianDay() > $end->getJulianDay()) {
@@ -56,21 +61,33 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
         $this->data = $data;
     }
 
+    /**
+     * @param TData $data
+     * @return static<TData>
+     */
     public static function createFromNightInterval(NightInterval $interval, mixed $data): static
     {
         return new static($interval->getStart(), $interval->getEnd(), $data);
     }
 
-    public static function empty(): static
+    /**
+     * @param TData $data
+     * @return static<TData>
+     */
+    public static function empty(mixed $data): static
     {
-        $interval = new static(new Date(), new Date(), null);
+        $interval = new static(new Date(), new Date(), $data);
         $interval->start = new Date(self::MAX);
         $interval->end = new Date(self::MIN);
 
         return $interval;
     }
 
-    public static function all(mixed $data): static
+    /**
+     * @param TData $data
+     * @return static<TData>
+     */
+    public static function all($data): static
     {
         return new static(new Date(self::MIN), new Date(self::MAX), $data);
     }
@@ -144,7 +161,7 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     }
 
     /**
-     * @return array<array{Date, mixed}> array of pairs (Date $date, mixed $data)
+     * @return array<array{Date, TData}>
      */
     public function toDateDataArray(): array
     {
@@ -173,13 +190,16 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     }
 
     /**
-     * @return array<Date>
+     * @return array{Date, Date}
      */
     public function getStartEnd(): array
     {
         return [$this->start, $this->end];
     }
 
+    /**
+     * @return TData
+     */
     public function getData(): mixed
     {
         return $this->data;
@@ -191,7 +211,7 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     }
 
     /**
-     * @param self $other
+     * @param self<TData> $other
      */
     public function equals(Equalable $other): bool
     {
@@ -200,7 +220,10 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
         return $this->start->equals($other->start) && $this->end->equals($other->end) && $this->dataEquals($other->data);
     }
 
-    public function dataEquals(mixed $otherData): bool
+    /**
+     * @param TData $otherData
+     */
+    public function dataEquals($otherData): bool
     {
         if ($this->data instanceof Equalable && $otherData instanceof Equalable && $this->data::class === $otherData::class) {
             return $this->data->equals($otherData);
@@ -210,7 +233,8 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     }
 
     /**
-     * @param self $other
+     * @param self<TData> $other
+     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -221,7 +245,7 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     }
 
     /**
-     * @param self $other
+     * @param self<TData> $other
      */
     public function compareIntersects(IntersectComparable $other): int
     {
@@ -244,6 +268,9 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
         return $date->isBetween($this->start, $this->end->subtractDay());
     }
 
+    /**
+     * @param NightInterval|self<mixed> $interval
+     */
     public function contains(NightInterval|self $interval): bool
     {
         if ($this->isEmpty() || $interval->isEmpty()) {
@@ -253,11 +280,19 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
         return $this->start->isSameOrBefore($interval->getStart()) && $this->end->isSameOrAfter($interval->getEnd());
     }
 
+    // todo: containsSame(self<TData>): bool
+
+    /**
+     * @param NightInterval|self<mixed> $interval
+     */
     public function intersects(NightInterval|self $interval): bool
     {
         return $this->start->isBefore($interval->getEnd()) && $this->end->isAfter($interval->getStart());
     }
 
+    /**
+     * @param NightInterval|self<mixed> $interval
+     */
     public function touches(NightInterval|self $interval): bool
     {
         return $this->start->equals($interval->getEnd()) || $this->end->equals($interval->getStart());
@@ -265,6 +300,9 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     // actions ---------------------------------------------------------------------------------------------------------
 
+    /**
+     * @return static<TData>
+     */
     public function intersect(NightInterval ...$items): static
     {
         $items[] = $this->toNightInterval();
@@ -275,13 +313,16 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
             if ($result->getEnd()->isSameOrAfter($item->getStart())) {
                 $result = new NightInterval(Date::max($result->getStart(), $item->getStart()), Date::min($result->getEnd(), $item->getEnd()));
             } else {
-                return static::empty();
+                return static::empty($this->data);
             }
         }
 
         return new static($result->getStart(), $result->getEnd(), $this->data);
     }
 
+    /**
+     * @return NightIntervalDataSet<TData>
+     */
     public function subtract(NightInterval ...$items): NightIntervalDataSet
     {
         $intervals = [$this];
@@ -309,8 +350,8 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     // static ----------------------------------------------------------------------------------------------------------
 
     /**
-     * @param array<self> $intervals
-     * @return array<self>
+     * @param array<static> $intervals
+     * @return array<static>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array
@@ -319,8 +360,8 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     }
 
     /**
-     * @param array<self> $intervals
-     * @return array<self>
+     * @param array<static> $intervals
+     * @return array<static>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array
