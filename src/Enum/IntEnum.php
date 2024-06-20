@@ -69,6 +69,13 @@ abstract class IntEnum implements Enum, Dumpable
         );
     }
 
+    final public static function checkValue(int $value): void
+    {
+        if (!self::isValid($value)) {
+            throw new InvalidValueException($value, static::class);
+        }
+    }
+
     /**
      * Validates given value. Can also normalize the value, if needed.
      *

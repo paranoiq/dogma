@@ -8,12 +8,14 @@
  */
 
 // spell-check-ignore: euccn eucjp eucjpwin euckr euctw hakre jisms koi8r koi8t koi8u sjismac sjiswin ucs2be ucs2le ucs4be ucs4le utf7imap
+// phpcs:disable Squiz.Arrays.ArrayDeclaration
 
 namespace Dogma\Language;
 
 use Dogma\Enum\StringEnum;
 use function str_replace;
 use function strtolower;
+use function in_array;
 use function strtoupper;
 
 /**
@@ -32,19 +34,19 @@ class Encoding extends StringEnum
     public const UTF_7_IMAP = 'UTF7-IMAP';
 
     public const UTF_16 = 'UTF-16';
-    public const UTF_16BE = 'UTF-16BE';
+    public const UTF_16BE = 'UTF-16';
     public const UTF_16LE = 'UTF-16LE';
 
     public const UTF_32 = 'UTF-32';
-    public const UTF_32BE = 'UTF-32BE';
+    public const UTF_32BE = 'UTF-32';
     public const UTF_32LE = 'UTF-32LE';
 
     public const UCS_2 = 'UCS-2';
-    public const UCS_2BE = 'UCS-2BE';
+    public const UCS_2BE = 'UCS-2';
     public const UCS_2LE = 'UCS-2LE';
 
     public const UCS_4 = 'UCS-4';
-    public const UCS_4BE = 'UCS-4BE';
+    public const UCS_4BE = 'UCS-4';
     public const UCS_4LE = 'UCS-4LE';
 
     public const ISO_8859_1 = 'ISO-8859-1'; // Latin-1 Western European
@@ -110,13 +112,13 @@ class Encoding extends StringEnum
     public const KOI8_U = 'KOI8-U';
     public const KOI8_T = 'KOI8-T';
 
-    public const GB18030 = 'GB18030';
+    public const GB18030 = 'GB18030'; // 1-4 byte
 
-    public const BIG_5 = 'BIG-5';
+    public const BIG_5 = 'BIG-5'; // 2 byte
 
-    public const UHC = 'UHC';
+    public const UHC = 'UHC'; // 2 byte
 
-    public const HZ = 'HZ';
+    public const HZ = 'HZ'; // ~{...~}
 
     public const ARMSCII_8 = 'ARMSCII-8';
 
@@ -243,6 +245,56 @@ class Encoding extends StringEnum
         self::CP862 => "~^(?!x)x~", // match nothing
         self::CP866 => "~^(?!x)x~", // match nothing
     ];
+
+    public static function isSupersetOfAscii(string $encoding): bool
+    {
+        static $asciiLike = [
+            self::BINARY, self::ASCII, self::UTF_8,
+            self::ISO_8859_1, self::ISO_8859_2, self::ISO_8859_3, self::ISO_8859_4, self::ISO_8859_5,
+            self::ISO_8859_6, self::ISO_8859_7, self::ISO_8859_8, self::ISO_8859_9, self::ISO_8859_10,
+            self::ISO_8859_11, self::ISO_8859_13, self::ISO_8859_14, self::ISO_8859_15, self::ISO_8859_16,
+            self::WINDOWS_1250, self::WINDOWS_1251, self::WINDOWS_1252, self::WINDOWS_1253, self::WINDOWS_1254,
+            self::WINDOWS_1255, self::WINDOWS_1256, self::WINDOWS_1257, self::WINDOWS_1258,
+            self::ARMSCII_8,
+        ];
+
+        return in_array($encoding, $asciiLike, true);
+    }
+
+    public static function isVariableLength(string $encoding): bool
+    {
+        static $variable = [
+            self::UTF_8, self::UTF_16, self::UTF_16LE, self::UTF_32, self::UTF_32LE,
+            self::GB18030,
+        ];
+
+        return in_array($encoding, $variable, true);
+    }
+
+    public static function minLength(string $encoding): ?int
+    {
+        static $lengths = [
+            self::UTF_16 => 2, self::UTF_16LE => 2,
+            self::UTF_32 => 4, self::UTF_32LE => 4,
+            self::BIG_5 => 2,
+            self::UHC => 2,
+        ];
+
+        return $lengths[$encoding] ?? 1;
+    }
+
+    public static function getBom(string $encoding): ?string
+    {
+        static $bom = [
+            self::UTF_8 => "\xEF\xBB\xBF",
+            self::UTF_16 => "\xFE\xFF",
+            self::UTF_16LE => "\xFF\xFE",
+            self::UTF_32 => "\x00\x00\xFE\xFF",
+            self::UTF_32LE => "\xFF\xFE\x00\x00",
+        ];
+
+        return $bom[$encoding] ?? null;
+    }
 
     public static function validateValue(string &$value): bool
     {

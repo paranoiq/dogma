@@ -11,6 +11,7 @@
 
 namespace Dogma;
 
+use Dogma\System\Callstack;
 use stdClass;
 use const INF;
 use function array_keys;
@@ -1215,6 +1216,17 @@ final class Check
                     : gettype($value);
             }));
             throw new InvalidValueException($value, $allowed);
+        }
+    }
+
+    public static function flags(int $value, int $allowedValues): void
+    {
+        if (($value & $allowedValues) !== $value) {
+            $line = Callstack::last()->getLineCode();
+            /** @var string[] $allowed */
+            $allowed = Str::match($line, '/::flags\\([^,]+,\\s*([^)]+)\\)/');
+
+            throw new InvalidValueException($value, $allowed[1]);
         }
     }
 

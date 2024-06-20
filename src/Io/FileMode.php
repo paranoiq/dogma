@@ -7,34 +7,52 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-// spell-check-ignore: xb
-
 namespace Dogma\Io;
 
 use Dogma\StaticClassMixin;
+use function in_array;
 
 class FileMode
 {
     use StaticClassMixin;
 
-    // if not found: ERROR; keep content
-    public const OPEN_READ = 'rb';
-    public const OPEN_READ_WRITE = 'r+b';
+    // error if not found, keep content
+    public const OPEN_READ = 'r';
+    public const OPEN_READ_WRITE = 'r+';
 
-    // if found: ERROR; no content
-    public const CREATE_WRITE = 'xb';
-    public const CREATE_READ_WRITE = 'x+b';
+    // error if found, no content
+    public const CREATE_WRITE = 'x';
+    public const CREATE_READ_WRITE = 'x+';
 
-    // if not found: create; keep content
-    public const CREATE_OR_OPEN_WRITE = 'cb';
-    public const CREATE_OR_OPEN_READ_WRITE = 'c+b';
+    // create if not found, keep content
+    public const CREATE_OR_OPEN_WRITE = 'c';
+    public const CREATE_OR_OPEN_READ_WRITE = 'c+';
 
-    // if not found: create; truncate content
-    public const CREATE_OR_TRUNCATE_WRITE = 'wb';
-    public const CREATE_OR_TRUNCATE_READ_WRITE = 'w+b';
+    // create if not found, truncate content
+    public const CREATE_OR_TRUNCATE_WRITE = 'w';
+    public const CREATE_OR_TRUNCATE_READ_WRITE = 'w+';
 
-    // if not found: create; keep content, point to end of file, don't accept new position
-    public const CREATE_OR_APPEND_WRITE = 'ab';
-    public const CREATE_OR_APPEND_READ_WRITE = 'a+b';
+    // create if not found, keep content, point to end of file, don't accept new position
+    public const CREATE_OR_APPEND_WRITE = 'a';
+    public const CREATE_OR_APPEND_READ_WRITE = 'a+';
+
+    public static function getReopenMode(string $mode): string
+    {
+        if ($mode === self::CREATE_WRITE) {
+            return self::CREATE_OR_OPEN_WRITE;
+        } elseif ($mode === self::CREATE_READ_WRITE) {
+            return self::CREATE_OR_OPEN_READ_WRITE;
+        } else {
+            return $mode;
+        }
+    }
+
+    public static function isReadable(string $mode): bool
+    {
+        return $mode !== self::CREATE_WRITE
+            && $mode !== self::CREATE_OR_OPEN_WRITE
+            && $mode !== self::CREATE_OR_TRUNCATE_WRITE
+            && $mode !== self::CREATE_OR_APPEND_WRITE;
+    }
 
 }

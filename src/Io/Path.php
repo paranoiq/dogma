@@ -9,6 +9,9 @@
 
 namespace Dogma\Io;
 
+/**
+ * File or directory path
+ */
 interface Path
 {
 
@@ -18,7 +21,7 @@ interface Path
     public function getPath(): string;
 
     /**
-     * File name without path
+     * Name without path
      */
     public function getName(): string;
 
