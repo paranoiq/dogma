@@ -19,6 +19,8 @@ $s = static function (NightInterval ...$items): NightIntervalSet {
     return new NightIntervalSet($items);
 };
 
+$empty = NightIntervalSet::empty();
+$all = NightIntervalSet::all();
 $interval = new NightInterval($d(1), $d(6));
 $emptyInterval = NightInterval::empty();
 
@@ -40,11 +42,14 @@ Assert::equal($s($i(1, 3), $i(4, 6))->toDateArray(), [$d(1), $d(2), $d(4), $d(5)
 getIntervals:
 getIterator:
 Assert::same($set->getIntervals(), iterator_to_array($set->getIterator()));
+Assert::equal($empty->getIntervals(), []);
 
 
 isEmpty:
 Assert::true((new NightIntervalSet([]))->isEmpty());
 Assert::true((new NightIntervalSet([$emptyInterval]))->isEmpty());
+Assert::true($empty->isEmpty());
+Assert::false($all->isEmpty());
 
 
 equals:

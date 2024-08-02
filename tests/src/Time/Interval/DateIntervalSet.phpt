@@ -19,6 +19,8 @@ $s = static function (DateInterval ...$items): DateIntervalSet {
     return new DateIntervalSet($items);
 };
 
+$empty = DateIntervalSet::empty();
+$all = DateIntervalSet::all();
 $interval = new DateInterval($d(1), $d(5));
 $emptyInterval = DateInterval::empty();
 
@@ -40,11 +42,14 @@ Assert::equal($s($i(1, 2), $i(4, 5))->toDateArray(), [$d(1), $d(2), $d(4), $d(5)
 getIntervals:
 getIterator:
 Assert::same($set->getIntervals(), iterator_to_array($set->getIterator()));
+Assert::equal($empty->getIntervals(), []);
 
 
 isEmpty:
 Assert::true((new DateIntervalSet([]))->isEmpty());
 Assert::true((new DateIntervalSet([$emptyInterval]))->isEmpty());
+Assert::true($empty->isEmpty());
+Assert::false($all->isEmpty());
 
 
 equals:

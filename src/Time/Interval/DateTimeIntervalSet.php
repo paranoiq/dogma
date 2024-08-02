@@ -170,6 +170,16 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         return new static($intervals);
     }
 
+	public static function empty(): self
+	{
+		return new static([]);
+	}
+
+	public static function all(): self
+	{
+		return new static([DateTimeInterval::all()]);
+	}
+
     public function format(
         string $format = DateTimeInterval::DEFAULT_FORMAT,
         ?DateTimeIntervalFormatter $formatter = null

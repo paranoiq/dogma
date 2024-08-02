@@ -28,6 +28,8 @@ $s = static function (DateTimeInterval ...$items): DateTimeIntervalSet {
     return new DateTimeIntervalSet($items);
 };
 
+$empty = DateTimeIntervalSet::empty();
+$all = DateTimeIntervalSet::all();
 $interval = new DateTimeInterval($dt(1), $dt(5));
 $emptyInterval = DateTimeInterval::empty();
 
@@ -141,11 +143,14 @@ Assert::equal(DateTimeIntervalSet::createFromDateIntervalSetAndWeekDayHoursSet(
 getIntervals:
 getIterator:
 Assert::same($set->getIntervals(), iterator_to_array($set->getIterator()));
+Assert::equal($empty->getIntervals(), []);
 
 
 isEmpty:
 Assert::true((new DateTimeIntervalSet([]))->isEmpty());
 Assert::true((new DateTimeIntervalSet([$emptyInterval]))->isEmpty());
+Assert::true($empty->isEmpty());
+Assert::false($all->isEmpty());
 
 
 equals:

@@ -67,6 +67,20 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static($intervals);
     }
 
+	public static function empty(): self
+	{
+		return new static([]);
+	}
+
+	/**
+	 * @param mixed|null $data
+	 * @return self
+	 */
+	public static function all($data): self
+	{
+		return new static([DateIntervalData::all($data)]);
+	}
+
     /**
      * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
      */

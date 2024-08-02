@@ -85,6 +85,16 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($intervals);
     }
 
+	public static function empty(): self
+	{
+		return new static([]);
+	}
+
+	public static function all(): self
+	{
+		return new static([NightInterval::all()]);
+	}
+
     /**
      * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
      */

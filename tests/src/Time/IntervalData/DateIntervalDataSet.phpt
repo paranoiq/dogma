@@ -41,6 +41,8 @@ $ds = static function (string $days) use ($di): DateIntervalDataSet {
     return new DateIntervalDataSet($intervals);
 };
 
+$emptySet = DateIntervalDataSet::empty();
+$allSet = DateIntervalDataSet::all(1);
 $interval = new DateIntervalData($d(1), $d(5), 1);
 $emptyInterval = DateInterval::empty();
 $set = new DateIntervalDataSet([$interval]);
@@ -55,11 +57,14 @@ Assert::equal($ds('1-2, 4-5')->toDateDataArray(), [[$d(1), 1], [$d(2), 1], [$d(4
 getIntervals:
 getIterator:
 Assert::same($set->getIntervals(), iterator_to_array($set->getIterator()));
+Assert::equal($emptySet->getIntervals(), []);
 
 
 isEmpty:
 Assert::true((new DateIntervalSet([]))->isEmpty());
 Assert::true((new DateIntervalSet([$emptyInterval]))->isEmpty());
+Assert::true($emptySet->isEmpty());
+Assert::false($allSet->isEmpty());
 
 
 equals:
