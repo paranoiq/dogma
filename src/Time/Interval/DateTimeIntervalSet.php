@@ -182,10 +182,11 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 
     public function format(
         string $format = DateTimeInterval::DEFAULT_FORMAT,
-        ?DateTimeIntervalFormatter $formatter = null
+        ?DateTimeIntervalFormatter $formatter = null,
+	    string $separator = ', '
     ): string
     {
-        return implode(', ', Arr::map($this->intervals, static function (DateTimeInterval $dateTimeInterval) use ($format, $formatter): string {
+        return implode($separator, Arr::map($this->intervals, static function (DateTimeInterval $dateTimeInterval) use ($format, $formatter): string {
             return $dateTimeInterval->format($format, $formatter);
         }));
     }
