@@ -82,6 +82,7 @@ class YearMonth implements Comparable, Equalable, Dumpable
         return sprintf('%s(%s #%s)', Cls::short(static::class), $this->format(), Obj::dumpHash($this));
     }
 
+    /** @phpstan-pure */
     public function add(int $months, int $years = 0): self
     {
         $year = $this->getYear() + $years + intval($months / 12);
@@ -94,6 +95,7 @@ class YearMonth implements Comparable, Equalable, Dumpable
         return self::createFromComponents($year, $month);
     }
 
+    /** @phpstan-pure */
     public function subtract(int $months, int $years = 0): self
     {
         $year = $this->getYear() - $years - intval($months / 12);
@@ -173,11 +175,13 @@ class YearMonth implements Comparable, Equalable, Dumpable
         return $this->getStart()->format($format);
     }
 
+    /** @phpstan-pure */
     public function next(): self
     {
         return new static($this->getStart()->modify('+1 month'));
     }
 
+    /** @phpstan-pure */
     public function previous(): self
     {
         return new static($this->getStart()->modify('-1 month'));

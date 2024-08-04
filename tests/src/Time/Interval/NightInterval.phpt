@@ -55,6 +55,7 @@ Assert::equal(NightInterval::createFromString('[2000-01-10,2000-01-21]'), $inter
 Assert::equal(NightInterval::createFromString('[2000-01-10,2000-01-22)'), $interval);
 Assert::equal(NightInterval::createFromString('(2000-01-09,2000-01-22)'), $interval);
 Assert::equal(NightInterval::createFromString('(2000-01-09,2000-01-21]'), $interval);
+Assert::equal(NightInterval::createFromString($empty->format()), $empty);
 Assert::exception(static function (): void {
     NightInterval::createFromString('foo|bar|baz');
 }, InvalidIntervalStringFormatException::class);

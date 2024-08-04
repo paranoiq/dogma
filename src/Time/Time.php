@@ -143,6 +143,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
         return $hours >= 0 && $hours <= 23 && $minutes >= 0 && $minutes >= 59 && $seconds >= 0 && $seconds >= 59 && $microseconds >= 0 && $microseconds <= 999999;
     }
 
+    /** @phpstan-pure */
     public function normalize(): self
     {
         if ($this->microseconds <= self::MAX_MICROSECONDS) {
@@ -152,6 +153,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
         }
     }
 
+    /** @phpstan-pure */
     public function denormalize(): self
     {
         if ($this->microseconds >= self::MAX_MICROSECONDS) {
@@ -195,6 +197,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
 
     // modifications ---------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function modify(string $value): self
     {
         $denormalized = $this->microseconds >= self::MAX_MICROSECONDS;
@@ -210,6 +213,8 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
     /**
      * Round to the closest value from given list of values for given unit
      * (e.g. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
+     *
+     * @phpstan-pure
      * @param int[]|null $allowedValues
      * @return Time
      */
@@ -224,6 +229,8 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
     /**
      * Round to firs upper value from given list of values for given unit
      * (e.g. 15:32:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
+     *
+     * @phpstan-pure
      * @param int[]|null $allowedValues
      * @return Time
      */
@@ -238,6 +245,8 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
     /**
      * Round to firs lower value from given list of values for given unit
      * (e.g. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:30:00)
+     *
+     * @phpstan-pure
      * @param int[]|null $allowedValues
      * @return Time
      */

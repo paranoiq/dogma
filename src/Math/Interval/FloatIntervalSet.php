@@ -29,10 +29,11 @@ use function is_array;
 class FloatIntervalSet implements IntervalSet
 {
     use StrictBehaviorMixin;
+    use IntervalSetNormalizeMixin;
     use IntervalSetDumpMixin;
 
     /** @var FloatInterval[] */
-    private $intervals = [];
+    private $intervals;
 
     /**
      * @param FloatInterval[] $intervals
@@ -41,11 +42,7 @@ class FloatIntervalSet implements IntervalSet
     {
         Check::itemsOfType($intervals, FloatInterval::class);
 
-        foreach ($intervals as $interval) {
-            if (!$interval->isEmpty()) {
-                $this->intervals[] = $interval;
-            }
-        }
+        $this->intervals = self::normalizeIntervals($intervals);
     }
 
     /**
@@ -112,6 +109,7 @@ class FloatIntervalSet implements IntervalSet
         return false;
     }
 
+    /** @phpstan-pure */
     public function envelope(): FloatInterval
     {
         if ($this->intervals === []) {
@@ -121,34 +119,13 @@ class FloatIntervalSet implements IntervalSet
         }
     }
 
-    /**
-     * Join overlapping intervals in set.
-     * @return self
-     */
-    public function normalize(): self
-    {
-        /** @var FloatInterval[] $intervals */
-        $intervals = Arr::sortComparable($this->intervals);
-        $count = count($intervals) - 1;
-        for ($n = 0; $n < $count; $n++) {
-            if ($intervals[$n]->intersects($intervals[$n + 1]) || $intervals[$n]->touches($intervals[$n + 1])) {
-                $intervals[$n + 1] = $intervals[$n]->envelope($intervals[$n + 1]);
-                unset($intervals[$n]);
-            }
-        }
-
-        return new static($intervals);
-    }
-
-    /**
-     * Add another set of intervals to this one without normalization.
-     * @return self
-     */
+    /** @phpstan-pure */
     public function add(self $set): self
     {
         return $this->addIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function addIntervals(FloatInterval ...$intervals): self
     {
         return new static(array_merge($this->intervals, $intervals));
@@ -156,6 +133,8 @@ class FloatIntervalSet implements IntervalSet
 
     /**
      * Remove another set of intervals from this one.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function subtract(self $set): self
@@ -163,6 +142,7 @@ class FloatIntervalSet implements IntervalSet
         return $this->subtractIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function subtractIntervals(FloatInterval ...$intervals): self
     {
         $sources = $this->intervals;
@@ -188,6 +168,7 @@ class FloatIntervalSet implements IntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function invert(): self
     {
         return (new static([FloatInterval::all()]))->subtract($this);
@@ -195,6 +176,8 @@ class FloatIntervalSet implements IntervalSet
 
     /**
      * Intersect with another set of intervals.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function intersect(self $set): self
@@ -202,6 +185,7 @@ class FloatIntervalSet implements IntervalSet
         return $this->intersectIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function intersectIntervals(FloatInterval ...$intervals): self
     {
         $results = [];
@@ -216,6 +200,7 @@ class FloatIntervalSet implements IntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function filterByLength(string $operator, float $length): self
     {
         $results = [];
@@ -258,6 +243,7 @@ class FloatIntervalSet implements IntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function map(callable $mapper): self
     {
         $results = [];
@@ -277,6 +263,7 @@ class FloatIntervalSet implements IntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function collect(callable $mapper): self
     {
         $results = [];

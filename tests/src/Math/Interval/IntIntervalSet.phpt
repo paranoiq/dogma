@@ -73,22 +73,22 @@ Assert::equal($set->map(static function (IntInterval $interval) {
     return $interval->split(2)->getIntervals();
 }), $s($i(1, 3), $i(4, 5)));
 
-$set = $s(IntInterval::empty(), $i(1, 1), $i(1, 2), $i(1, 3));
+$set = $s(IntInterval::empty(), $i(1, 1), $i(3, 4), $i(6, 8));
 
 
 filterByLength:
-Assert::equal($set->filterByLength('>', 1), $s($i(1, 3)));
-Assert::equal($set->filterByLength('>=', 1), $s($i(1, 2), $i(1, 3)));
-Assert::equal($set->filterByLength('=', 1), $s($i(1, 2)));
-Assert::equal($set->filterByLength('<>', 1), $s(IntInterval::empty(), $i(1, 1), $i(1, 3)));
-Assert::equal($set->filterByLength('<=', 1), $s(IntInterval::empty(), $i(1, 1), $i(1, 2)));
+Assert::equal($set->filterByLength('>', 1), $s($i(6, 8)));
+Assert::equal($set->filterByLength('>=', 1), $s($i(3, 4), $i(6, 8)));
+Assert::equal($set->filterByLength('=', 1), $s($i(3, 4)));
+Assert::equal($set->filterByLength('<>', 1), $s(IntInterval::empty(), $i(1, 1), $i(6, 8)));
+Assert::equal($set->filterByLength('<=', 1), $s(IntInterval::empty(), $i(1, 1), $i(3, 4)));
 Assert::equal($set->filterByLength('<', 1), $s(IntInterval::empty(), $i(1, 1)));
 
 
 filterByCount:
-Assert::equal($set->filterByCount('>', 1), $s($i(1, 2), $i(1, 3)));
-Assert::equal($set->filterByCount('>=', 1), $s($i(1, 1), $i(1, 2), $i(1, 3)));
+Assert::equal($set->filterByCount('>', 1), $s($i(3, 4), $i(6, 8)));
+Assert::equal($set->filterByCount('>=', 1), $s($i(1, 1), $i(3, 4), $i(6, 8)));
 Assert::equal($set->filterByCount('=', 1), $s($i(1, 1)));
-Assert::equal($set->filterByCount('<>', 1), $s(IntInterval::empty(), $i(1, 2), $i(1, 3)));
+Assert::equal($set->filterByCount('<>', 1), $s(IntInterval::empty(), $i(3, 4), $i(6, 8)));
 Assert::equal($set->filterByCount('<=', 1), $s(IntInterval::empty(), $i(1, 1)));
 Assert::equal($set->filterByCount('<', 1), $s(IntInterval::empty()));

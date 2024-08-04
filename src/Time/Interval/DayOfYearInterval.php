@@ -103,6 +103,7 @@ class DayOfYearInterval implements ModuloInterval
         return new static(new DayOfYear(self::MIN), new DayOfYear(self::MAX));
     }
 
+    /** @phpstan-pure */
     public function normalize(): self
     {
         if ($this->start->isNormalized()) {
@@ -116,6 +117,7 @@ class DayOfYearInterval implements ModuloInterval
         }
     }
 
+    /** @phpstan-pure */
     public function denormalize(): self
     {
         if ($this->end->isNormalized()) {
@@ -131,16 +133,19 @@ class DayOfYearInterval implements ModuloInterval
 
     // modifications ---------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function shift(string $value): self
     {
         return new static($this->start->modify($value), $this->end->modify($value));
     }
 
+    /** @phpstan-pure */
     public function setStart(DayOfYear $start): self
     {
         return new static($start, $this->end);
     }
 
+    /** @phpstan-pure */
     public function setEnd(DayOfYear $end): self
     {
         return new static($this->start, $end);
@@ -262,6 +267,7 @@ class DayOfYearInterval implements ModuloInterval
 
     // actions ---------------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function split(int $parts): DayOfYearIntervalSet
     {
         if ($this->isEmpty()) {
@@ -283,6 +289,7 @@ class DayOfYearInterval implements ModuloInterval
     }
 
     /**
+     * @phpstan-pure
      * @param DayOfYear[] $intervalStarts
      * @return DayOfYearIntervalSet
      */
@@ -309,6 +316,7 @@ class DayOfYearInterval implements ModuloInterval
     }
 
     /**
+     * @phpstan-pure
      * @return self[]
      */
     public function splitByEndOfYear(): array
@@ -323,6 +331,7 @@ class DayOfYearInterval implements ModuloInterval
         ];
     }
 
+    /** @phpstan-pure */
     public function envelope(self ...$items): self
     {
         $items[] = $this;
@@ -343,6 +352,7 @@ class DayOfYearInterval implements ModuloInterval
         return new static($start, $end);
     }
 
+    /** @phpstan-pure */
     public function intersect(self ...$items): DayOfYearIntervalSet
     {
         $items[] = $this;
@@ -375,6 +385,7 @@ class DayOfYearInterval implements ModuloInterval
         return (new DayOfYearIntervalSet([$result1, $result2]))->normalize();
     }
 
+    /** @phpstan-pure */
     public function union(self ...$items): DayOfYearIntervalSet
     {
         $items[] = $this;
@@ -400,6 +411,7 @@ class DayOfYearInterval implements ModuloInterval
         return new DayOfYearIntervalSet($results);
     }
 
+    /** @phpstan-pure */
     public function difference(self ...$items): DayOfYearIntervalSet
     {
         $items[] = $this;
@@ -415,6 +427,7 @@ class DayOfYearInterval implements ModuloInterval
         return new DayOfYearIntervalSet($results);
     }
 
+    /** @phpstan-pure */
     public function subtract(self ...$items): DayOfYearIntervalSet
     {
         $results = [$this];
@@ -464,6 +477,7 @@ class DayOfYearInterval implements ModuloInterval
         return new DayOfYearIntervalSet(array_values($results));
     }
 
+    /** @phpstan-pure */
     public function invert(): DayOfYearIntervalSet
     {
         return self::all()->subtract($this);

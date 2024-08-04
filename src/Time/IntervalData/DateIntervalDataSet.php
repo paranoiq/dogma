@@ -29,6 +29,7 @@ use function array_map;
 use function array_merge;
 use function array_shift;
 use function array_splice;
+use function array_values;
 use function count;
 use function implode;
 use function is_array;
@@ -49,9 +50,12 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      */
     final public function __construct(array $intervals)
     {
-        $this->intervals = Arr::values(Arr::filter($intervals, static function (DateIntervalData $interval): bool {
+        /** @var DateIntervalData[] $intervals */
+        $intervals = Arr::values(Arr::filter($intervals, static function (DateIntervalData $interval): bool {
             return !$interval->isEmpty();
         }));
+
+        $this->intervals = self::normalizeIntervals($intervals);
     }
 
     /**
@@ -65,6 +69,20 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         }, $set->getIntervals());
 
         return new static($intervals);
+    }
+
+    public static function empty(): self
+    {
+        return new static([]);
+    }
+
+    /**
+     * @param mixed|null $data
+     * @return self
+     */
+    public static function all($data): self
+    {
+        return new static([DateIntervalData::all($data)]);
     }
 
     /**
@@ -118,7 +136,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      */
     public function toDateDataArray(): array
     {
-        $intervals = $this->normalize()->getIntervals();
+        $intervals = $this->getIntervals();
 
         return array_merge(...array_map(static function (DateIntervalData $interval) {
             return $interval->toDateDataArray();
@@ -179,13 +197,29 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * Join overlapping intervals in set, if they have the same data.
-     * @return self
+     * @deprecated Unnecessary anymore, intervals always normalized.
      */
     public function normalize(): self
     {
+        return $this;
+    }
+
+    /**
+     * Join overlapping intervals in set, if they have the same data.
+     * @param DateIntervalData[] $intervals
+     * @return DateIntervalData[]
+     */
+    private static function normalizeIntervals(array $intervals): array
+    {
+        $intervals = array_values($intervals);
+        foreach ($intervals as $i => $interval) {
+            if ($interval->isEmpty()) {
+                unset($intervals[$i]);
+            }
+        }
+
         /** @var DateIntervalData[] $intervals */
-        $intervals = Arr::sortComparableValues($this->intervals);
+        $intervals = Arr::sortComparableValues($intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
             $first = $intervals[$n];
@@ -200,11 +234,13 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new static($intervals);
+        return array_values($intervals);
     }
 
     /**
      * Add another set of intervals to this one without normalization.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function add(self $set): self
@@ -212,6 +248,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return $this->addIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function addIntervals(DateIntervalData ...$intervals): self
     {
         return new static(array_merge($this->intervals, $intervals));
@@ -219,6 +256,8 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Remove another set of intervals from this one.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function subtract(DateIntervalSet $set): self
@@ -226,6 +265,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return $this->subtractIntervals(...$set->getIntervals());
     }
 
+    /** @phpstan-pure */
     public function subtractIntervals(DateInterval ...$intervals): self
     {
         $sources = $this->intervals;
@@ -254,6 +294,8 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Intersect with another set of intervals.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function intersect(DateIntervalSet $set): self
@@ -261,6 +303,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return $this->intersectIntervals(...$set->getIntervals());
     }
 
+    /** @phpstan-pure */
     public function intersectIntervals(DateInterval ...$intervals): self
     {
         $results = [];
@@ -275,6 +318,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function map(callable $mapper): self
     {
         $results = [];
@@ -294,6 +338,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function collect(callable $mapper): self
     {
         $results = [];
@@ -318,14 +363,15 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     /**
      * Maps data with mapper and collects intervals with non-null results.
      *
-     * @param callable $mapper (mixed $data): mixed|null $data
+     * @phpstan-pure
+     * @param callable $mapper (mixed $data, DateInterval $interval): mixed|null $data
      * @return self
      */
     public function collectData(callable $mapper): self
     {
         $results = [];
         foreach ($this->intervals as $interval) {
-            $resultData = $mapper($interval->getData());
+            $resultData = $mapper($interval->getData(), $interval->toDateInterval());
             if ($resultData !== null) {
                 $results[] = new DateIntervalData($interval->getStart(), $interval->getEnd(), $resultData);
             }
@@ -339,7 +385,8 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Only modifies and splits intersecting intervals. Does not insert new ones nor remove things.
      * Complexity O(m*n). For bigger sets use modifyDataByStream()
      *
-     * @param callable $reducer (mixed $oldData, mixed $input): mixed $newData
+     * @phpstan-pure
+     * @param callable $reducer (mixed $oldData, mixed $input, DateInterval $interval): mixed $newData
      * @return self
      */
     public function modifyData(self $other, callable $reducer): self
@@ -350,7 +397,11 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
                 if (!$result->intersects($interval)) {
                     continue;
                 }
-                $newData = $reducer($result->getData(), $interval->getData());
+                $newData = $reducer(
+                    $result->getData(),
+                    $interval->getData(),
+                    $result->toDateInterval()->intersect($interval->toDateInterval()),
+                );
                 if ($result->dataEquals($newData)) {
                     continue;
                 }
@@ -383,9 +434,10 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Both $this and inputs must be ordered to work properly, $this must be normalized.
      * Complexity ~O(m+n), worst case O(m*n) if all inputs cover whole interval set.
      *
+     * @phpstan-pure
      * @param iterable|mixed[] $inputs
      * @param callable $mapper (mixed $input): array{0: Date $start, 1: Date $end}
-     * @param callable $reducer (mixed $oldData, mixed $input): mixed $newData
+     * @param callable $reducer (mixed $oldData, mixed $input, DateInterval $interval): mixed $newData
      * @return self
      */
     public function modifyDataByStream(iterable $inputs, callable $mapper, callable $reducer): self
@@ -418,10 +470,29 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
                         // next result
                         $currentIndex++;
                         continue 2;
+                    case IntersectResult::SAME:
+                    case IntersectResult::INTERSECTS_START:
+                    case IntersectResult::EXTENDS_START:
+                    case IntersectResult::FITS_TO_START:
+                        $interval = new DateInterval($resultStart, $inputEnd);
+                        break;
+                    case IntersectResult::INTERSECTS_END:
+                    case IntersectResult::EXTENDS_END:
+                    case IntersectResult::FITS_TO_END:
+                        $interval = new DateInterval($inputStart, $resultEnd);
+                        break;
+                    case IntersectResult::CONTAINS:
+                        $interval = new DateInterval($resultStart, $resultEnd);
+                        break;
+                    case IntersectResult::IS_CONTAINED:
+                        $interval = new DateInterval($inputStart, $inputEnd);
+                        break;
+                    default:
+                        throw new ShouldNotHappenException('Unknown IntersectResult.');
                 }
 
                 $oldData = $result->getData();
-                $newData = $reducer($oldData, $input);
+                $newData = $reducer($oldData, $input, $interval);
                 if ($result->dataEquals($newData)) {
                     $currentIndex++;
                     continue;
@@ -479,14 +550,15 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Split interval set to more interval sets with different subsets of original data.
      * Splitter maps original data to a group of data. Should return array with keys indicating the data set group.
      *
-     * @param callable $splitter (mixed $data): array<int|string $group, mixed $data>
+     * @phpstan-pure
+     * @param callable $splitter (mixed $data, DateInterval $interval): array<int|string $group, mixed $data>
      * @return self[]
      */
     public function splitData(callable $splitter): array
     {
         $intervalGroups = [];
         foreach ($this->intervals as $interval) {
-            foreach ($splitter($interval->getData()) as $key => $values) {
+            foreach ($splitter($interval->getData(), $interval->toDateInterval()) as $key => $values) {
                 $intervalGroups[$key][] = new DateIntervalData($interval->getStart(), $interval->getEnd(), $values);
             }
         }

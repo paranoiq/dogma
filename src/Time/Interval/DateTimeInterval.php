@@ -81,6 +81,9 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
         $start = new DateTime($start);
         $end = new DateTime($end);
+        if ($start > $end) {
+            return self::empty();
+        }
 
         return new static($start, $end);
     }
@@ -149,16 +152,19 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     // modifications ---------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function shift(string $value): self
     {
         return new static($this->start->modify($value), $this->end->modify($value));
     }
 
+    /** @phpstan-pure */
     public function setStart(DateTime $start): self
     {
         return new static($start, $this->end);
     }
 
+    /** @phpstan-pure */
     public function setEnd(DateTime $end): self
     {
         return new static($this->start, $end);
@@ -302,6 +308,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     // actions ---------------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function split(int $parts): DateTimeIntervalSet
     {
         Check::min($parts, 1);
@@ -325,6 +332,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     }
 
     /**
+     * @phpstan-pure
      * @param DateTime[] $intervalStarts
      * @return DateTimeIntervalSet
      */
@@ -352,6 +360,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     /**
      * Splits interval into smaller by increments of given unit from the beginning of interval.
      *
+     * @phpstan-pure
      * @return DateTimeIntervalSet
      */
     public function splitByUnit(DateTimeUnit $unit, int $amount = 1): DateTimeIntervalSet
@@ -377,6 +386,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
      * *) in context of a superior unit - number of month in year, iso number of week in year, number of day in month...
      *  e.g. for 5 months beginning of May or October will be used as base.
      *
+     * @phpstan-pure
      * @return DateTimeIntervalSet
      */
     public function splitByUnitAligned(DateTimeUnit $unit, int $amount = 1, ?DateTime $reference = null): DateTimeIntervalSet
@@ -482,6 +492,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         }
     }
 
+    /** @phpstan-pure */
     public function envelope(self ...$items): self
     {
         $items[] = $this;
@@ -499,6 +510,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         return new static($start, $end);
     }
 
+    /** @phpstan-pure */
     public function intersect(self ...$items): self
     {
         $items[] = $this;
@@ -525,6 +537,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         return $result;
     }
 
+    /** @phpstan-pure */
     public function union(self ...$items): DateTimeIntervalSet
     {
         $items[] = $this;
@@ -550,6 +563,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         return new DateTimeIntervalSet($results);
     }
 
+    /** @phpstan-pure */
     public function difference(self ...$items): DateTimeIntervalSet
     {
         $items[] = $this;
@@ -565,6 +579,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         return new DateTimeIntervalSet($results);
     }
 
+    /** @phpstan-pure */
     public function subtract(self ...$items): DateTimeIntervalSet
     {
         $results = [$this];
@@ -609,6 +624,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         return new DateTimeIntervalSet(array_values($results));
     }
 
+    /** @phpstan-pure */
     public function invert(): DateTimeIntervalSet
     {
         return self::all()->subtract($this);

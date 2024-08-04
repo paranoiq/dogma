@@ -29,6 +29,7 @@ use function array_map;
 use function array_merge;
 use function array_shift;
 use function array_splice;
+use function array_values;
 use function count;
 use function implode;
 use function is_array;
@@ -49,9 +50,12 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      */
     final public function __construct(array $intervals)
     {
-        $this->intervals = Arr::values(Arr::filter($intervals, static function (NightIntervalData $interval): bool {
+        /** @var NightIntervalData[] $intervals */
+        $intervals = Arr::values(Arr::filter($intervals, static function (NightIntervalData $interval): bool {
             return !$interval->isEmpty();
         }));
+
+        $this->intervals = self::normalizeIntervals($intervals);
     }
 
     /**
@@ -65,6 +69,20 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         }, $set->getIntervals());
 
         return new static($intervals);
+    }
+
+    public static function empty(): self
+    {
+        return new static([]);
+    }
+
+    /**
+     * @param mixed|null $data
+     * @return self
+     */
+    public static function all($data): self
+    {
+        return new static([NightIntervalData::all($data)]);
     }
 
     /**
@@ -179,13 +197,29 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * Join overlapping intervals in set, if they have the same data.
-     * @return self
+     * @deprecated Unnecessary anymore, intervals always normalized.
      */
     public function normalize(): self
     {
+        return $this;
+    }
+
+    /**
+     * Join overlapping intervals in set, if they have the same data.
+     * @param NightIntervalData[] $intervals
+     * @return NightIntervalData[]
+     */
+    private static function normalizeIntervals(array $intervals): array
+    {
+        $intervals = array_values($intervals);
+        foreach ($intervals as $i => $interval) {
+            if ($interval->isEmpty()) {
+                unset($intervals[$i]);
+            }
+        }
+
         /** @var NightIntervalData[] $intervals */
-        $intervals = Arr::sortComparableValues($this->intervals);
+        $intervals = Arr::sortComparableValues($intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
             $first = $intervals[$n];
@@ -200,11 +234,13 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new static($intervals);
+        return array_values($intervals);
     }
 
     /**
      * Add another set of intervals to this one without normalization.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function add(self $set): self
@@ -212,6 +248,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return $this->addIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function addIntervals(NightIntervalData ...$intervals): self
     {
         return new static(array_merge($this->intervals, $intervals));
@@ -219,6 +256,8 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Remove another set of intervals from this one.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function subtract(NightIntervalSet $set): self
@@ -226,6 +265,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return $this->subtractIntervals(...$set->getIntervals());
     }
 
+    /** @phpstan-pure */
     public function subtractIntervals(NightInterval ...$intervals): self
     {
         $sources = $this->intervals;
@@ -254,6 +294,8 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Intersect with another set of intervals.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function intersect(NightIntervalSet $set): self
@@ -261,6 +303,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return $this->intersectIntervals(...$set->getIntervals());
     }
 
+    /** @phpstan-pure */
     public function intersectIntervals(NightInterval ...$intervals): self
     {
         $results = [];
@@ -275,6 +318,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function map(callable $mapper): self
     {
         $results = [];
@@ -294,6 +338,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function collect(callable $mapper): self
     {
         $results = [];
@@ -315,6 +360,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function collectData(callable $mapper): self
     {
         $results = [];
@@ -333,6 +379,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Only modifies and splits intersecting intervals. Does not insert new ones nor remove things.
      * Complexity O(m*n). For bigger sets use modifyDataByStream()
      *
+     * @phpstan-pure
      * @param callable $reducer (mixed $oldData, mixed $input): mixed $newData
      * @return self
      */
@@ -377,6 +424,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Both $this and inputs must be ordered to work properly, $this must be normalized.
      * Complexity ~O(m+n), worst case O(m*n) if all inputs cover whole interval set.
      *
+     * @phpstan-pure
      * @param iterable|mixed[] $inputs
      * @param callable $mapper (mixed $input): array{0: Date $start, 1: Date $end}
      * @param callable $reducer (mixed $oldData, mixed $input): mixed $newData
@@ -471,6 +519,8 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Split interval set to more interval sets with different subsets of original data.
+     *
+     * @phpstan-pure
      * @param callable $splitter Maps original data set to a group of data sets. Should return array with keys indicating the data set group.
      * @return self[] $this
      */

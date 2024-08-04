@@ -19,6 +19,8 @@ $s = static function (DateInterval ...$items): DateIntervalSet {
     return new DateIntervalSet($items);
 };
 
+$empty = DateIntervalSet::empty();
+$all = DateIntervalSet::all();
 $interval = new DateInterval($d(1), $d(5));
 $emptyInterval = DateInterval::empty();
 
@@ -40,11 +42,14 @@ Assert::equal($s($i(1, 2), $i(4, 5))->toDateArray(), [$d(1), $d(2), $d(4), $d(5)
 getIntervals:
 getIterator:
 Assert::same($set->getIntervals(), iterator_to_array($set->getIterator()));
+Assert::equal($empty->getIntervals(), []);
 
 
 isEmpty:
 Assert::true((new DateIntervalSet([]))->isEmpty());
 Assert::true((new DateIntervalSet([$emptyInterval]))->isEmpty());
+Assert::true($empty->isEmpty());
+Assert::false($all->isEmpty());
 
 
 equals:
@@ -65,6 +70,11 @@ Assert::equal($s($i(1, 2), $i(4, 5))->envelope(), $interval);
 normalize:
 Assert::equal($s($i(1, 4), $i(2, 5))->normalize(), $set);
 Assert::equal($s($i(10, 13), $i(5, 9), $i(18, 21), $i(5, 6), $i(15, 19))->normalize(), $s($i(5, 13), $i(15, 21)));
+
+$i1 = new DateInterval(new Date('2024-09-01'), new Date('2024-09-10'));
+$i2 = new DateInterval(new Date('2024-08-01'), new Date('2024-08-10'));
+$i3 = new DateInterval(new Date('2024-07-20'), new Date('2024-09-02'));
+Assert::count((new DateIntervalSet([$i1, $i2, $i3]))->normalize()->getIntervals(), 1);
 
 
 add:
@@ -90,22 +100,22 @@ Assert::equal($set->map(static function (DateInterval $interval) {
     return $interval->split(2)->getIntervals();
 }), $s($i(1, 3), $i(4, 5)));
 
-$set = $s($emptyInterval, $i(1, 1), $i(1, 2), $i(1, 3));
+$set = $s($emptyInterval, $i(1, 1), $i(3, 4), $i(6, 8));
 
 
 filterByLength:
-Assert::equal($set->filterByLength('>', 1), $s($i(1, 3)));
-Assert::equal($set->filterByLength('>=', 1), $s($i(1, 2), $i(1, 3)));
-Assert::equal($set->filterByLength('=', 1), $s($i(1, 2)));
-Assert::equal($set->filterByLength('<>', 1), $s($emptyInterval, $i(1, 1), $i(1, 3)));
-Assert::equal($set->filterByLength('<=', 1), $s($emptyInterval, $i(1, 1), $i(1, 2)));
+Assert::equal($set->filterByLength('>', 1), $s($i(6, 8)));
+Assert::equal($set->filterByLength('>=', 1), $s($i(3, 4), $i(6, 8)));
+Assert::equal($set->filterByLength('=', 1), $s($i(3, 4)));
+Assert::equal($set->filterByLength('<>', 1), $s($emptyInterval, $i(1, 1), $i(6, 8)));
+Assert::equal($set->filterByLength('<=', 1), $s($emptyInterval, $i(1, 1), $i(3, 4)));
 Assert::equal($set->filterByLength('<', 1), $s($emptyInterval, $i(1, 1)));
 
 
 filterByCount:
-Assert::equal($set->filterByDayCount('>', 1), $s($i(1, 2), $i(1, 3)));
-Assert::equal($set->filterByDayCount('>=', 1), $s($i(1, 1), $i(1, 2), $i(1, 3)));
+Assert::equal($set->filterByDayCount('>', 1), $s($i(3, 4), $i(6, 8)));
+Assert::equal($set->filterByDayCount('>=', 1), $s($i(1, 1), $i(3, 4), $i(6, 8)));
 Assert::equal($set->filterByDayCount('=', 1), $s($i(1, 1)));
-Assert::equal($set->filterByDayCount('<>', 1), $s($emptyInterval, $i(1, 2), $i(1, 3)));
+Assert::equal($set->filterByDayCount('<>', 1), $s($emptyInterval, $i(3, 4), $i(6, 8)));
 Assert::equal($set->filterByDayCount('<=', 1), $s($emptyInterval, $i(1, 1)));
 Assert::equal($set->filterByDayCount('<', 1), $s($emptyInterval));

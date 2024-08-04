@@ -16,6 +16,7 @@ use Dogma\Compare;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntervalSet;
 use Dogma\Math\Interval\IntervalSetDumpMixin;
+use Dogma\Math\Interval\IntervalSetNormalizeMixin;
 use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
@@ -36,6 +37,7 @@ use function sort;
 class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 {
     use StrictBehaviorMixin;
+    use IntervalSetNormalizeMixin;
     use IntervalSetDumpMixin;
 
     /** @var DateInterval[] */
@@ -46,9 +48,12 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
      */
     final public function __construct(array $intervals)
     {
-        $this->intervals = Arr::values(Arr::filter($intervals, static function (DateInterval $interval): bool {
+        /** @var DateInterval[] $intervals */
+        $intervals = Arr::values(Arr::filter($intervals, static function (DateInterval $interval): bool {
             return !$interval->isEmpty();
         }));
+
+        $this->intervals = self::normalizeIntervals($intervals);
     }
 
     /**
@@ -78,6 +83,16 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($intervals);
     }
 
+    public static function empty(): self
+    {
+        return new static([]);
+    }
+
+    public static function all(): self
+    {
+        return new static([DateInterval::all()]);
+    }
+
     /**
      * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
      */
@@ -93,7 +108,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
      */
     public function toDateArray(): array
     {
-        $intervals = $this->normalize()->getIntervals();
+        $intervals = $this->getIntervals();
 
         return array_merge(...array_map(static function (DateInterval $interval): array {
             return $interval->toDateArray();
@@ -102,10 +117,11 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 
     public function format(
         string $format = DateInterval::DEFAULT_FORMAT,
-        ?DateTimeIntervalFormatter $formatter = null
+        ?DateTimeIntervalFormatter $formatter = null,
+        string $separator = ', '
     ): string
     {
-        return implode(', ', Arr::map($this->intervals, static function (DateInterval $dateInterval) use ($format, $formatter): string {
+        return implode($separator, Arr::map($this->intervals, static function (DateInterval $dateInterval) use ($format, $formatter): string {
             return $dateInterval->format($format, $formatter);
         }));
     }
@@ -183,34 +199,13 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         }
     }
 
-    /**
-     * Join overlapping intervals in set.
-     * @return self
-     */
-    public function normalize(): self
-    {
-        /** @var DateInterval[] $intervals */
-        $intervals = Arr::sortComparableValues($this->intervals);
-        $count = count($intervals) - 1;
-        for ($n = 0; $n < $count; $n++) {
-            if ($intervals[$n]->intersects($intervals[$n + 1]) || $intervals[$n]->touches($intervals[$n + 1])) {
-                $intervals[$n + 1] = $intervals[$n]->envelope($intervals[$n + 1]);
-                unset($intervals[$n]);
-            }
-        }
-
-        return new static($intervals);
-    }
-
-    /**
-     * Add another set of intervals to this one without normalization.
-     * @return self
-     */
+    /** @phpstan-pure */
     public function add(self $set): self
     {
         return $this->addIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function addIntervals(DateInterval ...$intervals): self
     {
         return new static(array_merge($this->intervals, $intervals));
@@ -218,6 +213,8 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 
     /**
      * Remove another set of intervals from this one.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function subtract(self $set): self
@@ -225,6 +222,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return $this->subtractIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function subtractIntervals(DateInterval ...$intervals): self
     {
         $sources = $this->intervals;
@@ -250,6 +248,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function invert(): self
     {
         return (new static([DateInterval::all()]))->subtract($this);
@@ -257,6 +256,8 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 
     /**
      * Intersect with another set of intervals.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function intersect(self $set): self
@@ -264,6 +265,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return $this->intersectIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function intersectIntervals(DateInterval ...$intervals): self
     {
         $results = [];
@@ -278,11 +280,13 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function filterByLength(string $operator, int $days): self
     {
         return $this->filterByDayCount($operator, $days + 1);
     }
 
+    /** @phpstan-pure */
     public function filterByDayCount(string $operator, int $days): self
     {
         $results = [];
@@ -325,6 +329,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function map(callable $mapper): self
     {
         $results = [];
@@ -344,6 +349,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function collect(callable $mapper): self
     {
         $results = [];

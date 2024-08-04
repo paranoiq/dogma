@@ -73,13 +73,13 @@ Assert::equal($set->map(static function (FloatInterval $interval) {
     return $interval->split(2, FloatInterval::SPLIT_CLOSED)->getIntervals();
 }), $s($i(1, 3), $i(3, 5)));
 
-$set = $s(FloatInterval::empty(), $i(1, 1), $i(1, 2), $i(1, 3));
+$set = $s(FloatInterval::empty(), $i(1, 1), $i(3, 4), $i(6, 8));
 
 
 filterByLength:
-Assert::equal($set->filterByLength('>', 1), $s($i(1, 3)));
-Assert::equal($set->filterByLength('>=', 1), $s($i(1, 2), $i(1, 3)));
-Assert::equal($set->filterByLength('=', 1), $s($i(1, 2)));
-Assert::equal($set->filterByLength('<>', 1), $s(FloatInterval::empty(), $i(1, 1), $i(1, 3)));
-Assert::equal($set->filterByLength('<=', 1), $s(FloatInterval::empty(), $i(1, 1), $i(1, 2)));
+Assert::equal($set->filterByLength('>', 1), $s($i(6, 8)));
+Assert::equal($set->filterByLength('>=', 1), $s($i(3, 4), $i(6, 8)));
+Assert::equal($set->filterByLength('=', 1), $s($i(3, 4)));
+Assert::equal($set->filterByLength('<>', 1), $s(FloatInterval::empty(), $i(1, 1), $i(6, 8)));
+Assert::equal($set->filterByLength('<=', 1), $s(FloatInterval::empty(), $i(1, 1), $i(3, 4)));
 Assert::equal($set->filterByLength('<', 1), $s(FloatInterval::empty(), $i(1, 1)));

@@ -37,6 +37,8 @@ class TimeSpan implements DateOrTimeSpan
         int $seconds = 0,
         int $microseconds = 0
     ) {
+        [$hours, $minutes, $seconds, $microseconds] = self::normalizeUnits($hours, $minutes, $seconds, $microseconds);
+
         $this->hours = $hours;
         $this->minutes = $minutes;
         $this->seconds = $seconds;
@@ -157,19 +159,25 @@ class TimeSpan implements DateOrTimeSpan
 
     // actions ---------------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function add(self ...$other): self
     {
-        $that = clone($this);
+        $hours = $this->hours;
+        $minutes = $this->minutes;
+        $seconds = $this->seconds;
+        $microseconds = $this->microseconds;
+
         foreach ($other as $span) {
-            $that->hours += $span->hours;
-            $that->minutes += $span->minutes;
-            $that->seconds += $span->seconds;
-            $that->microseconds += $span->microseconds;
+            $hours += $span->hours;
+            $minutes += $span->minutes;
+            $seconds += $span->seconds;
+            $microseconds += $span->microseconds;
         }
 
-        return $that->normalize();
+        return new static($hours, $minutes, $seconds, $microseconds);
     }
 
+    /** @phpstan-pure */
     public function subtract(self ...$other): self
     {
         return $this->add(...Arr::map($other, static function (DateTimeSpan $span): DateTimeSpan {
@@ -177,11 +185,13 @@ class TimeSpan implements DateOrTimeSpan
         }));
     }
 
+    /** @phpstan-pure */
     public function invert(): self
     {
         return new self(-$this->hours, -$this->minutes, -$this->seconds, -$this->microseconds);
     }
 
+    /** @phpstan-pure */
     public function abs(): self
     {
         if ($this->getHoursFraction() >= 0.0) {
@@ -192,16 +202,19 @@ class TimeSpan implements DateOrTimeSpan
     }
 
     /**
-     * Normalizes values by summarizing smaller units into bigger. eg: '34 days' -> '1 month, 4 days'
-     * @return self
+     * @deprecated Unnecessary anymore, units always normalized.
      */
     public function normalize(): self
     {
-        $microseconds = $this->microseconds;
-        $seconds = $this->seconds;
-        $minutes = $this->minutes;
-        $hours = $this->hours;
+        return $this;
+    }
 
+    /**
+     * Normalizes values by summarizing smaller units into bigger. eg: '34 days' -> '1 month, 4 days'
+     * @return int[]
+     */
+    private static function normalizeUnits(int $hours, int $minutes, int $seconds, int $microseconds): array
+    {
         if ($microseconds >= 1000000) {
             $seconds += (int) ($microseconds / 1000000);
             $microseconds %= 1000000;
@@ -224,7 +237,7 @@ class TimeSpan implements DateOrTimeSpan
             $minutes %= 60;
         }
 
-        return new self($hours, $minutes, $seconds, $microseconds);
+        return [$hours, $minutes, $seconds, $microseconds];
     }
 
     // getters ---------------------------------------------------------------------------------------------------------

@@ -118,6 +118,7 @@ class DayOfYear implements Equalable, Comparable, Dumpable
         return self::createFromMonthAndDay($dateTime->getMonth(), $dateTime->getDay());
     }
 
+    /** @phpstan-pure */
     public function normalize(): self
     {
         if ($this->number <= self::MAX_NUMBER) {
@@ -127,6 +128,7 @@ class DayOfYear implements Equalable, Comparable, Dumpable
         }
     }
 
+    /** @phpstan-pure */
     public function denormalize(): self
     {
         if ($this->number >= self::MAX_NUMBER) {
@@ -158,6 +160,7 @@ class DayOfYear implements Equalable, Comparable, Dumpable
 
     // modifications ---------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function modify(string $modify): self
     {
         $date = Date::createFromComponents(self::DEFAULT_FORMAT_YEAR, $this->month, $this->dayOfMonth);
@@ -170,6 +173,7 @@ class DayOfYear implements Equalable, Comparable, Dumpable
         return $that;
     }
 
+    /** @phpstan-pure */
     public function addDay(): self
     {
         $number = $this->number + 1;
@@ -180,6 +184,7 @@ class DayOfYear implements Equalable, Comparable, Dumpable
         return new static($number);
     }
 
+    /** @phpstan-pure */
     public function addDays(int $days): self
     {
         $number = $this->number + $days;
@@ -190,6 +195,7 @@ class DayOfYear implements Equalable, Comparable, Dumpable
         return new static($number);
     }
 
+    /** @phpstan-pure */
     public function subtractDay(): self
     {
         $number = $this->number - 1;
@@ -200,6 +206,7 @@ class DayOfYear implements Equalable, Comparable, Dumpable
         return new static($number);
     }
 
+    /** @phpstan-pure */
     public function subtractDays(int $days): self
     {
         $number = $this->number - $days;

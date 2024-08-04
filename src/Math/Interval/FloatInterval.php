@@ -126,11 +126,13 @@ class FloatInterval implements OpenClosedInterval
 
     // modifications ---------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function shift(float $byValue): self
     {
         return new static($this->start + $byValue, $this->end + $byValue, $this->openStart, $this->openEnd);
     }
 
+    /** @phpstan-pure */
     public function multiply(float $byValue): self
     {
         return new static($this->start * $byValue, $this->end * $byValue, $this->openStart, $this->openEnd);
@@ -285,6 +287,7 @@ class FloatInterval implements OpenClosedInterval
 
     // actions ---------------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function split(int $parts, int $splitMode = self::SPLIT_OPEN_ENDS): FloatIntervalSet
     {
         Check::min($parts, 1);
@@ -304,6 +307,7 @@ class FloatInterval implements OpenClosedInterval
     }
 
     /**
+     * @phpstan-pure
      * @param float[] $intervalStarts
      * @return FloatIntervalSet
      */
@@ -324,7 +328,11 @@ class FloatInterval implements OpenClosedInterval
         return new FloatIntervalSet($results);
     }
 
-    // A1****A2****B1****B2 -> [A1, B2]
+    /**
+     * A1****A2****B1****B2 -> [A1, B2]
+     *
+     * @phpstan-pure
+     */
     public function envelope(self ...$items): self
     {
         $items[] = $this;
@@ -350,8 +358,12 @@ class FloatInterval implements OpenClosedInterval
         return new static($start, $end, $startExclusive, $endExclusive);
     }
 
-    // A1----B1****A2----B2 -> [B1, A2]
-    // A1----A2    B1----B2 -> [MAX, MIN]
+    /**
+     * A1----B1****A2----B2 -> [B1, A2]
+     * A1----A2    B1----B2 -> [MAX, MIN]
+     *
+     * @phpstan-pure
+     */
     public function intersect(self ...$items): self
     {
         $items[] = $this;
@@ -378,8 +390,12 @@ class FloatInterval implements OpenClosedInterval
         return $result;
     }
 
-    // A1****B1****A2****B2 -> {[A1, B2]}
-    // A1****A2    B1****B2 -> {[A1, A2], [B1, B2]}
+    /**
+     * A1****B1****A2****B2 -> {[A1, B2]}
+     * A1****A2    B1****B2 -> {[A1, A2], [B1, B2]}
+     *
+     * @phpstan-pure
+     */
     public function union(self ...$items): FloatIntervalSet
     {
         $items[] = $this;
@@ -405,9 +421,13 @@ class FloatInterval implements OpenClosedInterval
         return new FloatIntervalSet($results);
     }
 
-    // A xor B
-    // A1****B1----A2****B2 -> {[A1, A2], [B1, B2]}
-    // A1****A2    B1****B2 -> {[A1, A2], [B1, B2]}
+    /**
+     * A xor B
+     * A1****B1----A2****B2 -> {[A1, A2], [B1, B2]}
+     * A1****A2    B1****B2 -> {[A1, A2], [B1, B2]}
+     *
+     * @phpstan-pure
+     */
     public function difference(self ...$items): FloatIntervalSet
     {
         $items[] = $this;
@@ -423,9 +443,13 @@ class FloatInterval implements OpenClosedInterval
         return new FloatIntervalSet($results);
     }
 
-    // A minus B
-    // A1****B1----A2----B2 -> {[A1, B1]}
-    // A1****A2    B1----B2 -> {[A1, A2]}
+    /**
+     * A minus B
+     * A1****B1----A2----B2 -> {[A1, B1]}
+     * A1****A2    B1----B2 -> {[A1, A2]}
+     *
+     * @phpstan-pure
+     */
     public function subtract(self ...$items): FloatIntervalSet
     {
         $results = [$this];
@@ -470,7 +494,11 @@ class FloatInterval implements OpenClosedInterval
         return new FloatIntervalSet(array_values($results));
     }
 
-    // All minus A
+    /**
+     * All minus A
+     *
+     * @phpstan-pure
+     */
     public function invert(): FloatIntervalSet
     {
         return self::all()->subtract($this);

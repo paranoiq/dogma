@@ -17,6 +17,7 @@ use Dogma\Compare;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntervalSet;
 use Dogma\Math\Interval\IntervalSetDumpMixin;
+use Dogma\Math\Interval\IntervalSetNormalizeMixin;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
@@ -35,6 +36,7 @@ use function reset;
 class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 {
     use StrictBehaviorMixin;
+    use IntervalSetNormalizeMixin;
     use IntervalSetDumpMixin;
 
     /** @var DateTimeInterval[] */
@@ -45,9 +47,12 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
      */
     final public function __construct(array $intervals)
     {
-        $this->intervals = Arr::values(Arr::filter($intervals, static function (DateTimeInterval $interval): bool {
+        /** @var DateTimeInterval[] $intervals */
+        $intervals = Arr::values(Arr::filter($intervals, static function (DateTimeInterval $interval): bool {
             return !$interval->isEmpty();
         }));
+
+        $this->intervals = self::normalizeIntervals($intervals);
     }
 
     public static function createFromDateAndTimeIntervalSet(
@@ -170,12 +175,23 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         return new static($intervals);
     }
 
+    public static function empty(): self
+    {
+        return new static([]);
+    }
+
+    public static function all(): self
+    {
+        return new static([DateTimeInterval::all()]);
+    }
+
     public function format(
         string $format = DateTimeInterval::DEFAULT_FORMAT,
-        ?DateTimeIntervalFormatter $formatter = null
+        ?DateTimeIntervalFormatter $formatter = null,
+        string $separator = ', '
     ): string
     {
-        return implode(', ', Arr::map($this->intervals, static function (DateTimeInterval $dateTimeInterval) use ($format, $formatter): string {
+        return implode($separator, Arr::map($this->intervals, static function (DateTimeInterval $dateTimeInterval) use ($format, $formatter): string {
             return $dateTimeInterval->format($format, $formatter);
         }));
     }
@@ -253,34 +269,13 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         }
     }
 
-    /**
-     * Join overlapping intervals in set.
-     * @return self
-     */
-    public function normalize(): self
-    {
-        /** @var DateTimeInterval[] $intervals */
-        $intervals = Arr::sortComparable($this->intervals);
-        $count = count($intervals) - 1;
-        for ($n = 0; $n < $count; $n++) {
-            if ($intervals[$n]->intersects($intervals[$n + 1]) || $intervals[$n]->touches($intervals[$n + 1])) {
-                $intervals[$n + 1] = $intervals[$n]->envelope($intervals[$n + 1]);
-                unset($intervals[$n]);
-            }
-        }
-
-        return new static($intervals);
-    }
-
-    /**
-     * Add another set of intervals to this one without normalization.
-     * @return self
-     */
+    /** @phpstan-pure */
     public function add(self $set): self
     {
         return $this->addIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function addIntervals(DateTimeInterval ...$intervals): self
     {
         return new static(array_merge($this->intervals, $intervals));
@@ -288,6 +283,8 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 
     /**
      * Remove another set of intervals from this one.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function subtract(self $set): self
@@ -295,6 +292,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         return $this->subtractIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function subtractIntervals(DateTimeInterval ...$intervals): self
     {
         $sources = $this->intervals;
@@ -322,6 +320,8 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 
     /**
      * Intersect with another set of intervals.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function intersect(self $set): self
@@ -329,6 +329,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         return $this->intersectIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function intersectIntervals(DateTimeInterval ...$intervals): self
     {
         $results = [];
@@ -343,6 +344,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function filterByLength(string $operator, int $microseconds): self
     {
         $results = [];
@@ -385,6 +387,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function map(callable $mapper): self
     {
         $results = [];
@@ -404,6 +407,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function collect(callable $mapper): self
     {
         $results = [];

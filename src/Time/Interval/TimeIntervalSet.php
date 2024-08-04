@@ -15,6 +15,7 @@ use Dogma\Check;
 use Dogma\Compare;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntervalSetDumpMixin;
+use Dogma\Math\Interval\IntervalSetNormalizeMixin;
 use Dogma\Math\Interval\ModuloIntervalSet;
 use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
@@ -34,6 +35,7 @@ use function reset;
 class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokeable
 {
     use StrictBehaviorMixin;
+    use IntervalSetNormalizeMixin;
     use IntervalSetDumpMixin;
 
     /** @var TimeInterval[] */
@@ -44,9 +46,12 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
      */
     final public function __construct(array $intervals)
     {
-        $this->intervals = Arr::values(Arr::filter($intervals, static function (TimeInterval $interval): bool {
+        /** @var TimeInterval[] $intervals */
+        $intervals = Arr::values(Arr::filter($intervals, static function (TimeInterval $interval): bool {
             return !$interval->isEmpty();
         }));
+
+        $this->intervals = self::normalizeIntervals($intervals);
     }
 
     /**
@@ -133,6 +138,7 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
         return false;
     }
 
+    /** @phpstan-pure */
     public function envelope(): TimeInterval
     {
         if ($this->intervals === []) {
@@ -142,34 +148,13 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
         }
     }
 
-    /**
-     * Join overlapping intervals in set.
-     * @return self
-     */
-    public function normalize(): self
-    {
-        /** @var TimeInterval[] $intervals */
-        $intervals = Arr::sortComparable($this->intervals);
-        $count = count($intervals) - 1;
-        for ($n = 0; $n < $count; $n++) {
-            if ($intervals[$n]->intersects($intervals[$n + 1]) || $intervals[$n]->touches($intervals[$n + 1])) {
-                $intervals[$n + 1] = $intervals[$n]->envelope($intervals[$n + 1]);
-                unset($intervals[$n]);
-            }
-        }
-
-        return new static($intervals);
-    }
-
-    /**
-     * Add another set of intervals to this one without normalization.
-     * @return self
-     */
+    /** @phpstan-pure */
     public function add(self $set): self
     {
         return $this->addIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function addIntervals(TimeInterval ...$intervals): self
     {
         return new static(array_merge($this->intervals, $intervals));
@@ -177,6 +162,8 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
 
     /**
      * Remove another set of intervals from this one.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function subtract(self $set): self
@@ -184,6 +171,7 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
         return $this->subtractIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function subtractIntervals(TimeInterval ...$intervals): self
     {
         $sources = $this->intervals;
@@ -209,6 +197,7 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function invert(): self
     {
         return (new static([TimeInterval::all()]))->subtract($this);
@@ -216,6 +205,8 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
 
     /**
      * Intersect with another set of intervals.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function intersect(self $set): self
@@ -223,6 +214,7 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
         return $this->intersectIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function intersectIntervals(TimeInterval ...$intervals): self
     {
         $results = [];
@@ -237,6 +229,7 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function filterByLength(string $operator, int $microseconds): self
     {
         $results = [];
@@ -279,6 +272,7 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function map(callable $mapper): self
     {
         $results = [];
@@ -298,6 +292,7 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function collect(callable $mapper): self
     {
         $results = [];

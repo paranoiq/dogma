@@ -268,6 +268,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @phpstan-pure
      * @param string $modify
      * @return self
      */
@@ -283,6 +284,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     }
 
     /**
+     * @phpstan-pure
      * @param DateInterval|DateOrTimeSpan $interval
      * @return self
      */
@@ -302,6 +304,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     }
 
     /**
+     * @phpstan-pure
      * @param DateInterval|DateOrTimeSpan $interval
      * @return self
      */
@@ -315,6 +318,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return static::createFromDateTimeInterface($that);
     }
 
+    /** @phpstan-pure */
     public function addUnit(DateTimeUnit $unit, int $amount = 1): self
     {
         if ($unit->equalsValue(DateTimeUnit::QUARTER)) {
@@ -328,6 +332,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this->modify('+' . $amount . ' ' . $unit->getValue() . 's');
     }
 
+    /** @phpstan-pure */
     public function subtractUnit(DateTimeUnit $unit, int $amount = 1): self
     {
         if ($unit->equalsValue(DateTimeUnit::QUARTER)) {
@@ -343,6 +348,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @phpstan-pure
      * @param Time|int|string $time
      * @param int|null $minutes
      * @param int|null $seconds
@@ -369,6 +375,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     }
 
     /**
+     * @phpstan-pure
      * @param DateTimeZone|string $timeZone
      * @return DateTime
      */
@@ -384,6 +391,8 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     /**
      * Round to closest value from given list of values for given unit
      * (e.g. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
+     *
+     * @phpstan-pure
      * @param int[]|null $allowedValues
      * @return DateTime
      */
@@ -398,6 +407,8 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     /**
      * Round to firs upper value from given list of values for given unit
      * (e.g. 15:32:15 * minutes[0, 10, 20, 30, 40 50] --> 15:40:00)
+     *
+     * @phpstan-pure
      * @param int[]|null $allowedValues
      * @return DateTime
      */
@@ -412,6 +423,8 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     /**
      * Round to firs lower value from given list of values for given unit
      * (e.g. 15:36:15 * minutes[0, 10, 20, 30, 40 50] --> 15:30:00)
+     *
+     * @phpstan-pure
      * @param int[]|null $allowedValues
      * @return DateTime
      */

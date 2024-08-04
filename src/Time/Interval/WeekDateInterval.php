@@ -57,6 +57,7 @@ class WeekDateInterval extends DateInterval
     }
 
     /**
+     * @phpstan-pure
      * @return self[]
      */
     public static function createOverlappingIntervals(DateInterval $interval): array
@@ -75,11 +76,13 @@ class WeekDateInterval extends DateInterval
         return $intervals;
     }
 
+    /** @phpstan-pure */
     public function next(): self
     {
         return $this->shift('+ 1 week');
     }
 
+    /** @phpstan-pure */
     public function previous(): self
     {
         return $this->shift('- 1 week');

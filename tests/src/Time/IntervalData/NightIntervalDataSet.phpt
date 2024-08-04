@@ -40,6 +40,8 @@ $ds = static function (string $days) use ($di): NightIntervalDataSet {
     return new NightIntervalDataSet($intervals);
 };
 
+$emptySet = NightIntervalDataSet::empty();
+$allSet = NightIntervalDataSet::all(1);
 $interval = new NightIntervalData($d(1), $d(5), 1);
 $emptyInterval = NightInterval::empty();
 $set = new NightIntervalDataSet([$interval]);
@@ -54,6 +56,8 @@ Assert::equal($ds('1-3, 4-6')->toDateDataArray(), [[$d(1), 1], [$d(2), 1], [$d(4
 isEmpty:
 Assert::true((new NightIntervalSet([]))->isEmpty());
 Assert::true((new NightIntervalSet([$emptyInterval]))->isEmpty());
+Assert::true($emptySet->isEmpty());
+Assert::false($allSet->isEmpty());
 
 
 equals:

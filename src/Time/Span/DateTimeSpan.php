@@ -333,6 +333,7 @@ class DateTimeSpan implements DateOrTimeSpan
 
     // actions ---------------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function add(self ...$other): self
     {
         $that = clone($this);
@@ -349,6 +350,7 @@ class DateTimeSpan implements DateOrTimeSpan
         return $that->normalize(true);
     }
 
+    /** @phpstan-pure */
     public function subtract(self ...$other): self
     {
         return $this->add(...Arr::map($other, static function (DateTimeSpan $span): DateTimeSpan {
@@ -356,11 +358,13 @@ class DateTimeSpan implements DateOrTimeSpan
         }));
     }
 
+    /** @phpstan-pure */
     public function invert(): self
     {
         return new self(-$this->years, -$this->months, -$this->days, -$this->hours, -$this->minutes, -$this->seconds, -$this->microseconds);
     }
 
+    /** @phpstan-pure */
     public function abs(): self
     {
         if ($this->getYearsFraction() >= 0.0) {
@@ -372,6 +376,8 @@ class DateTimeSpan implements DateOrTimeSpan
 
     /**
      * Normalizes values by summarizing smaller units into bigger. eg: '34 days' -> '1 month, 4 days'
+     *
+     * @phpstan-pure
      * @return self
      */
     public function normalize(bool $safeOnly = false): self
@@ -435,6 +441,7 @@ class DateTimeSpan implements DateOrTimeSpan
         return new self($years, $months, $days, $hours, $minutes, $seconds, $microseconds);
     }
 
+    /** @phpstan-pure */
     public function roundToTwoValues(bool $useWeeks = false): self
     {
         $years = $this->getYearsFraction();
@@ -506,6 +513,7 @@ class DateTimeSpan implements DateOrTimeSpan
         return new self(0, 0, 0, 0, 0, $this->seconds, $this->microseconds);
     }
 
+    /** @phpstan-pure */
     public function roundToSingleValue(bool $useWeeks = false): self
     {
         $years = (int) round($this->getYearsFraction());

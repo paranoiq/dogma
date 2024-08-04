@@ -34,6 +34,8 @@ class DateSpan implements DateOrTimeSpan
         int $months = 0,
         int $days = 0
     ) {
+        [$years, $months, $days] = self::normalizeUnits($years, $months, $days);
+
         $this->years = $years;
         $this->months = $months;
         $this->days = $days;
@@ -148,18 +150,23 @@ class DateSpan implements DateOrTimeSpan
 
     // actions ---------------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function add(self ...$other): self
     {
-        $that = clone($this);
+        $years = $this->years;
+        $months = $this->months;
+        $days = $this->days;
+
         foreach ($other as $span) {
-            $that->years += $span->years;
-            $that->months += $span->months;
-            $that->days += $span->days;
+            $years += $span->years;
+            $months += $span->months;
+            $days += $span->days;
         }
 
-        return $that->normalize();
+        return new static($years, $months, $days);
     }
 
+    /** @phpstan-pure */
     public function subtract(self ...$other): self
     {
         return $this->add(...Arr::map($other, static function (DateTimeSpan $span): DateTimeSpan {
@@ -167,11 +174,13 @@ class DateSpan implements DateOrTimeSpan
         }));
     }
 
+    /** @phpstan-pure */
     public function invert(): self
     {
         return new self(-$this->years, -$this->months, -$this->days);
     }
 
+    /** @phpstan-pure */
     public function abs(): self
     {
         if ($this->getYearsFraction() >= 0.0) {
@@ -182,15 +191,19 @@ class DateSpan implements DateOrTimeSpan
     }
 
     /**
-     * Normalizes values by summarizing smaller units into bigger. eg: '34 days' -> '1 month, 4 days'
-     * @return self
+     * @deprecated Unnecessary anymore, intervals units normalized.
      */
     public function normalize(): self
     {
-        $days = $this->days;
-        $months = $this->months;
-        $years = $this->years;
+        return $this;
+    }
 
+    /**
+     * Normalizes values by summarizing smaller units into bigger. eg: '34 days' -> '1 month, 4 days'
+     * @return int[]
+     */
+    private static function normalizeUnits(int $years, int $months, int $days): array
+    {
         if ($days >= 30) {
             $months += (int) ($days / 30);
             $days %= 30;
@@ -206,7 +219,7 @@ class DateSpan implements DateOrTimeSpan
             $months %= 12;
         }
 
-        return new self($years, $months, $days);
+        return [$years, $months, $days];
     }
 
     // getters ---------------------------------------------------------------------------------------------------------

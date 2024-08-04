@@ -29,10 +29,11 @@ use function is_array;
 class IntIntervalSet implements IntervalSet
 {
     use StrictBehaviorMixin;
+    use IntervalSetNormalizeMixin;
     use IntervalSetDumpMixin;
 
     /** @var IntInterval[] */
-    private $intervals = [];
+    private $intervals;
 
     /**
      * @param IntInterval[] $intervals
@@ -41,11 +42,7 @@ class IntIntervalSet implements IntervalSet
     {
         Check::itemsOfType($intervals, IntInterval::class);
 
-        foreach ($intervals as $interval) {
-            if (!$interval->isEmpty()) {
-                $this->intervals[] = $interval;
-            }
-        }
+        $this->intervals = self::normalizeIntervals($intervals);
     }
 
     /**
@@ -112,6 +109,7 @@ class IntIntervalSet implements IntervalSet
         return false;
     }
 
+    /** @phpstan-pure */
     public function envelope(): IntInterval
     {
         if ($this->intervals === []) {
@@ -121,34 +119,13 @@ class IntIntervalSet implements IntervalSet
         }
     }
 
-    /**
-     * Join overlapping intervals in set.
-     * @return self
-     */
-    public function normalize(): self
-    {
-        /** @var IntInterval[] $intervals */
-        $intervals = Arr::sortComparable($this->intervals);
-        $count = count($intervals) - 1;
-        for ($n = 0; $n < $count; $n++) {
-            if ($intervals[$n]->intersects($intervals[$n + 1]) || $intervals[$n]->touches($intervals[$n + 1])) {
-                $intervals[$n + 1] = $intervals[$n]->envelope($intervals[$n + 1]);
-                unset($intervals[$n]);
-            }
-        }
-
-        return new static($intervals);
-    }
-
-    /**
-     * Add another set of intervals to this one without normalization.
-     * @return self
-     */
+    /** @phpstan-pure */
     public function add(self $set): self
     {
         return $this->addIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function addIntervals(IntInterval ...$intervals): self
     {
         return new static(array_merge($this->intervals, $intervals));
@@ -156,6 +133,8 @@ class IntIntervalSet implements IntervalSet
 
     /**
      * Remove another set of intervals from this one.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function subtract(self $set): self
@@ -163,6 +142,7 @@ class IntIntervalSet implements IntervalSet
         return $this->subtractIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function subtractIntervals(IntInterval ...$intervals): self
     {
         $sources = $this->intervals;
@@ -188,6 +168,7 @@ class IntIntervalSet implements IntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function invert(): self
     {
         return (new static([IntInterval::all()]))->subtract($this);
@@ -195,6 +176,8 @@ class IntIntervalSet implements IntervalSet
 
     /**
      * Intersect with another set of intervals.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function intersect(self $set): self
@@ -202,6 +185,7 @@ class IntIntervalSet implements IntervalSet
         return $this->intersectIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function intersectIntervals(IntInterval ...$intervals): self
     {
         $results = [];
@@ -216,11 +200,13 @@ class IntIntervalSet implements IntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function filterByLength(string $operator, int $length): self
     {
         return $this->filterByCount($operator, $length + 1);
     }
 
+    /** @phpstan-pure */
     public function filterByCount(string $operator, int $count): self
     {
         $results = [];
@@ -263,6 +249,7 @@ class IntIntervalSet implements IntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function map(callable $mapper): self
     {
         $results = [];
@@ -282,6 +269,7 @@ class IntIntervalSet implements IntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function collect(callable $mapper): self
     {
         $results = [];

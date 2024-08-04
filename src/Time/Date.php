@@ -173,26 +173,31 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     // modifications ---------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function modify(string $value): self
     {
         return static::createFromDateTimeInterface($this->getDateTime()->modify($value));
     }
 
+    /** @phpstan-pure */
     public function addDay(): self
     {
         return new static($this->julianDay + 1);
     }
 
+    /** @phpstan-pure */
     public function addDays(int $days): self
     {
         return new static($this->julianDay + $days);
     }
 
+    /** @phpstan-pure */
     public function subtractDay(): self
     {
         return new static($this->julianDay - 1);
     }
 
+    /** @phpstan-pure */
     public function subtractDays(int $days): self
     {
         return new static($this->julianDay - $days);

@@ -117,6 +117,7 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     // modifications ---------------------------------------------------------------------------------------------------
 
     /**
+     * @phpstan-pure
      * @return static
      */
     public function shift(string $value): self
@@ -124,11 +125,13 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
         return new static($this->start->modify($value), $this->end->modify($value), $this->data);
     }
 
+    /** @phpstan-pure */
     public function setStart(Date $start): self
     {
         return new static($start, $this->end, $this->data);
     }
 
+    /** @phpstan-pure */
     public function setEnd(Date $end): self
     {
         return new static($this->start, $end, $this->data);
@@ -309,6 +312,7 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     // actions ---------------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function intersect(NightInterval ...$items): self
     {
         $items[] = $this->toNightInterval();
@@ -328,6 +332,7 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
         return new static($result->getStart(), $result->getEnd(), $this->data);
     }
 
+    /** @phpstan-pure */
     public function subtract(NightInterval ...$items): NightIntervalDataSet
     {
         $intervals = [$this];

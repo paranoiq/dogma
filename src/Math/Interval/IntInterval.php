@@ -80,11 +80,13 @@ class IntInterval implements Interval
 
     // modifications ---------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function shift(int $byValue): self
     {
         return new static($this->start + $byValue, $this->end + $byValue);
     }
 
+    /** @phpstan-pure */
     public function multiply(int $byValue): self
     {
         return new static($this->start * $byValue, $this->end * $byValue);
@@ -185,6 +187,7 @@ class IntInterval implements Interval
 
     // actions ---------------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function split(int $parts): IntIntervalSet
     {
         Check::min($parts, 1);
@@ -208,6 +211,7 @@ class IntInterval implements Interval
     }
 
     /**
+     * @phpstan-pure
      * @param int[] $intervalStarts
      * @return IntIntervalSet
      */
@@ -228,7 +232,11 @@ class IntInterval implements Interval
         return new IntIntervalSet($results);
     }
 
-    // A1****A2****B1****B2 -> [A1, B2]
+    /**
+     * A1****A2****B1****B2 -> [A1, B2]
+     *
+     * @phpstan-pure
+     */
     public function envelope(self ...$items): self
     {
         $items[] = $this;
@@ -246,9 +254,13 @@ class IntInterval implements Interval
         return new static($start, $end);
     }
 
-    // A and B
-    // A1----B1****A2----B2 -> [B1, A2]
-    // A1----A2    B1----B2 -> [MAX, MIN]
+    /**
+     * A and B
+     * A1----B1****A2----B2 -> [B1, A2]
+     * A1----A2    B1----B2 -> [MAX, MIN]
+     *
+     * @phpstan-pure
+     */
     public function intersect(self ...$items): self
     {
         $items[] = $this;
@@ -268,9 +280,14 @@ class IntInterval implements Interval
         return $result;
     }
 
-    // A or B
-    // A1****B1****A2****B2 -> {[A1, B2]}
-    // A1****A2    B1****B2 -> {[A1, A2], [B1, B2]}
+
+    /**
+     * A or B
+     * A1****B1****A2****B2 -> {[A1, B2]}
+     * A1****A2    B1****B2 -> {[A1, A2], [B1, B2]}
+     *
+     * @phpstan-pure
+     */
     public function union(self ...$items): IntIntervalSet
     {
         $items[] = $this;
@@ -296,9 +313,13 @@ class IntInterval implements Interval
         return new IntIntervalSet($results);
     }
 
-    // A xor B
-    // A1****B1----A2****B2 -> {[A1, A2], [B1, B2]}
-    // A1****A2    B1****B2 -> {[A1, A2], [B1, B2]}
+    /**
+     * A xor B
+     * A1****B1----A2****B2 -> {[A1, A2], [B1, B2]}
+     * A1****A2    B1****B2 -> {[A1, A2], [B1, B2]}
+     *
+     * @phpstan-pure
+     */
     public function difference(self ...$items): IntIntervalSet
     {
         $items[] = $this;
@@ -314,9 +335,13 @@ class IntInterval implements Interval
         return new IntIntervalSet($results);
     }
 
-    // A minus B
-    // A1****B1----A2----B2 -> {[A1, B1]}
-    // A1****A2    B1----B2 -> {[A1, A2]}
+    /**
+     * A minus B
+     * A1****B1----A2----B2 -> {[A1, B1]}
+     * A1****A2    B1----B2 -> {[A1, A2]}
+     *
+     * @phpstan-pure
+     */
     public function subtract(self ...$items): IntIntervalSet
     {
         $intervals = [$this];
@@ -341,7 +366,11 @@ class IntInterval implements Interval
         return new IntIntervalSet(array_values($intervals));
     }
 
-    // All minus A
+    /**
+     * All minus A
+     *
+     * @phpstan-pure
+     */
     public function invert(): IntIntervalSet
     {
         return self::all()->subtract($this);

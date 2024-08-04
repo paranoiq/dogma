@@ -15,6 +15,7 @@ use Dogma\Check;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntervalSet;
 use Dogma\Math\Interval\IntervalSetDumpMixin;
+use Dogma\Math\Interval\IntervalSetNormalizeMixin;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DayOfYear;
@@ -32,6 +33,7 @@ use function reset;
 class DayOfYearIntervalSet implements IntervalSet
 {
     use StrictBehaviorMixin;
+    use IntervalSetNormalizeMixin;
     use IntervalSetDumpMixin;
 
     /** @var DayOfYearInterval[] */
@@ -42,9 +44,12 @@ class DayOfYearIntervalSet implements IntervalSet
      */
     final public function __construct(array $intervals)
     {
-        $this->intervals = Arr::values(Arr::filter($intervals, static function (DayOfYearInterval $interval): bool {
+        /** @var DayOfYearInterval[] $intervals */
+        $intervals = Arr::values(Arr::filter($intervals, static function (DayOfYearInterval $interval): bool {
             return !$interval->isEmpty();
         }));
+
+        $this->intervals = self::normalizeIntervals($intervals);
     }
 
     public function format(string $format = DayOfYearInterval::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
@@ -127,34 +132,13 @@ class DayOfYearIntervalSet implements IntervalSet
         }
     }
 
-    /**
-     * Join overlapping intervals in set.
-     * @return self
-     */
-    public function normalize(): self
-    {
-        /** @var DayOfYearInterval[] $intervals */
-        $intervals = Arr::sortComparable($this->intervals);
-        $count = count($intervals) - 1;
-        for ($n = 0; $n < $count; $n++) {
-            if ($intervals[$n]->intersects($intervals[$n + 1]) || $intervals[$n]->touches($intervals[$n + 1])) {
-                $intervals[$n + 1] = $intervals[$n]->envelope($intervals[$n + 1]);
-                unset($intervals[$n]);
-            }
-        }
-
-        return new static($intervals);
-    }
-
-    /**
-     * Add another set of intervals to this one without normalization.
-     * @return self
-     */
+    /** @phpstan-pure */
     public function add(self $set): self
     {
         return $this->addIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function addIntervals(DayOfYearInterval ...$intervals): self
     {
         return new static(array_merge($this->intervals, $intervals));
@@ -162,6 +146,8 @@ class DayOfYearIntervalSet implements IntervalSet
 
     /**
      * Remove another set of intervals from this one.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function subtract(self $set): self
@@ -169,6 +155,7 @@ class DayOfYearIntervalSet implements IntervalSet
         return $this->subtractIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function subtractIntervals(DayOfYearInterval ...$intervals): self
     {
         $sources = $this->intervals;
@@ -196,6 +183,8 @@ class DayOfYearIntervalSet implements IntervalSet
 
     /**
      * Intersect with another set of intervals.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function intersect(self $set): self
@@ -203,6 +192,7 @@ class DayOfYearIntervalSet implements IntervalSet
         return $this->intersectIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function intersectIntervals(DayOfYearInterval ...$intervals): self
     {
         $results = [];
@@ -217,6 +207,7 @@ class DayOfYearIntervalSet implements IntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function map(callable $mapper): self
     {
         $results = [];
@@ -236,6 +227,7 @@ class DayOfYearIntervalSet implements IntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function collect(callable $mapper): self
     {
         $results = [];

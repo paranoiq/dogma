@@ -123,6 +123,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         return new static(new Time(self::MIN), new Time(self::MAX));
     }
 
+    /** @phpstan-pure */
     public function normalize(): self
     {
         if ($this->start->isNormalized()) {
@@ -136,6 +137,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         }
     }
 
+    /** @phpstan-pure */
     public function denormalize(): self
     {
         if ($this->end->isNormalized()) {
@@ -160,16 +162,19 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 
     // modifications ---------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function shift(string $value): self
     {
         return new static($this->start->modify($value), $this->end->modify($value));
     }
 
+    /** @phpstan-pure */
     public function setStart(Time $start): self
     {
         return new static($start, $this->end);
     }
 
+    /** @phpstan-pure */
     public function setEnd(Time $end): self
     {
         return new static($this->start, $end);
@@ -302,6 +307,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 
     // actions ---------------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function split(int $parts): TimeIntervalSet
     {
         if ($this->isEmpty()) {
@@ -323,6 +329,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
     }
 
     /**
+     * @phpstan-pure
      * @param Time[] $intervalStarts
      * @return TimeIntervalSet
      */
@@ -348,6 +355,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
     }
 
     /**
+     * @phpstan-pure
      * @return self[]
      */
     public function splitByMidnight(): array
@@ -362,6 +370,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         ];
     }
 
+    /** @phpstan-pure */
     public function envelope(self ...$items): self
     {
         $items[] = $this;
@@ -382,6 +391,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         return new static($start, $end);
     }
 
+    /** @phpstan-pure */
     public function intersect(self ...$items): TimeIntervalSet
     {
         $items[] = $this;
@@ -414,6 +424,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         return (new TimeIntervalSet([$result1, $result2]))->normalize();
     }
 
+    /** @phpstan-pure */
     public function union(self ...$items): TimeIntervalSet
     {
         $items[] = $this;
@@ -439,6 +450,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         return new TimeIntervalSet($results);
     }
 
+    /** @phpstan-pure */
     public function difference(self ...$items): TimeIntervalSet
     {
         $items[] = $this;
@@ -454,6 +466,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         return new TimeIntervalSet($results);
     }
 
+    /** @phpstan-pure */
     public function subtract(self ...$items): TimeIntervalSet
     {
         $results = [$this];
@@ -503,6 +516,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         return new TimeIntervalSet(array_values($results));
     }
 
+    /** @phpstan-pure */
     public function invert(): TimeIntervalSet
     {
         return self::all()->subtract($this);
