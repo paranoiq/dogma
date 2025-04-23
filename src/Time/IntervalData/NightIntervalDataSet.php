@@ -73,8 +73,19 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
+     * @param DateIntervalDataSet<TData> $set
      * @return self<TData>
      */
+    public static function createFromDateIntervalDataSet(DateIntervalDataSet $set): self
+    {
+        return new static(Arr::map($set->getIntervals(), static function (DateIntervalData $interval): NightIntervalData {
+            return NightIntervalData::createFromDateIntervalData($interval);
+        }));
+    }
+
+	/**
+	 * @return self<TData>
+	 */
     public static function empty(): self
     {
         return new static([]);
@@ -97,6 +108,16 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         foreach ($this->intervals as $interval) {
             $interval->poke();
         }
+    }
+
+    /**
+     * @return DateIntervalDataSet<TData>
+     */
+    public function toDateIntervalDataSet(): DateIntervalDataSet
+    {
+        return new DateIntervalDataSet(Arr::map($this->intervals, static function (NightIntervalData $interval): DateIntervalData {
+            return $interval->toDateIntervalData();
+        }));
     }
 
     /**

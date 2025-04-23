@@ -74,6 +74,19 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     }
 
     /**
+     * @param DateIntervalData<TData> $interval
+     * @return self<TData>
+     */
+    public static function createFromDateIntervalData(DateIntervalData $interval): self
+    {
+        if ($interval->isEmpty()) {
+            return static::empty();
+        }
+
+        return new static($interval->getStart(), $interval->getEnd()->addDay(), $interval->getData());
+    }
+
+    /**
      * @return self<TData>
      */
     public static function empty(): self
@@ -318,6 +331,18 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     public function touches($interval): bool
     {
         return $this->start->equals($interval->getEnd()) || $this->end->equals($interval->getStart());
+    }
+
+    /**
+     * @return DateIntervalData<TData>
+     */
+    public function toDateIntervalData(): DateIntervalData
+    {
+        if ($this->start > $this->end) {
+            return DateIntervalData::empty();
+        }
+
+        return new DateIntervalData($this->start, $this->end->subtractDay(), $this->data);
     }
 
     // actions ---------------------------------------------------------------------------------------------------------
