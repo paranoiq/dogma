@@ -25,7 +25,7 @@ use function is_array;
 use function sprintf;
 
 /**
- * @implements IntervalSet<float>
+ * @extends IntervalSet<FloatInterval>
  */
 class FloatIntervalSet extends IntervalSet
 {
@@ -55,7 +55,7 @@ class FloatIntervalSet extends IntervalSet
     }
 
     /**
-     * @return Traversable<float>
+     * @return Traversable<FloatInterval>
      */
     public function getIterator(): Traversable
     {
@@ -67,8 +67,11 @@ class FloatIntervalSet extends IntervalSet
         return count($this->intervals);
     }
 
+    /**
+     * @param mixed $offset
+     */
     #[ReturnTypeWillChange]
-    public function offsetGet(int $offset): FloatInterval
+    public function offsetGet($offset): FloatInterval
     {
         if (isset($this->intervals[$offset])) {
             return $this->intervals[$offset];
@@ -77,7 +80,10 @@ class FloatIntervalSet extends IntervalSet
         throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
     }
 
-    public function offsetExists(int $offset): bool
+    /**
+     * @param mixed $offset
+     */
+    public function offsetExists($offset): bool
     {
         return isset($this->intervals[$offset]);
     }

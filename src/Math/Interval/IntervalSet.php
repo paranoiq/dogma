@@ -18,7 +18,8 @@ use IteratorAggregate;
 
 /**
  * @template T
- * @extends IteratorAggregate<int, T>
+ * @implements IteratorAggregate<int, T>
+ * @implements ArrayAccess<int, T>
  */
 abstract class IntervalSet implements Equalable, Dumpable, IteratorAggregate, Countable, ArrayAccess
 {

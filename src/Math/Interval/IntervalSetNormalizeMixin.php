@@ -10,6 +10,7 @@
 namespace Dogma\Math\Interval;
 
 use Dogma\Arr;
+use Dogma\Time\Interval\TimeInterval;
 use function array_values;
 use function count;
 
@@ -30,7 +31,7 @@ trait IntervalSetNormalizeMixin
      * @param T[] $intervals
      * @return T[]
      *
-     * @template T of Interval
+     * @template T of Interval|TimeInterval
      */
     private static function normalizeIntervals(array $intervals): array
     {

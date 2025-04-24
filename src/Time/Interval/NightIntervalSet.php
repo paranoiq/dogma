@@ -34,7 +34,7 @@ use function sort;
 use function sprintf;
 
 /**
- * @implements IntervalSet<NightInterval>
+ * @extends IntervalSet<NightInterval>
  */
 class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pokeable
 {
@@ -153,8 +153,11 @@ class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pok
         return count($this->intervals);
     }
 
+	/**
+	 * @param mixed $offset
+	 */
     #[ReturnTypeWillChange]
-    public function offsetGet(int $offset): NightInterval
+    public function offsetGet($offset): NightInterval
     {
         if (isset($this->intervals[$offset])) {
             return $this->intervals[$offset];
@@ -163,7 +166,10 @@ class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pok
         throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
     }
 
-    public function offsetExists(int $offset): bool
+	/**
+	 * @param mixed $offset
+	 */
+    public function offsetExists($offset): bool
     {
         return isset($this->intervals[$offset]);
     }

@@ -252,11 +252,17 @@ class Str
         return Strings::trim($string, $chars);
     }
 
+	/**
+	 * @param non-empty-string $pad
+	 */
     public static function padRight(string $string, int $length, string $pad = ' '): string
     {
         return Strings::padRight($string, $length, $pad);
     }
 
+	/**
+	 * @param non-empty-string $pad
+	 */
     public static function padLeft(string $string, int $length, string $pad = ' '): string
     {
         return Strings::padLeft($string, $length, $pad);

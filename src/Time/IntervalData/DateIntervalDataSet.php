@@ -51,7 +51,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      */
     final public function __construct(array $intervals)
     {
-        /** @var DateIntervalData[] $intervals */
+        /** @var DateIntervalData<TData>[] $intervals */
         $intervals = Arr::values(Arr::filter($intervals, static function (DateIntervalData $interval): bool {
             return !$interval->isEmpty();
         }));
@@ -72,6 +72,9 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static($intervals);
     }
 
+    /**
+     * @return self<TData>
+     */
     public static function empty(): self
     {
         return new static([]);
@@ -79,7 +82,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * @param mixed|null $data
-     * @return self
+     * @return self<TData>
      */
     public static function all($data): self
     {
@@ -199,6 +202,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * @deprecated Unnecessary anymore, intervals always normalized.
+	 * @return $this
      */
     public function normalize(): self
     {
@@ -572,7 +576,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new DateIntervalDataSet($results);
+        return new self($results);
     }
 
     /**
@@ -595,7 +599,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
         $intervalSets = [];
         foreach ($intervalGroups as $intervals) {
-            $intervalSets[] = new DateIntervalDataSet($intervals);
+            $intervalSets[] = new self($intervals);
         }
 
         return $intervalSets;

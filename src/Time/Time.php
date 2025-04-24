@@ -114,7 +114,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
         return new static(($hours * 3600 + $minutes * 60 + $seconds) * 1000000 + $microseconds);
     }
 
-    public static function createFromDateTimeInterface(DateTimeInterface $dateTime): Time
+    public static function createFromDateTimeInterface(DateTimeInterface $dateTime): self
     {
         if ($dateTime instanceof DateTime) {
             return $dateTime->getTime();

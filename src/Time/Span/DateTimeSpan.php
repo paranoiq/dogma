@@ -353,7 +353,7 @@ class DateTimeSpan implements DateOrTimeSpan
     /** @phpstan-pure */
     public function subtract(self ...$other): self
     {
-        return $this->add(...Arr::map($other, static function (DateTimeSpan $span): DateTimeSpan {
+        return $this->add(...Arr::map($other, static function (self $span): self {
             return $span->invert();
         }));
     }

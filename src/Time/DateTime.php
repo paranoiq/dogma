@@ -140,8 +140,11 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         }
     }
 
+	/**
+	 * @param int|float $timestamp
+	 */
     #[ReturnTypeWillChange]
-    public static function createFromTimestamp(int|float $timestamp, ?DateTimeZone $timeZone = null): self
+    public static function createFromTimestamp($timestamp, ?DateTimeZone $timeZone = null): self
     {
         $dateTime = static::createFromFormat('U', (string) $timestamp, TimeZone::getUtc());
         if ($timeZone === null) {

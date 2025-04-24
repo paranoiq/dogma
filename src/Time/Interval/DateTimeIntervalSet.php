@@ -34,7 +34,7 @@ use function reset;
 use function sprintf;
 
 /**
- * @implements IntervalSet<DateTimeInterval>
+ * @extends IntervalSet<DateTimeInterval>
  */
 class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
 {
@@ -212,8 +212,11 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
         return count($this->intervals);
     }
 
+	/**
+	 * @param mixed $offset
+	 */
     #[ReturnTypeWillChange]
-    public function offsetGet(int $offset): DateTimeInterval
+    public function offsetGet($offset): DateTimeInterval
     {
         if (isset($this->intervals[$offset])) {
             return $this->intervals[$offset];
@@ -222,7 +225,10 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
         throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
     }
 
-    public function offsetExists(int $offset): bool
+	/**
+	 * @param mixed $offset
+	 */
+    public function offsetExists($offset): bool
     {
         return isset($this->intervals[$offset]);
     }

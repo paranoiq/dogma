@@ -30,7 +30,7 @@ use function reset;
 use function sprintf;
 
 /**
- * @implements IntervalSet<DayOfYearInterval>
+ * @extends IntervalSet<DayOfYearInterval>
  */
 class DayOfYearIntervalSet extends IntervalSet
 {
@@ -73,8 +73,11 @@ class DayOfYearIntervalSet extends IntervalSet
         return count($this->intervals);
     }
 
+    /**
+     * @param mixed $offset
+     */
     #[ReturnTypeWillChange]
-    public function offsetGet(int $offset): DayOfYearInterval
+    public function offsetGet($offset): DayOfYearInterval
     {
         if (isset($this->intervals[$offset])) {
             return $this->intervals[$offset];
@@ -83,7 +86,10 @@ class DayOfYearIntervalSet extends IntervalSet
         throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
     }
 
-    public function offsetExists(int $offset): bool
+    /**
+     * @param mixed $offset
+     */
+    public function offsetExists($offset): bool
     {
         return isset($this->intervals[$offset]);
     }

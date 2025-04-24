@@ -45,7 +45,7 @@ foreach ($options as $option => $type) {
                 [$min, $max] = [$max, $min];
             }
 
-            $request[$option] = random_int($min, $max); // @phpstan-ignore-line
+            $request[$option] = random_int($min, $max); // @phpstan-ignore argument.type
         } else {
             $size = abs((int) $_GET[$option]);
             if (strpos($_GET[$option], 'K') !== false) {
