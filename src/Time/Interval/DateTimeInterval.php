@@ -61,12 +61,12 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     final public function __construct(DateTimeInterface $start, DateTimeInterface $end)
     {
-		if (!$start instanceof DateTime) {
-			$start = DateTime::createFromDateTimeInterface($start);
-		}
-		if (!$end instanceof DateTime) {
-			$end = DateTime::createFromDateTimeInterface($end);
-		}
+        if (!$start instanceof DateTime) {
+            $start = DateTime::createFromDateTimeInterface($start);
+        }
+        if (!$end instanceof DateTime) {
+            $end = DateTime::createFromDateTimeInterface($end);
+        }
 
         if ($start > $end) {
             throw new InvalidIntervalStartEndOrderException($start, $end);
@@ -200,10 +200,10 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         return new DateInterval($start, $end);
     }
 
-	public function toDateTimeIntervalSet(): DateTimeIntervalSet
-	{
-		return new DateTimeIntervalSet([$this]);
-	}
+    public function toDateTimeIntervalSet(): DateTimeIntervalSet
+    {
+        return new DateTimeIntervalSet([$this]);
+    }
 
     public function getLengthInMicroseconds(): int
     {

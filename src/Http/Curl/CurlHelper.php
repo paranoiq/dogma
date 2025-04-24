@@ -10,6 +10,10 @@
 namespace Dogma\Http\Curl;
 
 use Dogma\StaticClassMixin;
+use function constant;
+use function get_defined_constants;
+use function strtoupper;
+use function substr;
 use const CURLINFO_CONNECT_TIME;
 use const CURLINFO_CONTENT_LENGTH_DOWNLOAD;
 use const CURLINFO_CONTENT_LENGTH_UPLOAD;
@@ -31,10 +35,6 @@ use const CURLINFO_SPEED_UPLOAD;
 use const CURLINFO_SSL_VERIFYRESULT;
 use const CURLINFO_STARTTRANSFER_TIME;
 use const CURLINFO_TOTAL_TIME;
-use function constant;
-use function get_defined_constants;
-use function strtoupper;
-use function substr;
 
 class CurlHelper
 {

@@ -349,10 +349,10 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-	/**
-	 * @phpstan-pure
-	 * @return static[]
-	 */
+    /**
+     * @phpstan-pure
+     * @return static[]
+     */
     public function split(int $parts): array
     {
         Check::min($parts, 1);
@@ -377,8 +377,8 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     /**
      * @phpstan-pure
      * @param Date[] $intervalStarts
-	 * @return static[]
-	 */
+     * @return static[]
+     */
     public function splitBy(array $intervalStarts): array
     {
         if ($this->isEmpty()) {

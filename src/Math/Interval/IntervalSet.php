@@ -28,14 +28,14 @@ abstract class IntervalSet implements Equalable, Dumpable, IteratorAggregate, Co
      */
     abstract public function getIntervals(): array;
 
-	abstract public function isEmpty(): bool;
+    abstract public function isEmpty(): bool;
 
     //abstract public function containsValue(T $value): bool;
 
     /**
      * @return mixed|Interval
      */
-	abstract public function envelope();//: Interval<T>;
+    abstract public function envelope();//: Interval<T>;
 
     //abstract public function normalize(): IntervalSet<T>;
 
@@ -56,31 +56,31 @@ abstract class IntervalSet implements Equalable, Dumpable, IteratorAggregate, Co
     /**
      * @return T[]|mixed
      */
-	abstract public function map(callable $mapper);
+    abstract public function map(callable $mapper);
 
     /**
      * Map and filter
      * @return self|mixed
      */
-	abstract public function collect(callable $mapper);
+    abstract public function collect(callable $mapper);
 
-	/**
-	 * @param mixed $offset
-	 * @param mixed $value
-	 * @throws BadMethodCallException
-	 */
-	public function offsetSet($offset, $value): void
-	{
-		throw new BadMethodCallException('Class is immutable');
-	}
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     * @throws BadMethodCallException
+     */
+    public function offsetSet($offset, $value): void
+    {
+        throw new BadMethodCallException('Class is immutable');
+    }
 
-	/**
-	 * @param mixed $offset
-	 * @throws BadMethodCallException
-	 */
-	public function offsetUnset($offset): void
-	{
-		throw new BadMethodCallException('Class is immutable');
-	}
+    /**
+     * @param mixed $offset
+     * @throws BadMethodCallException
+     */
+    public function offsetUnset($offset): void
+    {
+        throw new BadMethodCallException('Class is immutable');
+    }
 
 }

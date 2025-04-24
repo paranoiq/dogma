@@ -68,31 +68,25 @@ class DayOfYearIntervalSet extends IntervalSet
         return $this->intervals;
     }
 
-	public function count(): int
-	{
-		return count($this->intervals);
-	}
+    public function count(): int
+    {
+        return count($this->intervals);
+    }
 
-	/**
-	 * @param int $offset
-	 */
-	#[ReturnTypeWillChange]
-	public function offsetGet($offset): DayOfYearInterval
-	{
-		if (isset($this->intervals[$offset])) {
-			return $this->intervals[$offset];
-		}
+    #[ReturnTypeWillChange]
+    public function offsetGet(int $offset): DayOfYearInterval
+    {
+        if (isset($this->intervals[$offset])) {
+            return $this->intervals[$offset];
+        }
 
-		throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
-	}
+        throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
+    }
 
-	/**
-	 * @param int $offset
-	 */
-	public function offsetExists($offset): bool
-	{
-		return isset($this->intervals[$offset]);
-	}
+    public function offsetExists(int $offset): bool
+    {
+        return isset($this->intervals[$offset]);
+    }
 
     /**
      * @return Traversable<DayOfYearInterval>
@@ -288,42 +282,42 @@ class DayOfYearIntervalSet extends IntervalSet
         return new static($results);
     }
 
-	/**
-	 * Join overlapping intervals.
-	 *
-	 * @param DayOfYearInterval[] $intervals
-	 * @return DayOfYearInterval[]
-	 */
-	private static function normalizeIntervals(array $intervals): array
-	{
-		$intervals = array_values($intervals);
-		foreach ($intervals as $i => $interval) {
-			if ($interval->isEmpty()) {
-				unset($intervals[$i]);
-			}
-		}
+    /**
+     * Join overlapping intervals.
+     *
+     * @param DayOfYearInterval[] $intervals
+     * @return DayOfYearInterval[]
+     */
+    private static function normalizeIntervals(array $intervals): array
+    {
+        $intervals = array_values($intervals);
+        foreach ($intervals as $i => $interval) {
+            if ($interval->isEmpty()) {
+                unset($intervals[$i]);
+            }
+        }
 
-		$intervals = Arr::sortComparableValues($intervals);
-		$count = count($intervals) - 1;
-		for ($n = 0; $n < $count; $n++) {
-			$intervalA = $intervals[$n];
-			$intervalB = $intervals[$n + 1];
-			if (
-				$intervalA->containsValue($intervalB->getStart())
-				|| $intervalA->getEnd()->equals($intervalB->getStart()->subtractDay())
-			) {
-				$intervals[$n + 1] = new DayOfYearInterval($intervalA->getStart(), $intervalB->getEnd());
-				unset($intervals[$n]);
-			} elseif (
-				$intervalB->containsValue($intervalA->getStart())
-				|| $intervalB->getEnd()->equals($intervalA->getStart()->subtractDay())
-			) {
-				$intervals[$n + 1] = new DayOfYearInterval($intervalB->getStart(), $intervalA->getEnd());
-				unset($intervals[$n]);
-			}
-		}
+        $intervals = Arr::sortComparableValues($intervals);
+        $count = count($intervals) - 1;
+        for ($n = 0; $n < $count; $n++) {
+            $intervalA = $intervals[$n];
+            $intervalB = $intervals[$n + 1];
+            if (
+            $intervalA->containsValue($intervalB->getStart())
+            || $intervalA->getEnd()->equals($intervalB->getStart()->subtractDay())
+            ) {
+                $intervals[$n + 1] = new DayOfYearInterval($intervalA->getStart(), $intervalB->getEnd());
+                unset($intervals[$n]);
+            } elseif (
+            $intervalB->containsValue($intervalA->getStart())
+            || $intervalB->getEnd()->equals($intervalA->getStart()->subtractDay())
+            ) {
+                $intervals[$n + 1] = new DayOfYearInterval($intervalB->getStart(), $intervalA->getEnd());
+                unset($intervals[$n]);
+            }
+        }
 
-		return array_values($intervals);
-	}
+        return array_values($intervals);
+    }
 
 }

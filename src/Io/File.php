@@ -17,7 +17,6 @@ use Dogma\NonCloneableMixin;
 use Dogma\NonSerializableMixin;
 use Dogma\ResourceType;
 use Dogma\StrictBehaviorMixin;
-use const LOCK_UN;
 use function basename;
 use function chmod;
 use function dirname;
@@ -45,6 +44,7 @@ use function str_replace;
 use function stream_get_meta_data;
 use function strlen;
 use function tmpfile;
+use const LOCK_UN;
 
 /**
  * Binary file reader/writer

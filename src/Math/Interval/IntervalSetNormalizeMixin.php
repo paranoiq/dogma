@@ -11,6 +11,7 @@ namespace Dogma\Math\Interval;
 
 use Dogma\Arr;
 use function array_values;
+use function count;
 
 trait IntervalSetNormalizeMixin
 {

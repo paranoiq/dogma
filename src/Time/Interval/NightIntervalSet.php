@@ -148,31 +148,25 @@ class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pok
         return $this->intervals;
     }
 
-	public function count(): int
-	{
-		return count($this->intervals);
-	}
+    public function count(): int
+    {
+        return count($this->intervals);
+    }
 
-	/**
-	 * @param int $offset
-	 */
-	#[ReturnTypeWillChange]
-	public function offsetGet($offset): NightInterval
-	{
-		if (isset($this->intervals[$offset])) {
-			return $this->intervals[$offset];
-		}
+    #[ReturnTypeWillChange]
+    public function offsetGet(int $offset): NightInterval
+    {
+        if (isset($this->intervals[$offset])) {
+            return $this->intervals[$offset];
+        }
 
-		throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
-	}
+        throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
+    }
 
-	/**
-	 * @param int $offset
-	 */
-	public function offsetExists($offset): bool
-	{
-		return isset($this->intervals[$offset]);
-	}
+    public function offsetExists(int $offset): bool
+    {
+        return isset($this->intervals[$offset]);
+    }
 
     /**
      * @return Traversable<NightInterval>

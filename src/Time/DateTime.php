@@ -28,7 +28,6 @@ use Dogma\Time\Provider\TimeProvider;
 use Dogma\Time\Span\DateOrTimeSpan;
 use Dogma\Time\Span\DateTimeSpan;
 use ReturnTypeWillChange;
-use const DATE_RFC2822;
 use function array_keys;
 use function array_values;
 use function ceil;
@@ -42,6 +41,7 @@ use function sprintf;
 use function str_replace;
 use function strtolower;
 use function strval;
+use const DATE_RFC2822;
 
 /**
  * Immutable date and time class.

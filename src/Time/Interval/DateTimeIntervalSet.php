@@ -207,31 +207,25 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
         return $this->intervals;
     }
 
-	public function count(): int
-	{
-		return count($this->intervals);
-	}
+    public function count(): int
+    {
+        return count($this->intervals);
+    }
 
-	/**
-	 * @param int $offset
-	 */
-	#[ReturnTypeWillChange]
-	public function offsetGet($offset): DateTimeInterval
-	{
-		if (isset($this->intervals[$offset])) {
-			return $this->intervals[$offset];
-		}
+    #[ReturnTypeWillChange]
+    public function offsetGet(int $offset): DateTimeInterval
+    {
+        if (isset($this->intervals[$offset])) {
+            return $this->intervals[$offset];
+        }
 
-		throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
-	}
+        throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
+    }
 
-	/**
-	 * @param int $offset
-	 */
-	public function offsetExists($offset): bool
-	{
-		return isset($this->intervals[$offset]);
-	}
+    public function offsetExists(int $offset): bool
+    {
+        return isset($this->intervals[$offset]);
+    }
 
     /**
      * @return Traversable<DateTimeInterval>
@@ -289,15 +283,15 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
         return false;
     }
 
-	public function toDateIntervalSet(): DateIntervalSet
-	{
-		return new DateIntervalSet(array_map(
-			static function (DateTimeInterval $interval): DateInterval {
-				return $interval->toDateInterval();
-			},
-			$this->intervals,
-		));
-	}
+    public function toDateIntervalSet(): DateIntervalSet
+    {
+        return new DateIntervalSet(array_map(
+            static function (DateTimeInterval $interval): DateInterval {
+                return $interval->toDateInterval();
+            },
+            $this->intervals
+        ));
+    }
 
     public function envelope(): DateTimeInterval
     {

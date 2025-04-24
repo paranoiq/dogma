@@ -9,7 +9,6 @@
 
 namespace Dogma;
 
-use const DIRECTORY_SEPARATOR;
 use function array_pop;
 use function dirname;
 use function explode;
@@ -21,6 +20,7 @@ use function ltrim;
 use function spl_autoload_register;
 use function str_replace;
 use function substr;
+use const DIRECTORY_SEPARATOR;
 
 final class DogmaLoader
 {

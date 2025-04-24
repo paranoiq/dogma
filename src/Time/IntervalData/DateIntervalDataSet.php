@@ -428,7 +428,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
                 $newData = $reducer(
                     $result->getData(),
                     $interval->getData(),
-                    $result->toDateInterval()->intersect($interval->toDateInterval()),
+                    $result->toDateInterval()->intersect($interval->toDateInterval())
                 );
                 if ($result->dataEquals($newData)) {
                     continue;

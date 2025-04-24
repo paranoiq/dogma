@@ -136,31 +136,25 @@ class DateIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Poke
         return $this->intervals;
     }
 
-	public function count(): int
-	{
-		return count($this->intervals);
-	}
+    public function count(): int
+    {
+        return count($this->intervals);
+    }
 
-	/**
-	 * @param int $offset
-	 */
-	#[ReturnTypeWillChange]
-	public function offsetGet($offset): DateInterval
-	{
-		if (isset($this->intervals[$offset])) {
-			return $this->intervals[$offset];
-		}
+    #[ReturnTypeWillChange]
+    public function offsetGet(int $offset): DateInterval
+    {
+        if (isset($this->intervals[$offset])) {
+            return $this->intervals[$offset];
+        }
 
-		throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
-	}
+        throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
+    }
 
-	/**
-	 * @param int $offset
-	 */
-	public function offsetExists($offset): bool
-	{
-		return isset($this->intervals[$offset]);
-	}
+    public function offsetExists(int $offset): bool
+    {
+        return isset($this->intervals[$offset]);
+    }
 
     /**
      * @return Traversable<DateInterval>
@@ -196,28 +190,28 @@ class DateIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Poke
         return true;
     }
 
-	public function contains(self $other): bool
-	{
-		if ($other->isEmpty()) {
-			return false;
-		}
+    public function contains(self $other): bool
+    {
+        if ($other->isEmpty()) {
+            return false;
+        }
 
-		$otherIntervals = $other->intervals;
-		foreach ($this->intervals as $interval) {
-			foreach ($otherIntervals as $i => $otherInterval) {
-				if (!$interval->contains($otherInterval)) {
-					continue;
-				}
+        $otherIntervals = $other->intervals;
+        foreach ($this->intervals as $interval) {
+            foreach ($otherIntervals as $i => $otherInterval) {
+                if (!$interval->contains($otherInterval)) {
+                    continue;
+                }
 
-				unset($otherIntervals[$i]);
-				if ($otherIntervals === []) {
-					return true;
-				}
-			}
-		}
+                unset($otherIntervals[$i]);
+                if ($otherIntervals === []) {
+                    return true;
+                }
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
     public function containsValue(Date $value): bool
     {

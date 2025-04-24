@@ -17,8 +17,6 @@ use Dogma\Equalable;
 use Dogma\IntersectComparable;
 use Dogma\Obj;
 use Dogma\StrictBehaviorMixin;
-use const PHP_INT_MAX;
-use const PHP_INT_MIN;
 use function array_fill;
 use function array_shift;
 use function array_unique;
@@ -28,6 +26,8 @@ use function max;
 use function min;
 use function round;
 use function sprintf;
+use const PHP_INT_MAX;
+use const PHP_INT_MIN;
 
 class IntInterval implements Interval
 {
@@ -282,7 +282,6 @@ class IntInterval implements Interval
 
         return $result;
     }
-
 
     /**
      * A or B

@@ -20,7 +20,6 @@ use Dogma\InvalidValueException;
 use Dogma\Obj;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
-use const INF;
 use function array_fill;
 use function array_shift;
 use function array_unique;
@@ -29,6 +28,7 @@ use function count;
 use function is_nan;
 use function number_format;
 use function sprintf;
+use const INF;
 
 class FloatInterval implements OpenClosedInterval
 {
