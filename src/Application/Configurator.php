@@ -151,9 +151,12 @@ final class Configurator extends stdClass
             }
             $values = array_merge($values, $altValues);
         }
-        foreach ($this->arguments as $name => [$shortcut, $type]) {
-            if (is_numeric($name)) {
-                continue;
+        foreach ($this->arguments as $name => $argument) {
+            if (is_string($argument)) {
+                $shortcut = $argument;
+                $type = null;
+            } else {
+                [$shortcut, $type] = $argument;
             }
 
             $value = $values[$name] ?? $values[$shortcut] ?? null;
