@@ -843,7 +843,7 @@ class Str
             try {
                 error_clear_last();
                 $result = mb_convert_encoding($string, $to, $from);
-                if (error_get_last() !== null) {
+                if ($result === false || error_get_last() !== null) {
                     throw new ErrorException('Cannot convert encoding', error_get_last());
                 }
 
@@ -896,7 +896,7 @@ class Str
 
     /**
      * @deprecated use Re::split() instead
-     * @return string[]
+     * @return list<string>
      */
     public static function split(string $string, string $pattern, int $flags = 0): array
     {

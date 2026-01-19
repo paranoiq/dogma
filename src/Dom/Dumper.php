@@ -11,6 +11,7 @@ namespace Dogma\Dom;
 
 use Dogma\NotImplementedException;
 use Dogma\StaticClassMixin;
+use DOMAttr;
 use DOMCdataSection;
 use DOMComment;
 use DOMDocument;
@@ -46,11 +47,11 @@ class Dumper
             if ($depth === 0) {
                 echo "<b>Document:</b>\n";
             }
-            /** @var DOMDocument $element */
+            /** @var DOMElement|null $element */
             $element = $node->documentElement;
-
-            self::dump($element, $maxDepth);
-
+            if ($element !== null) {
+                self::dump($element, $maxDepth);
+            }
         } elseif ($node instanceof DOMCdataSection) {
             if ($depth === 0) {
                 echo "<b>CdataSection:</b>\n";
@@ -101,6 +102,7 @@ class Dumper
         echo '<b>&lt;</b><b style="color: red">', $node->nodeName, '</b>';
 
         foreach ($node->attributes ?? [] as $attribute) {
+            /** @var DOMAttr $attribute */
             echo ' <span style="color: green">', $attribute->name, '</span>=<span style="color: blue">"', $attribute->value, '"</span>';
         }
 

@@ -151,7 +151,7 @@ Assert::equal($interval->split(2), [$i(10, 15), $i(16, 20)]);
 Assert::equal($interval->split(3), [
     new DayOfYearInterval(new DayOfYear('01-10'), new DayOfYear('01-13')),
     new DayOfYearInterval(new DayOfYear('01-14'), new DayOfYear('01-16')),
-    new DayOfYearInterval(new DayOfYear('01-17'), new DayOfYear('01-20'))
+    new DayOfYearInterval(new DayOfYear('01-17'), new DayOfYear('01-20')),
 ]);
 Assert::equal($empty->split(5), []);
 

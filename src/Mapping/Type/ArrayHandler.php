@@ -41,9 +41,8 @@ class ArrayHandler implements TypeHandler
      */
     public function createInstance(Type $type, $items, Mapper $mapper): array
     {
-        /** @var Type $itemType */
         $itemType = $type->getItemType();
-        if ($itemType !== null && $itemType->getName() !== Type::MIXED) {
+        if ($itemType instanceof Type && $itemType->getName() !== Type::MIXED) {
             $array = [];
             foreach ($items as $item) {
                 $array[] = $mapper->map($itemType, [TypeHandler::SINGLE_PARAMETER => $item]);

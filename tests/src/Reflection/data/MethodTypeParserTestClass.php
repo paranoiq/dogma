@@ -158,7 +158,7 @@ class MethodTypeParserTestClass
     /**
      * @param int(64)|null $one
      */
-    public function testTypehintAndAnnotationWithSizeWithNullNullable(int $one = null): void
+    public function testTypehintAndAnnotationWithSizeWithNullNullable(?int $one = null): void
     {
         //
     }

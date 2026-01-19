@@ -82,6 +82,7 @@ class MethodTypeParser
             throw new UnprocessableParameterException($method, 'Variadic and by reference parameters are not supported.');
         }
         $itemTypes = [];
+        /** @var list<string> $containerTypes */
         $containerTypes = [];
         $otherTypes = [];
         foreach ($options['types'] as $type) {
@@ -123,7 +124,7 @@ class MethodTypeParser
             throw new InvalidMethodAnnotationException($method, 'Invalid combination of types.');
         } elseif ($itemTypes) {
             /** @var string $container */
-            $container = $containerTypes[0];
+            $container = $containerTypes[0] ?? Type::PHP_ARRAY;
 
             return Type::collectionOf($container, $itemTypes[0], $options['nullable']);
         } elseif ($otherTypes) {

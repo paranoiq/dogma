@@ -39,7 +39,7 @@ class HttpChannelManager
     use NonSerializableMixin;
     use NonCloneableMixin;
 
-    /** @var CurlMultiHandle|resource */
+    /** @var CurlMultiHandle */
     private $handler;
 
     /** @var int maximum threads for all channels */

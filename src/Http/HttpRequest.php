@@ -84,7 +84,7 @@ class HttpRequest
     use StrictBehaviorMixin;
     use NonSerializableMixin;
 
-    /** @var CurlHandle|resource */
+    /** @var CurlHandle */
     private $curl;
 
     /** @var callable|null */
@@ -120,7 +120,6 @@ class HttpRequest
     public function __construct(?string $url = null, ?string $method = null)
     {
         error_clear_last();
-        /** @var resource|false $curl */
         $curl = curl_init();
         if ($curl === false) {
             /** @var string[] $error */
@@ -281,8 +280,6 @@ class HttpRequest
             if ($number === null) {
                 throw new HttpRequestException("Unknown CURL option '$name'!");
             }
-        } elseif (!is_int($name)) {
-            throw new HttpRequestException('Option name must be a string or a CURLOPT_* constant!');
         } else {
             $number = $name;
         }

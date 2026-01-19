@@ -97,6 +97,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
      * @param string $timeString
      * @param DateTimeZone|null $timeZone
      * @return static
+     * @throws InvalidDateTimeException
      */
     public static function createFromFormat($format, $timeString, $timeZone = null): self
     {

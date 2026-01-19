@@ -5,7 +5,6 @@ namespace Dogma\Tests\Language\Locale;
 use Dogma\Language\Encoding;
 use Dogma\Tester\Assert;
 
-
 require_once __DIR__ . '/../bootstrap.php';
 
 canCheck:

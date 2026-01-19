@@ -1334,7 +1334,7 @@ class Arr
             });
         }
 
-        return $arr;
+        return array_values($arr);
     }
 
     /**

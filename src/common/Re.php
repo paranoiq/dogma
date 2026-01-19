@@ -13,7 +13,6 @@ use function array_keys;
 use function array_values;
 use function count;
 use function is_array;
-use function is_callable;
 use function is_object;
 use function preg_grep;
 use function preg_last_error;
@@ -72,7 +71,7 @@ class Re
 
     /**
      * @param int $flags PREG_SPLIT_NO_EMPTY|PREG_SPLIT_OFFSET_CAPTURE
-     * @return string[]
+     * @return list<string>
      */
     public static function split(string $string, string $pattern, int $flags = 0): array
     {
@@ -81,14 +80,15 @@ class Re
             $flags = ($flags & ~PREG_OFFSET_CAPTURE) | PREG_SPLIT_OFFSET_CAPTURE;
         }
 
-        $result = preg_split($pattern, $string, -1, $flags);
-        if ($result === false) {
-            $error = preg_last_error() ?: 0;
+		/** @var list<string>|false $result */
+		$result = preg_split($pattern, $string, -1, $flags);
+		if ($result === false) {
+			$error = preg_last_error() ?: 0;
 
-            throw new RegexpException($error);
-        }
+			throw new RegexpException($error);
+		}
 
-        return $result;
+		return $result;
     }
 
     public static function pos(string $string, string $pattern, int $offset = 0): ?int
@@ -225,10 +225,6 @@ class Re
     public static function replace(string $string, $pattern, $replacement = null, int $limit = -1): string
     {
         if (is_object($replacement) || is_array($replacement)) {
-            if (!is_callable($replacement, false, $name)) {
-                throw new InvalidArgumentException("Callback '$name' is not callable.");
-            }
-
             $result = preg_replace_callback($pattern, $replacement, $string, $limit);
         } else {
             if ($replacement === null && is_array($pattern)) {

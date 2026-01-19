@@ -68,7 +68,7 @@ class IntIntervalSet extends IntervalSet
     }
 
     #[ReturnTypeWillChange]
-    public function offsetGet($offset): IntInterval
+    public function offsetGet(mixed $offset): IntInterval
     {
         if (isset($this->intervals[$offset])) {
             return $this->intervals[$offset];
@@ -77,7 +77,7 @@ class IntIntervalSet extends IntervalSet
         throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
     }
 
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return isset($this->intervals[$offset]);
     }

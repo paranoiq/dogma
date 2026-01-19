@@ -22,7 +22,7 @@ Assert::same(Str::chr(0x10FFFF), "\u{10FFFF}");
 
 foreach ([-1, 0xD800, 0xDFFF, 0x110000] as $code) {
     Assert::exception(
-        static function() use ($code): void {
+        static function () use ($code): void {
             Str::chr($code);
         },
         InvalidValueException::class

@@ -78,9 +78,9 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      */
     public static function createFromDateIntervalDataSet(DateIntervalDataSet $set): self
     {
-        return new static(Arr::map($set->getIntervals(), static function (DateIntervalData $interval): NightIntervalData {
+        return new static(array_map(static function (DateIntervalData $interval): NightIntervalData {
             return NightIntervalData::createFromDateIntervalData($interval);
-        }));
+        }, $set->getIntervals()));
     }
 
 	/**
@@ -115,9 +115,9 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      */
     public function toDateIntervalDataSet(): DateIntervalDataSet
     {
-        return new DateIntervalDataSet(Arr::map($this->intervals, static function (NightIntervalData $interval): DateIntervalData {
+        return new DateIntervalDataSet(array_map(static function (NightIntervalData $interval): DateIntervalData {
             return $interval->toDateIntervalData();
-        }));
+        }, $this->intervals));
     }
 
     /**
@@ -323,7 +323,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        /** @var NightIntervalData<TData>[] $results */
+        /** @var list<NightIntervalData<TData>> $results */
         $results = $results;
 
         return new static($results);
@@ -407,7 +407,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new static($results);
+        return new static(array_values($results));
     }
 
     /**
@@ -472,7 +472,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new static($results);
+        return new static(array_values($results));
     }
 
     /**
@@ -572,7 +572,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new static($results);
+        return new static(array_values($results));
     }
 
     /**

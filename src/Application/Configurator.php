@@ -18,6 +18,7 @@ use function array_key_exists;
 use function array_map;
 use function array_merge;
 use function array_pad;
+use function array_values;
 use function error_get_last;
 use function explode;
 use function file_get_contents;
@@ -97,7 +98,9 @@ final class Configurator extends stdClass
             $row = C::padString($row, self::HELP_COLUMN_WIDTH);
             $row .= ' ' . $info;
             if ($type === self::ENUM || $type === self::SET) {
-                $row .= '; values: ' . implode('|', array_map([C::class, 'lyellow'], $values));
+                /** @var string[] $valuesList */
+                $valuesList = $values ?? [];
+                $row .= '; values: ' . implode('|', array_map([C::class, 'lyellow'], $valuesList));
             }
             if (isset($this->defaults[$name])) {
                 if ($type === self::VALUES || $type === self::SET) {
@@ -255,23 +258,30 @@ final class Configurator extends stdClass
 
     /**
      * @param string|string[]|float|int|bool|null $value
-     * @return string|int|float|bool|string[]|int[]|float[]|null
+     * @return string|int|float|bool|list<string|int|float>|null
      */
     private function normalize($value, ?string $type = null)
     {
-        if (($type === self::VALUES || $type === self::SET) && is_string($value)) {
-            $value = explode(',', $value);
-            foreach ($value as &$item) {
-                $item = $this->normalize($item);
-            }
-        } elseif (is_numeric($value)) {
-            $value = (float) $value;
-            if ($value === (float) (int) $value) {
-                $value = (int) $value;
-            }
-        }
+		if (($type === self::VALUES || $type === self::SET) && is_string($value)) {
+			$result = [];
+			foreach (explode(',', $value) as $item) {
+				$normalized = $this->normalize($item);
+				/** @var string|int|float $normalized */
+				$result[] = $normalized;
+			}
+			return $result;
+		}
+		if (is_array($value)) {
+			return array_values($value);
+		}
+		if (is_numeric($value)) {
+			$value = (float) $value;
+			if ($value === (float) (int) $value) {
+				$value = (int) $value;
+			}
+		}
 
-        return $value;
+		return $value;
     }
 
     /**

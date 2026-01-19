@@ -42,7 +42,7 @@ class DateIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Poke
     use IntervalSetNormalizeMixin;
     use IntervalSetDumpMixin;
 
-    /** @var DateInterval[] */
+    /** @var list<DateInterval> */
     private $intervals;
 
     /**
@@ -78,9 +78,7 @@ class DateIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Poke
             }
             $previous = $date;
         }
-        if ($start !== false) {
-            $intervals[] = new DateInterval($start, $previous);
-        }
+        $intervals[] = new DateInterval($start, $previous);
 
         return new static($intervals);
     }
@@ -129,7 +127,7 @@ class DateIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Poke
     }
 
     /**
-     * @return DateInterval[]
+     * @return list<DateInterval>
      */
     public function getIntervals(): array
     {

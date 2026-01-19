@@ -7,9 +7,6 @@ includes:
 parameters:
     level: 7
 
-    featureToggles:
-        disableRuntimeReflectionProvider: true
-
     paths:
         - ../../src
         - ../../tests
@@ -26,11 +23,12 @@ parameters:
         - '~Variable \$result in PHPDoc tag @var does not exist~' # while ($result = array_shift($sources)) {
         - '~Parameter #1 \$value of static method Dogma\\Enum\\(Int|String)(Enum|Set)::isValid\(\) expects (int|string), int\|string given.~'
         - '~Method Dogma\\Enum\\(Int|String)Set::getConstantNames\(\) should return array<string> but returns array<(int|string), int\|string\|false>.~'
-        - '~Parameter #(1|2) \$arr(1|2) of function array_[a-z_]+ expects array, array\|\(callable\) given.~' # callables filtered out
+        - '~Parameter #(1|2) (\.\.\.)?\$arr(1|2)? of function array_[a-z_]+ expects array(<int\|string, mixed>|<mixed>)?, array(<mixed>)?\|\(callable\) given.~' # callables filtered out
         - '~Method Dogma\\Io\\FileMetaData::.*\(\) should return (int|string) but returns int\|string.~'
         -
             message: "~Result of && is always false~" # phpstan bug with is_subclass_of
             path: "../../src/common/Check.php"
+            reportUnmatched: false
         -
             message: "~Strict comparison using === between string and false will always evaluate to false~"
             path: "../../src/common/Str.php"
@@ -43,17 +41,35 @@ parameters:
         -
             message: '~Strict comparison using === between \*NEVER\* and 0 will always evaluate to false~'
             path: "../../tests/src/Http/responder.php"
+            reportUnmatched: false
 
         # Re flags & WTFs
         - '~Parameter #4 \$flags of function preg_match expects TFlags of 0|256|512|768, int given.~'
-        - '~Method Dogma\\Re::match\(\) should return array<string>\|null but returns array<array<int, int\|string\|null>\|string\|null>.~'
-        - '~Method Dogma\\Re::submatch\(\) should return string\|null but returns array<int, int\|string\|null>\|string\|null.~'
+        - '~Method Dogma\\Re::match\(\) should return array<string>\|null but returns array<(array<int, int\|string\|null>|list<int\|string\|null>)\|string\|null>.~'
+        - '~Method Dogma\\Re::submatch\(\) should return string\|null but returns (array<int, int\|string\|null>|list<int\|string\|null>)\|string\|null.~'
+
+        # silence phpstan 2 purity noise to reveal other issues
+        -
+            identifier: possiblyImpure.new
+        -
+            identifier: possiblyImpure.methodCall
+        -
+            identifier: possiblyImpure.functionCall
+        -
+            identifier: impure.propertyAssign
+        -
+            identifier: impure.functionCall
+        -
+            identifier: impure.methodCall
 
         # interface
         - '~^PHPDoc tag @return with type Dogma\\Language\\Locale\\LocaleCollationOption is not subtype of native type Dogma\\Enum\\StringEnum~'
 
         # deprecated things, won't fix
         - '~method Dogma\\Database\\SimplePdo~'
+
+        # flock type constraint
+        - '~Parameter #2 \$operation of function flock expects int<0, 7>, int given~'
 
         # PHP 7 -> 8
         - '~expects (Curl(Multi)?Handle|resource), Curl(Multi)?Handle\|resource given~'

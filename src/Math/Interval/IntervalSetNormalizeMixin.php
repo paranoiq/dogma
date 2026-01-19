@@ -29,7 +29,7 @@ trait IntervalSetNormalizeMixin
      * Join overlapping intervals.
      *
      * @param T[] $intervals
-     * @return T[]
+     * @return list<T>
      *
      * @template T of Interval|TimeInterval
      */

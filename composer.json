@@ -17,9 +17,9 @@
         "nette/utils": "~2.4|~3.0|~4.0"
     },
     "require-dev": {
-        "dogma/dogma-dev": "^v0.1.32",
-        "phpstan/phpstan": "^1.12.24",
-        "phpstan/phpstan-strict-rules": "^1.6.2"
+        "dogma/dogma-dev": "dev-master",
+        "phpstan/phpstan": "^2.1.33",
+        "phpstan/phpstan-strict-rules": "^2.0.7"
     },
     "suggest": {
         "ext-dom": "for Dom (basic functionality)",
@@ -155,6 +155,12 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": false,
             "sllh/composer-versions-check": false
+        }
+    },
+    "repositories": {
+        "dogma/dogma-dev": {
+            "type": "vcs",
+            "url": "github.com:slevomat/dogma-dev.git"
         }
     }
 }

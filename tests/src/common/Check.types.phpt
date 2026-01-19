@@ -87,7 +87,7 @@ $callableMethod = [new TestClass2(), 'test'];
 $callableStaticMethod = [TestClass2::class, 'testStatic'];
 
 /**
- * @var mixed[][] ($key => [$value, $possibleTypes...])
+ * @var mixed[][] $subjects ($key => [$value, $possibleTypes...])
  */
 $subjects = [
     'null' => [null, Type::NULL],

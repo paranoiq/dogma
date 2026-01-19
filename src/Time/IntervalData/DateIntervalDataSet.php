@@ -319,7 +319,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        /** @var DateIntervalData<TData>[] $results */
+        /** @var list<DateIntervalData<TData>> $results */
         $results = $results;
 
         return new static($results);
@@ -403,7 +403,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new static($results);
+        return new static(array_values($results));
     }
 
     /**
@@ -474,7 +474,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new static($results);
+        return new static(array_values($results));
     }
 
     /**
@@ -593,7 +593,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new self($results);
+        return new self(array_values($results));
     }
 
     /**

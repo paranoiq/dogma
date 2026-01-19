@@ -42,7 +42,7 @@ class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pok
     use IntervalSetNormalizeMixin;
     use IntervalSetDumpMixin;
 
-    /** @var NightInterval[] */
+    /** @var list<NightInterval> */
     private $intervals;
 
     /**
@@ -85,9 +85,7 @@ class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pok
             }
             $previous = $date;
         }
-        if ($start !== false) {
-            $intervals[] = new NightInterval($start, $previous->addDay());
-        }
+        $intervals[] = new NightInterval($start, $previous->addDay());
 
         return new static($intervals);
     }
@@ -141,7 +139,7 @@ class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pok
     }
 
     /**
-     * @return NightInterval[]
+     * @return list<NightInterval>
      */
     public function getIntervals(): array
     {

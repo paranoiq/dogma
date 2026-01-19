@@ -13,7 +13,6 @@ use Dogma\Re;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
-use Dogma\Time\InvalidDateTimeException;
 use DOMAttr;
 use DOMCdataSection;
 use DOMComment;
@@ -441,11 +440,7 @@ class QueryEngine
             return '';
         }
 
-        try {
-            $date = DateTime::createFromFormat($format, $string);
-        } catch (InvalidDateTimeException $e) {
-            throw new QueryEngineException("Cannot create DateTime object from '$string' using format '$format'.", 0, $e);
-        }
+        $date = DateTime::createFromFormat($format, $string);
 
         return $date->format('Y-m-d');
     }
@@ -456,11 +451,7 @@ class QueryEngine
             return '';
         }
 
-        try {
-            $date = DateTime::createFromFormat($format, $string);
-        } catch (InvalidDateTimeException $e) {
-            throw new QueryEngineException("Cannot create DateTime object from '$string' using format '$format'.", 0, $e);
-        }
+        $date = DateTime::createFromFormat($format, $string);
 
         return $date->format('Y-m-d H:i:s');
     }

@@ -187,7 +187,7 @@ Assert::equal($interval->split(2), [$i(10, 15), $i(15, 20)]);
 Assert::equal($interval->split(3), [
     new DateTimeInterval(new DateTime('2000-01-10 00:00:00'), new DateTime('2000-01-13 08:00:00')),
     new DateTimeInterval(new DateTime('2000-01-13 08:00:00'), new DateTime('2000-01-16 16:00:00')),
-    new DateTimeInterval(new DateTime('2000-01-16 16:00:00'), new DateTime('2000-01-20 00:00:00'))
+    new DateTimeInterval(new DateTime('2000-01-16 16:00:00'), new DateTime('2000-01-20 00:00:00')),
 ]);
 Assert::equal($empty->split(5), []);
 

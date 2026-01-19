@@ -101,8 +101,10 @@ class Locale
             $components['private' . $n] = $value;
         }
 
+        /** @var array{language: string, script?: string, region?: string, variant0?: string, variant1?: string, private0?: string, private1?: string} $filteredComponents */
+        $filteredComponents = array_filter($components);
         /** @var string|false $value */
-        $value = PhpLocale::composeLocale(array_filter($components));
+        $value = PhpLocale::composeLocale($filteredComponents);
         if ($value === false) {
             throw new InvalidArgumentException('Invalid locale components.');
         }

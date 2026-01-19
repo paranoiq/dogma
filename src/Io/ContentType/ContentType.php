@@ -12,6 +12,7 @@ namespace Dogma\Io\ContentType;
 use Dogma\Enum\PartialStringEnum;
 use Dogma\Str;
 use function array_search;
+use function is_string;
 
 class ContentType extends PartialStringEnum
 {
@@ -2589,10 +2590,9 @@ class ContentType extends PartialStringEnum
 
     public function getExtension(): ?string
     {
-        /** @var string|null $extension */
-        $extension = array_search($this->getValue(), self::$extensions, true) ?: null;
+        $extension = array_search($this->getValue(), self::$extensions, true);
 
-        return $extension;
+        return is_string($extension) ? $extension : null;
     }
 
     public function isAudio(): bool

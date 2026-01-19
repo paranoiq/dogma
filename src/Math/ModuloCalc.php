@@ -144,7 +144,7 @@ class ModuloCalc
     }
 
     /**
-     * @param int[] $values
+     * @param int[]|float[] $values
      */
     private static function checkValues(array &$values, int $modulus): void
     {

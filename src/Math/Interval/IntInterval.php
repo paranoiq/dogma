@@ -483,7 +483,7 @@ class IntInterval implements Interval
             $i++;
         }
 
-        return array_values(Arr::sortComparable($items));
+        return Arr::sortComparable($items);
     }
 
     /**

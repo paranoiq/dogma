@@ -159,7 +159,7 @@ Assert::equal($interval->split(2), [$i(10, 15), $i(15, 20)]);
 Assert::equal($interval->split(3), [
     new TimeInterval(new Time('10:00:00'), new Time('13:20:00')),
     new TimeInterval(new Time('13:20:00'), new Time('16:40:00')),
-    new TimeInterval(new Time('16:40:00'), new Time('20:00:00'))
+    new TimeInterval(new Time('16:40:00'), new Time('20:00:00')),
 ]);
 Assert::equal($empty->split(5), []);
 

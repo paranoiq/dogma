@@ -737,7 +737,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
             $i++;
         }
 
-        return array_values(Arr::sortComparable($items));
+        return Arr::sortComparable($items);
     }
 
     /**

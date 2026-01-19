@@ -446,7 +446,10 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
             return null;
         }
 
-        return max($this->toArray());
+        /** @var non-empty-array<mixed> $array */
+        $array = $this->toArray();
+
+        return max($array);
     }
 
     /**
@@ -457,7 +460,11 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         if ($this->isEmpty()) {
             return null;
         }
-        return min($this->toArray());
+
+        /** @var non-empty-array<mixed> $array */
+        $array = $this->toArray();
+
+        return min($array);
     }
 
     /**
