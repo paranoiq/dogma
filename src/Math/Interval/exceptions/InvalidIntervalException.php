@@ -9,14 +9,9 @@
 
 namespace Dogma\Math\Interval;
 
-use Throwable;
+use Dogma\Exception;
 
-class InvalidIntervalStringFormatException extends InvalidIntervalException
+abstract class InvalidIntervalException extends Exception
 {
-
-    public function __construct(string $string, ?Throwable $previous = null)
-    {
-        parent::__construct("Cannot parse interval borders from string '$string'.", $previous);
-    }
 
 }

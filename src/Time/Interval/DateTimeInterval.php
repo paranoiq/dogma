@@ -32,6 +32,8 @@ use Dogma\Time\Provider\TimeProvider;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Time;
 use Dogma\Time\TimeCalc;
+use Dogma\Time\TimeZone;
+use Dogma\Time\ValueOutOfAllowedRangeException;
 use function array_fill;
 use function array_shift;
 use function array_unique;
@@ -59,17 +61,31 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     final public function __construct(DateTime $start, DateTime $end)
     {
-        if ($start > $end) {
-            throw new InvalidIntervalStartEndOrderException($start, $end);
-        }
+        static::validate($start, $end);
 
         $this->start = $start;
         $this->end = $end;
 
         if ($start->equals($end)) {
             // default createEmpty()
-            $this->start = new DateTime(self::MAX);
-            $this->end = new DateTime(self::MIN);
+            $this->start = new DateTime(static::MAX);
+            $this->end = new DateTime(static::MIN);
+        }
+    }
+
+    public static function validate(DateTime $start, DateTime $end): void
+    {
+        if ($start > $end) {
+            throw new InvalidIntervalStartEndOrderException($start, $end);
+        }
+        $utc = new DateTimeZone(TimeZone::UTC);
+        $min = new DateTime(self::MIN, $utc);
+        $max = new DateTime(self::MAX, $utc);
+        if ($start < $min) {
+            throw new ValueOutOfAllowedRangeException($start, $min, $max);
+        }
+        if ($end > $max) {
+            throw new ValueOutOfAllowedRangeException($end, $min, $max);
         }
     }
 
@@ -128,21 +144,23 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     {
         $now = $timeProvider !== null ? $timeProvider->getDateTime($timeZone) : new DateTime('now', $timeZone);
 
-        return new static(new DateTime(self::MIN, $timeZone), $now);
+        return new static(new DateTime(static::MIN, $timeZone), $now);
     }
 
     public static function empty(): self
     {
-        $interval = new static(new DateTime(), new DateTime());
-        $interval->start = new DateTime(self::MAX);
-        $interval->end = new DateTime(self::MIN);
+        $utc = new DateTimeZone(TimeZone::UTC);
+        $interval = new static(new DateTime(static::MIN, $utc), new DateTime(static::MAX, $utc));
+        $interval->start = new DateTime(static::MAX);
+        $interval->end = new DateTime(static::MIN);
 
         return $interval;
     }
 
     public static function all(): self
     {
-        return new static(new DateTime(self::MIN), new DateTime(self::MAX));
+        $utc = new DateTimeZone(TimeZone::UTC);
+        return new static(new DateTime(static::MIN, $utc), new DateTime(static::MAX, $utc));
     }
 
     // modifications ---------------------------------------------------------------------------------------------------
@@ -471,8 +489,8 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     public function envelope(self ...$items): self
     {
         $items[] = $this;
-        $start = new DateTime(self::MAX);
-        $end = new DateTime(self::MIN);
+        $start = new DateTime(static::MAX);
+        $end = new DateTime(static::MIN);
         foreach ($items as $item) {
             if ($item->start < $start) {
                 $start = $item->start;

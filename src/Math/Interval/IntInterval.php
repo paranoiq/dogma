@@ -42,24 +42,37 @@ class IntInterval implements Interval
 
     final public function __construct(int $start, int $end)
     {
-        Check::min($end, $start);
+        static::validate($start, $end);
 
         $this->start = $start;
         $this->end = $end;
     }
 
+    public static function validate(int $start, int $end): void
+    {
+        if ($start > $end) {
+            throw new InvalidIntervalStartEndOrderException($start, $end);
+        }
+        if ($start < static::MIN) {
+            throw new ValueOutOfAllowedRangeException($start, static::MIN, static::MAX);
+        }
+        if ($end > static::MAX) {
+            throw new ValueOutOfAllowedRangeException($end, static::MIN, static::MAX);
+        }
+    }
+
     public static function empty(): self
     {
-        $interval = new static(0, 0);
-        $interval->start = self::MAX;
-        $interval->end = self::MIN;
+        $interval = new static(static::MIN, static::MAX);
+        $interval->start = static::MAX;
+        $interval->end = static::MIN;
 
         return $interval;
     }
 
     public static function all(): self
     {
-        return new static(self::MIN, self::MAX);
+        return new static(static::MIN, static::MAX);
     }
 
     /**
@@ -226,8 +239,8 @@ class IntInterval implements Interval
     public function envelope(self ...$items): self
     {
         $items[] = $this;
-        $start = self::MAX;
-        $end = self::MIN;
+        $start = static::MAX;
+        $end = static::MIN;
         foreach ($items as $item) {
             if ($item->start < $start) {
                 $start = $item->start;

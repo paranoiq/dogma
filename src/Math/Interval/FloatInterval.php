@@ -47,13 +47,7 @@ class FloatInterval implements OpenClosedInterval
 
     final public function __construct(float $start, float $end, bool $openStart = false, bool $openEnd = false)
     {
-        if (is_nan($start)) {
-            throw new InvalidValueException($start, Type::FLOAT);
-        }
-        if (is_nan($end)) {
-            throw new InvalidValueException($end, Type::FLOAT);
-        }
-        Check::min($end, $start);
+        static::validate($start, $end);
 
         $this->start = $start;
         $this->end = $end;
@@ -63,10 +57,29 @@ class FloatInterval implements OpenClosedInterval
         if ($start === $end) {
             if ($openStart || $openEnd) {
                 // default createEmpty()
-                $this->start = self::MAX;
-                $this->end = self::MIN;
+                $this->start = static::MAX;
+                $this->end = static::MIN;
                 $this->openStart = $this->openEnd = false;
             }
+        }
+    }
+
+    public static function validate(float $start, float $end): void
+    {
+        if (is_nan($start)) {
+            throw new InvalidValueException($start, Type::FLOAT);
+        }
+        if (is_nan($end)) {
+            throw new InvalidValueException($end, Type::FLOAT);
+        }
+        if ($start > $end) {
+            throw new InvalidIntervalStartEndOrderException($start, $end);
+        }
+        if ($start < static::MIN) {
+            throw new ValueOutOfAllowedRangeException($start, static::MIN, static::MAX);
+        }
+        if ($end > static::MAX) {
+            throw new ValueOutOfAllowedRangeException($end, static::MIN, static::MAX);
         }
     }
 
@@ -92,16 +105,16 @@ class FloatInterval implements OpenClosedInterval
 
     public static function empty(): self
     {
-        $interval = new static(0.0, 0.0);
-        $interval->start = self::MAX;
-        $interval->end = self::MIN;
+        $interval = new static(static::MIN, static::MAX);
+        $interval->start = static::MAX;
+        $interval->end = static::MIN;
 
         return $interval;
     }
 
     public static function all(): self
     {
-        return new static(self::MIN, self::MAX);
+        return new static(static::MIN, static::MAX);
     }
 
     /**
@@ -320,8 +333,8 @@ class FloatInterval implements OpenClosedInterval
     public function envelope(self ...$items): self
     {
         $items[] = $this;
-        $start = self::MAX;
-        $end = self::MIN;
+        $start = static::MAX;
+        $end = static::MIN;
         $startExclusive = true;
         $endExclusive = true;
         foreach ($items as $item) {

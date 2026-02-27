@@ -31,6 +31,7 @@ use Dogma\Time\Provider\TimeProvider;
 use Dogma\Time\Span\DateSpan;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Time;
+use Dogma\Time\ValueOutOfAllowedRangeException;
 use function array_fill;
 use function array_shift;
 use function array_unique;
@@ -63,18 +64,31 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
 
     final public function __construct(Date $start, Date $end)
     {
-        $startJd = $start->getJulianDay();
-        $endJd = $end->getJulianDay();
+        static::validate($start, $end);
 
-        if ($startJd > $endJd) {
-            throw new InvalidIntervalStartEndOrderException($start, $end);
-        } elseif ($startJd === $endJd) {
+        if ($start->equals($end)) {
             // canonical empty interval
-            $this->start = new Date(self::MAX);
-            $this->end = new Date(self::MIN);
+            $this->start = new Date(static::MAX);
+            $this->end = new Date(static::MIN);
         } else {
             $this->start = $start;
             $this->end = $end;
+        }
+    }
+
+    public static function validate(Date $start, Date $end): void
+    {
+        if ($start->isAfter($end)) {
+            throw new InvalidIntervalStartEndOrderException($start, $end);
+        }
+
+        $min = new Date(self::MIN);
+        $max = new Date(self::MAX);
+        if ($start->isBefore($min)) {
+            throw new ValueOutOfAllowedRangeException($start, $min, $max);
+        }
+        if ($end->isAfter($max)) {
+            throw new ValueOutOfAllowedRangeException($end, $min, $max);
         }
     }
 
@@ -129,28 +143,28 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
     {
         $tomorrow = $timeProvider !== null ? $timeProvider->getDate() : new Date();
 
-        return new static($tomorrow, new Date(self::MAX));
+        return new static($tomorrow, new Date(static::MAX));
     }
 
     public static function past(?TimeProvider $timeProvider = null): self
     {
         $yesterday = $timeProvider !== null ? $timeProvider->getDate() : new Date();
 
-        return new static(new Date(self::MIN), $yesterday);
+        return new static(new Date(static::MIN), $yesterday);
     }
 
     public static function empty(): self
     {
-        $interval = new static(new Date(), new Date());
-        $interval->start = new Date(self::MAX);
-        $interval->end = new Date(self::MIN);
+        $interval = new static(new Date(static::MIN), new Date(static::MAX));
+        $interval->start = new Date(static::MAX);
+        $interval->end = new Date(static::MIN);
 
         return $interval;
     }
 
     public static function all(): self
     {
-        return new static(new Date(self::MIN), new Date(self::MAX));
+        return new static(new Date(static::MIN), new Date(static::MAX));
     }
 
     /**

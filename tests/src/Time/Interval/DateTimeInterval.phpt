@@ -4,6 +4,7 @@ namespace Dogma\Tests\Time\Interval;
 
 use DateTime as PhpDateTime;
 use DateTimeImmutable;
+use DateTimeZone;
 use Dogma\Math\Interval\InvalidIntervalStringFormatException;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
@@ -18,6 +19,7 @@ use Dogma\Time\InvalidIntervalStartEndOrderException;
 use Dogma\Time\Microseconds;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Time;
+use Dogma\Time\TimeZone;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -229,8 +231,8 @@ Assert::equal($interval->difference($i(5, 15)), $s($i(5, 10), $i(15, 20)));
 Assert::equal($interval->difference($i(5, 15), $i(15, 30)), $s($i(5, 10), $i(20, 30)));
 Assert::equal($interval->difference($i(25, 30)), $s($interval, $i(25, 30)));
 Assert::equal($interval->difference($all), $s(
-    new DateTimeInterval(new DateTime(DateTime::MIN), $d(10)),
-    new DateTimeInterval($d(20), new DateTime(DateTime::MAX))
+    new DateTimeInterval(DateTime::createMin(), $d(10)),
+    new DateTimeInterval($d(20), DateTime::createMax())
 ));
 Assert::equal($interval->difference($empty), $s($interval));
 
@@ -248,8 +250,8 @@ Assert::equal($empty->subtract($empty), $s());
 
 invert:
 Assert::equal($interval->invert(), $s(
-    new DateTimeInterval(new DateTime(DateTime::MIN), $d(10)),
-    new DateTimeInterval($d(20), new DateTime(DateTime::MAX))
+    new DateTimeInterval(DateTime::createMin(), $d(10)),
+    new DateTimeInterval($d(20), DateTime::createMax())
 ));
 Assert::equal($empty->invert(), $s($all));
 Assert::equal($all->invert(), $s($empty));

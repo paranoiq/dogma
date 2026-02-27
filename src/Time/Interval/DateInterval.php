@@ -30,6 +30,7 @@ use Dogma\Time\InvalidIntervalStartEndOrderException;
 use Dogma\Time\Provider\TimeProvider;
 use Dogma\Time\Span\DateSpan;
 use Dogma\Time\Span\DateTimeSpan;
+use Dogma\Time\ValueOutOfAllowedRangeException;
 use function array_fill;
 use function array_shift;
 use function array_unique;
@@ -64,8 +65,17 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     public static function validate(Date $start, Date $end): void
     {
-        if ($start->getJulianDay() > $end->getJulianDay()) {
+        if ($start->isAfter($end)) {
             throw new InvalidIntervalStartEndOrderException($start, $end);
+        }
+
+        $min = new Date(self::MIN);
+        $max = new Date(self::MAX);
+        if ($start->isBefore($min)) {
+            throw new ValueOutOfAllowedRangeException($start, $min, $max);
+        }
+        if ($end->isAfter($max)) {
+            throw new ValueOutOfAllowedRangeException($end, $min, $max);
         }
     }
 
@@ -122,21 +132,21 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     {
         $yesterday = $timeProvider !== null ? $timeProvider->getDate()->subtractDay() : new Date('yesterday');
 
-        return new static(new Date(self::MIN), $yesterday);
+        return new static(new Date(static::MIN), $yesterday);
     }
 
     public static function empty(): self
     {
-        $interval = new static(new Date(), new Date());
-        $interval->start = new Date(self::MAX);
-        $interval->end = new Date(self::MIN);
+        $interval = new static(new Date(static::MIN), new Date(static::MAX));
+        $interval->start = new Date(static::MAX);
+        $interval->end = new Date(static::MIN);
 
         return $interval;
     }
 
     public static function all(): self
     {
-        return new static(new Date(self::MIN), new Date(self::MAX));
+        return new static(new Date(static::MIN), new Date(static::MAX));
     }
 
     /**

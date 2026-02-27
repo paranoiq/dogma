@@ -9,7 +9,7 @@
 
 namespace Dogma\Time;
 
-class InvalidIntervalException extends TimeException
+abstract class InvalidIntervalException extends TimeException
 {
 
 }

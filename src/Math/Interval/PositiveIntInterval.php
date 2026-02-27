@@ -9,14 +9,14 @@
 
 namespace Dogma\Math\Interval;
 
-use Throwable;
+use Dogma\StrictBehaviorMixin;
+use const PHP_INT_MAX;
 
-class InvalidIntervalStringFormatException extends InvalidIntervalException
+class PositiveIntInterval extends IntInterval
 {
+    use StrictBehaviorMixin;
 
-    public function __construct(string $string, ?Throwable $previous = null)
-    {
-        parent::__construct("Cannot parse interval borders from string '$string'.", $previous);
-    }
+    public const MIN = 1;
+    public const MAX = PHP_INT_MAX;
 
 }

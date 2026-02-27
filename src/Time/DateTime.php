@@ -89,6 +89,16 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         parent::__construct($time, $timezone);
     }
 
+    public static function createMin(): self
+    {
+        return new static(self::MIN, new DateTimeZone(TimeZone::UTC));
+    }
+
+    public static function createMax(): self
+    {
+        return new static(self::MAX, new DateTimeZone(TimeZone::UTC));
+    }
+
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $format
