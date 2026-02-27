@@ -32,8 +32,10 @@ class HttpOrCurlStatus extends PartialIntEnum
 
     public const S100_CONTINUE = 100;
     public const S101_SWITCHING_PROTOCOLS = 101;
-    public const S102_PROCESSING = 102;
+    public const S102_PROCESSING = 102; // WebDAV
+    /** @deprecated */
     public const S103_CHECKPOINT = 103;
+    public const S103_EARLY_HINTS = 103;
 
     public const S200_OK = 200;
     public const S201_CREATED = 201;
@@ -42,8 +44,8 @@ class HttpOrCurlStatus extends PartialIntEnum
     public const S204_NO_CONTENT = 204;
     public const S205_RESET_CONTENT = 205;
     public const S206_PARTIAL_CONTENT = 206;
-    public const S207_MULTI_STATUS = 207;
-    public const S208_ALREADY_REPORTED = 208;
+    public const S207_MULTI_STATUS = 207; // WebDAV
+    public const S208_ALREADY_REPORTED = 208; // WebDAV
     public const S226_IM_USER = 226;
 
     public const S300_MULTIPLE_CHOICES = 300;
@@ -54,7 +56,8 @@ class HttpOrCurlStatus extends PartialIntEnum
     public const S305_USE_PROXY = 305;
     public const S306_SWITCH_PROXY = 306;
     public const S307_TEMPORARY_REDIRECT = 307;
-    public const S308_RESUME_INCOMPLETE = 308;
+    public const S308_PERMANENT_REDIRECT = 308;
+    public const S308_RESUME_INCOMPLETE = 308; // Google Drive non-standard
 
     public const S400_BAD_REQUEST = 400;
     public const S401_UNAUTHORIZED = 401;
@@ -69,7 +72,11 @@ class HttpOrCurlStatus extends PartialIntEnum
     public const S410_GONE = 410;
     public const S411_LENGTH_REQUIRED = 411;
     public const S412_PRECONDITION_FAILED = 412;
+    /** @deprecated */
     public const S413_REQUESTED_ENTITY_TOO_LARGE = 413;
+    /** @deprecated */
+    public const S413_PAYLOAD_TOO_LARGE = 413;
+    public const S413_CONTENT_TOO_LARGE = 413;
     public const S414_REQUEST_URI_TOO_LONG = 414;
     public const S415_UNSUPPORTED_MEDIA_TYPE = 415;
     public const S416_REQUESTED_RANGE_NOT_SATISFIABLE = 416;
@@ -78,10 +85,12 @@ class HttpOrCurlStatus extends PartialIntEnum
     public const S419_AUTHENTICATION_TIMEOUT = 419;
     public const S420_ENHANCE_YOUR_CALM = 420;
     public const S421_MISDIRECTED_REQUEST = 421;
-    public const S422_UNPROCESSABLE_ENTITY = 422;
-    public const S423_LOCKED = 423;
-    public const S424_FAILED_DEPENDENCY = 424;
-    /** @deprecated ? */
+    /** @deprecated */
+    public const S422_UNPROCESSABLE_ENTITY = 422; // WebDAV
+    public const S422_UNPROCESSABLE_CONTENT = 422; // WebDAV
+    public const S423_LOCKED = 423; // WebDAV
+    public const S424_FAILED_DEPENDENCY = 424; // WebDAV
+    /** @deprecated */
     public const S425_UNORDERED_COLLECTION = 425;
     public const S425_TOO_EARLY = 425;
     public const S426_UPGRADE_REQUIRED = 426;
@@ -91,6 +100,7 @@ class HttpOrCurlStatus extends PartialIntEnum
     public const S449_RETRY_WITH = 449;
     public const S450_BLOCKED_BY_WINDOWS_PARENTAL_CONTROLS = 450;
     public const S451_UNAVAILABLE_FOR_LEGAL_REASONS = 451;
+    public const S499_CLIENT_CLOSED_REQUEST = 499; // nginx non-standard
 
     public const S500_INTERNAL_SERVER_ERROR = 500;
     public const S501_NOT_IMPLEMENTED = 501;
@@ -99,11 +109,18 @@ class HttpOrCurlStatus extends PartialIntEnum
     public const S504_GATEWAY_TIMEOUT = 504;
     public const S505_HTTP_VERSION_NOT_SUPPORTED = 505;
     public const S506_VARIANT_ALSO_NEGOTIATES = 506;
-    public const S507_INSUFFICIENT_STORAGE = 507;
-    public const S508_LOOP_DETECTED = 508;
+    public const S507_INSUFFICIENT_STORAGE = 507; // WebDAV
+    public const S508_LOOP_DETECTED = 508; // WebDAV
     public const S509_BANDWIDTH_LIMIT_EXCEEDED = 509;
     public const S510_NOT_EXTENDED = 510;
     public const S511_NETWORK_AUTHENTICATION_REQUIRED = 511;
+    public const S520_UNKNOWN_ERROR = 520; // Cloudflare non-standard
+    public const S521_WEB_SERVER_IS_DOWN = 521; // Cloudflare non-standard
+    public const S522_CONNECTION_TIMED_OUT = 522; // Cloudflare non-standard
+    public const S523_ORIGIN_IS_UNREACHABLE = 523; // Cloudflare non-standard
+    public const S524_A_TIMEOUT_OCCURRED = 524; // Cloudflare non-standard
+    public const S525_SSL_HANDSHAKE_FAILED = 525; // Cloudflare non-standard
+    public const S526_INVALID_SSL_CERTIFICATE = 526; // Cloudflare non-standard
 
     // system & CURL internals
     public const FAILED_INIT           = 2;  // Very early initialization code failed. This is likely to be an internal error or problem; or a resource problem where something fundamental could not get done at init time.
