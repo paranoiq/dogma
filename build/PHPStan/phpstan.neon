@@ -2,13 +2,16 @@
 includes:
     #- ../../vendor/phpstan/phpstan-strict-rules/rules.neon
     #- ../../vendor/phpstan/phpstan/conf/bleedingEdge.neon
+    #- ../../vendor/shipmonk/phpstan-rules/rules.neon # https://github.com/shipmonk-rnd/phpstan-rules
     - phpstan.conf.php
 
 parameters:
     level: 7
 
+    parallel:
+        maximumNumberOfProcesses: 8
+
     featureToggles:
-        disableRuntimeReflectionProvider: true
 
     paths:
         - ../../src
@@ -26,28 +29,10 @@ parameters:
         - '~Variable \$result in PHPDoc tag @var does not exist~' # while ($result = array_shift($sources)) {
         - '~Parameter #1 \$value of static method Dogma\\Enum\\(Int|String)(Enum|Set)::isValid\(\) expects (int|string), int\|string given.~'
         - '~Method Dogma\\Enum\\(Int|String)Set::getConstantNames\(\) should return array<string> but returns array<(int|string), int\|string\|false>.~'
-        - '~Parameter #(1|2) \$arr(1|2) of function array_[a-z_]+ expects array, array\|\(callable\) given.~' # callables filtered out
         - '~Method Dogma\\Io\\FileMetaData::.*\(\) should return (int|string) but returns int\|string.~'
-        -
-            message: "~Result of && is always false~" # phpstan bug with is_subclass_of
-            path: "../../src/common/Check.php"
-        -
-            message: "~Strict comparison using === between string and false will always evaluate to false~"
-            path: "../../src/common/Str.php"
-        -
-            message: '~Negated boolean expression is always true~'
-            path: "../../src/common/lists/Arr.php"
-        -
-            message: '~Negated boolean expression is always true~'
-            path: "../../src/common/lists/ImmutableArray.php"
-        -
-            message: '~Strict comparison using === between \*NEVER\* and 0 will always evaluate to false~'
-            path: "../../tests/src/Http/responder.php"
 
         # Re flags & WTFs
         - '~Parameter #4 \$flags of function preg_match expects TFlags of 0|256|512|768, int given.~'
-        - '~Method Dogma\\Re::match\(\) should return array<string>\|null but returns array<array<int, int\|string\|null>\|string\|null>.~'
-        - '~Method Dogma\\Re::submatch\(\) should return string\|null but returns array<int, int\|string\|null>\|string\|null.~'
 
         # interface
         - '~^PHPDoc tag @return with type Dogma\\Language\\Locale\\LocaleCollationOption is not subtype of native type Dogma\\Enum\\StringEnum~'
@@ -55,8 +40,8 @@ parameters:
         # deprecated things, won't fix
         - '~method Dogma\\Database\\SimplePdo~'
 
-        # PHP 7 -> 8
-        - '~expects (Curl(Multi)?Handle|resource), Curl(Multi)?Handle\|resource given~'
-
         # PHP 8.0 -> 8.1
         - '~finfo\|resource\|null~'
+
+        # the types in PHP probably do not match the C implementation. PHPStan is confused, tests are ok
+        - '~Parameter #1 \$arr1 of function array_(udiff|diff_ukey|udiff_uassoc|udiff_assoc|diff_uassoc|uintersect|intersect_ukey|uintersect_uassoc|uintersect_assoc|intersect_uassoc) expects~'

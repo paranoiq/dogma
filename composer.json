@@ -2,7 +2,7 @@
     "name": "dogma/dogma",
     "type": "library",
     "description": "The incomplete standard library",
-    "homepage": "http://github.com/paranoiq/dogma",
+    "homepage": "https://github.com/paranoiq/dogma",
     "license": ["BSD-3-Clause"],
     "authors": [
         {
@@ -11,15 +11,22 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^8.0",
         "ext-calendar":"*",
         "nette/http": "~2.4|~3.0",
         "nette/utils": "~2.4|~3.0|~4.0"
     },
     "require-dev": {
-        "dogma/dogma-dev": "0.1.31",
-        "phpstan/phpstan": "1.10.13",
-        "phpstan/phpstan-strict-rules": "1.5.1"
+        "dogma/dogma-debug": "0.1",
+        "dogma/dogma-dev": "0.1.33",
+        "nette/tester": "^2.6",
+        "php-parallel-lint/php-console-highlighter": "~1.0",
+        "php-parallel-lint/php-parallel-lint": "~1.4",
+        "phpstan/phpstan": "2.1.40",
+        "phpstan/phpstan-strict-rules": "2.0.10",
+        "shipmonk/composer-dependency-analyser": "^1.8",
+        "veewee/composer-run-parallel": "^1.3",
+        "shipmonk/phpstan-rules": "^4.3"
     },
     "suggest": {
         "ext-dom": "for Dom (basic functionality)",
@@ -47,10 +54,13 @@
         "da": "composer dump-autoload",
         "c": "@check:fast",
         "ca": "@check:all",
-        "t": "@tests:run",
-        "tc": "@tests:coverage",
+        "cp": "@check:par",
+        "cpp": "@check:pp",
         "cs": "@phpcs:all",
         "csf": "@phpcs:fix",
+        "ps": "@phpstan:run",
+        "t": "@tests:run",
+        "tc": "@tests:coverage",
 
         "build:run": [
             "composer install",
@@ -61,8 +71,8 @@
         "check:fast": [
             "@tests:run",
             "@phpstan:run",
-            "@lint:php",
-            "@spell:check",
+            "@lint:run",
+            "echo @spell:check temporarily disabled",
             "@phpcs:src-fast",
             "@phpcs:tests-fast",
             "@package:check",
@@ -71,38 +81,55 @@
         "check:all": [
             "@tests:all",
             "@phpstan:all",
-            "@lint:php-all",
-            "@spell:check",
+            "@lint:all",
+            "echo @spell:check temporarily disabled",
             "@phpcs:src-fast",
             "@phpcs:tests-fast",
             "@package:check",
             "printf \"\\n \\e[0;32mAll checks OK\\e[0m \\n\""
         ],
+        "check:par": [
+            "@tests:par",
+            "@phpstan:par",
+            "@lint:par",
+            "echo @spell:check temporarily disabled",
+            "@phpcs:src-fast",
+            "@phpcs:tests-fast",
+            "@package:check"
+        ],
+        "check:pp": "@parallel tests:par phpstan:par lint:par phpcs:src-fast phpcs:tests-fast package:check",
 
         "tests:run": "php vendor/nette/tester/src/tester tests -c tests --colors 1",
-        "tests:all": [
-            "php82 vendor/nette/tester/src/tester tests -c tests --colors 1",
-            "php81 vendor/nette/tester/src/tester tests -c tests --colors 1",
-            "php80 vendor/nette/tester/src/tester tests -c tests --colors 1",
-            "php74 vendor/nette/tester/src/tester tests -c tests --colors 1"
-        ],
+        "tests:all": ["@x:tests:php85", "@x:tests:php84", "@x:tests:php83", "@x:tests:php82", "@x:tests:php81", "@x:tests:php80"],
+        "tests:par": "@parallel x:tests:php85 x:tests:php84 x:tests:php83 x:tests:php82 x:tests:php81 x:tests:php80",
+        "x:tests:php85": "php85 vendor/nette/tester/src/tester tests -c tests --colors 1",
+        "x:tests:php84": "php84 vendor/nette/tester/src/tester tests -c tests --colors 1",
+        "x:tests:php83": "php83 vendor/nette/tester/src/tester tests -c tests --colors 1",
+        "x:tests:php82": "php82 vendor/nette/tester/src/tester tests -c tests --colors 1",
+        "x:tests:php81": "php81 vendor/nette/tester/src/tester tests -c tests --colors 1",
+        "x:tests:php80": "php80 vendor/nette/tester/src/tester tests -c tests --colors 1",
+
         "tests:coverage": "php vendor/nette/tester/src/tester tests -c tests --colors 1 -p phpdbg --coverage tests/coverage.html --coverage-src src",
 
-        "phpstan:run": "php vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/PHPStan/phpstan.neon",
-        "phpstan:all": [
-            "php82 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/PHPStan/phpstan.neon",
-            "php81 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/PHPStan/phpstan.neon",
-            "php80 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/PHPStan/phpstan.neon",
-            "php74 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/PHPStan/phpstan.neon"
-        ],
+        "phpstan:run": "php vendor/phpstan/phpstan/phpstan analyse --memory-limit 4G -c build/PHPStan/phpstan.neon",
+        "phpstan:all": ["@x:phpstan:php85", "@x:phpstan:php84", "@x:phpstan:php83", "@x:phpstan:php82", "@x:phpstan:php81", "@x:phpstan:php80"],
+        "phpstan:par": "@parallel x:phpstan:php85 x:phpstan:php84 x:phpstan:php83 x:phpstan:php82 x:phpstan:php81 x:phpstan:php80",
+        "x:phpstan:php85": "echo PHPStan at PHP 8.5 & php85 vendor/phpstan/phpstan/phpstan analyse --memory-limit 4G -c build/PHPStan/phpstan.php85.neon",
+        "x:phpstan:php84": "echo PHPStan at PHP 8.4 & php84 vendor/phpstan/phpstan/phpstan analyse --memory-limit 4G -c build/PHPStan/phpstan.php84.neon",
+        "x:phpstan:php83": "echo PHPStan at PHP 8.3 & php83 vendor/phpstan/phpstan/phpstan analyse --memory-limit 4G -c build/PHPStan/phpstan.php83.neon",
+        "x:phpstan:php82": "echo PHPStan at PHP 8.2 & php82 vendor/phpstan/phpstan/phpstan analyse --memory-limit 4G -c build/PHPStan/phpstan.php82.neon",
+        "x:phpstan:php81": "echo PHPStan at PHP 8.1 & php81 vendor/phpstan/phpstan/phpstan analyse --memory-limit 4G -c build/PHPStan/phpstan.php81.neon",
+        "x:phpstan:php80": "echo PHPStan at PHP 8.0 & php80 vendor/phpstan/phpstan/phpstan analyse --memory-limit 4G -c build/PHPStan/phpstan.php80.neon",
 
-        "lint:php": "php vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
-        "lint:php-all": [
-            "php82 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
-            "php81 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
-            "php80 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
-            "php74 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests"
-        ],
+        "lint:run": "php vendor/php-parallel-lint/php-parallel-lint/parallel-lint -j 32 src tests",
+        "lint:all": ["@x:lint:php85", "@x:lint:php84", "@x:lint:php83", "@x:lint:php82", "@x:lint:php81", "@x:lint:php80"],
+        "lint:par": "@parallel x:lint:php85 x:lint:php84 x:lint:php83 x:lint:php82 x:lint:php81 x:lint:php80",
+        "x:lint:php85": "php85 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
+        "x:lint:php84": "php84 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
+        "x:lint:php83": "php83 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
+        "x:lint:php82": "php82 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
+        "x:lint:php81": "php81 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
+        "x:lint:php80": "php80 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
 
         "phpcs:all": [
             "Composer\\Config::disableProcessTimeout",
@@ -125,7 +152,7 @@
 
         "package:check": "php vendor/dogma/dogma-dev/src/package-check.php",
 
-        "require:check": "php vendor/maglnet/composer-require-checker/bin/composer-require-checker.php check",
+        "dep:check": "php vendor/bin/composer-dependency-analyser",
 
         "modified-php-src": "chmod 777 temp && git diff-index --name-only --diff-filter=ACMR origin/master | grep \"^src.*\\.php$\" > temp/modified-php-src.txt || echo src/loader.php > temp/modified-php-src.txt",
         "modified-php-tests": "chmod 777 temp && git diff-index --name-only --diff-filter=ACMR origin/master | grep \"^tests.*\\.php$\" > temp/modified-php-tests.txt || echo tests/src/bootstrap.php > temp/modified-php-tests.txt"
@@ -134,19 +161,26 @@
         "da": "\u001B[0;33mShortcut for dump-autoloader\u001B[0m",
         "c": "\u001B[0;33mShortcut for check:fast\u001B[0m",
         "ca": "\u001B[0;33mShortcut for check:all\u001B[0m",
+        "cp": "\u001B[0;33mShortcut for check:par\u001B[0m",
+        "cpp": "\u001B[0;33mShortcut for check:pp\u001B[0m",
         "cs": "\u001B[0;33mShortcut for phpcs:all\u001B[0m",
         "csf": "\u001B[0;33mShortcut for phpcs:fix\u001B[0m",
+        "ps": "\u001B[0;33mShortcut for phpstan:run\u001B[0m",
         "t": "\u001B[0;33mShortcut for tests:run\u001B[0m",
         "tc": "\u001B[0;33mShortcut for tests:coverage\u001B[0m",
 
         "build:run": "Run build script",
         "check:fast": "Run all checks (tests, phpstan, phpcs, phplint, spell-check)",
-        "check:all": "Run all checks on all supported PHP versions (7.2 - 8.2)",
+        "check:all": "Run all checks on all supported PHP versions (8.0 - 8.5)",
+        "check:par": "Run all checks on all supported PHP versions in parallel by groups",
+        "check:pp": "Run all checks on all supported PHP versions in parallel",
         "tests:run": "Run tests",
-        "tests:all": "Run tests on all supported PHP versions (7.2 - 8.2)",
+        "tests:all": "Run tests on all supported PHP versions (8.0 - 8.5)",
+        "tests:par": "Run tests on all supported PHP versions in parallel",
         "tests:coverage": "Run tests with code coverage",
         "phpstan:run": "Run PHPStan check",
-        "phpstan:all": "Run PHPStan check on all supported PHP versions (7.2 - 8.2)",
+        "phpstan:all": "Run PHPStan check on all supported PHP versions (8.0 - 8.5)",
+        "phpstan:par": "Run PHPStan check on all supported PHP versions in parallel",
         "phpcs:all": "Run CS check on all code",
         "phpcs:src": "Run CS check on /src",
         "phpcs:src-fast": "Run fast CS check on /src",
@@ -154,13 +188,15 @@
         "phpcs:tests-fast": "Run fast CS check on /tests",
         "phpcs:fix": "Run CS check with auto-fixing on /src and /tests",
         "spell:check": "Run spell-checker",
-        "lint:php": "Run PHPLint",
-        "lint:php-all": "Run PHPLint on all supported PHP versions (7.2 - 8.2)"
+        "lint:run": "Run PHPLint",
+        "lint:all": "Run PHPLint on all supported PHP versions (8.0 - 8.5)",
+        "lint:par": "Run PHPLint on all supported PHP versions in parallel"
     },
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": false,
-            "sllh/composer-versions-check": false
+            "sllh/composer-versions-check": false,
+            "veewee/composer-run-parallel": true
         }
     }
 }

@@ -23,8 +23,8 @@ use function count;
  */
 class Tuple implements Countable, IteratorAggregate, ArrayAccess
 {
-    use StrictBehaviorMixin;
     use ImmutableArrayAccessMixin;
+    use StrictBehaviorMixin;
 
     /** @var mixed[] */
     private array $items;

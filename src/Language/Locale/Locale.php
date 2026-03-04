@@ -100,7 +100,7 @@ class Locale
         }
 
         /** @var string|false $value */
-        $value = PhpLocale::composeLocale(array_filter($components));
+        $value = PhpLocale::composeLocale(array_filter($components)); // @phpstan-ignore argument.type
         if ($value === false) {
             throw new InvalidArgumentException('Invalid locale components.');
         }

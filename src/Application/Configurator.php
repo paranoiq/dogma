@@ -12,15 +12,12 @@ namespace Dogma\Application;
 use Dogma\Application\Colors as C;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
-use Nette\Neon\Neon;
 use stdClass;
 use function array_key_exists;
 use function array_map;
 use function array_merge;
 use function array_pad;
-use function error_get_last;
 use function explode;
-use function file_get_contents;
 use function getopt;
 use function implode;
 use function is_array;
@@ -29,7 +26,6 @@ use function is_file;
 use function is_numeric;
 use function is_string;
 use function parse_ini_file;
-use function sprintf;
 use function substr;
 use function trigger_error;
 
@@ -89,6 +85,9 @@ final class Configurator extends stdClass
             }
             $row = '';
             [$short, $type, $info, $hint, $values] = array_pad($config, 5, null);
+            if ($values === null) {
+                $values = [];
+            }
             $row .= $short ? C::white('  -' . $short) : '    ';
             $row .= C::white(' --' . $name);
             if ($type === self::FLAG_VALUE || $type === self::VALUE || $type === self::VALUES || $type === self::ENUM || $type === self::SET) {
@@ -97,7 +96,7 @@ final class Configurator extends stdClass
             $row = C::padString($row, self::HELP_COLUMN_WIDTH);
             $row .= ' ' . $info;
             if ($type === self::ENUM || $type === self::SET) {
-                $row .= '; values: ' . implode('|', array_map([C::class, 'lyellow'], $values));
+                $row .= '; values: ' . implode('|', array_map([C::class, 'lyellow'], $values)); // @phpstan-ignore argument.type (todo: cleanup)
             }
             if (isset($this->defaults[$name])) {
                 if ($type === self::VALUES || $type === self::SET) {
@@ -171,19 +170,14 @@ final class Configurator extends stdClass
     public function loadConfig(string $filePath): void
     {
         if (is_file($filePath)) {
-            if (substr($filePath, -5) === '.neon') {
-                $file = file_get_contents($filePath);
-                if ($file === false) {
-                    /** @var string[] $error */
-                    $error = error_get_last();
-                    echo C::white(sprintf("Error while reading configuration file: %s!\n\n", $error['message']), C::RED);
+            if (substr($filePath, -4) === '.ini') {
+                $config = parse_ini_file($filePath);
+                if ($config === false) {
+                    echo C::white("Error: cannot read ini file $filePath!\n\n", C::RED);
                     exit(1);
                 }
-                $config = Neon::decode($file);
-            } elseif (substr($filePath, -4) === '.ini') {
-                $config = parse_ini_file($filePath);
             } else {
-                echo C::white("Error: Only .neon and .ini files are supported!\n\n", C::RED);
+                echo C::white("Error: Only .ini files are supported!\n\n", C::RED);
                 exit(1);
             }
         } elseif ($filePath) {
@@ -268,7 +262,7 @@ final class Configurator extends stdClass
             }
         }
 
-        return $value;
+        return $value; // @phpstan-ignore return.type (todo: cleanup)
     }
 
     /**

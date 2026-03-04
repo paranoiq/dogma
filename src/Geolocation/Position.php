@@ -36,8 +36,8 @@ class Position
     /** @var float [degrees] */
     private float $longitude;
 
-    /** @var array{float, float, float}|null */
-    private ?array $normalVector;
+    /** @var array{float, float, float} */
+    private array $normalVector;
 
     final public function __construct(float $latitude, float $longitude, float $planetRadius = self::PLANET_EARTH_RADIUS)
     {
@@ -103,7 +103,7 @@ class Position
      */
     public function getNormalVector(): array
     {
-        if ($this->normalVector === null) {
+        if (!isset($this->normalVector)) {
             $this->normalVector = Vector3::radiansToNormalVector(deg2rad($this->latitude), deg2rad($this->longitude));
         }
 

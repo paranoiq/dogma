@@ -51,9 +51,9 @@ use const LOCK_UN;
  */
 class File implements Path
 {
-    use StrictBehaviorMixin;
     use NonCloneableMixin;
     use NonSerializableMixin;
+    use StrictBehaviorMixin;
 
     /** @var positive-int */
     public static int $defaultChunkSize = 8192;
@@ -353,7 +353,7 @@ class File implements Path
 
         error_clear_last();
         $wouldBlock = null;
-        $result = flock($this->handle, $mode->getValue(), $wouldBlock);
+        $result = flock($this->handle, $mode->getValue(), $wouldBlock); // @phpstan-ignore argument.type
 
         if ($result === false) {
             if ($wouldBlock) {

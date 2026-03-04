@@ -75,8 +75,8 @@ use function uksort;
  */
 class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 {
-    use StrictBehaviorMixin;
     use ImmutableArrayAccessMixin;
+    use StrictBehaviorMixin;
 
     /** @internal */
     private const PRESERVE_KEYS = true;
@@ -438,7 +438,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
             return null;
         }
 
-        return max($this->toArray());
+        return max($this->toArray()); // @phpstan-ignore argument.type (non-empty!)
     }
 
     /**
@@ -449,7 +449,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         if ($this->isEmpty()) {
             return null;
         }
-        return min($this->toArray());
+        return min($this->toArray()); // @phpstan-ignore argument.type (non-empty!)
     }
 
     /**
@@ -1335,7 +1335,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
             $args[] = $function;
             $args[] = $keysFunction;
             $arr = array_udiff_uassoc(...$args);
-        } elseif ($function && !$keysFunction) {
+        } elseif ($function && !$keysFunction) { // @phpstan-ignore booleanNot.alwaysTrue (yeah, whatever)
             $args[] = $function;
             $arr = array_udiff_assoc(...$args);
         } elseif (!$function && $keysFunction) {
@@ -1433,7 +1433,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
             $args[] = $function;
             $args[] = $keysFunction;
             $arr = array_uintersect_uassoc(...$args);
-        } elseif ($function && !$keysFunction) {
+        } elseif ($function && !$keysFunction) { // @phpstan-ignore booleanNot.alwaysTrue (yeah, whatever)
             $args[] = $function;
             $arr = array_uintersect_assoc(...$args);
         } elseif (!$function && $keysFunction) {

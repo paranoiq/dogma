@@ -4,6 +4,7 @@ namespace Dogma\Tests\Type;
 
 use Closure;
 use Dogma\Check;
+use Dogma\Debug\Dumper;
 use Dogma\InvalidTypeException;
 use Dogma\InvalidValueException;
 use Dogma\Tester\Assert;
@@ -12,7 +13,6 @@ use Dogma\ValueOutOfRangeException;
 use stdClass;
 use Tester\AssertException;
 use Throwable;
-use Tracy\Debugger;
 use function get_class;
 use function in_array;
 use function is_float;
@@ -81,7 +81,7 @@ $callableMethod = [new TestClass2(), 'test'];
 $callableStaticMethod = [TestClass2::class, 'testStatic'];
 
 /**
- * @var mixed[][] ($key => [$value, $possibleTypes...])
+ * @var mixed[][] $subjects ($key => [$value, $possibleTypes...])
  */
 $subjects = [
     'null' => [null, Type::NULL],
@@ -151,18 +151,18 @@ foreach ($subjects as $name => $possibleTypes) {
         try {
             Check::type($copy, $type);
             if (!in_array($type, $possibleTypes, true)) {
-                $before = trim(Debugger::dump($subject, true));
-                $after = trim(Debugger::dump($copy, true));
+                $before = trim(Dumper::dump($subject));
+                $after = trim(Dumper::dump($copy));
                 $type = $type ?: 'null';
                 Assert::fail("Subject $name `$before` should not be castable to type $type. Instead casted to value `$after`.");
             }
         } catch (Throwable $e) {
             $class = get_class($e);
-            $before = trim(Debugger::dump($subject, true));
+            $before = trim(Dumper::dump($subject));
             if ($class === AssertException::class) {
                 throw $e;
             } elseif (in_array($type, $possibleTypes, true)) {
-                Assert::fail("Subject $name `$before` should be casted to type $type. $class thrown instead.");
+                Assert::fail("Subject $name `$before` should be casted to type $type. $class({$e->getMessage()}) thrown instead.");
             } elseif ($class === InvalidTypeException::class
                 && !($type === Type::FLOAT && is_float($subject) && (is_nan($subject) || $subject === INF || $subject === -INF))) {
                 continue;

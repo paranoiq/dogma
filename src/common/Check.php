@@ -24,6 +24,7 @@ use function is_a;
 use function is_array;
 use function is_callable;
 use function is_float;
+use function is_infinite;
 use function is_int;
 use function is_iterable;
 use function is_nan;
@@ -274,7 +275,7 @@ final class Check
             }
             return;
         }
-        if (!is_numeric($value)) {
+        if (!is_numeric($value) || (is_float($value) && (is_nan($value) || is_infinite($value)))) {
             throw new InvalidTypeException(Type::INT, $value);
         }
         $actualType = gettype($value);
@@ -337,8 +338,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function int8(&$value, ?int $min = null, ?int $max = null): void
     {
@@ -352,8 +353,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function nullableInt8(&$value, ?int $min = null, ?int $max = null): void
     {
@@ -370,8 +371,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function uint8(&$value, ?int $max = null): void
     {
@@ -385,8 +386,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function nullableUint8(&$value, ?int $max = null): void
     {
@@ -403,8 +404,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function int16(&$value, ?int $min = null, ?int $max = null): void
     {
@@ -418,8 +419,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function nullableInt16(&$value, ?int $min = null, ?int $max = null): void
     {
@@ -436,8 +437,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function uint16(&$value, ?int $max = null): void
     {
@@ -451,8 +452,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function nullableUint16(&$value, ?int $max = null): void
     {
@@ -469,8 +470,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function int24(&$value, ?int $min = null, ?int $max = null): void
     {
@@ -484,8 +485,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function nullableInt24(&$value, ?int $min = null, ?int $max = null): void
     {
@@ -502,8 +503,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function uint24(&$value, ?int $max = null): void
     {
@@ -517,8 +518,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function nullableUint24(&$value, ?int $max = null): void
     {
@@ -535,8 +536,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function int32(&$value, ?int $min = null, ?int $max = null): void
     {
@@ -550,8 +551,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function nullableInt32(&$value, ?int $min = null, ?int $max = null): void
     {
@@ -568,8 +569,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function uint32(&$value, ?int $max = null): void
     {
@@ -583,8 +584,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function nullableUint32(&$value, ?int $max = null): void
     {
@@ -601,8 +602,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function int48(&$value, ?int $min = null, ?int $max = null): void
     {
@@ -616,8 +617,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function nullableInt48(&$value, ?int $min = null, ?int $max = null): void
     {
@@ -634,8 +635,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function uint48(&$value, ?int $max = null): void
     {
@@ -649,8 +650,8 @@ final class Check
     /**
      * @param mixed $value
      * @throws InvalidTypeException
-     * @throws ValueOutOfRangeException
      * @throws ValueOutOfBoundsException
+     * @throws ValueOutOfRangeException
      */
     public static function nullableUint48(&$value, ?int $max = null): void
     {

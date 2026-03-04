@@ -140,7 +140,7 @@ class Arr
     {
         Check::min($step, 1);
 
-        return range($start, $end, $step);
+        return range($start, $end, $step); // @phpstan-ignore return.type (yes, this can overflow to float. do not care)
     }
 
     /**
@@ -1595,7 +1595,7 @@ class Arr
             $args[] = $keysFunction;
 
             return array_udiff_uassoc($array, ...$args); // @phpstan-ignore-line Parameter #2 $arr2 of function array_udiff_uassoc expects array, array<T>|(callable) given.
-        } elseif ($function && !$keysFunction) {
+        } elseif ($function && !$keysFunction) { // @phpstan-ignore booleanNot.alwaysTrue (yeah, whatever)
             $args[] = $function;
 
             return array_udiff_assoc($array, ...$args); // @phpstan-ignore-line Parameter #2 $arr2 of function array_udiff_assoc expects array, array<T>|(callable) given.
@@ -1680,7 +1680,7 @@ class Arr
             $args[] = $keysFunction;
 
             return array_uintersect_uassoc($array, ...$args); // @phpstan-ignore-line Parameter #2 $arr2 of function array_uintersect_uassoc expects array, array<T>|(callable) given.
-        } elseif ($function && !$keysFunction) {
+        } elseif ($function && !$keysFunction) { // @phpstan-ignore booleanNot.alwaysTrue (yeah, whatever)
             $args[] = $function;
 
             return array_uintersect_assoc($array, ...$args); // @phpstan-ignore-line Parameter #2 $arr2 of function array_uintersect_assoc expects array, array<T>|(callable) given.

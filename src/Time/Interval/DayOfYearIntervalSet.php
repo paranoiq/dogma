@@ -31,8 +31,8 @@ use function reset;
  */
 class DayOfYearIntervalSet implements IntervalSet
 {
-    use StrictBehaviorMixin;
     use IntervalSetDumpMixin;
+    use StrictBehaviorMixin;
 
     /** @var DayOfYearInterval[] */
     private array $intervals;

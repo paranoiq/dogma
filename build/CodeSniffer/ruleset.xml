@@ -1,9 +1,11 @@
 <?xml version="1.0"?>
 <ruleset name="Dogma">
     <config name="php_version" value="70400"/>
-    <rule ref="../../vendor/dogma/dogma-dev/src/CodeSniffer/ruleset.xml">
+    <rule ref="../../vendor/dogma/dogma-dev/src/ruleset.xml">
         <exclude name="Squiz.Arrays.ArrayDeclaration.ValueNoNewline"/>
         <exclude name="PSR2.Methods.FunctionCallSignature.MultipleArguments"/>
         <exclude name="Generic.CodeAnalysis.EmptyStatement"/>
+        <exclude name="PSR2.Namespaces.UseDeclaration.SpaceAfterLastUse"/><!-- duplicate -->
+        <exclude name="SlevomatCodingStandard.Classes.DisallowLateStaticBindingForConstants.DisallowedLateStaticBindingForConstant"/>
     </rule>
 </ruleset>

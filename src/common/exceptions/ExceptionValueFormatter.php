@@ -14,6 +14,7 @@ use function get_class;
 use function get_resource_type;
 use function is_array;
 use function is_bool;
+use function is_nan;
 use function is_object;
 use function is_resource;
 use function is_string;
@@ -45,6 +46,8 @@ class ExceptionValueFormatter
             return $value ? 'TRUE' : 'FALSE';
         } elseif ($value === null) {
             return 'NULL';
+        } elseif (is_nan($value)) {
+            return 'NAN';
         } else { // integer, float
             return (string) $value;
         }

@@ -33,7 +33,7 @@ class HttpOrCurlStatus extends PartialIntEnum
     public const S100_CONTINUE = 100;
     public const S101_SWITCHING_PROTOCOLS = 101;
     public const S102_PROCESSING = 102; // WebDAV
-    /** @deprecated */
+    /** @deprecated rfc */
     public const S103_CHECKPOINT = 103;
     public const S103_EARLY_HINTS = 103;
 
@@ -72,9 +72,9 @@ class HttpOrCurlStatus extends PartialIntEnum
     public const S410_GONE = 410;
     public const S411_LENGTH_REQUIRED = 411;
     public const S412_PRECONDITION_FAILED = 412;
-    /** @deprecated */
+    /** @deprecated rfc */
     public const S413_REQUESTED_ENTITY_TOO_LARGE = 413;
-    /** @deprecated */
+    /** @deprecated rfc */
     public const S413_PAYLOAD_TOO_LARGE = 413;
     public const S413_CONTENT_TOO_LARGE = 413;
     public const S414_REQUEST_URI_TOO_LONG = 414;
@@ -85,12 +85,12 @@ class HttpOrCurlStatus extends PartialIntEnum
     public const S419_AUTHENTICATION_TIMEOUT = 419;
     public const S420_ENHANCE_YOUR_CALM = 420;
     public const S421_MISDIRECTED_REQUEST = 421;
-    /** @deprecated */
+    /** @deprecated rfc */
     public const S422_UNPROCESSABLE_ENTITY = 422; // WebDAV
     public const S422_UNPROCESSABLE_CONTENT = 422; // WebDAV
     public const S423_LOCKED = 423; // WebDAV
     public const S424_FAILED_DEPENDENCY = 424; // WebDAV
-    /** @deprecated */
+    /** @deprecated rfc */
     public const S425_UNORDERED_COLLECTION = 425;
     public const S425_TOO_EARLY = 425;
     public const S426_UPGRADE_REQUIRED = 426;

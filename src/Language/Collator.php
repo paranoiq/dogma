@@ -43,7 +43,7 @@ class Collator extends PhpCollator
         }
         $options = $locale->getCollationOptions();
 
-        if ($collation === null && $options === []) {
+        if ($options === []) {
             parent::__construct($locale->getValue());
         } else {
             // work around bug with parsing locale collation

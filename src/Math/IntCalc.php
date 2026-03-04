@@ -175,7 +175,7 @@ class IntCalc
         $count = 0;
         if ($n < 0) {
             $count = 1;
-            $n = $n & PHP_INT_MAX;
+            $n &= PHP_INT_MAX;
         }
 
         while ($n !== 0) {

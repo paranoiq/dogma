@@ -17,6 +17,7 @@ use Dogma\Time\InvalidFormattingStringException;
 use Dogma\Time\Time;
 use function count;
 use function explode;
+use function get_class;
 
 /**
  * Uses standard PHP date() formatting and "|" separator for start and end part of formatting string.

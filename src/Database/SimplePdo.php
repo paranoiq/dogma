@@ -109,7 +109,7 @@ class SimplePdo extends PDO
                 if ($statement === false) {
                     throw new PDOException('Could not prepare statement.');
                 }
-                foreach (array_values($args) as $i => $arg) {
+                foreach ($args as $i => $arg) {
                     $type = $types[$i] ?? self::$nativeTypes[gettype($arg)] ?? self::PARAM_NULL;
                     $statement->bindParam(':arg_' . $i, $args[$i], $type);
                 }

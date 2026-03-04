@@ -20,10 +20,7 @@ class InvalidIntervalStartEndOrderException extends InvalidIntervalException
      */
     public function __construct($start, $end, ?Throwable $previous = null)
     {
-        parent::__construct(
-            "Start {$start} should be less than or equal to end {$end}.",
-            $previous
-        );
+        parent::__construct("Start {$start} should be less than or equal to end {$end}.", $previous);
     }
 
 }

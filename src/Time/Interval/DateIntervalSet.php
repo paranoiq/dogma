@@ -35,8 +35,8 @@ use function sort;
  */
 class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 {
-    use StrictBehaviorMixin;
     use IntervalSetDumpMixin;
+    use StrictBehaviorMixin;
 
     /** @var DateInterval[] */
     private array $intervals;
@@ -70,7 +70,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
             }
             $previous = $date;
         }
-        if ($start !== false) {
+        if ($start !== false) { // @phpstan-ignore notIdentical.alwaysTrue (reset can return false)
             $intervals[] = new DateInterval($start, $previous);
         }
 

@@ -102,7 +102,7 @@ class Cls
 
         $common = array_intersect($firstParents, $secondParents);
         if ($common === []) {
-            $commonRoots[$first][$second][$after] = false;
+            $commonRoots[$first][$second][(string) $after] = false;
             return null;
         }
 
@@ -118,7 +118,7 @@ class Cls
         }
 
         $root = array_pop($common);
-        $commonRoots[$first][$second][$after] = $root;
+        $commonRoots[$first][$second][(string) $after] = $root;
 
         return $root;
     }
@@ -155,7 +155,7 @@ class Cls
 
         $common = array_intersect($firstParents, $secondParents);
         if ($common === []) {
-            $commonBranches[$first][$second][$after] = false;
+            $commonBranches[$first][$second][(string) $after] = false;
             return null;
         }
 
@@ -171,7 +171,7 @@ class Cls
         }
 
         $branch = array_shift($common);
-        $commonBranches[$first][$second][$after] = $branch;
+        $commonBranches[$first][$second][(string) $after] = $branch;
 
         return $branch;
     }

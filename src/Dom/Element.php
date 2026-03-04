@@ -16,6 +16,7 @@ use Dogma\Time\DateTime;
 use DOMDocument;
 use DOMElement;
 use DOMNamedNodeMap;
+use DOMNameSpaceNode;
 use DOMNode;
 use DOMNodeList;
 use function array_shift;
@@ -26,7 +27,7 @@ use function func_get_args;
  * @property-read string $nodeValue
  * @property-read int $nodeType
  * @property-read DOMNode|null $parentNode
- * @property-read DOMNodeList $childNodes
+ * @property-read DOMNodeList<DOMNode|DOMNameSpaceNode> $childNodes
  * @property-read DOMElement|null $firstChild
  * @property-read DOMElement|null $lastChild
  * @property-read DOMElement|null $previousSibling

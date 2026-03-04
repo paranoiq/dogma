@@ -10,7 +10,10 @@
 namespace Dogma\System;
 
 use Dogma\Enum\StringEnum;
+use function preg_match;
+use function shell_exec;
 use const PHP_OS;
+use const PHP_OS_FAMILY;
 
 /**
  * PHP_OS_FAMILY values (PHP 7.2+)
@@ -49,6 +52,34 @@ class Os extends StringEnum
     public static function isWindows(): bool
     {
         return self::family() === self::WINDOWS;
+    }
+
+    /**
+     * @return array{int, int} ($logical, $physical)
+     */
+    public static function cpuCores(): array
+    {
+        switch (PHP_OS_FAMILY) {
+            case 'Linux':
+                $logical = (int) shell_exec('nproc');
+                $physical = (int) shell_exec('grep -m 1 "cpu cores" /proc/cpuinfo | awk \'{print $4}\'');
+
+                return [$logical ?: 1, $physical ?: ($logical ?: 1)];
+            case 'Windows':
+                $logical = shell_exec('wmic cpu get NumberOfLogicalProcessors /value');
+                $physical = shell_exec('wmic cpu get NumberOfCores /value');
+
+                preg_match('/(\d+)/', (string) $logical, $lMatches);
+                preg_match('/(\d+)/', (string) $physical, $pMatches);
+
+                return [(int) ($lMatches[1] ?? 1), (int) ($pMatches[1] ?? 1)];
+            case 'Darwin':
+                return [(int) shell_exec('sysctl -n hw.ncpu'), (int) shell_exec('sysctl -n hw.physicalcpu')];
+            default:
+                $logical = (int) shell_exec('nproc 2>/dev/null');
+
+                return [$logical ?: 1, $logical ?: 1];
+        }
     }
 
 }

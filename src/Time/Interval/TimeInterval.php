@@ -45,8 +45,8 @@ use function round;
  */
 class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 {
-    use StrictBehaviorMixin;
     use IntervalDumpMixin;
+    use StrictBehaviorMixin;
 
     public const MIN = Time::MIN;
     public const MAX = '47:59:59.999999';

@@ -81,11 +81,10 @@ use const PREG_SET_ORDER;
  */
 class HttpRequest
 {
-    use StrictBehaviorMixin;
     use NonSerializableMixin;
+    use StrictBehaviorMixin;
 
-    /** @var CurlHandle|resource */
-    private $curl;
+    private CurlHandle $curl;
 
     /** @var callable|null */
     private $init;
@@ -103,7 +102,7 @@ class HttpRequest
     /** @var mixed[] */
     private array $variables = [];
 
-    private string $content;
+    private ?string $content = null;
 
     protected ?HttpHeaderParser $headerParser = null;
 
@@ -116,10 +115,8 @@ class HttpRequest
     public function __construct(?string $url = null, ?string $method = null)
     {
         error_clear_last();
-        /** @var resource|false $curl */
         $curl = curl_init();
         if ($curl === false) {
-            /** @var string[] $error */
             $error = error_get_last();
 
             throw new HttpRequestException('Cannot initialize curl. Error: ' . $error['message']);
@@ -277,8 +274,6 @@ class HttpRequest
             if ($number === null) {
                 throw new HttpRequestException("Unknown CURL option '$name'!");
             }
-        } elseif (!is_int($name)) {
-            throw new HttpRequestException('Option name must be a string or a CURLOPT_* constant!');
         } else {
             $number = $name;
         }
@@ -442,9 +437,8 @@ class HttpRequest
     /**
      * Called by RequestManager.
      * @internal
-     * @return CurlHandle|resource
      */
-    public function getHandler()
+    public function getHandler(): CurlHandle
     {
         return $this->curl;
     }

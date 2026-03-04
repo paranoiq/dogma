@@ -87,7 +87,7 @@ class Re
             throw new RegexpException($error);
         }
 
-        return $result;
+        return $result; // @phpstan-ignore return.type ("should return array<string> but returns list<list<int|string>|string>" - no fucking way)
     }
 
     public static function pos(string $string, string $pattern, int $offset = 0): ?int
@@ -145,7 +145,7 @@ class Re
             return null;
         }
 
-        return $matches;
+        return $matches; // @phpstan-ignore return.type ("should return array<string>|null but returns array<list<int|string|null>|string|null>" - no fucking way)
     }
 
     /**
@@ -168,7 +168,7 @@ class Re
             return null;
         }
 
-        return $matches ? $matches[1] : null;
+        return $matches ? $matches[1] : null; // @phpstan-ignore return.type ("should return string|null but returns list<int|string|null>|string|null" - no fucking way)
     }
 
     /**
@@ -223,7 +223,7 @@ class Re
     public static function replace(string $string, $pattern, $replacement = null, int $limit = -1): string
     {
         if (is_object($replacement) || is_array($replacement)) {
-            if (!is_callable($replacement, false, $name)) {
+            if (!is_callable($replacement, false, $name)) { // @phpstan-ignore function.alreadyNarrowedType
                 throw new InvalidArgumentException("Callback '$name' is not callable.");
             }
 

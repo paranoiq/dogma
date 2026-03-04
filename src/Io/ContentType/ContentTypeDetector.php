@@ -41,7 +41,6 @@ class ContentTypeDetector
     private function initTypeHandler(): void
     {
         error_clear_last();
-        /** @var resource|false $typeHandler */
         $typeHandler = finfo_open(FILEINFO_MIME_TYPE, $this->magicFile);
         if ($typeHandler === false) {
             throw new ContentTypeDetectionException('Cannot initialize finfo extension: ' . error_get_last()['message']);
@@ -52,7 +51,6 @@ class ContentTypeDetector
     private function initEncodingHandler(): void
     {
         error_clear_last();
-        /** @var resource|false $encodingHandler */
         $encodingHandler = finfo_open(FILEINFO_MIME_ENCODING, $this->magicFile);
         if ($encodingHandler === false) {
             throw new ContentTypeDetectionException('Cannot initialize finfo extension. ' . error_get_last()['message']);

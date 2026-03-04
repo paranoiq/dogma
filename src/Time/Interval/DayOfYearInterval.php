@@ -35,8 +35,8 @@ use function min;
  */
 class DayOfYearInterval implements ModuloInterval
 {
-    use StrictBehaviorMixin;
     use IntervalDumpMixin;
+    use StrictBehaviorMixin;
 
     public const MIN = DayOfYear::MIN_NUMBER;
     public const MAX = DayOfYear::MAX_DENORMALIZED;

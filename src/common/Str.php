@@ -252,11 +252,17 @@ class Str
         return Strings::trim($string, $chars);
     }
 
+    /**
+     * @param  non-empty-string $pad
+     */
     public static function padRight(string $string, int $length, string $pad = ' '): string
     {
         return Strings::padRight($string, $length, $pad);
     }
 
+    /**
+     * @param  non-empty-string $pad
+     */
     public static function padLeft(string $string, int $length, string $pad = ' '): string
     {
         return Strings::padLeft($string, $length, $pad);
@@ -829,7 +835,7 @@ class Str
             try {
                 error_clear_last();
                 $result = mb_convert_encoding($string, $to, $from);
-                if (error_get_last() !== null) {
+                if ($result === false) {
                     throw new ErrorException('Cannot convert encoding', error_get_last());
                 }
 
@@ -855,7 +861,7 @@ class Str
 
             error_clear_last();
             $result = $converter->convert($string);
-            if ($result === false) {
+            if ($result === false) { // @phpstan-ignore identical.alwaysFalse (bullshit)
                 throw new ErrorException('Cannot convert encoding.', error_get_last());
             }
 

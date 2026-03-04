@@ -21,10 +21,7 @@ class ValueOutOfAllowedRangeException extends InvalidIntervalException
      */
     public function __construct($value, $min, $max, ?Throwable $previous = null)
     {
-        parent::__construct(
-            "Value {$value} is out of allowed range {$min} - {$max}.",
-            $previous
-        );
+        parent::__construct("Value {$value} is out of allowed range {$min} - {$max}.", $previous);
     }
 
 }

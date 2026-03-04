@@ -33,6 +33,7 @@ use function ceil;
 use function explode;
 use function floatval;
 use function floor;
+use function is_float;
 use function is_int;
 use function is_string;
 use function number_format;
@@ -104,9 +105,9 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
      * @param string $format
      * @param string $datetime
      * @param DateTimeZone|null $timezone
-     * @return static
+     * @throws InvalidDateTimeException
      */
-    public static function createFromFormat($format, $datetime, $timezone = null): self
+    public static function createFromFormat($format, $datetime, $timezone = null): static
     {
         // due to invalid type hint in parent class...
         Check::nullableObject($timezone, DateTimeZone::class);
@@ -126,9 +127,8 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @param non-empty-array<string> $formats
-     * @return static
      */
-    public static function createFromAnyFormat(array $formats, string $timeString, ?DateTimeZone $timezone = null): self
+    public static function createFromAnyFormat(array $formats, string $timeString, ?DateTimeZone $timezone = null): static
     {
         Check::count($formats, 1);
 
@@ -148,9 +148,16 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         }
     }
 
-    public static function createFromTimestamp(int $timestamp, ?DateTimeZone $timezone = null): self
+    public static function createFromTimestamp(int|float $timestamp, ?DateTimeZone $timezone = null): static
     {
-        $dateTime = static::createFromFormat('U', (string) $timestamp, TimeZone::getUtc());
+        if (is_float($timestamp)) {
+            $formatted = number_format($timestamp, 6, '.', '');
+
+            $dateTime = static::createFromFormat('U.u', $formatted, TimeZone::getUtc());
+        } else {
+            $dateTime = static::createFromFormat('U', (string) $timestamp, TimeZone::getUtc());
+        }
+
         if ($timezone === null) {
             $timezone = TimeZone::getDefault();
         }
@@ -159,7 +166,8 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $dateTime;
     }
 
-    public static function createFromFloatTimestamp(float $timestamp, ?DateTimeZone $timezone = null): self
+    /** @deprecated use createFromTimestamp() */
+    public static function createFromFloatTimestamp(float $timestamp, ?DateTimeZone $timezone = null): static
     {
         $formatted = number_format($timestamp, 6, '.', '');
 
@@ -172,7 +180,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $dateTime;
     }
 
-    public static function createFromMicroTimestamp(int $microTimestamp, ?DateTimeZone $timezone = null): self
+    public static function createFromMicroTimestamp(int $microTimestamp, ?DateTimeZone $timezone = null): static
     {
         $timestamp = (int) floor($microTimestamp / 1000000);
         $microseconds = $microTimestamp - $timestamp * 1000000;
@@ -195,7 +203,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         int $seconds = 0,
         int $microseconds = 0,
         ?DateTimeZone $timeZone = null
-    ): self
+    ): static
     {
         Check::range($year, 1, 9999);
         Check::range($month, 1, 12);
@@ -208,7 +216,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return new static("$year-$month-$day $hours:$minutes:$seconds.$microseconds", $timeZone);
     }
 
-    public static function createFromDateTimeInterface(DateTimeInterface $datetime, ?DateTimeZone $timezone = null): self
+    public static function createFromDateTimeInterface(DateTimeInterface $datetime, ?DateTimeZone $timezone = null): static
     {
         if ($timezone === null) {
             $timezone = $datetime->getTimezone();
@@ -219,7 +227,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return self::createFromTimestamp($timestamp, $timezone)->modify('+' . $microseconds . ' microseconds');
     }
 
-    public static function createFromDateAndTime(Date $date, Time $time, ?DateTimeZone $timeZone = null): self
+    public static function createFromDateAndTime(Date $date, Time $time, ?DateTimeZone $timeZone = null): static
     {
         // morning hours of next day
         if ($time->getMicroTime() > Time::MAX_MICROSECONDS) {
@@ -279,9 +287,9 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $modifier
      */
-    public function modify($modifier): self
+    public function modify($modifier): static
     {
-        /** @var self|false $result */
+        /** @var static|false $result */
         $result = parent::modify($modifier);
         if ($result === false) {
             throw new InvalidValueException($modifier, 'date-time modification string');
@@ -293,7 +301,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     /**
      * @param DateInterval|DateOrTimeSpan $interval
      */
-    public function add($interval): self
+    public function add($interval): static
     {
         if ($interval instanceof DateInterval) {
             $that = parent::add($interval);
@@ -311,7 +319,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     /**
      * @param DateInterval|DateOrTimeSpan $interval
      */
-    public function sub($interval): self
+    public function sub($interval): static
     {
         if ($interval instanceof DateOrTimeSpan) {
             return $this->add($interval->invert());
@@ -321,7 +329,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return static::createFromDateTimeInterface($that);
     }
 
-    public function addUnit(DateTimeUnit $unit, int $amount = 1): self
+    public function addUnit(DateTimeUnit $unit, int $amount = 1): static
     {
         if ($unit->equalsValue(DateTimeUnit::QUARTER)) {
             $unit = DateTimeUnit::month();
@@ -334,7 +342,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this->modify('+' . $amount . ' ' . $unit->getValue() . 's');
     }
 
-    public function subtractUnit(DateTimeUnit $unit, int $amount = 1): self
+    public function subtractUnit(DateTimeUnit $unit, int $amount = 1): static
     {
         if ($unit->equalsValue(DateTimeUnit::QUARTER)) {
             $unit = DateTimeUnit::month();
@@ -354,7 +362,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
      * @param int|null $second
      * @param int|null $microsecond
      */
-    public function setTime($hour, $minute = null, $second = null, $microsecond = null): self
+    public function setTime($hour, $minute = null, $second = null, $microsecond = null): static
     {
         if ($hour instanceof Time) {
             return self::createFromDateTimeInterface(parent::setTime($hour->getHours(), $hour->getMinutes(), $hour->getSeconds(), $hour->getMicroseconds()));

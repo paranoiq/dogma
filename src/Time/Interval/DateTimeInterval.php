@@ -47,8 +47,8 @@ use function range;
  */
 class DateTimeInterval implements Interval, DateOrTimeInterval
 {
-    use StrictBehaviorMixin;
     use IntervalDumpMixin;
+    use StrictBehaviorMixin;
 
     public const MIN = DateTime::MIN;
     public const MAX = DateTime::MAX;

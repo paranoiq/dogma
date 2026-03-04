@@ -4,7 +4,6 @@ namespace Dogma\Tests\Time\Interval;
 
 use DateTime as PhpDateTime;
 use DateTimeImmutable;
-use DateTimeZone;
 use Dogma\Math\Interval\InvalidIntervalStringFormatException;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
@@ -19,7 +18,6 @@ use Dogma\Time\InvalidIntervalStartEndOrderException;
 use Dogma\Time\Microseconds;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Time;
-use Dogma\Time\TimeZone;
 
 require_once __DIR__ . '/../../bootstrap.php';
 

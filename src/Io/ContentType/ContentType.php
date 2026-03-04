@@ -1815,7 +1815,7 @@ class ContentType extends PartialStringEnum
     public const VIDEO_X_SGI_MOVIE = 'video/x-sgi-movie';
     public const X_CONFERENCE_X_COOLTALK = 'x-conference/x-cooltalk';
 
-    /** @var string[] */
+    /** @var array<string,string> */
     private static array $extensions = [
         '123' => self::APPLICATION_VND_LOTUS_1_2_3,
         '3dml' => self::TEXT_VND_IN3D_3DML,
@@ -2589,10 +2589,7 @@ class ContentType extends PartialStringEnum
 
     public function getExtension(): ?string
     {
-        /** @var string|null $extension */
-        $extension = array_search($this->getValue(), self::$extensions, true) ?: null;
-
-        return $extension;
+        return array_search($this->getValue(), self::$extensions, true) ?: null;
     }
 
     public function isAudio(): bool

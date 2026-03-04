@@ -33,8 +33,8 @@ use function reset;
  */
 class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokeable
 {
-    use StrictBehaviorMixin;
     use IntervalSetDumpMixin;
+    use StrictBehaviorMixin;
 
     /** @var TimeInterval[] */
     private array $intervals;

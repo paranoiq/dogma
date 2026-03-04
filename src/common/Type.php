@@ -35,9 +35,9 @@ use function strlen;
  */
 class Type
 {
-    use StrictBehaviorMixin;
     use NonCloneableMixin;
     use NonSerializableMixin;
+    use StrictBehaviorMixin;
 
     // types
     public const BOOL = 'bool';

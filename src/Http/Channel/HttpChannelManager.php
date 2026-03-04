@@ -9,6 +9,7 @@
 
 namespace Dogma\Http\Channel;
 
+use CurlHandle;
 use CurlMultiHandle;
 use Dogma\Http\Curl\CurlHelper;
 use Dogma\Http\HttpHeaderParser;
@@ -35,12 +36,11 @@ use const PHP_INT_MIN;
  */
 class HttpChannelManager
 {
-    use StrictBehaviorMixin;
-    use NonSerializableMixin;
     use NonCloneableMixin;
+    use NonSerializableMixin;
+    use StrictBehaviorMixin;
 
-    /** @var CurlMultiHandle|resource */
-    private $handler;
+    private CurlMultiHandle $handler;
 
     /** @var int maximum threads for all channels */
     private int $threadLimit = 20;
@@ -71,10 +71,7 @@ class HttpChannelManager
         curl_multi_close($this->handler);
     }
 
-    /**
-     * @return CurlMultiHandle|resource
-     */
-    public function getHandler()
+    public function getHandler(): CurlMultiHandle
     {
         return $this->handler;
     }
@@ -213,10 +210,8 @@ class HttpChannelManager
 
     /**
      * Save data for later use.
-     * @param resource $resource
-     * @param string|int $name
      */
-    public function jobStarted($resource, HttpChannel $channel, $name, HttpRequest $request): void
+    public function jobStarted(CurlHandle $resource, HttpChannel $channel, string|int $name, HttpRequest $request): void
     {
         $this->resources[Obj::objectId($resource)] = [spl_object_hash($channel), $name, $request];
     }

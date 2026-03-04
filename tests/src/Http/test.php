@@ -7,13 +7,10 @@ use Dogma\Http\Channel\HttpChannel;
 use Dogma\Http\Channel\HttpChannelManager;
 use Dogma\Http\HttpDownloadRequest;
 use Dogma\Http\HttpRequest;
-use Tracy\Debugger;
 use function header;
 
 require_once __DIR__ . '/../bootstrap.php';
 require_once __DIR__ . '/../../../src/loader.php';
-
-Debugger::enable(Debugger::DEVELOPMENT, __DIR__);
 
 header('Content-Type: text/html; charset=utf-8');
 
@@ -60,6 +57,3 @@ $response = null;
 while ($response = $channelA->fetch()) {
     echo $response->getBody();
 }
-
-//dump($response);
-//dump($manager);

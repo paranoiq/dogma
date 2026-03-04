@@ -15,6 +15,7 @@ use DOMCdataSection;
 use DOMComment;
 use DOMDocument;
 use DOMElement;
+use DOMNameSpaceNode;
 use DOMNode;
 use DOMText;
 use function count;
@@ -28,7 +29,7 @@ class Dumper
     use StaticClassMixin;
 
     /**
-     * @param Element|NodeList|DOMNode $node
+     * @param Element|NodeList|DOMNode|DOMNameSpaceNode $node
      */
     public static function dump($node, int $maxDepth = 15, int $depth = 0, bool $onlyChild = false): void
     {
@@ -46,7 +47,6 @@ class Dumper
             if ($depth === 0) {
                 echo "<b>Document:</b>\n";
             }
-            /** @var DOMDocument $element */
             $element = $node->documentElement;
 
             self::dump($element, $maxDepth);
@@ -77,6 +77,9 @@ class Dumper
                 echo '    ';
                 self::dump($item, $maxDepth, $depth + 1, true);
             }
+        } elseif ($node instanceof DOMNameSpaceNode) {
+            // todo
+            echo '[DOMNameSpaceNode]';
         } else {
             echo '[something]';
             throw new NotImplementedException('Dom dumper found some strange thing.');
@@ -101,7 +104,7 @@ class Dumper
         echo '<b>&lt;</b><b style="color: red">', $node->nodeName, '</b>';
 
         foreach ($node->attributes ?? [] as $attribute) {
-            echo ' <span style="color: green">', $attribute->name, '</span>=<span style="color: blue">"', $attribute->value, '"</span>';
+            echo ' <span style="color: green">', $attribute->name, '</span>=<span style="color: blue">"', $attribute->value, '"</span>'; // @phpstan-ignore property.notFound, property.notFound
         }
 
         echo '<b>&gt;</b>';

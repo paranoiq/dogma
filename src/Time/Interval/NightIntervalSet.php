@@ -35,8 +35,8 @@ use function sort;
  */
 class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 {
-    use StrictBehaviorMixin;
     use IntervalSetDumpMixin;
+    use StrictBehaviorMixin;
 
     /** @var NightInterval[] */
     private array $intervals;
@@ -77,7 +77,7 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
             }
             $previous = $date;
         }
-        if ($start !== false) {
+        if ($start !== false) { // @phpstan-ignore notIdentical.alwaysTrue (reset can return false)
             $intervals[] = new NightInterval($start, $previous->addDay());
         }
 

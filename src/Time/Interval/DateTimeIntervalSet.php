@@ -34,8 +34,8 @@ use function reset;
  */
 class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 {
-    use StrictBehaviorMixin;
     use IntervalSetDumpMixin;
+    use StrictBehaviorMixin;
 
     /** @var DateTimeInterval[] */
     private array $intervals;

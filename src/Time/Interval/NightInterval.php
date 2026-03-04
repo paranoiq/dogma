@@ -50,8 +50,8 @@ use function round;
  */
 class NightInterval implements Interval, DateOrTimeInterval, Pokeable
 {
-    use StrictBehaviorMixin;
     use IntervalDumpMixin;
+    use StrictBehaviorMixin;
 
     public const MIN = Date::MIN;
     public const MAX = Date::MAX;
