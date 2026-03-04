@@ -298,10 +298,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $result;
     }
 
-    /**
-     * @param DateInterval|DateOrTimeSpan $interval
-     */
-    public function add($interval): static
+    public function add(DateInterval|DateOrTimeSpan $interval): static
     {
         if ($interval instanceof DateInterval) {
             $that = parent::add($interval);
@@ -316,10 +313,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return static::createFromDateTimeInterface($that);
     }
 
-    /**
-     * @param DateInterval|DateOrTimeSpan $interval
-     */
-    public function sub($interval): static
+    public function sub(DateInterval|DateOrTimeSpan $interval): static
     {
         if ($interval instanceof DateOrTimeSpan) {
             return $this->add($interval->invert());
@@ -381,10 +375,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return self::createFromDateTimeInterface(parent::setTime((int) $hour, (int) $minute, (int) $second, (int) $microsecond));
     }
 
-    /**
-     * @param DateTimeZone|string $timezone
-     */
-    public function setTimezone($timezone): self
+    public function setTimezone(DateTimeZone|string $timezone): self
     {
         if (!$timezone instanceof DateTimeZone) {
             $timezone = new DateTimeZone($timezone);
@@ -457,10 +448,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return parent::diff($targetObject, $absolute);
     }
 
-    /**
-     * @param DateTimeInterface|string $other
-     */
-    public function difference($other, bool $absolute = false): DateTimeSpan
+    public function difference(DateTimeInterface|string $other, bool $absolute = false): DateTimeSpan
     {
         $interval = $this->diff($other, $absolute);
 
@@ -508,10 +496,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this->getTimezone()->getOffset($this) === $other->getTimezone()->getOffset($other);
     }
 
-    /**
-     * @param DateTimeInterface|string $dateTime
-     */
-    public function isBefore($dateTime): bool
+    public function isBefore(DateTimeInterface|string $dateTime): bool
     {
         if (is_string($dateTime)) {
             $dateTime = new static($dateTime);
@@ -520,10 +505,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this < $dateTime;
     }
 
-    /**
-     * @param DateTimeInterface|string $dateTime
-     */
-    public function isAfter($dateTime): bool
+    public function isAfter(DateTimeInterface|string $dateTime): bool
     {
         if (is_string($dateTime)) {
             $dateTime = new static($dateTime);
@@ -532,11 +514,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this > $dateTime;
     }
 
-    /**
-     * @param DateTimeInterface|string $sinceTime
-     * @param DateTimeInterface|string $untilTime
-     */
-    public function isBetween($sinceTime, $untilTime): bool
+    public function isBetween(DateTimeInterface|string $sinceTime, DateTimeInterface|string $untilTime): bool
     {
         if (is_string($sinceTime)) {
             $sinceTime = new static($sinceTime);
@@ -563,10 +541,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return ($this->getMicroTimestamp() % Microseconds::DAY) === 0;
     }
 
-    /**
-     * @param DateTimeInterface|Date|string $date
-     */
-    public function isSameDay($date): bool
+    public function isSameDay(DateTimeInterface|Date|string $date): bool
     {
         if (is_string($date)) {
             $date = new static($date);
@@ -575,10 +550,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this->format(Date::DEFAULT_FORMAT) === $date->format(Date::DEFAULT_FORMAT);
     }
 
-    /**
-     * @param DateTimeInterface|Date|string $date
-     */
-    public function isBeforeDay($date): bool
+    public function isBeforeDay(DateTimeInterface|Date|string $date): bool
     {
         if (is_string($date)) {
             $date = new static($date);
@@ -587,10 +559,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this->format(Date::DEFAULT_FORMAT) < $date->format(Date::DEFAULT_FORMAT);
     }
 
-    /**
-     * @param DateTimeInterface|Date|string $date
-     */
-    public function isAfterDay($date): bool
+    public function isAfterDay(DateTimeInterface|Date|string $date): bool
     {
         if (is_string($date)) {
             $date = new static($date);
@@ -599,11 +568,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this->format(Date::DEFAULT_FORMAT) > $date->format(Date::DEFAULT_FORMAT);
     }
 
-    /**
-     * @param DateTimeInterface|Date|string $sinceDate
-     * @param DateTimeInterface|Date|string $untilDate
-     */
-    public function isBetweenDays($sinceDate, $untilDate): bool
+    public function isBetweenDays(DateTimeInterface|Date|string $sinceDate, DateTimeInterface|Date|string $untilDate): bool
     {
         if (is_string($sinceDate)) {
             $sinceDate = new static($sinceDate);
@@ -639,10 +604,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this->isBetween($tomorrow->getStart(), $tomorrow->getEnd());
     }
 
-    /**
-     * @param int|string|DayOfWeek $day
-     */
-    public function isDayOfWeek($day): bool
+    public function isDayOfWeek(int|string|DayOfWeek $day): bool
     {
         if (is_int($day)) {
             $day = DayOfWeek::get($day);
@@ -658,10 +620,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this->format('N') > 5;
     }
 
-    /**
-     * @param int|string|Month $month
-     */
-    public function isMonth($month): bool
+    public function isMonth(int|string|Month $month): bool
     {
         if (is_int($month)) {
             $month = Month::get($month);

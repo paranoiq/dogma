@@ -218,9 +218,8 @@ class Re
 
     /**
      * @param string|string[] $pattern
-     * @param string|callable|null $replacement
      */
-    public static function replace(string $string, $pattern, $replacement = null, int $limit = -1): string
+    public static function replace(string $string, string|array $pattern, string|callable|null $replacement = null, int $limit = -1): string
     {
         if (is_object($replacement) || is_array($replacement)) {
             if (!is_callable($replacement, false, $name)) { // @phpstan-ignore function.alreadyNarrowedType

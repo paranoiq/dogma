@@ -29,10 +29,7 @@ class Tuple implements Countable, IteratorAggregate, ArrayAccess
     /** @var mixed[] */
     private array $items;
 
-    /**
-     * @param mixed ...$items
-     */
-    public function __construct(...$items)
+    public function __construct(mixed ...$items)
     {
         $this->items = $items;
     }

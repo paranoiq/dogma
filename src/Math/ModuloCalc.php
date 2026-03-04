@@ -55,11 +55,10 @@ class ModuloCalc
     /**
      * Rounds value to the closest value from given set.
      * Sets overflow to true when maximal value is picked, but minimal value is returned.
-     * @param int|float $value
      * @param int[]|float[] $allowedValues
      * @return int[]|float[] (int|float $result, int $overflow)
      */
-    public static function roundTo($value, array $allowedValues, int $modulus): array
+    public static function roundTo(int|float $value, array $allowedValues, int $modulus): array
     {
         [$downValue, $underflow] = self::roundDownTo($value, $allowedValues, $modulus);
         [$upValue, $overflow] = self::roundUpTo($value, $allowedValues, $modulus);
@@ -77,11 +76,10 @@ class ModuloCalc
     /**
      * Rounds value to first bigger or same value from given set.
      * Sets overflow to true when maximal value is picked, but minimal value is returned.
-     * @param int|float $value
      * @param int[]|float[] $allowedValues
      * @return int[]|float[] (int|float $result, int $overflow)
      */
-    public static function roundUpTo($value, array $allowedValues, int $modulus): array
+    public static function roundUpTo(int|float $value, array $allowedValues, int $modulus): array
     {
         self::checkValues($allowedValues, $modulus);
 
@@ -113,11 +111,10 @@ class ModuloCalc
     /**
      * Rounds value up to first smaller or same value from given set.
      * Cannot overflow.
-     * @param int|float $value
      * @param int[]|float[] $allowedValues
      * @return int[]|float[] (int|float $result, int $overflow)
      */
-    public static function roundDownTo($value, array $allowedValues, int $modulus): array
+    public static function roundDownTo(int|float $value, array $allowedValues, int $modulus): array
     {
         self::checkValues($allowedValues, $modulus);
 

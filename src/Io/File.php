@@ -251,9 +251,8 @@ class File implements Path
 
     /**
      * Copy range of data to another File or callback. Returns actual length of copied data.
-     * @param File|callable $destination
      */
-    public function copyData($destination, ?int $start = null, int $length = 0, ?int $chunkSize = null): int
+    public function copyData(self|callable $destination, ?int $start = null, int $length = 0, ?int $chunkSize = null): int
     {
         if ($chunkSize === null) {
             $chunkSize = self::$defaultChunkSize;

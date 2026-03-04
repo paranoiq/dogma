@@ -18,10 +18,8 @@ class InvalidValueException extends Exception
     protected $value;
 
     /**
-     * @param mixed $value
-     * @param mixed $type
      */
-    public function __construct($value, $type, ?Throwable $previous = null)
+    public function __construct(mixed $value, mixed $type, ?Throwable $previous = null)
     {
         $valueFormatted = ExceptionValueFormatter::format($value);
         $type = ExceptionTypeFormatter::format($type);

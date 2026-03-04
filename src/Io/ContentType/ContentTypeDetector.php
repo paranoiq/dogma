@@ -59,10 +59,9 @@ class ContentTypeDetector
     }
 
     /**
-     * @param string|Path $file
      * @return ContentType|null
      */
-    public function detectFileContentType($file): ?ContentType
+    public function detectFileContentType(string|Path $file): ?ContentType
     {
         if ($this->typeHandler === null) {
             $this->initTypeHandler();
@@ -94,10 +93,9 @@ class ContentTypeDetector
     }
 
     /**
-     * @param string|Path $file
      * @return Encoding|null
      */
-    public function detectFileEncoding($file): ?Encoding
+    public function detectFileEncoding(string|Path $file): ?Encoding
     {
         if ($this->encodingHandler === null) {
             $this->initEncodingHandler();

@@ -162,10 +162,7 @@ class HttpRequest
         return $this->headerParser;
     }
 
-    /**
-     * @param mixed $data
-     */
-    public function setContext($data): void
+    public function setContext(mixed $data): void
     {
         $this->context = $data;
     }
@@ -190,10 +187,7 @@ class HttpRequest
         $this->setUrl($this->url . $url);
     }
 
-    /**
-     * @param mixed $data
-     */
-    public function setData($data): void
+    public function setData(mixed $data): void
     {
         if ($data !== null) {
             $this->dispatch($data);
@@ -203,7 +197,7 @@ class HttpRequest
     /**
      * @param string|mixed[] $data
      */
-    protected function dispatch($data): void
+    protected function dispatch(string|array $data): void
     {
         if (is_string($data)) {
             $this->setContent($data);
@@ -265,9 +259,8 @@ class HttpRequest
 
     /**
      * @param string|int $name option name or CURLOPT_ constant
-     * @param mixed $value
      */
-    public function setOption($name, $value): void
+    public function setOption(string|int $name, mixed $value): void
     {
         if (is_string($name)) {
             $number = CurlHelper::getCurlOptionNumber($name);
@@ -285,11 +278,7 @@ class HttpRequest
 
     // connection options ----------------------------------------------------------------------------------------------
 
-    /**
-     * @param float|int $timeout
-     * @param float|int $connectTimeout
-     */
-    public function setTimeout($timeout, $connectTimeout = null): void
+    public function setTimeout(float|int $timeout, float|int $connectTimeout = null): void
     {
         if ($timeout < 1) {
             $this->setOption(CURLOPT_TIMEOUT_MS, (int) ($timeout / 1000));

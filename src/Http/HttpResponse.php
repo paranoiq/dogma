@@ -48,14 +48,13 @@ class HttpResponse
     /**
      * @param string[] $rawHeaders
      * @param string[] $info
-     * @param mixed $context
      */
     public function __construct(
         HttpOrCurlStatus $status,
         ?string $body,
         array $rawHeaders,
         array $info,
-        $context,
+        mixed $context,
         ?HttpHeaderParser $headerParser = null
     ) {
         $this->status = $status;
@@ -148,10 +147,9 @@ class HttpResponse
     }
 
     /**
-     * @param string|int $name
      * @return string|string[]
      */
-    public function getInfo($name = null)
+    public function getInfo(string|int $name = null)
     {
         if ($name === null) {
             return $this->info;

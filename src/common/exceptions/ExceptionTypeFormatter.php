@@ -24,9 +24,8 @@ class ExceptionTypeFormatter
     use StaticClassMixin;
 
     /**
-     * @param mixed $type
      */
-    public static function format($type): string
+    public static function format(mixed $type): string
     {
         if (is_array($type)) {
             return implode(' or ', array_map([self::class, 'formatType'], $type));
@@ -36,9 +35,8 @@ class ExceptionTypeFormatter
     }
 
     /**
-     * @param mixed $type
      */
-    private static function formatType($type): string
+    private static function formatType(mixed $type): string
     {
         if ($type instanceof Type) {
             return $type->getId();

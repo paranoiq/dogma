@@ -20,8 +20,7 @@ interface Enum extends Equalable
     public function getValue();
 
     /**
-     * @param int|string $value
      */
-    public function equalsValue($value): bool;
+    public function equalsValue(int|string $value): bool;
 
 }

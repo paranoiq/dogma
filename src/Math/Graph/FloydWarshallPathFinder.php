@@ -106,10 +106,8 @@ class FloydWarshallPathFinder
 
     /**
      * Get total cost (distance) between point a and b
-     * @param int|string $i
-     * @param int|string $j
      */
-    public function getDistance($i, $j): int
+    public function getDistance(int|string $i, int|string $j): int
     {
         if ($this->nodeNames !== []) {
             $i = $this->nodeNames[$i];
@@ -121,11 +119,9 @@ class FloydWarshallPathFinder
 
     /**
      * Get nodes between a and b
-     * @param int|string $i
-     * @param int|string $j
      * @return int[]|string[]
      */
-    public function getPath($i, $j): array
+    public function getPath(int|string $i, int|string $j): array
     {
         $names = array_keys($this->nodeNames);
         if ($this->nodeNames !== []) {

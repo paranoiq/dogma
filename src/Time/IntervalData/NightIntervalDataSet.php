@@ -55,9 +55,8 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @param mixed|null $data
      */
-    public static function createFromNightIntervalSet(NightIntervalSet $set, $data): self
+    public static function createFromNightIntervalSet(NightIntervalSet $set, mixed $data): self
     {
         $intervals = array_map(static function (NightInterval $interval) use ($data) {
             return NightIntervalData::createFromNightInterval($interval, $data);

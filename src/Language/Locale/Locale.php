@@ -126,10 +126,7 @@ class Locale
         return new Collator($this);
     }
 
-    /**
-     * @param string|Locale $locale
-     */
-    public function matches($locale): bool
+    public function matches(string|self $locale): bool
     {
         Check::types($locale, [Type::STRING, self::class]);
 
@@ -142,9 +139,8 @@ class Locale
 
     /**
      * @param Locale[]|string[] $locales
-     * @param Locale|string $default
      */
-    public function findBestMatch(array $locales, $default = null): ?self
+    public function findBestMatch(array $locales, self|string $default = null): ?self
     {
         Check::types($default, [Type::STRING, self::class, Type::NULL]);
 

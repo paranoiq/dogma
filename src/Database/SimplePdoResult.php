@@ -74,10 +74,9 @@ class SimplePdoResult implements Iterator
     }
 
     /**
-     * @param int|string $column
      * @return mixed|bool
      */
-    public function fetchColumn($column = 0)
+    public function fetchColumn(int|string $column = 0)
     {
         if (is_int($column)) {
             return $this->statement->fetch(PDO::FETCH_NUM)[$column] ?? false;
@@ -87,10 +86,9 @@ class SimplePdoResult implements Iterator
     }
 
     /**
-     * @param int|string $column
      * @return mixed[]
      */
-    public function fetchColumnAll($column): array
+    public function fetchColumnAll(int|string $column): array
     {
         /** @var mixed[][] $result */
         $result = $this->statement->fetchAll(is_int($column) ? PDO::FETCH_NUM : PDO::FETCH_ASSOC);

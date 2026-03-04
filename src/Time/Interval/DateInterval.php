@@ -302,9 +302,8 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param Date|DateTimeInterface $date
      */
-    public function containsValue($date): bool
+    public function containsValue(Date|DateTimeInterface $date): bool
     {
         if (!$date instanceof Date) {
             $date = Date::createFromDateTimeInterface($date);

@@ -61,10 +61,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
 
     private ?DateTime $dateTime = null;
 
-    /**
-     * @param int|string $microsecondsOrTimeString
-     */
-    final public function __construct($microsecondsOrTimeString)
+    final public function __construct(int|string $microsecondsOrTimeString)
     {
         if (is_int($microsecondsOrTimeString)) {
             Check::range($microsecondsOrTimeString, self::MIN_MICROSECONDS, self::MAX_DENORMALIZED);
@@ -256,10 +253,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
         return DateTime::createFromDateAndTime($date ?? new Date(), $this, $timeZone);
     }
 
-    /**
-     * @param DateTimeInterface|Time|string $other
-     */
-    public function diff($other, bool $absolute = false): DateInterval
+    public function diff(DateTimeInterface|self|string $other, bool $absolute = false): DateInterval
     {
         if (is_string($other)) {
             $other = new DateTime($other);
@@ -270,10 +264,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
         return (new DateTime($this->format()))->diff($other, $absolute);
     }
 
-    /**
-     * @param DateTimeInterface|Time|string $other
-     */
-    public function difference($other, bool $absolute = false): TimeSpan
+    public function difference(DateTimeInterface|self|string $other, bool $absolute = false): TimeSpan
     {
         $interval = $this->diff($other, $absolute);
 
@@ -300,10 +291,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
         return ($this->microseconds % Microseconds::DAY) <=> ($other->microseconds % Microseconds::DAY);
     }
 
-    /**
-     * @param Time|string $time
-     */
-    public function isBefore($time): bool
+    public function isBefore(self|string $time): bool
     {
         if (is_string($time)) {
             $time = new static($time);
@@ -312,10 +300,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
         return ($this->microseconds % Microseconds::DAY) < ($time->microseconds % Microseconds::DAY);
     }
 
-    /**
-     * @param Time|string $time
-     */
-    public function isAfter($time): bool
+    public function isAfter(self|string $time): bool
     {
         if (is_string($time)) {
             $time = new static($time);
@@ -324,10 +309,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
         return ($this->microseconds % Microseconds::DAY) > ($time->microseconds % Microseconds::DAY);
     }
 
-    /**
-     * @param Time|string $time
-     */
-    public function isSameOrBefore($time): bool
+    public function isSameOrBefore(self|string $time): bool
     {
         if (is_string($time)) {
             $time = new static($time);
@@ -336,10 +318,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
         return ($this->microseconds % Microseconds::DAY) <= ($time->microseconds % Microseconds::DAY);
     }
 
-    /**
-     * @param Time|string $time
-     */
-    public function isSameOrAfter($time): bool
+    public function isSameOrAfter(self|string $time): bool
     {
         if (is_string($time)) {
             $time = new static($time);
@@ -348,11 +327,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
         return ($this->microseconds % Microseconds::DAY) >= ($time->microseconds % Microseconds::DAY);
     }
 
-    /**
-     * @param Time|string $since
-     * @param Time|string $until
-     */
-    public function isBetween($since, $until): bool
+    public function isBetween(self|string $since, self|string $until): bool
     {
         if (is_string($since)) {
             $since = new static($since);

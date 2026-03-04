@@ -14,7 +14,7 @@ $aspell = ResourceType::get(ResourceType::ASPELL);
 
 $resource = Type::resource();
 $resourceAspell = Type::resource($aspell);
-$resourceNullable = Type::resource(Type::NULLABLE);
+$resourceNullable = Type::resource(null, Type::NULLABLE);
 
 
 getId:

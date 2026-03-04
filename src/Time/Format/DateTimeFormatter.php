@@ -17,8 +17,7 @@ interface DateTimeFormatter
 {
 
     /**
-     * @param DateTimeInterface|Date|Time $dateTime
      */
-    public function format($dateTime, ?string $format = null): string;
+    public function format(DateTimeInterface|Date|Time $dateTime, ?string $format = null): string;
 
 }

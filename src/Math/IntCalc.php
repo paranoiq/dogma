@@ -72,10 +72,7 @@ class IntCalc
 
     // factorization ---------------------------------------------------------------------------------------------------
 
-    /**
-     * @return int|float
-     */
-    public static function factorial(int $n)
+    public static function factorial(int $n): int|float
     {
         $sign = $n < 0 ? -1 : 1;
         $n = $sign * $n;

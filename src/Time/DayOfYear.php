@@ -53,9 +53,8 @@ class DayOfYear implements Equalable, Comparable, Dumpable
      * ...
      * 366 = December 31st (even in non-leap years!)
      *
-     * @param int|string $dateOrDayNumber
      */
-    final public function __construct($dateOrDayNumber)
+    final public function __construct(int|string $dateOrDayNumber)
     {
         if (is_string($dateOrDayNumber)) {
             $date = new Date('2000-' . $dateOrDayNumber);

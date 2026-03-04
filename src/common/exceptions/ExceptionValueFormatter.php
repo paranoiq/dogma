@@ -30,9 +30,8 @@ class ExceptionValueFormatter
     use StaticClassMixin;
 
     /**
-     * @param mixed $value
      */
-    public static function format($value): string
+    public static function format(mixed $value): string
     {
         if (is_object($value)) {
             return sprintf('%s #%s', get_class($value), substr(md5(spl_object_hash($value)), 0, 8));

@@ -36,10 +36,9 @@ class Cls
     }
 
     /**
-     * @param string|object $class
      * @return string[]
      */
-    public static function parents($class): array
+    public static function parents(string|object $class): array
     {
         $parents = class_parents($class);
         if ($parents === false) {
@@ -50,10 +49,9 @@ class Cls
     }
 
     /**
-     * @param string|object $class
      * @return string[]
      */
-    public static function parentsAndSelf($class): array
+    public static function parentsAndSelf(string|object $class): array
     {
         if (is_object($class)) {
             $class = get_class($class);
@@ -73,12 +71,9 @@ class Cls
     /**
      * Oldest common ancestor
      *
-     * @param string|object $first
-     * @param string|object $second
-     * @param string|object|null $after
      * @return string|null
      */
-    public static function commonRoot($first, $second, $after = null): ?string
+    public static function commonRoot(string|object $first, string|object $second, string|object|null $after = null): ?string
     {
         static $commonRoots = [];
 
@@ -126,12 +121,9 @@ class Cls
     /**
      * Newest common ancestor
      *
-     * @param string|object $first
-     * @param string|object $second
-     * @param string|object|null $after
      * @return string|null
      */
-    public static function commonBranch($first, $second, $after = null): ?string
+    public static function commonBranch(string|object $first, string|object $second, string|object|null $after = null): ?string
     {
         static $commonBranches = [];
 

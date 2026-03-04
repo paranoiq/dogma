@@ -12,7 +12,7 @@ namespace Dogma\Time;
 use Dogma\StaticClassMixin;
 
 /**
- * Literally million times better than seconds!
+ * Literally a million times better than seconds!
  */
 class Microseconds
 {

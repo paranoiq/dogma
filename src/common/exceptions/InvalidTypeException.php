@@ -16,9 +16,8 @@ class InvalidTypeException extends Exception
 
     /**
      * @param string|string[] $expectedType
-     * @param mixed $actualType
      */
-    public function __construct($expectedType, $actualType, ?Throwable $previous = null)
+    public function __construct(string|array $expectedType, mixed $actualType, ?Throwable $previous = null)
     {
         $expectedType = ExceptionTypeFormatter::format($expectedType);
         $actualType = ExceptionTypeFormatter::format($actualType);

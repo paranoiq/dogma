@@ -28,10 +28,7 @@ class Dumper
 {
     use StaticClassMixin;
 
-    /**
-     * @param Element|NodeList|DOMNode|DOMNameSpaceNode $node
-     */
-    public static function dump($node, int $maxDepth = 15, int $depth = 0, bool $onlyChild = false): void
+    public static function dump(Element|NodeList|DOMNode|DOMNameSpaceNode $node, int $maxDepth = 15, int $depth = 0, bool $onlyChild = false): void
     {
         if ($depth > $maxDepth) {
             echo '…';
@@ -90,10 +87,7 @@ class Dumper
         }
     }
 
-    /**
-     * @param Element|DOMNode $node
-     */
-    private static function dumpElement($node, int $maxDepth = 15, int $depth = 0, bool $onlyChild = false): void
+    private static function dumpElement(Element|DOMNode $node, int $maxDepth = 15, int $depth = 0, bool $onlyChild = false): void
     {
         if ($depth === 0) {
             echo "<b>Element:</b>\n";

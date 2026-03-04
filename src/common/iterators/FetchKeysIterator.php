@@ -32,10 +32,8 @@ class FetchKeysIterator extends IteratorIterator
 
     /**
      * @param iterable<mixed> $iterable
-     * @param int|string|null $keysKey
-     * @param int|string|null $valuesKey
      */
-    public function __construct(iterable $iterable, $keysKey = null, $valuesKey = null)
+    public function __construct(iterable $iterable, int|string|null $keysKey = null, int|string|null $valuesKey = null)
     {
         $iterable = IteratorHelper::iterableToIterator($iterable);
 

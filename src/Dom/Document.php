@@ -164,7 +164,7 @@ class Document extends DOMDocument
      * @param string|string[] $target
      * @return int|float|bool|string|Date|DateTime|mixed[]|null
      */
-    public function extract($target)
+    public function extract(string|array $target)
     {
         return $this->engine->extract($target);
     }

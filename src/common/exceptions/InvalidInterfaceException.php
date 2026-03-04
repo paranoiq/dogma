@@ -19,9 +19,8 @@ class InvalidInterfaceException extends InvalidTypeException
 {
 
     /**
-     * @param mixed $value
      */
-    public function __construct(string $expectedInterface, $value, ?Throwable $previous = null)
+    public function __construct(string $expectedInterface, mixed $value, ?Throwable $previous = null)
     {
         if (is_object($value)) {
             $type = get_class($value);

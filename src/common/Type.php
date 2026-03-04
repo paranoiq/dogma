@@ -92,8 +92,8 @@ class Type
         string $id,
         string $type,
         bool $nullable = false,
-        $itemType = null,
-        $size = null,
+        self|array|null $itemType = null,
+        int|array|null $size = null,
         ?string $specific = null,
         ?Encoding $encoding = null,
         ?Locale $locale = null
@@ -265,26 +265,17 @@ class Type
         return self::get(self::PHP_CALLABLE, $nullable);
     }
 
-    /**
-     * @param ResourceType|string|null $resourceType
-     */
-    public static function resource($resourceType = null, ?bool $nullable = null): self
+    public static function resource(ResourceType|string|null $resourceType = null, ?bool $nullable = null): self
     {
         return self::get(self::RESOURCE, $resourceType, $nullable);
     }
 
-    /**
-     * @param string|self $itemType
-     */
-    public static function arrayOf($itemType, bool $nullable = false): self
+    public static function arrayOf(string|self $itemType, bool $nullable = false): self
     {
         return self::collectionOf(self::PHP_ARRAY, $itemType, $nullable);
     }
 
-    /**
-     * @param string|self $itemType
-     */
-    public static function collectionOf(string $type, $itemType, bool $nullable = false): self
+    public static function collectionOf(string $type, string|self $itemType, bool $nullable = false): self
     {
         Check::types($itemType, [self::STRING, self::class]);
 
@@ -301,10 +292,7 @@ class Type
         return self::$instances[$id];
     }
 
-    /**
-     * @param string|self|bool ...$itemTypes
-     */
-    public static function tupleOf(...$itemTypes): self
+    public static function tupleOf(string|self|bool ...$itemTypes): self
     {
         $nullable = false;
         if (is_bool(end($itemTypes))) {
@@ -625,9 +613,8 @@ class Type
 
     /**
      * Returns new instance of type. Works only on simple class types with public constructor.
-     * @param mixed ...$arguments
      */
-    public function getInstance(...$arguments): object
+    public function getInstance(mixed ...$arguments): object
     {
         $className = $this->type;
 

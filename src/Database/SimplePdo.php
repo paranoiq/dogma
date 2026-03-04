@@ -140,12 +140,8 @@ class SimplePdo extends PDO
         return new SimplePdoResult($statement);
     }
 
-    /**
-     * @param string|mixed $query
-     * @param mixed ...$args
-     */
     #[ReturnTypeWillChange]
-    public function exec($query, ...$args): void
+    public function exec(mixed $query, mixed ...$args): void
     {
         $args = func_get_args();
         array_shift($args);

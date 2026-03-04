@@ -23,10 +23,9 @@ class ErrorHelper
 
     /**
      * Get error object for given error number.
-     * @param int|string $system
      * @return SystemError|null
      */
-    public static function getError(int $errno, $system = self::LOCAL): ?SystemError
+    public static function getError(int $errno, int|string $system = self::LOCAL): ?SystemError
     {
         if ($system === self::LOCAL || is_string($system)) {
             $system = self::detectSystem();
@@ -53,10 +52,9 @@ class ErrorHelper
 
     /**
      * Get error message for given error number.
-     * @param int|string $system
      * @return string|null
      */
-    public static function getErrorDescription(int $errno, $system = self::LOCAL): ?string
+    public static function getErrorDescription(int $errno, int|string $system = self::LOCAL): ?string
     {
         $error = self::getError($errno, $system);
         if ($error !== null) {

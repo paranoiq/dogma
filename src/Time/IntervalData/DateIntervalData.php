@@ -48,9 +48,8 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     private $data;
 
     /**
-     * @param mixed|null $data
      */
-    final public function __construct(Date $start, Date $end, $data)
+    final public function __construct(Date $start, Date $end, mixed $data)
     {
         if ($start->getJulianDay() > $end->getJulianDay()) {
             throw new InvalidIntervalStartEndOrderException($start, $end);
@@ -62,9 +61,8 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     }
 
     /**
-     * @param mixed|null $data
      */
-    public static function createFromDateInterval(DateInterval $interval, $data): self
+    public static function createFromDateInterval(DateInterval $interval, mixed $data): self
     {
         return new static($interval->getStart(), $interval->getEnd(), $data);
     }
@@ -79,9 +77,8 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     }
 
     /**
-     * @param mixed|null $data
      */
-    public static function all($data): self
+    public static function all(mixed $data): self
     {
         return new static(new Date(self::MIN), new Date(self::MAX), $data);
     }
@@ -218,9 +215,8 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     }
 
     /**
-     * @param mixed|null $otherData
      */
-    public function dataEquals($otherData): bool
+    public function dataEquals(mixed $otherData): bool
     {
         if ($this->data instanceof Equalable && $otherData instanceof Equalable && get_class($this->data) === get_class($otherData)) {
             return $this->data->equals($otherData);
@@ -256,9 +252,8 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     }
 
     /**
-     * @param Date|DateTimeInterface $date
      */
-    public function containsValue($date): bool
+    public function containsValue(Date|DateTimeInterface $date): bool
     {
         if (!$date instanceof Date) {
             $date = Date::createFromDateTimeInterface($date);
@@ -268,9 +263,8 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     }
 
     /**
-     * @param DateInterval|DateIntervalData $interval
      */
-    public function contains($interval): bool
+    public function contains(DateInterval|self $interval): bool
     {
         if ($this->isEmpty() || $interval->isEmpty()) {
             return false;
@@ -280,17 +274,15 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     }
 
     /**
-     * @param DateInterval|DateIntervalData $interval
      */
-    public function intersects($interval): bool
+    public function intersects(DateInterval|self $interval): bool
     {
         return $this->start->isSameOrBefore($interval->getEnd()) && $this->end->isSameOrAfter($interval->getStart());
     }
 
     /**
-     * @param DateInterval|DateIntervalData $interval
      */
-    public function touches($interval): bool
+    public function touches(DateInterval|self $interval): bool
     {
         return $this->start->equals($interval->getEnd()->addDay()) || $this->end->equals($interval->getStart()->subtractDay());
     }

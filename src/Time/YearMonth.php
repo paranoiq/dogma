@@ -35,9 +35,8 @@ class YearMonth implements Comparable, Equalable, Dumpable
     private string $value;
 
     /**
-     * @param string|Date|DateTimeInterface|null $value
      */
-    final public function __construct($value = null)
+    final public function __construct(string|Date|DateTimeInterface|null $value = null)
     {
         if ($value === null) {
             $this->value = (new Date())->format(self::DEFAULT_FORMAT);
@@ -63,9 +62,9 @@ class YearMonth implements Comparable, Equalable, Dumpable
     {
         Check::range($value, 1, 999912);
 
-        $value = Str::padLeft((string) $value, 6, '0');
+        $val = Str::padLeft((string) $value, 6, '0');
 
-        return new static(substr($value, 0, 4) . '-' . substr($value, 4, 2));
+        return new static(substr($val, 0, 4) . '-' . substr($val, 4, 2));
     }
 
     public static function createFromComponents(int $year, int $month): self

@@ -444,18 +444,12 @@ class Str
 
     // comparison ------------------------------------------------------------------------------------------------------
 
-    /**
-     * @param int|string|Collator|Locale $collation
-     */
-    public static function equals(string $first, string $second, $collation = CaseComparison::CASE_SENSITIVE): bool
+    public static function equals(string $first, string $second, int|string|Collator|Locale $collation = CaseComparison::CASE_SENSITIVE): bool
     {
         return self::compare($first, $second, $collation) === 0;
     }
 
-    /**
-     * @param int|string|Collator|Locale $collation
-     */
-    public static function compare(string $first, string $second, $collation = CaseComparison::CASE_SENSITIVE): int
+    public static function compare(string $first, string $second, int|string|Collator|Locale $collation = CaseComparison::CASE_SENSITIVE): int
     {
         if ($collation === CaseComparison::CASE_SENSITIVE) {
             return strcmp($first, $second);
@@ -916,9 +910,8 @@ class Str
     /**
      * @deprecated use Re::replace() instead
      * @param string|string[] $pattern
-     * @param string|callable|null $replacement
      */
-    public static function replace(string $string, $pattern, $replacement = null, int $limit = -1): string
+    public static function replace(string $string, string|array $pattern, string|callable|null $replacement = null, int $limit = -1): string
     {
         return Re::replace($string, $pattern, $replacement, $limit);
     }

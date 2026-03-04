@@ -22,10 +22,9 @@ trait StaticClassMixin
 
     /**
      * @deprecated Magic static call are forbidden
-     * @param mixed $args
      * @throws UndefinedMethodException
      */
-    public static function __callStatic(string $name, $args): void
+    public static function __callStatic(string $name, mixed $args): void
     {
         throw new UndefinedMethodException(static::class, $name);
     }

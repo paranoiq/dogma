@@ -142,10 +142,9 @@ class HttpChannel
     /**
      * Run a new job immediately and wait for the response.
      * @param string|string[] $data
-     * @param mixed $context
      * @return HttpResponse|null
      */
-    public function fetchJob($data, $context = null): ?HttpResponse
+    public function fetchJob(string|array $data, mixed $context = null): ?HttpResponse
     {
         $name = $this->addJob($data, $context, null, true);
 
@@ -155,23 +154,18 @@ class HttpChannel
     /**
      * Run a new job immediately. Don't wait for response.
      * @param string|string[] $data
-     * @param mixed $context
-     * @param string|int $name
      * @return string|int
      */
-    public function runJob($data, $context = null, $name = null)
+    public function runJob(string|array $data, mixed $context = null, string|int $name = null)
     {
         return $this->addJob($data, $context, $name, true);
     }
 
     /**
      * Add new job to channel queue.
-     * @param string|string[]|mixed $data
-     * @param mixed $context
-     * @param string|int $name
      * @return string|int
      */
-    public function addJob($data, $context = null, $name = null, bool $forceStart = false)
+    public function addJob(mixed $data, mixed $context = null, string|int $name = null, bool $forceStart = false)
     {
         if (!is_string($data) && !is_array($data)) {
             throw new HttpChannelException('Illegal job data. Job data can be either string or array.');
@@ -204,9 +198,8 @@ class HttpChannel
     /**
      * Add more jobs to a channel. Array indexes are job names if they are strings.
      * @param string[]|string[][] $jobs
-     * @param mixed $context
      */
-    public function addJobs(array $jobs, $context = null): void
+    public function addJobs(array $jobs, mixed $context = null): void
     {
         $useKeys = array_keys($jobs) !== range(0, count($jobs) - 1);
 
@@ -234,9 +227,8 @@ class HttpChannel
     /**
      * Start a request in CURL. Called by HttpChannelManager
      * @internal
-     * @param string|int|null $name
      */
-    public function startJob($name = null): void
+    public function startJob(string|int|null $name = null): void
     {
         if (!$this->canStartJob()) {
             return;
@@ -279,10 +271,9 @@ class HttpChannel
     /**
      * Called by HttpChannelManager.
      * @internal
-     * @param string|int $name
      * @param mixed[] $multiInfo
      */
-    public function jobFinished($name, array $multiInfo, HttpRequest $request): void
+    public function jobFinished(string|int $name, array $multiInfo, HttpRequest $request): void
     {
         unset($this->running[$name]);
         $data = curl_multi_getcontent($multiInfo['handle']);
@@ -329,10 +320,7 @@ class HttpChannel
         return array_shift($this->finished);
     }
 
-    /**
-     * @param string|int $name
-     */
-    public function fetchByName($name): HttpResponse
+    public function fetchByName(string|int $name): HttpResponse
     {
         if (!isset($this->queue[$name]) && !isset($this->running[$name]) && !isset($this->finished[$name])) {
             throw new HttpChannelException("Job named '$name' was not found.");
@@ -363,9 +351,8 @@ class HttpChannel
 
     /**
      * Check if channel or a job is finished.
-     * @param string|int|null $name
      */
-    public function isFinished($name = null): bool
+    public function isFinished(string|int|null $name = null): bool
     {
         if ($name === null) {
             return empty($this->running) && empty($this->queue);

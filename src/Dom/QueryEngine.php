@@ -209,9 +209,8 @@ class QueryEngine
 
     /**
      * Find nodes
-     * @param Element|DOMNode|null $context
      */
-    public function find(string $query, $context = null): NodeList
+    public function find(string $query, Element|DOMNode|null $context = null): NodeList
     {
         $path = $this->translateQuery($query, (bool) $context);
         if ($context !== null) {
@@ -233,10 +232,9 @@ class QueryEngine
 
     /**
      * Find one node
-     * @param Element|DOMNode|null $context
      * @return DOMNode|Element|null
      */
-    public function findOne(string $query, $context = null)
+    public function findOne(string $query, Element|DOMNode|null $context = null)
     {
         $path = $this->translateQuery($query, (bool) $context);
         if ($context !== null) {
@@ -265,10 +263,9 @@ class QueryEngine
 
     /**
      * Evaluate a query
-     * @param Element|DOMNode|null $context
      * @return string|int|float|bool|Date|DateTime|null
      */
-    public function evaluate(string $query, $context = null)
+    public function evaluate(string $query, Element|DOMNode|null $context = null)
     {
         $path = $this->translateQuery($query);
 
@@ -309,10 +306,9 @@ class QueryEngine
     /**
      * Extract values from paths defined by one or more queries
      * @param string|string[]|string[][] $queries
-     * @param Element|DOMNode|null $context
      * @return int|float|bool|string|Date|DateTime|mixed[]|null
      */
-    public function extract($queries, $context = null)
+    public function extract(string|array $queries, Element|DOMNode|null $context = null)
     {
         if (is_string($queries)) {
             return $this->extractPath($queries, $context);
@@ -332,10 +328,9 @@ class QueryEngine
     // internals -------------------------------------------------------------------------------------------------------
 
     /**
-     * @param Element|DOMNode|null $context
      * @return int|float|bool|string|Date|DateTime|null
      */
-    private function extractPath(string $query, $context = null)
+    private function extractPath(string $query, Element|DOMNode|null $context = null)
     {
         if (Re::match($query, '/^[a-zA-Z0-9_-]+\\(/')) {
             $node = $this->evaluate($query, $context);

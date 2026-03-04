@@ -82,9 +82,8 @@ class HttpMultiChannel
     }
 
     /**
-     * @param string|int $jobName
      */
-    private function jobFinished($jobName): void
+    private function jobFinished(string|int $jobName): void
     {
         $error = $redirect = false;
         foreach ($this->finished[$jobName] as $response) {
@@ -156,11 +155,9 @@ class HttpMultiChannel
     /**
      * Add new job to channel queue.
      * @param string|mixed[] $data
-     * @param mixed $context
-     * @param string|int|mixed $name
      * @return string|int
      */
-    public function addJob($data, $context = null, $name = null)
+    public function addJob(string|array $data, mixed $context = null, mixed $name = null)
     {
         if ($name === null) {
             $name = ++$this->lastIndex;
@@ -185,9 +182,8 @@ class HttpMultiChannel
     /**
      * Add more jobs to a channel. Array indexes are job names if they are strings.
      * @param mixed[] $jobs
-     * @param mixed $context
      */
-    public function addJobs(array $jobs, $context = null): void
+    public function addJobs(array $jobs, mixed $context = null): void
     {
         $useKeys = array_keys($jobs) !== range(0, count($jobs) - 1);
 
@@ -199,10 +195,9 @@ class HttpMultiChannel
     /**
      * Run a new job and wait for the response.
      * @param string|mixed[] $data
-     * @param mixed $context
      * @return HttpResponse[]|null
      */
-    public function fetchJob($data, $context = null): ?array
+    public function fetchJob(string|array $data, mixed $context = null): ?array
     {
         $jobs = $this->dispatch($data);
         foreach ($jobs as $channel => $job) {
@@ -218,10 +213,9 @@ class HttpMultiChannel
     }
 
     /**
-     * @param string|int $name
      * @return HttpResponse[]|null
      */
-    public function fetch($name = null): ?array
+    public function fetch(string|int $name = null): ?array
     {
         if ($name !== null) {
             return $this->fetchNamedJob($name);
@@ -244,10 +238,9 @@ class HttpMultiChannel
     }
 
     /**
-     * @param string|int $name
      * @return HttpResponse[]
      */
-    private function fetchNamedJob($name): array
+    private function fetchNamedJob(string|int $name): array
     {
         if (!isset($this->queue[$name]) && !isset($this->finished[$name])) {
             throw new HttpChannelException("Job named '$name' was not found.");
@@ -311,7 +304,7 @@ class HttpMultiChannel
      * @param string|mixed[] $data
      * @return mixed[]
      */
-    protected function dispatch($data): array
+    protected function dispatch(string|array $data): array
     {
         if (is_string($data)) {
             // default - send copy to all channels

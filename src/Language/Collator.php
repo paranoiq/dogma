@@ -26,10 +26,7 @@ class Collator extends PhpCollator
 
     private bool $backwards = false;
 
-    /**
-     * @param Locale|string $locale
-     */
-    public function __construct($locale)
+    public function __construct(Locale|string $locale)
     {
         Check::types($locale, [Locale::class, Type::STRING]);
 
@@ -55,10 +52,7 @@ class Collator extends PhpCollator
         }
     }
 
-    /**
-     * @param Locale|string $locale
-     */
-    public static function create($locale): self
+    public static function create(Locale|string $locale): self
     {
         return new self($locale);
     }

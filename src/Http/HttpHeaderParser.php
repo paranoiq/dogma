@@ -101,7 +101,7 @@ class HttpHeaderParser
      * @param string|string[] $rawCookies
      * @return string[]
      */
-    public function parseCookies($rawCookies): array
+    public function parseCookies(string|array $rawCookies): array
     {
         if (!is_array($rawCookies)) {
             $rawCookies = [$rawCookies];
@@ -119,9 +119,8 @@ class HttpHeaderParser
 
     /**
      * @param mixed[] $headers
-     * @param mixed $value
      */
-    private function insertHeader(array &$headers, string $name, $value): void
+    private function insertHeader(array &$headers, string $name, mixed $value): void
     {
         if (isset($headers[$name])) {
             if (is_array($headers[$name])) {

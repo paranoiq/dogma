@@ -93,10 +93,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed ...$values
      * @return static
      */
-    public static function create(...$values): self
+    public static function create(mixed ...$values): self
     {
         return new static($values);
     }
@@ -143,12 +142,10 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param int|string $start
-     * @param int|string $end
      * @param int $step >= 1
      * @return static
      */
-    public static function range($start, $end, int $step = 1): self
+    public static function range(int|string $start, int|string $end, int $step = 1): self
     {
         Check::min($step, 1);
 
@@ -238,9 +235,8 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed $value
      */
-    public function contains($value): bool
+    public function contains(mixed $value): bool
     {
         return in_array($value, $this->toArray(), true);
     }
@@ -262,10 +258,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed $value
      * @return mixed|null
      */
-    public function indexOf($value, int $from = 0)
+    public function indexOf(mixed $value, int $from = 0)
     {
         if ($from > 0) {
             return $this->drop($from)->indexOf($value);
@@ -280,19 +275,17 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed $value
      * @return static
      */
-    public function indexesOf($value): self
+    public function indexesOf(mixed $value): self
     {
         return new static(array_keys($this->items, $value, true));
     }
 
     /**
-     * @param mixed $value
      * @return mixed|null
      */
-    public function lastIndexOf($value, ?int $end = null)
+    public function lastIndexOf(mixed $value, ?int $end = null)
     {
         if ($end !== null) {
             return $this->take($end)->indexesOf($value)->last();
@@ -324,9 +317,8 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param int|string $key
      */
-    public function containsKey($key): bool
+    public function containsKey(int|string $key): bool
     {
         return $this->offsetExists($key);
     }
@@ -584,28 +576,25 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     // transforming ----------------------------------------------------------------------------------------------------
 
     /**
-     * @param mixed $init
      * @return mixed|null
      */
-    public function fold(callable $function, $init = null)
+    public function fold(callable $function, mixed $init = null)
     {
         return $this->foldLeft($function, $init);
     }
 
     /**
-     * @param mixed $init
      * @return mixed|null
      */
-    public function foldLeft(callable $function, $init = null)
+    public function foldLeft(callable $function, mixed $init = null)
     {
         return array_reduce($this->toArray(), $function, $init);
     }
 
     /**
-     * @param mixed $init
      * @return mixed|null
      */
-    public function foldRight(callable $function, $init = null)
+    public function foldRight(callable $function, mixed $init = null)
     {
         foreach ($this->getReverseIterator() as $value) {
             $init = $function($value, $init);
@@ -647,10 +636,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed $init
      * @return static
      */
-    public function scanLeft(callable $function, $init): self
+    public function scanLeft(callable $function, mixed $init): self
     {
         $res = [];
         $res[] = $init;
@@ -662,10 +650,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed $init
      * @return static
      */
-    public function scanRight(callable $function, $init): self
+    public function scanRight(callable $function, mixed $init): self
     {
         $res = [];
         $res[] = $init;
@@ -818,10 +805,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed $value
      * @return static
      */
-    public function padTo(int $length, $value): self
+    public function padTo(int $length, mixed $value): self
     {
         return new static(array_pad($this->toArray(), $length, $value));
     }
@@ -1043,11 +1029,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed $valueKey
-     * @param mixed|null $indexKey
      * @return static
      */
-    public function column($valueKey, $indexKey = null): self
+    public function column(mixed $valueKey, mixed $indexKey = null): self
     {
         return new static(array_column($this->toArrayRecursive(), $valueKey, $indexKey));
     }
@@ -1124,10 +1108,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     // merging ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @param mixed ...$values
      * @return static
      */
-    public function append(...$values): self
+    public function append(mixed ...$values): self
     {
         return $this->appendAll($values);
     }
@@ -1147,10 +1130,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed ...$values
      * @return static
      */
-    public function prepend(...$values): self
+    public function prepend(mixed ...$values): self
     {
         return $this->prependAll($values);
     }
@@ -1172,11 +1154,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed $find
-     * @param mixed $replace
      * @return static
      */
-    public function replace($find, $replace): self
+    public function replace(mixed $find, mixed $replace): self
     {
         $arr = $this->toArray();
         $arr = array_replace($arr, [$find => $replace]);

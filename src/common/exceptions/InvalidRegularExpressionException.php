@@ -15,9 +15,8 @@ class InvalidRegularExpressionException extends InvalidValueException
 {
 
     /**
-     * @param mixed $regexp
      */
-    public function __construct($regexp, ?Throwable $previous = null)
+    public function __construct(mixed $regexp, ?Throwable $previous = null)
     {
         Exception::__construct("Value '$regexp' is not a valid regular expression.", $previous);
     }

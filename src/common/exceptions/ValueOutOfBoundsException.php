@@ -15,10 +15,8 @@ class ValueOutOfBoundsException extends ValueOutOfRangeException
 {
 
     /**
-     * @param int|float|string $value
-     * @param string|Type $type
      */
-    public function __construct($value, $type, ?Throwable $previous = null)
+    public function __construct(int|float|string $value, string|Type $type, ?Throwable $previous = null)
     {
         $value = ExceptionValueFormatter::format($value);
         $type = ExceptionTypeFormatter::format($type);

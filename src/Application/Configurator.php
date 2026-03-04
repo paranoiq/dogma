@@ -248,7 +248,7 @@ final class Configurator extends stdClass
      * @param string|string[]|float|int|bool|null $value
      * @return string|int|float|bool|string[]|int[]|float[]|null
      */
-    private function normalize($value, ?string $type = null)
+    private function normalize(string|array|float|int|bool|null $value, ?string $type = null)
     {
         if (($type === self::VALUES || $type === self::SET) && is_string($value)) {
             $value = explode(',', $value);
@@ -266,9 +266,8 @@ final class Configurator extends stdClass
     }
 
     /**
-     * @param mixed $value
      */
-    private function format($value): string
+    private function format(mixed $value): string
     {
         if (is_bool($value)) {
             return $value ? 'yes' : 'no';

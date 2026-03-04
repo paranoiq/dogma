@@ -14,20 +14,18 @@ trait StrictBehaviorMixin
 
     /**
      * @deprecated Magic calls are forbidden
-     * @param mixed $args
      * @throws UndefinedMethodException
      */
-    public function __call(string $name, $args): void
+    public function __call(string $name, mixed $args): void
     {
         throw new UndefinedMethodException(static::class, $name);
     }
 
     /**
      * @deprecated Magic static calls are forbidden
-     * @param mixed $args
      * @throws UndefinedMethodException
      */
-    public static function __callStatic(string $name, $args): void
+    public static function __callStatic(string $name, mixed $args): void
     {
         throw new UndefinedMethodException(static::class, $name);
     }
@@ -43,10 +41,9 @@ trait StrictBehaviorMixin
 
     /**
      * @deprecated Magic property access is forbidden
-     * @param mixed $value
      * @throws UndefinedPropertyException
      */
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         throw new UndefinedPropertyException(static::class, $name);
     }

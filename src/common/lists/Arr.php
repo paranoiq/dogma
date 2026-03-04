@@ -345,9 +345,8 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param int|string $key
      */
-    public static function containsKey(array $array, $key): bool
+    public static function containsKey(array $array, int|string $key): bool
     {
         return array_key_exists($key, $array);
     }
@@ -666,30 +665,27 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed|null $init
      * @return mixed|null
      */
-    public static function fold(array $array, callable $function, $init = null)
+    public static function fold(array $array, callable $function, mixed $init = null)
     {
         return self::foldLeft($array, $function, $init);
     }
 
     /**
      * @param mixed[] $array
-     * @param mixed|null $init
      * @return mixed|null
      */
-    public static function foldLeft(array $array, callable $function, $init = null)
+    public static function foldLeft(array $array, callable $function, mixed $init = null)
     {
         return array_reduce($array, $function, $init);
     }
 
     /**
      * @param mixed[] $array
-     * @param mixed|null $init
      * @return mixed|null
      */
-    public static function foldRight(array $array, callable $function, $init = null)
+    public static function foldRight(array $array, callable $function, mixed $init = null)
     {
         foreach (new ReverseArrayIterator($array) as $value) {
             $init = $function($value, $init);
@@ -735,10 +731,9 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed $init
      * @return mixed[]
      */
-    public static function scanLeft(array $array, callable $function, $init): array
+    public static function scanLeft(array $array, callable $function, mixed $init): array
     {
         $res = [];
         $res[] = $init;
@@ -751,10 +746,9 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed $init
      * @return mixed[]
      */
-    public static function scanRight(array $array, callable $function, $init): array
+    public static function scanRight(array $array, callable $function, mixed $init): array
     {
         $res = [];
         $res[] = $init;
@@ -946,10 +940,9 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed $value
      * @return mixed[]
      */
-    public static function padTo(array $array, int $length, $value): array
+    public static function padTo(array $array, int $length, mixed $value): array
     {
         return array_pad($array, $length, $value);
     }
@@ -1238,11 +1231,9 @@ class Arr
 
     /**
      * @param mixed[][] $array
-     * @param mixed $valueKey
-     * @param mixed|null $indexKey
      * @return mixed[]
      */
-    public static function column(array $array, $valueKey, $indexKey = null): array
+    public static function column(array $array, mixed $valueKey, mixed $indexKey = null): array
     {
         return array_column($array, $valueKey, $indexKey);
     }
