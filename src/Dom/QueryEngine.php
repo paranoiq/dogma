@@ -234,7 +234,7 @@ class QueryEngine
      * Find one node
      * @return DOMNode|Element|null
      */
-    public function findOne(string $query, Element|DOMNode|null $context = null)
+    public function findOne(string $query, Element|DOMNode|null $context = null): DOMNode|Element|null
     {
         $path = $this->translateQuery($query, (bool) $context);
         if ($context !== null) {
@@ -265,7 +265,7 @@ class QueryEngine
      * Evaluate a query
      * @return string|int|float|bool|Date|DateTime|null
      */
-    public function evaluate(string $query, Element|DOMNode|null $context = null)
+    public function evaluate(string $query, Element|DOMNode|null $context = null): string|int|float|bool|Date|DateTime|null
     {
         $path = $this->translateQuery($query);
 
@@ -308,7 +308,7 @@ class QueryEngine
      * @param string|string[]|string[][] $queries
      * @return int|float|bool|string|Date|DateTime|mixed[]|null
      */
-    public function extract(string|array $queries, Element|DOMNode|null $context = null)
+    public function extract(string|array $queries, Element|DOMNode|null $context = null): int|float|bool|string|Date|DateTime|array|null
     {
         if (is_string($queries)) {
             return $this->extractPath($queries, $context);
@@ -330,7 +330,7 @@ class QueryEngine
     /**
      * @return int|float|bool|string|Date|DateTime|null
      */
-    private function extractPath(string $query, Element|DOMNode|null $context = null)
+    private function extractPath(string $query, Element|DOMNode|null $context = null): int|float|bool|string|Date|DateTime|null
     {
         if (Re::match($query, '/^[a-zA-Z0-9_-]+\\(/')) {
             $node = $this->evaluate($query, $context);
@@ -398,7 +398,7 @@ class QueryEngine
      * Wrap element in DomElement object
      * @return Element|DOMNode
      */
-    private function wrap(DOMNode $node)
+    private function wrap(DOMNode $node): Element|DOMNode
     {
         if ($node instanceof DOMElement) {
             return new Element($node, $this);

@@ -27,7 +27,6 @@ use Dogma\Time\Span\DateSpan;
 use Dogma\Time\Span\DateTimeSpan;
 use function array_shift;
 use function array_values;
-use function get_class;
 use function sprintf;
 
 /**
@@ -44,11 +43,8 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
 
     private Date $end;
 
-    /** @var mixed|null */
-    private $data;
+    private mixed $data;
 
-    /**
-     */
     final public function __construct(Date $start, Date $end, mixed $data)
     {
         if ($start->getJulianDay() > $end->getJulianDay()) {
@@ -60,8 +56,6 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
         $this->data = $data;
     }
 
-    /**
-     */
     public static function createFromDateInterval(DateInterval $interval, mixed $data): self
     {
         return new static($interval->getStart(), $interval->getEnd(), $data);
@@ -76,8 +70,6 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
         return $interval;
     }
 
-    /**
-     */
     public static function all(mixed $data): self
     {
         return new static(new Date(self::MIN), new Date(self::MAX), $data);
@@ -109,20 +101,17 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
 
     // modifications ---------------------------------------------------------------------------------------------------
 
-    /**
-     * @return static
-     */
-    public function shift(string $value): self
+    public function shift(string $value): static
     {
         return new static($this->start->modify($value), $this->end->modify($value), $this->data);
     }
 
-    public function setStart(Date $start): self
+    public function setStart(Date $start): static
     {
         return new static($start, $this->end, $this->data);
     }
 
-    public function setEnd(Date $end): self
+    public function setEnd(Date $end): static
     {
         return new static($this->start, $end, $this->data);
     }
@@ -191,10 +180,7 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
         return [$this->start, $this->end];
     }
 
-    /**
-     * @return mixed|null
-     */
-    public function getData()
+    public function getData(): mixed
     {
         return $this->data;
     }
@@ -214,11 +200,9 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
         return $this->start->equals($other->start) && $this->end->equals($other->end) && $this->dataEquals($other->data);
     }
 
-    /**
-     */
     public function dataEquals(mixed $otherData): bool
     {
-        if ($this->data instanceof Equalable && $otherData instanceof Equalable && get_class($this->data) === get_class($otherData)) {
+        if ($this->data instanceof Equalable && $otherData instanceof Equalable && $this->data::class === $otherData::class) {
             return $this->data->equals($otherData);
         }
 
@@ -251,8 +235,6 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
         );
     }
 
-    /**
-     */
     public function containsValue(Date|DateTimeInterface $date): bool
     {
         if (!$date instanceof Date) {
@@ -262,8 +244,6 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
         return $date->isBetween($this->start, $this->end);
     }
 
-    /**
-     */
     public function contains(DateInterval|self $interval): bool
     {
         if ($this->isEmpty() || $interval->isEmpty()) {
@@ -273,15 +253,11 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
         return $this->start->isSameOrBefore($interval->getStart()) && $this->end->isSameOrAfter($interval->getEnd());
     }
 
-    /**
-     */
     public function intersects(DateInterval|self $interval): bool
     {
         return $this->start->isSameOrBefore($interval->getEnd()) && $this->end->isSameOrAfter($interval->getStart());
     }
 
-    /**
-     */
     public function touches(DateInterval|self $interval): bool
     {
         return $this->start->equals($interval->getEnd()->addDay()) || $this->end->equals($interval->getStart()->subtractDay());

@@ -52,7 +52,6 @@ class DayOfYear implements Equalable, Comparable, Dumpable
      * 61 = March 1st (even in non-leap years!)
      * ...
      * 366 = December 31st (even in non-leap years!)
-     *
      */
     final public function __construct(int|string $dateOrDayNumber)
     {

@@ -40,8 +40,7 @@ class HttpResponse
 
     private ?string $body;
 
-    /** @var mixed */
-    private $context;
+    private mixed $context;
 
     private ?HttpHeaderParser $headerParser;
 
@@ -55,7 +54,7 @@ class HttpResponse
         array $rawHeaders,
         array $info,
         mixed $context,
-        ?HttpHeaderParser $headerParser = null
+        ?HttpHeaderParser $headerParser = null,
     ) {
         $this->status = $status;
         $this->body = $body;
@@ -65,10 +64,7 @@ class HttpResponse
         $this->headerParser = $headerParser;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getContext()
+    public function getContext(): mixed
     {
         return $this->context;
     }
@@ -103,7 +99,7 @@ class HttpResponse
     /**
      * @return string|string[]|int|DateTime|Host|Url|ContentType|Encoding|Locale|null
      */
-    public function getHeader(string $name)
+    public function getHeader(string $name): string|array|int|DateTime|Host|Url|ContentType|Encoding|Locale|null
     {
         if ($this->headers === null) {
             $this->getHeaders();
@@ -149,7 +145,7 @@ class HttpResponse
     /**
      * @return string|string[]
      */
-    public function getInfo(string|int $name = null)
+    public function getInfo(string|int|null $name = null): string|array
     {
         if ($name === null) {
             return $this->info;

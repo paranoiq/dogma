@@ -19,7 +19,6 @@ use ReflectionClassConstant;
 use function array_diff_key;
 use function end;
 use function explode;
-use function get_class;
 use function implode;
 use function in_array;
 use function sprintf;
@@ -164,7 +163,7 @@ trait EnumSetMixin
 
     private function checkCompatibility(self $other): void
     {
-        $ancestor = Cls::commonRoot(static::class, get_class($other), self::class);
+        $ancestor = Cls::commonRoot(static::class, $other::class, self::class);
         if ($ancestor === null) {
             throw new InvalidTypeException(static::class, $other);
         }

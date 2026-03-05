@@ -323,14 +323,14 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     public function isFuture(?TimeProvider $timeProvider = null): bool
     {
-        $today = $timeProvider !== null ? $timeProvider->getDate() : new self();
+        $today = $timeProvider?->getDate() ?? new self();
 
         return $this->julianDay > $today->julianDay;
     }
 
     public function isPast(?TimeProvider $timeProvider = null): bool
     {
-        $today = $timeProvider !== null ? $timeProvider->getDate() : new self();
+        $today = $timeProvider?->getDate() ?? new self();
 
         return $this->julianDay < $today->julianDay;
     }

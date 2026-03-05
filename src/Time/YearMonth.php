@@ -34,8 +34,6 @@ class YearMonth implements Comparable, Equalable, Dumpable
 
     private string $value;
 
-    /**
-     */
     final public function __construct(string|Date|DateTimeInterface|null $value = null)
     {
         if ($value === null) {

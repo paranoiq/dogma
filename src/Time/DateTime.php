@@ -202,7 +202,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         int $minutes = 0,
         int $seconds = 0,
         int $microseconds = 0,
-        ?DateTimeZone $timeZone = null
+        ?DateTimeZone $timeZone = null,
     ): static
     {
         Check::range($year, 1, 9999);
@@ -244,7 +244,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         int $hours = 0,
         int $minutes = 0,
         int $seconds = 0,
-        int $microseconds = 0
+        int $microseconds = 0,
     ): bool
     {
         if ($year < 0 || $year > 9999 || $month < 1 || $month > 12 || $day < 1 || $day > 31 || $hours < 0 || $hours > 23
@@ -528,12 +528,12 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     public function isFuture(?TimeProvider $timeProvider = null): bool
     {
-        return $this > ($timeProvider !== null ? $timeProvider->getDateTime() : new self());
+        return $this > ($timeProvider?->getDateTime() ?? new self());
     }
 
     public function isPast(?TimeProvider $timeProvider = null): bool
     {
-        return $this < ($timeProvider !== null ? $timeProvider->getDateTime() : new self());
+        return $this < ($timeProvider?->getDateTime() ?? new self());
     }
 
     public function isMidnight(): bool
@@ -585,21 +585,21 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     public function isToday(?TimeProvider $timeProvider = null): bool
     {
-        $today = $timeProvider !== null ? $timeProvider->getDate() : new Date('today');
+        $today = $timeProvider?->getDate() ?? new Date('today');
 
         return $this->isBetween($today->getStart(), $today->getEnd());
     }
 
     public function isYesterday(?TimeProvider $timeProvider = null): bool
     {
-        $yesterday = $timeProvider !== null ? $timeProvider->getDateTime()->modify('-1 day')->getDate() : new Date('yesterday');
+        $yesterday = $timeProvider?->getDateTime()->modify('-1 day')->getDate() ?? new Date('yesterday');
 
         return $this->isBetween($yesterday->getStart(), $yesterday->getEnd());
     }
 
     public function isTomorrow(?TimeProvider $timeProvider = null): bool
     {
-        $tomorrow = $timeProvider !== null ? $timeProvider->getDateTime()->modify('+1 day')->getDate() : new Date('tomorrow');
+        $tomorrow = $timeProvider?->getDateTime()->modify('+1 day')->getDate() ?? new Date('tomorrow');
 
         return $this->isBetween($tomorrow->getStart(), $tomorrow->getEnd());
     }

@@ -27,7 +27,6 @@ use Dogma\Time\Span\DateSpan;
 use Dogma\Time\Span\DateTimeSpan;
 use function array_shift;
 use function array_values;
-use function get_class;
 use function sprintf;
 
 /**
@@ -44,11 +43,8 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     private Date $end;
 
-    /** @var mixed|null */
-    private $data;
+    private mixed $data;
 
-    /**
-     */
     final public function __construct(Date $start, Date $end, mixed $data)
     {
         if ($start->getJulianDay() > $end->getJulianDay()) {
@@ -60,8 +56,6 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
         $this->data = $data;
     }
 
-    /**
-     */
     public static function createFromNightInterval(NightInterval $interval, mixed $data): self
     {
         return new static($interval->getStart(), $interval->getEnd(), $data);
@@ -76,8 +70,6 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
         return $interval;
     }
 
-    /**
-     */
     public static function all(mixed $data): self
     {
         return new static(new Date(self::MIN), new Date(self::MAX), $data);
@@ -191,10 +183,7 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
         return [$this->start, $this->end];
     }
 
-    /**
-     * @return mixed|null
-     */
-    public function getData()
+    public function getData(): mixed
     {
         return $this->data;
     }
@@ -214,11 +203,9 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
         return $this->start->equals($other->start) && $this->end->equals($other->end) && $this->dataEquals($other->data);
     }
 
-    /**
-     */
     public function dataEquals(mixed $otherData): bool
     {
-        if ($this->data instanceof Equalable && $otherData instanceof Equalable && get_class($this->data) === get_class($otherData)) {
+        if ($this->data instanceof Equalable && $otherData instanceof Equalable && $this->data::class === $otherData::class) {
             return $this->data->equals($otherData);
         }
 
@@ -251,8 +238,6 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
         );
     }
 
-    /**
-     */
     public function containsValue(Date|DateTimeInterface $date): bool
     {
         if (!$date instanceof Date) {
@@ -262,8 +247,6 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
         return $date->isBetween($this->start, $this->end->subtractDay());
     }
 
-    /**
-     */
     public function contains(NightInterval|self $interval): bool
     {
         if ($this->isEmpty() || $interval->isEmpty()) {
@@ -273,15 +256,11 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
         return $this->start->isSameOrBefore($interval->getStart()) && $this->end->isSameOrAfter($interval->getEnd());
     }
 
-    /**
-     */
     public function intersects(NightInterval|self $interval): bool
     {
         return $this->start->isBefore($interval->getEnd()) && $this->end->isAfter($interval->getStart());
     }
 
-    /**
-     */
     public function touches(NightInterval|self $interval): bool
     {
         return $this->start->equals($interval->getEnd()) || $this->end->equals($interval->getStart());

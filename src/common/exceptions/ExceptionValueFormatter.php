@@ -10,7 +10,6 @@
 namespace Dogma;
 
 use function count;
-use function get_class;
 use function get_resource_type;
 use function is_array;
 use function is_bool;
@@ -29,12 +28,10 @@ class ExceptionValueFormatter
 {
     use StaticClassMixin;
 
-    /**
-     */
     public static function format(mixed $value): string
     {
         if (is_object($value)) {
-            return sprintf('%s #%s', get_class($value), substr(md5(spl_object_hash($value)), 0, 8));
+            return sprintf('%s #%s', $value::class, substr(md5(spl_object_hash($value)), 0, 8));
         } elseif (is_resource($value)) {
             return sprintf('resource (%s) #%d', get_resource_type($value), substr((string) $value, 13));
         } elseif (is_array($value)) {

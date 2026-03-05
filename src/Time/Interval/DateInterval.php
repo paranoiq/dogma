@@ -123,14 +123,14 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     public static function future(?TimeProvider $timeProvider = null): self
     {
-        $tomorrow = $timeProvider !== null ? $timeProvider->getDate()->addDay() : new Date('tomorrow');
+        $tomorrow = $timeProvider?->getDate()->addDay() ?? new Date('tomorrow');
 
         return new static($tomorrow, new Date(self::MAX));
     }
 
     public static function past(?TimeProvider $timeProvider = null): self
     {
-        $yesterday = $timeProvider !== null ? $timeProvider->getDate()->subtractDay() : new Date('yesterday');
+        $yesterday = $timeProvider?->getDate()->subtractDay() ?? new Date('yesterday');
 
         return new static(new Date(static::MIN), $yesterday);
     }
@@ -301,8 +301,6 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         );
     }
 
-    /**
-     */
     public function containsValue(Date|DateTimeInterface $date): bool
     {
         if (!$date instanceof Date) {

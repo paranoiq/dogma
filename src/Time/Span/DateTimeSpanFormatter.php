@@ -159,7 +159,7 @@ class DateTimeSpanFormatter
         string $format = self::FORMAT_DEFAULT,
         int $maxDecimals = 1,
         string $decimalPoint = '.',
-        ?Translator $translator = null
+        ?Translator $translator = null,
     ) {
         $this->format = $format;
         $this->maxDecimals = $maxDecimals;
@@ -256,7 +256,7 @@ class DateTimeSpanFormatter
         DateTimeSpan $span,
         ?string $format = null,
         ?int $maxDecimals = null,
-        ?string $decimalPoint = null
+        ?string $decimalPoint = null,
     ): string
     {
         $format = $format ?? $this->format;

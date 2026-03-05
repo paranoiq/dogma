@@ -25,7 +25,7 @@ class ContentTypeDetector
 {
     use StrictBehaviorMixin;
 
-    private ?string $magicFile = null;
+    private ?string $magicFile;
 
     /** @var resource|finfo|null */
     private $typeHandler;
@@ -58,9 +58,6 @@ class ContentTypeDetector
         $this->encodingHandler = $encodingHandler;
     }
 
-    /**
-     * @return ContentType|null
-     */
     public function detectFileContentType(string|Path $file): ?ContentType
     {
         if ($this->typeHandler === null) {
@@ -92,9 +89,6 @@ class ContentTypeDetector
         return ContentType::get($type);
     }
 
-    /**
-     * @return Encoding|null
-     */
     public function detectFileEncoding(string|Path $file): ?Encoding
     {
         if ($this->encodingHandler === null) {

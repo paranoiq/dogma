@@ -69,7 +69,7 @@ final class Check
         mixed &$value,
         string|array $type,
         int|float|string|null $min = null,
-        int|float|null $max = null
+        int|float|null $max = null,
     ): void
     {
         $itemTypes = null;
@@ -181,7 +181,7 @@ final class Check
             try {
                 self::type($value, $type, $min, $max);
                 return;
-            } catch (InvalidTypeException $e) {
+            } catch (InvalidTypeException) {
                 // pass
             }
         }

@@ -38,7 +38,7 @@ class TextFile extends File
         string $mode = FileMode::OPEN_READ,
         $streamContext = null,
         ?Encoding $encoding = null,
-        ?LineEndings $lineEndings = null
+        ?LineEndings $lineEndings = null,
     ): self {
         $self = new static($file, $mode, $streamContext);
 

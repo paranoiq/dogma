@@ -166,7 +166,7 @@ class Arr
      * @param mixed[] $array
      * @return int|string
      */
-    public static function randomKey(array $array)
+    public static function randomKey(array $array): int|string
     {
         return array_rand($array);
     }
@@ -279,7 +279,7 @@ class Arr
      * @param T $value
      * @return int|string|null
      */
-    public static function indexOf(array $array, $value, int $from = 0)
+    public static function indexOf(array $array, $value, int $from = 0): int|string|null
     {
         if ($from > 0) {
             return self::indexOf(self::drop($array, $from), $value);
@@ -306,7 +306,7 @@ class Arr
      * @param T $value
      * @return int|string|null
      */
-    public static function lastIndexOf(array $array, $value, ?int $end = null)
+    public static function lastIndexOf(array $array, $value, ?int $end = null): int|string|null
     {
         if ($end !== null) {
             return self::last(self::indexesOf(self::take($array, $end), $value));
@@ -321,7 +321,7 @@ class Arr
      * @param callable(T): bool $function
      * @return int|string|null
      */
-    public static function indexWhere(array $array, callable $function, int $from = 0)
+    public static function indexWhere(array $array, callable $function, int $from = 0): int|string|null
     {
         foreach (self::drop($array, $from) as $key => $value) {
             if ($function($value)) {
@@ -338,7 +338,7 @@ class Arr
      * @param callable(T): bool $function
      * @return int|string|null
      */
-    public static function lastIndexWhere(array $array, callable $function, ?int $end = null)
+    public static function lastIndexWhere(array $array, callable $function, ?int $end = null): int|string|null
     {
         return self::indexWhere(self::reverse(self::take($array, $end)), $function);
     }
@@ -556,7 +556,7 @@ class Arr
      * @param array<int|float> $array
      * @return int|float
      */
-    public static function product(array $array)
+    public static function product(array $array): int|float
     {
         return array_product($array);
     }
@@ -565,7 +565,7 @@ class Arr
      * @param array<int|float> $array
      * @return int|float
      */
-    public static function sum(array $array)
+    public static function sum(array $array): int|float
     {
         return array_sum($array);
     }
@@ -667,7 +667,7 @@ class Arr
      * @param mixed[] $array
      * @return mixed|null
      */
-    public static function fold(array $array, callable $function, mixed $init = null)
+    public static function fold(array $array, callable $function, mixed $init = null): mixed
     {
         return self::foldLeft($array, $function, $init);
     }
@@ -676,7 +676,7 @@ class Arr
      * @param mixed[] $array
      * @return mixed|null
      */
-    public static function foldLeft(array $array, callable $function, mixed $init = null)
+    public static function foldLeft(array $array, callable $function, mixed $init = null): mixed
     {
         return array_reduce($array, $function, $init);
     }
@@ -685,7 +685,7 @@ class Arr
      * @param mixed[] $array
      * @return mixed|null
      */
-    public static function foldRight(array $array, callable $function, mixed $init = null)
+    public static function foldRight(array $array, callable $function, mixed $init = null): mixed
     {
         foreach (new ReverseArrayIterator($array) as $value) {
             $init = $function($value, $init);
@@ -698,7 +698,7 @@ class Arr
      * @param mixed[] $array
      * @return mixed|null
      */
-    public static function reduce(array $array, callable $function)
+    public static function reduce(array $array, callable $function): mixed
     {
         return self::reduceLeft($array, $function);
     }
@@ -707,7 +707,7 @@ class Arr
      * @param mixed[] $array
      * @return mixed|null
      */
-    public static function reduceLeft(array $array, callable $function)
+    public static function reduceLeft(array $array, callable $function): mixed
     {
         if (empty($array)) {
             return null;
@@ -720,7 +720,7 @@ class Arr
      * @param mixed[] $array
      * @return mixed|null
      */
-    public static function reduceRight(array $array, callable $function)
+    public static function reduceRight(array $array, callable $function): mixed
     {
         if (empty($array)) {
             return null;
@@ -766,7 +766,7 @@ class Arr
      * @param mixed[] $array
      * @return mixed|null
      */
-    public static function head(array $array)
+    public static function head(array $array): mixed
     {
         if (count($array) === 0) {
             return null;
@@ -780,7 +780,7 @@ class Arr
      * @param mixed[] $array
      * @return mixed|null
      */
-    public static function first(array $array)
+    public static function first(array $array): mixed
     {
         if (count($array) === 0) {
             return null;
@@ -793,7 +793,7 @@ class Arr
      * @param mixed[] $array
      * @return mixed|null
      */
-    public static function last(array $array)
+    public static function last(array $array): mixed
     {
         if (count($array) === 0) {
             return null;

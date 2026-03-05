@@ -135,14 +135,14 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     public static function future(?DateTimeZone $timeZone = null, ?TimeProvider $timeProvider = null): self
     {
-        $now = $timeProvider !== null ? $timeProvider->getDateTime($timeZone) : new DateTime('now', $timeZone);
+        $now = $timeProvider?->getDateTime($timeZone) ?? new DateTime('now', $timeZone);
 
         return new static($now, new DateTime(self::MAX, $timeZone));
     }
 
     public static function past(?DateTimeZone $timeZone = null, ?TimeProvider $timeProvider = null): self
     {
-        $now = $timeProvider !== null ? $timeProvider->getDateTime($timeZone) : new DateTime('now', $timeZone);
+        $now = $timeProvider?->getDateTime($timeZone) ?? new DateTime('now', $timeZone);
 
         return new static(new DateTime(static::MIN, $timeZone), $now);
     }

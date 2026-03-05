@@ -81,8 +81,6 @@ class HttpMultiChannel
         }
     }
 
-    /**
-     */
     private function jobFinished(string|int $jobName): void
     {
         $error = $redirect = false;
@@ -157,7 +155,7 @@ class HttpMultiChannel
      * @param string|mixed[] $data
      * @return string|int
      */
-    public function addJob(string|array $data, mixed $context = null, mixed $name = null)
+    public function addJob(string|array $data, mixed $context = null, mixed $name = null): string|int
     {
         if ($name === null) {
             $name = ++$this->lastIndex;
@@ -215,7 +213,7 @@ class HttpMultiChannel
     /**
      * @return HttpResponse[]|null
      */
-    public function fetch(string|int $name = null): ?array
+    public function fetch(string|int|null $name = null): ?array
     {
         if ($name !== null) {
             return $this->fetchNamedJob($name);

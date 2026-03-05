@@ -39,7 +39,7 @@ class HtmlTableIterator implements Iterator
     public function __construct(
         Element $table,
         string $headRowSelector = ':headrow',
-        string $bodyRowSelector = ':bodyrow'
+        string $bodyRowSelector = ':bodyrow',
     )
     {
         if ($table->nodeName !== 'table') {

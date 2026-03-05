@@ -132,7 +132,7 @@ class Document extends DOMDocument
      * @return Element|DOMNode|null
      */
     #[ReturnTypeWillChange]
-    public function getElementById($id)
+    public function getElementById($id): Element|DOMNode|null
     {
         $element = parent::getElementById($id);
 
@@ -147,7 +147,7 @@ class Document extends DOMDocument
     /**
      * @return Element|DOMNode|null
      */
-    public function findOne(string $xpath)
+    public function findOne(string $xpath): Element|DOMNode|null
     {
         return $this->engine->findOne($xpath);
     }
@@ -155,7 +155,7 @@ class Document extends DOMDocument
     /**
      * @return int|float|bool|string|Date|DateTime|null
      */
-    public function evaluate(string $xpath)
+    public function evaluate(string $xpath): int|float|bool|string|Date|DateTime|null
     {
         return $this->engine->evaluate($xpath);
     }
@@ -164,7 +164,7 @@ class Document extends DOMDocument
      * @param string|string[] $target
      * @return int|float|bool|string|Date|DateTime|mixed[]|null
      */
-    public function extract(string|array $target)
+    public function extract(string|array $target): int|float|bool|string|Date|DateTime|array|null
     {
         return $this->engine->extract($target);
     }
@@ -177,10 +177,7 @@ class Document extends DOMDocument
         Dumper::dump($this);
     }
 
-    /**
-     * @return Element|DOMNode
-     */
-    private function wrap(DOMNode $node)
+    private function wrap(DOMNode $node): Element|DOMNode
     {
         if ($node instanceof DOMElement) {
             return new Element($node, $this->engine);

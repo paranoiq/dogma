@@ -19,7 +19,6 @@ use function array_values;
 use function class_parents;
 use function end;
 use function explode;
-use function get_class;
 use function is_object;
 
 class Cls
@@ -54,7 +53,7 @@ class Cls
     public static function parentsAndSelf(string|object $class): array
     {
         if (is_object($class)) {
-            $class = get_class($class);
+            $class = $class::class;
         }
 
         $parents = class_parents($class);
@@ -78,13 +77,13 @@ class Cls
         static $commonRoots = [];
 
         if (is_object($first)) {
-            $first = get_class($first);
+            $first = $first::class;
         }
         if (is_object($second)) {
-            $second = get_class($second);
+            $second = $second::class;
         }
         if (is_object($after)) {
-            $after = get_class($after);
+            $after = $after::class;
         }
 
         $root = $commonRoots[$first][$second][$after] ?? null;
@@ -128,13 +127,13 @@ class Cls
         static $commonBranches = [];
 
         if (is_object($first)) {
-            $first = get_class($first);
+            $first = $first::class;
         }
         if (is_object($second)) {
-            $second = get_class($second);
+            $second = $second::class;
         }
         if (is_object($after)) {
-            $after = get_class($after);
+            $after = $after::class;
         }
 
         $branch = $commonBranches[$first][$second][$after] ?? null;

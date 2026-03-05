@@ -644,7 +644,7 @@ class TimeZone extends PartialStringEnum
         try {
             $timeZone = self::get($name);
         } catch (InvalidValueException $e) {
-            throw new InvalidOrDeprecatedTimeZoneException($name);
+            throw new InvalidOrDeprecatedTimeZoneException($name, $e);
         }
 
         return $timeZone->getDateTimeZone();

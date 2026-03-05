@@ -55,16 +55,13 @@ class ReverseArrayIterator implements Iterator
      * @return int|string|null
      */
     #[ReturnTypeWillChange]
-    public function key()
+    public function key(): int|string|null
     {
         return key($this->array);
     }
 
-    /**
-     * @return mixed
-     */
     #[ReturnTypeWillChange]
-    public function current()
+    public function current(): mixed
     {
         return current($this->array);
     }

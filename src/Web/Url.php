@@ -24,7 +24,7 @@ class Url
         try {
             $this->url = new NetteUrl($url);
         } catch (NetteInvalidArgumentException $e) {
-            throw new InvalidUrlException($url);
+            throw new InvalidUrlException($url, $e);
         }
     }
 

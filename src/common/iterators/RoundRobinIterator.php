@@ -108,20 +108,14 @@ class RoundRobinIterator implements Iterator
         return true;
     }
 
-    /**
-     * @return mixed|null
-     */
     #[ReturnTypeWillChange]
-    public function current()
+    public function current(): mixed
     {
         return $this->iterators[$this->current]->current();
     }
 
-    /**
-     * @return mixed|null
-     */
     #[ReturnTypeWillChange]
-    public function key()
+    public function key(): mixed
     {
         return $this->key;
     }

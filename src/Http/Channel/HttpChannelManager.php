@@ -180,7 +180,7 @@ class HttpChannelManager
     /**
      * @return int|string|null
      */
-    private function selectChannel()
+    private function selectChannel(): int|string|null
     {
         if (count($this->resources) >= $this->threadLimit) {
             return null;

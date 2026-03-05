@@ -373,7 +373,7 @@ class Str
         string $separator = '',
         ?string $lastSeparator = null,
         ?int $maxLength = null,
-        string $ellipsis = '…'
+        string $ellipsis = '…',
     ): string
     {
         if (count($items) === 0) {
@@ -477,7 +477,7 @@ class Str
         string $end,
         ?string $startEscape = null,
         ?string $endEscape = null,
-        int $offset = 0
+        int $offset = 0,
     ): ?array
     {
         $seDouble = $start === $startEscape;
@@ -547,7 +547,7 @@ class Str
         float $deletionCost = 1.0,
         float $replacementCost = 1.0,
         ?float $replacementAccentCost = 0.5,
-        ?float $replacementCaseCost = 0.25
+        ?float $replacementCaseCost = 0.25,
     ): float
     {
         if ($string1 === $string2) {
@@ -615,7 +615,7 @@ class Str
         int $deleteCost = 4,
         int $replaceCost = 4,
         ?int $accentCost = 2,
-        ?int $caseCost = 1
+        ?int $caseCost = 1,
     ): int
     {
         if ($string1 === $string2) {
@@ -682,7 +682,7 @@ class Str
         int $swapCost = 4,
         int $replaceCost = 4,
         ?int $accentCost = 2,
-        ?int $caseCost = 1
+        ?int $caseCost = 1,
     ): int
     {
         $length1 = mb_strlen($string1, 'UTF-8');
@@ -747,7 +747,7 @@ class Str
         int $insertCost = 1,
         int $deleteCost = 1,
         int $swapCost = 1,
-        int $replaceCost = 1
+        int $replaceCost = 1,
     ): int
     {
         $length1 = strlen($string1);

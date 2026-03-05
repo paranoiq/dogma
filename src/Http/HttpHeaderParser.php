@@ -136,7 +136,7 @@ class HttpHeaderParser
     /**
      * @return string|int|DateTime|Host|Url|ContentType|Encoding|Locale
      */
-    private function formatValue(string $value, string $type)
+    private function formatValue(string $value, string $type): string|int|DateTime|Host|Url|ContentType|Encoding|Locale
     {
         switch ($type) {
             case Type::INT:

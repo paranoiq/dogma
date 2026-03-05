@@ -32,7 +32,7 @@ class SimplePdoResult implements Iterator
     private int $key;
 
     /** @var mixed[]|bool */
-    private $current;
+    private array|bool $current;
 
     /**
      * @param PDOStatement<int, mixed[]> $statement
@@ -55,7 +55,7 @@ class SimplePdoResult implements Iterator
     /**
      * @return mixed[]|bool
      */
-    public function fetch(int $mode = PDO::FETCH_ASSOC)
+    public function fetch(int $mode = PDO::FETCH_ASSOC): array|bool
     {
         return $this->statement->fetch($mode);
     }
@@ -73,10 +73,7 @@ class SimplePdoResult implements Iterator
         return $result;
     }
 
-    /**
-     * @return mixed|bool
-     */
-    public function fetchColumn(int|string $column = 0)
+    public function fetchColumn(int|string $column = 0): mixed
     {
         if (is_int($column)) {
             return $this->statement->fetch(PDO::FETCH_NUM)[$column] ?? false;

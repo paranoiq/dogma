@@ -16,18 +16,13 @@ use function array_key_exists;
 trait ImmutableArrayAccessMixin
 {
 
-    /**
-     */
     public function offsetExists(mixed $key): bool
     {
         return array_key_exists($key, $this->toArray());
     }
 
-    /**
-     * @return mixed
-     */
     #[ReturnTypeWillChange]
-    public function offsetGet(mixed $key)
+    public function offsetGet(mixed $key): mixed
     {
         return $this->items[$key];
     }

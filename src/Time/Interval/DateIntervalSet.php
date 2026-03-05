@@ -101,7 +101,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 
     public function format(
         string $format = DateInterval::DEFAULT_FORMAT,
-        ?DateTimeIntervalFormatter $formatter = null
+        ?DateTimeIntervalFormatter $formatter = null,
     ): string
     {
         return implode(', ', Arr::map($this->intervals, static function (DateInterval $dateInterval) use ($format, $formatter): string {

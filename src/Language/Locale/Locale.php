@@ -84,7 +84,7 @@ class Locale
         ?Script $script = null,
         array $variants = [],
         array $private = [],
-        array $keywords = []
+        array $keywords = [],
     ): self
     {
         $components = [
@@ -140,7 +140,7 @@ class Locale
     /**
      * @param Locale[]|string[] $locales
      */
-    public function findBestMatch(array $locales, self|string $default = null): ?self
+    public function findBestMatch(array $locales, self|string|null $default = null): ?self
     {
         Check::types($default, [Type::STRING, self::class, Type::NULL]);
 

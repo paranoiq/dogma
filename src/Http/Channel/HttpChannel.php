@@ -46,8 +46,7 @@ class HttpChannel
 
     private bool $stopped = false;
 
-    /** @var int|bool */
-    private $paused = false;
+    private int|bool $paused = false;
 
     /** @var string[]|string[][] (int|string $name => $data) */
     private array $queue = [];
@@ -156,7 +155,7 @@ class HttpChannel
      * @param string|string[] $data
      * @return string|int
      */
-    public function runJob(string|array $data, mixed $context = null, string|int $name = null)
+    public function runJob(string|array $data, mixed $context = null, string|int|null $name = null): string|int
     {
         return $this->addJob($data, $context, $name, true);
     }
@@ -165,7 +164,7 @@ class HttpChannel
      * Add new job to channel queue.
      * @return string|int
      */
-    public function addJob(mixed $data, mixed $context = null, string|int $name = null, bool $forceStart = false)
+    public function addJob(mixed $data, mixed $context = null, string|int|null $name = null, bool $forceStart = false): string|int
     {
         if (!is_string($data) && !is_array($data)) {
             throw new HttpChannelException('Illegal job data. Job data can be either string or array.');

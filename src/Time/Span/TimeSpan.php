@@ -31,7 +31,7 @@ class TimeSpan implements DateOrTimeSpan
         int $hours,
         int $minutes = 0,
         int $seconds = 0,
-        int $microseconds = 0
+        int $microseconds = 0,
     ) {
         $this->hours = $hours;
         $this->minutes = $minutes;

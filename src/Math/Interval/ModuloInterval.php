@@ -13,7 +13,10 @@ use Dogma\Comparable;
 use Dogma\Dumpable;
 use Dogma\Equalable;
 
-interface ModuloInterval /*<T>*/ extends Equalable, Comparable, Dumpable
+/**
+ * @template T
+ */
+interface ModuloInterval extends Equalable, Comparable, Dumpable
 {
 
     // queries ---------------------------------------------------------------------------------------------------------
@@ -21,14 +24,14 @@ interface ModuloInterval /*<T>*/ extends Equalable, Comparable, Dumpable
     public function format(): string;
 
     /**
-     * @return mixed
+     * @return T
      */
-    public function getStart(); //: T
+    public function getStart(): mixed;
 
     /**
-     * @return mixed
+     * @return T
      */
-    public function getEnd(); //: T
+    public function getEnd(): mixed;
 
     public function isEmpty(): bool;
 
@@ -45,15 +48,15 @@ interface ModuloInterval /*<T>*/ extends Equalable, Comparable, Dumpable
     // actions ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @return mixed|ModuloIntervalSet
+     * @return ModuloIntervalSet<T>
      */
-    public function split(int $parts);//: ModuloIntervalSet<T>;
+    public function split(int $parts): ModuloIntervalSet;
 
     /**
-     * @param mixed[]|array<T> $intervalStarts
-     * @return mixed|ModuloIntervalSet
+     * @param array<T> $intervalStarts
+     * @return ModuloIntervalSet<T>
      */
-    public function splitBy(array $intervalStarts);//: ModuloIntervalSet<T>;
+    public function splitBy(array $intervalStarts): ModuloIntervalSet;
 
     // A1****A2****B1****B2 -> [A1, B2]
     //public function envelope(self ...$items): self;
@@ -79,9 +82,9 @@ interface ModuloInterval /*<T>*/ extends Equalable, Comparable, Dumpable
     //public function subtract(self ...$items): ModuloIntervalSet<T>;
 
     /**
-     * @return mixed|ModuloIntervalSet
+     * @return ModuloIntervalSet<T>
      */
-    public function invert();//: ModuloIntervalSet<T>;
+    public function invert(): ModuloIntervalSet;
 
     // static ----------------------------------------------------------------------------------------------------------
 
@@ -100,14 +103,14 @@ interface ModuloInterval /*<T>*/ extends Equalable, Comparable, Dumpable
 
     /**
      * @param self[] $intervals
-     * @return self[]
+     * @return static[]
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array;
 
     /**
      * @param self[] $intervals
-     * @return self[]
+     * @return static[]
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array;

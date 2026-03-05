@@ -62,11 +62,8 @@ class CombineIterator implements Iterator
         return $keysValid && $valuesValid;
     }
 
-    /**
-     * @return mixed|null
-     */
     #[ReturnTypeWillChange]
-    public function current()
+    public function current(): mixed
     {
         return $this->values->valid() ? $this->values->current() : null;
     }
@@ -75,7 +72,7 @@ class CombineIterator implements Iterator
      * @return int|string|null
      */
     #[ReturnTypeWillChange]
-    public function key()
+    public function key(): int|string|null
     {
         return $this->keys->valid() ? $this->keys->current() : null;
     }

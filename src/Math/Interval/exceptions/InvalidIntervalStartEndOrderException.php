@@ -14,8 +14,6 @@ use Throwable;
 class InvalidIntervalStartEndOrderException extends InvalidIntervalException
 {
 
-    /**
-     */
     public function __construct(int|float $start, int|float $end, ?Throwable $previous = null)
     {
         parent::__construct("Start {$start} should be less than or equal to end {$end}.", $previous);

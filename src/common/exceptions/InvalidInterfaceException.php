@@ -10,7 +10,6 @@
 namespace Dogma;
 
 use Throwable;
-use function get_class;
 use function gettype;
 use function interface_exists;
 use function is_object;
@@ -18,12 +17,10 @@ use function is_object;
 class InvalidInterfaceException extends InvalidTypeException
 {
 
-    /**
-     */
     public function __construct(string $expectedInterface, mixed $value, ?Throwable $previous = null)
     {
         if (is_object($value)) {
-            $type = get_class($value);
+            $type = $value::class;
         } else {
             $type = gettype($value);
         }

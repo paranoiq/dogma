@@ -10,7 +10,6 @@
 namespace Dogma;
 
 use function array_map;
-use function get_class;
 use function get_resource_type;
 use function gettype;
 use function implode;
@@ -23,8 +22,6 @@ class ExceptionTypeFormatter
 {
     use StaticClassMixin;
 
-    /**
-     */
     public static function format(mixed $type): string
     {
         if (is_array($type)) {
@@ -34,14 +31,12 @@ class ExceptionTypeFormatter
         }
     }
 
-    /**
-     */
     private static function formatType(mixed $type): string
     {
         if ($type instanceof Type) {
             return $type->getId();
         } elseif (is_object($type)) {
-            return get_class($type);
+            return $type::class;
         } elseif (is_resource($type)) {
             return 'resource(' . get_resource_type($type) . ')';
         } elseif (is_string($type)) {

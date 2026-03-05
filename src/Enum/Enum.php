@@ -14,13 +14,8 @@ use Dogma\Equalable;
 interface Enum extends Equalable
 {
 
-    /**
-     * @return string|int
-     */
-    public function getValue();
+    public function getValue(): string|int;
 
-    /**
-     */
     public function equalsValue(int|string $value): bool;
 
 }

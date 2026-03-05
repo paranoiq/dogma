@@ -12,7 +12,6 @@ namespace Dogma\Time;
 use Dogma\Math\ModuloCalc;
 use Dogma\NotImplementedException;
 use Dogma\Overflow;
-use function get_class;
 
 class TimeCalc
 {
@@ -52,7 +51,7 @@ class TimeCalc
      */
     private static function roundAny(string $method, DateTimeOrTime $value, DateTimeUnit $unit, ?array $allowedValues = null): DateTimeOrTime
     {
-        $class = get_class($value);
+        $class = $value::class;
 
         if ($allowedValues === null) {
             $allowedValues = [0];

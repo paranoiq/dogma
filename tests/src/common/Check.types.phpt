@@ -13,7 +13,6 @@ use Dogma\ValueOutOfRangeException;
 use stdClass;
 use Tester\AssertException;
 use Throwable;
-use function get_class;
 use function in_array;
 use function is_float;
 use function is_object;
@@ -157,7 +156,7 @@ foreach ($subjects as $name => $possibleTypes) {
                 Assert::fail("Subject $name `$before` should not be castable to type $type. Instead casted to value `$after`.");
             }
         } catch (Throwable $e) {
-            $class = get_class($e);
+            $class = $e::class;
             $before = trim(Dumper::dump($subject));
             if ($class === AssertException::class) {
                 throw $e;

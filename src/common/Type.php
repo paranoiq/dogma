@@ -63,20 +63,20 @@ class Type
     public const NULLABLE = true;
     public const NOT_NULLABLE = false;
 
-    /** @var Type[] (string $id => $type) */
+    /** @var self[] (string $id => $type) */
     private static array $instances = [];
 
     private string $id;
 
     private string $type;
 
-    /** @var Type|Type[]|null */
-    private $itemType;
+    /** @var self|self[]|null */
+    private self|array|null $itemType = null;
 
     private bool $nullable;
 
     /** @var int|int[]|null */
-    private $size;
+    private int|array|null $size = null;
 
     private ?string $specific = null;
 
@@ -85,7 +85,7 @@ class Type
     private ?Locale $locale = null;
 
     /**
-     * @param Type|Type[]|null $itemType
+     * @param self|self[]|null $itemType
      * @param int|int[]|null $size
      */
     final private function __construct(
@@ -96,7 +96,7 @@ class Type
         int|array|null $size = null,
         ?string $specific = null,
         ?Encoding $encoding = null,
-        ?Locale $locale = null
+        ?Locale $locale = null,
     ) {
         $this->id = $id;
         $this->type = $type;
@@ -122,7 +122,7 @@ class Type
         $specific = null,
         $encoding = null,
         $locale = null,
-        ?bool $nullable = null
+        ?bool $nullable = null,
     ): self
     {
         $args = func_get_args();
@@ -455,7 +455,7 @@ class Type
      * Returns type of items or array of types for Tuple
      * @return self|self[]|null
      */
-    public function getItemType()
+    public function getItemType(): self|array|null
     {
         return $this->itemType;
     }
@@ -465,7 +465,7 @@ class Type
      *
      * @return int|int[]|null
      */
-    public function getSize()
+    public function getSize(): int|array|null
     {
         return $this->size;
     }
@@ -680,7 +680,7 @@ class Type
         try {
             self::fromId($type);
             return true;
-        } catch (Throwable $t) {
+        } catch (Throwable) {
             return false;
         }
     }

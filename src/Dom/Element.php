@@ -61,18 +61,12 @@ class Element
         return $this->engine->find($xpath, $this->element);
     }
 
-    /**
-     * @return Element|DOMNode|null
-     */
-    public function findOne(string $xpath)
+    public function findOne(string $xpath): self|DOMNode|null
     {
         return $this->engine->findOne($xpath, $this->element);
     }
 
-    /**
-     * @return string|int|float|bool|Date|DateTime|null
-     */
-    public function evaluate(string $xpath)
+    public function evaluate(string $xpath): string|int|float|bool|Date|DateTime|null
     {
         return $this->engine->evaluate($xpath, $this->element);
     }
@@ -81,7 +75,7 @@ class Element
      * @param string|string[] $target
      * @return int|float|bool|string|Date|DateTime|mixed[]|null
      */
-    public function extract(string|array $target)
+    public function extract(string|array $target): int|float|bool|string|Date|DateTime|array|null
     {
         return $this->engine->extract($target, $this->element);
     }
@@ -103,18 +97,12 @@ class Element
         return true;
     }
 
-    /**
-     * @return mixed
-     */
-    public function &__get(string $name)
+    public function &__get(string $name): mixed
     {
         return $this->element->$name;
     }
 
-    /**
-     * @return mixed
-     */
-    public function __call(string $name, mixed $arg)
+    public function __call(string $name, mixed $arg): mixed
     {
         $args = func_get_args();
 

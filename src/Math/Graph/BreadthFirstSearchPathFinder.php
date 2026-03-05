@@ -32,9 +32,6 @@ class BreadthFirstSearchPathFinder
         $this->edges = $edges;
     }
 
-    /**
-     * @return int|null
-     */
     public function getDistance(int|string $i, int|string $j): ?int
     {
         $path = $this->getPath($i, $j);

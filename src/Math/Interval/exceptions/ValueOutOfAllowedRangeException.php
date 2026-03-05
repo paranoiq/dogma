@@ -14,8 +14,6 @@ use Throwable;
 class ValueOutOfAllowedRangeException extends InvalidIntervalException
 {
 
-    /**
-     */
     public function __construct(int|float $value, int|float $min, int|float $max, ?Throwable $previous = null)
     {
         parent::__construct("Value {$value} is out of allowed range {$min} - {$max}.", $previous);

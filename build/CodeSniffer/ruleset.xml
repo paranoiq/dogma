@@ -7,5 +7,8 @@
         <exclude name="Generic.CodeAnalysis.EmptyStatement"/>
         <exclude name="PSR2.Namespaces.UseDeclaration.SpaceAfterLastUse"/><!-- duplicate -->
         <exclude name="SlevomatCodingStandard.Classes.DisallowLateStaticBindingForConstants.DisallowedLateStaticBindingForConstant"/>
+        <exclude name="SlevomatCodingStandard.Functions.DisallowTrailingCommaInDeclaration"/>
+        <exclude name="SlevomatCodingStandard.ControlStructures.DisallowNullSafeObjectOperator"/>
+        <exclude name="SlevomatCodingStandard.Exceptions.DisallowNonCapturingCatch"/>
     </rule>
 </ruleset>

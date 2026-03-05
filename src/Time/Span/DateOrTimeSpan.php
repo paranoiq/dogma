@@ -22,28 +22,21 @@ interface DateOrTimeSpan extends Equalable, Comparable
 
     public function isMixed(): bool;
 
-    //public function add(self ...$other): self;
+    public function add(self ...$other): static;
 
-    //public function subtract(self ...$other): self;
+    public function subtract(self ...$other): static;
 
-    /**
-     * @return mixed
-     */
-    public function invert();//: self;
+    public function invert(): static;
 
-    /**
-     * @return mixed
-     */
-    public function abs();//: self;
+    public function abs(): static;
 
     /**
      * Normalizes values by summarizing smaller units into bigger. eg: '34 days' -> '1 month, 4 days'
-     * @return self|mixed
      */
-    public function normalize();//: self;
+    public function normalize(): static;
 
     /**
-     * @return int[]
+     * @return array<int>
      */
     public function getValues(): array;
 

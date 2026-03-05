@@ -14,11 +14,8 @@ use Throwable;
 class InvalidValueException extends Exception
 {
 
-    /** @var mixed */
-    protected $value;
+    protected mixed $value;
 
-    /**
-     */
     public function __construct(mixed $value, mixed $type, ?Throwable $previous = null)
     {
         $valueFormatted = ExceptionValueFormatter::format($value);
@@ -29,10 +26,7 @@ class InvalidValueException extends Exception
         $this->value = $value;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }

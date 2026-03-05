@@ -14,8 +14,6 @@ use Throwable;
 class InvalidRegularExpressionException extends InvalidValueException
 {
 
-    /**
-     */
     public function __construct(mixed $regexp, ?Throwable $previous = null)
     {
         Exception::__construct("Value '$regexp' is not a valid regular expression.", $previous);

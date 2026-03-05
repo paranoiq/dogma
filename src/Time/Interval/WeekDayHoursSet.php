@@ -54,7 +54,7 @@ class WeekDayHoursSet implements Pokeable, Dumpable, IteratorAggregate
     public function createFromDaysOfWeekAndOpeningTime(
         DaysOfWeek $days,
         TimeInterval $opening,
-        ?TimeInterval $break = null
+        ?TimeInterval $break = null,
     ): self
     {
         $dayItems = [];

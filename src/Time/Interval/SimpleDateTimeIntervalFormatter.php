@@ -17,7 +17,6 @@ use Dogma\Time\InvalidFormattingStringException;
 use Dogma\Time\Time;
 use function count;
 use function explode;
-use function get_class;
 
 /**
  * Uses standard PHP date() formatting and "|" separator for start and end part of formatting string.
@@ -47,7 +46,7 @@ class SimpleDateTimeIntervalFormatter implements DateTimeIntervalFormatter
             $startFormat = $endFormat = Date::DEFAULT_FORMAT;
             $separator = ' - ';
         } else {
-            throw new ShouldNotHappenException('Default format for ' . get_class($interval) . ' is not defined.');
+            throw new ShouldNotHappenException('Default format for ' . $interval::class . ' is not defined.');
         }
 
         if ($interval instanceof DateInterval) {

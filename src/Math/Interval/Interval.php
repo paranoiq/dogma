@@ -14,7 +14,10 @@ use Dogma\Dumpable;
 use Dogma\Equalable;
 use Dogma\IntersectComparable;
 
-interface Interval /*<T>*/ extends Equalable, Comparable, IntersectComparable, Dumpable
+/**
+ * @template T
+ */
+interface Interval extends Equalable, Comparable, IntersectComparable, Dumpable
 {
 
     // queries ---------------------------------------------------------------------------------------------------------
@@ -22,14 +25,14 @@ interface Interval /*<T>*/ extends Equalable, Comparable, IntersectComparable, D
     public function format(): string;
 
     /**
-     * @return mixed
+     * @return T
      */
-    public function getStart(); //: T
+    public function getStart(): mixed;
 
     /**
-     * @return mixed
+     * @return T
      */
-    public function getEnd(); //: T
+    public function getEnd(): mixed;
 
     /**
      * @return mixed[]
@@ -51,15 +54,15 @@ interface Interval /*<T>*/ extends Equalable, Comparable, IntersectComparable, D
     // actions ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @return mixed|IntervalSet
+     * @return IntervalSet<T>
      */
-    public function split(int $parts);//: IntervalSet<T>;
+    public function split(int $parts): IntervalSet;
 
     /**
      * @param mixed[] $intervalStarts |array<T>
-     * @return mixed|IntervalSet
+     * @return IntervalSet<T>
      */
-    public function splitBy(array $intervalStarts);//: IntervalSet<T>;
+    public function splitBy(array $intervalStarts): IntervalSet;
 
     // A1****A2****B1****B2 -> [A1, B2]
     //public function envelope(self ...$items): self;
@@ -85,9 +88,9 @@ interface Interval /*<T>*/ extends Equalable, Comparable, IntersectComparable, D
     //public function subtract(self ...$items): IntervalSet<T>;
 
     /**
-     * @return mixed|IntervalSet
+     * @return IntervalSet<T>
      */
-    public function invert();//: IntervalSet<T>;
+    public function invert(): IntervalSet;
 
     // static ----------------------------------------------------------------------------------------------------------
 
@@ -106,14 +109,14 @@ interface Interval /*<T>*/ extends Equalable, Comparable, IntersectComparable, D
 
     /**
      * @param self[] $intervals
-     * @return self[]
+     * @return static[]
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array;
 
     /**
      * @param self[] $intervals
-     * @return self[]
+     * @return static[]
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array;

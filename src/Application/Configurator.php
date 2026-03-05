@@ -248,7 +248,7 @@ final class Configurator extends stdClass
      * @param string|string[]|float|int|bool|null $value
      * @return string|int|float|bool|string[]|int[]|float[]|null
      */
-    private function normalize(string|array|float|int|bool|null $value, ?string $type = null)
+    private function normalize(string|array|float|int|bool|null $value, ?string $type = null): string|int|float|bool|array|null
     {
         if (($type === self::VALUES || $type === self::SET) && is_string($value)) {
             $value = explode(',', $value);
@@ -265,8 +265,6 @@ final class Configurator extends stdClass
         return $value; // @phpstan-ignore return.type (todo: cleanup)
     }
 
-    /**
-     */
     private function format(mixed $value): string
     {
         if (is_bool($value)) {
@@ -278,7 +276,7 @@ final class Configurator extends stdClass
     /**
      * @return ConfigurationProfile|mixed|null
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         if (isset($this->profiles['@' . $name])) {
             return new ConfigurationProfile($this->profiles['@' . $name]);

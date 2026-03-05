@@ -106,8 +106,7 @@ class HttpRequest
 
     protected ?HttpHeaderParser $headerParser = null;
 
-    /** @var mixed */
-    protected $context;
+    protected mixed $context;
 
     /** @var string[] */
     protected array $responseHeaders = [];
@@ -167,10 +166,7 @@ class HttpRequest
         $this->context = $data;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getContext()
+    public function getContext(): mixed
     {
         return $this->context;
     }
@@ -278,7 +274,7 @@ class HttpRequest
 
     // connection options ----------------------------------------------------------------------------------------------
 
-    public function setTimeout(float|int $timeout, float|int $connectTimeout = null): void
+    public function setTimeout(float|int $timeout, float|int|null $connectTimeout = null): void
     {
         if ($timeout < 1) {
             $this->setOption(CURLOPT_TIMEOUT_MS, (int) ($timeout / 1000));
@@ -469,7 +465,7 @@ class HttpRequest
         } else {
             try {
                 $status = HttpOrCurlStatus::get($info['http_code']);
-            } catch (InvalidValueException $e) {
+            } catch (InvalidValueException) {
                 $status = HttpOrCurlStatus::get(HttpOrCurlStatus::UNKNOWN_RESPONSE_CODE);
             }
         }

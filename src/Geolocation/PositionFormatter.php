@@ -69,7 +69,7 @@ class PositionFormatter
     public function format(
         Position $position,
         ?string $format = null,
-        ?AngleFormatter $angleFormatter = null
+        ?AngleFormatter $angleFormatter = null,
     ): string
     {
         $format = $format ?? $this->format;

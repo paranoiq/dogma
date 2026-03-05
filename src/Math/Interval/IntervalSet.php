@@ -30,9 +30,9 @@ interface IntervalSet extends Equalable, Dumpable, IteratorAggregate
     //public function containsValue(T $value): bool;
 
     /**
-     * @return mixed|Interval
+     * @return Interval<T>
      */
-    public function envelope();//: Interval<T>;
+    public function envelope(): Interval;
 
     //public function normalize(): IntervalSet<T>;
 
@@ -50,15 +50,11 @@ interface IntervalSet extends Equalable, Dumpable, IteratorAggregate
 
     //public function filterByLength(string $operator, int|float $length): IntervalSet<T>;
 
-    /**
-     * @return self|mixed
-     */
-    public function map(callable $mapper);
+    public function map(callable $mapper): static;
 
     /**
      * Map and filter
-     * @return self|mixed
      */
-    public function collect(callable $mapper);
+    public function collect(callable $mapper): static;
 
 }

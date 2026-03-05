@@ -16,8 +16,6 @@ use Dogma\Time\Time;
 interface DateTimeFormatter
 {
 
-    /**
-     */
     public function format(DateTimeInterface|Date|Time $dateTime, ?string $format = null): string;
 
 }

@@ -43,7 +43,7 @@ class ErrorHelper
                 case self::WINDOWS:
                     return WindowsError::get($errno);
             }
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             return null;
         }
 

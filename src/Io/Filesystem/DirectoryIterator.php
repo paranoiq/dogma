@@ -50,11 +50,8 @@ class DirectoryIterator extends FilesystemIterator
         }
     }
 
-    /**
-     * @return FileInfo|mixed
-     */
     #[ReturnTypeWillChange]
-    public function current()
+    public function current(): mixed
     {
         if (!($this->flags & FilesystemIterator::CURRENT_AS_PATHNAME) && !($this->flags & FilesystemIterator::CURRENT_AS_SELF)) {
             /** @var string $path */

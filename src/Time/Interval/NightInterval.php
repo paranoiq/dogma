@@ -141,14 +141,14 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
 
     public static function future(?TimeProvider $timeProvider = null): self
     {
-        $tomorrow = $timeProvider !== null ? $timeProvider->getDate() : new Date();
+        $tomorrow = $timeProvider?->getDate() ?? new Date();
 
         return new static($tomorrow, new Date(static::MAX));
     }
 
     public static function past(?TimeProvider $timeProvider = null): self
     {
-        $yesterday = $timeProvider !== null ? $timeProvider->getDate() : new Date();
+        $yesterday = $timeProvider?->getDate() ?? new Date();
 
         return new static(new Date(static::MIN), $yesterday);
     }
@@ -314,8 +314,6 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         );
     }
 
-    /**
-     */
     public function containsValue(Date|DateTimeInterface $date): bool
     {
         if ($this->isEmpty()) {

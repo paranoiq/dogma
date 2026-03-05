@@ -24,11 +24,9 @@ class FetchKeysIterator extends IteratorIterator
 {
     use StrictBehaviorMixin;
 
-    /** @var int|string|null */
-    private $keysKey;
+    private int|string|null $keysKey = null;
 
-    /** @var int|string|null */
-    private $valuesKey;
+    private int|string|null $valuesKey = null;
 
     /**
      * @param iterable<mixed> $iterable
@@ -43,11 +41,8 @@ class FetchKeysIterator extends IteratorIterator
         $this->valuesKey = $valuesKey;
     }
 
-    /**
-     * @return mixed
-     */
     #[ReturnTypeWillChange]
-    public function current()
+    public function current(): mixed
     {
         if ($this->valuesKey === null) {
             return parent::current();
@@ -60,11 +55,8 @@ class FetchKeysIterator extends IteratorIterator
         }
     }
 
-    /**
-     * @return string|int
-     */
     #[ReturnTypeWillChange]
-    public function key()
+    public function key(): string|int
     {
         if ($this->keysKey === null) {
             return parent::key();

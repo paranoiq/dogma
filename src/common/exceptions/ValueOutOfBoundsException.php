@@ -14,8 +14,6 @@ use Throwable;
 class ValueOutOfBoundsException extends ValueOutOfRangeException
 {
 
-    /**
-     */
     public function __construct(int|float|string $value, string|Type $type, ?Throwable $previous = null)
     {
         $value = ExceptionValueFormatter::format($value);

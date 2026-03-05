@@ -40,10 +40,7 @@ class NodeList implements Countable, Iterator
         $this->engine = $engine;
     }
 
-    /**
-     * @return Element|DOMNode
-     */
-    public function item(int $offset)
+    public function item(int $offset): Element|DOMNode
     {
         /** @var DOMNode $item */
         $item = $this->nodeList->item($offset);
@@ -61,11 +58,8 @@ class NodeList implements Countable, Iterator
         return $n;
     }
 
-    /**
-     * @return Element|DOMNode
-     */
     #[ReturnTypeWillChange]
-    public function current()
+    public function current(): Element|DOMNode
     {
         /** @var DOMNode $item */
         $item = $this->nodeList->item($this->offset);
@@ -94,10 +88,7 @@ class NodeList implements Countable, Iterator
         return $this->nodeList->item($this->offset) !== null;
     }
 
-    /**
-     * @return Element|DOMNode
-     */
-    private function wrap(DOMNode $node)
+    private function wrap(DOMNode $node): Element|DOMNode
     {
         if ($node instanceof DOMElement) {
             return new Element($node, $this->engine);

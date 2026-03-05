@@ -29,7 +29,7 @@ class DateSpan implements DateOrTimeSpan
     final public function __construct(
         int $years,
         int $months = 0,
-        int $days = 0
+        int $days = 0,
     ) {
         $this->years = $years;
         $this->months = $months;

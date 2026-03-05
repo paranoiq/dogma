@@ -15,15 +15,9 @@ use Dogma\Time\Span\DateTimeSpan;
 interface DateOrTimeInterval
 {
 
-    /**
-     * @return DateOrTime|mixed
-     */
-    public function getStart(); // : DateOrTime
+    public function getStart(): DateOrTime;
 
-    /**
-     * @return DateOrTime|mixed
-     */
-    public function getEnd(); // : DateOrTime
+    public function getEnd(): DateOrTime;
 
     public function getSpan(): DateTimeSpan;
 
