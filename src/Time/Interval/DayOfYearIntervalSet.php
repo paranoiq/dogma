@@ -47,9 +47,13 @@ class DayOfYearIntervalSet implements ModuloIntervalSet
         }));
     }
 
-    public function format(string $format = DayOfYearInterval::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
+    public function format(
+        string $format = DayOfYearInterval::DEFAULT_FORMAT,
+        ?DateTimeIntervalFormatter $formatter = null,
+        string $separator = ', ',
+    ): string
     {
-        return implode(', ', Arr::map($this->intervals, static function (DayOfYearInterval $interval) use ($format, $formatter): string {
+        return implode($separator, Arr::map($this->intervals, static function (DayOfYearInterval $interval) use ($format, $formatter): string {
             return $interval->format($format, $formatter);
         }));
     }

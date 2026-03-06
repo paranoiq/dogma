@@ -62,9 +62,10 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
     public function format(
         string $format = TimeInterval::DEFAULT_FORMAT,
         ?DateTimeIntervalFormatter $formatter = null,
+        string $separator = ', ',
     ): string
     {
-        return implode(', ', Arr::map($this->intervals, static function (TimeInterval $timeInterval) use ($format, $formatter): string {
+        return implode($separator, Arr::map($this->intervals, static function (TimeInterval $timeInterval) use ($format, $formatter): string {
             return $timeInterval->format($format, $formatter);
         }));
     }
