@@ -16,6 +16,7 @@ use Dogma\IntersectComparable;
 
 /**
  * @template T
+ * @template S of IntervalSet
  */
 interface Interval extends Equalable, Comparable, IntersectComparable, Dumpable
 {
@@ -35,9 +36,9 @@ interface Interval extends Equalable, Comparable, IntersectComparable, Dumpable
     public function getEnd(): mixed;
 
     /**
-     * @return mixed[]
+     * @return array{T, T}
      */
-    public function getStartEnd(): array; //: array<T>
+    public function getStartEnd(): array;
 
     public function isEmpty(): bool;
 
@@ -54,13 +55,13 @@ interface Interval extends Equalable, Comparable, IntersectComparable, Dumpable
     // actions ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @return IntervalSet<T>
+     * @return S
      */
     public function split(int $parts): IntervalSet;
 
     /**
-     * @param mixed[] $intervalStarts |array<T>
-     * @return IntervalSet<T>
+     * @param array<T> $intervalStarts
+     * @return S
      */
     public function splitBy(array $intervalStarts): IntervalSet;
 
@@ -88,7 +89,7 @@ interface Interval extends Equalable, Comparable, IntersectComparable, Dumpable
     //public function subtract(self ...$items): IntervalSet<T>;
 
     /**
-     * @return IntervalSet<T>
+     * @return S
      */
     public function invert(): IntervalSet;
 
@@ -108,15 +109,15 @@ interface Interval extends Equalable, Comparable, IntersectComparable, Dumpable
     //public static function explodeOverlaps(self ...$items): array;
 
     /**
-     * @param self[] $intervals
-     * @return static[]
+     * @param array<static<T, S>> $intervals
+     * @return array<static<T, S>>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array;
 
     /**
-     * @param self[] $intervals
-     * @return static[]
+     * @param array<static<T, S>> $intervals
+     * @return array<static<T, S>>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array;

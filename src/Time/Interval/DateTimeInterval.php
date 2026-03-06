@@ -44,6 +44,8 @@ use function range;
 
 /**
  * Interval of times including date.
+ *
+ * @implements Interval<DateTime, DateTimeIntervalSet>
  */
 class DateTimeInterval implements Interval, DateOrTimeInterval
 {
@@ -89,7 +91,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         }
     }
 
-    public static function createFromString(string $string): self
+    public static function createFromString(string $string): static
     {
         [$start, $end] = IntervalParser::parseString($string);
 
@@ -99,7 +101,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         return new static($start, $end);
     }
 
-    public static function createFromStartAndLength(DateTime $start, DateTimeUnit $unit, int $amount): self
+    public static function createFromStartAndLength(DateTime $start, DateTimeUnit $unit, int $amount): static
     {
         if ($unit->equalsValue(DateTimeUnit::QUARTER)) {
             $unit = DateTimeUnit::month();
@@ -112,12 +114,12 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue()));
     }
 
-    public static function createFromDateTimeInterfaces(DateTimeInterface $start, DateTimeInterface $end): self
+    public static function createFromDateTimeInterfaces(DateTimeInterface $start, DateTimeInterface $end): static
     {
         return new static(DateTime::createFromDateTimeInterface($start), DateTime::createFromDateTimeInterface($end));
     }
 
-    public static function createFromDateAndTimeInterval(Date $date, TimeInterval $timeInterval, ?DateTimeZone $timeZone = null): self
+    public static function createFromDateAndTimeInterval(Date $date, TimeInterval $timeInterval, ?DateTimeZone $timeZone = null): static
     {
         return new static(
             DateTime::createFromDateAndTime($date, $timeInterval->getStart(), $timeZone),
@@ -125,7 +127,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         );
     }
 
-    public static function createFromDateIntervalAndTime(DateInterval $dateInterval, Time $time, ?DateTimeZone $timeZone = null): self
+    public static function createFromDateIntervalAndTime(DateInterval $dateInterval, Time $time, ?DateTimeZone $timeZone = null): static
     {
         return new static(
             DateTime::createFromDateAndTime($dateInterval->getStart(), $time, $timeZone),
@@ -133,21 +135,21 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         );
     }
 
-    public static function future(?DateTimeZone $timeZone = null, ?TimeProvider $timeProvider = null): self
+    public static function future(?DateTimeZone $timeZone = null, ?TimeProvider $timeProvider = null): static
     {
         $now = $timeProvider?->getDateTime($timeZone) ?? new DateTime('now', $timeZone);
 
         return new static($now, new DateTime(self::MAX, $timeZone));
     }
 
-    public static function past(?DateTimeZone $timeZone = null, ?TimeProvider $timeProvider = null): self
+    public static function past(?DateTimeZone $timeZone = null, ?TimeProvider $timeProvider = null): static
     {
         $now = $timeProvider?->getDateTime($timeZone) ?? new DateTime('now', $timeZone);
 
         return new static(new DateTime(static::MIN, $timeZone), $now);
     }
 
-    public static function empty(): self
+    public static function empty(): static
     {
         $utc = new DateTimeZone(TimeZone::UTC);
         $interval = new static(new DateTime(static::MIN, $utc), new DateTime(static::MAX, $utc));
@@ -157,7 +159,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         return $interval;
     }
 
-    public static function all(): self
+    public static function all(): static
     {
         $utc = new DateTimeZone(TimeZone::UTC);
         return new static(new DateTime(static::MIN, $utc), new DateTime(static::MAX, $utc));
@@ -165,17 +167,17 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     // modifications ---------------------------------------------------------------------------------------------------
 
-    public function shift(string $value): self
+    public function shift(string $value): static
     {
         return new static($this->start->modify($value), $this->end->modify($value));
     }
 
-    public function setStart(DateTime $start): self
+    public function setStart(DateTime $start): static
     {
         return new static($start, $this->end);
     }
 
-    public function setEnd(DateTime $end): self
+    public function setEnd(DateTime $end): static
     {
         return new static($this->start, $end);
     }
@@ -486,7 +488,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         }
     }
 
-    public function envelope(self ...$items): self
+    public function envelope(self ...$items): static
     {
         $items[] = $this;
         $start = new DateTime(static::MAX);
@@ -503,11 +505,12 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         return new static($start, $end);
     }
 
-    public function intersect(self ...$items): self
+    public function intersect(self ...$items): static
     {
         $items[] = $this;
         $sorted = Arr::sortComparable($items);
 
+        /** @var static $result */
         $result = array_shift($sorted);
         foreach ($sorted as $item) {
             if ($result->start < $item->start) {

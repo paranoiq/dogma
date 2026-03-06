@@ -32,6 +32,8 @@ use function min;
 
 /**
  * Interval between two dates represented as DayOfYear. Does not include information about year.
+ *
+ * @implements ModuloInterval<DayOfYear, DayOfYearIntervalSet>
  */
 class DayOfYearInterval implements ModuloInterval
 {

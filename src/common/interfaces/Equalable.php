@@ -15,6 +15,9 @@ namespace Dogma;
 interface Equalable
 {
 
+    /**
+     * @param static $other
+     */
     public function equals(self $other): bool;
 
 }

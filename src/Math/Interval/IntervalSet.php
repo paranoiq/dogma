@@ -15,13 +15,14 @@ use IteratorAggregate;
 
 /**
  * @template T
- * @extends IteratorAggregate<int, T>
+ * @template I of Interval
+ * @extends IteratorAggregate<int, I>
  */
 interface IntervalSet extends Equalable, Dumpable, IteratorAggregate
 {
 
     /**
-     * @return Interval[]
+     * @return array<I>
      */
     public function getIntervals(): array;
 
@@ -30,7 +31,7 @@ interface IntervalSet extends Equalable, Dumpable, IteratorAggregate
     //public function containsValue(T $value): bool;
 
     /**
-     * @return Interval<T>
+     * @return I
      */
     public function envelope(): Interval;
 

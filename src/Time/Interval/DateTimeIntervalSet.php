@@ -30,18 +30,18 @@ use function is_array;
 use function reset;
 
 /**
- * @implements IntervalSet<DateTimeInterval>
+ * @implements IntervalSet<DateTime, DateTimeInterval>
  */
 class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 {
     use IntervalSetDumpMixin;
     use StrictBehaviorMixin;
 
-    /** @var DateTimeInterval[] */
+    /** @var array<DateTimeInterval> */
     private array $intervals;
 
     /**
-     * @param DateTimeInterval[] $intervals
+     * @param array<DateTimeInterval> $intervals
      */
     final public function __construct(array $intervals)
     {
@@ -54,7 +54,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         Date $date,
         TimeIntervalSet $timeIntervalSet,
         ?DateTimeZone $timeZone = null,
-    ): self
+    ): static
     {
         $intervals = [];
         foreach ($timeIntervalSet->getIntervals() as $timeInterval) {
@@ -68,7 +68,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         DateInterval $dateInterval,
         TimeInterval $timeInterval,
         ?DateTimeZone $timeZone = null,
-    ): self
+    ): static
     {
         $intervals = [];
         foreach ($dateInterval->toDateArray() as $date) {
@@ -82,7 +82,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         DateInterval $dateInterval,
         TimeIntervalSet $timeIntervalSet,
         ?DateTimeZone $timeZone = null,
-    ): self
+    ): static
     {
         $intervals = [];
         foreach ($dateInterval->toDateArray() as $date) {
@@ -98,7 +98,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         DateIntervalSet $dateIntervalSet,
         TimeInterval $timeInterval,
         ?DateTimeZone $timeZone = null,
-    ): self
+    ): static
     {
         $intervals = [];
         foreach ($dateIntervalSet->getIntervals() as $dateInterval) {
@@ -114,7 +114,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         DateIntervalSet $dateIntervalSet,
         TimeIntervalSet $timeIntervalSet,
         ?DateTimeZone $timeZone = null,
-    ): self
+    ): static
     {
         $intervals = [];
         foreach ($dateIntervalSet->getIntervals() as $dateInterval) {
@@ -132,7 +132,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         DateInterval $dateInterval,
         WeekDayHoursSet $weekDayHoursSet,
         ?DateTimeZone $timeZone = null,
-    ): self
+    ): static
     {
         $intervals = [];
         foreach ($dateInterval->toDateArray() as $date) {
@@ -152,7 +152,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         DateIntervalSet $dateIntervalSet,
         WeekDayHoursSet $weekDayHoursSet,
         ?DateTimeZone $timeZone = null,
-    ): self
+    ): static
     {
         $intervals = [];
         foreach ($dateIntervalSet->getIntervals() as $dateInterval) {
@@ -181,7 +181,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
     }
 
     /**
-     * @return DateTimeInterval[]
+     * @return array<DateTimeInterval>
      */
     public function getIntervals(): array
     {
@@ -255,7 +255,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
     /**
      * Join overlapping intervals in set.
      */
-    public function normalize(): self
+    public function normalize(): static
     {
         /** @var DateTimeInterval[] $intervals */
         $intervals = Arr::sortComparable($this->intervals);
@@ -273,12 +273,12 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
     /**
      * Add another set of intervals to this one without normalization.
      */
-    public function add(self $set): self
+    public function add(self $set): static
     {
         return $this->addIntervals(...$set->intervals);
     }
 
-    public function addIntervals(DateTimeInterval ...$intervals): self
+    public function addIntervals(DateTimeInterval ...$intervals): static
     {
         return new static(array_merge($this->intervals, $intervals));
     }
@@ -286,12 +286,12 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
     /**
      * Remove another set of intervals from this one.
      */
-    public function subtract(self $set): self
+    public function subtract(self $set): static
     {
         return $this->subtractIntervals(...$set->intervals);
     }
 
-    public function subtractIntervals(DateTimeInterval ...$intervals): self
+    public function subtractIntervals(DateTimeInterval ...$intervals): static
     {
         $sources = $this->intervals;
         $results = [];
@@ -319,12 +319,12 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
     /**
      * Intersect with another set of intervals.
      */
-    public function intersect(self $set): self
+    public function intersect(self $set): static
     {
         return $this->intersectIntervals(...$set->intervals);
     }
 
-    public function intersectIntervals(DateTimeInterval ...$intervals): self
+    public function intersectIntervals(DateTimeInterval ...$intervals): static
     {
         $results = [];
         foreach ($this->intervals as $result) {
@@ -338,7 +338,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         return new static($results);
     }
 
-    public function filterByLength(string $operator, int $microseconds): self
+    public function filterByLength(string $operator, int $microseconds): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -380,7 +380,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         return new static($results);
     }
 
-    public function map(callable $mapper): self
+    public function map(callable $mapper): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -399,7 +399,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         return new static($results);
     }
 
-    public function collect(callable $mapper): self
+    public function collect(callable $mapper): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {

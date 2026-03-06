@@ -42,6 +42,8 @@ use function round;
  * End time if it is after midnight (that means lower value than start time), will be automatically normalized to 24:00-47:59.
  *
  * Span between start and end of interval cannot be more than 24 hours.
+ *
+ * @implements ModuloInterval<Time, TimeIntervalSet>
  */
 class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 {
@@ -78,7 +80,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         $this->end = $end;
     }
 
-    public static function createFromString(string $string): self
+    public static function createFromString(string $string): static
     {
         [$start, $end] = IntervalParser::parseString($string);
 
@@ -88,7 +90,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         return new static($start, $end);
     }
 
-    public static function createFromStartAndLength(Time $start, DateTimeUnit $unit, int $amount): self
+    public static function createFromStartAndLength(Time $start, DateTimeUnit $unit, int $amount): static
     {
         if (!$unit->isTime()) {
             throw new InvalidDateTimeUnitException($unit);
@@ -101,27 +103,27 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue()));
     }
 
-    public static function createFromDateTimeInterfaces(DateTimeInterface $start, DateTimeInterface $end): self
+    public static function createFromDateTimeInterfaces(DateTimeInterface $start, DateTimeInterface $end): static
     {
         return new static(Time::createFromDateTimeInterface($start), Time::createFromDateTimeInterface($end));
     }
 
-    public static function closed(Time $start, Time $end): self
+    public static function closed(Time $start, Time $end): static
     {
         return new static($start, $end);
     }
 
-    public static function empty(): self
+    public static function empty(): static
     {
         return new static(new Time(self::MIN), new Time(self::MIN));
     }
 
-    public static function all(): self
+    public static function all(): static
     {
         return new static(new Time(self::MIN), new Time(self::MAX));
     }
 
-    public function normalize(): self
+    public function normalize(): static
     {
         if ($this->start->isNormalized()) {
             $self = new static($this->start, $this->end);
@@ -134,7 +136,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         }
     }
 
-    public function denormalize(): self
+    public function denormalize(): static
     {
         if ($this->end->isNormalized()) {
             $self = new static($this->start, $this->end);
@@ -158,17 +160,17 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 
     // modifications ---------------------------------------------------------------------------------------------------
 
-    public function shift(string $value): self
+    public function shift(string $value): static
     {
         return new static($this->start->modify($value), $this->end->modify($value));
     }
 
-    public function setStart(Time $start): self
+    public function setStart(Time $start): static
     {
         return new static($start, $this->end);
     }
 
-    public function setEnd(Time $end): self
+    public function setEnd(Time $end): static
     {
         return new static($this->start, $end);
     }
@@ -355,7 +357,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         ];
     }
 
-    public function envelope(self ...$items): self
+    public function envelope(self ...$items): static
     {
         $items[] = $this;
         $start = new Time(self::MAX);

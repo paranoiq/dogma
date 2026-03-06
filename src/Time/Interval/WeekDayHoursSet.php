@@ -55,7 +55,7 @@ class WeekDayHoursSet implements Pokeable, Dumpable, IteratorAggregate
         DaysOfWeek $days,
         TimeInterval $opening,
         ?TimeInterval $break = null,
-    ): self
+    ): static
     {
         $dayItems = [];
         foreach (DayOfWeek::getInstances() as $day) {
@@ -115,7 +115,7 @@ class WeekDayHoursSet implements Pokeable, Dumpable, IteratorAggregate
     }
 
     /**
-     * @return WeekDayHours[]
+     * @return array<WeekDayHours>
      */
     public function getWeekDayHours(): array
     {

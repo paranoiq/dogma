@@ -176,7 +176,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     /**
      * Join overlapping intervals in set, if they have the same data.
      */
-    public function normalize(): self
+    public function normalize(): static
     {
         /** @var NightIntervalData[] $intervals */
         $intervals = Arr::sortComparableValues($this->intervals);
@@ -200,12 +200,12 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     /**
      * Add another set of intervals to this one without normalization.
      */
-    public function add(self $set): self
+    public function add(self $set): static
     {
         return $this->addIntervals(...$set->intervals);
     }
 
-    public function addIntervals(NightIntervalData ...$intervals): self
+    public function addIntervals(NightIntervalData ...$intervals): static
     {
         return new static(array_merge($this->intervals, $intervals));
     }
@@ -213,12 +213,12 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     /**
      * Remove another set of intervals from this one.
      */
-    public function subtract(NightIntervalSet $set): self
+    public function subtract(NightIntervalSet $set): static
     {
         return $this->subtractIntervals(...$set->getIntervals());
     }
 
-    public function subtractIntervals(NightInterval ...$intervals): self
+    public function subtractIntervals(NightInterval ...$intervals): static
     {
         $sources = $this->intervals;
         $results = [];
@@ -247,12 +247,12 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     /**
      * Intersect with another set of intervals.
      */
-    public function intersect(NightIntervalSet $set): self
+    public function intersect(NightIntervalSet $set): static
     {
         return $this->intersectIntervals(...$set->getIntervals());
     }
 
-    public function intersectIntervals(NightInterval ...$intervals): self
+    public function intersectIntervals(NightInterval ...$intervals): static
     {
         $results = [];
         foreach ($this->intervals as $result) {
@@ -266,7 +266,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static($results);
     }
 
-    public function map(callable $mapper): self
+    public function map(callable $mapper): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -285,7 +285,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static($results);
     }
 
-    public function collect(callable $mapper): self
+    public function collect(callable $mapper): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -311,7 +311,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      *
      * @param callable(mixed): (mixed|null) $mapper
      */
-    public function collectData(callable $mapper): self
+    public function collectData(callable $mapper): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -332,7 +332,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * @template T
      * @param callable(T, mixed): T $reducer
      */
-    public function modifyData(self $other, callable $reducer): self
+    public function modifyData(self $other, callable $reducer): static
     {
         $results = $this->getIntervals();
         foreach ($other->getIntervals() as $interval) {
@@ -378,7 +378,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * @param callable(mixed): array{Date, Date} $mapper ($input): array{$start, $end}
      * @param callable(T, mixed): T $reducer (mixed $oldData, mixed $input): mixed $newData
      */
-    public function modifyDataByStream(iterable $inputs, callable $mapper, callable $reducer): self
+    public function modifyDataByStream(iterable $inputs, callable $mapper, callable $reducer): static
     {
         $results = $this->getIntervals();
         $resultsCount = count($results);
@@ -462,7 +462,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new self($results);
+        return new static($results);
     }
 
     /**
@@ -470,7 +470,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Splitter maps original data to a group of data. Should return array with keys indicating the data set group.
      *
      * @param callable(mixed): array<int|string, mixed> $splitter ($data): array<$group, $data>
-     * @return self[] $this
+     * @return array<static>
      */
     public function splitData(callable $splitter): array
     {
@@ -483,7 +483,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
         $intervalSets = [];
         foreach ($intervalGroups as $intervals) {
-            $intervalSets[] = (new self($intervals))->normalize();
+            $intervalSets[] = (new static($intervals))->normalize();
         }
 
         return $intervalSets;

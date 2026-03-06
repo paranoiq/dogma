@@ -56,12 +56,12 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
         $this->data = $data;
     }
 
-    public static function createFromNightInterval(NightInterval $interval, mixed $data): self
+    public static function createFromNightInterval(NightInterval $interval, mixed $data): static
     {
         return new static($interval->getStart(), $interval->getEnd(), $data);
     }
 
-    public static function empty(): self
+    public static function empty(): static
     {
         $interval = new static(new Date(), new Date(), null);
         $interval->start = new Date(self::MAX);
@@ -70,7 +70,7 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
         return $interval;
     }
 
-    public static function all(mixed $data): self
+    public static function all(mixed $data): static
     {
         return new static(new Date(self::MIN), new Date(self::MAX), $data);
     }
@@ -101,20 +101,17 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     // modifications ---------------------------------------------------------------------------------------------------
 
-    /**
-     * @return static
-     */
-    public function shift(string $value): self
+    public function shift(string $value): static
     {
         return new static($this->start->modify($value), $this->end->modify($value), $this->data);
     }
 
-    public function setStart(Date $start): self
+    public function setStart(Date $start): static
     {
         return new static($start, $this->end, $this->data);
     }
 
-    public function setEnd(Date $end): self
+    public function setEnd(Date $end): static
     {
         return new static($this->start, $end, $this->data);
     }
@@ -268,7 +265,7 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    public function intersect(NightInterval ...$items): self
+    public function intersect(NightInterval ...$items): static
     {
         $items[] = $this->toNightInterval();
         $sorted = Arr::sortComparable($items);

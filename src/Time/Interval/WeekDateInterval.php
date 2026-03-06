@@ -16,7 +16,7 @@ use Dogma\Time\InvalidWeekDateIntervalException;
 
 /**
  * DateInterval aligned to a single week boundaries.
- * Week always starts with monday and ends with sunday (because i live in a civilized country ^_^).
+ * Week always starts with monday and ends with sunday.
  * WeekInterval cannot be empty.
  */
 class WeekDateInterval extends DateInterval
@@ -33,22 +33,22 @@ class WeekDateInterval extends DateInterval
         }
     }
 
-    public static function create(Date $start, Date $end): self
+    public static function create(Date $start, Date $end): static
     {
         return new static($start, $end);
     }
 
-    public static function createFromDate(Date $date): self
+    public static function createFromDate(Date $date): static
     {
         return self::createFromIsoYearAndWeek((int) $date->format('o'), (int) $date->format('W'));
     }
 
-    public static function createFromDateTimeInterface(DateTimeInterface $dateTime): self
+    public static function createFromDateTimeInterface(DateTimeInterface $dateTime): static
     {
         return self::createFromIsoYearAndWeek((int) $dateTime->format('o'), (int) $dateTime->format('W'));
     }
 
-    public static function createFromIsoYearAndWeek(int $year, int $week): self
+    public static function createFromIsoYearAndWeek(int $year, int $week): static
     {
         $start = Date::createFromIsoYearAndWeek($year, $week, DayOfWeek::MONDAY);
         $end = $start->modify('+ 6 days');
@@ -57,7 +57,7 @@ class WeekDateInterval extends DateInterval
     }
 
     /**
-     * @return self[]
+     * @return array<static>
      */
     public static function createOverlappingIntervals(DateInterval $interval): array
     {
@@ -75,12 +75,12 @@ class WeekDateInterval extends DateInterval
         return $intervals;
     }
 
-    public function next(): self
+    public function next(): static
     {
         return $this->shift('+ 1 week');
     }
 
-    public function previous(): self
+    public function previous(): static
     {
         return $this->shift('- 1 week');
     }

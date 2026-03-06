@@ -171,12 +171,12 @@ class TimeSpan implements DateOrTimeSpan
         }));
     }
 
-    public function invert(): self
+    public function invert(): static
     {
-        return new self(-$this->hours, -$this->minutes, -$this->seconds, -$this->microseconds);
+        return new static(-$this->hours, -$this->minutes, -$this->seconds, -$this->microseconds);
     }
 
-    public function abs(): self
+    public function abs(): static
     {
         if ($this->getHoursFraction() >= 0.0) {
             return $this;
@@ -188,7 +188,7 @@ class TimeSpan implements DateOrTimeSpan
     /**
      * Normalizes values by summarizing smaller units into bigger. eg: '34 days' -> '1 month, 4 days'
      */
-    public function normalize(): self
+    public function normalize(): static
     {
         $microseconds = $this->microseconds;
         $seconds = $this->seconds;
@@ -217,7 +217,7 @@ class TimeSpan implements DateOrTimeSpan
             $minutes %= 60;
         }
 
-        return new self($hours, $minutes, $seconds, $microseconds);
+        return new static($hours, $minutes, $seconds, $microseconds);
     }
 
     // getters ---------------------------------------------------------------------------------------------------------

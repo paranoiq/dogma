@@ -28,7 +28,7 @@ use function round;
  * - microseconds
  *
  * Since interval is not anchored to some starting time, exact size of some time units is not known.
- * Therefore in calculations where different units are compared or calculated:
+ * Therefor in calculations where different units are compared or calculated:
  * - every month has 30 days
  * - every year has 365 days
  * - every day has 24 hours
@@ -165,7 +165,7 @@ class DateTimeSpan implements DateOrTimeSpan
             throw new ShouldNotHappenException('Years should always be positive at this point.');
         }
 
-        $span = new self($years, $months, $days, $hours, $minutes, $seconds, $microseconds);
+        $span = new static($years, $months, $days, $hours, $minutes, $seconds, $microseconds);
         if ($inverted) {
             $span = $span->invert();
         }
@@ -346,12 +346,12 @@ class DateTimeSpan implements DateOrTimeSpan
         }));
     }
 
-    public function invert(): self
+    public function invert(): static
     {
-        return new self(-$this->years, -$this->months, -$this->days, -$this->hours, -$this->minutes, -$this->seconds, -$this->microseconds);
+        return new static(-$this->years, -$this->months, -$this->days, -$this->hours, -$this->minutes, -$this->seconds, -$this->microseconds);
     }
 
-    public function abs(): self
+    public function abs(): static
     {
         if ($this->getYearsFraction() >= 0.0) {
             return $this;
@@ -363,7 +363,7 @@ class DateTimeSpan implements DateOrTimeSpan
     /**
      * Normalizes values by summarizing smaller units into bigger. eg: '34 days' -> '1 month, 4 days'
      */
-    public function normalize(bool $safeOnly = false): self
+    public function normalize(bool $safeOnly = false): static
     {
         $microseconds = $this->microseconds;
         $seconds = $this->seconds;
@@ -396,7 +396,7 @@ class DateTimeSpan implements DateOrTimeSpan
         }
 
         if ($safeOnly) {
-            return new self($years, $months, $days, $hours, $minutes, $seconds, $microseconds);
+            return new static($years, $months, $days, $hours, $minutes, $seconds, $microseconds);
         }
 
         if ($hours >= 24) {
@@ -421,7 +421,7 @@ class DateTimeSpan implements DateOrTimeSpan
             $months %= 12;
         }
 
-        return new self($years, $months, $days, $hours, $minutes, $seconds, $microseconds);
+        return new static($years, $months, $days, $hours, $minutes, $seconds, $microseconds);
     }
 
     public function roundToTwoValues(bool $useWeeks = false): self
@@ -434,7 +434,7 @@ class DateTimeSpan implements DateOrTimeSpan
                 $wholeYears += (int) ($months / 12);
                 $months = 0;
             }
-            return new self($wholeYears, $months);
+            return new static($wholeYears, $months);
         }
 
         $months = $this->getMonthsFraction();
@@ -448,14 +448,14 @@ class DateTimeSpan implements DateOrTimeSpan
             if ($useWeeks) {
                 $days = (int) (round($days / 7) * 7);
             }
-            return new self(0, $wholeMonths, $days);
+            return new static(0, $wholeMonths, $days);
         }
 
         if ($useWeeks) {
             $weeks = $this->getWeeksFraction();
             if (abs($weeks) >= 1) {
                 $days = (int) round($this->getDaysFraction());
-                return new self(0, 0, $days);
+                return new static(0, 0, $days);
             }
         }
 
@@ -467,7 +467,7 @@ class DateTimeSpan implements DateOrTimeSpan
                 $wholeDays += (int) ($hours / 24);
                 $hours = 0;
             }
-            return new self(0, 0, $wholeDays, $hours);
+            return new static(0, 0, $wholeDays, $hours);
         }
 
         $hours = $this->getHoursTotal();
@@ -478,7 +478,7 @@ class DateTimeSpan implements DateOrTimeSpan
                 $wholeHours += (int) ($minutes / 60);
                 $minutes = 0;
             }
-            return new self(0, 0, 0, $wholeHours, $minutes);
+            return new static(0, 0, 0, $wholeHours, $minutes);
         }
 
         $minutes = $this->getMinutesFraction();
@@ -489,52 +489,52 @@ class DateTimeSpan implements DateOrTimeSpan
                 $wholeMinutes += (int) ($seconds / 60);
                 $seconds = 0;
             }
-            return new self(0, 0, 0, 0, $wholeMinutes, $seconds);
+            return new static(0, 0, 0, 0, $wholeMinutes, $seconds);
         }
 
-        return new self(0, 0, 0, 0, 0, $this->seconds, $this->microseconds);
+        return new static(0, 0, 0, 0, 0, $this->seconds, $this->microseconds);
     }
 
     public function roundToSingleValue(bool $useWeeks = false): self
     {
         $years = (int) round($this->getYearsFraction());
         if (abs($years) >= 1) {
-            return new self($years);
+            return new static($years);
         }
 
         $months = (int) round($this->getMonthsFraction());
         if (abs($months) >= 1) {
-            return new self(0, $months);
+            return new static(0, $months);
         }
 
         if ($useWeeks) {
             $weeks = (int) round($this->getWeeksFraction());
             if (abs($weeks) >= 1) {
-                return new self(0, 0, $weeks * 7);
+                return new static(0, 0, $weeks * 7);
             }
         }
 
         $days = (int) round($this->getDaysFraction());
         if (abs($days) >= 1) {
-            return new self(0, 0, $days);
+            return new static(0, 0, $days);
         }
 
         $hours = (int) round($this->getHoursTotal());
         if (abs($hours) >= 1) {
-            return new self(0, 0, 0, $hours);
+            return new static(0, 0, 0, $hours);
         }
 
         $minutes = (int) round($this->getMinutesFraction());
         if (abs($minutes) >= 1) {
-            return new self(0, 0, 0, 0, $minutes);
+            return new static(0, 0, 0, 0, $minutes);
         }
 
         $seconds = (int) round($this->getSecondsFraction());
         if (abs($seconds) >= 1) {
-            return new self(0, 0, 0, 0, 0, $seconds);
+            return new static(0, 0, 0, 0, 0, $seconds);
         }
 
-        return new self(0, 0, 0, 0, 0, 0, $this->microseconds);
+        return new static(0, 0, 0, 0, 0, 0, $this->microseconds);
     }
 
     // getters ---------------------------------------------------------------------------------------------------------

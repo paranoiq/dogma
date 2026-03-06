@@ -22,9 +22,9 @@ interface DateOrTimeSpan extends Equalable, Comparable
 
     public function isMixed(): bool;
 
-    public function add(self ...$other): static;
+    //public function add(self ...$other): static;
 
-    public function subtract(self ...$other): static;
+    //public function subtract(self ...$other): static;
 
     public function invert(): static;
 

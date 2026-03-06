@@ -143,7 +143,7 @@ class DateSpan implements DateOrTimeSpan
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    public function add(self ...$other): self
+    public function add(self ...$other): static
     {
         $that = clone($this);
         foreach ($other as $span) {
@@ -155,19 +155,19 @@ class DateSpan implements DateOrTimeSpan
         return $that->normalize();
     }
 
-    public function subtract(self ...$other): self
+    public function subtract(DateOrTimeSpan ...$other): static
     {
         return $this->add(...Arr::map($other, static function (DateTimeSpan $span): DateTimeSpan {
             return $span->invert();
         }));
     }
 
-    public function invert(): self
+    public function invert(): static
     {
-        return new self(-$this->years, -$this->months, -$this->days);
+        return new static(-$this->years, -$this->months, -$this->days);
     }
 
-    public function abs(): self
+    public function abs(): static
     {
         if ($this->getYearsFraction() >= 0.0) {
             return $this;
@@ -179,7 +179,7 @@ class DateSpan implements DateOrTimeSpan
     /**
      * Normalizes values by summarizing smaller units into bigger. eg: '34 days' -> '1 month, 4 days'
      */
-    public function normalize(): self
+    public function normalize(): static
     {
         $days = $this->days;
         $months = $this->months;
@@ -200,7 +200,7 @@ class DateSpan implements DateOrTimeSpan
             $months %= 12;
         }
 
-        return new self($years, $months, $days);
+        return new static($years, $months, $days);
     }
 
     // getters ---------------------------------------------------------------------------------------------------------

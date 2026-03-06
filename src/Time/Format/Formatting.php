@@ -24,12 +24,12 @@ class Formatting
     public const NO_ZEROS_GROUP_START = '[';
     public const NO_ZEROS_GROUP_END = ']';
 
-    // variables inside block () must be different than current time. otherwise the block is removed
+    // variables inside block () must be different from current time. otherwise the block is removed
     // e.g. "1.12.(2017)" is converted to "1.12." if the current year is 2017, otherwise to "1.12.2017"
     public const OPTIONAL_GROUP_START = '(';
     public const OPTIONAL_GROUP_END = ')';
 
-    // variables inside block {} must be different from other date from the pair. otherwise the block is removed
+    // variables inside block {} must be different from another date from the pair. otherwise the block is removed
     // e.g. "1.12.{2017} - 31.12.2017" is converted to "1.12. - 31.12.2017"
     public const NO_DUPLICATION_GROUP_START = '{';
     public const NO_DUPLICATION_GROUP_END = '}';

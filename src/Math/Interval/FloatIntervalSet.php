@@ -24,18 +24,18 @@ use function end;
 use function is_array;
 
 /**
- * @implements IntervalSet<float>
+ * @implements IntervalSet<float, FloatInterval>
  */
 class FloatIntervalSet implements IntervalSet
 {
     use IntervalSetDumpMixin;
     use StrictBehaviorMixin;
 
-    /** @var FloatInterval[] */
+    /** @var array<FloatInterval> */
     private array $intervals = [];
 
     /**
-     * @param FloatInterval[] $intervals
+     * @param array<FloatInterval> $intervals
      */
     final public function __construct(array $intervals)
     {
@@ -49,7 +49,7 @@ class FloatIntervalSet implements IntervalSet
     }
 
     /**
-     * @return FloatInterval[]
+     * @return array<FloatInterval>
      */
     public function getIntervals(): array
     {
@@ -57,7 +57,7 @@ class FloatIntervalSet implements IntervalSet
     }
 
     /**
-     * @return Traversable<float>
+     * @return Traversable<FloatInterval>
      */
     public function getIterator(): Traversable
     {
@@ -141,12 +141,12 @@ class FloatIntervalSet implements IntervalSet
     /**
      * Add another set of intervals to this one without normalization.
      */
-    public function add(self $set): self
+    public function add(self $set): static
     {
         return $this->addIntervals(...$set->intervals);
     }
 
-    public function addIntervals(FloatInterval ...$intervals): self
+    public function addIntervals(FloatInterval ...$intervals): static
     {
         return new static(array_merge($this->intervals, $intervals));
     }
@@ -154,12 +154,12 @@ class FloatIntervalSet implements IntervalSet
     /**
      * Remove another set of intervals from this one.
      */
-    public function subtract(self $set): self
+    public function subtract(self $set): static
     {
         return $this->subtractIntervals(...$set->intervals);
     }
 
-    public function subtractIntervals(FloatInterval ...$intervals): self
+    public function subtractIntervals(FloatInterval ...$intervals): static
     {
         $sources = $this->intervals;
         $results = [];
@@ -184,7 +184,7 @@ class FloatIntervalSet implements IntervalSet
         return new static($results);
     }
 
-    public function invert(): self
+    public function invert(): static
     {
         return (new static([FloatInterval::all()]))->subtract($this);
     }
@@ -192,12 +192,12 @@ class FloatIntervalSet implements IntervalSet
     /**
      * Intersect with another set of intervals.
      */
-    public function intersect(self $set): self
+    public function intersect(self $set): static
     {
         return $this->intersectIntervals(...$set->intervals);
     }
 
-    public function intersectIntervals(FloatInterval ...$intervals): self
+    public function intersectIntervals(FloatInterval ...$intervals): static
     {
         $results = [];
         foreach ($this->intervals as $result) {
@@ -211,7 +211,7 @@ class FloatIntervalSet implements IntervalSet
         return new static($results);
     }
 
-    public function filterByLength(string $operator, float $length): self
+    public function filterByLength(string $operator, float $length): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -253,7 +253,7 @@ class FloatIntervalSet implements IntervalSet
         return new static($results);
     }
 
-    public function map(callable $mapper): self
+    public function map(callable $mapper): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -272,7 +272,7 @@ class FloatIntervalSet implements IntervalSet
         return new static($results);
     }
 
-    public function collect(callable $mapper): self
+    public function collect(callable $mapper): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {

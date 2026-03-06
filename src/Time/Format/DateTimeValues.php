@@ -41,7 +41,7 @@ class DateTimeValues
 
     public int $seconds;
 
-    public int $miliseconds;
+    public int $milliseconds;
 
     public int $microseconds;
 

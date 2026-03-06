@@ -29,6 +29,9 @@ use function sprintf;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
 
+/**
+ * @implements Interval<int, IntIntervalSet>
+ */
 class IntInterval implements Interval
 {
     use StrictBehaviorMixin;
@@ -61,7 +64,7 @@ class IntInterval implements Interval
         }
     }
 
-    public static function empty(): self
+    public static function empty(): static
     {
         $interval = new static(static::MIN, static::MAX);
         $interval->start = static::MAX;
@@ -70,7 +73,7 @@ class IntInterval implements Interval
         return $interval;
     }
 
-    public static function all(): self
+    public static function all(): static
     {
         return new static(static::MIN, static::MAX);
     }
@@ -91,12 +94,12 @@ class IntInterval implements Interval
 
     // modifications ---------------------------------------------------------------------------------------------------
 
-    public function shift(int $byValue): self
+    public function shift(int $byValue): static
     {
         return new static($this->start + $byValue, $this->end + $byValue);
     }
 
-    public function multiply(int $byValue): self
+    public function multiply(int $byValue): static
     {
         return new static($this->start * $byValue, $this->end * $byValue);
     }
@@ -236,7 +239,7 @@ class IntInterval implements Interval
     }
 
     // A1****A2****B1****B2 -> [A1, B2]
-    public function envelope(self ...$items): self
+    public function envelope(self ...$items): static
     {
         $items[] = $this;
         $start = static::MAX;
@@ -256,11 +259,12 @@ class IntInterval implements Interval
     // A and B
     // A1----B1****A2----B2 -> [B1, A2]
     // A1----A2    B1----B2 -> [MAX, MIN]
-    public function intersect(self ...$items): self
+    public function intersect(self ...$items): static
     {
         $items[] = $this;
         $sorted = Arr::sortComparable($items);
 
+        /** @var static $result */
         $result = array_shift($sorted);
         foreach ($sorted as $item) {
             if ($result->end >= $item->start) {

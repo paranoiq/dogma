@@ -40,6 +40,8 @@ use function round;
 
 /**
  * Interval of dates. Based on IntInterval.
+ *
+ * @implements Interval<Date, DateIntervalSet>
  */
 class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 {
@@ -79,7 +81,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         }
     }
 
-    public static function createFromString(string $string): self
+    public static function createFromString(string $string): static
     {
         [$start, $end, $openStart, $openEnd] = IntervalParser::parseString($string);
 
@@ -98,7 +100,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         return new static($start, $end);
     }
 
-    public static function createFromStartAndLength(Date $start, DateTimeUnit $unit, int $amount): self
+    public static function createFromStartAndLength(Date $start, DateTimeUnit $unit, int $amount): static
     {
         if (!$unit->isDate()) {
             throw new InvalidDateTimeUnitException($unit);
@@ -111,31 +113,31 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue() . ' -1 day'));
     }
 
-    public static function createFromDateTimeInterfaces(DateTimeInterface $start, DateTimeInterface $end): self
+    public static function createFromDateTimeInterfaces(DateTimeInterface $start, DateTimeInterface $end): static
     {
         return new static(Date::createFromDateTimeInterface($start), Date::createFromDateTimeInterface($end));
     }
 
-    public static function createFromNightInterval(NightInterval $interval): self
+    public static function createFromNightInterval(NightInterval $interval): static
     {
-        return $interval->toDateInterval();
+        return new static($interval->getStart(), $interval->getEnd()->subtractDay());
     }
 
-    public static function future(?TimeProvider $timeProvider = null): self
+    public static function future(?TimeProvider $timeProvider = null): static
     {
         $tomorrow = $timeProvider?->getDate()->addDay() ?? new Date('tomorrow');
 
         return new static($tomorrow, new Date(self::MAX));
     }
 
-    public static function past(?TimeProvider $timeProvider = null): self
+    public static function past(?TimeProvider $timeProvider = null): static
     {
         $yesterday = $timeProvider?->getDate()->subtractDay() ?? new Date('yesterday');
 
         return new static(new Date(static::MIN), $yesterday);
     }
 
-    public static function empty(): self
+    public static function empty(): static
     {
         $interval = new static(new Date(static::MIN), new Date(static::MAX));
         $interval->start = new Date(static::MAX);
@@ -144,7 +146,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         return $interval;
     }
 
-    public static function all(): self
+    public static function all(): static
     {
         return new static(new Date(static::MIN), new Date(static::MAX));
     }
@@ -160,20 +162,17 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     // modifications ---------------------------------------------------------------------------------------------------
 
-    /**
-     * @return static
-     */
-    public function shift(string $value): self
+    public function shift(string $value): static
     {
         return new static($this->start->modify($value), $this->end->modify($value));
     }
 
-    public function setStart(Date $start): self
+    public function setStart(Date $start): static
     {
         return new static($start, $this->end);
     }
 
-    public function setEnd(Date $end): self
+    public function setEnd(Date $end): static
     {
         return new static($this->start, $end);
     }
@@ -380,7 +379,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         return new DateIntervalSet($results);
     }
 
-    public function envelope(self ...$items): self
+    public function envelope(self ...$items): static
     {
         $items[] = $this;
         $start = Date::MAX_DAY_NUMBER;
@@ -399,11 +398,12 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         return new static(new Date($start), new Date($end));
     }
 
-    public function intersect(self ...$items): self
+    public function intersect(self ...$items): static
     {
         $items[] = $this;
         $sorted = Arr::sortComparable($items);
 
+        /** @var static $result */
         $result = array_shift($sorted);
         foreach ($sorted as $item) {
             if ($result->end->isSameOrAfter($item->start)) {

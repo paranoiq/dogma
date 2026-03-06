@@ -56,12 +56,12 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
         $this->data = $data;
     }
 
-    public static function createFromDateInterval(DateInterval $interval, mixed $data): self
+    public static function createFromDateInterval(DateInterval $interval, mixed $data): static
     {
         return new static($interval->getStart(), $interval->getEnd(), $data);
     }
 
-    public static function empty(): self
+    public static function empty(): static
     {
         $interval = new static(new Date(), new Date(), null);
         $interval->start = new Date(self::MAX);
@@ -70,7 +70,7 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
         return $interval;
     }
 
-    public static function all(mixed $data): self
+    public static function all(mixed $data): static
     {
         return new static(new Date(self::MIN), new Date(self::MAX), $data);
     }
@@ -265,11 +265,12 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    public function intersect(DateInterval ...$items): self
+    public function intersect(DateInterval ...$items): static
     {
         $items[] = $this->toDateInterval();
         $sorted = Arr::sortComparable($items);
 
+        /** @var static $result */
         $result = array_shift($sorted);
         foreach ($sorted as $item) {
             if ($result->getEnd()->isSameOrAfter($item->getStart())) {

@@ -15,6 +15,7 @@ use Dogma\Equalable;
 
 /**
  * @template T
+ * @template S of ModuloIntervalSet
  */
 interface ModuloInterval extends Equalable, Comparable, Dumpable
 {
@@ -48,13 +49,13 @@ interface ModuloInterval extends Equalable, Comparable, Dumpable
     // actions ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @return ModuloIntervalSet<T>
+     * @return S
      */
     public function split(int $parts): ModuloIntervalSet;
 
     /**
      * @param array<T> $intervalStarts
-     * @return ModuloIntervalSet<T>
+     * @return S
      */
     public function splitBy(array $intervalStarts): ModuloIntervalSet;
 
@@ -82,7 +83,7 @@ interface ModuloInterval extends Equalable, Comparable, Dumpable
     //public function subtract(self ...$items): ModuloIntervalSet<T>;
 
     /**
-     * @return ModuloIntervalSet<T>
+     * @return S
      */
     public function invert(): ModuloIntervalSet;
 
@@ -102,15 +103,15 @@ interface ModuloInterval extends Equalable, Comparable, Dumpable
     //public static function explodeOverlaps(self ...$items): array;
 
     /**
-     * @param self[] $intervals
-     * @return static[]
+     * @param array<static<T, S>> $intervals
+     * @return array<static<T, S>>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array;
 
     /**
-     * @param self[] $intervals
-     * @return static[]
+     * @param array<static<T, S>> $intervals
+     * @return array<static<T, S>>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array;

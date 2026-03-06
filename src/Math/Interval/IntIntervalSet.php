@@ -24,18 +24,18 @@ use function end;
 use function is_array;
 
 /**
- * @implements IntervalSet<int>
+ * @implements IntervalSet<int, IntInterval>
  */
 class IntIntervalSet implements IntervalSet
 {
     use IntervalSetDumpMixin;
     use StrictBehaviorMixin;
 
-    /** @var IntInterval[] */
+    /** @var array<IntInterval> */
     private array $intervals = [];
 
     /**
-     * @param IntInterval[] $intervals
+     * @param array<IntInterval> $intervals
      */
     final public function __construct(array $intervals)
     {
@@ -49,7 +49,7 @@ class IntIntervalSet implements IntervalSet
     }
 
     /**
-     * @return IntInterval[]
+     * @return array<IntInterval>
      */
     public function getIntervals(): array
     {
@@ -57,7 +57,7 @@ class IntIntervalSet implements IntervalSet
     }
 
     /**
-     * @return Traversable<int>
+     * @return Traversable<IntInterval>
      */
     public function getIterator(): Traversable
     {
@@ -123,7 +123,7 @@ class IntIntervalSet implements IntervalSet
     /**
      * Join overlapping intervals in set.
      */
-    public function normalize(): self
+    public function normalize(): static
     {
         /** @var IntInterval[] $intervals */
         $intervals = Arr::sortComparable($this->intervals);
@@ -141,12 +141,12 @@ class IntIntervalSet implements IntervalSet
     /**
      * Add another set of intervals to this one without normalization.
      */
-    public function add(self $set): self
+    public function add(self $set): static
     {
         return $this->addIntervals(...$set->intervals);
     }
 
-    public function addIntervals(IntInterval ...$intervals): self
+    public function addIntervals(IntInterval ...$intervals): static
     {
         return new static(array_merge($this->intervals, $intervals));
     }
@@ -154,12 +154,12 @@ class IntIntervalSet implements IntervalSet
     /**
      * Remove another set of intervals from this one.
      */
-    public function subtract(self $set): self
+    public function subtract(self $set): static
     {
         return $this->subtractIntervals(...$set->intervals);
     }
 
-    public function subtractIntervals(IntInterval ...$intervals): self
+    public function subtractIntervals(IntInterval ...$intervals): static
     {
         $sources = $this->intervals;
         $results = [];
@@ -184,7 +184,7 @@ class IntIntervalSet implements IntervalSet
         return new static($results);
     }
 
-    public function invert(): self
+    public function invert(): static
     {
         return (new static([IntInterval::all()]))->subtract($this);
     }
@@ -192,12 +192,12 @@ class IntIntervalSet implements IntervalSet
     /**
      * Intersect with another set of intervals.
      */
-    public function intersect(self $set): self
+    public function intersect(self $set): static
     {
         return $this->intersectIntervals(...$set->intervals);
     }
 
-    public function intersectIntervals(IntInterval ...$intervals): self
+    public function intersectIntervals(IntInterval ...$intervals): static
     {
         $results = [];
         foreach ($this->intervals as $result) {
@@ -211,12 +211,12 @@ class IntIntervalSet implements IntervalSet
         return new static($results);
     }
 
-    public function filterByLength(string $operator, int $length): self
+    public function filterByLength(string $operator, int $length): static
     {
         return $this->filterByCount($operator, $length + 1);
     }
 
-    public function filterByCount(string $operator, int $count): self
+    public function filterByCount(string $operator, int $count): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -258,7 +258,7 @@ class IntIntervalSet implements IntervalSet
         return new static($results);
     }
 
-    public function map(callable $mapper): self
+    public function map(callable $mapper): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -277,7 +277,7 @@ class IntIntervalSet implements IntervalSet
         return new static($results);
     }
 
-    public function collect(callable $mapper): self
+    public function collect(callable $mapper): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {

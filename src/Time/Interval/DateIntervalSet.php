@@ -31,7 +31,7 @@ use function reset;
 use function sort;
 
 /**
- * @implements IntervalSet<DateInterval>
+ * @implements IntervalSet<Date, DateInterval>
  */
 class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 {
@@ -54,7 +54,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
     /**
      * @param Date[] $dates
      */
-    public static function createFromDateArray(array $dates): self
+    public static function createFromDateArray(array $dates): static
     {
         if (count($dates) === 0) {
             return new static([]);
@@ -184,7 +184,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
     /**
      * Join overlapping intervals in set.
      */
-    public function normalize(): self
+    public function normalize(): static
     {
         /** @var DateInterval[] $intervals */
         $intervals = Arr::sortComparableValues($this->intervals);
@@ -202,12 +202,12 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
     /**
      * Add another set of intervals to this one without normalization.
      */
-    public function add(self $set): self
+    public function add(self $set): static
     {
         return $this->addIntervals(...$set->intervals);
     }
 
-    public function addIntervals(DateInterval ...$intervals): self
+    public function addIntervals(DateInterval ...$intervals): static
     {
         return new static(array_merge($this->intervals, $intervals));
     }
@@ -215,12 +215,12 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
     /**
      * Remove another set of intervals from this one.
      */
-    public function subtract(self $set): self
+    public function subtract(self $set): static
     {
         return $this->subtractIntervals(...$set->intervals);
     }
 
-    public function subtractIntervals(DateInterval ...$intervals): self
+    public function subtractIntervals(DateInterval ...$intervals): static
     {
         $sources = $this->intervals;
         $results = [];
@@ -245,7 +245,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
-    public function invert(): self
+    public function invert(): static
     {
         return (new static([DateInterval::all()]))->subtract($this);
     }
@@ -253,12 +253,12 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
     /**
      * Intersect with another set of intervals.
      */
-    public function intersect(self $set): self
+    public function intersect(self $set): static
     {
         return $this->intersectIntervals(...$set->intervals);
     }
 
-    public function intersectIntervals(DateInterval ...$intervals): self
+    public function intersectIntervals(DateInterval ...$intervals): static
     {
         $results = [];
         foreach ($this->intervals as $result) {
@@ -272,12 +272,12 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
-    public function filterByLength(string $operator, int $days): self
+    public function filterByLength(string $operator, int $days): static
     {
         return $this->filterByDayCount($operator, $days + 1);
     }
 
-    public function filterByDayCount(string $operator, int $days): self
+    public function filterByDayCount(string $operator, int $days): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -319,7 +319,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
-    public function map(callable $mapper): self
+    public function map(callable $mapper): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -338,7 +338,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
-    public function collect(callable $mapper): self
+    public function collect(callable $mapper): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {

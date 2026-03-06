@@ -30,6 +30,9 @@ use function number_format;
 use function sprintf;
 use const INF;
 
+/**
+ * @implements OpenClosedInterval<float, FloatIntervalSet>
+ */
 class FloatInterval implements OpenClosedInterval
 {
     use StrictBehaviorMixin;
@@ -83,27 +86,27 @@ class FloatInterval implements OpenClosedInterval
         }
     }
 
-    public static function closed(float $start, float $end): self
+    public static function closed(float $start, float $end): static
     {
         return new static($start, $end, false, false);
     }
 
-    public static function open(float $start, float $end): self
+    public static function open(float $start, float $end): static
     {
         return new static($start, $end, true, true);
     }
 
-    public static function openStart(float $start, float $end): self
+    public static function openStart(float $start, float $end): static
     {
         return new static($start, $end, true, false);
     }
 
-    public static function openEnd(float $start, float $end): self
+    public static function openEnd(float $start, float $end): static
     {
         return new static($start, $end, false, true);
     }
 
-    public static function empty(): self
+    public static function empty(): static
     {
         $interval = new static(static::MIN, static::MAX);
         $interval->start = static::MAX;
@@ -112,7 +115,7 @@ class FloatInterval implements OpenClosedInterval
         return $interval;
     }
 
-    public static function all(): self
+    public static function all(): static
     {
         return new static(static::MIN, static::MAX);
     }
@@ -135,12 +138,12 @@ class FloatInterval implements OpenClosedInterval
 
     // modifications ---------------------------------------------------------------------------------------------------
 
-    public function shift(float $byValue): self
+    public function shift(float $byValue): static
     {
         return new static($this->start + $byValue, $this->end + $byValue, $this->openStart, $this->openEnd);
     }
 
-    public function multiply(float $byValue): self
+    public function multiply(float $byValue): static
     {
         return new static($this->start * $byValue, $this->end * $byValue, $this->openStart, $this->openEnd);
     }
@@ -330,7 +333,7 @@ class FloatInterval implements OpenClosedInterval
     }
 
     // A1****A2****B1****B2 -> [A1, B2]
-    public function envelope(self ...$items): self
+    public function envelope(self ...$items): static
     {
         $items[] = $this;
         $start = static::MAX;
@@ -357,23 +360,23 @@ class FloatInterval implements OpenClosedInterval
 
     // A1----B1****A2----B2 -> [B1, A2]
     // A1----A2    B1----B2 -> [MAX, MIN]
-    public function intersect(self ...$items): self
+    public function intersect(self ...$items): static
     {
         $items[] = $this;
         $sorted = Arr::sortComparable($items);
 
-        /** @var self $result */
+        /** @var static $result */
         $result = array_shift($sorted);
         foreach ($sorted as $item) {
             if ($result->start < $item->start || ($result->start === $item->start && $result->openStart && !$item->openStart)) {
                 if ($result->end < $item->start || ($result->end === $item->start && ($result->openEnd || $item->openStart))) {
-                    return self::empty();
+                    return static::empty();
                 }
                 $result = new static($item->start, $result->end, $item->openStart, $result->openEnd);
             }
             if ($result->end > $item->end || ($result->end === $item->end && !$result->openEnd && $item->openEnd)) {
                 if ($result->start > $item->end || ($result->start === $item->end && ($result->openStart || $item->openEnd))) {
-                    return self::empty();
+                    return static::empty();
                 }
                 $result = new static($result->start, $item->end, $result->openStart, $item->openEnd);
             }

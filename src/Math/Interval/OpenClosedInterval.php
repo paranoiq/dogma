@@ -11,7 +11,18 @@
 
 namespace Dogma\Math\Interval;
 
-interface OpenClosedInterval /*<T>*/ extends Interval /*<T>*/
+/**
+ * @template T
+ * @template S of IntervalSet
+ * @extends Interval<T, S>
+ *
+ * implementation should have these constructors:
+ * - public static function closed(T $start, T $end): self<T>;
+ * - public static function open(T $start, T $end): self<T>;
+ * - public static function openStart(T $start, T $end): self<T>;
+ * - public static function openEnd(T $start, T $end): self<T>;
+ */
+interface OpenClosedInterval extends Interval
 {
 
     public const OPEN = true;
@@ -20,14 +31,6 @@ interface OpenClosedInterval /*<T>*/ extends Interval /*<T>*/
     public const SPLIT_OPEN_STARTS = 1;
     public const SPLIT_CLOSED = 0;
     public const SPLIT_OPEN_ENDS = -1;
-
-    //public static function closed(T $start, T $end): self<T>;
-
-    //public static function open(T $start, T $end): self<T>;
-
-    //public static function openStart(T $start, T $end): self<T>;
-
-    //public static function openEnd(T $start, T $end): self<T>;
 
     public function hasOpenStart(): bool;
 

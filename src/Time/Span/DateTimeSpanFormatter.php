@@ -72,10 +72,10 @@ class DateTimeSpanFormatter
     public const SECONDS_WORD = 'R';
     public const SECONDS_UNIT = 'r';
 
-    public const MILISECONDS = 'v';
-    public const MILISECONDS_TOTAL = 'V';
-    public const MILISECONDS_WORD = 'B';
-    public const MILISECONDS_UNIT = 'b';
+    public const MILLISECONDS = 'v';
+    public const MILLISECONDS_TOTAL = 'V';
+    public const MILLISECONDS_WORD = 'B';
+    public const MILLISECONDS_UNIT = 'b';
 
     public const MICROSECONDS = 'u';
     public const MICROSECONDS_TOTAL = 'U';
@@ -133,10 +133,10 @@ class DateTimeSpanFormatter
         self::SECONDS_TOTAL_FRACTION,
         self::SECONDS_UNIT,
         self::SECONDS_WORD,
-        self::MILISECONDS,
-        self::MILISECONDS_TOTAL,
-        self::MILISECONDS_UNIT,
-        self::MILISECONDS_WORD,
+        self::MILLISECONDS,
+        self::MILLISECONDS_TOTAL,
+        self::MILLISECONDS_UNIT,
+        self::MILLISECONDS_WORD,
         self::MICROSECONDS,
         self::MICROSECONDS_TOTAL,
         self::MICROSECONDS_UNIT,
@@ -237,10 +237,10 @@ class DateTimeSpanFormatter
      * R    'seconds' word                              second, seconds, seconds
      * r    's' for seconds                             s, s, s
      *
-     * V    Miliseconds total (calculated from µs)      7, 108952
-     * v    Miliseconds (calculated from µs)            7, 52
-     * B    'miliseconds' word                          miliseconds
-     * b    'ms' for miliseconds                        ms
+     * V    Milliseconds total (calculated from µs)     7, 108952
+     * v    Milliseconds (calculated from µs)           7, 52
+     * B    'milliseconds' word                         milliseconds
+     * b    'ms' for milliseconds                       ms
      *
      * U    Microseconds total                          7701, 108952738
      * u    Microseconds                                7701, 52738
@@ -522,7 +522,7 @@ class DateTimeSpanFormatter
                     case self::SECONDS_UNIT:
                         $group .= $this->formatUnit(self::SECONDS, $characters[$i + 1]);
                         break;
-                    case self::MILISECONDS:
+                    case self::MILLISECONDS:
                         // miliseconds ---------------------------------------------------------------------------------
                         $microseconds = (int) ($span->getMicroseconds() / 1000);
                         $group .= $microseconds;
@@ -530,18 +530,18 @@ class DateTimeSpanFormatter
                             $groupValid = true;
                         }
                         break;
-                    case self::MILISECONDS_TOTAL:
+                    case self::MILLISECONDS_TOTAL:
                         $microseconds = (int) ($span->getMicrosecondsTotal() / 1000);
                         $group .= $microseconds;
                         if ($microseconds !== 0) {
                             $groupValid = true;
                         }
                         break;
-                    case self::MILISECONDS_WORD:
-                        $group .= $this->formatUnit(self::MILISECONDS, $characters[$i + 1], (int) ($span->getMicroseconds() / 1000));
+                    case self::MILLISECONDS_WORD:
+                        $group .= $this->formatUnit(self::MILLISECONDS, $characters[$i + 1], (int) ($span->getMicroseconds() / 1000));
                         break;
-                    case self::MILISECONDS_UNIT:
-                        $group .= $this->formatUnit(self::MILISECONDS, $characters[$i + 1]);
+                    case self::MILLISECONDS_UNIT:
+                        $group .= $this->formatUnit(self::MILLISECONDS, $characters[$i + 1]);
                         break;
                     case self::MICROSECONDS:
                         // microseconds --------------------------------------------------------------------------------
@@ -648,7 +648,7 @@ class DateTimeSpanFormatter
             self::HOURS => ['h', 'hour', 'hours'],
             self::MINUTES => ['m', 'minute', 'minutes'],
             self::SECONDS => ['s', 'second', 'seconds'],
-            self::MILISECONDS => ['ms', 'milisecond', 'miliseconds'],
+            self::MILLISECONDS => ['ms', 'millisecond', 'milliseconds'],
             self::MICROSECONDS => ['µs', 'microsecond', 'microseconds'],
         ];
     }

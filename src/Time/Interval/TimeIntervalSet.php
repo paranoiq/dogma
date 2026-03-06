@@ -29,7 +29,7 @@ use function is_array;
 use function reset;
 
 /**
- * @implements ModuloIntervalSet<TimeInterval>
+ * @implements ModuloIntervalSet<Time, TimeInterval>
  */
 class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokeable
 {
@@ -144,7 +144,7 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
     /**
      * Join overlapping intervals in set.
      */
-    public function normalize(): self
+    public function normalize(): static
     {
         /** @var TimeInterval[] $intervals */
         $intervals = Arr::sortComparable($this->intervals);
@@ -162,12 +162,12 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
     /**
      * Add another set of intervals to this one without normalization.
      */
-    public function add(self $set): self
+    public function add(self $set): static
     {
         return $this->addIntervals(...$set->intervals);
     }
 
-    public function addIntervals(TimeInterval ...$intervals): self
+    public function addIntervals(TimeInterval ...$intervals): static
     {
         return new static(array_merge($this->intervals, $intervals));
     }
@@ -175,12 +175,12 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
     /**
      * Remove another set of intervals from this one.
      */
-    public function subtract(self $set): self
+    public function subtract(self $set): static
     {
         return $this->subtractIntervals(...$set->intervals);
     }
 
-    public function subtractIntervals(TimeInterval ...$intervals): self
+    public function subtractIntervals(TimeInterval ...$intervals): static
     {
         $sources = $this->intervals;
         $results = [];
@@ -205,7 +205,7 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
         return new static($results);
     }
 
-    public function invert(): self
+    public function invert(): static
     {
         return (new static([TimeInterval::all()]))->subtract($this);
     }
@@ -213,12 +213,12 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
     /**
      * Intersect with another set of intervals.
      */
-    public function intersect(self $set): self
+    public function intersect(self $set): static
     {
         return $this->intersectIntervals(...$set->intervals);
     }
 
-    public function intersectIntervals(TimeInterval ...$intervals): self
+    public function intersectIntervals(TimeInterval ...$intervals): static
     {
         $results = [];
         foreach ($this->intervals as $result) {
@@ -232,7 +232,7 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
         return new static($results);
     }
 
-    public function filterByLength(string $operator, int $microseconds): self
+    public function filterByLength(string $operator, int $microseconds): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -274,7 +274,7 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
         return new static($results);
     }
 
-    public function map(callable $mapper): self
+    public function map(callable $mapper): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -293,7 +293,7 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
         return new static($results);
     }
 
-    public function collect(callable $mapper): self
+    public function collect(callable $mapper): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {

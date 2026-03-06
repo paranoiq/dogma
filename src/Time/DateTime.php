@@ -300,7 +300,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     public function add(DateInterval|DateOrTimeSpan $interval): static
     {
-        if ($interval instanceof DateInterval) {
+        if ($interval instanceof DateInterval) { // @phpstan-ignore instanceof.alwaysTrue
             $that = parent::add($interval);
         } elseif (!$interval->isMixed()) {
             $interval = $interval->toNative();
@@ -736,7 +736,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         $values->hours = (int) $results[8];
         $values->minutes = (int) $results[9];
         $values->seconds = (int) $results[10];
-        $values->miliseconds = (int) $results[11];
+        $values->milliseconds = (int) $results[11];
         $values->microseconds = (int) $results[12];
 
         $values->dst = (bool) $results[13];

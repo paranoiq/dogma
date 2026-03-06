@@ -13,8 +13,8 @@ use Dogma\Arr;
 use Dogma\ArrayIterator;
 use Dogma\Check;
 use Dogma\Equalable;
-use Dogma\Math\Interval\IntervalSet;
 use Dogma\Math\Interval\IntervalSetDumpMixin;
+use Dogma\Math\Interval\ModuloIntervalSet;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DayOfYear;
@@ -27,9 +27,9 @@ use function is_array;
 use function reset;
 
 /**
- * @implements IntervalSet<DayOfYearInterval>
+ * @implements ModuloIntervalSet<DayOfYear, DayOfYearInterval>
  */
-class DayOfYearIntervalSet implements IntervalSet
+class DayOfYearIntervalSet implements ModuloIntervalSet
 {
     use IntervalSetDumpMixin;
     use StrictBehaviorMixin;
@@ -129,7 +129,7 @@ class DayOfYearIntervalSet implements IntervalSet
     /**
      * Join overlapping intervals in set.
      */
-    public function normalize(): self
+    public function normalize(): static
     {
         /** @var DayOfYearInterval[] $intervals */
         $intervals = Arr::sortComparable($this->intervals);
@@ -147,12 +147,12 @@ class DayOfYearIntervalSet implements IntervalSet
     /**
      * Add another set of intervals to this one without normalization.
      */
-    public function add(self $set): self
+    public function add(self $set): static
     {
         return $this->addIntervals(...$set->intervals);
     }
 
-    public function addIntervals(DayOfYearInterval ...$intervals): self
+    public function addIntervals(DayOfYearInterval ...$intervals): static
     {
         return new static(array_merge($this->intervals, $intervals));
     }
@@ -160,12 +160,12 @@ class DayOfYearIntervalSet implements IntervalSet
     /**
      * Remove another set of intervals from this one.
      */
-    public function subtract(self $set): self
+    public function subtract(self $set): static
     {
         return $this->subtractIntervals(...$set->intervals);
     }
 
-    public function subtractIntervals(DayOfYearInterval ...$intervals): self
+    public function subtractIntervals(DayOfYearInterval ...$intervals): static
     {
         $sources = $this->intervals;
         $results = [];
@@ -193,12 +193,12 @@ class DayOfYearIntervalSet implements IntervalSet
     /**
      * Intersect with another set of intervals.
      */
-    public function intersect(self $set): self
+    public function intersect(self $set): static
     {
         return $this->intersectIntervals(...$set->intervals);
     }
 
-    public function intersectIntervals(DayOfYearInterval ...$intervals): self
+    public function intersectIntervals(DayOfYearInterval ...$intervals): static
     {
         $results = [];
         foreach ($this->intervals as $result) {
@@ -212,7 +212,7 @@ class DayOfYearIntervalSet implements IntervalSet
         return new static($results);
     }
 
-    public function map(callable $mapper): self
+    public function map(callable $mapper): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -231,7 +231,7 @@ class DayOfYearIntervalSet implements IntervalSet
         return new static($results);
     }
 
-    public function collect(callable $mapper): self
+    public function collect(callable $mapper): static
     {
         $results = [];
         foreach ($this->intervals as $interval) {

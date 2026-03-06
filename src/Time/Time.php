@@ -415,7 +415,7 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
         $values->hours = (int) $results[0];
         $values->minutes = (int) $results[1];
         $values->seconds = (int) $results[2];
-        $values->miliseconds = (int) $results[3];
+        $values->milliseconds = (int) $results[3];
         $values->microseconds = (int) $results[4];
     }
 
