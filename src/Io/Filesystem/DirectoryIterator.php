@@ -36,11 +36,7 @@ class DirectoryIterator extends FilesystemIterator
         }
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param int|null $flags
-     */
-    public function setFlags($flags = null): void
+    public function setFlags(?int $flags = null): void
     {
         $this->flags = $flags;
         if (!($flags & FilesystemIterator::CURRENT_AS_PATHNAME) && !($flags & FilesystemIterator::CURRENT_AS_SELF)) {

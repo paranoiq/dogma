@@ -20,22 +20,22 @@ use function is_int;
 
 /**
  * @deprecated will be removed
- * @implements Iterator<int, mixed[]>
+ * @implements Iterator<int, array<mixed>>
  */
 class SimplePdoResult implements Iterator
 {
     use StrictBehaviorMixin;
 
-    /** @var PDOStatement<int, mixed[]> */
+    /** @var PDOStatement<int, array<mixed>> */
     private PDOStatement $statement;
 
     private int $key;
 
-    /** @var mixed[]|bool */
+    /** @var array<mixed>|bool */
     private array|bool $current;
 
     /**
-     * @param PDOStatement<int, mixed[]> $statement
+     * @param PDOStatement<int, array<mixed>> $statement
      */
     public function __construct(PDOStatement $statement)
     {
@@ -53,7 +53,7 @@ class SimplePdoResult implements Iterator
     }
 
     /**
-     * @return mixed[]|bool
+     * @return array<mixed>|bool
      */
     public function fetch(int $mode = PDO::FETCH_ASSOC): array|bool
     {
@@ -61,11 +61,11 @@ class SimplePdoResult implements Iterator
     }
 
     /**
-     * @return mixed[][]
+     * @return array<array<mixed>>
      */
     public function fetchAll(int $mode = PDO::FETCH_ASSOC): array
     {
-        /** @var mixed[][] $result */
+        /** @var array<array<mixed>> $result */
         $result = $this->statement->fetchAll($mode);
         $this->close();
         unset($this->statement);
@@ -83,11 +83,11 @@ class SimplePdoResult implements Iterator
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
     public function fetchColumnAll(int|string $column): array
     {
-        /** @var mixed[][] $result */
+        /** @var array<array<mixed>> $result */
         $result = $this->statement->fetchAll(is_int($column) ? PDO::FETCH_NUM : PDO::FETCH_ASSOC);
         $rows = [];
         foreach ($result as $row) {
@@ -126,7 +126,7 @@ class SimplePdoResult implements Iterator
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
     public function current(): array
     {

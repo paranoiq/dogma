@@ -17,7 +17,7 @@ use Iterator;
 use function count;
 
 /**
- * @implements Iterator<int, mixed[]>
+ * @implements Iterator<int, array<mixed>>
  */
 class HtmlTableIterator implements Iterator
 {
@@ -29,7 +29,7 @@ class HtmlTableIterator implements Iterator
 
     private string $bodyRowSelector;
 
-    /** @var string[] */
+    /** @var array<string> */
     private array $head;
 
     private NodeList $rows;
@@ -75,7 +75,7 @@ class HtmlTableIterator implements Iterator
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function current(): array
     {
@@ -94,7 +94,7 @@ class HtmlTableIterator implements Iterator
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     private function formatRow(Element $row): array
     {

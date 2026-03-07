@@ -33,16 +33,16 @@ class Locale
 {
     use StrictBehaviorMixin;
 
-    /** @var self[] */
+    /** @var array<self> */
     private static array $instances = [];
 
     private string $value;
 
-    /** @var string[]|string[][]|null[] */
+    /** @var array<string|array<string>|null> */
     private array $components;
 
     /**
-     * @param string[]|string[][]|null[] $components
+     * @param array<string|array<string>|null> $components
      */
     final private function __construct(string $value, array $components)
     {
@@ -74,9 +74,9 @@ class Locale
     }
 
     /**
-     * @param string[] $variants
-     * @param string[] $private
-     * @param string[] $keywords
+     * @param array<string> $variants
+     * @param array<string> $private
+     * @param array<string> $keywords
      */
     public static function create(
         Language $language,
@@ -138,7 +138,7 @@ class Locale
     }
 
     /**
-     * @param Locale[]|string[] $locales
+     * @param array<Locale|string> $locales
      */
     public function findBestMatch(array $locales, self|string|null $default = null): ?self
     {
@@ -203,7 +203,7 @@ class Locale
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function getVariants(): array
     {
@@ -228,7 +228,7 @@ class Locale
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function getPrivates(): array
     {
@@ -258,11 +258,11 @@ class Locale
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function getKeywords(): array
     {
-        /** @var string[] $keywords */
+        /** @var array<string> $keywords */
         $keywords = $this->components['keywords'] ?? [];
 
         return $keywords;
@@ -270,7 +270,7 @@ class Locale
 
     public function getKeyword(string $keyword): ?string
     {
-        /** @var string[] $keywords */
+        /** @var array<string> $keywords */
         $keywords = $this->components['keywords'];
 
         return $keywords[$keyword] ?? null;
@@ -305,7 +305,7 @@ class Locale
     }
 
     /**
-     * @return LocaleCollationOption[]
+     * @return array<LocaleCollationOption>
      */
     public function getCollationOptions(): array
     {
@@ -317,7 +317,7 @@ class Locale
                 $options[$keyword] = $class::get($value);
             }
         }
-        /** @var LocaleCollationOption[] $options */
+        /** @var array<LocaleCollationOption> $options */
         $options = $options;
 
         return $options;

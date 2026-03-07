@@ -81,7 +81,7 @@ class IntCalc
     }
 
     /**
-     * @return int[]
+     * @return array<int>
      */
     public static function factorize(int $n): array
     {
@@ -139,7 +139,7 @@ class IntCalc
     // bit operations --------------------------------------------------------------------------------------------------
 
     /**
-     * @return int[]
+     * @return array<int>
      */
     public static function binaryComponents(int $n): array
     {

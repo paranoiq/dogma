@@ -31,7 +31,7 @@ class Prime implements Sequence
 
     private const MAX_SIEVE_SIZE = PowersOfTwo::_4M;
 
-    /** @var int[] */
+    /** @var array<int, int> */
     private static array $cache = [
         1 => 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97,
         101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199,
@@ -119,7 +119,7 @@ class Prime implements Sequence
 
     /**
      * Returns firs n primes
-     * @return int[]
+     * @return array<int>
      */
     public static function getUntilPosition(int $count): array
     {
@@ -132,7 +132,7 @@ class Prime implements Sequence
 
     /**
      * Returns primes lower than certain number
-     * @return int[]
+     * @return array<int>
      */
     public static function getUntil(int $max): array
     {
@@ -154,7 +154,7 @@ class Prime implements Sequence
 
     /**
      * Returns primes between min and max
-     * @return int[]
+     * @return array<int>
      */
     public static function getBetween(int $min, int $max): array
     {
@@ -172,7 +172,7 @@ class Prime implements Sequence
         $min = self::$lastSieved + 1;
         $max = min(self::$lastSieved * 2, self::$lastSieved + self::MAX_SIEVE_SIZE);
         $numbers = range($min, $max, 2);
-        /** @var int[] $numbers */
+        /** @var array<int> $numbers */
         $numbers = array_combine($numbers, $numbers);
 
         // filter primes from previous segments

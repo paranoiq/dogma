@@ -25,11 +25,11 @@ class ArrayIterator implements Iterator
 {
     use StrictBehaviorMixin;
 
-    /** @var mixed[] */
+    /** @var array<mixed> */
     protected array $array;
 
     /**
-     * @param mixed[] $array
+     * @param array<mixed> $array
      */
     public function __construct(array $array)
     {

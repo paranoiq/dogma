@@ -34,11 +34,11 @@ class DayOfYearIntervalSet implements ModuloIntervalSet
     use IntervalSetDumpMixin;
     use StrictBehaviorMixin;
 
-    /** @var DayOfYearInterval[] */
+    /** @var array<DayOfYearInterval> */
     private array $intervals;
 
     /**
-     * @param DayOfYearInterval[] $intervals
+     * @param array<DayOfYearInterval> $intervals
      */
     final public function __construct(array $intervals)
     {
@@ -59,7 +59,7 @@ class DayOfYearIntervalSet implements ModuloIntervalSet
     }
 
     /**
-     * @return DayOfYearInterval[]
+     * @return array<DayOfYearInterval>
      */
     public function getIntervals(): array
     {
@@ -135,7 +135,7 @@ class DayOfYearIntervalSet implements ModuloIntervalSet
      */
     public function normalize(): static
     {
-        /** @var DayOfYearInterval[] $intervals */
+        /** @var array<DayOfYearInterval> $intervals */
         $intervals = Arr::sortComparable($this->intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
@@ -188,7 +188,7 @@ class DayOfYearIntervalSet implements ModuloIntervalSet
             }
         }
 
-        /** @var DayOfYearInterval[] $results */
+        /** @var array<DayOfYearInterval> $results */
         $results = $results;
 
         return new static($results);

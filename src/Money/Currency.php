@@ -179,7 +179,7 @@ class Currency extends StringEnum
     public const ZIMBABWE_DOLLAR = 'ZWL';
     public const ZLOTY = 'PLN';
 
-    /** @var string[] */
+    /** @var array<string> */
     private static array $names = [
         self::AFGHANI => 'Afghani',
         self::ALGERIAN_DINAR => 'Algerian Dinar',
@@ -345,7 +345,7 @@ class Currency extends StringEnum
         self::ZLOTY => 'Zloty',
     ];
 
-    /** @var string[] */
+    /** @var array<string> */
     private static array $idents = [
         self::AFGHANI => 'afghani',
         self::ALGERIAN_DINAR => 'algerian-dinar',

@@ -82,7 +82,7 @@ class DateTimeUnit extends StringEnum
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public static function getDateUnits(): array
     {
@@ -96,7 +96,7 @@ class DateTimeUnit extends StringEnum
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public static function getTimeUnits(): array
     {
@@ -110,7 +110,7 @@ class DateTimeUnit extends StringEnum
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public static function getComparisonFormats(): array
     {

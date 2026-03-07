@@ -25,11 +25,11 @@ class ChunkIterator extends IteratorIterator
 
     private int $key = 0;
 
-    /** @var mixed[] */
+    /** @var array<mixed> */
     private array $chunk;
 
     /**
-     * @param iterable|mixed[] $iterable
+     * @param iterable<mixed> $iterable
      */
     public function __construct(iterable $iterable, int $chunkSize)
     {
@@ -60,7 +60,7 @@ class ChunkIterator extends IteratorIterator
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
     public function current(): array
     {

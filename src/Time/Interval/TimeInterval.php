@@ -33,7 +33,6 @@ use function array_values;
 use function count;
 use function max;
 use function min;
-use function round;
 
 /**
  * Interval of times without date.
@@ -212,7 +211,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @return Time[]
+     * @return array<Time>
      */
     public function getStartEnd(): array
     {
@@ -307,8 +306,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         $partSize = ($this->end->getMicroTime() - $this->start->getMicroTime()) / $parts;
         $intervalStarts = [];
         for ($n = 1; $n < $parts; $n++) {
-            // rounded to microseconds
-            $intervalStarts[] = round(($this->start->getMicroTime() + $partSize * $n) % (Time::MAX_MICROSECONDS + 1), 6);
+            $intervalStarts[] = ($this->start->getMicroTime() + $partSize * $n) % (Time::MAX_MICROSECONDS + 1);
         }
         $intervalStarts = array_unique($intervalStarts);
         $intervalStarts = Arr::map($intervalStarts, static function (int $timestamp): Time {
@@ -319,7 +317,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param Time[] $intervalStarts
+     * @param array<Time> $intervalStarts
      */
     public function splitBy(array $intervalStarts): TimeIntervalSet
     {
@@ -343,7 +341,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @return self[]
+     * @return array<self>
      */
     public function splitByMidnight(): array
     {
@@ -412,7 +410,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
     public function union(self ...$items): TimeIntervalSet
     {
         $items[] = $this;
-        /** @var self[] $items */
+        /** @var array<self> $items */
         $items = Arr::sortComparable($items);
 
         /** @var TimeInterval $current */
@@ -528,11 +526,11 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 
     /**
      * @param TimeInterval ...$items
-     * @return TimeInterval[]
+     * @return array<TimeInterval>
      */
     public static function explodeOverlaps(self ...$items): array
     {
-        /** @var self[] $items */
+        /** @var array<self> $items */
         $items = Arr::sortComparable($items);
         $starts = array_fill(0, count($items), 0);
         $i = 0;
@@ -625,8 +623,8 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param self[] $intervals
-     * @return self[]
+     * @param array<self> $intervals
+     * @return array<self>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array
@@ -635,8 +633,8 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param self[] $intervals
-     * @return self[]
+     * @param array<self> $intervals
+     * @return array<self>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array

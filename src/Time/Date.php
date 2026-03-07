@@ -437,8 +437,8 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
     }
 
     /**
-     * @param Date[] $items
-     * @return Date[]
+     * @param array<Date> $items
+     * @return array<Date>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $items, int $flags = Order::ASCENDING): array

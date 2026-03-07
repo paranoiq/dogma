@@ -14,7 +14,6 @@ use Dogma\StrictBehaviorMixin;
 use function array_keys;
 use function count;
 use function is_array;
-use function is_int;
 use function is_string;
 use function range;
 use function spl_object_hash;
@@ -23,10 +22,10 @@ class HttpMultiChannel
 {
     use StrictBehaviorMixin;
 
-    /** @var HttpChannel[] */
+    /** @var array<HttpChannel> */
     private array $channels;
 
-    /** @var string[] */
+    /** @var array<string> */
     private array $channelIds;
 
     private int $lastIndex = -1;
@@ -50,7 +49,7 @@ class HttpMultiChannel
     private $dispatcher;
 
     /**
-     * @param HttpChannel[] $channels
+     * @param array<HttpChannel> $channels
      */
     public function __construct(array $channels)
     {
@@ -58,13 +57,13 @@ class HttpMultiChannel
 
         foreach ($channels as $channelName => $channel) {
             $this->channelIds[spl_object_hash($channel)] = $channelName;
-            $channel->setResponseHandler(function (HttpResponse $response, HttpChannel $channel, string $subJobName): void {
+            $channel->setResponseHandler(function (HttpResponse $response, HttpChannel $channel, int|string $subJobName): void {
                 $this->responseHandler($response, $channel, $subJobName);
             });
         }
     }
 
-    public function responseHandler(HttpResponse $response, HttpChannel $channel, string $subJobName): void
+    public function responseHandler(HttpResponse $response, HttpChannel $channel, int|string $subJobName): void
     {
         $channelId = spl_object_hash($channel);
         $channelName = $this->channelIds[$channelId];
@@ -108,7 +107,7 @@ class HttpMultiChannel
     }
 
     /**
-     * @return HttpChannel[]
+     * @return array<HttpChannel>
      */
     public function getChannels(): array
     {
@@ -152,15 +151,12 @@ class HttpMultiChannel
 
     /**
      * Add new job to channel queue.
-     * @param string|mixed[] $data
-     * @return string|int
+     * @param string|array<mixed> $data
      */
-    public function addJob(string|array $data, mixed $context = null, mixed $name = null): string|int
+    public function addJob(string|array $data, mixed $context = null, int|string|null $name = null): int|string
     {
         if ($name === null) {
             $name = ++$this->lastIndex;
-        } elseif (!is_string($name) && !is_int($name)) {
-            throw new HttpChannelException('Illegal job name. Job name can be only a string or an integer.');
         }
 
         if ($this->dispatcher !== null) {
@@ -179,7 +175,7 @@ class HttpMultiChannel
 
     /**
      * Add more jobs to a channel. Array indexes are job names if they are strings.
-     * @param mixed[] $jobs
+     * @param array<mixed> $jobs
      */
     public function addJobs(array $jobs, mixed $context = null): void
     {
@@ -192,8 +188,8 @@ class HttpMultiChannel
 
     /**
      * Run a new job and wait for the response.
-     * @param string|mixed[] $data
-     * @return HttpResponse[]|null
+     * @param string|array<mixed> $data
+     * @return array<HttpResponse>|null
      */
     public function fetchJob(string|array $data, mixed $context = null): ?array
     {
@@ -211,7 +207,7 @@ class HttpMultiChannel
     }
 
     /**
-     * @return HttpResponse[]|null
+     * @return array<HttpResponse>|null
      */
     public function fetch(string|int|null $name = null): ?array
     {
@@ -236,7 +232,7 @@ class HttpMultiChannel
     }
 
     /**
-     * @return HttpResponse[]
+     * @return array<HttpResponse>
      */
     private function fetchNamedJob(string|int $name): array
     {
@@ -299,8 +295,8 @@ class HttpMultiChannel
 
     /**
      * Job data dispatch function. Splits up data for sub-jobs (sub-channels). Override if needed.
-     * @param string|mixed[] $data
-     * @return mixed[]
+     * @param string|array<mixed> $data
+     * @return array<mixed>
      */
     protected function dispatch(string|array $data): array
     {

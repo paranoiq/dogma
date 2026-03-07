@@ -29,7 +29,7 @@ final class DogmaLoader
     /** @var static|null */
     private static ?self $instance = null;
 
-    /** @var string[] */
+    /** @var array<string> */
     private array $classMap = [];
 
     private function __construct()
@@ -82,7 +82,7 @@ final class DogmaLoader
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function getClassMap(): array
     {

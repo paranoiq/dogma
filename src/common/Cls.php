@@ -35,7 +35,7 @@ class Cls
     }
 
     /**
-     * @return string[]
+     * @return list<class-string>
      */
     public static function parents(string|object $class): array
     {
@@ -48,7 +48,8 @@ class Cls
     }
 
     /**
-     * @return string[]
+     * @param class-string|object $class
+     * @return list<class-string>
      */
     public static function parentsAndSelf(string|object $class): array
     {
@@ -70,7 +71,10 @@ class Cls
     /**
      * Oldest common ancestor
      *
-     * @return string|null
+     * @param class-string|object $first
+     * @param class-string|object $second
+     * @param class-string|object|null $after
+     * @return class-string|null
      */
     public static function commonRoot(string|object $first, string|object $second, string|object|null $after = null): ?string
     {
@@ -120,7 +124,10 @@ class Cls
     /**
      * Newest common ancestor
      *
-     * @return string|null
+     * @param class-string|object $first
+     * @param class-string|object $second
+     * @param class-string|object|null $after
+     * @return class-string|null
      */
     public static function commonBranch(string|object $first, string|object $second, string|object|null $after = null): ?string
     {

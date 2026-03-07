@@ -144,7 +144,7 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     }
 
     /**
-     * @return Date[]|mixed[] array of pairs (Date $date, mixed $data)
+     * @return array<array{Date, mixed}> array of pairs (Date $date, mixed $data)
      */
     public function toDateDataArray(): array
     {
@@ -173,7 +173,7 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     }
 
     /**
-     * @return Date[]
+     * @return array<Date>
      */
     public function getStartEnd(): array
     {
@@ -310,8 +310,8 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     // static ----------------------------------------------------------------------------------------------------------
 
     /**
-     * @param self[] $intervals
-     * @return self[]
+     * @param array<self> $intervals
+     * @return array<self>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array
@@ -320,8 +320,8 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     }
 
     /**
-     * @param self[] $intervals
-     * @return self[]
+     * @param array<self> $intervals
+     * @return array<self>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array

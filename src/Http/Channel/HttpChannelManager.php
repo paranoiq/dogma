@@ -48,22 +48,18 @@ class HttpChannelManager
     /** @var float sum of priorities of all channels */
     private float $sumPriorities = 0.0;
 
-    /** @var HttpChannel[] */
+    /** @var array<HttpChannel> */
     private array $channels = [];
 
-    /** @var mixed[] (int $resourceId => array($channelId, $jobName, $request)) */
+    /** @var array<int, array{string, int|string, HttpRequest}> (int $resourceId => array($channelId, $jobName, $request)) */
     private array $resources = [];
 
-    private ?HttpHeaderParser $headerParser = null;
+    private ?HttpHeaderParser $headerParser;
 
     public function __construct(?HttpHeaderParser $headerParser = null)
     {
         $this->headerParser = $headerParser;
-        $handler = curl_multi_init();
-        if ($handler === false) {
-            throw new HttpChannelException('Cannot initialize CURL multi-request.');
-        }
-        $this->handler = $handler;
+        $this->handler = curl_multi_init();
     }
 
     public function __destruct()
@@ -177,9 +173,6 @@ class HttpChannelManager
         $this->exec();
     }
 
-    /**
-     * @return int|string|null
-     */
     private function selectChannel(): int|string|null
     {
         if (count($this->resources) >= $this->threadLimit) {

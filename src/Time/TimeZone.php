@@ -448,7 +448,7 @@ class TimeZone extends PartialStringEnum
 
     /**
      * @see https://secure.php.net/manual/en/timezones.others.php for deprecated timezones info
-     * @var string[]
+     * @var array<string>
      */
     private static array $deprecated = [
         'Africa/Asmera',

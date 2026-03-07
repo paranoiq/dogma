@@ -17,11 +17,11 @@ use function is_array;
 class ErrorException extends Exception
 {
 
-    /** @var string[]|int[]|null */
+    /** @var array<string|int>|null */
     private ?array $error = null;
 
     /**
-     * @param string[]|int[]|null $error
+     * @param array<string|int>|null $error
      */
     public function __construct(string $message, ?array $error, ?Throwable $previous = null)
     {
@@ -50,7 +50,7 @@ class ErrorException extends Exception
     }
 
     /**
-     * @return string[]|int[]|null
+     * @return array<string|int>|null
      */
     public function getErrorInfo(): ?array
     {

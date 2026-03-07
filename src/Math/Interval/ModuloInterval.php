@@ -91,14 +91,14 @@ interface ModuloInterval extends Equalable, Comparable, Dumpable
 
     /**
      * @param ModuloInterval ...$items
-     * @return ModuloInterval[][]|int[][] ($ident => ($interval, $count))
+     * @return array<string, array{ModuloInterval, int}> ($ident => ($interval, $count))
      */
     //public static function countOverlaps(self ...$items): array;
 
     /**
      * O(n log n)
      * @param ModuloInterval ...$items
-     * @return ModuloInterval[]
+     * @return array<ModuloInterval>
      */
     //public static function explodeOverlaps(self ...$items): array;
 

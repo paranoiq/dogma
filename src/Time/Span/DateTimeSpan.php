@@ -194,7 +194,7 @@ class DateTimeSpan implements DateOrTimeSpan
 
     /**
      * Separates positive and negative values to two instances
-     * @return DateInterval[] ($positive, $negative)
+     * @return array{DateInterval, DateInterval} ($positive, $negative)
      */
     public function toPositiveAndNegative(): array
     {
@@ -540,7 +540,7 @@ class DateTimeSpan implements DateOrTimeSpan
     // getters ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @return int[]
+     * @return array<int>
      */
     public function getValues(): array
     {

@@ -57,7 +57,7 @@ class UnicodeCharacterCategory extends StringEnum
     public const PARAGRAPH_SEPARATOR = 'Zp';
     public const SPACE_SEPARATOR = 'Zs';
 
-    /** @var string[] */
+    /** @var array<string> */
     private static array $names = [
         self::OTHER => 'Other',
         self::CONTROL => 'Control',

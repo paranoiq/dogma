@@ -144,7 +144,7 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @param array<mixed> $array
      * @return array<int|string>
      */
     public static function keys(array $array): array
@@ -163,7 +163,7 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @param array<mixed> $array
      * @return int|string
      */
     public static function randomKey(array $array): int|string
@@ -183,7 +183,9 @@ class Arr
 
     /**
      * @deprecated will be removed. use Call::with() instead
-     * @param mixed[] $array
+     * @template T
+     * @param array<T> $array
+     * @param callable(T): mixed $function
      */
     public static function doForEach(array $array, callable $function): void
     {
@@ -227,7 +229,7 @@ class Arr
     // queries ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @param mixed[] $array
+     * @param array<mixed> $array
      */
     public static function isEmpty(array $array): bool
     {
@@ -235,7 +237,7 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @param array<mixed> $array
      */
     public static function isNotEmpty(array $array): bool
     {
@@ -344,7 +346,7 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @param array<mixed> $array
      */
     public static function containsKey(array $array, int|string $key): bool
     {
@@ -352,7 +354,7 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @param array<mixed> $array
      * @param array<int|string> $keys
      */
     public static function containsAnyKey(array $array, array $keys): bool
@@ -361,7 +363,7 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @param array<mixed> $array
      * @param array<int|string> $keys
      */
     public static function containsAllKeys(array $array, array $keys): bool
@@ -471,7 +473,7 @@ class Arr
 
     /**
      * Alias of count() without params
-     * @param mixed[] $array
+     * @param array<mixed> $array
      */
     public static function size(array $array): int
     {
@@ -602,8 +604,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] $other
+     * @template T
+     * @param array<T> $array
+     * @param array<T> $other
      */
     public static function corresponds(array $array, array $other, callable $function): bool
     {
@@ -623,8 +626,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] $other
+     * @template T
+     * @param array<T> $array
+     * @param array<T> $other
      */
     public static function hasSameElements(array $array, array $other): bool
     {
@@ -634,8 +638,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] $slice
+     * @template T
+     * @param array<T> $array
+     * @param array<T> $slice
      */
     public static function startsWith(array $array, array $slice, int $from = 0): bool
     {
@@ -653,8 +658,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] $slice
+     * @template T
+     * @param array<T> $array
+     * @param array<T> $slice
      */
     public static function endsWith(array $array, array $slice): bool
     {
@@ -664,17 +670,24 @@ class Arr
     // transforming ----------------------------------------------------------------------------------------------------
 
     /**
-     * @param mixed[] $array
-     * @return mixed|null
+     * Alias for foldLeft()
+     * @template T
+     * @param array<T> $array
+     * @param T|null $init
+     * @param callable(T|null, T): T $function
+     * @return T|null
      */
     public static function fold(array $array, callable $function, mixed $init = null): mixed
     {
-        return self::foldLeft($array, $function, $init);
+        return array_reduce($array, $function, $init);
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed|null
+     * @template T
+     * @param array<T> $array
+     * @param T|null $init
+     * @param callable(T|null, T): T $function
+     * @return T|null
      */
     public static function foldLeft(array $array, callable $function, mixed $init = null): mixed
     {
@@ -682,8 +695,11 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed|null
+     * @template T
+     * @param array<T> $array
+     * @param T|null $init
+     * @param callable(T|null, T): T $function
+     * @return T|null
      */
     public static function foldRight(array $array, callable $function, mixed $init = null): mixed
     {
@@ -695,17 +711,26 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed|null
+     * Alias for reduceLeft()
+     * @template T
+     * @param array<T> $array
+     * @param callable(T|null, T): T $function
+     * @return T|null
      */
     public static function reduce(array $array, callable $function): mixed
     {
-        return self::reduceLeft($array, $function);
+        if (empty($array)) {
+            return null;
+        }
+
+        return self::foldLeft(self::tail($array), $function, self::head($array));
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed|null
+     * @template T
+     * @param array<T> $array
+     * @param callable(T|null, T): T $function
+     * @return T|null
      */
     public static function reduceLeft(array $array, callable $function): mixed
     {
@@ -717,8 +742,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed|null
+     * @template T
+     * @param array<T> $array
+     * @param callable(T|null, T): T $function
+     * @return T|null
      */
     public static function reduceRight(array $array, callable $function): mixed
     {
@@ -730,8 +757,11 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param callable(T, T): T $function
+     * @param T $init
+     * @return array<T>
      */
     public static function scanLeft(array $array, callable $function, mixed $init): array
     {
@@ -745,8 +775,11 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param callable(T, T): T $function
+     * @param T $init
+     * @return array<T>
      */
     public static function scanRight(array $array, callable $function, mixed $init): array
     {
@@ -763,8 +796,9 @@ class Arr
     // slicing ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @param mixed[] $array
-     * @return mixed|null
+     * @template T
+     * @param array<T> $array
+     * @return T|null
      */
     public static function head(array $array): mixed
     {
@@ -777,8 +811,9 @@ class Arr
 
     /**
      * Alias of head()
-     * @param mixed[] $array
-     * @return mixed|null
+     * @template T
+     * @param array<T> $array
+     * @return T|null
      */
     public static function first(array $array): mixed
     {
@@ -790,8 +825,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed|null
+     * @template T
+     * @param array<T> $array
+     * @return T|null
      */
     public static function last(array $array): mixed
     {
@@ -803,8 +839,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function init(array $array): array
     {
@@ -812,8 +849,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function tail(array $array): array
     {
@@ -821,8 +859,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<array<T>>
      */
     public static function inits(array $array): array
     {
@@ -836,8 +875,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<array<T>>
      */
     public static function tails(array $array): array
     {
@@ -851,8 +891,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[] (mixed $head, static $tail)
+     * @template T
+     * @param array<T> $array
+     * @return array{T, array<T>} ($head, $tail)
      */
     public static function headTail(array $array): array
     {
@@ -860,8 +901,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[] (static $init, mixed $last)
+     * @template T
+     * @param array<T> $array
+     * @return array{array<T>, T} ($init, $last)
      */
     public static function initLast(array $array): array
     {
@@ -869,8 +911,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function slice(array $array, int $from, ?int $length = null): array
     {
@@ -878,9 +921,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @template T
+     * @param array<T> $array
      * @param int<1, max> $size
-     * @return mixed[]
+     * @return array<array<T>>
      */
     public static function chunks(array $array, int $size): array
     {
@@ -888,8 +932,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<array<T>>
      */
     public static function sliding(array $array, int $size, int $step = 1): array
     {
@@ -901,8 +946,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function drop(array $array, int $count): array
     {
@@ -910,8 +956,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function dropRight(array $array, int $count): array
     {
@@ -919,8 +966,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function dropWhile(array $array, callable $function): array
     {
@@ -939,8 +987,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param T $value
+     * @return array<T>
      */
     public static function padTo(array $array, int $length, mixed $value): array
     {
@@ -948,8 +998,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[][] (static $l, static $r)
+     * @template T
+     * @param array<T> $array
+     * @param callable(T): bool $function
+     * @return array{array<T>, array<T>} ($l, $r)
      */
     public static function span(array $array, callable $function): array
     {
@@ -969,8 +1021,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function take(array $array, ?int $count = null): array
     {
@@ -978,8 +1031,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function takeRight(array $array, int $count): array
     {
@@ -987,8 +1041,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param callable(T): bool $function
+     * @return array<T>
      */
     public static function takeWhile(array $array, callable $function): array
     {
@@ -1004,8 +1060,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function rotateLeft(array $array, int $positions = 1): array
     {
@@ -1018,8 +1075,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function rotateRight(array $array, int $positions = 1): array
     {
@@ -1034,8 +1092,11 @@ class Arr
     // filtering -------------------------------------------------------------------------------------------------------
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @template R
+     * @param array<T> $array
+     * @param callable(T): (R|null) $function
+     * @return array<R>
      */
     public static function collect(array $array, callable $function): array
     {
@@ -1043,8 +1104,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param callable(T): bool|null $function
+     * @return array<T>
      */
     public static function filter(array $array, ?callable $function = null): array
     {
@@ -1056,8 +1119,11 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @template K of int|string
+     * @param array<K, T> $array
+     * @param callable(K): bool $function
+     * @return array<K, T>
      */
     public static function filterKeys(array $array, callable $function): array
     {
@@ -1072,8 +1138,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T> $array
+     * @param callable(T): bool $function
+     * @return array<T>
      */
     public static function filterNot(array $array, callable $function): array
     {
@@ -1083,8 +1151,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[][] (mixed[] $fist, mixed[] $second)
+     * @template T
+     * @param array<T> $array
+     * @param callable(T): bool $function
+     * @return array{array<T>, array<T>} ($fist, $second)
      */
     public static function partition(array $array, callable $function): array
     {
@@ -1104,8 +1174,11 @@ class Arr
     // mapping ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @template R
+     * @param array<T> $array
+     * @param callable(T): R $function
+     * @return array<R>
      */
     public static function flatMap(array $array, callable $function): array
     {
@@ -1113,8 +1186,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<T>|array<array<T>> $array
+     * @return list<T>
      */
     public static function flatten(array $array): array
     {
@@ -1133,8 +1207,11 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @template K of int|string
+     * @param array<T> $array
+     * @param callable(T): K $function
+     * @return array<K, array<T>>
      */
     public static function groupBy(array $array, callable $function): array
     {
@@ -1148,8 +1225,11 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @template R
+     * @param array<T> $array
+     * @param callable(T): R $function
+     * @return array<R>
      */
     public static function map(array $array, callable $function): array
     {
@@ -1157,19 +1237,29 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template K of int|string
+     * @template T
+     * @template R
+     * @param array<K, T> $array
+     * @param callable(K, T): R $function
+     * @return array<K, R>
      */
     public static function mapPairs(array $array, callable $function): array
     {
+        // @phpstan-ignore argument.type
         return self::remap($array, static function ($key, $value) use ($function) {
             return [$key => $function($key, $value)];
         });
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template K of int|string
+     * @template T
+     * @template RK of int|string
+     * @template R
+     * @param array<K, T> $array
+     * @param callable(K, T): array<RK, R> $function
+     * @return array<RK, R>
      */
     public static function remap(array $array, callable $function): array
     {
@@ -1184,8 +1274,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T of int|string
+     * @param array<T, T> $array
+     * @return array<T, T>
      */
     public static function flip(array $array): array
     {
@@ -1193,8 +1284,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<array<T>> $array
+     * @return array<array<T>>
      */
     public static function transpose(array $array): array
     {
@@ -1202,8 +1294,7 @@ class Arr
             return [];
         }
 
-        array_unshift($array, null);
-        $array = array_map(...$array);
+        $array = array_map(null, ...$array);
         foreach ($array as $key => $value) {
             $array[$key] = (array) $value;
         }
@@ -1212,8 +1303,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template T
+     * @param array<array<T>> $array
+     * @return array<array<T>>
      */
     public static function transposeSafe(array $array): array
     {
@@ -1230,10 +1322,11 @@ class Arr
     }
 
     /**
-     * @param mixed[][] $array
-     * @return mixed[]
+     * @template T
+     * @param array<array<T>> $array
+     * @return array<T>
      */
-    public static function column(array $array, mixed $valueKey, mixed $indexKey = null): array
+    public static function column(array $array, int|string $valueKey, int|string|null $indexKey = null): array
     {
         return array_column($array, $valueKey, $indexKey);
     }
@@ -1300,6 +1393,7 @@ class Arr
     /**
      * @template T
      * @param array<T> $array
+     * @param callable(T, T): int $function
      * @return array<T>
      */
     public static function sortWith(array $array, callable $function, int $flags = Order::ASCENDING): array
@@ -1314,9 +1408,11 @@ class Arr
     }
 
     /**
+     * @template K of int|string
      * @template T
-     * @param array<T> $array
-     * @return array<T>
+     * @param array<K, T> $array
+     * @param callable(K, K): int $function
+     * @return array<K, T>
      */
     public static function sortKeysWith(array $array, callable $function, int $flags = Order::ASCENDING): array
     {
@@ -1330,9 +1426,9 @@ class Arr
     }
 
     /**
-     * @template T
-     * @param array<Comparable&T> $array
-     * @return array<Comparable&T>
+     * @template T of Comparable
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function sortComparable(array $array, int $flags = Sorting::REGULAR): array
     {
@@ -1351,9 +1447,9 @@ class Arr
     }
 
     /**
-     * @template T
-     * @param array<Comparable&T> $array
-     * @return array<Comparable&T>
+     * @template T of Comparable
+     * @param array<T> $array
+     * @return array<T>
      */
     public static function sortComparableValues(array $array, int $flags = Sorting::REGULAR): array
     {
@@ -1574,10 +1670,13 @@ class Arr
     }
 
     /**
+     * @template K of int|string
      * @template T
-     * @param array<T> $array
-     * @param array<T> ...$args
-     * @return array<T>
+     * @param array<K, T> $array
+     * @param callable(T, T): int|null $function
+     * @param callable(K, K): int|null $keysFunction
+     * @param array<K, T> ...$args
+     * @return array<K, T>
      */
     public static function diffPairsWith(array $array, ?callable $function, ?callable $keysFunction, array ...$args): array
     {
@@ -1613,6 +1712,7 @@ class Arr
     /**
      * @template T
      * @param array<T> $array
+     * @param callable(T, T): int $function
      * @param array<T> ...$args
      * @return array<T>
      */
@@ -1635,10 +1735,12 @@ class Arr
     }
 
     /**
+     * @template K of int|string
      * @template T
-     * @param array<T> $array
-     * @param array<T> ...$args
-     * @return array<T>
+     * @param array<K, T> $array
+     * @param callable(K, K): int $function
+     * @param array<K, T> ...$args
+     * @return array<K, T>
      */
     public static function intersectKeysWith(array $array, callable $function, array ...$args): array
     {
@@ -1659,10 +1761,13 @@ class Arr
     }
 
     /**
+     * @template K of int|string
      * @template T
-     * @param array<T> $array
-     * @param array<T> ...$args
-     * @return array<T>
+     * @param array<K, T> $array
+     * @param callable(T, T): int|null $function
+     * @param callable(K, K): int|null $keysFunction
+     * @param array<K, T> ...$args
+     * @return array<K, T>
      */
     public static function intersectPairsWith(array $array, ?callable $function, ?callable $keysFunction, array ...$args): array
     {

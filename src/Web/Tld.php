@@ -286,7 +286,7 @@ final class Tld extends PartialStringEnum
     public const ZR = 'zr';
     public const ZW = 'zw';
 
-    /** @var string[] */
+    /** @var array<string> */
     private static array $countryMap = [
         self::AC => Country::SAINT_HELENA,
         self::AD => Country::ANDORRA,

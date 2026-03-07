@@ -121,7 +121,7 @@ class Encoding extends StringEnum
 
     public const ARMSCII_8 = 'ARMSCII-8';
 
-    /** @var string[] @see iconv aliases: https://gist.github.com/hakre/4188459 */
+    /** @var array<string, string> @see iconv aliases: https://gist.github.com/hakre/4188459 */
     private static array $aliases = [
         'bin' => self::BINARY,
         'binary' => self::BINARY,
@@ -212,7 +212,7 @@ class Encoding extends StringEnum
         'armscii8' => self::ARMSCII_8,
     ];
 
-    /** @var string[] */
+    /** @var array<string> */
     private static array $unused = [
         self::ISO_8859_1 => "~[\x7F-\xFF]~",
         self::ISO_8859_2 => "~[\x7F-\xFF]~",

@@ -122,7 +122,7 @@ class IntInterval implements Interval
     }
 
     /**
-     * @return int[]
+     * @return array<int>
      */
     public function getStartEnd(): array
     {
@@ -219,7 +219,7 @@ class IntInterval implements Interval
     }
 
     /**
-     * @param int[] $intervalStarts
+     * @param array<int> $intervalStarts
      */
     public function splitBy(array $intervalStarts): IntIntervalSet
     {
@@ -379,11 +379,11 @@ class IntInterval implements Interval
 
     /**
      * O(n log n)
-     * @return self[]
+     * @return list<self>
      */
     public static function explodeOverlaps(self ...$items): array
     {
-        // 0-5 1-6 2-7 -->  0-0 1-1 1-1 2-5 2-5 2-5 6-6 6-6 7-7
+        // 0-5 1-6 2-7 --> 0-0 1-1 1-1 2-5 2-5 2-5 6-6 6-6 7-7
 
         $sorted = Arr::sortComparable($items);
         $starts = array_fill(0, count($sorted), 0);
@@ -462,8 +462,8 @@ class IntInterval implements Interval
     }
 
     /**
-     * @param self[] $intervals
-     * @return self[]
+     * @param array<self> $intervals
+     * @return array<self>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array
@@ -472,8 +472,8 @@ class IntInterval implements Interval
     }
 
     /**
-     * @param self[] $intervals
-     * @return self[]
+     * @param array<self> $intervals
+     * @return array<self>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array

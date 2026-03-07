@@ -21,12 +21,12 @@ class HttpDownloadRequest extends HttpRequest
 
     private File $file;
 
-    /**
-     * @return HttpFileResponse
-     */
-    public function execute(): HttpResponse
+    public function execute(): HttpFileResponse
     {
-        return parent::execute();
+        /** @var HttpFileResponse $response */
+        $response = parent::execute();
+
+        return $response;
     }
 
     /**
@@ -46,9 +46,8 @@ class HttpDownloadRequest extends HttpRequest
     /**
      * Called by Channel.
      * @internal
-     * @return HttpFileResponse
      */
-    public function createResponse(?string $response, int $error): HttpResponse
+    public function createResponse(?string $response, int $error): HttpFileResponse
     {
         $info = $this->getInfo();
         $status = $this->getResponseStatus($error, $info);

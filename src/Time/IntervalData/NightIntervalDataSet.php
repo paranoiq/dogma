@@ -41,11 +41,11 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 {
     use StrictBehaviorMixin;
 
-    /** @var NightIntervalData[] */
+    /** @var array<NightIntervalData> */
     private array $intervals;
 
     /**
-     * @param NightIntervalData[] $intervals
+     * @param array<NightIntervalData> $intervals
      */
     final public function __construct(array $intervals)
     {
@@ -110,7 +110,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @return Date[][]|mixed[][] array of pairs: (Date $date, Equalable $data)
+     * @return array<array{Date, mixed}> array of pairs: (Date $date, Equalable $data)
      */
     public function toDateDataArray(): array
     {
@@ -122,7 +122,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @return NightIntervalData[]
+     * @return array<NightIntervalData>
      */
     public function getIntervals(): array
     {
@@ -178,7 +178,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      */
     public function normalize(): static
     {
-        /** @var NightIntervalData[] $intervals */
+        /** @var array<NightIntervalData> $intervals */
         $intervals = Arr::sortComparableValues($this->intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
@@ -238,7 +238,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        /** @var NightIntervalData[] $results */
+        /** @var array<NightIntervalData> $results */
         $results = $results;
 
         return new static($results);

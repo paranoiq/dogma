@@ -46,7 +46,7 @@ class Vector3i implements Equalable
     }
 
     /**
-     * @return int[]
+     * @return array{int, int, int}
      */
     public function getValues(): array
     {

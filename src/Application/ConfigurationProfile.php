@@ -16,11 +16,11 @@ final class ConfigurationProfile extends stdClass
 {
     use StrictBehaviorMixin;
 
-    /** @var mixed[] */
+    /** @var array<mixed> */
     private array $values;
 
     /**
-     * @param mixed[] $values
+     * @param array<mixed> $values
      */
     public function __construct(array $values)
     {

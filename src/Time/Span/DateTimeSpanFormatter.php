@@ -91,7 +91,7 @@ class DateTimeSpanFormatter
     public const FORMAT_FULL_WORDS = '[yZ, ][mO, ]dF[, hL][, iK][, SR]';
     public const FORMAT_FULL_UNITS = '[yz, ][mo, ]df[, hl][, ik][, Sr]';
 
-    /** @var string[] */
+    /** @var array<string> */
     private static array $specialCharacters = [
         self::YEARS,
         self::YEARS_FRACTION,
@@ -636,7 +636,7 @@ class DateTimeSpanFormatter
 
     /**
      * (Override for other default translations.)
-     * @return string[][]
+     * @return array<array{string, string, string}>
      */
     protected function getVocabulary(): array
     {

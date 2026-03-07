@@ -2522,7 +2522,7 @@ class ContentType extends PartialStringEnum
         'zoo' => self::APPLICATION_X_ZOO,
     ];
 
-    /** @var bool[] */
+    /** @var array<string, bool> */
     private static array $compressed = [
         self::APPLICATION_GZIP => true,
         self::APPLICATION_X_BZIP => true,
@@ -2535,7 +2535,7 @@ class ContentType extends PartialStringEnum
         self::APPLICATION_X_XZ => true,
     ];
 
-    /** @var bool[] */
+    /** @var array<string, bool> */
     private static array $archive = [
         // uncompressed
         self::APPLICATION_VND_EFI_ISO => false,

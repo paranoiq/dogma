@@ -24,18 +24,18 @@ class HttpResponse
 {
     use StrictBehaviorMixin;
 
-    /** @var mixed[] */
+    /** @var array<mixed> */
     protected array $info;
 
     private HttpOrCurlStatus $status;
 
-    /** @var string[] */
+    /** @var array<string> */
     private array $rawHeaders;
 
-    /** @var mixed[]|null */
+    /** @var array<mixed>|null */
     private ?array $headers = null;
 
-    /** @var string[]|null */
+    /** @var array<string>|null */
     private ?array $cookies = null;
 
     private ?string $body;
@@ -45,8 +45,8 @@ class HttpResponse
     private ?HttpHeaderParser $headerParser;
 
     /**
-     * @param string[] $rawHeaders
-     * @param string[] $info
+     * @param array<string> $rawHeaders
+     * @param array<string> $info
      */
     public function __construct(
         HttpOrCurlStatus $status,
@@ -85,7 +85,7 @@ class HttpResponse
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function getHeaders(): array
     {
@@ -97,7 +97,7 @@ class HttpResponse
     }
 
     /**
-     * @return string|string[]|int|DateTime|Host|Url|ContentType|Encoding|Locale|null
+     * @return string|array<string>|int|DateTime|Host|Url|ContentType|Encoding|Locale|null
      */
     public function getHeader(string $name): string|array|int|DateTime|Host|Url|ContentType|Encoding|Locale|null
     {
@@ -118,7 +118,7 @@ class HttpResponse
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function getCookies(): array
     {
@@ -143,7 +143,7 @@ class HttpResponse
     }
 
     /**
-     * @return string|string[]
+     * @return string|array<string>
      */
     public function getInfo(string|int|null $name = null): string|array
     {

@@ -58,11 +58,10 @@ class Collator extends PhpCollator
     }
 
     /**
-     * @param mixed[] $collationOptions
+     * @param array<LocaleCollationOption> $collationOptions
      */
     public function configure(array $collationOptions = []): void
     {
-        /** @var LocaleCollationOption $value */
         foreach ($collationOptions as $keyword => $value) {
             switch ($keyword) {
                 case LocaleKeyword::COL_ALTERNATE:
@@ -104,17 +103,12 @@ class Collator extends PhpCollator
         return Locale::get($locale);
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param string $str1
-     * @param string $str2
-     */
-    public function compare($str1, $str2): int
+    public function compare(string $string1, string $string2): int
     {
         if ($this->backwards) {
-            $result = parent::compare($str2, $str1);
+            $result = parent::compare($string2, $string1);
         } else {
-            $result = parent::compare($str1, $str2);
+            $result = parent::compare($string1, $string2);
         }
         if ($result === false) {
             throw new InvalidArgumentException('Incomparable strings given.');
@@ -124,46 +118,42 @@ class Collator extends PhpCollator
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param mixed[] $arr
-     * @param int $sortFlag
+     * @param array<mixed> $array
      */
-    public function asort(array &$arr, $sortFlag = self::SORT_REGULAR): bool
+    public function asort(array &$array, int $flags = self::SORT_REGULAR): bool
     {
-        $result = parent::asort($arr, $sortFlag);
+        $result = parent::asort($array, $flags);
 
         if ($this->backwards) {
-            $arr = Arr::reverse($arr);
+            $array = Arr::reverse($array);
         }
 
         return $result;
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param mixed[] $arr
-     * @param int $sortFlag
+     * @param array<mixed> $array
      */
-    public function sort(array &$arr, $sortFlag = self::SORT_REGULAR): bool
+    public function sort(array &$array, int $flags = self::SORT_REGULAR): bool
     {
-        $result = parent::sort($arr, $sortFlag);
+        $result = parent::sort($array, $flags);
 
         if ($this->backwards) {
-            $arr = Arr::reverse($arr);
+            $array = Arr::reverse($array);
         }
 
         return $result;
     }
 
     /**
-     * @param mixed[] $arr
+     * @param array<mixed> $array
      */
-    public function sortWithSortKeys(array &$arr): bool
+    public function sortWithSortKeys(array &$array): bool
     {
-        $result = parent::sortWithSortKeys($arr);
+        $result = parent::sortWithSortKeys($array);
 
         if ($this->backwards) {
-            $arr = Arr::reverse($arr);
+            $array = Arr::reverse($array);
         }
 
         return $result;

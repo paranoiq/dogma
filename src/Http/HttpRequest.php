@@ -86,20 +86,20 @@ class HttpRequest
 
     private CurlHandle $curl;
 
-    /** @var callable|null */
+    /** @var callable(self): bool|null */
     private $init;
 
     private string $url;
 
     private string $method = HttpMethod::GET;
 
-    /** @var string[] */
+    /** @var array<string> */
     private array $headers = [];
 
-    /** @var string[] */
+    /** @var array<string> */
     private array $cookies = [];
 
-    /** @var mixed[] */
+    /** @var array<mixed> */
     private array $variables = [];
 
     private ?string $content = null;
@@ -108,7 +108,7 @@ class HttpRequest
 
     protected mixed $context;
 
-    /** @var string[] */
+    /** @var array<string> */
     protected array $responseHeaders = [];
 
     public function __construct(?string $url = null, ?string $method = null)
@@ -146,6 +146,9 @@ class HttpRequest
         }
     }
 
+    /**
+     * @param callable(self): bool $init
+     */
     public function setInit(callable $init): void
     {
         $this->init = $init;
@@ -191,7 +194,7 @@ class HttpRequest
     }
 
     /**
-     * @param string|mixed[] $data
+     * @param string|array<mixed> $data
      */
     protected function dispatch(string|array $data): void
     {
@@ -217,7 +220,7 @@ class HttpRequest
 
     /**
      * Set URL or POST variables. Can be called repeatedly.
-     * @param mixed[] $variables
+     * @param array<mixed> $variables
      */
     public function setVariables(array $variables): void
     {
@@ -307,7 +310,7 @@ class HttpRequest
     }
 
     /**
-     * @param string[] $headers
+     * @param array<string> $headers
      */
     public function setHeaders(array $headers): void
     {
@@ -337,7 +340,7 @@ class HttpRequest
     }
 
     /**
-     * @param string[] $cookies
+     * @param array<string> $cookies
      */
     public function setCookies(array $cookies): void
     {
@@ -443,7 +446,7 @@ class HttpRequest
     // internals -------------------------------------------------------------------------------------------------------
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
     protected function getInfo(): array
     {
@@ -456,7 +459,7 @@ class HttpRequest
     }
 
     /**
-     * @param mixed[] $info
+     * @param array<mixed> $info
      */
     protected function getResponseStatus(int $error, array $info): HttpOrCurlStatus
     {
@@ -501,7 +504,7 @@ class HttpRequest
     }
 
     /**
-     * @param mixed[] $variables
+     * @param array<mixed> $variables
      */
     private function prepareData(array $variables): void
     {
@@ -562,7 +565,7 @@ class HttpRequest
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
     private function analyzeUrl(): array
     {
@@ -583,7 +586,7 @@ class HttpRequest
     }
 
     /**
-     * @param mixed[] $vars
+     * @param array<mixed> $vars
      */
     private function fillUrlVariables(array $vars): void
     {

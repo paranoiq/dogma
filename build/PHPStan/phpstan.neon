@@ -23,7 +23,6 @@ parameters:
 
     ignoreErrors:
         # misleading
-        - '~^Method Dogma\\Http\\HttpDownloadRequest::execute\(\) should return Dogma\\Http\\HttpFileResponse but returns Dogma\\Http\\HttpResponse.~' # guaranteed
         - '~^Instanceof between Dogma\\Dom\\Element\|DOMNode and DOMCdataSection will always evaluate to false.~' # DOMCdataSection is a child of DOMNode
         - '~Parameter .* of static method Dogma\\Type::get\(\) expects~' # parameters magic
         - '~Variable \$result in PHPDoc tag @var does not exist~' # while ($result = array_shift($sources)) {

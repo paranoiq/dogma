@@ -39,7 +39,6 @@ use function array_shift;
 use function array_unique;
 use function array_values;
 use function count;
-use function floor;
 use function range;
 
 /**
@@ -230,7 +229,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     }
 
     /**
-     * @return DateTime[]
+     * @return array<DateTime>
      */
     public function getStartEnd(): array
     {
@@ -325,10 +324,10 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         $intervalStarts = [];
         for ($n = 1; $n < $parts; $n++) {
             // rounded to microseconds
-            $intervalStarts[] = floor($this->start->getMicroTimestamp() + $partSize * $n);
+            $intervalStarts[] = $this->start->getMicroTimestamp() + $partSize * $n;
         }
         $intervalStarts = array_unique($intervalStarts); /// why unique???
-        $intervalStarts = Arr::map($intervalStarts, function (int $timestamp) {
+        $intervalStarts = Arr::map($intervalStarts, function (int $timestamp): DateTime {
             return DateTime::createFromMicroTimestamp($timestamp, $this->getStart()->getTimezone());
         });
 
@@ -336,7 +335,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     }
 
     /**
-     * @param DateTime[] $intervalStarts
+     * @param array<DateTime> $intervalStarts
      */
     public function splitBy(array $intervalStarts): DateTimeIntervalSet
     {
@@ -642,7 +641,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     /**
      * @param DateTimeInterval ...$items
-     * @return DateTimeInterval[]
+     * @return array<DateTimeInterval>
      */
     public static function explodeOverlaps(self ...$items): array
     {
@@ -724,8 +723,8 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     }
 
     /**
-     * @param self[] $intervals
-     * @return self[]
+     * @param array<self> $intervals
+     * @return array<self>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array
@@ -734,8 +733,8 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     }
 
     /**
-     * @param self[] $intervals
-     * @return self[]
+     * @param array<self> $intervals
+     * @return array<self>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array

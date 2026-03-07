@@ -41,11 +41,11 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 {
     use StrictBehaviorMixin;
 
-    /** @var DateIntervalData[] */
+    /** @var array<DateIntervalData> */
     private array $intervals;
 
     /**
-     * @param DateIntervalData[] $intervals
+     * @param array<DateIntervalData> $intervals
      */
     final public function __construct(array $intervals)
     {
@@ -110,7 +110,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @return Date[][]|mixed[][] array of pairs: (Date $date, Equalable $data)
+     * @return array<array{Date, mixed}> array of pairs: (Date $date, Equalable $data)
      */
     public function toDateDataArray(): array
     {
@@ -122,7 +122,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @return DateIntervalData[]
+     * @return array<DateIntervalData>
      */
     public function getIntervals(): array
     {
@@ -178,7 +178,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      */
     public function normalize(): static
     {
-        /** @var DateIntervalData[] $intervals */
+        /** @var array<DateIntervalData> $intervals */
         $intervals = Arr::sortComparableValues($this->intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
@@ -238,7 +238,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        /** @var DateIntervalData[] $results */
+        /** @var array<DateIntervalData> $results */
         $results = $results;
 
         return new static($results);

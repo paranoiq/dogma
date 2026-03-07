@@ -38,11 +38,11 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
     use IntervalSetDumpMixin;
     use StrictBehaviorMixin;
 
-    /** @var DateInterval[] */
+    /** @var array<DateInterval> */
     private array $intervals;
 
     /**
-     * @param DateInterval[] $intervals
+     * @param array<DateInterval> $intervals
      */
     final public function __construct(array $intervals)
     {
@@ -52,7 +52,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
     }
 
     /**
-     * @param Date[] $dates
+     * @param array<Date> $dates
      */
     public static function createFromDateArray(array $dates): static
     {
@@ -88,7 +88,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
     }
 
     /**
-     * @return Date[]
+     * @return array<Date>
      */
     public function toDateArray(): array
     {
@@ -111,7 +111,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
     }
 
     /**
-     * @return DateInterval[]
+     * @return array<DateInterval>
      */
     public function getIntervals(): array
     {
@@ -187,7 +187,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
      */
     public function normalize(): static
     {
-        /** @var DateInterval[] $intervals */
+        /** @var array<DateInterval> $intervals */
         $intervals = Arr::sortComparableValues($this->intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
@@ -240,7 +240,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
             }
         }
 
-        /** @var DateInterval[] $results */
+        /** @var array<DateInterval> $results */
         $results = $results;
 
         return new static($results);

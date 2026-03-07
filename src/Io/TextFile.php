@@ -94,7 +94,7 @@ class TextFile extends File
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function readCsvRow(string $delimiter, string $quoteChar, string $escapeChar): array
     {
@@ -119,7 +119,7 @@ class TextFile extends File
     }
 
     /**
-     * @param string[] $row
+     * @param array<string> $row
      */
     public function writeCsvRow(array $row, string $delimiter, string $quoteChar): int
     {

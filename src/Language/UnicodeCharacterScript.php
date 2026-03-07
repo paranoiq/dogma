@@ -117,7 +117,7 @@ class UnicodeCharacterScript extends StringEnum
     public const VAI = 'Vai';
     public const YI = 'Yi';
 
-    /** @var string[] */
+    /** @var array<string> */
     private static array $iso = [
         self::ARABIC => Script::ARABIC,
         self::ARMENIAN => Script::ARMENIAN,

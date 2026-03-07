@@ -105,7 +105,7 @@ class Month extends IntEnum
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public static function getNames(): array
     {
@@ -126,7 +126,7 @@ class Month extends IntEnum
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public static function getShortcuts(): array
     {
@@ -147,7 +147,7 @@ class Month extends IntEnum
     }
 
     /**
-     * @return int[]
+     * @return array<int>
      */
     public static function getLengths(bool $leapYear = false): array
     {
@@ -182,7 +182,7 @@ class Month extends IntEnum
     }
 
     /**
-     * @return int[]
+     * @return array<int>
      */
     public static function getLengthsForYear(int $year): array
     {

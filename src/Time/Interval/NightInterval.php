@@ -239,7 +239,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @return Date[]
+     * @return array<Date>
      */
     public function toDateArray(): array
     {
@@ -266,7 +266,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @return Date[]
+     * @return array<Date>
      */
     public function getStartEnd(): array
     {
@@ -369,7 +369,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param Date[] $intervalStarts
+     * @param array<Date> $intervalStarts
      */
     public function splitBy(array $intervalStarts): NightIntervalSet
     {
@@ -519,7 +519,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @return NightInterval[]
+     * @return array<NightInterval>
      */
     public static function explodeOverlaps(self ...$items): array
     {
@@ -600,8 +600,8 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param self[] $intervals
-     * @return self[]
+     * @param array<self> $intervals
+     * @return array<self>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array
@@ -610,8 +610,8 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param self[] $intervals
-     * @return self[]
+     * @param array<self> $intervals
+     * @return array<self>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array

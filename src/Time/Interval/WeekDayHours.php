@@ -69,7 +69,7 @@ class WeekDayHours implements Pokeable, Dumpable
     }
 
     /**
-     * @return TimeInterval[]
+     * @return array<TimeInterval>
      */
     public function getTimeIntervals(): array
     {

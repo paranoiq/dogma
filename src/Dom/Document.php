@@ -127,14 +127,12 @@ class Document extends DOMDocument
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param string $id
      * @return Element|DOMNode|null
      */
     #[ReturnTypeWillChange]
-    public function getElementById($id): Element|DOMNode|null
+    public function getElementById(string $elementId): Element|DOMNode|null
     {
-        $element = parent::getElementById($id);
+        $element = parent::getElementById($elementId);
 
         return $element ? $this->wrap($element) : null;
     }
@@ -144,25 +142,19 @@ class Document extends DOMDocument
         return $this->engine->find($xpath);
     }
 
-    /**
-     * @return Element|DOMNode|null
-     */
     public function findOne(string $xpath): Element|DOMNode|null
     {
         return $this->engine->findOne($xpath);
     }
 
-    /**
-     * @return int|float|bool|string|Date|DateTime|null
-     */
     public function evaluate(string $xpath): int|float|bool|string|Date|DateTime|null
     {
         return $this->engine->evaluate($xpath);
     }
 
     /**
-     * @param string|string[] $target
-     * @return int|float|bool|string|Date|DateTime|mixed[]|null
+     * @param string|array<string> $target
+     * @return int|float|bool|string|Date|DateTime|array<mixed>|null
      */
     public function extract(string|array $target): int|float|bool|string|Date|DateTime|array|null
     {

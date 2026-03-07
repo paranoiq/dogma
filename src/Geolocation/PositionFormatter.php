@@ -40,7 +40,7 @@ class PositionFormatter
     public const FORMAT_PRETTY = 'nl,eo';
     public const FORMAT_DEFAULT = 'L,O';
 
-    /** @var string[] */
+    /** @var array<string> */
     private static array $specialCharacters = [
         self::LATITUDE,
         self::LATITUDE_SIGNED,

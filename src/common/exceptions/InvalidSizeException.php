@@ -17,8 +17,8 @@ class InvalidSizeException extends Exception
 {
 
     /**
-     * @param int|int[] $actualSize
-     * @param int[]|string[] $allowedSizes
+     * @param int|array<int> $actualSize
+     * @param array<int|string> $allowedSizes
      */
     public function __construct(string|Type $type, int|array $actualSize, array $allowedSizes, ?Throwable $previous = null)
     {

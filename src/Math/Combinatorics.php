@@ -20,7 +20,7 @@ class Combinatorics
 
     /**
      * Get all combinations of integers, the given integer can be sum of.
-     * @return int[][]
+     * @return array<array<int>>
      */
     public static function sumFactorize(int $number): array
     {
@@ -38,7 +38,7 @@ class Combinatorics
     }
 
     /**
-     * @return string[][]
+     * @return array<array<string>>
      */
     public static function getAllSubstringCombinations(string $string): array
     {

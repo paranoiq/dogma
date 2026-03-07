@@ -39,7 +39,7 @@ final class Colors
     public const YELLOW = 'yellow';
     public const LYELLOW = 'lyellow';
 
-    /** @var string[] */
+    /** @var array<string> */
     private static array $fg = [
         self::WHITE => '1;37',
         self::LGRAY => '0;37',
@@ -61,7 +61,7 @@ final class Colors
         self::LYELLOW => '0;33',
     ];
 
-    /** @var string[] */
+    /** @var array<string> */
     private static array $bg = [
         self::LGRAY => '47',
         self::BLACK => '40',

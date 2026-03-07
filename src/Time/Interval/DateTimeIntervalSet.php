@@ -258,7 +258,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
      */
     public function normalize(): static
     {
-        /** @var DateTimeInterval[] $intervals */
+        /** @var array<DateTimeInterval> $intervals */
         $intervals = Arr::sortComparable($this->intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
@@ -311,7 +311,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
             }
         }
 
-        /** @var DateTimeInterval[] $results */
+        /** @var array<DateTimeInterval> $results */
         $results = $results;
 
         return new static($results);

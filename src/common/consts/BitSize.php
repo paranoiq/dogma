@@ -27,7 +27,7 @@ class BitSize
     public const DEFAULT_FLOAT_SIZE = self::BITS_64;
 
     /**
-     * @return int[]
+     * @return array<int>
      */
     public static function getIntSizes(): array
     {
@@ -42,7 +42,7 @@ class BitSize
     }
 
     /**
-     * @return int[]
+     * @return array<int>
      */
     public static function getFloatSizes(): array
     {

@@ -310,7 +310,7 @@ class File implements Path
 
     /**
      * Truncate file and move pointer at the end
-     * @param int<0, max> $size
+     * @param non-negative-int $size
      */
     public function truncate(int $size = 0): void
     {
@@ -432,7 +432,7 @@ class File implements Path
 
     /**
      * Get stream meta data for files opened via HTTP, FTP…
-     * @return mixed[]
+     * @return array<mixed>
      */
     public function getStreamMetaData(): array
     {
@@ -441,7 +441,7 @@ class File implements Path
 
     /**
      * Get stream wrapper headers (HTTP)
-     * @return mixed[]
+     * @return array<mixed>
      */
     public function getHeaders(): array
     {

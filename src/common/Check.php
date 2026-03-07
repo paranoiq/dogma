@@ -151,7 +151,7 @@ final class Check
                 break;
         }
         if ($itemTypes !== null) {
-            /** @var string[] $itemTypes */
+            /** @var array<string> $itemTypes */
             self::itemsOfTypes($value, $itemTypes);
         }
     }
@@ -169,7 +169,7 @@ final class Check
     }
 
     /**
-     * @param string[] $types
+     * @param array<string> $types
      * @throws InvalidTypeException
      */
     public static function types(mixed &$value, array $types, int|float|null $min = null, int|float|null $max = null): void
@@ -189,7 +189,7 @@ final class Check
     }
 
     /**
-     * @param iterable|mixed[] $items
+     * @param iterable<mixed> $items
      * @throws InvalidTypeException
      */
     public static function itemsOfType(iterable $items, string $type, int|float|null $valueMin = null, int|float|null $valueMax = null): void
@@ -200,8 +200,8 @@ final class Check
     }
 
     /**
-     * @param iterable|mixed[] $items
-     * @param string[] $types
+     * @param iterable<mixed> $items
+     * @param array<string> $types
      * @throws InvalidTypeException
      */
     public static function itemsOfTypes(iterable $items, array $types, int|float|null $valueMin = null, int|float|null $valueMax = null): void
@@ -851,7 +851,7 @@ final class Check
     }
 
     /**
-     * @param string[] $types
+     * @param array<string> $types
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -865,7 +865,7 @@ final class Check
     }
 
     /**
-     * @param string[] $types
+     * @param array<string> $types
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -975,7 +975,7 @@ final class Check
     }
 
     /**
-     * @param mixed[] $value
+     * @param array<mixed> $value
      * @throws ValueOutOfRangeException
      */
     public static function count(array $value, ?int $min = null, ?int $max = null): void

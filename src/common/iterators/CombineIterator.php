@@ -28,8 +28,8 @@ class CombineIterator implements Iterator
     private Iterator $values;
 
     /**
-     * @param iterable|mixed[] $keys
-     * @param iterable|mixed[] $values
+     * @param iterable<mixed> $keys
+     * @param iterable<mixed> $values
      */
     public function __construct(iterable $keys, iterable $values)
     {

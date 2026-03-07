@@ -36,11 +36,11 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
     use IntervalSetDumpMixin;
     use StrictBehaviorMixin;
 
-    /** @var TimeInterval[] */
+    /** @var array<TimeInterval> */
     private array $intervals;
 
     /**
-     * @param TimeInterval[] $intervals
+     * @param array<TimeInterval> $intervals
      */
     final public function __construct(array $intervals)
     {
@@ -71,7 +71,7 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
     }
 
     /**
-     * @return TimeInterval[]
+     * @return array<TimeInterval>
      */
     public function getIntervals(): array
     {
@@ -147,7 +147,7 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
      */
     public function normalize(): static
     {
-        /** @var TimeInterval[] $intervals */
+        /** @var array<TimeInterval> $intervals */
         $intervals = Arr::sortComparable($this->intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
@@ -200,7 +200,7 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
             }
         }
 
-        /** @var TimeInterval[] $results */
+        /** @var array<TimeInterval> $results */
         $results = $results;
 
         return new static($results);

@@ -125,7 +125,7 @@ class IntIntervalSet implements IntervalSet
      */
     public function normalize(): static
     {
-        /** @var IntInterval[] $intervals */
+        /** @var array<IntInterval> $intervals */
         $intervals = Arr::sortComparable($this->intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
@@ -178,7 +178,7 @@ class IntIntervalSet implements IntervalSet
             }
         }
 
-        /** @var IntInterval[] $results */
+        /** @var array<IntInterval> $results */
         $results = $results;
 
         return new static($results);

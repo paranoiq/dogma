@@ -32,7 +32,7 @@ class AngleFormatter
     public const FORMAT_PRETTY = 'd˚m′S″';
     public const FORMAT_NUMBER = 'D';
 
-    /** @var string[] */
+    /** @var array<string> */
     private static array $specialCharacters = [
         self::DEGREES,
         self::DEGREES_FLOORED,

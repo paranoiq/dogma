@@ -30,8 +30,8 @@ class ModuloCalc
 
     /**
      * Calculates all differences between given values.
-     * @param int[]|float[] $values
-     * @return int[]|float[]
+     * @param array<int|float> $values
+     * @return array<int|float>
      */
     public static function differences(array $values, int $modulus): array
     {
@@ -55,8 +55,8 @@ class ModuloCalc
     /**
      * Rounds value to the closest value from given set.
      * Sets overflow to true when maximal value is picked, but minimal value is returned.
-     * @param int[]|float[] $allowedValues
-     * @return int[]|float[] (int|float $result, int $overflow)
+     * @param array<int|float> $allowedValues
+     * @return array{int|float, int} (int|float $result, int $overflow)
      */
     public static function roundTo(int|float $value, array $allowedValues, int $modulus): array
     {
@@ -76,8 +76,8 @@ class ModuloCalc
     /**
      * Rounds value to first bigger or same value from given set.
      * Sets overflow to true when maximal value is picked, but minimal value is returned.
-     * @param int[]|float[] $allowedValues
-     * @return int[]|float[] (int|float $result, int $overflow)
+     * @param array<int|float> $allowedValues
+     * @return array{int|float, int} (int|float $result, int $overflow)
      */
     public static function roundUpTo(int|float $value, array $allowedValues, int $modulus): array
     {
@@ -111,8 +111,8 @@ class ModuloCalc
     /**
      * Rounds value up to first smaller or same value from given set.
      * Cannot overflow.
-     * @param int[]|float[] $allowedValues
-     * @return int[]|float[] (int|float $result, int $overflow)
+     * @param array<int|float> $allowedValues
+     * @return array{int|float, int} (int|float $result, int $overflow)
      */
     public static function roundDownTo(int|float $value, array $allowedValues, int $modulus): array
     {
@@ -141,7 +141,7 @@ class ModuloCalc
     }
 
     /**
-     * @param int[]|float[] $values
+     * @param array<int|float> $values
      */
     private static function checkValues(array &$values, int $modulus): void
     {

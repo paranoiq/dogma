@@ -17,6 +17,9 @@ class Output
 {
     use StaticClassMixin;
 
+    /**
+     * @param callable(): void $callback
+     */
     public static function capture(callable $callback): string
     {
         ob_start();

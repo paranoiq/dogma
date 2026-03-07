@@ -25,11 +25,11 @@ class ReverseArrayIterator implements Iterator
 {
     use StrictBehaviorMixin;
 
-    /** @var mixed[] */
+    /** @var array<mixed> */
     private array $array;
 
     /**
-     * @param mixed[] $array
+     * @param array<mixed> $array
      */
     public function __construct(array $array)
     {

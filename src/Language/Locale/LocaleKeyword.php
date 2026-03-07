@@ -31,7 +31,7 @@ class LocaleKeyword extends PartialStringEnum
     public const COL_STRENGTH = 'colstrength';
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public static function getCollationOptions(): array
     {

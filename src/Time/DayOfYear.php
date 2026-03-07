@@ -315,8 +315,8 @@ class DayOfYear implements Equalable, Comparable, Dumpable
     }
 
     /**
-     * @param DayOfYear[] $items
-     * @return DayOfYear[]
+     * @param array<DayOfYear> $items
+     * @return array<DayOfYear>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $items, int $flags = Order::ASCENDING): array

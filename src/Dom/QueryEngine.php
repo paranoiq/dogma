@@ -43,7 +43,7 @@ class QueryEngine
 
     private DOMXPath $xpath;
 
-    /** @var string[] (string $pattern => string $replacement) */
+    /** @var array<string> (string $pattern => string $replacement) */
     private array $translations = [
         // index: [n]
         '/\\[([0-9]+)..([0-9]+)\\]/' => '[position() >= $1 and position() <= $2]', // [m..n]
@@ -123,7 +123,7 @@ class QueryEngine
         '/:anchor/' => "*[@id or (name() = 'a' and @name)]",
     ];
 
-    /** @var string[] */
+    /** @var array<string> */
     private array $nativeFunctions = [
         'position',
         'last',
@@ -165,7 +165,7 @@ class QueryEngine
         'bool',
     ];
 
-    /** @var string[] */
+    /** @var array<string> */
     private array $userFunctions = [
         'Dogma\\Dom\\QueryEngine::match',
         'Dogma\\Dom\\QueryEngine::replace',
@@ -232,7 +232,6 @@ class QueryEngine
 
     /**
      * Find one node
-     * @return DOMNode|Element|null
      */
     public function findOne(string $query, Element|DOMNode|null $context = null): DOMNode|Element|null
     {
@@ -263,7 +262,6 @@ class QueryEngine
 
     /**
      * Evaluate a query
-     * @return string|int|float|bool|Date|DateTime|null
      */
     public function evaluate(string $query, Element|DOMNode|null $context = null): string|int|float|bool|Date|DateTime|null
     {
@@ -305,8 +303,8 @@ class QueryEngine
 
     /**
      * Extract values from paths defined by one or more queries
-     * @param string|string[]|string[][] $queries
-     * @return int|float|bool|string|Date|DateTime|mixed[]|null
+     * @param string|array<string|array<string>> $queries
+     * @return int|float|bool|string|Date|DateTime|array<mixed>|null
      */
     public function extract(string|array $queries, Element|DOMNode|null $context = null): int|float|bool|string|Date|DateTime|array|null
     {
@@ -327,9 +325,6 @@ class QueryEngine
 
     // internals -------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return int|float|bool|string|Date|DateTime|null
-     */
     private function extractPath(string $query, Element|DOMNode|null $context = null): int|float|bool|string|Date|DateTime|null
     {
         if (Re::match($query, '/^[a-zA-Z0-9_-]+\\(/')) {
@@ -396,7 +391,6 @@ class QueryEngine
 
     /**
      * Wrap element in DomElement object
-     * @return Element|DOMNode
      */
     private function wrap(DOMNode $node): Element|DOMNode
     {
@@ -411,7 +405,6 @@ class QueryEngine
 
     /**
      * Test with regular expression and return matching string
-     * @return string|null
      */
     public static function match(string $string, string $pattern): ?string
     {

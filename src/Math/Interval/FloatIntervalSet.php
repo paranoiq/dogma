@@ -125,7 +125,7 @@ class FloatIntervalSet implements IntervalSet
      */
     public function normalize(): self
     {
-        /** @var FloatInterval[] $intervals */
+        /** @var array<FloatInterval> $intervals */
         $intervals = Arr::sortComparable($this->intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
@@ -178,7 +178,7 @@ class FloatIntervalSet implements IntervalSet
             }
         }
 
-        /** @var FloatInterval[] $results */
+        /** @var array<FloatInterval> $results */
         $results = $results;
 
         return new static($results);

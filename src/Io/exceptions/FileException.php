@@ -14,11 +14,11 @@ use Throwable;
 class FileException extends IoException
 {
 
-    /** @var mixed[]|null */
+    /** @var array<mixed>|null */
     private ?array $error = null;
 
     /**
-     * @param mixed[]|null $error
+     * @param array<mixed>|null $error
      */
     public function __construct(string $message, ?array $error = null, ?Throwable $previous = null)
     {
@@ -28,7 +28,7 @@ class FileException extends IoException
     }
 
     /**
-     * @return mixed[]|null
+     * @return array<mixed>|null
      */
     public function getError(): ?array
     {

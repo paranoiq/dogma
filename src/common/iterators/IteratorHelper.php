@@ -18,7 +18,7 @@ class IteratorHelper
     use StaticClassMixin;
 
     /**
-     * @param iterable|mixed[] $iterable
+     * @param iterable<mixed> $iterable
      * @return Iterator<mixed, mixed>
      */
     public static function iterableToIterator(iterable $iterable): Iterator

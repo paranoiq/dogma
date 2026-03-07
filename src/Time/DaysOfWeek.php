@@ -51,7 +51,7 @@ class DaysOfWeek extends IntSet
     }
 
     /**
-     * @return DayOfWeek[]
+     * @return array<DayOfWeek>
      */
     public function toDays(): array
     {
@@ -78,8 +78,8 @@ class DaysOfWeek extends IntSet
     }
 
     /**
-     * @param DateOrDateTime[] $days
-     * @return DateOrDateTime[]
+     * @param array<DateOrDateTime> $days
+     * @return array<DateOrDateTime>
      */
     public function filterDays(array $days): array
     {

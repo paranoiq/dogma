@@ -71,7 +71,7 @@ class Re
 
     /**
      * @param int $flags PREG_SPLIT_NO_EMPTY|PREG_SPLIT_OFFSET_CAPTURE
-     * @return string[]
+     * @return array<string>
      */
     public static function split(string $string, string $pattern, int $flags = 0): array
     {
@@ -128,7 +128,7 @@ class Re
 
     /**
      * @param int $flags PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL
-     * @return string[]|null
+     * @return array<string>|null
      */
     public static function match(string $string, string $pattern, int $flags = 0, int $offset = 0): ?array
     {
@@ -173,7 +173,7 @@ class Re
 
     /**
      * @param int $flags PREG_SET_ORDER|PREG_PATTERN_ORDER
-     * @return string[][]
+     * @return array<array<string>>
      */
     public static function matchAll(string $string, string $pattern, int $flags = 0, int $offset = 0): array
     {
@@ -196,7 +196,7 @@ class Re
     /**
      * Same as matchAll(), but only returns first subpattern from each match
      *
-     * @return string[]
+     * @return array<string>
      */
     public static function submatchAll(string $string, string $pattern, int $offset = 0): array
     {
@@ -217,7 +217,7 @@ class Re
     }
 
     /**
-     * @param string|string[] $pattern
+     * @param string|array<string> $pattern
      */
     public static function replace(string $string, string|array $pattern, string|callable|null $replacement = null, int $limit = -1): string
     {
@@ -249,8 +249,8 @@ class Re
     }
 
     /**
-     * @param string[] $strings
-     * @return string[]
+     * @param array<string> $strings
+     * @return array<string>
      */
     public static function filter(array $strings, string $pattern, int $flags = 0): array
     {

@@ -81,7 +81,7 @@ class DateSpan implements DateOrTimeSpan
     }
 
     /**
-     * @return DateInterval[]
+     * @return array<DateInterval>
      */
     public function toPositiveAndNegative(): array
     {
@@ -155,9 +155,9 @@ class DateSpan implements DateOrTimeSpan
         return $that->normalize();
     }
 
-    public function subtract(DateOrTimeSpan ...$other): static
+    public function subtract(self ...$other): static
     {
-        return $this->add(...Arr::map($other, static function (DateTimeSpan $span): DateTimeSpan {
+        return $this->add(...Arr::map($other, static function (self $span): self {
             return $span->invert();
         }));
     }
@@ -206,7 +206,7 @@ class DateSpan implements DateOrTimeSpan
     // getters ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @return int[]
+     * @return array<int>
      */
     public function getValues(): array
     {

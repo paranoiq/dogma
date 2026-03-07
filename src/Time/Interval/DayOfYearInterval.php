@@ -70,7 +70,7 @@ class DayOfYearInterval implements ModuloInterval
         $this->end = $end;
     }
 
-    public static function createFromString(string $string): self
+    public static function createFromString(string $string): static
     {
         [$start, $end] = IntervalParser::parseString($string);
 
@@ -80,7 +80,7 @@ class DayOfYearInterval implements ModuloInterval
         return new static($start, $end);
     }
 
-    public static function createFromStartAndLength(DayOfYear $start, DateTimeUnit $unit, int $amount): self
+    public static function createFromStartAndLength(DayOfYear $start, DateTimeUnit $unit, int $amount): static
     {
         if (!$unit->isDate() || $unit->equalsValue(DateTimeUnit::YEAR)) {
             throw new InvalidDateTimeUnitException($unit);
@@ -93,17 +93,17 @@ class DayOfYearInterval implements ModuloInterval
         return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue()));
     }
 
-    public static function empty(): self
+    public static function empty(): static
     {
         return new static(new DayOfYear(self::MAX), new DayOfYear(self::MIN));
     }
 
-    public static function all(): self
+    public static function all(): static
     {
         return new static(new DayOfYear(self::MIN), new DayOfYear(self::MAX));
     }
 
-    public function normalize(): self
+    public function normalize(): static
     {
         if ($this->start->isNormalized()) {
             $self = new static($this->start, $this->end);
@@ -116,7 +116,7 @@ class DayOfYearInterval implements ModuloInterval
         }
     }
 
-    public function denormalize(): self
+    public function denormalize(): static
     {
         if ($this->end->isNormalized()) {
             $self = new static($this->start, $this->end);
@@ -131,17 +131,17 @@ class DayOfYearInterval implements ModuloInterval
 
     // modifications ---------------------------------------------------------------------------------------------------
 
-    public function shift(string $value): self
+    public function shift(string $value): static
     {
         return new static($this->start->modify($value), $this->end->modify($value));
     }
 
-    public function setStart(DayOfYear $start): self
+    public function setStart(DayOfYear $start): static
     {
         return new static($start, $this->end);
     }
 
-    public function setEnd(DayOfYear $end): self
+    public function setEnd(DayOfYear $end): static
     {
         return new static($this->start, $end);
     }
@@ -173,7 +173,7 @@ class DayOfYearInterval implements ModuloInterval
     }
 
     /**
-     * @return DayOfYear[]
+     * @return array<DayOfYear>
      */
     public function getStartEnd(): array
     {
@@ -279,7 +279,7 @@ class DayOfYearInterval implements ModuloInterval
     }
 
     /**
-     * @param DayOfYear[] $intervalStarts
+     * @param array<DayOfYear> $intervalStarts
      */
     public function splitBy(array $intervalStarts): DayOfYearIntervalSet
     {
@@ -304,21 +304,21 @@ class DayOfYearInterval implements ModuloInterval
     }
 
     /**
-     * @return self[]
+     * @return array{static, static}
      */
     public function splitByEndOfYear(): array
     {
         if (!$this->isOverEndOfYear()) {
-            return [$this, self::empty()];
+            return [$this, static::empty()];
         }
 
         return [
-            new self($this->start, new DayOfYear(DayOfYear::MAX_NUMBER)),
-            new self(new DayOfYear(DayOfYear::MIN_NUMBER), $this->end),
+            new static($this->start, new DayOfYear(DayOfYear::MAX_NUMBER)),
+            new static(new DayOfYear(DayOfYear::MIN_NUMBER), $this->end),
         ];
     }
 
-    public function envelope(self ...$items): self
+    public function envelope(self ...$items): static
     {
         $items[] = $this;
         $start = new DayOfYear(self::MAX);
@@ -373,7 +373,7 @@ class DayOfYearInterval implements ModuloInterval
     public function union(self ...$items): DayOfYearIntervalSet
     {
         $items[] = $this;
-        /** @var self[] $items */
+        /** @var array<self> $items */
         $items = Arr::sortComparable($items);
 
         /** @var DayOfYearInterval $current */
@@ -489,11 +489,11 @@ class DayOfYearInterval implements ModuloInterval
 
     /**
      * @param DayOfYearInterval ...$items
-     * @return DayOfYearInterval[]
+     * @return array<DayOfYearInterval>
      */
     public static function explodeOverlaps(self ...$items): array
     {
-        /** @var self[] $items */
+        /** @var array<self> $items */
         $items = Arr::sortComparable($items);
         $starts = array_fill(0, count($items), 0);
         $i = 0;
@@ -585,8 +585,8 @@ class DayOfYearInterval implements ModuloInterval
     }
 
     /**
-     * @param self[] $intervals
-     * @return self[]
+     * @param array<self> $intervals
+     * @return array<self>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array
@@ -595,8 +595,8 @@ class DayOfYearInterval implements ModuloInterval
     }
 
     /**
-     * @param self[] $intervals
-     * @return self[]
+     * @param array<self> $intervals
+     * @return array<self>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array

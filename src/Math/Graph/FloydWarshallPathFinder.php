@@ -27,22 +27,22 @@ class FloydWarshallPathFinder
 {
     use StrictBehaviorMixin;
 
-    /** @var int[][] */
+    /** @var array<array<int>> */
     private array $weights;
 
     private int $nodeCount;
 
-    /** @var string[]|int[] */
+    /** @var array<string|int> */
     private array $nodeNames = [];
 
-    /** @var int[][] */
+    /** @var array<array<int>> */
     private array $distances = [[]];
 
-    /** @var mixed[][] */
+    /** @var array<array<mixed>> */
     private array $predecessors = [[]];
 
     /**
-     * @param int[][] $weights graph edge weights. may be sparse
+     * @param array<array<int>> $weights graph edge weights. may be sparse
      */
     public function __construct(array $weights)
     {
@@ -119,7 +119,7 @@ class FloydWarshallPathFinder
 
     /**
      * Get nodes between a and b
-     * @return int[]|string[]
+     * @return array<int|string>
      */
     public function getPath(int|string $i, int|string $j): array
     {

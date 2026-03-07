@@ -97,14 +97,14 @@ interface Interval extends Equalable, Comparable, IntersectComparable, Dumpable
 
     /**
      * @param Interval ...$items
-     * @return Interval[][]|int[][] ($ident => ($interval, $count))
+     * @return array<string, array{Interval, int}> ($ident => ($interval, $count))
      */
     //public static function countOverlaps(self ...$items): array;
 
     /**
      * O(n log n)
      * @param Interval ...$items
-     * @return Interval[]
+     * @return array<Interval>
      */
     //public static function explodeOverlaps(self ...$items): array;
 

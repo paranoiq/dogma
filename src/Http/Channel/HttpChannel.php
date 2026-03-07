@@ -48,25 +48,25 @@ class HttpChannel
 
     private int|bool $paused = false;
 
-    /** @var string[]|string[][] (int|string $name => $data) */
+    /** @var array<string|array<string>> ($name => $data) */
     private array $queue = [];
 
-    /** @var string[]|string[][] (int|string $name => $data) */
+    /** @var array<string|array<string>> ($name => $data) */
     private array $running = [];
 
-    /** @var HttpResponse[] */
+    /** @var array<HttpResponse> */
     private array $finished = [];
 
-    /** @var mixed[] (int|string $name => $context) */
+    /** @var array<mixed> ($name => $context) */
     private array $contexts = [];
 
-    /** @var callable|null */
+    /** @var callable(HttpResponse, HttpChannel, int|string): void|null */
     private $responseHandler;
 
-    /** @var callable|null */
+    /** @var callable(HttpResponse, HttpChannel, int|string): void|null */
     private $redirectHandler;
 
-    /** @var callable|null */
+    /** @var callable(HttpResponse, HttpChannel, int|string): void|null */
     private $errorHandler;
 
     public function __construct(HttpRequest $requestPrototype, ?HttpChannelManager $manager = null)
@@ -91,7 +91,7 @@ class HttpChannel
 
     /**
      * Set callback handler for every response (even an error)
-     * @param callable(HttpResponse, HttpChannel, string): void $responseHandler ($response, $channel, $name)
+     * @param callable(HttpResponse, HttpChannel, int|string): void $responseHandler ($response, $channel, $name)
      */
     public function setResponseHandler(callable $responseHandler): void
     {
@@ -100,7 +100,7 @@ class HttpChannel
 
     /**
      * Set separate callback handler for redirects. ResponseHandler will no longer handle these.
-     * @param callable(HttpResponse, HttpChannel, string): void $redirectHandler ($response, $channel, $name)
+     * @param callable(HttpResponse, HttpChannel, int|string): void $redirectHandler ($response, $channel, $name)
      */
     public function setRedirectHandler(callable $redirectHandler): void
     {
@@ -109,7 +109,7 @@ class HttpChannel
 
     /**
      * Set separate callback handler for errors. ResponseHandler will no longer handle these.
-     * @param callable(HttpResponse, HttpChannel, string): void $errorHandler ($response, $channel, $name)
+     * @param callable(HttpResponse, HttpChannel, int|string): void $errorHandler ($response, $channel, $name)
      */
     public function setErrorHandler(callable $errorHandler): void
     {
@@ -140,8 +140,7 @@ class HttpChannel
 
     /**
      * Run a new job immediately and wait for the response.
-     * @param string|string[] $data
-     * @return HttpResponse|null
+     * @param string|array<string> $data
      */
     public function fetchJob(string|array $data, mixed $context = null): ?HttpResponse
     {
@@ -152,8 +151,7 @@ class HttpChannel
 
     /**
      * Run a new job immediately. Don't wait for response.
-     * @param string|string[] $data
-     * @return string|int
+     * @param string|array<string> $data
      */
     public function runJob(string|array $data, mixed $context = null, string|int|null $name = null): string|int
     {
@@ -162,7 +160,6 @@ class HttpChannel
 
     /**
      * Add new job to channel queue.
-     * @return string|int
      */
     public function addJob(mixed $data, mixed $context = null, string|int|null $name = null, bool $forceStart = false): string|int
     {
@@ -196,7 +193,7 @@ class HttpChannel
 
     /**
      * Add more jobs to a channel. Array indexes are job names if they are strings.
-     * @param string[]|string[][] $jobs
+     * @param array<string|array<string>> $jobs
      */
     public function addJobs(array $jobs, mixed $context = null): void
     {
@@ -270,7 +267,7 @@ class HttpChannel
     /**
      * Called by HttpChannelManager.
      * @internal
-     * @param mixed[] $multiInfo
+     * @param array<mixed> $multiInfo
      */
     public function jobFinished(string|int $name, array $multiInfo, HttpRequest $request): void
     {

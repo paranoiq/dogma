@@ -21,11 +21,11 @@ class BreadthFirstSearchPathFinder
 {
     use StrictBehaviorMixin;
 
-    /** @var int[][]|string[][] */
+    /** @var array<array{int|string, int|string}> */
     private array $edges;
 
     /**
-     * @param int[][]|string[][] $edges
+     * @param array<array{int|string, int|string}> $edges
      */
     public function __construct(array $edges)
     {
@@ -40,7 +40,7 @@ class BreadthFirstSearchPathFinder
     }
 
     /**
-     * @return int[]|string[]|null
+     * @return array<int|string>|null
      */
     public function getPath(int|string $i, int|string $j): ?array
     {

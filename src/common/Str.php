@@ -42,11 +42,13 @@ use function mb_substr;
 use function min;
 use function ord;
 use function range;
+use function str_contains;
+use function str_ends_with;
 use function str_replace;
+use function str_starts_with;
 use function strcasecmp;
 use function strcmp;
 use function strlen;
-use function strncmp;
 use function strpos;
 use function strrpos;
 use function strtolower;
@@ -141,26 +143,26 @@ class Str
 
     public static function startsWith(string $string, string $find): bool
     {
-        return strncmp($string, $find, strlen($find)) === 0;
+        return str_starts_with($string, $find);
     }
 
     public static function endsWith(string $string, string $find): bool
     {
-        return $find === '' || substr($string, -strlen($find)) === $find;
+        return str_ends_with($string, $find);
     }
 
     public static function contains(string $string, string $find): bool
     {
-        return strpos($string, $find) !== false;
+        return str_contains($string, $find);
     }
 
     /**
-     * @param string[] $find
+     * @param array<string> $find
      */
     public static function containsAny(string $string, array $find): bool
     {
         foreach ($find as $value) {
-            if (strpos($string, $value) !== false) {
+            if (str_contains($string, $value)) {
                 return true;
             }
         }
@@ -169,12 +171,12 @@ class Str
     }
 
     /**
-     * @param string[] $find
+     * @param array<string> $find
      */
     public static function containsAll(string $string, array $find): bool
     {
         foreach ($find as $value) {
-            if (strpos($string, $value) === false) {
+            if (!str_contains($string, $value)) {
                 return false;
             }
         }
@@ -317,7 +319,7 @@ class Str
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public static function splitByFirst(string $string, string $search): array
     {
@@ -330,7 +332,7 @@ class Str
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public static function splitByLast(string $string, string $search): array
     {
@@ -419,7 +421,7 @@ class Str
     }
 
     /**
-     * @param string[] $replacements
+     * @param array<string> $replacements
      */
     public static function replaceKeys(string $string, array $replacements): string
     {
@@ -469,7 +471,7 @@ class Str
      *
      * E.g. called with ("foo {{no-tag}} {tag}}body} bar", '{', '}', '{', '}) will return [15, 12] for the "{tag{{body}"
      *
-     * @return int[]|null[] ($start, $length)
+     * @return array{int|null, int|null} ($start, $length)
      */
     public static function findTag(
         string $string,
@@ -478,7 +480,7 @@ class Str
         ?string $startEscape = null,
         ?string $endEscape = null,
         int $offset = 0,
-    ): ?array
+    ): array
     {
         $seDouble = $start === $startEscape;
         $seLength = $startEscape ? strlen($startEscape) : 0;
@@ -882,7 +884,7 @@ class Str
 
     /**
      * @deprecated use Re::split() instead
-     * @return string[]
+     * @return array<string>
      */
     public static function split(string $string, string $pattern, int $flags = 0): array
     {
@@ -891,7 +893,7 @@ class Str
 
     /**
      * @deprecated use Re::match() instead
-     * @return string[]|null
+     * @return array<string>|null
      */
     public static function match(string $string, string $pattern, int $flags = 0, int $offset = 0): ?array
     {
@@ -900,7 +902,7 @@ class Str
 
     /**
      * @deprecated use Re::matchAll() instead
-     * @return string[][]
+     * @return array<array<string>>
      */
     public static function matchAll(string $string, string $pattern, int $flags = 0, int $offset = 0): array
     {
@@ -909,7 +911,7 @@ class Str
 
     /**
      * @deprecated use Re::replace() instead
-     * @param string|string[] $pattern
+     * @param string|array<string> $pattern
      */
     public static function replace(string $string, string|array $pattern, string|callable|null $replacement = null, int $limit = -1): string
     {

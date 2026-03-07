@@ -215,7 +215,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @return Date[]
+     * @return array<Date>
      */
     public function toDateArray(): array
     {
@@ -253,7 +253,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @return Date[]
+     * @return array<Date>
      */
     public function getStartEnd(): array
     {
@@ -355,7 +355,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param Date[] $intervalStarts
+     * @param array<Date> $intervalStarts
      */
     public function splitBy(array $intervalStarts): DateIntervalSet
     {
@@ -506,7 +506,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @return DateInterval[]
+     * @return array<DateInterval>
      */
     public static function explodeOverlaps(self ...$items): array
     {
@@ -587,8 +587,8 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param self[] $intervals
-     * @return self[]
+     * @param array<self> $intervals
+     * @return array<self>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array
@@ -597,8 +597,8 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param self[] $intervals
-     * @return self[]
+     * @param array<self> $intervals
+     * @return array<self>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array

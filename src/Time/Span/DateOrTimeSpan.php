@@ -12,7 +12,7 @@ interface DateOrTimeSpan extends Equalable, Comparable
     public function toNative(): DateInterval;
 
     /**
-     * @return DateInterval[]
+     * @return array<DateInterval>
      */
     public function toPositiveAndNegative(): array;
 

@@ -33,11 +33,11 @@ class WeekDayHoursSet implements Pokeable, Dumpable, IteratorAggregate
 {
     use StrictBehaviorMixin;
 
-    /** @var WeekDayHours[] */
+    /** @var array<WeekDayHours> */
     private array $weekDayHours = [];
 
     /**
-     * @param WeekDayHours[] $weekDayHoursList
+     * @param array<WeekDayHours> $weekDayHoursList
      */
     final public function __construct(array $weekDayHoursList)
     {

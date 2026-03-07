@@ -17,8 +17,8 @@ class HttpFileResponse extends HttpResponse
     private File $file;
 
     /**
-     * @param string[] $rawHeaders
-     * @param string[] $info
+     * @param array<string> $rawHeaders
+     * @param array<string> $info
      */
     public function __construct(HttpOrCurlStatus $status, File $file, array $rawHeaders, array $info, mixed $context, ?HttpHeaderParser $headerParser = null)
     {

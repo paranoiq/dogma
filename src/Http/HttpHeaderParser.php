@@ -31,7 +31,7 @@ class HttpHeaderParser
 {
     use StrictBehaviorMixin;
 
-    /** @var string[] */
+    /** @var array<string> */
     private static array $types = [
         HttpHeader::AGE => Type::INT,
         HttpHeader::CONTENT_LANGUAGE => Locale::class,
@@ -59,8 +59,8 @@ class HttpHeaderParser
     }
 
     /**
-     * @param string[] $rawHeaders
-     * @return mixed[]
+     * @param array<string> $rawHeaders
+     * @return array<string, string|int|DateTime|Host|Url|ContentType|Encoding|Locale|array<string|int|DateTime|Host|Url|ContentType|Encoding|Locale>>
      */
     public function parseHeaders(array $rawHeaders): array
     {
@@ -98,8 +98,8 @@ class HttpHeaderParser
     }
 
     /**
-     * @param string|string[] $rawCookies
-     * @return string[]
+     * @param string|array<string> $rawCookies
+     * @return array<string>
      */
     public function parseCookies(string|array $rawCookies): array
     {
@@ -118,24 +118,23 @@ class HttpHeaderParser
     }
 
     /**
-     * @param mixed[] $headers
+     * @param array<string, string|int|DateTime|Host|Url|ContentType|Encoding|Locale|array<string|int|DateTime|Host|Url|ContentType|Encoding|Locale>> $headers
+     * @param string|int|DateTime|Host|Url|ContentType|Encoding|Locale $value
      */
     private function insertHeader(array &$headers, string $name, mixed $value): void
     {
-        if (isset($headers[$name])) {
-            if (is_array($headers[$name])) {
-                $headers[$name][] = $value;
-            } else {
-                $headers[$name] = [$headers[$name], $value];
-            }
-        } else {
+        if (!isset($headers[$name])) {
+            // first insert
             $headers[$name] = $value;
+        } elseif (!is_array($headers[$name])) {
+            // second insert
+            $headers[$name] = [$headers[$name], $value];
+        } else {
+            // third... insert
+            $headers[$name][] = $value;
         }
     }
 
-    /**
-     * @return string|int|DateTime|Host|Url|ContentType|Encoding|Locale
-     */
     private function formatValue(string $value, string $type): string|int|DateTime|Host|Url|ContentType|Encoding|Locale
     {
         switch ($type) {

@@ -116,7 +116,7 @@ class HttpHeader extends PartialStringEnum
     public const X_WAP_PROFILE = 'X-Wap-Profile';
     public const X_WEBKIT_CSP = 'X-WebKit-CSP';
 
-    /** @var string[] */
+    /** @var array<string> */
     private static array $exceptions = [
         'et' => 'ET',
         'etag' => 'ETag',

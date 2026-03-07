@@ -63,19 +63,19 @@ class Type
     public const NULLABLE = true;
     public const NOT_NULLABLE = false;
 
-    /** @var self[] (string $id => $type) */
+    /** @var array<string, self> ($id => $type) */
     private static array $instances = [];
 
     private string $id;
 
     private string $type;
 
-    /** @var self|self[]|null */
+    /** @var self|array<self>|null */
     private self|array|null $itemType = null;
 
     private bool $nullable;
 
-    /** @var int|int[]|null */
+    /** @var int|array<int>|null */
     private int|array|null $size = null;
 
     private ?string $specific = null;
@@ -85,8 +85,8 @@ class Type
     private ?Locale $locale = null;
 
     /**
-     * @param self|self[]|null $itemType
-     * @param int|int[]|null $size
+     * @param self|array<self>|null $itemType
+     * @param int|array<int>|null $size
      */
     final private function __construct(
         string $id,
@@ -110,7 +110,7 @@ class Type
 
     /**
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param int|int[]|null $size [optional]
+     * @param int|array<int>|null $size [optional]
      * @param string|null $specific [optional]
      * @param Encoding|null $encoding [optional]
      * @param Locale|null $locale [optional]
@@ -312,7 +312,7 @@ class Type
             }
         }
 
-        /** @var self[] $itemTypes */
+        /** @var array<self> $itemTypes */
         $itemTypes = $itemTypes;
 
         $id = Tuple::class . '<' . implode(',', $itemIds) . '>' . ($nullable ? '?' : '');
@@ -333,10 +333,11 @@ class Type
             return self::$instances[$id];
         }
 
-        if (!preg_match('/^([^(<?]+)(?:\\(([^)]+)\\))?(?:<(.*)>)?(\\?)?$/', $id, $match)) {
+        if (!preg_match('~^([^(<?]+)(?:\\(([^)]+)\\))?(?:<(.*)>)?(\\?)?$~', $id, $match)) {
             throw new InvalidTypeDefinitionException($id);
         }
         $match = Arr::padTo($match, 5, false);
+        /** @var string $baseId */
         [, $baseId, $params, $itemIds, $nullable] = $match;
         $nullable = (bool) $nullable;
 
@@ -344,7 +345,7 @@ class Type
         if ($params) {
             foreach (explode(',', $params) as $param) {
                 switch (true) {
-                    case $size === null && preg_match('/([0-9]+)?([suf])?/', $param, $match):
+                    case $size === null && preg_match('~([0-9]+)?([suf])?~', $param, $match):
                         $size = (int) $match[1];
                         if ($size) {
                             self::checkSize($baseId, $size);
@@ -377,7 +378,7 @@ class Type
             return self::get($baseId, $size, $specific, $encoding, $locale, $nullable);
         }
 
-        $itemIds = Str::split($itemIds, '/(?<![0-9]),/');
+        $itemIds = Re::split($itemIds, '~(?<![0-9]),~');
         $last = 0;
         $counter = 0;
         foreach ($itemIds as $i => $type) {
@@ -418,9 +419,6 @@ class Type
         return $this->id;
     }
 
-    /**
-     * @return string|class-string
-     */
     public function getName(): string
     {
         return $this->type;
@@ -453,7 +451,7 @@ class Type
 
     /**
      * Returns type of items or array of types for Tuple
-     * @return self|self[]|null
+     * @return self|array<self>|null
      */
     public function getItemType(): self|array|null
     {
@@ -463,7 +461,7 @@ class Type
     /**
      * Returns bit-size for numeric types and length for string
      *
-     * @return int|int[]|null
+     * @return int|array<int>|null
      */
     public function getSize(): int|array|null
     {
@@ -573,7 +571,7 @@ class Type
 
                 return self::collectionOf($this->type, $itemType);
             case $this->isTuple():
-                /** @var mixed[] $itemType */
+                /** @var array<mixed> $itemType */
                 $itemType = $this->itemType;
 
                 return self::tupleOf(...$itemType);
@@ -595,7 +593,7 @@ class Type
 
                 return self::collectionOf($this->type, $itemType->getTypeWithoutParams(), $this->nullable);
             case $this->isTuple():
-                /** @var self[] $itemType */
+                /** @var array<self> $itemType */
                 $itemType = $this->itemType;
 
                 $itemTypes = [];
@@ -623,7 +621,7 @@ class Type
 
     /**
      * List of types and pseudo-types, that can be used in annotations. Does not include 'null' and 'void'
-     * @return string[]
+     * @return array<string>
      */
     public static function listTypes(): array
     {
@@ -644,7 +642,7 @@ class Type
 
     /**
      * List of native PHP types. Does not include 'null'.
-     * @return string[]
+     * @return array<string>
      */
     public static function listNativeTypes(): array
     {
@@ -662,7 +660,7 @@ class Type
 
     /**
      * List of native PHP scalar types and pseudotype 'numeric'.
-     * @return string[]
+     * @return array<string>
      */
     public static function listScalarTypes(): array
     {
@@ -686,7 +684,7 @@ class Type
     }
 
     /**
-     * @return self[]
+     * @return array<self>
      */
     public static function getDefinedTypes(): array
     {

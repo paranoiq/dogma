@@ -200,15 +200,10 @@ class Transliterator extends PhpTransliterator
     public const FULLWIDTH_TO_HALFWIDTH = 'Fullwidth-Halfwidth';
     public const HALFWIDTH_TO_FULLWIDTH = 'Halfwidth-Fullwidth';
 
-    /** @var PhpTransliterator[] */
+    /** @var array<PhpTransliterator> */
     private static array $instances = [];
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param string $id
-     * @param int|null $direction
-     */
-    public static function create($id, $direction = null): PhpTransliterator
+    public static function create(string $id, ?int $direction = null): PhpTransliterator
     {
         if (isset(self::$instances[$id])) {
             return self::$instances[$id];
@@ -223,12 +218,7 @@ class Transliterator extends PhpTransliterator
         return $transliterator;
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param string $rules
-     * @param int|null $direction
-     */
-    public static function createFromRules($rules, $direction = null): PhpTransliterator
+    public static function createFromRules(string $rules, ?int $direction = null): PhpTransliterator
     {
         $transliterator = $direction !== null
             ? parent::createFromRules($rules, $direction)

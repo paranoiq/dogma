@@ -102,14 +102,14 @@ class Element
         return $this->element->$name;
     }
 
-    public function __call(string $name, mixed $arg): mixed
+    public function __call(string $name, mixed $args): mixed
     {
-        $args = func_get_args();
+        $arg = func_get_args();
 
         /** @var callable $cb */
         $cb = [$this->element, $name];
 
-        return $cb(array_shift($args));
+        return $cb(array_shift($arg));
     }
 
     /**

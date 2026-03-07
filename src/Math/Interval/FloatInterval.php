@@ -172,7 +172,7 @@ class FloatInterval implements OpenClosedInterval
     }
 
     /**
-     * @return float[]
+     * @return array<float>
      */
     public function getStartEnd(): array
     {
@@ -313,7 +313,7 @@ class FloatInterval implements OpenClosedInterval
     }
 
     /**
-     * @param float[] $intervalStarts
+     * @param array<float> $intervalStarts
      */
     public function splitBy(array $intervalStarts, int $splitMode = self::SPLIT_OPEN_ENDS): FloatIntervalSet
     {
@@ -508,7 +508,7 @@ class FloatInterval implements OpenClosedInterval
     /**
      * O(n log n)
      * @param FloatInterval ...$items
-     * @return FloatInterval[]
+     * @return array<FloatInterval>
      */
     public static function explodeOverlaps(self ...$items): array
     {
@@ -596,8 +596,8 @@ class FloatInterval implements OpenClosedInterval
     }
 
     /**
-     * @param self[] $intervals
-     * @return self[]
+     * @param array<self> $intervals
+     * @return array<self>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sort(array $intervals): array
@@ -606,8 +606,8 @@ class FloatInterval implements OpenClosedInterval
     }
 
     /**
-     * @param self[] $intervals
-     * @return self[]
+     * @param array<self> $intervals
+     * @return array<self>
      * @deprecated will be removed. use Arr::sortComparable() instead.
      */
     public static function sortByStart(array $intervals): array

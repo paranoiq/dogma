@@ -20,11 +20,11 @@ class FileMetaData
 {
     use StrictBehaviorMixin;
 
-    /** @var int[]|string[] */
+    /** @var array<int|string> */
     private array $stat;
 
     /**
-     * @param int[]|string[] $stat
+     * @param array<int|string> $stat
      */
     public function __construct(array $stat)
     {

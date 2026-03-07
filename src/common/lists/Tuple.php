@@ -26,7 +26,7 @@ class Tuple implements Countable, IteratorAggregate, ArrayAccess
     use ImmutableArrayAccessMixin;
     use StrictBehaviorMixin;
 
-    /** @var mixed[] */
+    /** @var array<mixed> */
     private array $items;
 
     public function __construct(mixed ...$items)
@@ -48,7 +48,7 @@ class Tuple implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
     public function toArray(): array
     {

@@ -78,7 +78,7 @@ class DayOfWeek extends IntEnum
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public static function getNames(): array
     {
@@ -94,7 +94,7 @@ class DayOfWeek extends IntEnum
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public static function getShortcuts(): array
     {

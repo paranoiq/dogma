@@ -37,7 +37,7 @@ class IntBounds
     public const INT64_MAX = PHP_INT_MAX;
 
     /**
-     * @return int[]
+     * @return array<int>
      */
     public static function getRange(int $size, string $sign = Sign::SIGNED): array
     {

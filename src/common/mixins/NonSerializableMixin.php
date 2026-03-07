@@ -13,7 +13,7 @@ trait NonSerializableMixin
 {
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      * @deprecated Serializing this class is forbidden
      * @throws NonSerializableObjectException
      */
