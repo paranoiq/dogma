@@ -11,17 +11,13 @@ namespace Dogma\Time;
 
 use Dogma\Arr;
 use Dogma\Check;
-use Dogma\Cls;
 use Dogma\Comparable;
-use Dogma\Dumpable;
 use Dogma\Equalable;
-use Dogma\Obj;
 use Dogma\Order;
 use Dogma\StrictBehaviorMixin;
 use function is_string;
-use function sprintf;
 
-class DayOfYear implements Equalable, Comparable, Dumpable
+class DayOfYear implements Equalable, Comparable
 {
     use StrictBehaviorMixin;
 
@@ -134,21 +130,6 @@ class DayOfYear implements Equalable, Comparable, Dumpable
     public function isNormalized(): bool
     {
         return $this->number <= self::MAX_NUMBER;
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function dump(): string
-    {
-        return sprintf(
-            '%s(%d-%d %d #%s)',
-            Cls::short(static::class),
-            $this->month,
-            $this->dayOfMonth,
-            $this->number,
-            Obj::dumpHash($this)
-        );
     }
 
     // modifications ---------------------------------------------------------------------------------------------------

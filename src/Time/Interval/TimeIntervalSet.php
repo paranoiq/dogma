@@ -14,9 +14,7 @@ use Dogma\ArrayIterator;
 use Dogma\Check;
 use Dogma\Compare;
 use Dogma\Equalable;
-use Dogma\Math\Interval\IntervalSetDumpMixin;
 use Dogma\Math\Interval\ModuloIntervalSet;
-use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Time;
@@ -31,9 +29,8 @@ use function reset;
 /**
  * @implements ModuloIntervalSet<Time, TimeInterval>
  */
-class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokeable
+class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet
 {
-    use IntervalSetDumpMixin;
     use StrictBehaviorMixin;
 
     /** @var array<TimeInterval> */
@@ -47,16 +44,6 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
         $this->intervals = Arr::values(Arr::filter($intervals, static function (TimeInterval $interval): bool {
             return !$interval->isEmpty();
         }));
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function poke(): void
-    {
-        foreach ($this->intervals as $interval) {
-            $interval->poke();
-        }
     }
 
     public function format(

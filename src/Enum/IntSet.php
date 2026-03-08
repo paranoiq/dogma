@@ -9,11 +9,8 @@
 
 namespace Dogma\Enum;
 
-use Dogma\Cls;
-use Dogma\Dumpable;
 use Dogma\Equalable;
 use Dogma\Math\IntCalc;
-use Dogma\Obj;
 use function array_diff;
 use function array_intersect;
 use function array_merge;
@@ -21,17 +18,15 @@ use function array_search;
 use function array_sum;
 use function array_unique;
 use function count;
-use function implode;
 use function in_array;
 use function sort;
-use function sprintf;
 
 /**
  * Base class for sets of integer values
  *
  * @see about.md to find out how enum inheritance works.
  */
-abstract class IntSet implements Set, Dumpable
+abstract class IntSet implements Set
 {
     use EnumSetMixin;
 
@@ -89,33 +84,6 @@ abstract class IntSet implements Set, Dumpable
     public function invert(): self
     {
         return new static(array_diff(self::getAllowedValues(), $this->values));
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function dump(): string
-    {
-        $names = [];
-        foreach ($this->getConstantNames() as $value => $name) {
-            $names[] = $value . ' ' . $name;
-        }
-
-        return $this->values !== []
-            ? sprintf(
-                "%s(%s %s #%s)\n[\n    %s\n]",
-                Cls::short(static::class),
-                count($this->values),
-                $this->getValue(),
-                Obj::dumpHash($this),
-                implode("\n", $names)
-            )
-            : sprintf(
-                '%s(%s #%s)',
-                Cls::short(static::class),
-                count($this->values),
-                Obj::dumpHash($this)
-            );
     }
 
     /**

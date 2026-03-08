@@ -15,8 +15,6 @@ use Dogma\Check;
 use Dogma\Compare;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntervalSet;
-use Dogma\Math\Interval\IntervalSetDumpMixin;
-use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
@@ -33,9 +31,8 @@ use function sort;
 /**
  * @implements IntervalSet<Date, DateInterval>
  */
-class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
+class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 {
-    use IntervalSetDumpMixin;
     use StrictBehaviorMixin;
 
     /** @var array<DateInterval> */
@@ -75,16 +72,6 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         }
 
         return new static($intervals);
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function poke(): void
-    {
-        foreach ($this->intervals as $interval) {
-            $interval->poke();
-        }
     }
 
     /**

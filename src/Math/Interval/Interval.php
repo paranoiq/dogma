@@ -10,7 +10,6 @@
 namespace Dogma\Math\Interval;
 
 use Dogma\Comparable;
-use Dogma\Dumpable;
 use Dogma\Equalable;
 use Dogma\IntersectComparable;
 
@@ -18,7 +17,7 @@ use Dogma\IntersectComparable;
  * @template T
  * @template S of IntervalSet
  */
-interface Interval extends Equalable, Comparable, IntersectComparable, Dumpable
+interface Interval extends Equalable, Comparable, IntersectComparable
 {
 
     // queries ---------------------------------------------------------------------------------------------------------

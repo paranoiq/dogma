@@ -15,13 +15,9 @@ use DateTimeInterface;
 use DateTimeZone;
 use Dogma\Arr;
 use Dogma\Check;
-use Dogma\Cls;
 use Dogma\Comparable;
-use Dogma\Dumpable;
 use Dogma\Equalable;
-use Dogma\Obj;
 use Dogma\Order;
-use Dogma\Pokeable;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeValues;
@@ -34,7 +30,6 @@ use function is_string;
 use function ltrim;
 use function preg_match;
 use function round;
-use function sprintf;
 
 /**
  * Time of day without a date and timezone.
@@ -44,7 +39,7 @@ use function sprintf;
  * When compared 27:00:00 will be equal to 03:00:00 (modulo arithmetic).
  * When formatted 27:00:00 will result in "03:00:00".
  */
-class Time implements DateTimeOrTime, Pokeable, Dumpable
+class Time implements DateTimeOrTime
 {
     use StrictBehaviorMixin;
 
@@ -159,28 +154,6 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
     public function isNormalized(): bool
     {
         return $this->microseconds <= self::MAX_MICROSECONDS;
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function poke(): void
-    {
-        $this->getDateTime();
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function dump(): string
-    {
-        return sprintf(
-            '%s(%s %s #%s)',
-            Cls::short(static::class),
-            $this->format(),
-            $this->microseconds,
-            Obj::dumpHash($this)
-        );
     }
 
     final public function __clone()

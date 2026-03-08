@@ -13,7 +13,6 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
-use Dogma\Math\Interval\IntervalDumpMixin;
 use Dogma\Math\Interval\IntervalParser;
 use Dogma\Math\Interval\ModuloInterval;
 use Dogma\StrictBehaviorMixin;
@@ -37,7 +36,6 @@ use function min;
  */
 class DayOfYearInterval implements ModuloInterval
 {
-    use IntervalDumpMixin;
     use StrictBehaviorMixin;
 
     public const MIN = DayOfYear::MIN_NUMBER;

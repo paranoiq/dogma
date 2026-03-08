@@ -12,13 +12,10 @@ namespace Dogma\Time\IntervalData;
 use DateTimeInterface;
 use Dogma\Arr;
 use Dogma\Check;
-use Dogma\Cls;
 use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\IntersectComparable;
 use Dogma\Math\Interval\IntervalCalc;
-use Dogma\Obj;
-use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\Interval\NightInterval;
@@ -27,14 +24,13 @@ use Dogma\Time\Span\DateSpan;
 use Dogma\Time\Span\DateTimeSpan;
 use function array_shift;
 use function array_values;
-use function sprintf;
 
 /**
  * Interval of nights with data bound to it.
  *
  * @template TData
  */
-class NightIntervalData implements Equalable, Comparable, IntersectComparable, Pokeable
+class NightIntervalData implements Equalable, Comparable, IntersectComparable
 {
     use StrictBehaviorMixin;
 
@@ -90,30 +86,6 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     public static function all($data): static
     {
         return new static(new Date(self::MIN), new Date(self::MAX), $data);
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function poke(): void
-    {
-        $this->start->format();
-        $this->end->format();
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function dump(): string
-    {
-        return sprintf(
-            '%s(%s - %s %s #%s)',
-            Cls::short(static::class),
-            $this->start->dump(),
-            $this->end->dump(),
-            '...',
-            Obj::dumpHash($this)
-        );
     }
 
     // modifications ---------------------------------------------------------------------------------------------------

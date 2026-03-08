@@ -12,12 +12,9 @@ namespace Dogma\Time\IntervalData;
 use Dogma\Arr;
 use Dogma\ArrayIterator;
 use Dogma\Check;
-use Dogma\Cls;
 use Dogma\Equalable;
 use Dogma\IntersectResult;
 use Dogma\Math\Interval\IntervalCalc;
-use Dogma\Obj;
-use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
@@ -30,15 +27,13 @@ use function array_merge;
 use function array_shift;
 use function array_splice;
 use function count;
-use function implode;
 use function is_array;
-use function sprintf;
 
 /**
  * @template TData
  * @implements IteratorAggregate<DateIntervalData<TData>>
  */
-class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
+class DateIntervalDataSet implements Equalable, IteratorAggregate
 {
     use StrictBehaviorMixin;
 
@@ -66,41 +61,6 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         }, $set->getIntervals());
 
         return new static($intervals);
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function poke(): void
-    {
-        foreach ($this->intervals as $interval) {
-            $interval->poke();
-        }
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function dump(): string
-    {
-        $intervals = [];
-        foreach ($this->intervals as $interval) {
-            $intervals[] = $interval->dump();
-        }
-
-        return $intervals !== []
-            ? sprintf(
-                "%s(%d #%s)\n[\n    %s\n]",
-                Cls::short(static::class),
-                count($intervals),
-                Obj::dumpHash($this),
-                implode("\n    ", $intervals)
-            )
-            : sprintf(
-                '%s(0 #%s)',
-                Cls::short(static::class),
-                Obj::dumpHash($this)
-            );
     }
 
     public function toDateIntervalSet(): DateIntervalSet

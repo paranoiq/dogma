@@ -161,14 +161,6 @@ class Document extends DOMDocument
         return $this->engine->extract($target);
     }
 
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function dump(): void
-    {
-        Dumper::dump($this);
-    }
-
     private function wrap(DOMNode $node): Element|DOMNode
     {
         if ($node instanceof DOMElement) {

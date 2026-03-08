@@ -18,10 +18,8 @@ use Dogma\Equalable;
 use Dogma\IntersectComparable;
 use Dogma\Math\Interval\Interval;
 use Dogma\Math\Interval\IntervalCalc;
-use Dogma\Math\Interval\IntervalDumpMixin;
 use Dogma\Math\Interval\IntervalParser;
 use Dogma\Math\Interval\IntInterval;
-use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTimeUnit;
@@ -43,9 +41,8 @@ use function round;
  *
  * @implements Interval<Date, DateIntervalSet>
  */
-class DateInterval implements Interval, DateOrTimeInterval, Pokeable
+class DateInterval implements Interval, DateOrTimeInterval
 {
-    use IntervalDumpMixin;
     use StrictBehaviorMixin;
 
     public const MIN = Date::MIN;
@@ -149,15 +146,6 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     public static function all(): static
     {
         return new static(new Date(static::MIN), new Date(static::MAX));
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function poke(): void
-    {
-        $this->start->format();
-        $this->end->format();
     }
 
     // modifications ---------------------------------------------------------------------------------------------------

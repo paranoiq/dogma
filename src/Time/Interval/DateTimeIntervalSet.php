@@ -16,7 +16,6 @@ use Dogma\Check;
 use Dogma\Compare;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntervalSet;
-use Dogma\Math\Interval\IntervalSetDumpMixin;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
@@ -34,7 +33,6 @@ use function reset;
  */
 class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 {
-    use IntervalSetDumpMixin;
     use StrictBehaviorMixin;
 
     /** @var array<DateTimeInterval> */

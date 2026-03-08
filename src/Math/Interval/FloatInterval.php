@@ -11,13 +11,11 @@ namespace Dogma\Math\Interval;
 
 use Dogma\Arr;
 use Dogma\Check;
-use Dogma\Cls;
 use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\IntersectComparable;
 use Dogma\IntersectResult;
 use Dogma\InvalidValueException;
-use Dogma\Obj;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 use function array_fill;
@@ -118,22 +116,6 @@ class FloatInterval implements OpenClosedInterval
     public static function all(): static
     {
         return new static(static::MIN, static::MAX);
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function dump(): string
-    {
-        return sprintf(
-            '%s(%s%d - %d%s #%s)',
-            Cls::short(static::class),
-            $this->start,
-            $this->openStart ? ']' : '[',
-            $this->end,
-            $this->openEnd ? '[' : ']',
-            Obj::dumpHash($this)
-        );
     }
 
     // modifications ---------------------------------------------------------------------------------------------------

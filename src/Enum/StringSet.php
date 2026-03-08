@@ -9,10 +9,7 @@
 
 namespace Dogma\Enum;
 
-use Dogma\Cls;
-use Dogma\Dumpable;
 use Dogma\Equalable;
-use Dogma\Obj;
 use function array_diff;
 use function array_intersect;
 use function array_merge;
@@ -23,14 +20,13 @@ use function explode;
 use function implode;
 use function in_array;
 use function sort;
-use function sprintf;
 
 /**
  * Base class for sets of string values
  *
  * @see about.md to find out how enum inheritance works.
  */
-abstract class StringSet implements Set, Dumpable
+abstract class StringSet implements Set
 {
     use EnumSetMixin;
 
@@ -88,32 +84,6 @@ abstract class StringSet implements Set, Dumpable
     public function invert(): self
     {
         return new static(array_diff(self::getAllowedValues(), $this->values));
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function dump(): string
-    {
-        $names = [];
-        foreach ($this->getConstantNames() as $value => $name) {
-            $names[] = $value . ' ' . $name;
-        }
-
-        return $this->values !== []
-            ? sprintf(
-                "%s(%s #%s)\n[\n    %s\n]",
-                Cls::short(static::class),
-                count($this->values),
-                Obj::dumpHash($this),
-                implode("\n", $names)
-            )
-            : sprintf(
-                '%s(%s #%s)',
-                Cls::short(static::class),
-                count($this->values),
-                Obj::dumpHash($this)
-            );
     }
 
     /**

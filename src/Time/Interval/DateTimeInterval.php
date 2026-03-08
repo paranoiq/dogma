@@ -19,7 +19,6 @@ use Dogma\IntersectComparable;
 use Dogma\Math\IntCalc;
 use Dogma\Math\Interval\Interval;
 use Dogma\Math\Interval\IntervalCalc;
-use Dogma\Math\Interval\IntervalDumpMixin;
 use Dogma\Math\Interval\IntervalParser;
 use Dogma\NotImplementedException;
 use Dogma\ShouldNotHappenException;
@@ -48,7 +47,6 @@ use function range;
  */
 class DateTimeInterval implements Interval, DateOrTimeInterval
 {
-    use IntervalDumpMixin;
     use StrictBehaviorMixin;
 
     public const MIN = DateTime::MIN;

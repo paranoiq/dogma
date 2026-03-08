@@ -13,7 +13,6 @@ use Dogma\Arr;
 use Dogma\ArrayIterator;
 use Dogma\Check;
 use Dogma\Equalable;
-use Dogma\Math\Interval\IntervalSetDumpMixin;
 use Dogma\Math\Interval\ModuloIntervalSet;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
@@ -31,7 +30,6 @@ use function reset;
  */
 class DayOfYearIntervalSet implements ModuloIntervalSet
 {
-    use IntervalSetDumpMixin;
     use StrictBehaviorMixin;
 
     /** @var array<DayOfYearInterval> */

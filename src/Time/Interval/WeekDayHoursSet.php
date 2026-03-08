@@ -10,10 +10,6 @@
 namespace Dogma\Time\Interval;
 
 use Dogma\ArrayIterator;
-use Dogma\Cls;
-use Dogma\Dumpable;
-use Dogma\Obj;
-use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateTime;
 use Dogma\Time\DayOfWeek;
@@ -21,15 +17,12 @@ use Dogma\Time\DaysOfWeek;
 use Dogma\Time\InvalidWeekDayHoursSetException;
 use IteratorAggregate;
 use Traversable;
-use function count;
-use function implode;
 use function ksort;
-use function sprintf;
 
 /**
  * @implements IteratorAggregate<WeekDayHours>
  */
-class WeekDayHoursSet implements Pokeable, Dumpable, IteratorAggregate
+class WeekDayHoursSet implements IteratorAggregate
 {
     use StrictBehaviorMixin;
 
@@ -65,41 +58,6 @@ class WeekDayHoursSet implements Pokeable, Dumpable, IteratorAggregate
         }
 
         return new static($dayItems);
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function poke(): void
-    {
-        foreach ($this->weekDayHours as $hours) {
-            $hours->poke();
-        }
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function dump(): string
-    {
-        $hours = [];
-        foreach ($this->weekDayHours as $interval) {
-            $hours[] = $interval->dump();
-        }
-
-        return $hours !== []
-            ? sprintf(
-                "%s(%d #%s) [\n    %s\n]",
-                Cls::short(static::class),
-                count($hours),
-                Obj::dumpHash($this),
-                implode("\n    ", $hours)
-            )
-            : sprintf(
-                '%s(0 #%s)',
-                Cls::short(static::class),
-                Obj::dumpHash($this)
-            );
     }
 
     public function containsValue(DateTime $dateTime): bool

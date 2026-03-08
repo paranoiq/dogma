@@ -10,14 +10,13 @@
 namespace Dogma\Math\Interval;
 
 use Dogma\Comparable;
-use Dogma\Dumpable;
 use Dogma\Equalable;
 
 /**
  * @template T
  * @template S of ModuloIntervalSet
  */
-interface ModuloInterval extends Equalable, Comparable, Dumpable
+interface ModuloInterval extends Equalable, Comparable
 {
 
     // queries ---------------------------------------------------------------------------------------------------------

@@ -14,10 +14,8 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
-use Dogma\Math\Interval\IntervalDumpMixin;
 use Dogma\Math\Interval\IntervalParser;
 use Dogma\Math\Interval\ModuloInterval;
-use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DateTimeUnit;
 use Dogma\Time\InvalidDateTimeUnitException;
@@ -44,9 +42,8 @@ use function min;
  *
  * @implements ModuloInterval<Time, TimeIntervalSet>
  */
-class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
+class TimeInterval implements ModuloInterval, DateOrTimeInterval
 {
-    use IntervalDumpMixin;
     use StrictBehaviorMixin;
 
     public const MIN = Time::MIN;
@@ -146,15 +143,6 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         } else {
             return $this;
         }
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function poke(): void
-    {
-        $this->start->format();
-        $this->end->format();
     }
 
     // modifications ---------------------------------------------------------------------------------------------------

@@ -11,11 +11,9 @@ namespace Dogma\Math\Interval;
 
 use Dogma\Arr;
 use Dogma\Check;
-use Dogma\Cls;
 use Dogma\Comparable;
 use Dogma\Equalable;
 use Dogma\IntersectComparable;
-use Dogma\Obj;
 use Dogma\StrictBehaviorMixin;
 use function array_fill;
 use function array_shift;
@@ -25,7 +23,6 @@ use function count;
 use function max;
 use function min;
 use function round;
-use function sprintf;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
 
@@ -76,20 +73,6 @@ class IntInterval implements Interval
     public static function all(): static
     {
         return new static(static::MIN, static::MAX);
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function dump(): string
-    {
-        return sprintf(
-            '%s(%d - %d #%s)',
-            Cls::short(static::class),
-            $this->start,
-            $this->end,
-            Obj::dumpHash($this)
-        );
     }
 
     // modifications ---------------------------------------------------------------------------------------------------

@@ -14,13 +14,10 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Dogma\Check;
-use Dogma\Cls;
 use Dogma\Comparable;
-use Dogma\Dumpable;
 use Dogma\Equalable;
 use Dogma\InvalidValueException;
 use Dogma\LogicException;
-use Dogma\Obj;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeValues;
@@ -37,7 +34,6 @@ use function is_float;
 use function is_int;
 use function is_string;
 use function number_format;
-use function sprintf;
 use function str_replace;
 use function strtolower;
 use function strval;
@@ -50,7 +46,7 @@ use const DATE_RFC2822;
  *
  * Comparisons and intervals are based on microseconds since unix epoch, giving a possible range of about ±280.000 years.
  */
-class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTime, Dumpable
+class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTime
 {
     use StrictBehaviorMixin;
 
@@ -256,21 +252,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         $lengths = Month::getLengthsForYear($year);
 
         return $day <= $lengths[$month];
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function dump(): string
-    {
-        return sprintf(
-            '%s(%s %s %s #%s)',
-            Cls::short(static::class),
-            $this->format(),
-            $this->getTimezone()->getName(),
-            $this->getMicroTimestamp(),
-            Obj::dumpHash($this)
-        );
     }
 
     /**

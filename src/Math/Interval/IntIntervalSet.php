@@ -28,7 +28,6 @@ use function is_array;
  */
 class IntIntervalSet implements IntervalSet
 {
-    use IntervalSetDumpMixin;
     use StrictBehaviorMixin;
 
     /** @var array<IntInterval> */

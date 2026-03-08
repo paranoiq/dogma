@@ -15,13 +15,9 @@ use DateTimeInterface;
 use DateTimeZone;
 use Dogma\Arr;
 use Dogma\Check;
-use Dogma\Cls;
 use Dogma\Comparable;
-use Dogma\Dumpable;
 use Dogma\Equalable;
-use Dogma\Obj;
 use Dogma\Order;
-use Dogma\Pokeable;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Interval\DateTimeInterval;
@@ -36,14 +32,13 @@ use function intval;
 use function is_int;
 use function is_string;
 use function jdtogregorian;
-use function sprintf;
 use function str_replace;
 use function strtolower;
 
 /**
  * Date class.
  */
-class Date implements DateOrDateTime, Pokeable, Dumpable
+class Date implements DateOrDateTime
 {
     use StrictBehaviorMixin;
 
@@ -137,28 +132,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
         $lengths = Month::getLengthsForYear($year);
 
         return $day <= $lengths[$month];
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function poke(): void
-    {
-        $this->getDateTime();
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function dump(): string
-    {
-        return sprintf(
-            '%s(%s %s #%s)',
-            Cls::short(static::class),
-            $this->format(),
-            $this->julianDay,
-            Obj::dumpHash($this)
-        );
     }
 
     final public function __clone()

@@ -9,21 +9,17 @@
 
 namespace Dogma\Enum;
 
-use Dogma\Cls;
-use Dogma\Dumpable;
 use Dogma\Equalable;
 use Dogma\InvalidValueException;
-use Dogma\Obj;
 use function array_search;
 use function in_array;
-use function sprintf;
 
 /**
  * Base class for enums with string values.
  *
  * @see about.md to find out how enum inheritance works.
  */
-abstract class StringEnum implements Enum, Dumpable
+abstract class StringEnum implements Enum
 {
     use EnumSetMixin;
 
@@ -52,20 +48,6 @@ abstract class StringEnum implements Enum, Dumpable
     final public static function get(string $value): self
     {
         return new static($value);
-    }
-
-    /**
-     * @deprecated replaced by https://github.com/paranoiq/dogma-debug/
-     */
-    public function dump(): string
-    {
-        return sprintf(
-            '%s(%s %s #%s)',
-            Cls::short(static::class),
-            $this->value,
-            $this->getConstantName(),
-            Obj::dumpHash($this)
-        );
     }
 
     /**

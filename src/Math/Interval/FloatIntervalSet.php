@@ -28,7 +28,6 @@ use function is_array;
  */
 class FloatIntervalSet implements IntervalSet
 {
-    use IntervalSetDumpMixin;
     use StrictBehaviorMixin;
 
     /** @var array<FloatInterval> */
