@@ -413,14 +413,6 @@ class Str
     }
 
     /**
-     * @deprecated use Str::count() instead
-     */
-    public static function substringCount(string $string, string $substring): int
-    {
-        return (strlen($string) - strlen(str_replace($substring, '', $string))) / strlen($substring);
-    }
-
-    /**
      * @param array<string> $replacements
      */
     public static function replaceKeys(string $string, array $replacements): string
@@ -534,74 +526,6 @@ class Str
         } while (true);
 
         return [$i, $j - $i + 1];
-    }
-
-    /**
-     * Levenshtein distance for UTF-8 with additional weights for accent and case differences.
-     * Expects input strings to be normalized UTF-8.
-     *
-     * @deprecated use levenshtein()
-     */
-    public static function levenshteinUnicode(
-        string $string1,
-        string $string2,
-        float $insertionCost = 1.0,
-        float $deletionCost = 1.0,
-        float $replacementCost = 1.0,
-        ?float $replacementAccentCost = 0.5,
-        ?float $replacementCaseCost = 0.25,
-    ): float
-    {
-        if ($string1 === $string2) {
-            return 0;
-        }
-
-        $length1 = mb_strlen($string1, 'UTF-8');
-        $length2 = mb_strlen($string2, 'UTF-8');
-        if ($length1 < $length2) {
-            return self::levenshteinUnicode(
-                $string2,
-                $string1,
-                $insertionCost,
-                $deletionCost,
-                $replacementCost,
-                $replacementAccentCost,
-                $replacementCaseCost
-            );
-        }
-        if ($length1 === 0) {
-            return (float) $length2;
-        }
-
-        $previousRow = range(0.0, $length2);
-        for ($i = 0; $i < $length1; $i++) {
-            $currentRow = [];
-            $currentRow[0] = $i + 1.0;
-            $char1 = mb_substr($string1, $i, 1, 'UTF-8');
-            for ($j = 0; $j < $length2; $j++) {
-                $char2 = mb_substr($string2, $j, 1, 'UTF-8');
-
-                if ($char1 === $char2) {
-                    $cost = 0;
-                } elseif ($replacementCaseCost !== null && self::lower($char1) === self::lower($char2)) {
-                    $cost = $replacementCaseCost;
-                } elseif ($replacementAccentCost !== null && self::removeDiacritics($char1) === self::removeDiacritics($char2)) {
-                    $cost = $replacementAccentCost;
-                } elseif ($replacementCaseCost !== null && $replacementAccentCost !== null && self::removeDiacriticsAndLower($char1) === self::removeDiacriticsAndLower($char2)) {
-                    $cost = $replacementCaseCost + $replacementAccentCost;
-                } else {
-                    $cost = $replacementCost;
-                }
-                $replacement = $previousRow[$j] + $cost;
-                $insertions = $previousRow[$j + 1] + $insertionCost;
-                $deletions = $currentRow[$j] + $deletionCost;
-
-                $currentRow[] = min($replacement, $insertions, $deletions);
-            }
-            $previousRow = $currentRow;
-        }
-
-        return $previousRow[$length2];
     }
 
     /**
@@ -878,44 +802,6 @@ class Str
         } else {
             throw new ShouldNotHappenException('No extension for converting encodings installed.');
         }
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
-     * @deprecated use Re::split() instead
-     * @return array<string>
-     */
-    public static function split(string $string, string $pattern, int $flags = 0): array
-    {
-        return Re::split($string, $pattern, $flags);
-    }
-
-    /**
-     * @deprecated use Re::match() instead
-     * @return array<string>|null
-     */
-    public static function match(string $string, string $pattern, int $flags = 0, int $offset = 0): ?array
-    {
-        return Re::match($string, $pattern, $flags, $offset);
-    }
-
-    /**
-     * @deprecated use Re::matchAll() instead
-     * @return array<array<string>>
-     */
-    public static function matchAll(string $string, string $pattern, int $flags = 0, int $offset = 0): array
-    {
-        return Re::matchAll($string, $pattern, $flags, $offset);
-    }
-
-    /**
-     * @deprecated use Re::replace() instead
-     * @param string|array<string> $pattern
-     */
-    public static function replace(string $string, string|array $pattern, string|callable|null $replacement = null, int $limit = -1): string
-    {
-        return Re::replace($string, $pattern, $replacement, $limit);
     }
 
 }

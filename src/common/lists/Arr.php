@@ -182,19 +182,6 @@ class Arr
     }
 
     /**
-     * @deprecated will be removed. use Call::with() instead
-     * @template T
-     * @param array<T> $array
-     * @param callable(T): mixed $function
-     */
-    public static function doForEach(array $array, callable $function): void
-    {
-        foreach ($array as $value) {
-            $function($value);
-        }
-    }
-
-    /**
      * Copy array to remove any existing references
      * @template T
      * @param array<T> $array

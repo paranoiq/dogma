@@ -162,20 +162,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $dateTime;
     }
 
-    /** @deprecated use createFromTimestamp() */
-    public static function createFromFloatTimestamp(float $timestamp, ?DateTimeZone $timezone = null): static
-    {
-        $formatted = number_format($timestamp, 6, '.', '');
-
-        $dateTime = static::createFromFormat('U.u', $formatted, TimeZone::getUtc());
-        if ($timezone === null) {
-            $timezone = TimeZone::getDefault();
-        }
-        $dateTime = $dateTime->setTimezone($timezone);
-
-        return $dateTime;
-    }
-
     public static function createFromMicroTimestamp(int $microTimestamp, ?DateTimeZone $timezone = null): static
     {
         $timestamp = (int) floor($microTimestamp / 1000000);

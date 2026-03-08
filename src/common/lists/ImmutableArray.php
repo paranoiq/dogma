@@ -205,16 +205,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         return $this[$this->randomKey()];
     }
 
-    /**
-     * @deprecated will be removed. use Call::with() instead
-     */
-    public function doForEach(callable $function): void
-    {
-        foreach ($this as $value) {
-            $function($value);
-        }
-    }
-
     // queries ---------------------------------------------------------------------------------------------------------
 
     public function isEmpty(): bool
