@@ -474,7 +474,7 @@ class DateInterval implements Interval, DateOrTimeInterval
     // static ----------------------------------------------------------------------------------------------------------
 
     /**
-     * @return array<array{0: DateInterval, 1: int}> ($interval, $count)
+     * @return array<array{DateInterval, int}> ($interval, $count)
      */
     public static function countOverlaps(self ...$items): array
     {

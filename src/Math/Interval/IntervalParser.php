@@ -27,7 +27,7 @@ class IntervalParser
     public const SEPARATORS = [',', '|', '/', ' - ', '--'];
 
     /**
-     * @return array{0: string, 1: string, 2: bool|null, 3: bool|null} (string $start, string $end, ?bool $openStart, ?bool $openEnd)
+     * @return array{string, string, bool|null, bool|null} ($start, $end, $openStart, $openEnd)
      */
     public static function parseString(string $string): array
     {

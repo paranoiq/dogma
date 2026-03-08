@@ -488,7 +488,7 @@ class NightInterval implements Interval, DateOrTimeInterval
     // static ----------------------------------------------------------------------------------------------------------
 
     /**
-     * @return array<array{0: NightInterval, 1: int}> ($interval, $count)
+     * @return array<array{NightInterval, int}> ($interval, $count)
      */
     public static function countOverlaps(self ...$items): array
     {

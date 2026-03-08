@@ -468,7 +468,7 @@ class FloatInterval implements OpenClosedInterval
 
     /**
      * @param FloatInterval ...$items
-     * @return array<array{0: FloatInterval, 1: int}> ($ident => ($interval, $count))
+     * @return array<array{FloatInterval, int}> ($ident => ($interval, $count))
      */
     public static function countOverlaps(self ...$items): array
     {

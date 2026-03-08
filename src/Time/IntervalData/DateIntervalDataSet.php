@@ -372,7 +372,7 @@ class DateIntervalDataSet implements Equalable, IteratorAggregate
      *
      * @template TInput
      * @param iterable<TInput> $inputs
-     * @param callable(TInput): array{0: Date, 1: Date} $mapper
+     * @param callable(TInput): array{Date, Date} $mapper
      * @param callable(TData, TInput): TData $reducer
      * @return static<TData>
      */

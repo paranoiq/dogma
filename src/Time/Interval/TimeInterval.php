@@ -493,7 +493,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval
 
     /**
      * @param TimeInterval ...$items
-     * @return array<array{0: TimeInterval, 1: int}> ($interval, $count)
+     * @return array<array{TimeInterval, int}> ($interval, $count)
      */
     public static function countOverlaps(self ...$items): array
     {
