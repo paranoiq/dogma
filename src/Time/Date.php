@@ -17,7 +17,6 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
-use Dogma\Order;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Interval\DateTimeInterval;
@@ -407,16 +406,6 @@ class Date implements DateOrDateTime
         return Arr::maxBy($items, static function (self $date): int {
             return $date->julianDay;
         });
-    }
-
-    /**
-     * @param array<Date> $items
-     * @return array<Date>
-     * @deprecated will be removed. use Arr::sortComparable() instead.
-     */
-    public static function sort(array $items, int $flags = Order::ASCENDING): array
-    {
-        return Arr::sortComparable($items, $flags);
     }
 
 }

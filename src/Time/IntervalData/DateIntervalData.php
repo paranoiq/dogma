@@ -319,26 +319,4 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable
         return new DateIntervalDataSet(array_values($intervals));
     }
 
-    // static ----------------------------------------------------------------------------------------------------------
-
-    /**
-     * @param array<static> $intervals
-     * @return array<static>
-     * @deprecated will be removed. use Arr::sortComparable() instead.
-     */
-    public static function sort(array $intervals): array
-    {
-        return Arr::sortComparable($intervals);
-    }
-
-    /**
-     * @param array<static> $intervals
-     * @return array<static>
-     * @deprecated will be removed. use Arr::sortComparable() instead.
-     */
-    public static function sortByStart(array $intervals): array
-    {
-        return Arr::sortComparable($intervals);
-    }
-
 }

@@ -17,7 +17,6 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
-use Dogma\Order;
 use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeValues;
@@ -406,16 +405,6 @@ class Time implements DateTimeOrTime
         return Arr::maxBy($items, static function (self $time): int {
             return $time->microseconds;
         });
-    }
-
-    /**
-     * @param array<Time> $items
-     * @return array<Time>
-     * @deprecated will be removed. use Arr::sortComparable() instead.
-     */
-    public static function sort(array $items, int $flags = Order::ASCENDING): array
-    {
-        return Arr::sortComparable($items, $flags);
     }
 
 }

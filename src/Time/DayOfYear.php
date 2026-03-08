@@ -13,7 +13,6 @@ use Dogma\Arr;
 use Dogma\Check;
 use Dogma\Comparable;
 use Dogma\Equalable;
-use Dogma\Order;
 use Dogma\StrictBehaviorMixin;
 use function is_string;
 
@@ -293,16 +292,6 @@ class DayOfYear implements Equalable, Comparable
         return Arr::maxBy($items, static function (self $time): int {
             return $time->number;
         });
-    }
-
-    /**
-     * @param array<DayOfYear> $items
-     * @return array<DayOfYear>
-     * @deprecated will be removed. use Arr::sortComparable() instead.
-     */
-    public static function sort(array $items, int $flags = Order::ASCENDING): array
-    {
-        return Arr::sortComparable($items, $flags);
     }
 
 }

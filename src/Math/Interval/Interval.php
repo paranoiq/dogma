@@ -107,18 +107,4 @@ interface Interval extends Equalable, Comparable, IntersectComparable
      */
     //public static function explodeOverlaps(self ...$items): array;
 
-    /**
-     * @param array<static<T, S>> $intervals
-     * @return array<static<T, S>>
-     * @deprecated will be removed. use Arr::sortComparable() instead.
-     */
-    public static function sort(array $intervals): array;
-
-    /**
-     * @param array<static<T, S>> $intervals
-     * @return array<static<T, S>>
-     * @deprecated will be removed. use Arr::sortComparable() instead.
-     */
-    public static function sortByStart(array $intervals): array;
-
 }

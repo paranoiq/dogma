@@ -582,24 +582,4 @@ class DayOfYearInterval implements ModuloInterval
         return array_values(Arr::sortComparable($items));
     }
 
-    /**
-     * @param array<self> $intervals
-     * @return array<self>
-     * @deprecated will be removed. use Arr::sortComparable() instead.
-     */
-    public static function sort(array $intervals): array
-    {
-        return Arr::sortComparable($intervals);
-    }
-
-    /**
-     * @param array<self> $intervals
-     * @return array<self>
-     * @deprecated will be removed. use Arr::sortComparable() instead.
-     */
-    public static function sortByStart(array $intervals): array
-    {
-        return Arr::sortComparable($intervals);
-    }
-
 }
