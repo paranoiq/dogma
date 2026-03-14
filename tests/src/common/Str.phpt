@@ -8,6 +8,20 @@ use Dogma\Tester\Assert;
 
 require_once __DIR__ . '/../bootstrap.php';
 
+checkEncoding:
+Assert::true(Str::checkEncoding("\u{17E}lu\u{165}ou\u{10D}k\u{FD}")); // UTF-8   žluťoučký
+Assert::true(Str::checkEncoding("\x01")); // C0
+Assert::false(Str::checkEncoding("\xed\xa0\x80")); // surrogate pairs   xD800
+Assert::false(Str::checkEncoding("\xf4\x90\x80\x80")); // out of range   x110000
+
+
+fixEncoding:
+Assert::same(Str::fixEncoding("\u{17E}lu\u{165}ou\u{10D}k\u{FD}"), "\u{17E}lu\u{165}ou\u{10D}k\u{FD}"); // UTF-8   žluťoučký
+Assert::same(Str::fixEncoding("\x01"), "\x01"); // C0
+Assert::same(Str::fixEncoding("foo\xed\xa0\x80bar"), "foobar"); // surrogate pairs   xD800
+Assert::same(Str::fixEncoding("foo\xf4\x90\x80\x80bar"), "foobar"); // out of range   x110000
+
+
 chr:
 Assert::same(Str::chr(0x000000), "\x00");
 Assert::same(Str::chr(0x00007F), "\x7F");
@@ -41,6 +55,39 @@ Assert::same(Str::ord("\u{E000}"), 0x00E000);
 Assert::same(Str::ord("\u{FFFF}"), 0x00FFFF);
 Assert::same(Str::ord("\u{10000}"), 0x010000);
 Assert::same(Str::ord("\u{10FFFF}"), 0x10FFFF);
+
+
+startsWith:
+Assert::true(Str::startsWith("foobar", "foo"));
+Assert::false(Str::startsWith("foobar", "bar"));
+
+
+endsWith:
+Assert::false(Str::endsWith("foobar", "foo"));
+Assert::true(Str::endsWith("foobar", "bar"));
+
+
+contains:
+Assert::true(Str::contains("foobar", "foo"));
+Assert::true(Str::contains("foobar", "bar"));
+Assert::false(Str::contains("foobar", "baz"));
+
+
+containsAny:
+Assert::true(Str::containsAny("foobar", ["foo", "baz"]));
+Assert::true(Str::containsAny("foobar", ["bar", "baz"]));
+Assert::false(Str::containsAny("foobar", ["baz", "newt"]));
+
+
+containsAll:
+Assert::true(Str::containsAll("foobar", ["foo", "bar"]));
+Assert::true(Str::containsAll("foobar", ["bar"]));
+Assert::false(Str::containsAll("foobar", ["foo", "baz"]));
+
+
+substring:
+Assert::same(Str::substring("žluťoučký kůň", 3, 6), "ťoučký");
+Assert::same(Str::substring("žluťoučký kůň", -10, 6), "ťoučký");
 
 
 between:

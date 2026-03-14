@@ -14,7 +14,8 @@
         "php": "^8.0",
         "ext-calendar":"*",
         "nette/http": "~2.4|~3.0",
-        "nette/utils": "~2.4|~3.0|~4.0"
+        "nette/utils": "~2.4|~3.0|~4.0",
+        "anyascii/anyascii": "^0.3.3"
     },
     "require-dev": {
         "dogma/dogma-debug": "0.1",

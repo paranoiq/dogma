@@ -14,7 +14,7 @@ use function array_search;
 use function strtolower;
 
 /**
- * 2-letter language codes by ISO-639
+ * 2-letter language codes by ISO-639-1
  */
 class Language extends StringEnum
 {

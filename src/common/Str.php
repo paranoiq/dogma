@@ -12,13 +12,16 @@
 
 namespace Dogma;
 
+use AnyAscii;
 use Collator as PhpCollator;
 use Dogma\Language\Collator;
+use Dogma\Language\Intl;
 use Dogma\Language\Locale\Locale;
 use Dogma\Language\Transliterator;
 use Dogma\Language\UnicodeCharacterCategory;
 use Error;
-use Nette\Utils\Strings;
+use Language\AsciiTranslit;
+use Normalizer;
 use UConverter;
 use function array_keys;
 use function array_pop;
@@ -30,9 +33,12 @@ use function count;
 use function error_clear_last;
 use function error_get_last;
 use function function_exists;
+use function htmlspecialchars;
+use function htmlspecialchars_decode;
 use function iconv;
 use function implode;
 use function is_string;
+use function max;
 use function mb_convert_case;
 use function mb_convert_encoding;
 use function mb_strlen;
@@ -41,9 +47,12 @@ use function mb_strtoupper;
 use function mb_substr;
 use function min;
 use function ord;
+use function preg_quote;
+use function preg_replace;
 use function range;
 use function str_contains;
 use function str_ends_with;
+use function str_repeat;
 use function str_replace;
 use function str_starts_with;
 use function strcasecmp;
@@ -53,6 +62,9 @@ use function strpos;
 use function strrpos;
 use function strtolower;
 use function substr;
+use function trim;
+use const ENT_IGNORE;
+use const ENT_NOQUOTES;
 use const MB_CASE_TITLE;
 
 /**
@@ -62,20 +74,57 @@ class Str
 {
     use StaticClassMixin;
 
-    // proxy -----------------------------------------------------------------------------------------------------------
+    public const TRIM_CHARS = " \t\n\r\0\x0B\u{A0}\u{2000}\u{2001}\u{2002}\u{2003}\u{2004}\u{2005}\u{2006}\u{2007}\u{2008}\u{2009}\u{200A}\u{200B}\u{2028}\u{3000}";
 
     public static function checkEncoding(string $string): bool
     {
-        return $string === Strings::fixEncoding($string);
+        return $string === self::fixEncoding($string);
     }
 
     public static function fixEncoding(string $string): string
     {
-        return Strings::fixEncoding($string);
+        // removes xD800-xDFFF, x110000 and higher
+        return htmlspecialchars_decode(htmlspecialchars($string, ENT_NOQUOTES | ENT_IGNORE, 'UTF-8'), ENT_NOQUOTES);
+    }
+
+    /**
+     * Short for normalizeEncoding() + normalizeNewLines()
+     * @see removeControlCharacters() and fixEncoding()
+     */
+    public static function normalize(string $string): string
+    {
+        return self::normalizeEncoding(self::normalizeNewLines($string));
+    }
+
+    /**
+     * Convert to Unicode Normalization Form C (NFC) - Canonical Composition
+     */
+    public static function normalizeEncoding(string $string): string
+    {
+        $normalized = Normalizer::normalize($string, Normalizer::FORM_C);
+        if ($normalized === false) {
+            throw new ErrorException('String normalization failed.', error_get_last()['message']);
+        }
+
+        return $normalized;
+    }
+
+    /**
+     * Convert all newlines to \n only
+     */
+    public static function normalizeNewLines(string $string): string
+    {
+        return str_replace(["\r\n", "\r"], "\n", $string);
+    }
+
+    public static function removeControlCharacters(string $string): string
+    {
+        return preg_replace('~[\x00-\x08\x0B-\x1F\x7F-\x9F]+~u', '', $string);
     }
 
     public static function chr(int $code): string
     {
+        //                high surrogate & low surrogate
         if ($code < 0 || ($code >= 0xD800 && $code <= 0xDFFF) || $code > 0x10FFFF) {
             throw new InvalidValueException($code, 'unicode codepoint in range 0x00 to 0xD7FF or 0xE000 to 0x10FFFF');
         }
@@ -186,37 +235,43 @@ class Str
 
     public static function substring(string $string, int $start, ?int $length = null): string
     {
-        return Strings::substring($string, $start, $length);
-    }
-
-    public static function normalize(string $string): string
-    {
-        return Strings::normalize($string);
-    }
-
-    public static function normalizeNewLines(string $string): string
-    {
-        return str_replace(["\r\n", "\r"], "\n", $string);
+        return mb_substr($string, $start, $length, 'UTF-8');
     }
 
     public static function toAscii(string $string): string
     {
-        return Strings::toAscii($string);
+        if (class_exists(Intl::class)) {
+            $string = str_replace(array_keys(AsciiTranslit::REPLACEMENTS), array_values(AsciiTranslit::REPLACEMENTS), $string);
+        }
+
+        return AnyAscii::transliterate($string);
     }
 
     public static function webalize(string $string, ?string $chars = null, bool $lower = true): string
     {
-        return Strings::webalize($string, $chars, $lower);
+        $string = self::toAscii($string);
+        $string = Re::replace('~[^a-zA-Z0-9' . ($chars !== null ? preg_quote($chars, '~') : '') . ']+~', '-', $string);
+        if ($lower) {
+            $string = strtolower($string);
+        }
+
+        return trim($string, '-');
     }
 
     public static function truncate(string $string, int $maxLength, string $append = "\u{2026}"): string
     {
-        return Strings::truncate($string, $maxLength, $append);
-    }
+        if (self::length($string) <= $maxLength) {
+            return $string;
+        }
 
-    public static function indent(string $string, int $level = 1, string $chars = "\t"): string
-    {
-        return Strings::indent($string, $level, $chars);
+        $maxLength -= self::length($append);
+        if ($maxLength < 1) {
+            return $append;
+        } elseif ($matches = Re::match($string, '#^.{1,' . $maxLength . '}(?=[\s\x00-/:-@\[-`{-~])#us')) {
+            return $matches[0] . $append;
+        } else {
+            return self::substring($string, 0, $maxLength) . $append;
+        }
     }
 
     public static function lower(string $string): string
@@ -246,12 +301,14 @@ class Str
 
     public static function length(string $string): int
     {
-        return Strings::length($string);
+        return mb_strlen($string, 'UTF-8');
     }
 
-    public static function trim(string $string, string $chars = Strings::TRIM_CHARACTERS): string
+    public static function trim(string $string, string $chars = self::TRIM_CHARS): string
     {
-        return Strings::trim($string, $chars);
+        $chars = preg_quote($chars, '~');
+
+        return Re::replace($string, '~^[' . $chars . ']+|[' . $chars . ']+$~Du', '');
     }
 
     /**
@@ -259,7 +316,10 @@ class Str
      */
     public static function padRight(string $string, int $length, string $pad = ' '): string
     {
-        return Strings::padRight($string, $length, $pad);
+        $length = max(0, $length - self::length($string));
+        $padLen = self::length($pad);
+
+        return $string . str_repeat($pad, (int) ($length / $padLen)) . self::substring($pad, 0, $length % $padLen);
     }
 
     /**
@@ -267,17 +327,54 @@ class Str
      */
     public static function padLeft(string $string, int $length, string $pad = ' '): string
     {
-        return Strings::padLeft($string, $length, $pad);
+        $length = max(0, $length - self::length($string));
+        $padLen = self::length($pad);
+
+        return str_repeat($pad, (int) ($length / $padLen)) . self::substring($pad, 0, $length % $padLen) . $string;
     }
 
     public static function before(string $string, string $find, int $nth = 1): ?string
     {
-        return Strings::before($string, $find, $nth);
+        $pos = self::pos($string, $find, $nth);
+
+        return $pos === null ? null : substr($string, 0, $pos);
     }
 
     public static function after(string $string, string $find, int $nth = 1): ?string
     {
-        return Strings::after($string, $find, $nth);
+        $pos = self::pos($string, $find, $nth);
+
+        return $pos === null ? null : substr($string, $pos + strlen($find));
+    }
+
+    private static function pos(string $haystack, string $needle, int $nth = 1): ?int
+    {
+        if (!$nth) {
+            return null;
+        } elseif ($nth > 0) {
+            if ($needle === '') {
+                return 0;
+            }
+
+            $pos = 0;
+            while (($pos = strpos($haystack, $needle, $pos)) !== false && --$nth) {
+                $pos++;
+            }
+        } else {
+            $len = strlen($haystack);
+            if ($needle === '') {
+                return $len;
+            } elseif ($len === 0) {
+                return null;
+            }
+
+            $pos = $len - 1;
+            while (($pos = strrpos($haystack, $needle, $pos - $len)) !== false && ++$nth) {
+                $pos--;
+            }
+        }
+
+        return $pos === false ? null : $pos;
     }
 
     // substrings etc --------------------------------------------------------------------------------------------------
