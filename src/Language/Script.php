@@ -14,6 +14,10 @@ use function array_search;
 use function strtolower;
 use function ucfirst;
 
+/**
+ * ISO 15924
+ * https://en.wiktionary.org/wiki/Wiktionary:List_of_scripts
+ */
 class Script extends StringEnum
 {
 
@@ -44,29 +48,38 @@ class Script extends StringEnum
     public const CHAKMA = 'Cakm';
     public const CHAM = 'Cham';
     public const CHEROKEE = 'Cher';
+    public const CHORASMIAN = 'Chrs';
     public const CIRTH = 'Cirt';
     public const COPTIC = 'Copt';
     public const CUNEIFORM = 'Xsux';
     public const CYPRIOT = 'Cprt';
+    public const CYPRO_MINOAN = 'Cpmn';
     public const CYRILLIC = 'Cyrl';
     public const CYRILLIC_OLD_CHURCH_SLAVONIC = 'Cyrs';
     public const DESERET = 'Dsrt';
     public const DEVANAGARI = 'Deva';
+    public const DIVES_AKURU = 'Diak';
+    public const DOGRA = 'Dogr';
     public const DUPLOYAN_SHORTHAND = 'Dupl';
     public const EGYPTIAN_DEMOTIC = 'Egyd';
     public const EGYPTIAN_HIERATIC = 'Egyh';
     public const EGYPTIAN_HIEROGLYPHS = 'Egyp';
     public const ELBASAN = 'Elba';
+    public const ELYMAIC = 'Elym';
     public const ETHIOPIC = 'Ethi';
+    public const GARAY = 'Gara';
     public const GEORGIAN = 'Geor';
     public const GLAGOLITIC = 'Glag';
     public const GOTHIC = 'Goth';
     public const GRANTHA = 'Gran';
     public const GREEK = 'Grek';
     public const GUJARATI = 'Gujr';
+    public const GUNJALA_GONDI = 'Gong';
     public const GURMUKHI = 'Guru';
+    public const GURUNG_KHE_MA = 'Gukh';
     public const HAN = 'Hani';
     public const HANGUL = 'Hang';
+    public const HANIFI_ROHINGYA = 'Rohg';
     public const HANUNOO = 'Hano';
     public const HAN_SIMPLIFIED = 'Hans';
     public const HAN_TRADITIONAL = 'Hant';
@@ -87,7 +100,9 @@ class Script extends StringEnum
     public const KAITHI = 'Kthi';
     public const KANNADA = 'Knda';
     public const KATAKANA = 'Kana';
+    public const KAWI = 'Kawi';
     public const KAYAH_LI = 'Kali';
+    public const KHAMTI_SHAN = 'Khmk';
     public const KHAROSHTHI = 'Khar';
     public const KHITAN_LARGE = 'Kitl';
     public const KHITAN_SMALL = 'Kits';
@@ -95,6 +110,7 @@ class Script extends StringEnum
     public const KHOJKI = 'Khoj';
     public const KHUDAWADI = 'Sind';
     public const KHUTSURI = 'Geok';
+    public const KIRAT_RAI = 'Krai';
     public const KLINGON = 'Piqd';
     public const KOREAN = 'Kore';
     public const KPELLE = 'Kpel';
@@ -112,12 +128,15 @@ class Script extends StringEnum
     public const LYCIAN = 'Lyci';
     public const LYDIAN = 'Lydi';
     public const MAHAJANI = 'Mahj';
+    public const MAKASAR = 'Maka';
     public const MALAYALAM = 'Mlym';
     public const MANDAIC = 'Mand';
     public const MANICHAEAN = 'Mani';
     public const MARCHEN = 'Marc';
+    public const MASARAM_GONDI = 'Gonm';
     public const MATHEMATICAL_NOTATION = 'Zmth';
     public const MAYAN_HIEROGLYPHS = 'Maya';
+    public const MEDEFAIDRIN = 'Medf';
     public const MEITEI_MAYEK = 'Mtei';
     public const MENDE_KIKAKUI = 'Mend';
     public const MEROITIC_CURSIVE = 'Merc';
@@ -130,19 +149,23 @@ class Script extends StringEnum
     public const MULTANI = 'Mult';
     public const MYANMAR = 'Mymr';
     public const NABATAEAN = 'Nbat';
+    public const NAG_MUNDARI = 'Nagm';
     public const NAKHI_GEBA = 'Nkgb';
     public const NEWA = 'Newa';
     public const NEW_TAI_LUE = 'Talu';
     public const NKO = 'Nkoo';
     public const NUSHU = 'Nshu';
+    public const NYIAKENG_PUACHUE_HMONG = 'Hmnp';
     public const OGHAM = 'Ogam';
     public const OLD_HUNGARIAN = 'Hung';
     public const OLD_ITALIC = 'Ital';
     public const OLD_NORTH_ARABIAN = 'Narb';
     public const OLD_PERMIC = 'Perm';
     public const OLD_PERSIAN = 'Xpeo';
+    public const OLD_SOGDIAN = 'Sogo';
     public const OLD_SOUTH_ARABIAN = 'Sarb';
     public const OL_CHIKI = 'Olck';
+    public const OL_ONAL = 'Onao';
     public const ORIYA = 'Orya';
     public const ORKHON_RUNIC = 'Orkh';
     public const OSAGE = 'Osge';
@@ -164,8 +187,11 @@ class Script extends StringEnum
     public const SIDDHAM = 'Sidd';
     public const SIGNWRITING = 'Sgnw';
     public const SINHALA = 'Sinh';
+    public const SOGDIAN = 'Sogd';
     public const SORA_SOMPENG = 'Sora';
+    public const SOYOMBO = 'Soyo';
     public const SUNDANESE = 'Sund';
+    public const SUNUWAR = 'Sunu';
     public const SYLOTI_NAGRI = 'Sylo';
     public const SYMBOLS = 'Zsym';
     public const SYMBOLS_EMOJI = 'Zsye';
@@ -180,6 +206,7 @@ class Script extends StringEnum
     public const TAI_VIET = 'Tavt';
     public const TAKRI = 'Takr';
     public const TAMIL = 'Taml';
+    public const TANGSA = 'Tnsa';
     public const TANGUT = 'Tang';
     public const TELUGU = 'Telu';
     public const TENGWAR = 'Teng';
@@ -188,15 +215,22 @@ class Script extends StringEnum
     public const TIBETAN = 'Tibt';
     public const TIFINAGH = 'Tfng';
     public const TIRHUTA = 'Tirh';
+    public const TODO_BICHIG = 'Todo';
+    public const TOTO = 'Toto';
+    public const TULU_TIGALARI = 'Tutg';
     public const UGARITIC = 'Ugar';
-    public const UNCODED_SCRIPT = 'Zzzz';
-    public const UNDETERMINED_SCRIPT = 'Zyyy';
-    public const UNWRITTEN_DOCUMENTS = 'Zxxx';
     public const VAI = 'Vaii';
     public const VISIBLE_SPEECH = 'Visp';
+    public const WANCHO = 'Wcho';
     public const WARANG_CITI = 'Wara';
     public const WOLEAI = 'Wole';
+    public const YEZIDI = 'Yezi';
     public const YI = 'Yiii';
+    public const ZANABAZAR_SQUARE = 'Zanb';
+
+    public const UNWRITTEN_DOCUMENTS = 'Zxxx';
+    public const UNDETERMINED_SCRIPT = 'Zyyy';
+    public const UNCODED_SCRIPT = 'Zzzz';
 
     /** @var array<string> */
     private static array $names = [
@@ -227,29 +261,38 @@ class Script extends StringEnum
         self::CHAKMA => 'Chakma',
         self::CHAM => 'Cham',
         self::CHEROKEE => 'Cherokee',
+        self::CHORASMIAN => 'Chorasmian',
         self::CIRTH => 'Cirth',
         self::COPTIC => 'Coptic',
         self::CUNEIFORM => 'Cuneiform, Sumero-Akkadian',
         self::CYPRIOT => 'Cypriot',
+        self::CYPRO_MINOAN => 'Cypro-Minoan',
         self::CYRILLIC => 'Cyrillic',
         self::CYRILLIC_OLD_CHURCH_SLAVONIC => 'Cyrillic (Old Church Slavonic variant)',
         self::DESERET => 'Deseret (Mormon)',
         self::DEVANAGARI => 'Devanagari (Nagari)',
+        self::DIVES_AKURU => 'Dives Akuru',
+        self::DOGRA => 'Dogra',
         self::DUPLOYAN_SHORTHAND => 'Duployan shorthand, Duployan stenography',
         self::EGYPTIAN_DEMOTIC => 'Egyptian demotic',
         self::EGYPTIAN_HIERATIC => 'Egyptian hieratic',
         self::EGYPTIAN_HIEROGLYPHS => 'Egyptian hieroglyphs',
         self::ELBASAN => 'Elbasan',
+        self::ELYMAIC => 'Elymaic',
         self::ETHIOPIC => 'Ethiopic (Geʻez)',
+        self::GARAY => 'Garay',
         self::GEORGIAN => 'Georgian (Mkhedruli)',
         self::GLAGOLITIC => 'Glagolitic',
         self::GOTHIC => 'Gothic',
         self::GRANTHA => 'Grantha',
         self::GREEK => 'Greek',
         self::GUJARATI => 'Gujarati',
+        self::GUNJALA_GONDI => 'Gunjala Gondi',
         self::GURMUKHI => 'Gurmukhi',
+        self::GURUNG_KHE_MA => 'Gurung Khe Ma',
         self::HAN => 'Han (Hanzi, Kanji, Hanja)',
         self::HANGUL => 'Hangul (Hangŭl, Hangeul)',
+        self::HANIFI_ROHINGYA => 'Hanifi Rohingya',
         self::HANUNOO => 'Hanunoo (Hanunóo)',
         self::HAN_SIMPLIFIED => 'Han (Simplified variant)',
         self::HAN_TRADITIONAL => 'Han (Traditional variant)',
@@ -270,7 +313,9 @@ class Script extends StringEnum
         self::KAITHI => 'Kaithi',
         self::KANNADA => 'Kannada',
         self::KATAKANA => 'Katakana',
+        self::KAWI => 'Kawi',
         self::KAYAH_LI => 'Kayah Li',
+        self::KHAMTI_SHAN => 'Khamti Shan',
         self::KHAROSHTHI => 'Kharoshthi',
         self::KHITAN_LARGE => 'Khitan large script',
         self::KHITAN_SMALL => 'Khitan small script',
@@ -278,6 +323,7 @@ class Script extends StringEnum
         self::KHOJKI => 'Khojki',
         self::KHUDAWADI => 'Khudawadi, Sindhi',
         self::KHUTSURI => 'Khutsuri (Asomtavruli and Nuskhuri)',
+        self::KIRAT_RAI => 'Kirat Rai',
         self::KLINGON => 'Klingon (KLI pIqaD)',
         self::KOREAN => 'Korean (alias for Hangul + Han)',
         self::KPELLE => 'Kpelle',
@@ -295,12 +341,15 @@ class Script extends StringEnum
         self::LYCIAN => 'Lycian',
         self::LYDIAN => 'Lydian',
         self::MAHAJANI => 'Mahajani',
+        self::MAKASAR => 'Makasar',
         self::MALAYALAM => 'Malayalam',
         self::MANDAIC => 'Mandaic, Mandaean',
         self::MANICHAEAN => 'Manichaean',
         self::MARCHEN => 'Marchen',
+        self::MASARAM_GONDI => 'Masaram Gondi',
         self::MATHEMATICAL_NOTATION => 'Mathematical notation',
         self::MAYAN_HIEROGLYPHS => 'Mayan hieroglyphs',
+        self::MEDEFAIDRIN => 'Medefaidrin',
         self::MEITEI_MAYEK => 'Meitei Mayek (Meithei, Meetei)',
         self::MENDE_KIKAKUI => 'Mende Kikakui',
         self::MEROITIC_CURSIVE => 'Meroitic Cursive',
@@ -313,19 +362,23 @@ class Script extends StringEnum
         self::MULTANI => 'Multani',
         self::MYANMAR => 'Myanmar (Burmese)',
         self::NABATAEAN => 'Nabataean',
+        self::NAG_MUNDARI => 'Nag Mundari',
         self::NAKHI_GEBA => 'Nakhi Geba (\'Na-\'Khi ²Ggŏ-¹baw, Naxi Geba)',
         self::NEWA => 'Newa, Newar, Newari, Nepāla lipi',
         self::NEW_TAI_LUE => 'New Tai Lue',
         self::NKO => 'N’Ko',
         self::NUSHU => 'Nüshu',
+        self::NYIAKENG_PUACHUE_HMONG => 'Nyiakeng Puachue Hmong',
         self::OGHAM => 'Ogham',
         self::OLD_HUNGARIAN => 'Old Hungarian (Hungarian Runic)',
         self::OLD_ITALIC => 'Old Italic (Etruscan, Oscan, etc.)',
         self::OLD_NORTH_ARABIAN => 'Old North Arabian (Ancient North Arabian)',
         self::OLD_PERMIC => 'Old Permic',
         self::OLD_PERSIAN => 'Old Persian',
+        self::OLD_SOGDIAN => 'Old Sogdian',
         self::OLD_SOUTH_ARABIAN => 'Old South Arabian',
         self::OL_CHIKI => 'Ol Chiki (Ol Cemet’, Ol, Santali)',
+        self::OL_ONAL => 'Ol Onal',
         self::ORIYA => 'Oriya',
         self::ORKHON_RUNIC => 'Old Turkic, Orkhon Runic',
         self::OSAGE => 'Osage',
@@ -347,8 +400,11 @@ class Script extends StringEnum
         self::SIDDHAM => 'Siddham, Siddhaṃ, Siddhamātṛkā',
         self::SIGNWRITING => 'SignWriting',
         self::SINHALA => 'Sinhala',
+        self::SOGDIAN => 'Sogdian',
         self::SORA_SOMPENG => 'Sora Sompeng',
+        self::SOYOMBO => 'Soyombo',
         self::SUNDANESE => 'Sundanese',
+        self::SUNUWAR => 'Sunuwar',
         self::SYLOTI_NAGRI => 'Syloti Nagri',
         self::SYMBOLS => 'Symbols',
         self::SYMBOLS_EMOJI => 'Symbols (Emoji variant)',
@@ -363,6 +419,7 @@ class Script extends StringEnum
         self::TAI_VIET => 'Tai Viet',
         self::TAKRI => 'Takri, Ṭākrī, Ṭāṅkrī',
         self::TAMIL => 'Tamil',
+        self::TANGSA => 'Tangsa',
         self::TANGUT => 'Tangut',
         self::TELUGU => 'Telugu',
         self::TENGWAR => 'Tengwar',
@@ -371,15 +428,21 @@ class Script extends StringEnum
         self::TIBETAN => 'Tibetan',
         self::TIFINAGH => 'Tifinagh (Berber)',
         self::TIRHUTA => 'Tirhuta',
+        self::TODO_BICHIG => 'Todo Bichig',
+        self::TOTO => 'Toto',
+        self::TULU_TIGALARI => 'Tulu Tigalari',
         self::UGARITIC => 'Ugaritic',
         self::UNCODED_SCRIPT => 'Code for uncoded script',
         self::UNDETERMINED_SCRIPT => 'Code for undetermined script',
         self::UNWRITTEN_DOCUMENTS => 'Code for unwritten documents',
         self::VAI => 'Vai',
         self::VISIBLE_SPEECH => 'Visible Speech',
+        self::WANCHO => 'Wancho',
         self::WARANG_CITI => 'Warang Citi (Varang Kshiti)',
         self::WOLEAI => 'Woleai',
+        self::YEZIDI => 'Yezidi',
         self::YI => 'Yi',
+        self::ZANABAZAR_SQUARE => 'Zanabazar Square',
     ];
 
     /** @var array<string> */
@@ -411,29 +474,38 @@ class Script extends StringEnum
         self::CHAKMA => 'chakma',
         self::CHAM => 'cham',
         self::CHEROKEE => 'cherokee',
+        self::CHORASMIAN => 'chorasmian',
         self::CIRTH => 'cirth',
         self::COPTIC => 'coptic',
         self::CUNEIFORM => 'cuneiform',
         self::CYPRIOT => 'cypriot',
+        self::CYPRO_MINOAN => 'cypro-minoan',
         self::CYRILLIC => 'cyrillic',
         self::CYRILLIC_OLD_CHURCH_SLAVONIC => 'cyrillic-old-church-slavonic',
         self::DESERET => 'deseret',
         self::DEVANAGARI => 'devanagari',
+        self::DIVES_AKURU => 'dives-akuru',
+        self::DOGRA => 'dogra',
         self::DUPLOYAN_SHORTHAND => 'duployan-shorthand',
         self::EGYPTIAN_DEMOTIC => 'egyptian-demotic',
         self::EGYPTIAN_HIERATIC => 'egyptian-hieratic',
         self::EGYPTIAN_HIEROGLYPHS => 'egyptian-hieroglyphs',
         self::ELBASAN => 'elbasan',
+        self::ELYMAIC => 'elymaic',
         self::ETHIOPIC => 'ethiopic',
+        self::GARAY => 'garay',
         self::GEORGIAN => 'georgian',
         self::GLAGOLITIC => 'glagolitic',
         self::GOTHIC => 'gothic',
         self::GRANTHA => 'grantha',
         self::GREEK => 'greek',
         self::GUJARATI => 'gujarati',
+        self::GUNJALA_GONDI => 'gunjala-gondi',
         self::GURMUKHI => 'gurmukhi',
+        self::GURUNG_KHE_MA => 'gurung-khe-ma',
         self::HAN => 'han',
         self::HANGUL => 'hangul',
+        self::HANIFI_ROHINGYA => 'hanifi-rohingya',
         self::HANUNOO => 'hanunoo',
         self::HAN_SIMPLIFIED => 'han-simplified',
         self::HAN_TRADITIONAL => 'han-traditional',
@@ -454,7 +526,9 @@ class Script extends StringEnum
         self::KAITHI => 'kaithi',
         self::KANNADA => 'kannada',
         self::KATAKANA => 'katakana',
+        self::KAWI => 'kawi',
         self::KAYAH_LI => 'kayah-li',
+        self::KHAMTI_SHAN => 'khamti-shan',
         self::KHAROSHTHI => 'kharoshthi',
         self::KHITAN_LARGE => 'khitan-large',
         self::KHITAN_SMALL => 'khitan-small',
@@ -462,6 +536,7 @@ class Script extends StringEnum
         self::KHOJKI => 'khojki',
         self::KHUDAWADI => 'khudawadi',
         self::KHUTSURI => 'khutsuri',
+        self::KIRAT_RAI => 'kirat-rai',
         self::KLINGON => 'klingon',
         self::KOREAN => 'korean',
         self::KPELLE => 'kpelle',
@@ -479,12 +554,15 @@ class Script extends StringEnum
         self::LYCIAN => 'lycian',
         self::LYDIAN => 'lydian',
         self::MAHAJANI => 'mahajani',
+        self::MAKASAR => 'makasar',
         self::MALAYALAM => 'malayalam',
         self::MANDAIC => 'mandaic',
         self::MANICHAEAN => 'manichaean',
         self::MARCHEN => 'marchen',
+        self::MASARAM_GONDI => 'masaram-gondi',
         self::MATHEMATICAL_NOTATION => 'mathematical-notation',
         self::MAYAN_HIEROGLYPHS => 'mayan-hieroglyphs',
+        self::MEDEFAIDRIN => 'medefaidrin',
         self::MEITEI_MAYEK => 'meitei-mayek',
         self::MENDE_KIKAKUI => 'mende-kikakui',
         self::MEROITIC_CURSIVE => 'meroitic-cursive',
@@ -497,19 +575,23 @@ class Script extends StringEnum
         self::MULTANI => 'multani',
         self::MYANMAR => 'myanmar',
         self::NABATAEAN => 'nabataean',
+        self::NAG_MUNDARI => 'nag-mundari',
         self::NAKHI_GEBA => 'nakhi-geba',
         self::NEWA => 'newa',
         self::NEW_TAI_LUE => 'new-tai-lue',
         self::NKO => 'nko',
         self::NUSHU => 'nushu',
+        self::NYIAKENG_PUACHUE_HMONG => 'nyiakeng-puachue-hmong',
         self::OGHAM => 'ogham',
         self::OLD_HUNGARIAN => 'old-hungarian',
         self::OLD_ITALIC => 'old-italic',
         self::OLD_NORTH_ARABIAN => 'old-north-arabian',
         self::OLD_PERMIC => 'old-permic',
         self::OLD_PERSIAN => 'old-persian',
+        self::OLD_SOGDIAN => 'old-sogdian',
         self::OLD_SOUTH_ARABIAN => 'old-south-arabian',
         self::OL_CHIKI => 'ol-chiki',
+        self::OL_ONAL => 'ol-onal',
         self::ORIYA => 'oriya',
         self::ORKHON_RUNIC => 'orkhon-runic',
         self::OSAGE => 'osage',
@@ -531,8 +613,11 @@ class Script extends StringEnum
         self::SIDDHAM => 'siddham',
         self::SIGNWRITING => 'signwriting',
         self::SINHALA => 'sinhala',
+        self::SOGDIAN => 'sogdian',
         self::SORA_SOMPENG => 'sora-sompeng',
+        self::SOYOMBO => 'soyombo',
         self::SUNDANESE => 'sundanese',
+        self::SUNUWAR => 'sunuwar',
         self::SYLOTI_NAGRI => 'syloti-nagri',
         self::SYMBOLS => 'symbols',
         self::SYMBOLS_EMOJI => 'symbols-emoji',
@@ -547,6 +632,7 @@ class Script extends StringEnum
         self::TAI_VIET => 'tai-viet',
         self::TAKRI => 'takri',
         self::TAMIL => 'tamil',
+        self::TANGSA => 'tangsa',
         self::TANGUT => 'tangut',
         self::TELUGU => 'telugu',
         self::TENGWAR => 'tengwar',
@@ -555,15 +641,21 @@ class Script extends StringEnum
         self::TIBETAN => 'tibetan',
         self::TIFINAGH => 'tifinagh',
         self::TIRHUTA => 'tirhuta',
+        self::TODO_BICHIG => 'todo-bichig',
+        self::TOTO => 'toto',
+        self::TULU_TIGALARI => 'tulu-tigalari',
         self::UGARITIC => 'ugaritic',
         self::UNCODED_SCRIPT => 'uncoded-script',
         self::UNDETERMINED_SCRIPT => 'undetermined-script',
         self::UNWRITTEN_DOCUMENTS => 'unwritten-documents',
         self::VAI => 'vai',
         self::VISIBLE_SPEECH => 'visible-speech',
+        self::WANCHO => 'wancho',
         self::WARANG_CITI => 'warang-citi',
         self::WOLEAI => 'woleai',
+        self::YEZIDI => 'yezidi',
         self::YI => 'yi',
+        self::ZANABAZAR_SQUARE => 'zanabazar-square',
     ];
 
     public function getName(): string
