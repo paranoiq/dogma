@@ -51,6 +51,10 @@ class Transliterator extends PhpTransliterator
     public const UNHEX_PERL = 'Hex-Any/Perl';
     public const HEX_XML = 'Any-Hex/XML';
     public const UNHEX_XML = 'Hex-Any/XML';
+    public const HEX_CSS = 'Any-Hex/CSS';
+    public const UNHEX_CSS = 'Hex-Any/CSS';
+    public const HEX_UNICODE = 'Any-Hex/Unicode';
+    public const UNHEX_UNICODE = 'Hex-Any/Unicode';
 
     public const FIX_ACCENTS = 'Any-Accents';
     public const ASCII_ACCENTS = 'Accents-Any';
@@ -73,6 +77,7 @@ class Transliterator extends PhpTransliterator
     public const TO_HANGUL = 'Any-Hangul';
     public const TO_HEBREW = 'Any-Hebrew';
     public const TO_HIRAGANA = 'Any-Hiragana';
+    public const TO_IPA = 'Any-IPA';
     public const TO_KANNADA = 'Any-Kannada';
     public const TO_KATAKANA = 'Any-Katakana';
     public const TO_LATIN = 'Any-Latin';
@@ -80,7 +85,7 @@ class Transliterator extends PhpTransliterator
     public const TO_ORIYA = 'Any-Oriya';
     public const TO_TAMIL = 'Any-Tamil';
     public const TO_TELUGU = 'Any-Telugu';
-    public const TO_THAI = 'Any-Thai'; // may not be available
+    public const TO_THAI = 'Any-Thai';
 
     public const ARABIC_TO_LATIN = 'Arabic-Latin';
     public const BENGALI_TO_DEVANAGARI = 'Bengali-Devanagari';
@@ -127,6 +132,7 @@ class Transliterator extends PhpTransliterator
     public const HEBREW_TO_LATIN = 'Hebrew-Latin';
     public const HIRAGANA_TO_KATAKANA = 'Hiragana-Katakana';
     public const HIRAGANA_TO_LATIN = 'Hiragana-Latin';
+    public const IPA_TO_XSAMPA = 'IPA-XSampa';
     public const JAMO_TO_LATIN = 'Jamo-Latin';
     public const KANNADA_TO_BENGALI = 'Kannada-Bengali';
     public const KANNADA_TO_DEVANAGARI = 'Kannada-Devanagari';
@@ -195,7 +201,8 @@ class Transliterator extends PhpTransliterator
     public const TELUGU_TO_MALAYALAM = 'Telugu-Malayalam';
     public const TELUGU_TO_ORIYA = 'Telugu-Oriya';
     public const TELUGU_TO_TAMIL = 'Telugu-Tamil';
-    public const THAI_TO_LATIN = 'Thai-Latin'; // may not be available
+    public const THAI_TO_LATIN = 'Thai-Latin';
+    public const XSAMPA_TO_IPA = 'XSampa-IPA';
 
     public const FULLWIDTH_TO_HALFWIDTH = 'Fullwidth-Halfwidth';
     public const HALFWIDTH_TO_FULLWIDTH = 'Halfwidth-Fullwidth';
@@ -266,7 +273,7 @@ class Transliterator extends PhpTransliterator
         $from = explode(' ', $fromScript->getName())[0];
         $to = explode(' ', $toScript->getName())[0];
 
-        return self::create("$from-$to");
+        return self::create("{$from}-{$to}");
     }
 
 }
