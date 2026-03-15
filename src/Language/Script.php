@@ -34,6 +34,7 @@ class Script extends StringEnum
     public const BASSA_VAH = 'Bass';
     public const BATAK = 'Batk';
     public const BENGALI = 'Beng';
+    public const BERIA_ERFE = 'Berf';
     public const BHAIKSUKI = 'Bhks';
     public const BLISSYMBOLS = 'Blis';
     public const BOOK_PAHLAVI = 'Phlv';
@@ -89,7 +90,6 @@ class Script extends StringEnum
     public const HIRAGANA = 'Hira';
     public const IMPERIAL_ARAMAIC = 'Armi';
     public const INDUS = 'Inds';
-    public const INHERITED_SCRIPT = 'Zinh';
     public const INSCRIPTIONAL_PAHLAVI = 'Phli';
     public const INSCRIPTIONAL_PARTHIAN = 'Prti';
     public const JAMO = 'Jamo';
@@ -134,7 +134,6 @@ class Script extends StringEnum
     public const MANICHAEAN = 'Mani';
     public const MARCHEN = 'Marc';
     public const MASARAM_GONDI = 'Gonm';
-    public const MATHEMATICAL_NOTATION = 'Zmth';
     public const MAYAN_HIEROGLYPHS = 'Maya';
     public const MEDEFAIDRIN = 'Medf';
     public const MEITEI_MAYEK = 'Mtei';
@@ -149,6 +148,7 @@ class Script extends StringEnum
     public const MULTANI = 'Mult';
     public const MYANMAR = 'Mymr';
     public const NABATAEAN = 'Nbat';
+    public const NANDINAGARI = 'Nand';
     public const NAG_MUNDARI = 'Nagm';
     public const NAKHI_GEBA = 'Nkgb';
     public const NEWA = 'Newa';
@@ -193,8 +193,6 @@ class Script extends StringEnum
     public const SUNDANESE = 'Sund';
     public const SUNUWAR = 'Sunu';
     public const SYLOTI_NAGRI = 'Sylo';
-    public const SYMBOLS = 'Zsym';
-    public const SYMBOLS_EMOJI = 'Zsye';
     public const SYRIAC = 'Syrc';
     public const SYRIAC_EASTERN = 'Syrn';
     public const SYRIAC_ESTRANGELO = 'Syre';
@@ -228,6 +226,10 @@ class Script extends StringEnum
     public const YI = 'Yiii';
     public const ZANABAZAR_SQUARE = 'Zanb';
 
+    public const INHERITED_SCRIPT = 'Zinh';
+    public const MATHEMATICAL_NOTATION = 'Zmth';
+    public const SYMBOLS = 'Zsym';
+    public const SYMBOLS_EMOJI = 'Zsye';
     public const UNWRITTEN_DOCUMENTS = 'Zxxx';
     public const UNDETERMINED_SCRIPT = 'Zyyy';
     public const UNCODED_SCRIPT = 'Zzzz';
@@ -247,6 +249,7 @@ class Script extends StringEnum
         self::BASSA_VAH => 'Bassa Vah',
         self::BATAK => 'Batak',
         self::BENGALI => 'Bengali',
+        self::BERIA_ERFE => 'Beria Erfe',
         self::BHAIKSUKI => 'Bhaiksuki',
         self::BLISSYMBOLS => 'Blissymbols',
         self::BOOK_PAHLAVI => 'Book Pahlavi',
@@ -364,6 +367,7 @@ class Script extends StringEnum
         self::NABATAEAN => 'Nabataean',
         self::NAG_MUNDARI => 'Nag Mundari',
         self::NAKHI_GEBA => 'Nakhi Geba (\'Na-\'Khi ²Ggŏ-¹baw, Naxi Geba)',
+        self::NANDINAGARI => 'Nandinagari',
         self::NEWA => 'Newa, Newar, Newari, Nepāla lipi',
         self::NEW_TAI_LUE => 'New Tai Lue',
         self::NKO => 'N’Ko',
@@ -460,6 +464,7 @@ class Script extends StringEnum
         self::BASSA_VAH => 'bassa-vah',
         self::BATAK => 'batak',
         self::BENGALI => 'bengali',
+        self::BERIA_ERFE => 'beria-erfe',
         self::BHAIKSUKI => 'bhaiksuki',
         self::BLISSYMBOLS => 'blissymbols',
         self::BOOK_PAHLAVI => 'book-pahlavi',
@@ -577,6 +582,7 @@ class Script extends StringEnum
         self::NABATAEAN => 'nabataean',
         self::NAG_MUNDARI => 'nag-mundari',
         self::NAKHI_GEBA => 'nakhi-geba',
+        self::NANDINAGARI => 'nandinagari',
         self::NEWA => 'newa',
         self::NEW_TAI_LUE => 'new-tai-lue',
         self::NKO => 'nko',
@@ -658,6 +664,219 @@ class Script extends StringEnum
         self::ZANABAZAR_SQUARE => 'zanabazar-square',
     ];
 
+    /** @var array<string, int> */
+    private static array $ids = [
+        self::ADLAM => 166,
+        self::AFAKA => 439,
+        self::AHOM => 338,
+        self::ANATOLIAN_HIEROGLYPHS => 80,
+        self::ARABIC => 160,
+        self::ARABIC_NASTALIQ => 161,
+        self::ARMENIAN => 230,
+        self::AVESTAN => 134,
+        self::BALINESE => 360,
+        self::BAMUM => 435,
+        self::BASSA_VAH => 259,
+        self::BATAK => 365,
+        self::BENGALI => 325,
+        self::BERIA_ERFE => 258,
+        self::BHAIKSUKI => 334,
+        self::BLISSYMBOLS => 550,
+        self::BOOK_PAHLAVI => 133,
+        self::BOPOMOFO => 285,
+        self::BRAHMI => 300,
+        self::BRAILLE => 570,
+        self::BUGINESE => 367,
+        self::BUHID => 372,
+        self::CANADIAN_ABORIGINAL_SYLLABICS => 440,
+        self::CARIAN => 201,
+        self::CAUCASIAN_ALBANIAN => 239,
+        self::CHAKMA => 349,
+        self::CHAM => 358,
+        self::CHEROKEE => 445,
+        self::CHORASMIAN => 109,
+        self::CIRTH => 291,
+        self::COPTIC => 204,
+        self::CUNEIFORM => 20,
+        self::CYPRIOT => 403,
+        self::CYPRO_MINOAN => 402,
+        self::CYRILLIC => 220,
+        self::CYRILLIC_OLD_CHURCH_SLAVONIC => 221,
+        self::DESERET => 250,
+        self::DEVANAGARI => 315,
+        self::DIVES_AKURU => 342,
+        self::DOGRA => 328,
+        self::DUPLOYAN_SHORTHAND => 755,
+        self::EGYPTIAN_DEMOTIC => 70,
+        self::EGYPTIAN_HIERATIC => 60,
+        self::EGYPTIAN_HIEROGLYPHS => 50,
+        self::ELBASAN => 226,
+        self::ELYMAIC => 128,
+        self::ETHIOPIC => 430,
+        self::GARAY => 164,
+        self::GEORGIAN => 240,
+        self::GLAGOLITIC => 225,
+        self::GOTHIC => 206,
+        self::GRANTHA => 343,
+        self::GREEK => 200,
+        self::GUJARATI => 320,
+        self::GUNJALA_GONDI => 312,
+        self::GURMUKHI => 310,
+        self::GURUNG_KHE_MA => 397,
+        self::HAN => 500,
+        self::HANGUL => 286,
+        self::HANIFI_ROHINGYA => 167,
+        self::HANUNOO => 371,
+        self::HAN_SIMPLIFIED => 501,
+        self::HAN_TRADITIONAL => 502,
+        self::HAN_WITH_BOPOMOFO => 503,
+        self::HATRAN => 127,
+        self::HEBREW => 125,
+        self::HIRAGANA => 410,
+        self::IMPERIAL_ARAMAIC => 124,
+        self::INDUS => 610,
+        self::INHERITED_SCRIPT => 994,
+        self::INSCRIPTIONAL_PAHLAVI => 131,
+        self::INSCRIPTIONAL_PARTHIAN => 130,
+        self::JAMO => 284,
+        self::JAPANESE => 413,
+        self::JAPANESE_SYLLABARIES => 412,
+        self::JAVANESE => 361,
+        self::JURCHEN => 510,
+        self::KAITHI => 317,
+        self::KANNADA => 345,
+        self::KATAKANA => 411,
+        self::KAWI => 368,
+        self::KAYAH_LI => 357,
+        self::KHAROSHTHI => 305,
+        self::KHITAN_LARGE => 505,
+        self::KHITAN_SMALL => 288,
+        self::KHMER => 355,
+        self::KHOJKI => 322,
+        self::KHUDAWADI => 318,
+        self::KHUTSURI => 241,
+        self::KIRAT_RAI => 396,
+        self::KLINGON => 293,
+        self::KOREAN => 287,
+        self::KPELLE => 436,
+        self::LAO => 356,
+        self::LATIN => 215,
+        self::LATIN_FRAKTUR => 217,
+        self::LATIN_GAELIC => 216,
+        self::LEKE => 364,
+        self::LEPCHA => 335,
+        self::LIMBU => 336,
+        self::LINEAR_A => 400,
+        self::LINEAR_B => 401,
+        self::LISU => 399,
+        self::LOMA => 437,
+        self::LYCIAN => 202,
+        self::LYDIAN => 116,
+        self::MAHAJANI => 314,
+        self::MAKASAR => 366,
+        self::MALAYALAM => 347,
+        self::MANDAIC => 140,
+        self::MANICHAEAN => 139,
+        self::MARCHEN => 332,
+        self::MASARAM_GONDI => 313,
+        self::MATHEMATICAL_NOTATION => 995,
+        self::MAYAN_HIEROGLYPHS => 90,
+        self::MEDEFAIDRIN => 265,
+        self::MEITEI_MAYEK => 337,
+        self::MENDE_KIKAKUI => 438,
+        self::MEROITIC_CURSIVE => 101,
+        self::MEROITIC_HIEROGLYPHS => 100,
+        self::MIAO => 282,
+        self::MODI => 324,
+        self::MONGOLIAN => 145,
+        self::MOON => 218,
+        self::MRO => 264,
+        self::MULTANI => 323,
+        self::MYANMAR => 350,
+        self::NABATAEAN => 159,
+        self::NAG_MUNDARI => 295,
+        self::NAKHI_GEBA => 420,
+        self::NANDINAGARI => 311,
+        self::NEWA => 333,
+        self::NEW_TAI_LUE => 354,
+        self::NKO => 165,
+        self::NUSHU => 499,
+        self::NYIAKENG_PUACHUE_HMONG => 451,
+        self::OGHAM => 212,
+        self::OLD_HUNGARIAN => 176,
+        self::OLD_ITALIC => 210,
+        self::OLD_NORTH_ARABIAN => 106,
+        self::OLD_PERMIC => 227,
+        self::OLD_PERSIAN => 30,
+        self::OLD_SOGDIAN => 142,
+        self::OLD_SOUTH_ARABIAN => 105,
+        self::OL_CHIKI => 261,
+        self::OL_ONAL => 296,
+        self::ORIYA => 327,
+        self::ORKHON_RUNIC => 175,
+        self::OSAGE => 219,
+        self::OSMANYA => 260,
+        self::PAHAWH_HMONG => 450,
+        self::PALMYRENE => 126,
+        self::PAU_CIN_HAU => 263,
+        self::PHAGS_PA => 331,
+        self::PHOENICIAN => 115,
+        self::PSALTER_PAHLAVI => 132,
+        self::REJANG => 363,
+        self::RONGORONGO => 620,
+        self::RUNIC => 211,
+        self::SAMARITAN => 123,
+        self::SARATI => 292,
+        self::SAURASHTRA => 344,
+        self::SHARADA => 319,
+        self::SHAVIAN => 281,
+        self::SIDDHAM => 302,
+        self::SIGNWRITING => 95,
+        self::SINHALA => 348,
+        self::SOGDIAN => 141,
+        self::SORA_SOMPENG => 398,
+        self::SOYOMBO => 329,
+        self::SUNDANESE => 362,
+        self::SUNUWAR => 274,
+        self::SYLOTI_NAGRI => 316,
+        self::SYMBOLS => 996,
+        self::SYRIAC => 135,
+        self::SYRIAC_EASTERN => 136,
+        self::SYRIAC_ESTRANGELO => 138,
+        self::SYRIAC_WESTERN => 137,
+        self::TAGALOG => 370,
+        self::TAGBANWA => 373,
+        self::TAI_LE => 353,
+        self::TAI_THAM => 351,
+        self::TAI_VIET => 359,
+        self::TAKRI => 321,
+        self::TAMIL => 346,
+        self::TANGSA => 275,
+        self::TANGUT => 520,
+        self::TELUGU => 340,
+        self::TENGWAR => 290,
+        self::THAANA => 170,
+        self::THAI => 352,
+        self::TIBETAN => 330,
+        self::TIFINAGH => 120,
+        self::TIRHUTA => 326,
+        self::TODO_BICHIG => 229,
+        self::TOTO => 294,
+        self::TULU_TIGALARI => 341,
+        self::UGARITIC => 40,
+        self::UNCODED_SCRIPT => 999,
+        self::UNDETERMINED_SCRIPT => 998,
+        self::UNWRITTEN_DOCUMENTS => 997,
+        self::VAI => 470,
+        self::VISIBLE_SPEECH => 280,
+        self::WANCHO => 283,
+        self::WARANG_CITI => 262,
+        self::WOLEAI => 480,
+        self::YEZIDI => 192,
+        self::YI => 460,
+        self::ZANABAZAR_SQUARE => 339,
+    ];
+
     public function getName(): string
     {
         return self::$names[$this->getValue()];
@@ -668,10 +887,23 @@ class Script extends StringEnum
         return self::$idents[$this->getValue()];
     }
 
+    public function getId(): int
+    {
+        return self::$ids[$this->getValue()];
+    }
+
     public static function getByIdent(string $ident): self
     {
         /** @var string $code */
         $code = array_search($ident, self::$idents, true);
+
+        return self::get($code);
+    }
+
+    public static function getById(int $id): self
+    {
+        /** @var string $code */
+        $code = array_search($id, self::$ids, true);
 
         return self::get($code);
     }

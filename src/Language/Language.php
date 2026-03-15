@@ -14,7 +14,7 @@ use function array_search;
 use function strtolower;
 
 /**
- * 2-letter language codes by ISO-639-1
+ * 2-letter ISO-639-1 language codes
  */
 class Language extends StringEnum
 {
@@ -114,7 +114,7 @@ class Language extends StringEnum
     public const LAO = 'lo';
     public const LATIN = 'la';
     public const LATVIAN = 'lv';
-    public const LIMBURGISH = 'li';
+    public const LIMBURGAN = 'li';
     public const LINGALA = 'ln';
     public const LITHUANIAN = 'lt';
     public const LUBA_KATANGA = 'lu';
@@ -304,7 +304,7 @@ class Language extends StringEnum
         self::LAO => 'lao',
         self::LATIN => 'latin',
         self::LATVIAN => 'latvian',
-        self::LIMBURGISH => 'limburgish',
+        self::LIMBURGAN => 'limburgish',
         self::LINGALA => 'lingala',
         self::LITHUANIAN => 'lithuanian',
         self::LUBA_KATANGA => 'luba-katanga',
@@ -495,7 +495,7 @@ class Language extends StringEnum
         self::LAO => 'ພາສາລາວ',
         self::LATIN => 'latine',
         self::LATVIAN => 'latviešu valoda',
-        self::LIMBURGISH => 'limburgs',
+        self::LIMBURGAN => 'limburgs',
         self::LINGALA => 'lingála',
         self::LITHUANIAN => 'lietuvių kalba',
         self::LUBA_KATANGA => 'luba-katanga',
@@ -686,7 +686,7 @@ class Language extends StringEnum
         self::LAO => 'lao',
         self::LATIN => 'latin',
         self::LATVIAN => 'latvian',
-        self::LIMBURGISH => 'limburgish',
+        self::LIMBURGAN => 'limburgish',
         self::LINGALA => 'lingala',
         self::LITHUANIAN => 'lithuanian',
         self::LUBA_KATANGA => 'luba-katanga',
