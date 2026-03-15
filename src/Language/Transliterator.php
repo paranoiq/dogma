@@ -62,13 +62,32 @@ class Transliterator extends PhpTransliterator
     public const FIX_TYPOGRAPHY = 'Any-Publishing';
     public const ASCII_TYPOGRAPHY = 'Publishing-Any';
 
+    // special
     public const TO_ASCII = 'Latin-ASCII';
+
+    public const TO_IPA = 'Any-IPA';
+    public const XSAMPA_TO_IPA = 'XSampa-IPA';
+    public const IPA_TO_XSAMPA = 'IPA-XSampa';
+
+    public const CYRILLIC_TO_LATIN_BGN = 'Cyrillic-Latin/BGN';
+    public const CYRILLIC_TO_LATIN_ISO = 'Cyrillic-Latin/ISO';
+
+    public const GREEK_TO_LATIN_BGN = 'Greek-Latin/BGN';
+    public const GREEK_TO_LATIN_ISO = 'Greek-Latin/ISO';
+
+    public const HEBREW_TO_LATIN_BGN = 'Hebrew-Latin/BGN';
+
+    public const FULLWIDTH_TO_HALFWIDTH = 'Fullwidth-Halfwidth';
+    public const HALFWIDTH_TO_FULLWIDTH = 'Halfwidth-Fullwidth';
 
     // script rules
     public const TO_ARABIC = 'Any-Arabic';
+    public const TO_ARMENIAN = 'Any-Armenian';
     public const TO_BENGALI = 'Any-Bengali';
     public const TO_CYRILLIC = 'Any-Cyrillic';
     public const TO_DEVANAGARI = 'Any-Devanagari';
+    public const TO_ETHIOPIC = 'Any-Ethiopic';
+    public const TO_GEORGIAN = 'Any-Georgian';
     public const TO_GREEK = 'Any-Greek';
     public const TO_GREEK_UNGEGN = 'Any-Greek/UNGEGN';
     public const TO_GUJARATI = 'Any-Gujarati';
@@ -77,17 +96,22 @@ class Transliterator extends PhpTransliterator
     public const TO_HANGUL = 'Any-Hangul';
     public const TO_HEBREW = 'Any-Hebrew';
     public const TO_HIRAGANA = 'Any-Hiragana';
-    public const TO_IPA = 'Any-IPA';
     public const TO_KANNADA = 'Any-Kannada';
     public const TO_KATAKANA = 'Any-Katakana';
+    public const TO_KHMER = 'Any-Khmer';
+    public const TO_LAO = 'Any-Lao';
     public const TO_LATIN = 'Any-Latin';
     public const TO_MALAYALAM = 'Any-Malayalam';
+    public const TO_MONGOLIAN = 'Any-Mongolian';
     public const TO_ORIYA = 'Any-Oriya';
+    public const TO_SINHALA = 'Any-Sinhala';
     public const TO_TAMIL = 'Any-Tamil';
     public const TO_TELUGU = 'Any-Telugu';
     public const TO_THAI = 'Any-Thai';
+    public const TO_TIBETAN = 'Any-Tibetan';
 
     public const ARABIC_TO_LATIN = 'Arabic-Latin';
+    public const ARMENIAN_TO_LATIN = 'Armenian-Latin';
     public const BENGALI_TO_DEVANAGARI = 'Bengali-Devanagari';
     public const BENGALI_TO_GUJARATI = 'Bengali-Gujarati';
     public const BENGALI_TO_GURMUKHI = 'Bengali-Gurmukhi';
@@ -97,6 +121,7 @@ class Transliterator extends PhpTransliterator
     public const BENGALI_TO_ORIYA = 'Bengali-Oriya';
     public const BENGALI_TO_TAMIL = 'Bengali-Tamil';
     public const BENGALI_TO_TELUGU = 'Bengali-Telugu';
+    public const BENGALI_TO_THAI = 'Bengali-Thai';
     public const CYRILLIC_TO_LATIN = 'Cyrillic-Latin';
     public const DEVANAGARI_TO_BENGALI = 'Devanagari-Bengali';
     public const DEVANAGARI_TO_GUJARATI = 'Devanagari-Gujarati';
@@ -107,6 +132,9 @@ class Transliterator extends PhpTransliterator
     public const DEVANAGARI_TO_ORIYA = 'Devanagari-Oriya';
     public const DEVANAGARI_TO_TAMIL = 'Devanagari-Tamil';
     public const DEVANAGARI_TO_TELUGU = 'Devanagari-Telugu';
+    public const DEVANAGARI_TO_THAI = 'Devanagari-Thai';
+    public const ETHIOPIC_TO_LATIN = 'Ethiopic-Latin';
+    public const GEORGIAN_TO_LATIN = 'Georgian-Latin';
     public const GREEK_TO_LATIN = 'Greek-Latin';
     public const GREEK_TO_LATIN_UNGEGN = 'Greek-Latin/UNGEGN';
     public const GUJARATI_TO_BENGALI = 'Gujarati-Bengali';
@@ -118,6 +146,7 @@ class Transliterator extends PhpTransliterator
     public const GUJARATI_TO_ORIYA = 'Gujarati-Oriya';
     public const GUJARATI_TO_TAMIL = 'Gujarati-Tamil';
     public const GUJARATI_TO_TELUGU = 'Gujarati-Telugu';
+    public const GUJARATI_TO_THAI = 'Gujarati-Thai';
     public const GURMUKHI_TO_BENGALI = 'Gurmukhi-Bengali';
     public const GURMUKHI_TO_DEVANAGARI = 'Gurmukhi-Devanagari';
     public const GURMUKHI_TO_GUJARATI = 'Gurmukhi-Gujarati';
@@ -127,12 +156,12 @@ class Transliterator extends PhpTransliterator
     public const GURMUKHI_TO_ORIYA = 'Gurmukhi-Oriya';
     public const GURMUKHI_TO_TAMIL = 'Gurmukhi-Tamil';
     public const GURMUKHI_TO_TELUGU = 'Gurmukhi-Telugu';
-    public const HAN_TO_LATIN = 'Han-Latin';
+    public const GURMUKHI_TO_THAI = 'Gurmukhi-Thai';
     public const HANGUL_TO_LATIN = 'Hangul-Latin';
+    public const HAN_TO_LATIN = 'Han-Latin';
     public const HEBREW_TO_LATIN = 'Hebrew-Latin';
     public const HIRAGANA_TO_KATAKANA = 'Hiragana-Katakana';
     public const HIRAGANA_TO_LATIN = 'Hiragana-Latin';
-    public const IPA_TO_XSAMPA = 'IPA-XSampa';
     public const JAMO_TO_LATIN = 'Jamo-Latin';
     public const KANNADA_TO_BENGALI = 'Kannada-Bengali';
     public const KANNADA_TO_DEVANAGARI = 'Kannada-Devanagari';
@@ -143,8 +172,11 @@ class Transliterator extends PhpTransliterator
     public const KANNADA_TO_ORIYA = 'Kannada-Oriya';
     public const KANNADA_TO_TAMIL = 'Kannada-Tamil';
     public const KANNADA_TO_TELUGU = 'Kannada-Telugu';
+    public const KANNADA_TO_THAI = 'Kannada-Thai';
     public const KATAKANA_TO_HIRAGANA = 'Katakana-Hiragana';
     public const KATAKANA_TO_LATIN = 'Katakana-Latin';
+    public const KHMER_TO_LATIN = 'Khmer-Latin';
+    public const LAO_TO_LATIN = 'Lao-Latin';
     public const LATIN_TO_ARABIC = 'Latin-Arabic';
     public const LATIN_TO_BENGALI = 'Latin-Bengali';
     public const LATIN_TO_CYRILLIC = 'Latin-Cyrillic';
@@ -164,7 +196,7 @@ class Transliterator extends PhpTransliterator
     public const LATIN_TO_ORIYA = 'Latin-Oriya';
     public const LATIN_TO_TAMIL = 'Latin-Tamil';
     public const LATIN_TO_TELUGU = 'Latin-Telugu';
-    public const LATIN_TO_THAI = 'Latin-Thai'; // may not be available
+    public const LATIN_TO_THAI = 'Latin-Thai';
     public const MALAYALAM_TO_BENGALI = 'Malayalam-Bengali';
     public const MALAYALAM_TO_DEVANAGARI = 'Malayalam-Devanagari';
     public const MALAYALAM_TO_GUJARATI = 'Malayalam-Gujarati';
@@ -174,6 +206,8 @@ class Transliterator extends PhpTransliterator
     public const MALAYALAM_TO_ORIYA = 'Malayalam-Oriya';
     public const MALAYALAM_TO_TAMIL = 'Malayalam-Tamil';
     public const MALAYALAM_TO_TELUGU = 'Malayalam-Telugu';
+    public const MALAYALAM_TO_THAI = 'Malayalam-Thai';
+    public const MONGOLIAN_TO_LATIN = 'Mongolian-Latin';
     public const ORIYA_TO_BENGALI = 'Oriya-Bengali';
     public const ORIYA_TO_DEVANAGARI = 'Oriya-Devanagari';
     public const ORIYA_TO_GUJARATI = 'Oriya-Gujarati';
@@ -183,6 +217,8 @@ class Transliterator extends PhpTransliterator
     public const ORIYA_TO_MALAYALAM = 'Oriya-Malayalam';
     public const ORIYA_TO_TAMIL = 'Oriya-Tamil';
     public const ORIYA_TO_TELUGU = 'Oriya-Telugu';
+    public const ORIYA_TO_THAI = 'Oriya-Thai';
+    public const SINHALA_TO_LATIN = 'Sinhala-Latin';
     public const TAMIL_TO_BENGALI = 'Tamil-Bengali';
     public const TAMIL_TO_DEVANAGARI = 'Tamil-Devanagari';
     public const TAMIL_TO_GUJARATI = 'Tamil-Gujarati';
@@ -192,6 +228,7 @@ class Transliterator extends PhpTransliterator
     public const TAMIL_TO_MALAYALAM = 'Tamil-Malayalam';
     public const TAMIL_TO_ORIYA = 'Tamil-Oriya';
     public const TAMIL_TO_TELUGU = 'Tamil-Telugu';
+    public const TAMIL_TO_THAI = 'Tamil-Thai';
     public const TELUGU_TO_BENGALI = 'Telugu-Bengali';
     public const TELUGU_TO_DEVANAGARI = 'Telugu-Devanagari';
     public const TELUGU_TO_GUJARATI = 'Telugu-Gujarati';
@@ -201,11 +238,9 @@ class Transliterator extends PhpTransliterator
     public const TELUGU_TO_MALAYALAM = 'Telugu-Malayalam';
     public const TELUGU_TO_ORIYA = 'Telugu-Oriya';
     public const TELUGU_TO_TAMIL = 'Telugu-Tamil';
+    public const TELUGU_TO_THAI = 'Telugu-Thai';
     public const THAI_TO_LATIN = 'Thai-Latin';
-    public const XSAMPA_TO_IPA = 'XSampa-IPA';
-
-    public const FULLWIDTH_TO_HALFWIDTH = 'Fullwidth-Halfwidth';
-    public const HALFWIDTH_TO_FULLWIDTH = 'Halfwidth-Fullwidth';
+    public const TIBETAN_TO_LATIN = 'Tibetan-Latin';
 
     /** @var array<PhpTransliterator> */
     private static array $instances = [];
