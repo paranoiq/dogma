@@ -3,9 +3,8 @@
 namespace Dogma\Tests\Str;
 
 use AnyAscii;
-use Dogma\Arr;
 use Dogma\InvalidValueException;
-use Dogma\Language\Intl;
+use Dogma\Language\IntlHelper;
 use Dogma\Re;
 use Dogma\Str;
 use IntlChar;
@@ -22,13 +21,17 @@ use function trim;
 
 require_once __DIR__ . '/../src/bootstrap.php';
 
+/**
+ * This script renders most Unicode code pages to inspect and debug ASCII transliteration
+ * Most CJK pages are turned off to save the browser from putting your CPU on fire.
+ */
+
 ?>
 <style>
     body {
         font-family: Calibri, sans-serif;
         background-color: white;
     }
-
     .tw {
         float: left;
         height: 1024px;
@@ -88,17 +91,17 @@ require_once __DIR__ . '/../src/bootstrap.php';
         margin-right: 8px;
         /*flex: 0 1 auto; /* Allows items to maintain their size or grow/shrink */
     }
-    li { margin-left: -10px; }
+    li { margin-left: -20px; }
 </style>
 
 <?php
 
 $icu = INTL_ICU_VERSION;
-$uni = Intl::ICU_TO_UNICODE[(int) $icu];
+$uni = IntlChar::UNICODE_VERSION;
 echo "<h2>ICU {$icu}, Unicode {$uni}</h2>";
 echo "<div class='container'>";
 $lastSubcat = null;
-foreach (Intl::CATEGORIES as $category => $blocks) {
+foreach (IntlHelper::CATEGORIES as $category => $blocks) {
     if ($category !== 'African Scripts'
         && $category !== 'American Scripts'
         && $category !== 'Indones. & Philippine Sc.'
@@ -114,11 +117,13 @@ foreach (Intl::CATEGORIES as $category => $blocks) {
     echo "<h3>{$category}</h3>";
     echo "<ul><ul>";
     foreach ($blocks as $block => $id) {
+        $age = IntlHelper::getBlockVersion($id);
+        $age = $age ? " ({$age})" : ' …';
         if ($block[0] === '#') {
             $block = substr($block, 1);
             $b = formatBlockName($block);
             $lastSubcat = $b;
-            echo "</ul><li><a href='#{$block}'><b>{$b}</b></a>\n<ul>";
+            echo "</ul><li><a href='#{$block}'><b>{$b}</b></a>{$age}\n<ul>";
         } else {
             $b = formatBlockName($block);
             if (Str::startsWith($b, $lastSubcat)) {
@@ -128,7 +133,7 @@ foreach (Intl::CATEGORIES as $category => $blocks) {
             } elseif (Str::startsWith($b, 'Combining ')) {
                 $b = '… ' . Str::after($b, 'Combining ');
             }
-            echo "<li><a href='#{$block}'>{$b}</a>\n";
+            echo "<li><a href='#{$block}'>{$b}</a>{$age}\n";
         }
     }
     echo "</ul></ul>";
@@ -152,8 +157,8 @@ function formatBlockName(string $name): string
     $name = Str::capitalize(Str::lower(str_replace('_', ' ', $name)));
 
     $name = str_replace(
-        ['Cjk', 'Ipa ', 'Supplemental ', 'Supplementary ', 'Characters', 'Punctuation', 'Miscellaneous', 'Mathematical ', 'Unified Canadian Aboriginal Syllabics'],
-        ['CJK', 'IPA ', 'Suppl. ', 'Suppl. ', 'Chars.', 'Punct.', 'Misc.', 'Math. ', 'Uni. Canadian Aboriginal Syll.'],
+        ['Cjk', 'Ipa ', 'Supplemental ', 'Supplementary ', 'Characters', 'Punctuation', 'Pictographs', 'Presentation ', 'Description', 'Compatibility', 'Miscellaneous', 'Mathematical ', ' Cuneiform', 'Unified Canadian Aboriginal Syllabics'],
+        ['CJK', 'IPA ', 'Suppl. ',       'Suppl. ',        'Chars.',     'Punct.',      'Pictogr.',    'Pres. ',        'Desc.',       'Compat.',       'Misc.',         'Math. ',        ' Cunei.',    'Uni. Canadian Abor. Syll.'],
         $name
     );
 
@@ -162,15 +167,16 @@ function formatBlockName(string $name): string
 
 $transliterator = Transliterator::create('Any-Latin; Latin-ASCII');
 $blocksOrderedByCategory = [];
-foreach (Intl::CATEGORIES as $blocks) {
+foreach (IntlHelper::CATEGORIES as $blocks) {
     foreach ($blocks as $block => $id) {
         $blocksOrderedByCategory[trim($block, '#')] = $id;
     }
 }
-$boundaries = Intl::getBlockBoundaries($blocksOrderedByCategory);
+$boundaries = IntlHelper::getBlockExtents($blocksOrderedByCategory);
 
 $block = $blockName = null;
 $groups = [];
+$count = 0;
 foreach ($blocksOrderedByCategory as $blockId) {
     if ($blockId < 1) {
         continue;
@@ -202,15 +208,18 @@ foreach ($blocksOrderedByCategory as $blockId) {
             if ($block !== null) {
                 renderGroup($groups, $blockName);
                 $groups = [];
+                $count = 0;
             }
             $block = $b;
-            $blockName = array_search($b, Intl::BLOCKS, true) ?: 'UNKNOWN_' . $b;
+            $blockName = array_search($b, IntlHelper::BLOCKS, true) ?: 'UNKNOWN_' . $b;
         }
         $groups[$cell][$row] = [$cp, $h, $c, $t, $a, $x];
+        $count++;
 
-        if ((($cp + 1) % 256) === 0) {
+        if ($count === 256) {
             renderGroup($groups, $blockName);
             $groups = [];
+            $count = 0;
         }
     }
 }

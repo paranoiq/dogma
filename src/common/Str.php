@@ -15,7 +15,7 @@ namespace Dogma;
 use AnyAscii;
 use Collator as PhpCollator;
 use Dogma\Language\Collator;
-use Dogma\Language\Intl;
+use Dogma\Language\IntlHelper;
 use Dogma\Language\Locale\Locale;
 use Dogma\Language\Transliterator;
 use Dogma\Language\UnicodeCharacterCategory;
@@ -240,7 +240,7 @@ class Str
 
     public static function toAscii(string $string): string
     {
-        if (class_exists(Intl::class)) {
+        if (class_exists(IntlHelper::class)) {
             $string = str_replace(array_keys(AsciiTranslit::REPLACEMENTS), array_values(AsciiTranslit::REPLACEMENTS), $string);
         }
 
