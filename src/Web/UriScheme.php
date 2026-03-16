@@ -10,11 +10,13 @@
 namespace Dogma\Web;
 
 use Dogma\Enum\PartialStringEnum;
+use Dogma\System\Port;
+use function str_replace;
+use function strtoupper;
 
 class UriScheme extends PartialStringEnum
 {
 
-    // IETF
     public const AAA = 'aaa';
     public const AAAS = 'aaas';
     public const ABOUT = 'about';
@@ -25,8 +27,11 @@ class UriScheme extends PartialStringEnum
     public const AFP = 'afp';
     public const AFS = 'afs';
     public const AIM = 'aim';
+    public const AMQP = 'amqp';
+    public const AMQPS = 'amqps';
     public const APPDATA = 'appdata';
     public const APT = 'apt';
+    public const ASYNCAPI = 'asyncapi';
     public const ATTACHMENT = 'attachment';
     public const AW = 'aw';
     public const BARION = 'barion';
@@ -34,7 +39,9 @@ class UriScheme extends PartialStringEnum
     public const BITCOIN = 'bitcoin';
     public const BLOB = 'blob';
     public const BOLO = 'bolo';
+    public const BROWSER = 'browser';
     public const BROWSEREXT = 'browserext';
+    public const CABAL = 'cabal';
     public const CALLTO = 'callto';
     public const CAP = 'cap';
     public const CHROME = 'chrome';
@@ -46,17 +53,22 @@ class UriScheme extends PartialStringEnum
     public const CONTENT = 'content';
     public const CRID = 'crid';
     public const CVS = 'cvs';
+    public const DANO = 'dano';
     public const DATA = 'data';
     public const DAV = 'dav';
     public const DICT = 'dict';
     public const DIS = 'dis';
+    public const DISCORD = 'discord';
     public const DLNA_PLAYCONTAINER = 'dlna-playcontainer';
     public const DLNA_PLAYSINGLE = 'dlna-playsingle';
     public const DNS = 'dns';
     public const DNTP = 'dntp';
+    public const DOH = 'doh';
+    public const DRM = 'drm';
     public const DTN = 'dtn';
     public const DVB = 'dvb';
     public const ED2K = 'ed2k';
+    public const ETHEREUM = 'ethereum';
     public const EXAMPLE = 'example';
     public const FACETIME = 'facetime';
     public const FAX = 'fax';
@@ -68,11 +80,13 @@ class UriScheme extends PartialStringEnum
     public const FISH = 'fish';
     public const FTP = 'ftp';
     public const GEO = 'geo';
+    public const GEO_URI = 'geo';
     public const GG = 'gg';
     public const GIT = 'git';
     public const GIZMOPROJECT = 'gizmoproject';
     public const GO = 'go';
     public const GOPHER = 'gopher';
+    public const GRAPHQL = 'graphql';
     public const GTALK = 'gtalk';
     public const H323 = 'h323';
     public const HAM = 'ham';
@@ -86,7 +100,9 @@ class UriScheme extends PartialStringEnum
     public const IMAP = 'imap';
     public const INFO = 'info';
     public const IOTDISCO = 'iotdisco';
+    public const IPFS = 'ipfs';
     public const IPN = 'ipn';
+    public const IPNS = 'ipns';
     public const IPP = 'ipp';
     public const IPPS = 'ipps';
     public const IRC = 'irc';
@@ -104,6 +120,7 @@ class UriScheme extends PartialStringEnum
     public const JMS = 'jms';
     public const KEYPARC = 'keyparc';
     public const LASTFM = 'lastfm';
+    public const LBRY = 'lbry';
     public const LDAP = 'ldap';
     public const LDAPS = 'ldaps';
     public const LVLT = 'lvlt';
@@ -112,11 +129,18 @@ class UriScheme extends PartialStringEnum
     public const MAILTO = 'mailto';
     public const MAPS = 'maps';
     public const MARKET = 'market';
+    public const MATRIX = 'matrix';
     public const MESSAGE = 'message';
     public const MID = 'mid';
+    public const MINERVA = 'minerva';
     public const MMS = 'mms';
     public const MODEM = 'modem';
     public const MOZ = 'moz';
+    public const MQTT = 'mqtt';
+    public const MQTTS = 'mqtts';
+    public const MSNIM = 'msnim';
+    public const MSRP = 'msrp';
+    public const MSRPS = 'msrps';
     public const MS_ACCESS = 'ms-access';
     public const MS_BROWSER_EXTENSION = 'ms-browser-extension';
     public const MS_DRIVE_TO = 'ms-drive-to';
@@ -127,8 +151,8 @@ class UriScheme extends PartialStringEnum
     public const MS_HELP = 'ms-help';
     public const MS_INFOPATH = 'ms-infopath';
     public const MS_MEDIA_STREAM_ID = 'ms-media-stream-id';
-    public const MS_PROJECT = 'ms-project';
     public const MS_POWERPOINT = 'ms-powerpoint';
+    public const MS_PROJECT = 'ms-project';
     public const MS_PUBLISHER = 'ms-publisher';
     public const MS_SEARCH_REPAIR = 'ms-search-repair';
     public const MS_SECONDARY_SCREEN_CONTROLLER = 'ms-secondary-screen-controller';
@@ -160,9 +184,6 @@ class UriScheme extends PartialStringEnum
     public const MS_VISIO = 'ms-visio';
     public const MS_WALK_TO = 'ms-walk-to';
     public const MS_WORD = 'ms-word';
-    public const MSNIM = 'msnim';
-    public const MSRP = 'msrp';
-    public const MSRPS = 'msrps';
     public const MTQP = 'mtqp';
     public const MUMBLE = 'mumble';
     public const MUPDATE = 'mupdate';
@@ -171,11 +192,15 @@ class UriScheme extends PartialStringEnum
     public const NFS = 'nfs';
     public const NI = 'ni';
     public const NIH = 'nih';
+    public const NIH_SCHEME = 'nih';
+    public const NI_SCHEME = 'ni';
     public const NNTP = 'nntp';
     public const NOTES = 'notes';
     public const OCF = 'ocf';
+    public const OCRP = 'ocrp';
     public const OID = 'oid';
     public const OPAQUELOCKTOKEN = 'opaquelocktoken';
+    public const OPENPGP4FPR = 'openpgp4fpr';
     public const PACK = 'pack';
     public const PALM = 'palm';
     public const PAPARAZZI = 'paparazzi';
@@ -185,8 +210,8 @@ class UriScheme extends PartialStringEnum
     public const PRES = 'pres';
     public const PROSPERO = 'prospero';
     public const PROXY = 'proxy';
-    public const PWID = 'pwid';
     public const PSYC = 'psyc';
+    public const PWID = 'pwid';
     public const QB = 'qb';
     public const QUERY = 'query';
     public const REDIS = 'redis';
@@ -201,20 +226,26 @@ class UriScheme extends PartialStringEnum
     public const RTSP = 'rtsp';
     public const RTSPS = 'rtsps';
     public const RTSPU = 'rtspu';
+    public const SARIF = 'sarif';
     public const SECONDLIFE = 'secondlife';
+    public const SECRET = 'secret';
     public const SERVICE = 'service';
     public const SESSION = 'session';
     public const SFTP = 'sftp';
+    public const SFTPS = 'sftps';
     public const SGN = 'sgn';
     public const SHTTP = 'shttp';
     public const SIEVE = 'sieve';
+    public const SIGNAL = 'sgnl';
     public const SIP = 'sip';
     public const SIPS = 'sips';
     public const SKYPE = 'skype';
+    public const SLACK = 'slack';
     public const SMB = 'smb';
     public const SMS = 'sms';
     public const SMTP = 'smtp';
     public const SNEWS = 'snews';
+    public const SNI = 'sni';
     public const SNMP = 'snmp';
     public const SOAP_BEEP = 'soap.beep';
     public const SOAP_BEEPS = 'soap.beeps';
@@ -222,13 +253,18 @@ class UriScheme extends PartialStringEnum
     public const SPOTIFY = 'spotify';
     public const SSH = 'ssh';
     public const STEAM = 'steam';
+    public const STRATUM = 'stratum';
     public const STUN = 'stun';
     public const STUNS = 'stuns';
     public const SUBMIT = 'submit';
     public const SVN = 'svn';
     public const TAG = 'tag';
+    public const TASHAN = 'tashan';
+    public const TAXII = 'taxii';
+    public const TAXIIS = 'taxiis';
     public const TEAMSPEAK = 'teamspeak';
     public const TEL = 'tel';
+    public const TELEGRAM = 'tg';
     public const TELIAEID = 'teliaeid';
     public const TELNET = 'telnet';
     public const TFTP = 'tftp';
@@ -244,14 +280,19 @@ class UriScheme extends PartialStringEnum
     public const UNREAL = 'unreal';
     public const URN = 'urn';
     public const UT2004 = 'ut2004';
-    public const V_EVENT = 'v-event';
     public const VEMMI = 'vemmi';
     public const VENTRILO = 'ventrilo';
     public const VIDEOTEX = 'videotex';
-    public const VNC = 'vnc';
     public const VIEW_SOURCE = 'view-source';
+    public const VNC = 'vnc';
+    public const VNC_SCHEME = 'vnc';
+    public const VSCODE = 'vscode';
+    public const VSCODE_INSIDERS = 'vscode-insiders';
+    public const V_EVENT = 'v-event';
+    public const WAI = 'wai';
     public const WAIS = 'wais';
     public const WEBCAL = 'webcal';
+    public const WHATSAPP = 'whatsapp';
     public const WPID = 'wpid';
     public const WS = 'ws';
     public const WSS = 'wss';
@@ -268,5 +309,79 @@ class UriScheme extends PartialStringEnum
     public const Z39_50 = 'z39.50';
     public const Z39_50R = 'z39.50r';
     public const Z39_50S = 'z39.50s';
+    public const ZOOMMTG = 'zoommtg';
+
+    private const SCHEME_TO_PORT = [
+        self::AAA => 3868,
+        self::AAAS => 5658,
+        self::AFP => 548,
+        self::AIM => 5190,
+        self::BESHARE => 7138,
+        self::BITCOIN => 8333,
+        self::BOLO => 50000,
+        self::CVS => 2401,
+        self::DAV => 80,
+        self::DNS => 53,
+        self::DOH => 443,
+        self::ED2K => 4662,
+        self::H323 => 1720,
+        self::IPFS => 4001,
+        self::IPNS => 4001,
+        self::IPPS => 631,
+        self::IRC6 => 6667,
+        self::IRCS => 6697,
+        self::IRIS => 702,
+        self::JABBER => 5222,
+        self::MMS => 1755,
+        self::MQTTS => 8883,
+        self::MSRPS => 2855,
+        self::MUMBLE => 64738,
+        self::POP => 110,
+        self::PSYC => 9204,
+        self::REDISS => 6379,
+        self::RMI => 1099,
+        self::RTMFP => 1935,
+        self::RTMP => 1935,
+        self::RTSPU => 5005,
+        self::SFTPS => 22,
+        self::SHTTP => 80,
+        self::SMB => 445,
+        self::SNEWS => 563,
+        self::SOAP_BEEPS => 605,
+        self::SOLDAT => 23073,
+        self::STRATUM => 3333,
+        self::TAXII => 443,
+        self::TAXIIS => 443,
+        self::TEAMSPEAK => 9987,
+        self::TN3270 => 23,
+        self::TURN => 3478,
+        self::TURNS => 5349,
+        self::UNREAL => 7777,
+        self::UT2004 => 7777,
+        self::VENTRILO => 3784,
+        self::VNC => 5900,
+        self::WAIS => 210,
+        self::WS => 80,
+        self::WSS => 443,
+        self::XMLRPC_BEEPS => 605,
+        self::XMPP => 5222,
+        self::YMSGR => 5050,
+        self::Z39_50R => 210,
+        self::Z39_50S => 210,
+    ];
+
+    public static function getValueRegexp(): string
+    {
+        return '([a-z][a-z0-9.-]+)';
+    }
+
+    public function getDefaultPort(): ?int
+    {
+        $val = $this->getValue();
+        $ports = Port::getAllowedValues();
+        $service = strtoupper(str_replace('-', '_', $val));
+
+        return $ports[$service] ?? self::SCHEME_TO_PORT[$val] ?? null;
+    }
 
 }

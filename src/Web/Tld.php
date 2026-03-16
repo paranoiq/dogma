@@ -567,7 +567,7 @@ final class Tld extends PartialStringEnum
 
     public static function getValueRegexp(): string
     {
-        return '^([a-z]{2,}|xn--[0-9a-z]{4,})$';
+        return '([a-z]{2,}|xn--[0-9a-z]{4,})';
     }
 
 }

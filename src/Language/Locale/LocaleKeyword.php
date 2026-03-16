@@ -55,7 +55,7 @@ class LocaleKeyword extends PartialStringEnum
 
     public static function getValueRegexp(): string
     {
-        return '[a-z]+';
+        return '([a-z]+)';
     }
 
 }

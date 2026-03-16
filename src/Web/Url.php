@@ -9,78 +9,210 @@
 
 namespace Dogma\Web;
 
+use Dogma\Check;
+use Dogma\Equalable;
+use Dogma\InvalidArgumentException;
 use Dogma\StrictBehaviorMixin;
-use Nette\Http\Url as NetteUrl;
-use Nette\InvalidArgumentException as NetteInvalidArgumentException;
+use function array_slice;
+use function explode;
+use function http_build_query;
+use function implode;
+use function ini_get;
+use function ip2long;
+use function is_array;
+use function parse_str;
+use function parse_url;
+use function preg_quote;
+use function preg_replace;
+use function rawurldecode;
+use function str_replace;
+use const PHP_QUERY_RFC3986;
 
-class Url
+/**
+ * Immutable representation of a URL.
+ *
+ * <pre>
+ * scheme  user password    host     port     path        query   fragment
+ *   |      |      |         |        |        |            |        |
+ * /--\   /--\ /-------\ /---------\ /--\/-----------\ /--------\ /------\
+ * http://john:1337h4x0r@example.com:8042/en/index.php?name=param#fragment  <-- absoluteUrl
+ * \______\_____________________________/
+ *     |               |
+ *  hostUrl        authority
+ * </pre>
+ */
+class Url implements Equalable
 {
     use StrictBehaviorMixin;
 
-    private NetteUrl $url;
+    private string $scheme;
 
+    private string $user;
+
+    private string $password;
+
+    private string $host;
+
+    private int|null $port;
+
+    private string $path;
+
+    /** @var array<string> */
+    private array $query = [];
+
+    private string $fragment;
+
+    private string $authority;
+
+    /**
+     * @throws InvalidArgumentException
+     */
     public function __construct(string $url)
     {
-        try {
-            $this->url = new NetteUrl($url);
-        } catch (NetteInvalidArgumentException $e) {
-            throw new InvalidUrlException($url, $e);
+        $p = @parse_url($url);
+        if ($p === false) {
+            throw new InvalidArgumentException("Malformed or unsupported URI '{$url}'.");
         }
+
+        $this->scheme = $p['scheme'] ?? '';
+        $this->port = $p['port'] ?? null;
+        $this->host = rawurldecode($p['host'] ?? '');
+        $this->user = rawurldecode($p['user'] ?? '');
+        $this->password = rawurldecode($p['pass'] ?? '');
+        $this->path = $p['path'];
+        if ($this->host && $this->path[0] !== '/') {
+            $this->path = '/' . $this->path;
+        }
+        $this->query = is_array($p['query']) ? $p['query'] : self::parseQuery($p['query'] ?? '');
+        $this->fragment = rawurldecode($p['fragment'] ?? '');
     }
 
     public function getValue(): string
     {
-        return $this->url->getAbsoluteUrl();
+        return $this->getAbsoluteUrl();
     }
 
-    public function getScheme(): UriScheme
+    /**
+     * URI including query string and fragment
+     */
+    public function getAbsoluteUrl(): string
     {
-        return UriScheme::get($this->url->getScheme());
+        return $this->getHostUrl() . $this->path
+            . (($tmp = $this->getQuery()) ? '?' . $tmp : '')
+            . ($this->fragment === '' ? '' : '#' . $this->fragment);
+    }
+
+    /**
+     * Scheme and authority part of URI
+     */
+    public function getHostUrl(): string
+    {
+        return ($this->scheme ? $this->scheme . ':' : '')
+            . ($this->authority !== '' ? '//' . $this->authority : '');
+    }
+
+    public function getScheme(): string
+    {
+        return $this->scheme;
     }
 
     public function getUser(): ?string
     {
-        return $this->url->getUser();
+        return $this->user;
     }
 
     public function getPassword(): ?string
     {
-        return $this->url->getPassword();
+        return $this->password;
     }
 
-    public function getHost(): Domain
+    public function getHost(): string
     {
-        return new Domain($this->url->getHost());
+        return $this->host;
     }
 
-    public function getDomain(): Domain
+    public function getHostEnum(): Domain
     {
-        return new Domain($this->url->getHost());
+        return new Domain($this->host);
     }
 
-    public function getTld(): Tld
+    public function getDomain(int $level = 2): string
     {
-        return $this->getDomain()->getTld();
+        $parts = ip2long($this->host)
+            ? [$this->host]
+            : explode('.', $this->host);
+
+        $parts = $level >= 0
+            ? array_slice($parts, -$level)
+            : array_slice($parts, 0, $level);
+
+        return implode('.', $parts);
+    }
+
+    public function getDomainEnum(int $level = 2): Domain
+    {
+        return new Domain($this->getDomain($level));
+    }
+
+    public function getTld(): string
+    {
+        return $this->getDomainEnum()->getTld()->getValue();
+    }
+
+    public function getTldEnum(): Tld
+    {
+        return $this->getDomainEnum()->getTld();
     }
 
     public function getPort(): ?int
     {
-        return $this->url->getPort();
+        return $this->port;
     }
 
     public function getPath(): string
     {
-        return $this->url->getPath();
+        return $this->path;
     }
 
     public function getQuery(): string
     {
-        return $this->url->getQuery();
+        return http_build_query($this->query, '', '&', PHP_QUERY_RFC3986);
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function getQueryParameters(): array
+    {
+        return $this->query;
     }
 
     public function getFragment(): string
     {
-        return $this->url->getFragment();
+        return $this->fragment;
+    }
+
+    /**
+     * @param self $other
+     */
+    public function equals(Equalable $other): bool
+    {
+        Check::instance($other, self::class);
+
+        return $this->getAbsoluteUrl() === $other->getAbsoluteUrl();
+    }
+
+    /**
+     * @return array<string>
+     */
+    public static function parseQuery(string $s): array
+    {
+        $s = str_replace(['%5B', '%5b'], '[', $s);
+        $sep = preg_quote(ini_get('arg_separator.input'), '~');
+        $s = preg_replace("~([$sep])([^[$sep=]+)([^$sep]*)~", '&0[$2]$3', '&' . $s);
+        parse_str($s, $res);
+
+        return $res[0] ?? [];
     }
 
 }
