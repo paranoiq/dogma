@@ -49,7 +49,7 @@ require_once __DIR__ . '/../src/bootstrap.php';
         max-height: 60px;
     }
     abbr { color: silver; }
-    strong abbr { color: red; }
+    strong abbr { color: blue; }
     td.empty {
         background:
             linear-gradient(to top left, transparent calc(50% - 0.5px), silver, transparent calc(50% + 0.5px)),
