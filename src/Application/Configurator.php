@@ -9,7 +9,7 @@
 
 namespace Dogma\Application;
 
-use Dogma\Application\Colors as C;
+use Dogma\Application\Ansi as A;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use stdClass;
@@ -26,7 +26,7 @@ use function is_file;
 use function is_numeric;
 use function is_string;
 use function parse_ini_file;
-use function substr;
+use function str_ends_with;
 use function trigger_error;
 
 final class Configurator extends stdClass
@@ -88,23 +88,23 @@ final class Configurator extends stdClass
             if ($values === null) {
                 $values = [];
             }
-            $row .= $short ? C::white('  -' . $short) : '    ';
-            $row .= C::white(' --' . $name);
+            $row .= $short ? A::white('  -' . $short) : '    ';
+            $row .= A::white(' --' . $name);
             if ($type === self::FLAG_VALUE || $type === self::VALUE || $type === self::VALUES || $type === self::ENUM || $type === self::SET) {
-                $row .= C::gray($hint ? " <$hint>" : ' <value>');
+                $row .= A::gray($hint ? " <$hint>" : ' <value>');
             }
-            $row = C::padString($row, self::HELP_COLUMN_WIDTH);
+            $row = A::pad($row, self::HELP_COLUMN_WIDTH);
             $row .= ' ' . $info;
             if ($type === self::ENUM || $type === self::SET) {
-                $row .= '; values: ' . implode('|', array_map([C::class, 'lyellow'], $values)); // @phpstan-ignore argument.type (todo: cleanup)
+                $row .= '; values: ' . implode('|', array_map([A::class, 'lyellow'], $values)); // @phpstan-ignore argument.type (todo: cleanup)
             }
             if (isset($this->defaults[$name])) {
                 if ($type === self::VALUES || $type === self::SET) {
                     $row .= '; default: ' . implode(',', array_map(function ($value) {
-                        return C::lyellow($this->format($value));
+                        return A::lyellow($this->format($value));
                     }, $this->defaults[$name]));
                 } else {
-                    $row .= '; default: ' . C::lyellow($this->format($this->defaults[$name]));
+                    $row .= '; default: ' . A::lyellow($this->format($this->defaults[$name]));
                 }
             }
             $guide .= $row . "\n";
@@ -170,18 +170,18 @@ final class Configurator extends stdClass
     public function loadConfig(string $filePath): void
     {
         if (is_file($filePath)) {
-            if (substr($filePath, -4) === '.ini') {
+            if (str_ends_with($filePath, '.ini')) {
                 $config = parse_ini_file($filePath);
                 if ($config === false) {
-                    echo C::white("Error: cannot read ini file $filePath!\n\n", C::RED);
+                    echo A::white("Error: cannot read ini file $filePath!\n\n", A::LRED);
                     exit(1);
                 }
             } else {
-                echo C::white("Error: Only .ini files are supported!\n\n", C::RED);
+                echo A::white("Error: Only .ini files are supported!\n\n", A::LRED);
                 exit(1);
             }
         } elseif ($filePath) {
-            echo C::white("Configuration file $filePath not found.\n\n", C::RED);
+            echo A::white("Configuration file $filePath not found.\n\n", A::LRED);
             exit(1);
         } else {
             $config = [];
